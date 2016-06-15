@@ -13,15 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-VERSION=1.2
+CCP_VERSION=1.2
 REGISTRY=52.2.93.43:5000
 containers="crunchydata/crunchy-vacuum crunchydata/crunchy-prometheus crunchydata/crunchy-promgateway crunchydata/crunchy-grafana crunchydata/crunchy-dns crunchydata/crunchy-collect crunchydata/crunchy-pgbadger crunchydata/crunchy-pgpool crunchydata/crunchy-watch crunchydata/crunchy-backup crunchydata/crunchy-postgres"
 for i in $containers;
 do
 	echo $i is the container
-	docker tag $i:$VERSION $REGISTRY/$i:$VERSION
-	docker tag $i:$VERSION $REGISTRY/$i:latest
-	docker push $REGISTRY/$i:$VERSION
-	docker push $REGISTRY/$i:latest
+	docker tag $i:$CCP_VERSION $REGISTRY/$i:$CCP_VERSION
+	docker push $REGISTRY/$i:$CCP_VERSION
 done
 exit
