@@ -17,20 +17,34 @@ environments.
 
 This instruction assumes you are installing on Centos 7 or RHEL 7.
 
+=== Assumptions
+
+The install assumes the following about your host configuration:
+ * centos7 (or RHEL7) VM
+ * user called someuser has been created
+ * someuser has sudo privileges with no password
+
 === Step 1 - Project Directory Structure
 
-First steps are to create a proper directory structure to
-hold the conatiner code:
+First add the following lines to your .bashrc file to set
+the project paths:
 ....
-mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
 export GOPATH=$HOME/cdev
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_VERSION=1.2.1
+export BUILDBASE=$GOPATH/src/github.com/crunchydata/crunchy-containers
+....
+
+Next, set up a project directory structure and pull down the project:
+....
+mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
 cd $GOPATH
+sudo yum -y install golang git docker
 go get github.com/tools/godep
 cd src/github.com
 mkdir crunchydata
+cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
 git checkout 1.2.1
@@ -44,7 +58,11 @@ key and yum repo file into the $BUILDBASE/conf directory at this point.*
 
 Next, install system dependencies:
 ....
-export BUILDBASE=$GOPATH/github.com/crunchydata/crunchy-containers
+sudo yum -y update
+sudo groupadd docker
+sudo usermod -a -G docker someuser
+sudo systemctl enable docker.service
+sudo systemctl start docker.service
 cd $BUILDBASE
 make setup
 ....
@@ -62,7 +80,6 @@ Set these variables according to your deployment requirements
 then perform a container build as follows:
 
 ....
-cd $BUILDBASE
 make all
 ....
 
