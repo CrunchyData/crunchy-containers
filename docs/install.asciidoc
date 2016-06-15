@@ -8,6 +8,7 @@ v1.2.1, {docdate}
 The crunchy-containers can run on different environments including:
  * standalone docker
  * openshift enterprise
+ * kubernetes 1.2.X
 
 In this document we list the basic installation steps required for these
 environments.
@@ -30,6 +31,9 @@ go get github.com/tools/godep
 cd src/github.com
 mkdir crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
+cd crunchy-containers
+git checkout 1.2.1
+godep restore
 ....
 
 *If you are a Crunchy enterprise customer, you will place the CRUNCHY repo
@@ -46,11 +50,23 @@ make setup
 
 === Step 3 - Build the Containers
 
-Next, compile the code, and build the Docker images as follows:
+Important variables within the Makefile determine what
+the containers will be built with including:
+ * OSFLAVOR - set to either *rhel7* or *centos7*; determines
+ what base image will be used for the containers
+ * PGVERSION - set to either *9.5*, or *9.3*; determines
+ what version of Postgres will be used within the containers
+
+Set these variables according to your deployment requirements
+then perform a container build as follows:
+
 ....
 cd $BUILDBASE
 make all
 ....
+
+After this, you will have all the Crunchy containers built and are ready
+for use.
 
 === Step 4 - Openshift Enterprise Installation
 
@@ -58,6 +74,8 @@ See the OSE installation guide for details on how to install
 OSE on your host.  The main instructions are here:
 
 https://docs.openshift.com/enterprise/3.2/install_config/install/index.html
+
+==== Step 4a - Openshift Router Setup
 
 To install the OSE router, here are the instructions I use:
 
@@ -77,6 +95,7 @@ oc expose service v3simple-spatial -l name=v3simple-spatial
 oc get route
 ....
 
+==== Step 4b - Openshift DNS Setup
 
 To set up dnsmasq, here are the instructions I basically follow
 this set of instructions:
@@ -132,18 +151,22 @@ dig @192.168.0.114 single-master.openshift.svc.cluster.local
 dig @192.168.0.114 osejeff.crunchy.lab
 ....
 
-
-
 You can now log in as an OSE user and start creating containers:
 ....
 oc login -u system:admin
 oc project openshift
 ....
 
+The most recent DNS related configuration files that I test with 
+are included in the $BUILDBASE/docs/openshift-install directory
+as a reference.
+
 === Step 5 - Configure Container UID Control
 
 Openshift will run containers with a random UID by default.  This can cause files written by the
-Postgres containers to have random UIDs if you persist data for example to an NFS fileshare.
+Postgres containers to have random UIDs if you persist data for example to an NFS fileshare.  The
+containers will work with a random UID, but you can also override this Openshift security
+setting to have the containers run as the postgres UID (26).
 
 You can make Openshift run as the Postgres UID if you set the *runAsUser* security setting to the *RunAsAny* value
 as follows:
@@ -319,24 +342,13 @@ here:
 
 https://docs.openshift.com/enterprise/3.1/install_config/aggregate_logging.html
 
-=== Tip 8: nss_wrapper
-
-If an Openshift deployment requires that random generated UIDs be
-supported by containers, the Crunchy containers can be modifed
-similar to those located here to support the use of nss_wrapper
-to equate the random generated UIDs/GIDs by openshift with 
-the postgres user:
-
-https://github.com/openshift/postgresql/blob/master/9.4/root/usr/share/container-scripts/postgresql/common.sh
-
-
-=== Tip 9: build box setup
+=== Tip 8: build box setup
 
 golang is required to build the pgbadger container, on RH 7.2, golang
 is found in the 'server optional' repository and needs to be enabled
 to install.
 
-=== Tip 10: encoding secrets
+=== Tip 9: encoding secrets
 
 You can use kubernetes secrets to set and maintain your database
 credentials.  Secrets requires you base64 encode your user and password
@@ -349,7 +361,7 @@ echo -n 'myuserid' | base64
 You will paste these values into  your JSON secrets files for values.
 
 
-=== Tip 11: DNS host entry and DeploymentConfig
+=== Tip 10: DNS host entry and DeploymentConfig
 
 If your openshift environment can not resolve your hostname via
 a DNS server (external to openshift!), you will get errors when trying
@@ -362,7 +374,7 @@ server.
 
 
 
-=== Tip 12: Setting up Docker storage
+=== Tip 11: Setting up Docker storage
 
 I typically set up Docker storage this way:
  * add an extra IDE drive to my VM
