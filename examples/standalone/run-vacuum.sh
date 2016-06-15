@@ -33,5 +33,5 @@ sudo docker run \
 	--link master:master \
 	--name=crunchy-vacuum-job \
 	--hostname=crunchy-vacuum-job \
-	-d crunchydata/crunchy-vacuum:latest
+	-d crunchydata/crunchy-vacuum:$CCP_VERSION
 

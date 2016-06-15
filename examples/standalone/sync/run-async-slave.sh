@@ -44,5 +44,5 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=async-slave \
 	--hostname=async-slave \
-	-d crunchydata/crunchy-postgres:latest
+	-d crunchydata/crunchy-postgres:$CCP_VERSION
 

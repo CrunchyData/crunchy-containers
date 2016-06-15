@@ -58,5 +58,5 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=master-restore \
 	--hostname=master-restore \
-	-d crunchydata/crunchy-postgres:latest
+	-d crunchydata/crunchy-postgres:$CCP_VERSION
 

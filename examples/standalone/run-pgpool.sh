@@ -29,5 +29,5 @@ sudo docker run \
 	-e PG_DATABASE=postgres \
 	--name=pgpool \
 	--hostname=pgpool \
-	-d crunchydata/crunchy-pgpool:latest
+	-d crunchydata/crunchy-pgpool:$CCP_VERSION
 

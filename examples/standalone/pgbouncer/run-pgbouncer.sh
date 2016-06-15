@@ -35,5 +35,5 @@ sudo docker run \
 	--link master:master \
 	--name=pgbouncer \
 	--hostname=pgbouncer \
-	-d crunchydata/crunchy-pgbouncer:latest
+	-d crunchydata/crunchy-pgbouncer:$CCP_VERSION
 

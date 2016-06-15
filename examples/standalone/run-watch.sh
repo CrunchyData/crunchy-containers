@@ -30,5 +30,5 @@ sudo docker run \
 	-e SLEEP_TIME=20 \
 	--name=crunchy-watch \
 	--hostname=crunchy-watch \
-	-d crunchydata/crunchy-watch:latest
+	-d crunchydata/crunchy-watch:$CCP_VERSION
 

@@ -37,5 +37,5 @@ sudo docker run \
 	-e DOMAIN=crunchy.lab. \
 	--name=crunchy-dns \
 	--hostname=crunchy-dns \
-	-d crunchydata/crunchy-dns:latest
+	-d crunchydata/crunchy-dns:$CCP_VERSION
 

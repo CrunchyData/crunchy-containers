@@ -35,7 +35,7 @@ sudo docker run \
 	-v $DATA_DIR:/data \
 	--name=crunchy-promgateway \
 	--hostname=crunchy-promgateway \
-	-d crunchydata/crunchy-promgateway:latest
+	-d crunchydata/crunchy-promgateway:$CCP_VERSION
 
 sudo docker run \
 	-p $HOSTIP:9090:9090/tcp \
@@ -43,7 +43,7 @@ sudo docker run \
 	--name=crunchy-prometheus \
 	--hostname=crunchy-prometheus \
 	--link crunchy-promgateway:crunchy-promgateway \
-	-d crunchydata/crunchy-prometheus:latest
+	-d crunchydata/crunchy-prometheus:$CCP_VERSION
 
 
 sudo docker run \
@@ -52,4 +52,4 @@ sudo docker run \
 	--link crunchy-prometheus:crunchy-prometheus \
 	--name=crunchy-grafana \
 	--hostname=crunchy-grafana \
-	-d crunchydata/crunchy-grafana:latest
+	-d crunchydata/crunchy-grafana:$CCP_VERSION

@@ -49,7 +49,7 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=master \
 	--hostname=master \
-	-d crunchydata/crunchy-postgres:latest
+	-d crunchydata/crunchy-postgres:$CCP_VERSION
 
 export HOSTIP=`hostname --ip-address`
 sudo docker stop master-collect
@@ -63,4 +63,4 @@ sudo docker run \
 	--link master:master \
 	--name=master-collect \
 	--hostname=master-collect \
-	-d crunchydata/crunchy-collect:latest
+	-d crunchydata/crunchy-collect:$CCP_VERSION

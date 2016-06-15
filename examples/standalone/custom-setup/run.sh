@@ -51,5 +51,5 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=setupsql \
 	--hostname=setupsql \
-	-d crunchydata/crunchy-postgres:latest
+	-d crunchydata/crunchy-postgres:$CCP_VERSION
 
