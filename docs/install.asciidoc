@@ -26,6 +26,7 @@ mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
 export GOPATH=$HOME/cdev
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
+export CCP_VERSION=1.2.1
 cd $GOPATH
 go get github.com/tools/godep
 cd src/github.com

@@ -52,28 +52,8 @@ On RHEL systems, "Go" can be installed with the following command:
 3) Building the Containers (Optional)
 
 If you don't want to pull the containers from DockerHub or the
-private Crunchy Docker registry, you can perform the following
-steps to build the containers:
-
-....
-export GOPATH=$HOME/cdev
-export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOBIN
-export CCP_VERSION=1.2.1
-export BUILDBASE=$GOPATH/src/github.com/crunchydata/crunchy-containers
-mkdir -p $GOPATH/pkg $GOPATH/bin $GOPATH/src
-cd $GOPATH
-go get github.com/tools/godep
-cd $GOPATH/src/github.com/
-mkdir crunchydata
-cd crunchydata
-git clone https://github.com/crunchydata/crunchy-containers.git
-cd crunchy-containers
-git checkout $CCP_VERSION
-godep restore
-make setup
-make all
-....
+private Crunchy Docker registry, you can perform a build of
+all the containers locally on your development host.
 
 Complete install documentation is found here: link:docs/install.asciidoc[Install Docs]
 
@@ -96,24 +76,6 @@ Both of these files can be obtained with the following procedure:
  * Click on "Downloads" in the upper right corner
  * The "Download GPG Key" button will automatically download the CRUNCHY-GPG-KEY.public file
  * The "Download repo file (RHEL)" button will automatically download a personalized (to your user) crunchypg95.repo file
-
-=== Installation Configuration
-
-Build targets include two environment variables that determine
-the Docker base image to be used and the version of Postgresql to
-use.
-
-By default, centos7 and Postgres 9.5 (PGDG) are used to build
-the container images.
-
-Modify the following Makefile env variables for your desired
-target, currently rhel7 and centos7 are supported OS base images
-and 9.3 and 9.5 are supported versions of Postgresql:
-
-....
-OSFLAVOR=cento7
-PGVERSION=9.5
-....
 
 === Examples
 
