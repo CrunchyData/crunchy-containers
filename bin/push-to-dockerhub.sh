@@ -17,8 +17,6 @@ if [ -z "$CCP_VERSION" ]; then
 	echo "CCP_VERSION not set"
 	exit 1
 fi
-docker push -f crunchydata/crunchy-dba:$CCP_VERSION
-docker push -f crunchydata/crunchy-vacuum:$CCP_VERSION
 docker push -f crunchydata/crunchy-prometheus:$CCP_VERSION
 docker push -f crunchydata/crunchy-promgateway:$CCP_VERSION
 docker push -f crunchydata/crunchy-grafana:$CCP_VERSION
@@ -31,16 +29,3 @@ docker push -f crunchydata/crunchy-backup:$CCP_VERSION
 docker push -f crunchydata/crunchy-postgres:$CCP_VERSION
 docker push -f crunchydata/crunchy-pgbouncer:$CCP_VERSION
 
-docker push -f crunchydata/crunchy-dba:latest
-docker push -f crunchydata/crunchy-vacuum:latest
-docker push -f crunchydata/crunchy-prometheus:latest
-docker push -f crunchydata/crunchy-promgateway:latest
-docker push -f crunchydata/crunchy-grafana:latest
-docker push -f crunchydata/crunchy-dns:latest
-docker push -f crunchydata/crunchy-collect:latest
-docker push -f crunchydata/crunchy-pgbadger:latest
-docker push -f crunchydata/crunchy-pgpool:latest
-docker push -f crunchydata/crunchy-watch:latest
-docker push -f crunchydata/crunchy-backup:latest
-docker push -f crunchydata/crunchy-postgres:latest
-docker push -f crunchydata/crunchy-pgbouncer:latest
