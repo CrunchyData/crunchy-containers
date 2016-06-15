@@ -1,0 +1,53 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Job",
+    "metadata": {
+        "name": "{{.JOB_HOST}}-backup"
+    },
+    "spec": {
+        "selector": {
+            "matchLabels": {
+                "app": "{{.JOB_HOST}}-backup"
+            }
+        },
+        "template": {
+            "metadata": {
+                "name": "{{.JOB_HOST}}-backup",
+                "labels": {
+                    "app": "{{.JOB_HOST}}-backup"
+                }
+            },
+            "spec": {
+                "volumes": [{
+                    "name": "pgdata",
+                    "persistentVolumeClaim": {
+                        "claimName": "{{.JOB_HOST}}-backup-pvc"
+                    }
+                }],
+                "containers": [{
+                    "name": "{{.JOB_HOST}}-backup",
+                    "image": "crunchydata/crunchy-backup:1.2",
+                    "volumeMounts": [{
+                        "mountPath": "/pgdata",
+                        "name": "pgdata",
+                        "readOnly": false
+                    }],
+                    "env": [{
+                        "name": "BACKUP_HOST",
+                        "value": "{{.JOB_HOST}}"
+                    }, {
+                        "name": "BACKUP_USER",
+                        "value": "{{.PG_USER}}"
+                    }, {
+                        "name": "BACKUP_PASS",
+                        "value": "{{.PG_PASSWORD}}"
+                    }, {
+                        "name": "BACKUP_PORT",
+                        "value": "{{.PG_PORT}}"
+                    }]
+                }],
+                "restartPolicy": "Never"
+            }
+        }
+    }
+}

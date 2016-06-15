@@ -1,0 +1,35 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "crunchy-grafana",
+        "labels": {
+            "name": "crunchy-grafana"
+        }
+    },
+    "spec": {
+        "containers": [{
+            "name": "crunchy-grafana",
+            "image": "crunchydata/crunchy-grafana:1.2",
+            "ports": [{
+                "containerPort": 3000,
+                "protocol": "TCP"
+            }],
+            "env": [],
+            "securityContext": {
+                "capabilities": {}
+            },
+            "volumeMounts": [{
+                "mountPath": "/data",
+                "name": "data",
+                "readOnly": false
+            }]
+        }],
+        "volumes": [{
+            "name": "data",
+            "persistentVolumeClaim": {
+                "claimName": "grafana-pvc"
+            }
+        }]
+    }
+}

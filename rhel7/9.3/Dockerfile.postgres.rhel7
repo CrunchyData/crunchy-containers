@@ -1,0 +1,60 @@
+FROM rhel7.2
+
+LABEL Release="1.2.1"
+LABEL Vendor="Crunchy Data Solutions"
+LABEL PostgresVersion="9.3"
+
+# PGDG Postgres repo
+#RUN rpm -Uvh http://yum.postgresql.org/9.3/redhat/rhel-7-x86_64/pgdg-redhat93-9.3-1.noarch.rpm
+
+# Crunchy postgresql repo info
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg93.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+#RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+RUN yum -y install rsync libxslt libxml2 procps-ng \
+postgresql9?-server  \
+postgresql9?-libs  \
+postgresql9?-contrib  \
+postgresql9? \
+openssh-clients \
+hostname bind-utils \
+&& yum -y reinstall glibc-common  && yum clean all -y
+
+# set up cpm directory
+#
+RUN mkdir -p /opt/cpm/bin
+RUN mkdir -p /opt/cpm/conf
+
+RUN chown -R postgres:postgres /opt/cpm
+
+# set environment vars
+ENV PGROOT /usr/pgsql-9.3
+ENV PGDATA /pgdata
+
+# add path settings for postgres user
+ADD conf/.bash_profile /var/lib/pgsql/
+
+# add volumes to allow override of pg_hba.conf and postgresql.conf
+VOLUME ["/pgconf"]
+
+# add volumes to allow backup of postgres files
+VOLUME ["/pgdata"]
+
+# add volumes to offer a restore feature
+VOLUME ["/backup"]
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin /opt/cpm/bin
+ADD conf /opt/cpm/conf
+
+RUN chown -R postgres:postgres /pgdata
+RUN chown -R postgres:postgres /backup
+
+USER postgres
+
+CMD ["/opt/cpm/bin/start.sh"]
+

@@ -1,0 +1,42 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "watch",
+        "labels": {
+            "name": "watch"
+        }
+    },
+    "spec": {
+        "serviceAccount": "pg-watcher",
+        "containers": [{
+            "name": "watch",
+            "image": "crunchydata/crunchy-watch:1.2",
+            "env": [{
+                "name": "KUBE_PROJECT",
+                "value": "default"
+            }, {
+                "name": "SLEEP_TIME",
+                "value": "20"
+            }, {
+                "name": "SLAVE_TO_TRIGGER_LABEL",
+                "value": "slave"
+            }, {
+                "name": "PG_MASTER_SERVICE",
+                "value": "master"
+            }, {
+                "name": "PG_SLAVE_SERVICE",
+                "value": "slave"
+            }, {
+                "name": "PG_MASTER_PORT",
+                "value": "5432"
+            }, {
+                "name": "PG_MASTER_USER",
+                "value": "master"
+            }, {
+                "name": "PG_DATABASE",
+                "value": "postgres"
+            }]
+        }]
+    }
+}

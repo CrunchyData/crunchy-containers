@@ -1,0 +1,32 @@
+FROM rhel7.2
+
+LABEL Release="1.2.1"
+LABEL Vendor="Crunchy Data Solutions"
+LABEL PostgresRelease="9.5"
+
+# PGDG Postgres repo
+#RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
+
+# Crunchy Postgres repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg95.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+# install deps
+RUN yum -y install libxslt libxml2 procps-ng \
+postgresql9?-server  \
+postgresql9? \
+openssh-clients \
+hostname bind-utils \
+ && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin
+ADD bin/backup/ /opt/cpm/bin
+RUN chown -R postgres:postgres /opt/cpm
+
+VOLUME ["/pgdata"]
+RUN chown -R postgres:postgres /pgdata
+
+USER postgres
+
+CMD ["/opt/cpm/bin/start-backupjob.sh"]

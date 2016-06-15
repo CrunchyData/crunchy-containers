@@ -1,0 +1,53 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Job",
+    "metadata": {
+        "name": "backup-job-nfs"
+    },
+    "spec": {
+        "selector": {
+            "matchLabels": {
+                "app": "backup-job-nfs"
+            }
+        },
+        "template": {
+            "metadata": {
+                "name": "backup-job-nfs",
+                "labels": {
+                    "app": "backup-job-nfs"
+                }
+            },
+            "spec": {
+                "volumes": [{
+                    "name": "pgdata",
+                    "persistentVolumeClaim": {
+                        "claimName": "backup-job-pvc"
+                    }
+                }],
+                "containers": [{
+                    "name": "backup-job-nfs",
+                    "image": "crunchydata/crunchy-backup:1.2",
+                    "volumeMounts": [{
+                        "mountPath": "/pgdata",
+                        "name": "pgdata",
+                        "readOnly": false
+                    }],
+                    "env": [{
+                        "name": "BACKUP_HOST",
+                        "value": "single-master"
+                    }, {
+                        "name": "BACKUP_USER",
+                        "value": "master"
+                    }, {
+                        "name": "BACKUP_PASS",
+                        "value": "password"
+                    }, {
+                        "name": "BACKUP_PORT",
+                        "value": "5432"
+                    }]
+                }],
+                "restartPolicy": "Never"
+            }
+        }
+    }
+}

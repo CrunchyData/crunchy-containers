@@ -1,0 +1,65 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "crunchy-promgateway-example",
+        "creationTimestamp": null,
+        "annotations": {
+            "description": "Crunchy PostgreSQL gateway Example",
+            "iconClass": "icon-database",
+            "tags": "database,postgresql,replication"
+        }
+    },
+    "parameters": [],
+    "objects": [{
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "crunchy-promgateway",
+            "labels": {
+                "name": "crunchy-promgateway"
+            }
+        },
+        "spec": {
+            "ports": [
+	    {
+                "name": "pushgateway",
+                "protocol": "TCP",
+                "port": 9091,
+                "targetPort": 9091,
+                "nodePort": 0
+            }
+	    ],
+            "selector": {
+                "name": "crunchy-promgateway"
+            }
+        },
+        "status": {
+            "loadBalancer": {}
+        }
+    }, {
+        "kind": "Pod",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "crunchy-promgateway",
+            "labels": {
+                "name": "crunchy-promgateway"
+            }
+        },
+        "spec": {
+            "containers": [{
+                "name": "crunchy-promgateway",
+                "image": "crunchydata/crunchy-promgateway:1.2.1",
+                "ports": [
+		{
+                    "containerPort": 9091,
+                    "protocol": "TCP"
+                }
+		],
+                "env": [],
+                "volumeMounts": []
+            }],
+            "volumes": []
+        }
+    }]
+}

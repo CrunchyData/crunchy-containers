@@ -1,0 +1,12 @@
+edit the priviledged security context
+
+
+oc edit scc privileged
+
+add the following:
+
+allowedCapabilities
+
+In the pod def add the following:
+
+securityContext.capabilities.add

@@ -1,0 +1,33 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "crunchy-prometheus",
+        "labels": {
+            "name": "crunchy-prometheus"
+        }
+    },
+    "spec": {
+        "containers": [{
+            "name": "crunchy-prometheus",
+            "image": "crunchydata/crunchy-prometheus:1.2",
+            "ports": [{
+                "containerPort": 9090,
+                "protocol": "TCP"
+            }, {
+                "containerPort": 9091,
+                "protocol": "TCP"
+            }],
+            "env": [],
+            "volumeMounts": [{
+                "mountPath": "/data",
+                "name": "data",
+                "readOnly": false
+            }]
+        }],
+        "volumes": [{
+            "name": "data",
+            "emptyDir": {}
+        }]
+    }
+}

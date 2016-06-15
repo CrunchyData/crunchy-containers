@@ -1,0 +1,25 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "crunchy-grafana",
+        "labels": {
+            "name": "crunchy-grafana"
+        }
+    },
+    "spec": {
+        "ports": [{
+            "name": "grafana",
+            "protocol": "TCP",
+            "port": 3000,
+            "targetPort": 3000,
+            "nodePort": 0
+        }],
+        "selector": {
+            "name": "crunchy-grafana"
+        }
+    },
+    "status": {
+        "loadBalancer": {}
+    }
+}

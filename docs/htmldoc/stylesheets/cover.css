@@ -1,0 +1,24 @@
+.cover {
+    height: 30em;
+}
+
+footer {
+    display: none;
+}
+
+.panels {
+    margin-top: 5em;
+}
+
+.ulist ul {
+    list-style-type: none;
+    padding-left: 1em;
+}
+
+h1.page-header {
+    margin: 44px 0 22px;
+}
+
+.toc-top-link {
+    display: none;
+}

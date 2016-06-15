@@ -1,0 +1,21 @@
+
+.affix {
+    top: 80px;
+    position: static;
+    width: 100%;
+    z-index: 1;
+}
+
+@media (min-width: 992px) {
+    .affix {
+        position: fixed;
+        width: 213px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .affix {
+        position: fixed;
+        width: 263px;
+    }
+}

@@ -1,0 +1,49 @@
+rmemeber, you basically want to have 1 replication controller for the master
+(08:32:28 PM) Paul Morie: 1 for read replicas
+(08:32:38 PM) Paul Morie: and be able to resize the rc for read replicas up, right?
+(08:32:50 PM) Paul Morie: and have all the new read replicas be able to use the same networked storage?
+(08:34:03 PM) Jeff McCormick: yeah, that is where I was going, 1 master rc and 1 standby rc, then scale up the standby pods, all of the pods would have their own /pgdata volume either emptyDir or NFS based.
+(08:34:34 PM) Jeff McCormick: I think with this permission fix, it should work.
+(08:34:48 PM) Paul Morie: are you still using nss_wrapper?
+(08:35:00 PM) Paul Morie: or did the privileged container hack eliminate the need for that
+(08:35:29 PM) Jeff McCormick: I have it in the container but I didn't use it in my testing just now...so I'm hoping that its not necessary....need to test that.
+(08:35:44 PM) Paul Morie: k
+(08:35:47 PM) Jeff McCormick: I'm using RunAsAny as well in the sec context
+(08:35:49 PM) Paul Morie: that will be good to know
+(08:35:51 PM) Paul Morie: okay, cool
+(08:36:04 PM) Jeff McCormick: this is some crazy foo for sure!  ha ha
+(08:36:14 PM) Paul Morie: then you should be running as the postgres uid (...uh, 42?) in the container
+(08:36:18 PM) Paul Morie: yes, it is nuts
+(08:36:43 PM) Paul Morie: it's going to be badass when this stuff just works without all the hacks
+(08:36:46 PM) Jeff McCormick: actually I'm running as 'root'
+(08:36:58 PM) Jeff McCormick: forgot I changed the Dockerfile USER to specify root.
+(08:36:59 PM) Paul Morie: hrm.
+(08:37:03 PM) Paul Morie: got you
+(08:37:18 PM) Paul Morie: okay, we should see if we can get you back to this state running as postgres
+(08:37:35 PM) Jeff McCormick: I'm guessing root will be required to be able to do the chown/chmod
+(08:37:35 PM) Paul Morie: if you have the right capabilities you should be able to do whatever you want, uid 0 or no
+(08:37:48 PM) Paul Morie: we can give you the individual kernel caps you need, i think
+(08:38:14 PM) Paul Morie: let me look them up quick
+(08:38:30 PM) Paul Morie: i am trying to memorize them all :-P
+(08:38:46 PM) Paul Morie: you need CAP_FOWNER for chmod
+(08:39:26 PM) Paul Morie: ah, and CAP_CHOWN for chown
+(08:40:22 PM) Paul Morie: so, i think we should be able to drop the priv'd container bit, add those capabilities to the security context, and viola, it should work
+(08:40:49 PM) Jeff McCormick: ah, that would be sweet
+(08:41:07 PM) Paul Morie: yeah
+(08:41:15 PM) Paul Morie: i want badly for you not to need privileged to do this
+(08:41:22 PM) Paul Morie: the optics will be better for everyone
+(08:42:00 PM) Jeff McCormick: agreed
+(08:42:10 PM) Paul Morie: cool
+(08:42:18 PM) Paul Morie: i think this means i get to drink some beer tonight
+(08:42:47 PM) Jeff McCormick: ha ha, for sure.
+(08:43:00 PM) Paul Morie: omg, someone merged a change that made a conflict w/ my 10 commit PR for upstream unit tests in origin
+(08:43:03 PM) Paul Morie: no beer for me
+(08:43:10 PM) Jeff McCormick: doh
+(08:43:21 PM) Paul Morie: yeah, someone was in the queue ahead of me w/ a breaking change
+(08:43:24 PM) Paul Morie: NO REST FOR THE WICKED
+(08:44:04 PM) Jeff McCormick: I'll do some testing on this tomorrow, with the capabilties and see if it will work when running as the postgres user and in non-priv mode
+(08:44:12 PM) Paul Morie: cool
+(08:44:18 PM) Paul Morie: that will be good medicine when that works
+
+also try out nfs example with this permission change.
+

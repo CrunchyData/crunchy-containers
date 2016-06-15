@@ -1,0 +1,44 @@
+FROM centos:7
+
+LABEL Release="1.2.1"
+LABEL Vendor="Crunchy Data Solutions"
+LABEL PostgresVersion="9.3"
+
+# PGDG Postgres repo
+RUN rpm -Uvh http://yum.postgresql.org/9.3/redhat/rhel-7-x86_64/pgdg-centos93-9.3-1.noarch.rpm
+
+# set up Crunchy repo
+#ADD conf/CRUNCHY-GPG-KEY.public  /
+#ADD conf/crunchypg95.repo /etc/yum.repos.d/
+#RUN rpm --import CRUNCHY-GPG-KEY.public
+
+# install docker from docker repo
+ADD conf/pgbouncer/docker.repo /etc/yum.repos.d/
+
+RUN yum -y install docker-engine procps-ng \
+pgbouncer \
+postgresql9? \
+openssh-clients \
+hostname  \
+ && yum clean all -y
+
+# set up cpm directory
+#
+RUN mkdir -p /opt/cpm/bin
+RUN mkdir -p /opt/cpm/conf
+
+# add volumes to allow override of pgbouncer config files
+VOLUME ["/pgconf"]
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin/pgbouncer /opt/cpm/bin
+ADD conf/pgbouncer /opt/cpm/conf
+
+RUN chown -R daemon:daemon /opt/cpm/bin
+
+USER root
+
+CMD ["/opt/cpm/bin/startpgbouncer.sh"]
+

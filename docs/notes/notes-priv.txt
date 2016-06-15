@@ -1,0 +1,15 @@
+one scheme that worked....
+
+add allowPrivilegedContainer: true
+to the security context for the restricted and priviledged users....
+
+add RunAsAny
+to the security context to allow us to run as the postgres user
+
+in the container, I used USER root, and then was able to chmod/chown
+the emptyDir volume to the postgres user...
+
+oc oc config use-context default/192-168-0-107:8443/system:admin
+oc edit scc restricted --config=/var/lib/openshift/openshift.local.config/master/admin.kubeconfig
+oc edit scc privileged
+

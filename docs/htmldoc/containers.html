@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="generator" content="AsciiDoc 8.6.8, bootstrap backend 4.5.0">
+    <title>Crunchy Container Overview</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Crunchy Data Solutions, Inc.">
+    <!-- AsciiDoc Bootstrap styles -->
+    <link rel="stylesheet" type="text/css" id="bootstrapTheme" href="./stylesheets/asciidoc-bootstrap.min.css">
+    <!-- Back to top (jquery plugin) -->
+    <link rel="stylesheet" type="text/css" href="./stylesheets/ui.totop.css">
+
+    <!--[if (lt IE 9) & (!IEMobile)]>
+        <script src="./javascripts/html5shiv.min.js"></script>
+        <script src="./javascripts/respond.min.js"></script>
+    <![endif]-->
+
+  </head>
+  <body id="toc-top">
+    <div id="page">
+
+
+      <div class="jumbotron">
+        <div class="container">
+          <h1>Crunchy Container Overview</h1>
+        </div>
+      </div>
+
+  <div id="content" class="container">
+
+    <div class="row">
+
+
+
+
+        <div class="col-md-9" role="main">
+<div class="section">
+    <h1 class="page-header" id="introduction">1. Introduction</h1>
+<div class="paragraph"><p>In this document, we will describe each of the containers found
+within the Crunchy Containers for PostgreSQL.</p></div>
+</div>
+<div class="section">
+    <h1 class="page-header" id="crunchy_postgres">2. crunchy-postgres</h1>
+<div class="paragraph"><p>The crunchy-postgres container executes the Postgres database.</p></div>
+<h2 id="packages">2.1. Packages</h2>
+<div class="paragraph"><p>The container image is built using either the Crunchy Postgres release
+or the community version based upon a flag in the Makefile.</p></div>
+<div class="paragraph"><p>The Crunchy postgres RPMs are available to Crunchy customers only.  The
+Crunchy release is meant for customers that require enterprise level
+support.</p></div>
+<div class="paragraph"><p>The PGDG community RPMs can be used as well by simply commenting out
+the Crunchy yum repo within the Dockerfiles and uncommenting
+the PGDG yum repo.</p></div>
+<h2 id="setup_sql">2.2. setup.sql</h2>
+<div class="paragraph"><p>The <strong>setup.sql</strong> script is used to define startup SQL commands that are
+executed when the database is first created.</p></div>
+<h2 id="environment_variables">2.3. Environment Variables</h2>
+<div class="ulist"><ul>
+<li>
+<p>
+PG_MODE - either master or slave, this value determines whether
+   the database is set up as a master or slave instance
+</p>
+</li>
+<li>
+<p>
+PG_MASTER_USER - the value to use for the user ID created as
+   master.  The <strong>master</strong> user has super user priviledges.
+</p>
+</li>
+<li>
+<p>
+PG_MASTER_PASSWORD - the password for the PG_MASTER_USER database user
+</p>
+</li>
+<li>
+<p>
+PG_USER - the value to use for the user ID created as a normal user.
+   This user is created as part of the setup.sql script upon database
+   creation and allows users to predefine an application user.
+</p>
+</li>
+<li>
+<p>
+PG_PASSWORD - the password for the PG_USER database user that is created
+</p>
+</li>
+<li>
+<p>
+PG_DATABASE - a database that is created upon database initialization
+</p>
+</li>
+<li>
+<p>
+PG_ROOT_PASSWORD - the postgres user password set up upon database
+   initialization
+</p>
+</li>
+<li>
+<p>
+PG_LOCALE - if set, the locale you want to create the database with, if
+   not set, the default locale is used
+</p>
+</li>
+<li>
+<p>
+SYNC_SLAVE - if set, this value is used to specify the application_name
+   of a slave that will be used for a synchronous replication
+</p>
+</li>
+</ul></div>
+<h2 id="features">2.4. Features</h2>
+<div class="paragraph"><p>The following features are supported by the crunchy-postgres container:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+use of openshift secrets
+</p>
+</li>
+<li>
+<p>
+ability to restore from a database backup
+</p>
+</li>
+<li>
+<p>
+use of custom pg_hba.conf and postgresql.conf files
+</p>
+</li>
+<li>
+<p>
+ability to override postgresql.conf configuration parameters
+</p>
+</li>
+<li>
+<p>
+ability to override the default setup.sql script
+</p>
+</li>
+<li>
+<p>
+ability to set the database locale
+</p>
+</li>
+<li>
+<p>
+ability to specify a synchronous slave application_name
+</p>
+</li>
+</ul></div>
+<h2 id="locale_support">2.5. Locale Support</h2>
+<div class="paragraph"><p>Adding locale support to the container is accomplished by
+running <em>yum reinstall glibc_common</em> within the container, this
+increases the size of the container image and can be removed if you
+do not require specific locale support.</p></div>
+<div class="paragraph"><p>You can specify the PG_LOCALE env var which is passed to the initdb
+command when the initial data files are created, for example:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>"name": "PG_LOCALE",
+"value": "fr_BE.UTF-8"</pre>
+</div></div>
+<div class="paragraph"><p>By default, no locale is specified when the initdb command is executed.</p></div>
+</div>
+<div class="section">
+    <h1 class="page-header" id="crunchy_backup">3. crunchy-backup</h1>
+<div class="paragraph"><p>The crunchy-backup container executes a pg_basebackup against another
+database container.  The backup is a full backup using the standard
+utility included with postgres, pg_basebackup.</p></div>
+<h2 id="backup_location">3.1. Backup Location</h2>
+<div class="paragraph"><p>Backups are stored in a mounted backup volume location, using the
+database host name as a sub-directory, then followed by a unique
+backup directory based upon a date/timestamp.  It is left to the
+user to perform database backup archives in this current version
+of the container.  This backup location is referenced when performing
+a database restore.</p></div>
+<h2 id="dependencies">3.2. Dependencies</h2>
+<div class="paragraph"><p>The container is meant to be using a NFS or similar network file system
+to persist database backups.</p></div>
+</div>
+<div class="section">
+    <h1 class="page-header" id="crunchy_collect">4. crunchy-collect</h1>
+<h2 id="description">4.1. Description</h2>
+<div class="paragraph"><p>Postgresql metrics are collected by the crunchy-collect container.  To
+start collection of metrics on a Postgres database, you add the
+crunchy-collect container into the pod that holds the crunchy-pg container.</p></div>
+<h2 id="requirements">4.2. Requirements</h2>
+<div class="paragraph"><p>Metrics are stored in the crunchy-prometheus container.  crunchy-prometheus runs
+the prometheus time series database. Metrics are pushed from
+crunchy-collect to the prometheus pushgateway found in the crunchy-pushgateway
+container.  Metrics dashboards are created using the grafana web application
+which is found in the crunchy-grafana container.</p></div>
+<div class="paragraph"><p>To start the metrics containers, run one of the following scripts:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>examples/standalone/metrics/run-metrics.sh
+examples/kube/metrics/run.sh
+examples/openshift/metrics/run.sh</pre>
+</div></div>
+<div class="paragraph"><p>The crunchy-prometheus data in this example is stored in emptyDir volume types.
+To persist the data and grafana templates long term, you will want to
+use NFS volume types as specified in <strong>examples/openshift/metrics/run-nfs.json</strong>.</p></div>
+<div class="paragraph"><p>When running the metrics containers, the following ports are available:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+crunchy-prometheus:9090 - the prometheus web user interface
+</p>
+</li>
+<li>
+<p>
+crunchy-pushgateway:9091 - the prometheus pushgateway REST API
+</p>
+</li>
+<li>
+<p>
+crunchy-grafana:3000 - the grafana web user interface
+</p>
+</li>
+</ul></div>
+<h2 id="crunchy_collect_environment_variables">4.3. crunchy-collect Environment Variables</h2>
+<div class="ulist"><ul>
+<li>
+<p>
+POLL_INT - number of minutes to sleep until metrics are collected.  defaults to 15 minutes
+</p>
+</li>
+<li>
+<p>
+PROM_GATEWAY - the http URL of the prometheus pushgateway into which the metrics will be pushed.  defaults to <a href="http://crunchy-pushgateway:9091">http://crunchy-pushgateway:9091</a>
+</p>
+</li>
+</ul></div>
+</div>
+<div class="section">
+    <h1 class="page-header" id="crunchy_pgbadger">5. crunchy-pgbadger</h1>
+<div class="paragraph"><p>The crunchy-pgbadger container executes the pgbadger utility.  A small
+http server is running on the container, when a request
+is made to:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>http://&lt;&lt;ip address&gt;&gt;:10000/api/badgergenerate</pre>
+</div></div>
+<h2 id="environment_variables_2">5.1. Environment Variables</h2>
+<div class="ulist"><ul>
+<li>
+<p>
+BADGER_TARGET - only used in standalone mode to specify the
+   name of the container, also used to find the location of the
+   database log files in /pgdata/$BADGER_TARGET/pg_log/*.log
+</p>
+</li>
+</ul></div>
+<h2 id="features_2">5.2. Features</h2>
+<div class="paragraph"><p>The following features are supported by the crunchy-pgbadger container:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+basic invocation of pgbadger against the database log files
+</p>
+</li>
+</ul></div>
+</div>
+<div class="section">
+    <h1 class="page-header" id="crunchy_pgpool">6. crunchy-pgpool</h1>
+<div class="paragraph"><p>The crunchy-pgpool container executes the pgpool utility.  Pgpool can
+be used to provide a smart postgres-aware proxy to a postgres cluster,
+both master and slave, so that applications can only have to work
+with a single database connection.</p></div>
+<div class="paragraph"><p>Postgres slaves are read-only whereas a master is both read and write
+capable.</p></div>
+<h2 id="environment_variables_3">6.1. Environment Variables</h2>
+<div class="ulist"><ul>
+<li>
+<p>
+PG_USERNAME - user to connect to postgres
+</p>
+</li>
+<li>
+<p>
+PG_PASSWORD - user password to connect to postgres
+</p>
+</li>
+<li>
+<p>
+PG_MASTER_SERVICE_NAME - database host to connect to for the master node
+</p>
+</li>
+<li>
+<p>
+PG_SLAVE_SERVICE_NAME - database host to connect to for the slave node
+</p>
+</li>
+</ul></div>
+<h2 id="features_3">6.2. Features</h2>
+<div class="paragraph"><p>The following features are supported by the crunchy-pgpool container:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+basic invocation of pgpool
+</p>
+</li>
+</ul></div>
+</div>
+<div class="section">
+    <h1 class="page-header" id="crunchy_watch">7. crunchy-watch</h1>
+<div class="paragraph"><p>We create a container, crunchy-watch, that lives inside a pod
+with a master container.</p></div>
+<div class="paragraph"><p>The watch container has access to a service account that is used
+inside the container to issue commands to openshift.</p></div>
+<div class="paragraph"><p>You set up the SA using this:</p></div>
+<div class="paragraph"><p>oc create -f sa.json</p></div>
+<div class="paragraph"><p>You then set up permissions for the SA to edit stuff in the openshift project,
+this example allows all service accounts to edit resources in the <em>openshift</em>
+project:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>oc policy add-role-to-group edit system:serviceaccounts -n openshift</pre>
+</div></div>
+<div class="paragraph"><p>You then reference the SA within the POD spec:</p></div>
+<div class="paragraph"><p>watch-logic.sh is an example of what can run inside the watch container</p></div>
+<div class="paragraph"><p>I copy the oc command into the container from the host when the container
+image is built.  I could not find a way to install this using the redhat
+rpms, so I manually add it to the container.</p></div>
+<h2 id="environment_variables_4">7.1. Environment Variables</h2>
+<div class="ulist"><ul>
+<li>
+<p>
+SLEEP_TIME - the time to sleep in seconds between checking on the master
+</p>
+</li>
+<li>
+<p>
+PG_MASTER_SERVICE -  the master service name
+</p>
+</li>
+<li>
+<p>
+PG_SLAVE_SERVICE - the slave service name
+</p>
+</li>
+<li>
+<p>
+PG_MASTER_PORT - database port to use when checking the database
+</p>
+</li>
+<li>
+<p>
+PG_MASTER_USER -  database user account to use when checking the database
+   using pg_isready utility
+</p>
+</li>
+<li>
+<p>
+PG_DATABASE - database to use when checking the database using pg_isready
+</p>
+</li>
+</ul></div>
+<h2 id="logic">7.2. Logic</h2>
+<div class="paragraph"><p>The watch container will watch the master, if the master dies, then
+the watcher will:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+create the trigger file on the slave that will become the new master
+</p>
+</li>
+<li>
+<p>
+change the labels on the slave to be those of the master
+</p>
+</li>
+<li>
+<p>
+will start watching the new master in case that falls over next
+</p>
+</li>
+<li>
+<p>
+will look for slaves that have the metadata label value of <strong>slavetype=trigger</strong> to prefer
+   the failover to, if found it will use the first slave with that label, if
+   not found, it will use the first slave it finds
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Example of looking for the failover slave:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>oc get pod -l name=pg-slave-rc-dc
+NAME                     READY     STATUS    RESTARTS   AGE
+pg-slave-rc-dc           1/1       Running   2          16m
+pg-slave-rc-dc-1-96qs8   1/1       Running   1          16m
+
+oc get pod -l slavetype=trigger
+NAME             READY     STATUS    RESTARTS   AGE
+pg-slave-rc-dc   1/1       Running   2          16m</pre>
+</div></div>
+</div>
+<div class="section">
+    <h1 class="page-header" id="crunchy_dba">8. crunchy-dba</h1>
+<div class="paragraph"><p>The crunchy-dba container implements a cron scheduler.  The purpose
+of the crunchy-dba container is to offer a way to perform
+simple DBA tasks that occur on some form of schedule such as
+backup jobs or running a vacuum on a <strong>single</strong> Postgres database container.</p></div>
+<div class="paragraph"><p>You can either run the crunchy-dba container as a single pod or include
+the container within a database pod.</p></div>
+<div class="paragraph"><p>The crunchy-dba container makes use of a Service Account to perform
+the startup of scheduled jobs.  The Kube Job type is used to execute
+the scheduled jobs with a Restart policy of Never.</p></div>
+<h2 id="environment_variables_5">8.1. Environment Variables</h2>
+<div class="paragraph"><p>The following environment variables control the actions
+of crunchy-dba:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+OSE_PROJECT - required, the OSE project name to log into
+</p>
+</li>
+<li>
+<p>
+JOB_HOST - required, the postgres container name the action will be taken against
+</p>
+</li>
+<li>
+<p>
+VAC_SCHEDULE - if set, this will start a vacuum job container.  The
+ setting value must be a valid cron expression as described below.
+</p>
+</li>
+<li>
+<p>
+BACKUP_SCHEDULE - if set, this will start a backup job container.  The
+ setting value must be a valid cron expression as described below.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>For a vacuum job, you are required to supply the following
+environment variables:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+JOB_HOST
+</p>
+</li>
+<li>
+<p>
+PG_USER
+</p>
+</li>
+<li>
+<p>
+PG_PASSWORD
+</p>
+</li>
+<li>
+<p>
+PG_DATABASE - defaults to postgres when not specified
+</p>
+</li>
+<li>
+<p>
+PG_PORT - defaults to 5432 when not specified
+</p>
+</li>
+<li>
+<p>
+VAC_ANALYZE(optional) - defaults to true when not specified
+</p>
+</li>
+<li>
+<p>
+VAC_FULL(optional) - defaults to true when not specified
+</p>
+</li>
+<li>
+<p>
+VAC_VERBOSE(optional) - defaults to true when not specified
+</p>
+</li>
+<li>
+<p>
+VAC_FREEZE(optional) - defaults to false when not specified
+</p>
+</li>
+<li>
+<p>
+VAC_TABLE(optional) - defaults to all tables when not specified, or you can set this value to indicate a single table to vacuum
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>For a backup job, you are required to supply the following
+environment variables:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+JOB_HOST
+</p>
+</li>
+<li>
+<p>
+PG_USER - database user used to perform the backup
+</p>
+</li>
+<li>
+<p>
+PG_PASSWORD - database user password used to perform the backup
+</p>
+</li>
+<li>
+<p>
+PG_PORT - port value used when connecting for a backup to the database
+</p>
+</li>
+<li>
+<p>
+BACKUP_PV_CAPACITY - a value like 1Gi is used to define the PV storage capacity
+</p>
+</li>
+<li>
+<p>
+BACKUP_PV_PATH - the NFS path used to build the PV
+</p>
+</li>
+<li>
+<p>
+BACKUP_PV_HOST - the NFS host used to build the PV
+</p>
+</li>
+<li>
+<p>
+BACKUP_PVC_STORAGE - a value like 75M means to allow 75 megabytes for the PVC used
+ in performing the backup
+</p>
+</li>
+</ul></div>
+<h2 id="cron_expression_format">8.2. CRON Expression Format</h2>
+<div class="paragraph"><p>A cron expression represents a set of times, using 6 space-separated fields.</p></div>
+<table>
+<caption class="title">Table 1. Table Fields</caption>
+<tbody>
+<tr>
+<td>Field name</td>
+<td>Mandatory?</td>
+<td>Allowed values</td>
+<td>Allowed special characters</td>
+</tr>
+<tr>
+<td>Seconds</td>
+<td>Yes</td>
+<td>0-59</td>
+<td>* / , -</td>
+</tr>
+<tr>
+<td>Minutes</td>
+<td>Yes</td>
+<td>0-59</td>
+<td>* / , -</td>
+</tr>
+<tr>
+<td>Hours</td>
+<td>Yes</td>
+<td>0-23</td>
+<td>* / , -</td>
+</tr>
+<tr>
+<td>Day of month</td>
+<td>Yes</td>
+<td>1-31</td>
+<td>* / , - ?</td>
+</tr>
+<tr>
+<td>Month</td>
+<td>Yes</td>
+<td>1-12 or JAN-DEC</td>
+<td>* / , -</td>
+</tr>
+<tr>
+<td>Day of week</td>
+<td>Yes</td>
+<td>0-6 or SUN-SAT</td>
+<td>* / , - ?</td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph"><p>Note: Month and Day-of-week field values are case insensitive.  "SUN", "Sun",
+and "sun" are equally accepted.</p></div>
+<h3 id="special_characters">8.2.1. Special Characters</h3>
+<h4>Asterisk ( * )</h4>
+<div class="paragraph"><p>The asterisk indicates that the cron expression will match for all values
+of the field; e.g., using an asterisk in the 5th field (month) would
+indicate every month.</p></div>
+<h4>Slash ( / )</h4>
+<div class="paragraph"><p>Slashes are used to describe increments of ranges. For example 3-59/15 in
+the 1st field (minutes) would indicate the 3rd minute of the hour and every
+15 minutes thereafter. The form "*\/&#8230;" is equivalent to the form
+"first-last/&#8230;", that is, an increment over the largest possible range of
+the field.  The form "N/&#8230;" is accepted as meaning "N-MAX/&#8230;", that is,
+starting at N, use the increment until the end of that specific range.
+It does not wrap around.</p></div>
+<h4>Comma ( , )</h4>
+<div class="paragraph"><p>Commas are used to separate items of a list. For example, using
+"MON,WED,FRI" in the 5th field (day of week) would mean Mondays,
+Wednesdays and Fridays.</p></div>
+<h4>Hyphen ( - )</h4>
+<div class="paragraph"><p>Hyphens are used to define ranges. For example, 9-17 would indicate every
+hour between 9am and 5pm inclusive.</p></div>
+<h4>Question mark ( ? )</h4>
+<div class="paragraph"><p>Question mark may be used instead of <em>*</em> for leaving either day-of-month or
+day-of-week blank.</p></div>
+<h3 id="predefined_schedules">8.2.2. Predefined schedules</h3>
+<div class="paragraph"><p>You may use one of several pre-defined schedules in place of a cron expression.</p></div>
+<table>
+<caption class="title">Table 2. Table Predefined Schedules</caption>
+<tbody>
+<tr>
+<td>Entry</td>
+<td>Description</td>
+<td>Equivalent To</td>
+</tr>
+<tr>
+<td>@yearly (or @annually)</td>
+<td>Run once a year, midnight, Jan. 1st</td>
+<td>0 0 0 1 1 *</td>
+</tr>
+<tr>
+<td>@monthly</td>
+<td>Run once a month, midnight, first of month</td>
+<td>0 0 0 1 * *</td>
+</tr>
+<tr>
+<td>@weekly</td>
+<td>Run once a week, midnight on Sunday</td>
+<td>0 0 0 * * 0</td>
+</tr>
+<tr>
+<td>@daily (or @midnight)</td>
+<td>Run once a day, midnight</td>
+<td>0 0 0 * * *</td>
+</tr>
+<tr>
+<td>@hourly</td>
+<td>Run once an hour, beginning of hour</td>
+<td>0 0 * * * *</td>
+</tr>
+</tbody>
+</table>
+<h3 id="intervals">8.2.3. Intervals</h3>
+<div class="paragraph"><p>You may also schedule a job to execute at fixed intervals.  This is
+supported by formatting the cron spec like this:</p></div>
+<div class="literalblock">
+<div class="content monospaced">
+<pre>@every &lt;duration&gt;</pre>
+</div></div>
+<div class="paragraph"><p>where "duration" is a string accepted by time.ParseDuration
+(<a href="http://golang.org/pkg/time/#ParseDuration">http://golang.org/pkg/time/#ParseDuration</a>).</p></div>
+<div class="paragraph"><p>For example, "@every 1h30m10s" would indicate a schedule that activates every
+1 hour, 30 minutes, 10 seconds.</p></div>
+<div class="paragraph"><p>Note: The interval does not take the job runtime into account.  For example,
+if a job takes 3 minutes to run, and it is scheduled to run every 5 minutes,
+it will have only 2 minutes of idle time between each run.</p></div>
+<h3 id="time_zones">8.2.4. Time zones</h3>
+<div class="paragraph"><p>All interpretation and scheduling is done in the machines local
+time zone (as provided by the Go time package
+(<a href="http://www.golang.org/pkg/time">http://www.golang.org/pkg/time</a>).  Be aware that jobs scheduled during
+daylight-savings leap-ahead transitions will not be run!</p></div>
+</div>
+<div class="section">
+    <h1 class="page-header" id="crunchy_pgbouncer">9. crunchy-pgbouncer</h1>
+<div class="paragraph"><p>The crunchy-ppgbouncer container executes the Postgres pgbouncer
+utility and a failover watch script.</p></div>
+<h2 id="environment_variables_6">9.1. Environment Variables</h2>
+<div class="ulist"><ul>
+<li>
+<p>
+FAILOVER - when set, the container will look at the configured
+   master database and if it can&#8217;t reach it, will perform a failover
+   to a configured slave database
+</p>
+</li>
+<li>
+<p>
+OSE_PROJECT - when set, indicates you are running under OSE
+</p>
+</li>
+<li>
+<p>
+PG_MASTER_USER - the value to use for the user ID created as
+   master.  The <strong>master</strong> user has super user priviledges.
+</p>
+</li>
+<li>
+<p>
+SLEEP_TIME - time in seconds to sleep when polling the master
+</p>
+</li>
+<li>
+<p>
+PG_DATABASE - the database to use when checking the readiness of the master
+</p>
+</li>
+<li>
+<p>
+PG_MASTER_PORT - the postgres port to use when checking the master
+</p>
+</li>
+<li>
+<p>
+PG_MASTER_SERVICE - the name of the master database container
+</p>
+</li>
+<li>
+<p>
+PG_SLAVE_SERVICE - the name of the slave database container, this is
+   used to know which container to trigger the failover on
+</p>
+</li>
+</ul></div>
+<h2 id="features_4">9.2. Features</h2>
+<div class="paragraph"><p>The following features are supported by the crunchy-postgres container:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+mount pgbouncer user.txt and pgbouncer.ini config files via /pgconf volume
+</p>
+</li>
+<li>
+<p>
+ability to cause a failover on a configured slave container
+</p>
+</li>
+<li>
+<p>
+ability to rewrite the pgbouncer.ini config file and reload pgbouncer
+   after a failover
+</p>
+</li>
+</ul></div>
+<h2 id="restrictions">9.3. Restrictions</h2>
+<div class="ulist"><ul>
+<li>
+<p>
+the name of the master database in the pgbouncer.ini file is required
+   to be <strong>master</strong>
+</p>
+</li>
+<li>
+<p>
+for configuration, has to have users.txt and pgbouncer.ini files mounted in /pgconf
+</p>
+</li>
+</ul></div>
+</div>
+<div class="section">
+    <h1 class="page-header" id="legal_notices">10. Legal Notices</h1>
+<div class="paragraph"><p>Copyright © 2016 Crunchy Data Solutions, Inc.</p></div>
+<div class="paragraph"><p>CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.</p></div>
+<div class="paragraph"><p>Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.</p></div>
+</div>
+        </div>  <!-- /.col-md-9 -->
+        <div class="col-md-3">
+        <div id="sidebar">
+    <div class="toc2">
+<div class="panel panel-default">
+<div class="panel-heading">Table of Contents</div>
+<div class="panel-body" id="toc">
+</div>
+</div>
+    </div>
+</div>
+        </div>  <!-- /.col-md-3 -->
+    </div>  <!-- /.row -->
+
+  </div>  <!-- /.container -->
+
+    <footer id="footer" role="contentinfo">
+        <div class="container">
+<div class="row"><div id="footnotes"></div></div>
+        <table>
+        <tr>
+        <td><b>Crunchy Data Solutions, Inc.</b></td>
+        <td>v1.0.3</td>
+        <td>February 27, 2016</td>
+        </tr>
+        </table>
+        </div>
+    </footer>
+
+    <script src="./javascripts/jquery.min.js"></script>
+    <script src="./bootstrap/js/bootstrap.min.js"></script>
+    <script src="./javascripts/asciidoc.js"></script>
+    <!-- Install TOC and/or footnotes (if necessary) -->
+    <script type="text/javascript">asciidoc.install(2);</script>
+
+    <script src="./javascripts/jquery.ui.totop.min.js"></script>
+
+
+
+    <!-- Remove footnotes if empty block -->
+    <script type="text/javascript">$(function(){ if ($("#footnotes div").length == 0) $("#footnotes").parent().remove(); });</script>
+
+    <script type="text/javascript">$(function(){ if ($("#dropdown-menu-versions")) $("#dropdown-menu-versions").parent().remove(); });</script>
+
+    <script type="text/javascript">$(function(){ $().UItoTop(); });</script>
+    </div> <!-- page -->
+  </body>
+</html>

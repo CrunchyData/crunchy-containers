@@ -1,0 +1,115 @@
+###
+# setup
+###
+[vagrant@openshiftdev ~]$ git clone https://github.com/CrunchyData/os-pg-testing
+Cloning into 'os-pg-testing'...
+remote: Counting objects: 38, done.
+remote: Compressing objects: 100% (27/27), done.
+remote: Total 38 (delta 13), reused 34 (delta 9), pack-reused 0
+Unpacking objects: 100% (38/38), done.
+Checking connectivity... done.
+
+###
+# Allow the caps on the restricted scc
+###
+[vagrant@openshiftdev ~]$ oc edit scc restricted -o json
+securitycontextconstraints/restricted
+[vagrant@openshiftdev ~]$ oc get scc restricted
+NAME         PRIV      CAPS             HOSTDIR   SELINUX     RUNASUSER
+restricted   false     [FOWNER CHOWN]   false     MustRunAs   MustRunAsRange
+
+###
+# Edited the dockerfile's setcap to start.sh
+###
+[vagrant@openshiftdev ~]$ cd os-pg-testing/
+[vagrant@openshiftdev os-pg-testing]$ vi Dockerfile 
+[vagrant@openshiftdev os-pg-testing]$ tail -10 Dockerfile 
+RUN setcap cap_chown,cap_fowner+ep /usr/bin/chown
+RUN setcap cap_chown,cap_fowner+ep /usr/bin/chmod
+RUN setcap cap_chown,cap_fowner+ep /opt/cpm/bin/start.sh
+RUN setcap cap_chown,cap_fowner+ep /usr/pgsql-9.4/bin/pg_ctl
+RUN setcap cap_chown,cap_fowner+ep /usr/pgsql-9.4/bin/initdb
+
+USER postgres
+
+CMD ["/opt/cpm/bin/start.sh"]
+
+###
+# Build the new dockerfile
+###
+[vagrant@openshiftdev os-pg-testing]$ docker build -t crunchydata/crunchy-pg .
+...snip lots of output...
+
+###
+# Create the template and application
+###
+[vagrant@openshiftdev os-pg-testing]$ oc create -f pgrepl_master_slave_emptydir_caps.json
+templates/crunchy-pg-replication-example
+[vagrant@openshiftdev os-pg-testing]$ oc new-app crunchy-pg-replication-example
+services/pg-master
+services/pg-slave
+pods/pg-master
+pods/pg-slave
+Service "pg-master" created at None with port mappings 5432.
+Service "pg-slave" created at None with port mappings 5432.
+Run 'oc status' to view your app.
+
+
+[vagrant@openshiftdev os-pg-testing]$ oc get pods
+NAME              READY     STATUS    RESTARTS   AGE
+hello-openshift   1/1       Running   0          20m
+pg-master         1/1       Running   0          12s
+pg-slave          1/1       Running   0          12s
+
+[vagrant@openshiftdev os-pg-testing]$ oc exec -i -t pg-master /bin/bash
+bash-4.2$ ls -l /
+total 48
+lrwxrwxrwx.   1 root     root    7 Apr 15 14:28 bin -> usr/bin
+drwxr-xr-x.   5 root     root  380 Jul 24 20:54 dev
+drwxr-xr-x.  48 root     root 4096 Jul 24 20:53 etc
+drwxr-xr-x.   2 root     root 4096 Jun 10  2014 home
+lrwxrwxrwx.   1 root     root    7 Apr 15 14:28 lib -> usr/lib
+lrwxrwxrwx.   1 root     root    9 Apr 15 14:28 lib64 -> usr/lib64
+drwx------.   2 root     root 4096 Apr 15 14:26 lost+found
+drwxr-xr-x.   2 root     root 4096 Jun 10  2014 media
+drwxr-xr-x.   2 root     root 4096 Jun 10  2014 mnt
+drwxr-xr-x.   3 root     root 4096 Jul 24 20:50 opt
+drwxrwxrwx.   2 postgres root   80 Jul 24 20:54 pgdata
+dr-xr-xr-x. 143 root     root    0 Jul 24 20:53 proc
+dr-xr-x---.   3 root     root 4096 Jul 24 20:49 root
+drwxr-xr-x.  12 root     root 4096 Jul 24 20:54 run
+lrwxrwxrwx.   1 root     root    8 Apr 15 14:28 sbin -> usr/sbin
+drwxr-xr-x.   2 root     root 4096 Jun 10  2014 srv
+dr-xr-xr-x.  13 root     root    0 Jul 24 20:42 sys
+drwxrwxrwt.   7 root     root 4096 Jul 24 20:54 tmp
+drwxr-xr-x.  14 root     root 4096 Jul 24 20:50 usr
+drwxr-xr-x.  19 root     root 4096 Apr 15 14:29 var
+ @pweil-
+ Owner
+ pweil- commented 24 minutes ago
+ some extra checks:
+
+ [vagrant@openshiftdev os-pg-testing]$ oc get pod pg-master -o json | grep scc
+             "openshift.io/scc": "restricted"
+
+	     [vagrant@openshiftdev os-pg-testing]$ oc get pod pg-master -o json
+	     ...snip...
+	     "securityContext": {
+	                         "capabilities": {
+				                         "add": [
+							                             "CHOWN",
+										                                 "FOWNER"
+														                         ]
+																	                     },
+																			                         "privileged": false,
+																						                     "seLinuxOptions": {
+																								                             "level": "s0:c1,c0"
+																											                         },
+																														                     "runAsUser": 1000000000
+																																                     }
+																																		     @pweil-
+																																		     Owner
+																																		     pweil- commented 23 minutes ago
+																																		     [vagrant@openshiftdev os-pg-testing]$ ps -efZ | grep start.sh
+																																		     system_u:system_r:svirt_lxc_net_t:s0:c0,c1 1000000+ 4031 515  0 20:53 ? 00:00:00 /bin/bash /opt/cpm/bin/start.sh
+																																		     system_u:system_r:svirt_lxc_net_t:s0:c0,c1 1000000+ 4042 515  0 20:53 ? 00:00:00 /bin/bash /opt/cpm/bin/start.sh

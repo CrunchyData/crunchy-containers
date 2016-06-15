@@ -1,0 +1,57 @@
+@import url(user.css);
+
+.admonition {
+    /* bootstrap 3 .alert style */
+    padding: 15px;
+    margin-bottom: 21px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+}
+.note {
+    border-color: olive;
+}
+.tip {
+    border-color: blue;
+}
+.warning {
+    border-color: yellow;
+}
+.caution {
+    border-color: fuchsia;
+}
+.important {
+    border-color: red;
+}
+.note .icon {
+    color: olive;
+}
+.tip .icon {
+    color: blue;
+}
+.warning .icon {
+    color: yellow;
+}
+.caution .icon {
+    color: fuchsia;
+}
+.important .icon {
+    color: red;
+}
+.admonition .icon {
+    float: none;
+    font-size: 1.33em;
+}
+.admonition .icon .title {
+    margin: 0;
+    text-transform: uppercase;
+    background-color: #DDD;
+    padding-left: 1em;
+}
+.admonition .content {
+    padding-left: 0;
+    padding-top: 0.5em;
+    margin-left: 0;
+    border-left: 0;
+    border-top: 0;
+    min-height: 0;
+}

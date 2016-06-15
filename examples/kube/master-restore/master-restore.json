@@ -1,0 +1,64 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "restored-master",
+        "labels": {
+            "name": "restored-master"
+        }
+    },
+    "spec": {
+        "containers": [{
+            "name": "restored-master",
+            "image": "crunchydata/crunchy-postgres:1.2",
+            "ports": [{
+                "containerPort": 5432,
+                "protocol": "TCP"
+            }],
+            "env": [{
+                "name": "PG_MASTER_USER",
+                "value": "master"
+            }, {
+                "name": "PG_MODE",
+                "value": "master"
+            }, {
+                "name": "BACKUP_PATH",
+                "value": "single-master/2016-05-27-14-35-33"
+            }, {
+                "name": "PG_MASTER_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_USER",
+                "value": "testuser"
+            }, {
+                "name": "PG_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_DATABASE",
+                "value": "userdb"
+            }, {
+                "name": "PG_ROOT_PASSWORD",
+                "value": "password"
+            }],
+            "volumeMounts": [{
+                "mountPath": "/pgdata",
+                "name": "pgdata",
+                "readOnly": false
+            }, {
+                "mountPath": "/backup",
+                "name": "backup",
+                "readOnly": true
+            }]
+        }],
+        "volumes": [{
+            "name": "pgdata",
+            "emptyDir": {}
+        }, {
+            "name": "backup",
+            "persistentVolumeClaim": {
+                "claimName": "master-restore-pvc"
+            }
+
+        }]
+    }
+}

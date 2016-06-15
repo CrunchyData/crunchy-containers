@@ -1,0 +1,26 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "master-collect",
+        "labels": {
+            "name": "master-collect"
+        }
+    },
+    "spec": {
+        "ports": [{
+            "protocol": "TCP",
+            "port": 5432,
+            "targetPort": 5432,
+            "nodePort": 0
+        }],
+        "selector": {
+            "name": "master-collect"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+    },
+    "status": {
+        "loadBalancer": {}
+    }
+}

@@ -1,0 +1,30 @@
+= Running Crunchy Containers with systemd
+Crunchy Data Solutions, Inc.
+v1.2.1, {docdate}
+:title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
+
+=== Unit File
+The crunchy-pg.service is an example of a systemd unit file
+that starts and stops a container named crunchy-pg that
+has already been created.
+
+=== test-start.sh
+
+This script is called by the systemd start execution.  The trick
+with this script is that it blocks forever after starting the 
+docker crunchy-pg container.  The blocking in the script
+keeps systemd happy and thinking that this is a normal daemon.
+
+=== test-stop.sh
+
+This script stops the test-start.sh script and also stops the 
+crunchy-pg docker container.
+
+== Legal Notices
+
+Copyright © 2016 Crunchy Data Solutions, Inc.
+
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
+

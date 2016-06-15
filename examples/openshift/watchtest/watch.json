@@ -1,0 +1,51 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "crunchy-watch-example",
+        "annotations": {
+            "description": "crunchy-watch Example",
+            "iconClass": "icon-database",
+            "tags": "database,postgresql,replication"
+        }
+    },
+    "objects": [{
+        "kind": "Pod",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "watch",
+            "labels": {
+                "name": "watch"
+            }
+        },
+        "spec": {
+            "serviceAccount": "pg-watcher",
+            "containers": [{
+                "name": "watch",
+                "image": "crunchydata/crunchy-watch:1.2.1",
+                "env": [{
+                    "name": "OSE_PROJECT",
+                    "value": "openshift"
+                }, {
+                    "name": "SLEEP_TIME",
+                    "value": "20"
+                }, {
+                    "name": "PG_MASTER_SERVICE",
+                    "value": "pg-master-rc-dc"
+                }, {
+                    "name": "PG_SLAVE_SERVICE",
+                    "value": "pg-master-rc-dc"
+                }, {
+                    "name": "PG_MASTER_PORT",
+                    "value": "5432"
+                }, {
+                    "name": "PG_MASTER_USER",
+                    "value": "master"
+                }, {
+                    "name": "PG_DATABASE",
+                    "value": "postgres"
+                }]
+            }]
+        }
+    }]
+}

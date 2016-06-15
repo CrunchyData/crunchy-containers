@@ -1,0 +1,26 @@
+FROM centos:7
+
+LABEL Release="1.2.1"
+LABEL Vendor="Crunchy Data Solutions"
+LABEL PostgresVersion="9.5"
+
+# PGDG Postgres repo
+RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-1.noarch.rpm
+
+# Crunchy Postgres repo
+#ADD conf/CRUNCHY-GPG-KEY.public  /
+#ADD conf/crunchypg95.repo /etc/yum.repos.d/
+#RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN yum install -y procps-ng postgresql9? postgresql9?-server unzip openssh-clients hostname bind-utils && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin
+ADD bin/backup/ /opt/cpm/bin
+RUN chown -R postgres:postgres /opt/cpm
+
+VOLUME ["/pgdata"]
+RUN chown -R postgres:postgres /pgdata
+
+USER postgres
+
+CMD ["/opt/cpm/bin/start-backupjob.sh"]

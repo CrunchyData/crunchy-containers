@@ -1,0 +1,138 @@
+== Crunchy PostgreSQL Containers
+v1.2.1, {docdate}
+
+image::docs/crunchy_logo.png?raw=true[]
+
+
+This project includes a set of Dockerfiles that lets you build
+the Crunchy Certified PostgreSQL Docker containers. 
+
+The containers will execute in the following environments:
+
+ * Standalone - a pure Docker environment
+ * Openshift 3.x
+ * Kubernetes 1.2.X
+
+The project includes the following containers:
+
+ * link:docs/containers.asciidoc#crunchy-postgres[crunchy-postgres] - executes Postgres
+ * link:docs/containers.asciidoc#crunchy-backup[crunchy-backup] - performs a full database backup
+ * link:docs/containers.asciidoc#crunchy-pgpool[crunchy-pgpool] - executes pgpool
+ * link:docs/containers.asciidoc#crunchy-pgbadger[crunchy-pgbadger] - executes pgbadger
+ * link:docs/containers.asciidoc#crunchy-watch[crunchy-watch] - performs a form of automated failover
+ * link:docs/metrics.asciidoc#crunchy-collect[crunchy-collect] - collects Postgres metrics
+ * link:docs/metrics.asciidoc#crunchy-prometheus[crunchy-prometheus] -stores Postgres metrics
+ * link:docs/metrics.asciidoc#crunchy-grafana[crunchy-grafana] - graphs Postgres metrics
+ * link:docs/containers.asciidoc#crunchy-dns[crunchy-dns] - standalone DNS server useful for standalone execution
+ * link:docs/containers.asciidoc#crunchy-vacuum[crunchy-vacuum] - performs a Postgres VACUUM
+ * link:docs/containers.asciidoc#crunchy-dba[crunchy-dba] - cron scheduler, useful for routine DBA tasks
+ * link:docs/containers.asciidoc#crunchy-pgbouncer[crunchy-pgbouncer] - pgbouncer connection pooler and simple form of failover
+
+
+=== Build Prerequisites
+
+These containers have been tested on Centos 7, RHEL 7, Openshift 3.1,
+Kubernetes 1.2.4, and Docker 1.8/1.9.
+
+1) Installing / configuring Docker
+
+On an EL7 system, docker can be installed with the following commands:
+
+ * sudo yum -y install docker
+ * sudo groupadd docker
+ * sudo usermod -a -G docker ${USER} 
+ * sudo systemctl enable docker;systemctl start docker
+ * TIP:  remember to log out $USER for the docker group to take effect!
+
+2) Installing / configuring Go
+
+On RHEL systems, "Go" can be installed with the following command:
+
+ * subscription-manager repos --enable=rhel-7-server-optional-rpms
+ * sudo yum -y install golang
+
+3) Building the Containers (Optional)
+
+If you don't want to pull the containers from DockerHub or the
+private Crunchy Docker registry, you can perform the following
+steps to build the containers:
+
+....
+export GOPATH=$HOME/cdev
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
+export CCP_VERSION=1.2.1
+export BUILDBASE=$GOPATH/src/github.com/crunchydata/crunchy-containers
+mkdir -p $GOPATH/pkg $GOPATH/bin $GOPATH/src
+cd $GOPATH
+go get github.com/tools/godep
+cd $GOPATH/src/github.com/
+mkdir crunchydata
+cd crunchydata
+git clone https://github.com/crunchydata/crunchy-containers.git
+cd crunchy-containers
+git checkout $CCP_VERSION
+godep restore
+make setup
+make all
+....
+
+5) Setting up config files for compilation
+
+In order to compile the openshift-dedicated-container code for RHEL, two files must be placed in the conf directory:
+
+ * crunchypg95.repo or crunchypg93.repo
+ * CRUNCHY-GPG-KEY.public
+
+Both of these files can be obtained with the following procedure:
+
+ * Request an account on access.crunchydata.com
+ * Go to https://access.crunchydata.com/
+ * In the upper-right, click "Customer Log In"
+ * Enter your provided username and password
+ * Click "submit"
+ * Read the terms of use and click "I agree"
+ * Change your password (first login) by Clicking on "Profile" in the upper right; enter your old password, a new password, and click "Change password"
+ * Click on "Downloads" in the upper right corner
+ * The "Download GPG Key" button will automatically download the CRUNCHY-GPG-KEY.public file
+ * The "Download repo file (RHEL)" button will automatically download a personalized (to your user) crunchypg95.repo file
+
+=== Installation Configuration
+
+Build targets include two environment variables that determine
+the Docker base image to be used and the version of Postgresql to
+use.
+
+By default, centos7 and Postgres 9.5 (PGDG) are used to build
+the container images.
+
+Modify the following Makefile env variables for your desired
+target, currently rhel7 and centos7 are supported OS base images
+and 9.3 and 9.5 are supported versions of Postgresql:
+
+....
+OSFLAVOR=cento7
+PGVERSION=9.5
+....
+
+=== Examples
+
+Various examples are provided in the /examples directory and described
+in the documentation for running Standalone and Openshift examples..
+
+=== Testing
+
+There is a small test suite to test out your initial installation, you
+run it with the following command:
+
+....
+make test
+....
+
+Testing openshift is performed as follows:
+....
+make testopenshift
+....
+
+
+

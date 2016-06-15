@@ -1,0 +1,172 @@
+= Metrics Collection - Crunchy Containers for PostgreSQL
+Crunchy Data Solutions, Inc.
+v1.2.1, {docdate}
+:title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
+
+== Collected Metrics
+
+== Description
+Postgresql metrics are collected by the crunchy-collect container.  To
+start collection of metrics on a Postgres database, you add the
+crunchy-collect container into the pod that holds the crunchy-pg container.
+
+=== Requirements
+Metrics are stored in the crunchy-prometheus container.  crunchy-prometheus runs
+the prometheus time series database. The prometheus pushgateway is
+found within the crunchy-promgateway container, and
+the grafana web application is foud within the crunchy-grafana container.  
+An example of starting the metrics containers
+is in examples/openshift/scope.json.
+
+To start the crunchy-scope container, run the following:
+....
+examples/openshift/metrics/run.sh
+....
+
+The crunchy-prometheus data in this example is stored in emptyDir volume types.
+To persist the data and grafana templates long term, you will want to
+use NFS volume types as specified in examples/openshift/metrics/run-nfs.sh
+
+When running crunchy-scope, the following ports are available:
+ * crunchy-prometheus:9090 - the prometheus web user interface
+ * crunchy-promgateway:9091 - the prometheus pushgateway REST API
+ * crunchy-grafana:3000 - the grafana web user interface
+
+=== crunchy-collect Environment Variables
+
+ * POLL_INT - number of minutes to sleep until metrics are collected.  defaults to 15 minutes
+ * PROM_GATEWAY - the http URL of the prometheus pushgateway into which the metrics will be pushed.  defaults to http://crunchy-promgateway:9091
+
+=== Example
+An example of using crunchy-collect is stored in examples/openshift/master-collect.json
+
+This example collects metrics for the pg-master database.  Run the
+example as follows:
+....
+oc process -f master-collect.json | oc create -f -
+....
+
+== Collected Metrics
+
+.Table Connection Metrics
+[format="csv", options="header"]
+|===
+Metric,Description,Scope,Unit
+crunchy_connections, the number of active connections, database/cluster,count
+|===
+
+.Table Connection Utilization Metrics
+[format="csv", options="header"]
+|===
+Metric,Description,Scope,Unit
+crunchy_connectionutil, the percent utilization of max connections, cluster, percent
+|===
+
+.Table Database Size Metrics
+[format="csv", options="header"]
+|===
+Metric,Description,Scope,Unit
+crunchy_databasesize, the size in Megabytes of a database, database, megabytes
+|===
+
+.Table pg_stat_database Metrics
+[format="csv", options="header"]
+|===
+Metric,Description,Scope,Unit
+crunchy_xact_commit, Number of transactions in this database that have been committed, database, count
+crunchy_xact_rollback, Number of transactions in this database that have been rolled back, database, count
+crunchy_tup_returned, tup_returned, database, count
+crunchy_tup_fetched, tup_fetched, database, count
+crunchy_tup_inserted, tup_inserted, database, count
+crunchy_tup_updated, tup_updated, database, count
+crunchy_tup_deleted, tup_deleted, database, count
+crunchy_conflicts, conflicts, database, count
+crunchy_temp_files, temp_files, database, count
+crunchy_temp_bytes, temp_bytes, database, count
+crunchy_deadlocks, deadlocks, database, count
+crunchy_blks_read, blks_read, database, count
+crunchy_blks_hit, blks_hit, database, count
+crunchy_hit_ratio, hit_ratio, database, percent
+crunchy_blk_read_time, blk_read_time, database, time
+crunchy_blk_write_time, blk_write_time, database, time
+|===
+
+.Table bgwriter Metrics
+[format="csv", options="header"]
+|===
+Metric,Description,Scope,Unit
+crunchy_checkpoints_timed, checkpoints_timed, cluster, count
+crunchy_checkpoints_req, checkpoints_req, cluster, count
+crunchy_checkpoint_write_time, checkpoint_write_time, cluster, count
+crunchy_checkpoint_sync_time, checkpoint_sync_time, cluster, count
+crunchy_buffers_checkpoint, buffers_checkpoint, cluster, count
+crunchy_buffers_clean, buffers_clean, cluster, count
+crunchy_maxwritten_clean, maxwritten_clean, cluster, count
+crunchy_buffers_backend, buffers_backend, cluster, count
+crunchy_buffers_backend_fsync, buffers_backend_fsync, cluster, count
+crunchy_buffers_alloc, buffers_alloc, cluster, count
+|===
+
+.Table Table Size Metrics
+[format="csv", options="header"]
+|===
+Metric,Description,Scope,Unit
+crunchy_database_size, database_size in megs, database, megabytes
+crunchy_table_size, table size in megs, database, megabytes
+crunchy_index_size, index size in megs, database, megabytes
+crunchy_total_size, total size in megs, database, megabytes
+|===
+
+.Table Dead Rows Metrics
+[format="csv", options="header"]
+|===
+Metric,Description,Scope,Unit
+crunchy_pct_dead, percentage dead rows in table, database, item
+|===
+
+.Table Lock Metrics
+[format="csv", options="header"]
+|===
+Metric,Description,Scope,Unit
+crunchy_lock_count, locks held for a database, database, count
+|===
+
+.Table pg_xlog Metrics
+[format="csv", options="header"]
+|===
+Metric,Description,Scope,unit
+*crunchy_xlog_count*,count of pg_xlog archive files,cluster,count
+|===
+
+<<<
+== Grafana Dashboard
+
+You can create dashboards of various graphs using the Grafana Dashboard
+editor:
+
+image::grafana-dashboard-sample.png[]
+
+<<<
+== Grafana Data Source
+
+You create a grafana data source that represents the prometheus
+database running within crunchy-prometheus:
+
+image::grafana-data-source.png[]
+
+<<<
+== Prometheus Console
+
+You can issue raw queries to prometheus using its web
+console:
+
+image::prometheus-console.png[]
+
+== Legal Notices
+
+Copyright © 2016 Crunchy Data Solutions, Inc.
+
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
+

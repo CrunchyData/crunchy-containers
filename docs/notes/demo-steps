@@ -1,0 +1,10 @@
+1) start up scope
+
+2) start up master-collect
+
+2) oc process -f master.json | oc create -f -
+
+2) backup-job-nfs
+
+3) master-restore
+<<edit the backup location>>

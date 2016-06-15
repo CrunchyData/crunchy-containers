@@ -1,0 +1,21 @@
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "master-slave-rc-nfs-pv",
+        "labels": {
+            "name": "master-slave-rc-nfs-pv"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "1Gi"
+        },
+        "accessModes": ["ReadWriteMany"],
+        "nfs": {
+            "path": "/nfsfileshare",
+            "server": "IPADDRESS"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}

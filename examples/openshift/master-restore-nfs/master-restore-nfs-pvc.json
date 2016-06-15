@@ -1,0 +1,20 @@
+  {
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+          "name": "master-restore-nfs-pvc"
+      },
+      "spec": {
+          "labels": {
+              "name": "master-restore-nfs-pv"
+          },
+          "accessModes": [
+              "ReadWriteMany"
+          ],
+          "resources": {
+              "requests": {
+                  "storage": "1Gi"
+              }
+          }
+      }
+  }

@@ -1,0 +1,36 @@
+.admonition {
+    padding: 15px;
+    margin-bottom: 21px;
+    border: 0;
+}
+.note {
+    background-color: olive;
+}
+.tip {
+    background-color: blue;
+}
+.warning {
+    background-color: yellow;
+}
+.caution {
+    background-color: fuchsia;
+}
+.important {
+    background-color: red;
+}
+.admonition .icon {
+    float: left;
+    font-size: 3em;
+    background-color: transparent;
+}
+.admonition .icon .title {
+    font-size: 1em;
+    margin: 0;
+}
+.admonition .content {
+    padding-left: 0.5em;
+    margin-left: 4em;
+    border-left: 3px solid #DDD;
+    min-height: 4em;
+    background-color: #DDD;
+}

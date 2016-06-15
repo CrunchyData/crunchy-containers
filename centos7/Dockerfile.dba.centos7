@@ -1,0 +1,19 @@
+FROM centos:7
+
+LABEL Release="1.2.1"
+LABEL Vendor="Crunchy Data Solutions"
+
+RUN yum -y install procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
+
+# set up cpm directory
+#
+RUN mkdir -p /opt/cpm/bin
+RUN mkdir -p /opt/cpm/conf
+
+ADD bin/dba /opt/cpm/bin
+ADD conf/dba /opt/cpm/conf
+
+USER root
+
+CMD ["/opt/cpm/bin/start-dba.sh"]
+

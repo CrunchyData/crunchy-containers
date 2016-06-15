@@ -1,0 +1,33 @@
+e(11:17:22 AM) Paul Morie: i was about to IM you and say i'm looking
+(11:18:50 AM) Paul Morie: 1 sec talking tot he guy who wrote that API for kube
+(11:20:02 AM) Jeff McCormick: cool, thx
+(11:24:04 AM) Paul Morie: s/CAP_FOWNER/FOWNER/
+(11:24:42 AM) Jeff McCormick: ah
+(11:24:45 AM) Jeff McCormick: let me try that 
+(11:25:13 AM) Paul Morie: apparently you drop the CAP_ w/ the docker api
+(11:25:14 AM) Paul Morie: https://docs.docker.com/reference/run/#runtime-privilege-linux-capabilities-and-lxc-configuration
+(11:27:34 AM) Paul Morie: k
+(11:27:56 AM) Paul Morie: if you're running as non-root, you will also need to call setcap to give the binary those capabilities
+(11:28:22 AM) Paul Morie: (11:25:59 AM) Paul Weil: a caveat: if he's running as the non-root user the binary running still needs to be given the effective/permitted capability since the eff/prm caps are cleared when the uid is switched
+(11:26:36 AM) Paul Morie: what does that mean?
+(11:26:39 AM) Paul Morie: re: the binary
+(11:26:45 AM) Paul Morie: does he need to do anything else?
+(11:26:49 AM) Paul Morie: he's running as non-root
+(11:26:56 AM) Paul Morie: we're trying to avoid using privileged containers
+(11:26:59 AM) Paul Weil: like this then: https://github.com/pweil-/origin/blob/master/images/router/haproxy/Dockerfile#L20-20
+(11:27:14 AM) Paul Weil: if he gets an error that permission is still denied
+(11:27:29 AM) Paul Morie: ahh, i see what you mean
+(11:27:39 AM) Paul Weil: and for complete nerd reference: http://man7.org/linux/man-pages/man7/capabilities.7.html
+(11:27:45 AM) Paul Weil: 2. If the effective user ID is changed from 0 to nonzero, then all           capabilities are cleared from the effective set.
+(11:28:30 AM) Paul Morie: i'm not going to try to paraphrase all that
+(11:28:48 AM) Jeff McCormick: haha
+(11:29:00 AM) Jeff McCormick: I'll give this a try...
+(11:31:23 AM) Jeff McCormick: bash-4.2$ id
+uid=26(postgres) gid=26(postgres) groups=26(postgres)
+bash-4.2$ chown postgres /pgdata
+chown: changing ownership of '/pgdata': Permission denied
+
+(11:31:38 AM) Jeff McCormick: so would I do a setcap on the 'chown' command?
+(11:37:05 AM) Jeff McCormick: ah, I see, I have to do that in the Dockerfile...
+(11:37:51 AM) Paul Morie: i want to say if you have a wrapper script that does this stuff, you could probably setcap on that script
+(11:42:09 AM) Paul Morie:       A child created via fork(2) inherits copies of its parent's        capability sets.  See below for a discussion of the treatment of        capabilities during execve(2).

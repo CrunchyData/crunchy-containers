@@ -1,0 +1,20 @@
+  {
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+          "name": "master-slave-rc-nfs-pvc"
+      },
+      "spec": {
+          "labels": {
+              "name": "master-slave-rc-nfs-pv"
+          },
+          "accessModes": [
+              "ReadWriteMany"
+          ],
+          "resources": {
+              "requests": {
+                  "storage": "1Gi"
+              }
+          }
+      }
+  }

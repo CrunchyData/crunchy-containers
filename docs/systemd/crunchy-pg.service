@@ -1,0 +1,11 @@
+[Unit]
+Description=Run crunchy-pg  
+After=docker.service  
+Requires=docker.service
+
+[Service]
+ExecStart=/tmp/test-start.sh
+ExecStop=/tmp/test-stop.sh
+
+[Install]
+WantedBy=multi-user.target 

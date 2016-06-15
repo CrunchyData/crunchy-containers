@@ -1,0 +1,35 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pgpool",
+        "labels": {
+            "name": "pgpool"
+        }
+    },
+    "spec": {
+        "containers": [{
+            "name": "pgpool",
+            "image": "crunchydata/crunchy-pgpool:1.2",
+            "ports": [{
+                "containerPort": 5432,
+                "protocol": "TCP"
+            }],
+            "env": [{
+                "name": "PG_USERNAME",
+                "value": "testuser"
+            }, {
+                "name": "PG_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_MASTER_SERVICE_NAME",
+                "value": "master"
+            }, {
+                "name": "PG_SLAVE_SERVICE_NAME",
+                "value": "slave"
+            }],
+            "volumeMounts": []
+        }],
+        "volumes": []
+    }
+}

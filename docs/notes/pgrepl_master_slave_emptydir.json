@@ -1,0 +1,197 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "crunchy-pg-replication-example",
+        "creationTimestamp": null,
+        "annotations": {
+            "description": "Crunchy PostgreSQL Replication Example",
+            "iconClass": "icon-database",
+            "tags": "database,postgresql,replication"
+        }
+    },
+    "parameters": [{
+        "name": "PG_MASTER_USER",
+        "description": "The username used for master-slave replication",
+        "value": "master"
+    }, {
+        "name": "PG_MASTER_PASSWORD",
+        "description": "The password for the PG master user",
+        "generate": "expression",
+        "from": "[a-zA-Z0-9]{12}"
+    }, {
+        "name": "PG_USER",
+        "description": "The username that clients will use to connect to PG server",
+        "value": "user"
+    }, {
+        "name": "PG_PASSWORD",
+        "description": "The password for the PG master user",
+        "generate": "expression",
+        "from": "[a-zA-Z0-9]{12}"
+    }, {
+        "name": "PG_DATABASE",
+        "description": "The name of the database that will be created",
+        "value": "userdb"
+    }, {
+        "name": "PG_ROOT_PASSWORD",
+        "description": "The password for the PG adminitrator",
+        "generate": "expression",
+        "from": "[a-zA-Z0-9]{12}"
+    }],
+
+    "objects": [ 
+{
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "pg-master",
+            "labels": {
+                "name": "pg-master"
+            }
+        },
+        "spec": {
+            "ports": [{
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }],
+            "selector": {
+                "name": "pg-master"
+            },
+            "portalIP": "None",
+            "type": "ClusterIP",
+            "sessionAffinity": "None"
+        },
+        "status": {
+            "loadBalancer": {}
+        }
+}, 
+{
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "pg-slave",
+            "labels": {
+                "name": "pg-slave"
+            }
+        },
+        "spec": {
+            "ports": [{
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }],
+            "selector": {
+                "name": "pg-slave"
+            },
+            "portalIP": "None",
+            "type": "ClusterIP",
+            "sessionAffinity": "None"
+	}
+},
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pg-master",
+        "labels": {
+            "name": "pg-master"
+        }
+    },
+    "spec": {
+        "containers": [{
+            "name": "pg-master",
+            "image": "crunchydata/crunchy-pg",
+            "ports": [{
+                "containerPort": 5432,
+                "protocol": "TCP"
+            }],
+                       "env": [{
+                            "name": "PG_MASTER_USER",
+                            "value": "${PG_MASTER_USER}"
+                        }, {
+                            "name": "PG_MASTER_PASSWORD",
+                            "value": "${PG_MASTER_PASSWORD}"
+                        }, {
+                            "name": "PG_USER",
+                            "value": "${PG_USER}"
+                        }, {
+                            "name": "PG_PASSWORD",
+                            "value": "${PG_PASSWORD}"
+                        }, {
+                            "name": "PG_DATABASE",
+                            "value": "${PG_DATABASE}"
+                        }, {
+                            "name": "PG_ROOT_PASSWORD",
+                            "value": "${PG_ROOT_PASSWORD}"
+                        }],
+        "securityContext": {
+            "privileged": true
+        },
+
+
+            "volumeMounts": [{
+                "mountPath": "/pgdata",
+                "name": "pgdata",
+                "readOnly": false
+            }]
+        }],
+        "volumes": [{
+            "name": "pgdata",
+                "emptyDir": { }
+        }]
+    }
+},
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pg-slave",
+        "labels": {
+            "name": "pg-slave"
+        }
+    },
+    "spec": {
+        "containers": [{
+            "name": "pg-slave",
+            "image": "crunchydata/crunchy-pg",
+            "ports": [{
+                "containerPort": 5432,
+                "protocol": "TCP"
+            }],
+                        "env": [{
+                            "name": "PG_MASTER_USER",
+                            "value": "${PG_MASTER_USER}"
+                        }, {
+                            "name": "PG_REPLICA",
+                            "value": "yes"
+                        }, {
+                            "name": "PG_MASTER_PASSWORD",
+                            "value": "${PG_MASTER_PASSWORD}"
+                        }, {
+                            "name": "PG_MASTER_HOST",
+                            "value": "pg-master"
+                        }, {
+                            "name": "PG_DATABASE",
+                            "value": "${PG_DATABASE}"
+                        }],
+        "securityContext": {
+            "privileged": true
+        },
+
+            "volumeMounts": [{
+                "mountPath": "/pgdata",
+                "name": "pgdata",
+                "readOnly": false
+            }]
+        }],
+        "volumes": [{
+            "name": "pgdata",
+                "emptyDir": { }
+        }]
+    }
+}
+]
+}

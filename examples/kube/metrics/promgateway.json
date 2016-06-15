@@ -1,0 +1,23 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "crunchy-promgateway",
+        "labels": {
+            "name": "crunchy-promgateway"
+        }
+    },
+    "spec": {
+        "containers": [{
+            "name": "crunchy-promgateway",
+            "image": "crunchydata/crunchy-promgateway:1.2",
+            "ports": [{
+                "containerPort": 9091,
+                "protocol": "TCP"
+            }],
+            "env": [],
+            "volumeMounts": []
+        }],
+        "volumes": []
+    }
+}

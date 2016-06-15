@@ -1,0 +1,27 @@
+#bin/bash
+
+# Copyright 2016 Crunchy Data Solutions, Inc.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+VERSION=1.2
+REGISTRY=52.2.93.43:5000
+containers="crunchydata/crunchy-vacuum crunchydata/crunchy-prometheus crunchydata/crunchy-promgateway crunchydata/crunchy-grafana crunchydata/crunchy-dns crunchydata/crunchy-collect crunchydata/crunchy-pgbadger crunchydata/crunchy-pgpool crunchydata/crunchy-watch crunchydata/crunchy-backup crunchydata/crunchy-postgres"
+for i in $containers;
+do
+	echo $i is the container
+	docker tag $i:$VERSION $REGISTRY/$i:$VERSION
+	docker tag $i:$VERSION $REGISTRY/$i:latest
+	docker push $REGISTRY/$i:$VERSION
+	docker push $REGISTRY/$i:latest
+done
+exit
