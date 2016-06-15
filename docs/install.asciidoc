@@ -61,11 +61,37 @@ Next, install system dependencies:
 sudo yum -y update
 sudo groupadd docker
 sudo usermod -a -G docker someuser
+....
+
+Remember to log out of the *someuser* account for the docker group
+to be added to your current session.  Adding *docker* group to your
+user account allows you to run docker commands from your user account.
+
+Before you start docker, you might consider configuring docker storage:
+This is described if you run:
+....
+man docker-storage-setup
+....
+
+Next, we enable , start up docker:
+....
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
-cd $BUILDBASE
-make setup
 ....
+
+At this point, you have a decision to make, either build the
+containers on your local host, or download prebuilt containers
+from dockerhub.
+
+To download the prebuilt containers, make sure you can login to
+dockerhub.com, and then run the following:
+....
+docker login
+cd $BUILDBASE
+./bin/pull-from-dockerhub.sh
+....
+
+To build the containers from source, run Step 3 below.
 
 === Step 3 - Build the Containers
 
@@ -80,11 +106,14 @@ Set these variables according to your deployment requirements
 then perform a container build as follows:
 
 ....
+make setup
 make all
 ....
 
 After this, you will have all the Crunchy containers built and are ready
-for use.
+for use in a *standalone docker* environment.
+
+To install an Openshift environment, continue on to Step 4.
 
 === Step 4 - Openshift Enterprise Installation
 

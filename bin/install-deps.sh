@@ -26,3 +26,10 @@ tar xvzf /tmp/openshift-origin-client-tools-v1.1.3-cffae05-linux-64bit.tar.gz  -
 sudo cp /tmp/openshift-origin-client-tools-v1.1.3-cffae05-linux-64bit/oc /usr/bin/oc
 
 sudo yum -y install postgresql-server
+
+#
+# install kubectl binary into /usr/bin
+#
+wget -O /tmp/kubernetes.tar.gz https://github.com/kubernetes/kubernetes/releases/download/v1.2.4/kubernetes.tar.gz
+tar xvzf /tmp/kubernetes.tar.gz -C /tmp
+sudo cp /tmp/kubernetes/platforms/linux/amd64/kubectl /usr/bin
