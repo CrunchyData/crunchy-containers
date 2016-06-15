@@ -32,7 +32,7 @@ asciidoc --backend install $HOME/bootstrap-4.5.0.zip
 mkdir -p $HOME/.asciidoc/backends/bootstrap/js
 cp $GOPATH/src/github.com/crunchydata/crunchy-containers/docs/bootstrap.js \
 $HOME/.asciidoc/backends/bootstrap/js/
-unzip -j $HOME/bootstrap-4.5.0.zip  bootstrap.conf -d $HOME/.asciidoc/backends/bootstrap/
+unzip $HOME/bootstrap-4.5.0.zip  $HOME/.asciidoc/backends/bootstrap/
 
 #
 # install oc binary into /usr/bin
