@@ -14,4 +14,4 @@
 
 oc delete dc pgpool-rc
 oc delete service pgpool-rc
-../../waitforterm.sh pgpool-rc oc
+$BUILDBASE/examples/waitforterm.sh pgpool-rc oc

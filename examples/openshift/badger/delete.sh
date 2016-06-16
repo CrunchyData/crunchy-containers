@@ -14,4 +14,4 @@
 
 oc delete pod badger-example
 oc delete service badger-example
-../../waitforterm.sh badger-example oc
+$BUILDBASE/examples/waitforterm.sh badger-example oc

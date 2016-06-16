@@ -17,4 +17,4 @@ kubectl delete pvc pgbouncer-pvc
 kubectl delete pv pgbouncer-pv
 kubectl delete pod pgbouncer
 kubectl delete service pgbouncer
-../../waitforterm.sh pgbouncer kubectl
+$BUILDBASE/examples/waitforterm.sh pgbouncer kubectl

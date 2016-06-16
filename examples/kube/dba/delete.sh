@@ -18,4 +18,4 @@ kubectl delete serviceaccount dba-sa
 kubectl delete pod master-dba
 kubectl delete service master-dba
 
-../../waitforterm.sh master-dba kubectl
+$BUILDBASE/examples/waitforterm.sh master-dba kubectl

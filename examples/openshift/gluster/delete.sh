@@ -20,4 +20,4 @@ oc delete service glusterfs-cluster
 oc delete service master-gluster
 oc delete pod master-gluster
 
-../../waitforterm.sh master-gluster oc
+$BUILDBASE/examples/waitforterm.sh master-gluster oc

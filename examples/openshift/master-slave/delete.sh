@@ -14,4 +14,4 @@
 
 oc delete service ms-master ms-slave
 oc delete pod ms-master ms-slave
-../../waitforterm.sh ms-master oc
+$BUILDBASE/examples/waitforterm.sh ms-master oc

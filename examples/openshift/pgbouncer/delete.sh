@@ -17,4 +17,4 @@ oc delete pvc pgbouncer-pvc
 oc delete pv pgbouncer-pv
 oc delete pod pgbouncer
 oc delete service pgbouncer
-../../waitforterm.sh pgbouncer oc
+$BUILDBASE/examples/waitforterm.sh pgbouncer oc

@@ -17,4 +17,4 @@ oc delete pvc  prometheus-pvc grafana-pvc
 oc delete pv prometheus-pv grafana-pv
 oc delete pod crunchy-prometheus crunchy-grafana crunchy-promgateway
 oc delete service crunchy-prometheus crunchy-grafana crunchy-promgateway
-../../waitforterm.sh crunchy-prometheus oc
+$BUILDBASE/examples/waitforterm.sh crunchy-prometheus oc

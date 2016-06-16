@@ -16,8 +16,8 @@ oc delete dc m-s-rc-nfs-slave
 oc delete pod m-s-rc-nfs-master 
 oc delete pod m-s-rc-nfs-slave
 oc delete pod -l name=m-s-rc-nfs-master
-../../waitforterm.sh m-s-rc-nfs-master oc
-../../waitforterm.sh m-s-rc-nfs-slave oc
+$BUILDBASE/examples/waitforterm.sh m-s-rc-nfs-master oc
+$BUILDBASE/examples/waitforterm.sh m-s-rc-nfs-slave oc
 oc delete service m-s-rc-nfs-master
 oc delete service m-s-rc-nfs-slave
 oc delete pvc master-slave-rc-nfs-pvc

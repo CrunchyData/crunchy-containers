@@ -19,4 +19,4 @@ oc delete pv ceph-pv
 oc delete service master-ceph
 oc delete pod master-ceph
 
-../../waitforterm.sh master-ceph oc
+$BUILDBASE/examples/waitforterm.sh master-ceph oc

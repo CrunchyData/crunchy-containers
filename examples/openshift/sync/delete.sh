@@ -17,5 +17,5 @@ oc delete service slave
 oc delete pod master
 oc delete pod slave
 oc delete pod sync-slave
-../../waitforterm.sh master oc
-../../waitforterm.sh slave oc
+$BUILDBASE/examples/waitforterm.sh master oc
+$BUILDBASE/examples/waitforterm.sh slave oc

@@ -18,4 +18,4 @@ oc delete service pg-slave-rc-dc
 oc delete pod pg-master-rc-dc
 oc delete pod -l name=pg-slave-rc-dc
 oc delete pod -l name=pg-master-rc-dc
-../../waitforterm.sh pg-master-rc-dc oc
+$BUILDBASE/examples/waitforterm.sh pg-master-rc-dc oc

@@ -14,4 +14,4 @@
 
 kubectl delete service pgpool
 kubectl delete pod pgpool
-../../waitforterm.sh pgpool kubectl
+$BUILDBASE/examples/waitforterm.sh pgpool kubectl

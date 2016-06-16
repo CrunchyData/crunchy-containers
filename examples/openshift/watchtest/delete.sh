@@ -16,4 +16,4 @@ oc project openshift
 
 oc delete pod watch
 oc delete sa pg-watcher
-../../waitforterm.sh watch oc
+$BUILDBASE/examples/waitforterm.sh watch oc

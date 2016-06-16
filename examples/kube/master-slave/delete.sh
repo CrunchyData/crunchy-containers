@@ -16,5 +16,5 @@ kubectl delete service master
 kubectl delete service slave
 kubectl delete pod master
 kubectl delete pod slave
-../../waitforterm.sh master kubectl
-../../waitforterm.sh slave kubectl
+$BUILDBASE/examples/waitforterm.sh master kubectl
+$BUILDBASE/examples/waitforterm.sh slave kubectl

@@ -17,4 +17,4 @@ oc delete service custom-config
 oc delete pod custom-config
 oc delete pvc custom-config-pvc
 oc delete pv custom-config-pv
-../../waitforterm.sh custom-config oc
+$BUILDBASE/examples/waitforterm.sh custom-config oc

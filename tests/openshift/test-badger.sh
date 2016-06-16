@@ -22,11 +22,14 @@ echo BUILDBASE is $BUILDBASE
 
 oc login -u system:admin
 oc projects openshift
-oc delete pod badger-example
-oc delete service badger-example
+
+$BUILDBASE/examples/openshift/badger/delete.sh
+
 echo "sleeping for 10 seconds to allow any existing pods/services to terminate"
 sleep 10
-oc process -f $BUILDBASE/examples/openshift/master-badger.json |  oc create -f -
+
+$BUILDBASE/examples/openshift/badger/run.sh
+
 
 echo "sleeping for 10 seconds to allow pods/services to startup"
 sleep 10
@@ -44,6 +47,5 @@ else
 	exit $rc
 fi
 
-oc delete pod badger-example
-oc delete service badger-example
+$BUILDBASE/examples/openshift/badger/delete.sh
 exit 0
