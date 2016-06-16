@@ -16,11 +16,12 @@
 echo "WARNING: make sure to edit the gluster-endpoint.json with your gluster IP address"
 
 oc project openshift
+LOC=$BUILDBASE/examples/openshift/gluster
 
-oc create -f gluster-endpoint.json
-oc create -f gluster-pv.json
-oc create -f gluster-pvc.json
-oc create -f gluster-service.json
+oc create -f $LOC/gluster-endpoint.json
+oc create -f $LOC/gluster-pv.json
+oc create -f $LOC/gluster-pvc.json
+oc create -f $LOC/gluster-service.json
 
-oc process -f master-gluster.json | oc create -f -
+oc process -f $LOC/master-gluster.json | oc create -f -
 

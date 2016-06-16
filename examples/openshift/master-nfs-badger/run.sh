@@ -16,7 +16,8 @@
 oc project openshift
 
 IPADDRESS=`hostname --ip-address`
+LOC=$BUILDBASE/examples/openshift/master-nfs-badger
 
-cat master-nfs-badger-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
-oc create -f master-nfs-badger-pvc.json
-oc process -f master-nfs-badger.json | oc create -f -
+cat $LOC/master-nfs-badger-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
+oc create -f $LOC/master-nfs-badger-pvc.json
+oc process -f $LOC/master-nfs-badger.json | oc create -f -

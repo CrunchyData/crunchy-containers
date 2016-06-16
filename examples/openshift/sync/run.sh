@@ -14,8 +14,10 @@
 
 oc project openshift
 
-oc create -f master-service.json
-oc create -f slave-service.json
-oc create -f master-pod.json
-oc create -f slave-pod.json
-oc create -f sync-slave-pod.json
+LOC=$BUILDBASE/examples/openshift/sync
+
+oc create -f $LOC/master-service.json
+oc create -f $LOC/slave-service.json
+oc create -f $LOC/master-pod.json
+oc create -f $LOC/slave-pod.json
+oc create -f $LOC/sync-slave-pod.json

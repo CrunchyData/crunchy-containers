@@ -14,4 +14,6 @@
 
 oc project openshift
 
-oc process -f master-slave.json | oc create -f -
+LOC=$BUILDBASE/examples/openshift/master-slave
+
+oc process -f $LOC/master-slave.json | oc create -f -

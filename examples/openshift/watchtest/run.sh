@@ -14,10 +14,12 @@
 
 oc project openshift
 
-oc create -f $BUILDBASE/examples/openshift/watchtest/watch-sa.json
+LOC=$BUILDBASE/examples/openshift/watchtest
+
+oc create -f $LOC/watch-sa.json
 oc policy add-role-to-group edit system:serviceaccounts -n openshift
 oc policy add-role-to-group edit system:serviceaccounts -n default
 #oc process -f $BUILDBASE/examples/openshift/watchtest/complex2.json | oc create -f -
 echo "sleep 20 to give master time to start..."
 sleep 20
-oc process -f $BUILDBASE/examples/openshift/watchtest/watch.json | oc create -f -
+oc process -f $LOC/watch.json | oc create -f -

@@ -20,13 +20,15 @@
 
 oc project openshift
 
+LOC=$BUILDBASE/examples/openshift/metrics
+
 IPADDRESS=`hostname --ip-address`
-cat $BUILDBASE/examples/openshift/metrics/grafana-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
-cat $BUILDBASE/examples/openshift/metrics/prometheus-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
+cat $LOC/grafana-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
+cat $LOC/prometheus-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
 
-oc create -f $BUILDBASE/examples/openshift/metrics/grafana-pvc.json
-oc create -f $BUILDBASE/examples/openshift/metrics/prometheus-pvc.json
+oc create -f $LOC/grafana-pvc.json
+oc create -f $LOC/prometheus-pvc.json
 
-oc process -f $BUILDBASE/examples/openshift/metrics/prometheus-nfs.json | oc create -f -
-oc process -f $BUILDBASE/examples/openshift/metrics/promgateway.json | oc create -f -
-oc process -f $BUILDBASE/examples/openshift/metrics/grafana-nfs.json | oc create -f -
+oc process -f $LOC/prometheus-nfs.json | oc create -f -
+oc process -f $LOC/promgateway.json | oc create -f -
+oc process -f $LOC/grafana-nfs.json | oc create -f -

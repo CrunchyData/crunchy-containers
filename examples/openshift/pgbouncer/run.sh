@@ -19,10 +19,13 @@ CONFIGDIR=/nfsfileshare/bouncerconfig
 sudo rm -rf $CONFIGDIR
 sudo mkdir $CONFIGDIR
 sudo chmod 777 $CONFIGDIR
-cp pgbouncer.ini $CONFIGDIR
-cp users.txt $CONFIGDIR
+
+LOC=$BUILDBASE/examples/openshift/pgbouncer
+
+cp $LOC/pgbouncer.ini $CONFIGDIR
+cp $LOC/users.txt $CONFIGDIR
 
 IPADDRESS=`hostname --ip-address`
-cat pgbouncer-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
-oc create -f pgbouncer-pvc.json
-oc process -f $BUILDBASE/examples/openshift/pgbouncer/pgbouncer.json | oc create -f -
+cat $LOC/pgbouncer-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
+oc create -f $LOC/pgbouncer-pvc.json
+oc process -f $LOC/pgbouncer.json | oc create -f -

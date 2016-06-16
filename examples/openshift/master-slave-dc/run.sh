@@ -13,5 +13,6 @@
 # limitations under the License.
 
 oc project openshift
+LOC=$BUILDBASE/examples/openshift/master-slave-dc
 
-oc process -f master-slave-rc-dc-slaves-only.json | oc create -f -
+oc process -f $LOC/master-slave-rc-dc-slaves-only.json | oc create -f -

@@ -18,6 +18,8 @@
 #
 oc project openshift
 
-oc process -f $BUILDBASE/examples/openshift/metrics/prometheus.json | oc create -f -
-oc process -f $BUILDBASE/examples/openshift/metrics/promgateway.json | oc create -f -
-oc process -f $BUILDBASE/examples/openshift/metrics/grafana.json | oc create -f -
+LOC=$BUILDBASE/examples/openshift/metrics
+
+oc process -f $LOC/prometheus.json | oc create -f -
+oc process -f $LOC/promgateway.json | oc create -f -
+oc process -f $LOC/grafana.json | oc create -f -

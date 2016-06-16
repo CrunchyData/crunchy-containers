@@ -14,9 +14,10 @@
 
 
 oc project openshift
+LOC=$BUILDBASE/examples/openshift/master-restore
 
 IPADDRESS=`hostname --ip-address`
-cat $BUILDBASE/examples/openshift/master-restore/master-restore-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
+cat $LOC/master-restore-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
 
-oc create -f master-restore-pvc.json
-oc process -f master-restore.json | oc create -f -
+oc create -f $LOC/master-restore-pvc.json
+oc process -f $LOC/master-restore.json | oc create -f -

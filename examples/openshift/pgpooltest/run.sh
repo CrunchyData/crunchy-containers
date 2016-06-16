@@ -15,5 +15,6 @@
 oc project openshift
 
 echo "this example depends on the master-slave example being run prior"
+LOC=$BUILDBASE/examples/openshift/pgpooltest
 
-oc process -f $BUILDBASE/examples/openshift/pgpooltest/pgpool-rc.json | oc create -f -
+oc process -f $LOC/pgpool-rc.json | oc create -f -

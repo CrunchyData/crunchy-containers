@@ -13,8 +13,9 @@
 # limitations under the License.
 
 oc project openshift
+LOC=$BUILDBASE/examples/openshift/watch
 
-oc create -f $BUILDBASE/examples/openshift/watch/watch-sa.json
+oc create -f $LOC/watch-sa.json
 oc policy add-role-to-group edit system:serviceaccounts -n openshift
 oc policy add-role-to-group edit system:serviceaccounts -n default
-oc create -f $BUILDBASE/examples/openshift/watch/watch.json
+oc create -f $LOC/watch.json

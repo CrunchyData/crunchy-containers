@@ -14,7 +14,9 @@
 
 oc project openshift
 
-oc create -f pguser-secret.json
-oc create -f pgmaster-secret.json 
-oc create -f pgroot-secret.json 
-oc process -f secret-pg.json | oc create -f -
+LOC=$BUILDBASE/examples/openshift/secret
+
+oc create -f $LOC/pguser-secret.json
+oc create -f $LOC/pgmaster-secret.json 
+oc create -f $LOC/pgroot-secret.json 
+oc process -f $LOC/secret-pg.json | oc create -f -
