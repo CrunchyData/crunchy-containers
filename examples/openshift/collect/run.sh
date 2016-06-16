@@ -14,4 +14,4 @@
 
 oc project openshift
 
-oc process -f master-collect.json | oc create -f -
+oc process -f $BUILDBASE/examples/openshift/collect/master-collect.json | oc create -f -

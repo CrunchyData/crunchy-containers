@@ -15,9 +15,11 @@
 
 oc project openshift
 
-oc create -f ceph-secret.json
-oc create -f ceph-pv.json
-oc create -f ceph-pvc.json
+LOC=$BUILDBASE/examples/openshift/ceph
 
-oc process -f master-ceph.json | oc create -f -
+oc create -f $LOC/ceph-secret.json
+oc create -f $LOC/ceph-pv.json
+oc create -f $LOC/ceph-pvc.json
+
+oc process -f $LOC/master-ceph.json | oc create -f -
 

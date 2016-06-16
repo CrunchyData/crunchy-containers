@@ -14,4 +14,4 @@
 
 oc project openshift 
 
-oc process -f master-badger.json | oc create -f -
+oc process -f $BUILDBASE/examples/openshift/badger/master-badger.json | oc create -f -

@@ -15,11 +15,12 @@
 
 oc project openshift
 
+LOC=$BUILDBASE/examples/openshift/custom-config
 NFS=/nfsfileshare/custom-config
 sudo mkdir $NFS
-sudo cp `pwd`/setup.sql $NFS
+sudo cp $LOC/setup.sql $NFS
 
 IPADDRESS=`hostname --ip-address`
-cat custom-config-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
-oc create -f custom-config-pvc.json
-oc process -f custom-config.json | oc create -f -
+cat $LOC/custom-config-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
+oc create -f $LOC/custom-config-pvc.json
+oc process -f $LOC/custom-config.json | oc create -f -

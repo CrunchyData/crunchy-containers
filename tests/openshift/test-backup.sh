@@ -18,7 +18,6 @@ echo BUILDBASE is $BUILDBASE
 # test backup
 #
 
-oc login -u system:admin
 oc projects openshift
 
 echo "cleaning up any leftovers...."
@@ -26,6 +25,7 @@ echo "cleaning up any leftovers...."
 export PGPASSFILE=/tmp/single-master-pgpass
 
 cleanup() {
+$BUILDBASE/examples/openshift/single-master/delete.sh
 $BUILDBASE/examples/openshift/backup-job/delete.sh
 # clear out any previous backups
 sudo rm -rf /nfsfileshare/single-master
@@ -41,7 +41,7 @@ echo "sleeping for 40 seconds to allow any existing pods/services to terminate"
 sleep 40
 
 echo "creating single-master pod..."
-oc process -f $BUILDBASE/examples/openshift/master.json |  oc create -f -
+$BUILDBASE/examples/openshift/single-master/run.sh
 
 echo "sleeping for 40 seconds to allow pods/services to startup"
 sleep 40
