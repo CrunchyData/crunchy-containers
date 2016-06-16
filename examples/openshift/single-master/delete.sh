@@ -15,4 +15,4 @@
 oc delete service single-master single-slave
 oc delete pod single-master
 oc delete pod single-slave
-../../waitforterm.sh single-master oc
+$BUILDBASE/examples/waitforterm.sh single-master oc

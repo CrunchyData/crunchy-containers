@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 echo BUILDBASE is $BUILDBASE
 #
 # test setup
@@ -23,13 +22,8 @@ echo BUILDBASE is $BUILDBASE
 # test master
 #
 
-oc login -u system:admin
-oc projects openshift
-oc delete pod single-master
-oc delete service single-master
-echo "sleeping for 20 seconds to allow any existing pods/services to terminate"
-sleep 40
-oc process -f $BUILDBASE/examples/openshift/master.json |  oc create -f -
+$BUILDBASE/examples/openshift/single-master/delete.sh
+$BUILDBASE/examples/openshift/single-master/run.sh
 
 echo "sleeping for 40 seconds to allow pods/services to startup"
 sleep 40
@@ -61,7 +55,8 @@ fi
 chmod 777 $PGPASSFILE
 /usr/bin/rm $PGPASSFILE
 # always delete the pod and service even on a failure
-oc delete pod single-master
-oc delete service single-master
+
+$BUILDBASE/examples/openshift/single-master/delete.sh
+
 
 exit 0
