@@ -633,6 +633,31 @@ or via the pgbouncer proxy as follows:
 psql -h pgbouncer.openshift.svc.cluster.local  -U master master
 ....
 
+=== Openshift Example 17 - synchrounous slave
+
+This example deploys a PostgreSQL cluster with a master,
+a synchrounous slave, and an asynchronous slave.  The
+two slaves share the same Service.
+
+Running the example:
+....
+examples/openshift/sync/run.sh
+....
+
+Connect to the *master* and *slave* databases as follows:
+....
+psql -h master -U postgres postgres -c 'create table mister (id int)'
+psql -h master -U postgres postgres -c 'insert into mister values (1)'
+psql -h master -U postgres postgres -c 'table pg_stat_replication'
+psql -h slave -U postgres postgres -c 'select inet_server_addr(), * from mister'
+psql -h slave -U postgres postgres -c 'select inet_server_addr(), * from mister'
+psql -h slave -U postgres postgres -c 'select inet_server_addr(), * from mister'
+....
+
+This set of queries will show you the IP address of the Postgres slave
+container, notice it changes because of the round-robin Service proxy
+we are using for both slaves.  The example queries also show that both
+slaves are replicating from the master.
 
 == Openshift Tips
 
