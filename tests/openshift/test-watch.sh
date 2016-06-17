@@ -16,6 +16,7 @@
 
 echo BUILDBASE is $BUILDBASE
 cleanup() {
+$BUILDBASE/examples/openshift/master-slave-dc/delete.sh
 $BUILDBASE/examples/openshift/watchtest/delete.sh
 echo "sleeping while cleaning up any leftovers..."
 sleep 30
@@ -27,15 +28,16 @@ sleep 30
 cleanup
 
 ## create container
+$BUILDBASE/examples/openshift/master-slave-dc/run.sh
 $BUILDBASE/examples/openshift/watchtest/run.sh
 
-echo "sleep for 30 while the container starts up..."
+echo "sleep for 60 while the container starts up..."
 sleep 60
 echo "deleting the master which triggers the failover..."
 
-oc delete pod ms-master
+oc delete pod pg-master-rc-dc
 sleep 60
-PODNAME=`oc get pod ms-slave --no-headers | cut -f1 -d' '`
+PODNAME=`oc get pod -l name=pg-slave-rc-dc --no-headers | cut -f1 -d' '`
 echo $PODNAME " is the new master pod name"
 export IP=`oc describe pod $PODNAME | grep IP | cut -f2 -d':' `
 echo $IP " is the new master IP address"
