@@ -21,7 +21,7 @@ source $BUILDBASE/tests/standalone/pgpass-setup
 
 $BUILDBASE/examples/standalone/run-pg-replica.sh
 
-sleep 60
+sleep 90
 
 psql -p 12002 -h 127.0.0.1 -U masteruser userdb -c 'select now()'
 
@@ -36,5 +36,4 @@ else
 	exit $rc
 fi
 
-#docker stop pg-replica
 exit 0
