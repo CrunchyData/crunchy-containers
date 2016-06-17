@@ -16,10 +16,9 @@
 echo BUILDBASE is $BUILDBASE
 cleanup() {
 sudo rm -rf /nfsfileshare/single-master
+$BUILDBASE/examples/openshift/single-master/delete.sh
 $BUILDBASE/examples/openshift/master-restore/delete.sh
 $BUILDBASE/examples/openshift/backup-job/delete.sh
-oc delete service single-master
-oc delete pod single-master
 echo "sleeping while cleaning up any leftovers..."
 sleep 30
 }
@@ -32,7 +31,7 @@ cleanup
 
 
 ## create container
-oc process -f $BUILDBASE/examples/openshift/master.json | oc create -f -
+$BUILDBASE/examples/openshift/single-master/run.sh
 
 echo "sleep for 30 while the container starts up..."
 sleep 30
@@ -45,6 +44,7 @@ sleep 30
 sudo mv /nfsfilesystem/single-master/2* /nfsfilesystem/single-master/2016-03-28-12-09-28
 ## create restored container
 $BUILDBASE/examples/openshift/master-restore/run.sh
+sleep 30
 
 export IP=`oc describe pod master-restore | grep IP | cut -f2 -d':' `
 echo $IP " is the IP address"
@@ -61,7 +61,7 @@ chmod 400 $PGPASSFILE
 
 oc describe pod master-restore | grep IPAddress
 
-psql -h $IP -U master testdb -c 'select now()'
+psql -h $IP -U master postgres -c 'select now()'
 
 rc=$?
 

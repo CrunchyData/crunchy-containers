@@ -14,4 +14,4 @@
 
 oc delete dc pgpool-rc
 oc delete service pgpool-rc
-$BUILDBASE/examples/waitforterm.sh pgpool-rc oc
+oc delete pod -l name=pgpool-rc

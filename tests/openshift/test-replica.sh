@@ -22,16 +22,16 @@ echo BUILDBASE is $BUILDBASE
 
 oc login -u system:admin
 oc projects openshift
-oc delete pod ms-master ms-slave
-oc delete service ms-master ms-slave
 
-export SLEEP=70
-echo "sleeping for " $SLEEP " seconds to allow any existing pods/services to terminate"
-sleep $SLEEP
-oc process -f $BUILDBASE/examples/openshift/master-slave.json |  oc create -f -
 
+$BUILDBASE/examples/openshift/master-slave/delete.sh
+
+$BUILDBASE/examples/openshift/master-slave/run.sh
+
+SLEEP=50
 echo "sleeping for " $SLEEP " seconds to allow pods/services to startup"
 sleep $SLEEP
+
 export MASTERIP=`oc describe pod ms-master | grep IP | cut -f2 -d':' `
 export SLAVEIP=`oc describe pod ms-slave | grep IP | cut -f2 -d':' `
 echo $MASTERIP " is the master IP address"
@@ -77,6 +77,8 @@ else
 	echo "test master slave slave test FAILED"
 	resultrc=2
 fi
+
+$BUILDBASE/examples/openshift/master-slave/delete.sh
 
 exit $resultrc
 
