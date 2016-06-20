@@ -57,6 +57,7 @@ export PG_ROOT_PASSWORD=$PG_ROOT_PASSWORD
 
 
 mkdir -p /pgdata/$HOSTNAME
+chmod 0700 /pgdata/$HOSTNAME
 
 
 start-pg-wrapper.sh 
