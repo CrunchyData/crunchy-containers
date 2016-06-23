@@ -19,9 +19,21 @@
 
 source /opt/cpm/bin/setenv.sh
 
+# this lets us run initdb and postgres on Openshift
+# when it is configured to use random UIDs
+function ose_hack() {
+	export USER_ID=$(id -u)
+	export GROUP_ID=$(id -g)
+	envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
+	export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
+	export NSS_WRAPPER_PASSWD=/tmp/passwd
+	export NSS_WRAPPER_GROUP=/etc/group
+}
+
 function initdb_logic() {
 	echo "doing initdb...."
 
+#	tar xzf /opt/cpm/conf/data.tar.gz --directory=$PGDATA
 	if [[ -v PG_LOCALE ]]; then
 		initdb --locale=$PG_LOCALE -D $PGDATA  > /tmp/initdb.log &> /tmp/initdb.err
 	else
@@ -206,6 +218,8 @@ rm $PGDATA/postmaster.pid
 #export LD_PRELOAD=libnss_wrapper.so NSS_WRAPPER_PASSWD=/tmp/passwd  NSS_WRAPPER_GROUP=/etc/group
 echo "user id is..."
 id
+
+ose_hack
 
 fill_conf_file
 

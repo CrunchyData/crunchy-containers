@@ -52,5 +52,9 @@ cat $PGPASSFILE
 pg_basebackup --xlog --pgdata $BACKUP_PATH --host=$BACKUP_HOST --port=$BACKUP_PORT -U $BACKUP_USER
 
 chown -R $UID:$UID $BACKUP_PATH
+# 
+# open up permissions for the OSE Dedicated random UID scenario
+#
+chmod -R o+rx $BACKUP_PATH
 
 echo "backup has ended!"
