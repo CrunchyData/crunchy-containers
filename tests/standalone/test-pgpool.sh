@@ -24,7 +24,7 @@ $BUILDBASE/examples/standalone/run-pgpool.sh
 
 sleep 30
 
-psql -p 12003 -h 127.0.0.1 -U masteruser postgres -c "insert into mastertable values  ('pgpool', 'was here')"
+psql -p 12003 -h 127.0.0.1 -U testuser userdb -c "insert into testtable values  ('pgpool', 'was here', now())"
 
 rc=$?
 
