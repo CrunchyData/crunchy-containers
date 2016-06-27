@@ -1,4 +1,4 @@
-OSFLAVOR=centos7
+OSFLAVOR=rhel7
 PGVERSION=9.5
 
 ifndef BUILDBASE
