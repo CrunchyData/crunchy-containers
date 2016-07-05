@@ -34,6 +34,8 @@ cp $GOPATH/src/github.com/crunchydata/crunchy-containers/docs/bootstrap.js \
 $HOME/.asciidoc/backends/bootstrap/js/
 unzip $HOME/bootstrap-4.5.0.zip  $HOME/.asciidoc/backends/bootstrap/
 
+rpm -qa | grep atomic-openshift-client
+if [ $? -ne 0 ]; then
 #
 # install oc binary into /usr/bin
 #
@@ -51,3 +53,4 @@ sudo yum -y install postgresql-server
 wget -O /tmp/kubernetes.tar.gz https://github.com/kubernetes/kubernetes/releases/download/v1.2.4/kubernetes.tar.gz
 tar xvzf /tmp/kubernetes.tar.gz -C /tmp
 sudo cp /tmp/kubernetes/platforms/linux/amd64/kubectl /usr/bin
+fi
