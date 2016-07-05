@@ -1,0 +1,20 @@
+  {
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+          "name": "master-restore-pvc"
+      },
+      "spec": {
+          "labels": {
+              "name": "master-restore-pv"
+          },
+          "accessModes": [
+              "ReadWriteMany"
+          ],
+          "resources": {
+              "requests": {
+                  "storage": "1Gi"
+              }
+          }
+      }
+  }
