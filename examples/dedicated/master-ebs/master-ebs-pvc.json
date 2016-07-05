@@ -1,0 +1,17 @@
+  {
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "master-ebs-pvc"
+      },
+      "spec": {
+        "accessModes": [
+          "ReadWriteMany"
+        ],
+        "resources": {
+          "requests": {
+            "storage": "300M"
+          }
+        }
+      }
+    }
