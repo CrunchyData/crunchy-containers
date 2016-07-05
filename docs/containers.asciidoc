@@ -8,6 +8,12 @@ v1.2.1, {docdate}
 In this document, we will describe each of the containers found
 within the Crunchy Containers for PostgreSQL.
 
+The containers and their relationships to the overall architecture
+are depicted below:
+
+image::containers.png?raw=true[]
+
+
 == crunchy-postgres 
 
 The crunchy-postgres container executes the Postgres database.  
