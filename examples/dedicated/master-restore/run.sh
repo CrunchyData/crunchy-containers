@@ -13,11 +13,9 @@
 # limitations under the License.
 
 
-oc project openshift
-LOC=$BUILDBASE/examples/openshift/master-restore
+oc project jeff-project
 
-IPADDRESS=`hostname --ip-address`
-cat $LOC/master-restore-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
+LOC=$BUILDBASE/examples/dedicated/master-restore
 
 oc create -f $LOC/master-restore-pvc.json
 oc process -f $LOC/master-restore.json | oc create -f -

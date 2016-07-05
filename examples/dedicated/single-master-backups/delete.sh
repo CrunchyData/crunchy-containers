@@ -12,6 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete job backup-job-nfs
-oc delete pvc backup-job-pvc
-oc delete pv backup-job-pv
+oc delete job single-master-backup-job
