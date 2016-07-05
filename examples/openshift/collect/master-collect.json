@@ -75,6 +75,7 @@
             "containers": [{
                 "name": "collect",
                 "image": "crunchydata/crunchy-collect:1.2.1",
+                "imagePullPolicy": "Always",
                 "env": [{
                     "name": "PG_MASTER_USER",
                     "value": "${PG_MASTER_USER}"
@@ -99,6 +100,7 @@
             }, {
                 "name": "pg-master",
                 "image": "crunchydata/crunchy-postgres:1.2.1",
+                "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

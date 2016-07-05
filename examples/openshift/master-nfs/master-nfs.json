@@ -81,6 +81,7 @@
             "containers": [{
                 "name": "master-nfs",
                 "image": "crunchydata/crunchy-postgres:1.2.1",
+                "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

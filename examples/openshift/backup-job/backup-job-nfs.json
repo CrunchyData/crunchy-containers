@@ -27,6 +27,7 @@
                 "containers": [{
                     "name": "backup-job-nfs",
                     "image": "crunchydata/crunchy-backup:1.2.1",
+                    "imagePullPolicy": "Always",
                     "volumeMounts": [{
                         "mountPath": "/pgdata",
                         "name": "pgdata",

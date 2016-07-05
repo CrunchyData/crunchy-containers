@@ -56,6 +56,7 @@
             "containers": [{
                 "name": "server",
                 "image": "crunchydata/crunchy-pgbouncer:1.2.1",
+                "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

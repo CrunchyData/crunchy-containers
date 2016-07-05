@@ -23,6 +23,7 @@
             "containers": [{
                 "name": "watch",
                 "image": "crunchydata/crunchy-watch:1.2.1",
+                "imagePullPolicy": "Always",
                 "env": [{
                     "name": "OSE_PROJECT",
                     "value": "openshift"
