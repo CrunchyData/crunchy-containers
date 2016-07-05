@@ -98,6 +98,7 @@
             "containers": [{
                 "name": "ms-master",
                 "image": "crunchydata/crunchy-postgres:1.2.1",
+                "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
@@ -154,6 +155,7 @@
             "containers": [{
                 "name": "ms-slave",
                 "image": "crunchydata/crunchy-postgres:1.2.1",
+                "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

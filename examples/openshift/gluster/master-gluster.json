@@ -80,7 +80,8 @@
             }],
             "containers": [{
                 "name": "master-gluster",
-                "image": "crunchydata/crunchy-postgres",
+                "image": "crunchydata/crunchy-postgres:1.2.1",
+                "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

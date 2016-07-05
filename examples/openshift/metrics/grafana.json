@@ -50,6 +50,7 @@
             "containers": [{
                 "name": "crunchy-grafana",
                 "image": "crunchydata/crunchy-grafana:1.2.1",
+                "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 3000,
                     "protocol": "TCP"

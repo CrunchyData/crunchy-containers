@@ -87,6 +87,7 @@
 	    {
                 "name": "badger-example",
                 "image": "crunchydata/crunchy-postgres:1.2.1",
+                "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
@@ -128,6 +129,7 @@
 	    {
                 "name": "pg-badger",
                 "image": "crunchydata/crunchy-pgbadger:1.2.1",
+                "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 15000,
                     "protocol": "TCP"

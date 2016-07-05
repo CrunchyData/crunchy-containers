@@ -104,6 +104,7 @@
             "containers": [{
                 "name": "${PG_MASTER_SERVICE_NAME}",
                 "image": "crunchydata/crunchy-postgres:1.2.1",
+                "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
@@ -178,6 +179,7 @@
                     "containers": [{
                         "name": "server",
                         "image": "crunchydata/crunchy-postgres:1.2.1",
+                        "imagePullPolicy": "Always",
                         "ports": [{
                             "containerPort": 5432,
                             "protocol": "TCP"
@@ -215,7 +217,6 @@
                         }],
                         "resources": {},
                         "terminationMessagePath": "/dev/termination-log",
-                        "imagePullPolicy": "IfNotPresent",
                         "securityContext": {
                             "privileged": false
                         },

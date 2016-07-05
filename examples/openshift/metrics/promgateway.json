@@ -50,6 +50,7 @@
             "containers": [{
                 "name": "crunchy-promgateway",
                 "image": "crunchydata/crunchy-promgateway:1.2.1",
+                "imagePullPolicy": "Always",
                 "ports": [
 		{
                     "containerPort": 9091,

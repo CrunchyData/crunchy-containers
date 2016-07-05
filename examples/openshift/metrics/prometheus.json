@@ -50,6 +50,7 @@
             "containers": [{
                 "name": "crunchy-prometheus",
                 "image": "crunchydata/crunchy-prometheus:1.2.1",
+                "imagePullPolicy": "Always",
                 "ports": [
 		{
                     "containerPort": 9090,
