@@ -29,7 +29,7 @@ sudo mkdir -p $DATA_DIR
 sudo chown postgres:postgres $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-OSFLAVOR=rhel7
+OSFLAVOR=centos7
 PGVERSION=9.5
 
 sudo docker stop master

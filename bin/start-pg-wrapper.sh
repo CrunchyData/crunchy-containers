@@ -241,8 +241,8 @@ esac
 
 if [ -f /pgconf/postgresql.conf ]; then
        	echo "pgconf postgresql.conf is being used"
-	exec postgres -c config_file=/pgconf/postgresql.conf -c hba_file=/pgconf/pg_hba.conf -D $PGDATA 
+	postgres -c config_file=/pgconf/postgresql.conf -c hba_file=/pgconf/pg_hba.conf -D $PGDATA 
 else
-	exec postgres -D $PGDATA 
+	postgres -D $PGDATA 
 fi
 
