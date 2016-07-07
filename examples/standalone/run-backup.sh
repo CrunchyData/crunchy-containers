@@ -38,5 +38,5 @@ docker run \
 	--link master:master\
 	--name=masterbackup \
 	--hostname=masterbackup \
-	-d crunchydata/crunchy-backup:$CCP_VERSION
+	-d crunchydata/crunchy-backup:centos7-9.5-$CCP_VERSION
 

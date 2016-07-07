@@ -50,5 +50,5 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=sync-master \
 	--hostname=sync-master \
-	-d crunchydata/crunchy-postgres:$CCP_VERSION
+	-d crunchydata/crunchy-postgres:centos7-9.5-$CCP_VERSION
 

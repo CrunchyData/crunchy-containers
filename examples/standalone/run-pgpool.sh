@@ -29,5 +29,5 @@ sudo docker run \
 	-e PG_DATABASE=postgres \
 	--name=pgpool \
 	--hostname=pgpool \
-	-d crunchydata/crunchy-pgpool:$CCP_VERSION
+	-d crunchydata/crunchy-pgpool:centos7-9.5-$CCP_VERSION
 

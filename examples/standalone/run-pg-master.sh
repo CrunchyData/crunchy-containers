@@ -29,9 +29,6 @@ sudo mkdir -p $DATA_DIR
 sudo chown postgres:postgres $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-OSFLAVOR=centos7
-PGVERSION=9.5
-
 sudo docker stop master
 sudo docker rm master
 
@@ -52,5 +49,5 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=master \
 	--hostname=master \
-	-d crunchydata/crunchy-postgres:$OSFLAVOR-$PGVERSION-$CCP_VERSION
+	-d crunchydata/crunchy-postgres:centos7-9.5-$CCP_VERSION
 
