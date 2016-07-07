@@ -21,9 +21,9 @@ RUN yum -y install epel-release && yum -y reinstall glibc-common && \
 
 # set up cpm directory
 #
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /backup
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /backup /pgconf
 
-RUN chown -R postgres:postgres /opt/cpm /pgdata /backup
+RUN chown -R postgres:postgres /opt/cpm /pgdata /backup /pgconf
 
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/

@@ -48,6 +48,7 @@ function initdb_logic() {
 }
 
 function check_for_restore() {
+	ls -l /backup
 	if [ ! -f /backup/$BACKUP_PATH/postgresql.conf ]; then
 		echo "no backup file found..."
 		initdb_logic

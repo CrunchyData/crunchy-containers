@@ -24,8 +24,7 @@ hostname  \
 
 # set up cpm directory
 #
-RUN mkdir -p /opt/cpm/bin
-RUN mkdir -p /opt/cpm/conf
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
 # add volumes to allow override of pgbouncer config files
 VOLUME ["/pgconf"]
