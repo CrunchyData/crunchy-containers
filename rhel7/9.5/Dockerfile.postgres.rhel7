@@ -23,7 +23,7 @@ postgis2_9? postgis2_9?-client pgrouting* && yum clean all -y
 #
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /backup
 
-RUN chown -R postgres:postgres /opt/cpm /pgdata
+RUN chown -R postgres:postgres /opt/cpm /pgdata /backup
 
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/

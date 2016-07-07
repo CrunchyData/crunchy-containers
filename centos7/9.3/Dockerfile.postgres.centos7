@@ -1,6 +1,6 @@
 FROM centos:7
 
-LABEL Release="1.2.1"
+LABEL Release="1.2.1.1"
 LABEL Vendor="Crunchy Data Solutions"
 
 LABEL PostgresVersion="9.3"
@@ -19,10 +19,9 @@ RUN yum install -y gettext nss_wrapper postgresql9? postgresql9?-contrib \
 
 # set up cpm directory
 #
-RUN mkdir -p /opt/cpm/bin
-RUN mkdir -p /opt/cpm/conf
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
-RUN chown -R postgres:postgres /opt/cpm
+RUN chown -R postgres:postgres /opt/cpm /pgdata /backup
 
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/
@@ -39,8 +38,8 @@ VOLUME ["/backup"]
 # open up the postgres port
 EXPOSE 5432
 
-ADD bin /opt/cpm/bin
-ADD conf /opt/cpm/conf
+ADD bin/postgres /opt/cpm/bin
+ADD conf/postgres /opt/cpm/conf
 
 #RUN setcap cap_chown,cap_fowner+ep /usr/bin/chown
 #RUN setcap cap_chown,cap_fowner+ep /usr/bin/chmod
@@ -48,8 +47,6 @@ ADD conf /opt/cpm/conf
 #RUN setcap cap_chown,cap_fowner+ep /usr/pgsql-9.4/bin/pg_ctl
 #RUN setcap cap_chown,cap_fowner+ep /usr/pgsql-9.4/bin/initdb
 
-RUN chown -R postgres:postgres /pgdata
-RUN chown -R postgres:postgres /backup
 
 USER 26
 
