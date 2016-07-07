@@ -17,12 +17,11 @@ RUN yum -y install libxslt libxml2 procps-ng \
 postgresql9?-server   postgresql9?  openssh-clients  hostname bind-utils \
  && yum clean all -y
 
-RUN mkdir -p /opt/cpm/bin
+RUN mkdir -p /opt/cpm/bin /pgdata
 ADD bin/backup/ /opt/cpm/bin
-RUN chown -R postgres:postgres /opt/cpm
+RUN chown -R postgres:postgres /opt/cpm /pgdata
 
 VOLUME ["/pgdata"]
-RUN chown -R postgres:postgres /pgdata
 
 USER postgres
 

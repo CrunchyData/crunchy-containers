@@ -1,6 +1,6 @@
 FROM centos:7
 
-LABEL Release="1.2.1"
+LABEL Release="1.2.1.1"
 LABEL Vendor="Crunchy Data Solutions"
 LABEL PostgresVersion="9.5"
 
@@ -14,12 +14,11 @@ RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.
 
 RUN yum install -y procps-ng postgresql9? postgresql9?-server unzip openssh-clients hostname bind-utils && yum clean all -y
 
-RUN mkdir -p /opt/cpm/bin
+RUN mkdir -p /opt/cpm/bin /pgdata
 ADD bin/backup/ /opt/cpm/bin
-RUN chown -R postgres:postgres /opt/cpm
+RUN chown -R postgres:postgres /opt/cpm /pgdata
 
 VOLUME ["/pgdata"]
-RUN chown -R postgres:postgres /pgdata
 
 USER postgres
 
