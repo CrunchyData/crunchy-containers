@@ -49,8 +49,7 @@
         "spec": {
             "containers": [{
                 "name": "crunchy-prometheus",
-                "image": "crunchydata/crunchy-prometheus:1.2.1",
-                "imagePullPolicy": "Always",
+                "image": "crunchydata/crunchy-prometheus:rhel7-9.5-1.2.1.1",
                 "ports": [
 		{
                     "containerPort": 9090,

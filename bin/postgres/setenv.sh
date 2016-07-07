@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc project openshift
-LOC=$BUILDBASE/examples/openshift/single-master
+if [ -d /usr/pgsql-9.5 ]; then
+	export PGROOT=/usr/pgsql-9.5
+elif [ -d /usr/pgsql-9.4 ]; then
+	export PGROOT=/usr/pgsql-9.4
+else
+	export PGROOT=/usr/pgsql-9.3
+fi
 
-oc process -f $LOC/master.json | oc create -f -
-oc process -f $LOC/slave.json | oc create -f -
+echo "setting PGROOT to " $PGROOT
+
+export PGDATA=/pgdata/$HOSTNAME
+export PATH=/opt/cpm/bin:$PGROOT/bin:$PATH
+export LD_LIBRARY_PATH=$PGROOT/lib
+
+chown postgres $PGDATA

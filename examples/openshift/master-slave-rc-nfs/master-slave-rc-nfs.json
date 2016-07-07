@@ -103,8 +103,7 @@
         "spec": {
             "containers": [{
                 "name": "${PG_MASTER_SERVICE_NAME}",
-                "image": "crunchydata/crunchy-postgres:1.2.1",
-                "imagePullPolicy": "Always",
+                "image": "crunchydata/crunchy-postgres:rhel7-9.5-1.2.1.1",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
@@ -178,8 +177,7 @@
                 "spec": {
                     "containers": [{
                         "name": "server",
-                        "image": "crunchydata/crunchy-postgres:1.2.1",
-                        "imagePullPolicy": "Always",
+                        "image": "crunchydata/crunchy-postgres:rhel7-9.5-1.2.1.1",
                         "ports": [{
                             "containerPort": 5432,
                             "protocol": "TCP"

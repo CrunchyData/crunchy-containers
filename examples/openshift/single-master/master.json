@@ -74,7 +74,7 @@
         "spec": {
             "containers": [{
                 "name": "single-master",
-                "image": "crunchydata/crunchy-postgres:rhel7-9.5-1.2.1",
+                "image": "crunchydata/crunchy-postgres:rhel7-9.5-1.2.1.1",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

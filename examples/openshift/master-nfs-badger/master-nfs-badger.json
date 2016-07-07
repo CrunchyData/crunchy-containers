@@ -91,8 +91,7 @@
             "containers": [
             {
                 "name": "pg-badger",
-                "image": "crunchydata/crunchy-pgbadger:1.2.1",
-                "imagePullPolicy": "Always",
+                "image": "crunchydata/crunchy-pgbadger:rhel7-9.5-1.2.1.1",
                 "ports": [{
                     "containerPort": 10000,
                     "protocol": "TCP"
@@ -133,8 +132,7 @@
             },
 		{
                 "name": "master-nfs-badger",
-                "image": "crunchydata/crunchy-postgres:1.2.1",
-                "imagePullPolicy": "Always",
+                "image": "crunchydata/crunchy-postgres:rhel7-9.5-1.2.1.1",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

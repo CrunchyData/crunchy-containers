@@ -103,8 +103,7 @@
         "spec": {
             "containers": [{
                     "name": "collect",
-                    "image": "crunchydata/crunchy-collect:1.2.1",
-                    "imagePullPolicy": "Always",
+                    "image": "crunchydata/crunchy-collect:rhel7-9.5-1.2.1.1",
                     "env": [{
                         "name": "PG_MASTER_USER",
                         "value": "${PG_MASTER_USER}"
@@ -128,8 +127,7 @@
                     }]
                 },{
                     "name": "server",
-                    "image": "crunchydata/crunchy-postgres:1.2.1",
-                    "imagePullPolicy": "Always",
+                    "image": "crunchydata/crunchy-postgres:rhel7-9.5-1.2.1.1",
                     "ports": [{
                         "containerPort": 5432,
                         "protocol": "TCP"
@@ -231,8 +229,7 @@
                 "spec": {
                     "containers": [{
                         "name": "server",
-                        "image": "crunchydata/crunchy-postgres:1.2.1",
-                        "imagePullPolicy": "Always",
+                        "image": "crunchydata/crunchy-postgres:rhel7-9.5-1.2.1.1",
                         "ports": [{
                             "containerPort": 5432,
                             "protocol": "TCP"
