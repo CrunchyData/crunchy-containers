@@ -10,6 +10,25 @@ using the Portworx Docker volume technology
 in the examples/portworx directory.  Those examples are 
 explained below.
 
+=== Setup
+For these examples, I built a centos7.2 VM, and configured it
+according to the Portworx documentation link:https://github.com/portworx/px-dev[here].
+
+Each container has been tested running in selinux enforcing mode.  To
+have this work, you will see the following line in the Docker run
+commands:
+....
+--security-opt=label:disable
+....
+
+Also, you will notice in the Docker volume create scripts, there is 
+the following line that allows the permissions of the Docker volumes
+to be set as owned by the postgres UID:
+....
+--opt uid=26
+....
+
+
 === Example 1 - Running a single database
 
 Create the container with this command:
