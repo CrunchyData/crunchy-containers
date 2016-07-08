@@ -35,5 +35,5 @@ sudo docker run \
 	--link master:master \
 	--name=pgbouncer \
 	--hostname=pgbouncer \
-	-d crunchydata/crunchy-pgbouncer:centos7-9.5-$CCP_VERSION
+	-d crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG
 

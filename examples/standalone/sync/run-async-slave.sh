@@ -44,5 +44,5 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=async-slave \
 	--hostname=async-slave \
-	-d crunchydata/crunchy-postgres:centos7-9.5-$CCP_VERSION
+	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 

@@ -26,5 +26,5 @@ sudo docker run \
 	-e BADGER_TARGET=master \
 	--name=badger-example \
 	--hostname=badger-example \
-	-d crunchydata/crunchy-pgbadger:centos7-9.5-$CCP_VERSION
+	-d crunchydata/crunchy-pgbadger:$CCP_IMAGE_TAG
 
