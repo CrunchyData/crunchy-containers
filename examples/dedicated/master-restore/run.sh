@@ -17,5 +17,4 @@ oc project jeff-project
 
 LOC=$BUILDBASE/examples/dedicated/master-restore
 
-oc create -f $LOC/master-restore-pvc.json
 oc process -f $LOC/master-restore.json | oc create -f -

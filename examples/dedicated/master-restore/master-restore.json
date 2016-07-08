@@ -78,12 +78,13 @@
             }, {
                 "name": "backup",
                 "persistentVolumeClaim": {
-                    "claimName": "master-restore-pvc"
+                    "claimName": "single-master-backups-pvc"
                 }
             }],
             "containers": [{
                 "name": "master-restore",
-                "image": "crunchydata/crunchy-postgres:1.2.1",
+                "image": "172.30.240.45:5000/jeff-project/crunchy-postgres:rhel7-9.5-1.2.1.1",
+		"imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
@@ -105,7 +106,7 @@
                     "value": "password"
                 }, {
                     "name": "BACKUP_PATH",
-                    "value": "single-master/2016-06-23-11-51-15"
+                    "value": "single-master/2016-07-08-16-54-28"
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"
