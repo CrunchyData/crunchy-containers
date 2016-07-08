@@ -20,7 +20,7 @@ docbuild:
 postgres:
 	make versiontest
 	docker build -t crunchy-postgres -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres.$(CCP_BASEOS) .
-	docker tag -f crunchy-postgres crunchydata/crunchy-postgres:$(CCP_BASEOS)-$(CCP_CCP_PGVERSION)-$(CCP_VERSION)
+	docker tag -f crunchy-postgres crunchydata/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 watch:
 	cp /usr/bin/oc bin/watch
 	cp /usr/bin/kubectl bin/watch
