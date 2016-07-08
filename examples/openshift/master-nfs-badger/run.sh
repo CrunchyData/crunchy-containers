@@ -20,4 +20,4 @@ LOC=$BUILDBASE/examples/openshift/master-nfs-badger
 
 cat $LOC/master-nfs-badger-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
 oc create -f $LOC/master-nfs-badger-pvc.json
-oc process -f $LOC/master-nfs-badger.json | oc create -f -
+oc process -f $LOC/master-nfs-badger.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

@@ -22,4 +22,4 @@ oc policy add-role-to-group edit system:serviceaccounts -n default
 #oc process -f $BUILDBASE/examples/openshift/watchtest/complex2.json | oc create -f -
 echo "sleep 20 to give master time to start..."
 sleep 20
-oc process -f $LOC/watch.json | oc create -f -
+oc process -f $LOC/watch.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

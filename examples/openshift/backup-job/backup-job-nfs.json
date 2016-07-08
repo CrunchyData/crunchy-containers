@@ -26,7 +26,7 @@
                 }],
                 "containers": [{
                     "name": "backup-job-nfs",
-                    "image": "crunchydata/crunchy-backup:rhel7-9.5-1.2.1.1",
+                    "image": "crunchydata/crunchy-backup:centos7-9.5-1.2.1.1",
                     "volumeMounts": [{
                         "mountPath": "/pgdata",
                         "name": "pgdata",

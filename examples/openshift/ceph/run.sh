@@ -21,5 +21,5 @@ oc create -f $LOC/ceph-secret.json
 oc create -f $LOC/ceph-pv.json
 oc create -f $LOC/ceph-pvc.json
 
-oc process -f $LOC/master-ceph.json | oc create -f -
+oc process -f $LOC/master-ceph.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
 

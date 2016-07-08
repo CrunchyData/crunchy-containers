@@ -28,4 +28,4 @@ cp $LOC/users.txt $CONFIGDIR
 IPADDRESS=`hostname --ip-address`
 cat $LOC/pgbouncer-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
 oc create -f $LOC/pgbouncer-pvc.json
-oc process -f $LOC/pgbouncer.json | oc create -f -
+oc process -f $LOC/pgbouncer.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

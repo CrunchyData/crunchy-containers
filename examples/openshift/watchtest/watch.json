@@ -9,6 +9,11 @@
             "tags": "database,postgresql,replication"
         }
     },
+    "parameters": [{
+        "name": "CCP_IMAGE_TAG",
+        "description": "image tag to use"
+    }, {
+
     "objects": [{
         "kind": "Pod",
         "apiVersion": "v1",
@@ -22,7 +27,7 @@
             "serviceAccount": "pg-watcher",
             "containers": [{
                 "name": "watch",
-                "image": "crunchydata/crunchy-watch:rhel7-9.5-1.2.1.1",
+                "image": "crunchydata/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
                     "value": "openshift"

@@ -15,6 +15,9 @@
         "description": "The username used for master-slave replication",
         "value": "master"
     }, {
+        "name": "CCP_IMAGE_TAG",
+        "description": "The image tag to use"
+    }, {
         "name": "PG_MASTER_PASSWORD",
         "description": "The password for the PG master user",
         "value": "password"
@@ -74,7 +77,7 @@
         "spec": {
             "containers": [{
                 "name": "collect",
-                "image": "crunchydata/crunchy-collect:rhel7-9.5-1.2.1.1",
+                "image": "crunchydata/crunchy-collect:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "PG_MASTER_USER",
                     "value": "${PG_MASTER_USER}"
@@ -98,7 +101,7 @@
                 }]
             }, {
                 "name": "pg-master",
-                "image": "crunchydata/crunchy-postgres:rhel7-9.5-1.2.1.1",
+                "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

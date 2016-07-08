@@ -20,4 +20,4 @@ IPADDRESS=`hostname --ip-address`
 cat $LOC/master-restore-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
 
 oc create -f $LOC/master-restore-pvc.json
-oc process -f $LOC/master-restore.json | oc create -f -
+oc process -f $LOC/master-restore.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

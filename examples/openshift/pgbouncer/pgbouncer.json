@@ -13,6 +13,9 @@
     "parameters": [{
         "name": "PGBOUNCER_SERVICE_NAME",
         "value": "pgbouncer"
+    },{
+        "name": "CCP_IMAGE_TAG",
+        "description": "the image tag to use"
     }],
     "objects": [{
         "kind": "Service",
@@ -55,7 +58,7 @@
             }],
             "containers": [{
                 "name": "server",
-                "image": "crunchydata/crunchy-pgbouncer:rhel7-9.5-1.2.1.1",
+                "image": "crunchydata/crunchy-pgbouncer:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

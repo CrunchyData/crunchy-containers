@@ -72,6 +72,9 @@
             }
         },
         "spec": {
+                "securityContext": {
+                    "fsGroup": 26
+                },
             "volumes": [{
                 "name": "pgdata",
 		"persistentVolumeClaim": {
@@ -80,7 +83,7 @@
             }],
             "containers": [{
                 "name": "master-ebs",
-                "image": "crunchydata/crunchy-postgres:1.2.1",
+                "image": "172.30.240.45:5000/jeff-project/crunchy-postgres:rhel7-9.5-1.2.1.1",
                 "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 5432,

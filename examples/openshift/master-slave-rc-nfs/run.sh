@@ -18,4 +18,4 @@ LOC=$BUILDBASE/examples/openshift/master-slave-rc-nfs
 IPADDRESS=`hostname --ip-address`
 cat $LOC/master-slave-rc-nfs-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
 oc create -f $LOC/master-slave-rc-nfs-pvc.json
-oc process -f $LOC/master-slave-rc-nfs.json | oc create -f -
+oc process -f $LOC/master-slave-rc-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

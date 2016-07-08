@@ -19,4 +19,4 @@ LOC=$BUILDBASE/examples/openshift/secret
 oc create -f $LOC/pguser-secret.json
 oc create -f $LOC/pgmaster-secret.json 
 oc create -f $LOC/pgroot-secret.json 
-oc process -f $LOC/secret-pg.json | oc create -f -
+oc process -f $LOC/secret-pg.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

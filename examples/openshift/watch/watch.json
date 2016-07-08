@@ -11,7 +11,7 @@
         "serviceAccount": "pg-watcher",
         "containers": [{
             "name": "watch",
-            "image": "crunchydata/crunchy-watch:rhel7-9.5-1.2.1.1",
+            "image": "crunchydata/crunchy-watch:centos7-9.5-1.2.1.1",
             "env": [{
                 "name": "OSE_PROJECT",
                 "value": "openshift"

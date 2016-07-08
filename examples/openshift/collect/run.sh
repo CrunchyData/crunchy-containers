@@ -14,4 +14,5 @@
 
 oc project openshift
 
-oc process -f $BUILDBASE/examples/openshift/collect/master-collect.json | oc create -f -
+LOC=$BUILDBASE/examples/openshift/collect
+oc process -f $LOC/master-collect.json  -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

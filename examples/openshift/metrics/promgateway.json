@@ -10,7 +10,10 @@
             "tags": "database,postgresql,replication"
         }
     },
-    "parameters": [],
+    "parameters": [{
+        "name": "CCP_IMAGE_TAG",
+        "description": "The image tag to use"
+    }],
     "objects": [{
         "kind": "Service",
         "apiVersion": "v1",
@@ -49,7 +52,7 @@
         "spec": {
             "containers": [{
                 "name": "crunchy-promgateway",
-                "image": "crunchydata/crunchy-promgateway:rhel7-9.5-1.2.1.1",
+                "image": "crunchydata/crunchy-promgateway:${CCP_IMAGE_TAG}",
                 "ports": [
 		{
                     "containerPort": 9091,

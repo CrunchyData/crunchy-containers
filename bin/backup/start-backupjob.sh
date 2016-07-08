@@ -26,7 +26,22 @@
 # $BACKUP_PORT pg port we are connecting to
 #
 
+ls -l /
+ls -l /pgdata
+
 env
+
+function ose_hack() {
+        export USER_ID=$(id -u)
+        export GROUP_ID=$(id -g)
+        envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
+        export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
+        export NSS_WRAPPER_PASSWD=/tmp/passwd
+        export NSS_WRAPPER_GROUP=/etc/group
+}
+
+
+ose_hack
 
 BACKUPBASE=/pgdata/$BACKUP_HOST
 if [ ! -d "$BACKUPBASE" ]; then

@@ -10,8 +10,7 @@
         "spec": {
             "containers": [{
                 "name": "sync-slave",
-                "image": "crunchydata/crunchy-postgres:1.2.1",
-                "imagePullPolicy": "Always",
+                "image": "crunchydata/crunchy-postgres:centos7-9.5-1.2.1.1",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

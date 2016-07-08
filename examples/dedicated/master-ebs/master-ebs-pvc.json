@@ -6,11 +6,11 @@
       },
       "spec": {
         "accessModes": [
-          "ReadWriteMany"
+          "ReadWriteOnce"
         ],
         "resources": {
           "requests": {
-            "storage": "300M"
+            "storage": "500M"
           }
         }
       }

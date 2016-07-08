@@ -62,7 +62,7 @@ chmod 0700 /pgdata/$HOSTNAME
 
 start-pg-wrapper.sh 
 
-#while true; do
-#	echo "sleeping "
-#	sleep 1000
-#done
+while true; do
+	echo "sleeping "
+	sleep 1000
+done

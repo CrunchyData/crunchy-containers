@@ -23,4 +23,4 @@ sudo cp $LOC/setup.sql $NFS
 IPADDRESS=`hostname --ip-address`
 cat $LOC/custom-config-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
 oc create -f $LOC/custom-config-pvc.json
-oc process -f $LOC/custom-config.json | oc create -f -
+oc process -f $LOC/custom-config.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

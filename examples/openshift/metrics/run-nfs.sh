@@ -29,6 +29,6 @@ cat $LOC/prometheus-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
 oc create -f $LOC/grafana-pvc.json
 oc create -f $LOC/prometheus-pvc.json
 
-oc process -f $LOC/prometheus-nfs.json | oc create -f -
-oc process -f $LOC/promgateway.json | oc create -f -
-oc process -f $LOC/grafana-nfs.json | oc create -f -
+oc process -f $LOC/prometheus-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $LOC/promgateway.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $LOC/grafana-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

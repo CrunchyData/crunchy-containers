@@ -13,5 +13,5 @@
 # limitations under the License.
 
 oc project openshift 
-
-oc process -f $BUILDBASE/examples/openshift/badger/master-badger.json | oc create -f -
+LOC=$BUILDBASE/examples/openshift/badger
+oc process -f $LOC/master-badger.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
