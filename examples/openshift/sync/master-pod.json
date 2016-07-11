@@ -1,4 +1,20 @@
 {
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pg-replica-example",
+        "creationTimestamp": null,
+        "annotations": {
+            "description": "PostgreSQL Replication Example",
+            "iconClass": "icon-database",
+            "tags": "database,postgresql,replication"
+        }
+    },
+    "parameters": [{
+        "name": "CCP_IMAGE_TAG",
+        "description": "the image tag to use"
+    }],
+    "objects": [{
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
@@ -10,7 +26,7 @@
         "spec": {
             "containers": [{
                 "name": "master",
-                "image": "crunchydata/crunchy-postgres:centos7-9.5-1.2.1.1",
+                "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
@@ -40,28 +56,23 @@
                     "name": "PG_ROOT_PASSWORD",
                     "value": "password"
                 }],
-                "volumeMounts": [
-		{
+                "volumeMounts": [{
                     "mountPath": "/pgdata",
                     "name": "pgdata",
                     "readOnly": false
-                },
-		{
+                }, {
                     "mountPath": "/backup",
                     "name": "backup",
                     "readOnly": true
-                }
-		]
+                }]
             }],
-            "volumes": [
-	    {
+            "volumes": [{
                 "name": "pgdata",
                 "emptyDir": {}
-            },
-	    {
+            }, {
                 "name": "backup",
                 "emptyDir": {}
-            }
-	    ]
+            }]
         }
-    }
+    }]
+}

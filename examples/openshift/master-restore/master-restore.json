@@ -108,7 +108,7 @@
                     "value": "password"
                 }, {
                     "name": "BACKUP_PATH",
-                    "value": "single-master/2016-06-23-11-51-15"
+                    "value": "single-master/2016-07-11-15-04-26"
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"

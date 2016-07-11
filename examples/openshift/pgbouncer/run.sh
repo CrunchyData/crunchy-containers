@@ -15,6 +15,8 @@
 
 oc project openshift
 
+echo "this example depends upon the master-slave-dc example being run prior!"
+
 CONFIGDIR=/nfsfileshare/bouncerconfig
 sudo rm -rf $CONFIGDIR
 sudo mkdir $CONFIGDIR
