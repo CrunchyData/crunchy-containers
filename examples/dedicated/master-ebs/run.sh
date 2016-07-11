@@ -16,4 +16,4 @@
 oc project jeff-project
 
 oc create -f master-ebs-pvc.json
-oc process -f master-ebs.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f master-ebs.json | oc create -f -

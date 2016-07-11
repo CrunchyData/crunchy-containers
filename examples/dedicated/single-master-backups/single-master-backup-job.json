@@ -1,58 +1,72 @@
 {
-    "apiVersion": "extensions/v1beta1",
-    "kind": "Job",
+    "kind": "Template",
+    "apiVersion": "v1",
     "metadata": {
-        "name": "single-master-backup-job"
+        "name": "simple-master-example",
+        "creationTimestamp": null,
+        "annotations": {
+            "description": "Crunchy PostgreSQL Master Example",
+            "iconClass": "icon-database",
+            "tags": "database,postgresql,replication"
+        }
     },
-    "spec": {
-        "selector": {
-            "matchLabels": {
-                "app": "single-master-backup-job"
-            }
+    "parameters": [{
+        "name": "CCP_IMAGE_TAG",
+        "description": "image tag to use"
+    }],
+
+    "objects": [{
+        "kind": "Job",
+        "apiVersion": "extensions/v1beta1",
+        "metadata": {
+            "name": "single-master-backup-job"
         },
-        "template": {
-            "metadata": {
-                "name": "single-master-backup-job",
-                "labels": {
+        "spec": {
+            "selector": {
+                "matchLabels": {
                     "app": "single-master-backup-job"
                 }
             },
-            "spec": {
-                "securityContext": {
-                    "fsGroup": 26
-                },
-
-                "volumes": [{
-                    "name": "pgdata",
-                    "persistentVolumeClaim": {
-                        "claimName": "single-master-backups-pvc"
-                    }
-                }],
-                "containers": [{
+            "template": {
+                "metadata": {
                     "name": "single-master-backup-job",
-                    "image": "172.30.240.45:5000/jeff-project/crunchy-backup:rhel7-9.5-1.2.1.1",
-                    "imagePullPolicy": "Always",
-                    "volumeMounts": [{
-                        "mountPath": "/pgdata",
+                    "labels": {
+                        "app": "single-master-backup-job"
+                    }
+                },
+                "spec": {
+                    "volumes": [{
                         "name": "pgdata",
-                        "readOnly": false
+                        "persistentVolumeClaim": {
+                            "claimName": "single-master-backups-pvc"
+                        }
                     }],
-                    "env": [{
-                        "name": "BACKUP_HOST",
-                        "value": "single-master"
-                    }, {
-                        "name": "BACKUP_USER",
-                        "value": "master"
-                    }, {
-                        "name": "BACKUP_PASS",
-                        "value": "password"
-                    }, {
-                        "name": "BACKUP_PORT",
-                        "value": "5432"
-                    }]
-                }],
-                "restartPolicy": "Never"
+                    "containers": [{
+                        "name": "single-master-backup-job",
+                        "image": "172.30.240.45:5000/jeff-project/crunchy-backup:${CCP_IMAGE_TAG}",
+			"imagePullPolicy":"Always",
+                        "volumeMounts": [{
+                            "mountPath": "/pgdata",
+                            "name": "pgdata",
+                            "readOnly": false
+                        }],
+                        "env": [{
+                            "name": "BACKUP_HOST",
+                            "value": "single-master"
+                        }, {
+                            "name": "BACKUP_USER",
+                            "value": "master"
+                        }, {
+                            "name": "BACKUP_PASS",
+                            "value": "password"
+                        }, {
+                            "name": "BACKUP_PORT",
+                            "value": "5432"
+                        }]
+                    }],
+                    "restartPolicy": "Never"
+                }
             }
         }
-    }
+    }]
 }

@@ -17,4 +17,4 @@ oc project jeff-project
 
 LOC=$BUILDBASE/examples/dedicated/master-restore
 
-oc process -f $LOC/master-restore.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/master-restore.json | oc create -f -
