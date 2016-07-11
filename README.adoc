@@ -1,5 +1,5 @@
 == Crunchy PostgreSQL Containers
-v1.2.1, {docdate}
+v1.2.2, {docdate}
 
 image::docs/crunchy_logo.png?raw=true[]
 
@@ -56,7 +56,12 @@ On RHEL systems, "Go" can be installed with the following command:
 If you don't want to pull the containers from link:https://hub.docker.com/u/crunchydata/dashboard/[DockerHub], you can perform a build of
 all the containers locally on your development host.
 
-Complete build and install documentation is found here: link:docs/install.asciidoc[Install Docs]
+Complete build and install documentation is found here: link:docs/install.asciidoc[Install Docs].  The provided Dockerfiles build the containers
+on a Centos 7 base image and use the community PostgreSQL RPMs.  
+
+Crunchy provides a commercially supported version of these containers
+built upon RHEL 7 and the Crunchy supported PostgreSQL.  Contact Crunchy
+for more details at link:http://www.crunchydata.com.
 
 === Examples
 
