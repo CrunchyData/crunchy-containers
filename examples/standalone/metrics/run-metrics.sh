@@ -29,6 +29,7 @@ sudo chown root:root $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
 export HOSTIP=`hostname --ip-address`
+echo $HOSTIP
 
 sudo docker run \
 	-p $HOSTIP:9091:9091/tcp \

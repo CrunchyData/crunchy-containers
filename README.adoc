@@ -53,36 +53,22 @@ On RHEL systems, "Go" can be installed with the following command:
 
 3) Building the Containers (Optional)
 
-If you don't want to pull the containers from link:https://hub.docker.com/u/crunchydata/dashboard/[DockerHub] or the
-private Crunchy Docker registry, you can perform a build of
+If you don't want to pull the containers from link:https://hub.docker.com/u/crunchydata/dashboard/[DockerHub], you can perform a build of
 all the containers locally on your development host.
 
-Complete install documentation is found here: link:docs/install.asciidoc[Install Docs]
-
-5) Setting up config files for compilation
-
-In order to compile the openshift-dedicated-container code for RHEL, two files must be placed in the conf directory:
-
- * crunchypg95.repo or crunchypg93.repo
- * CRUNCHY-GPG-KEY.public
-
-Both of these files can be obtained with the following procedure:
-
- * Request an account on access.crunchydata.com
- * Go to https://access.crunchydata.com/
- * In the upper-right, click "Customer Log In"
- * Enter your provided username and password
- * Click "submit"
- * Read the terms of use and click "I agree"
- * Change your password (first login) by Clicking on "Profile" in the upper right; enter your old password, a new password, and click "Change password"
- * Click on "Downloads" in the upper right corner
- * The "Download GPG Key" button will automatically download the CRUNCHY-GPG-KEY.public file
- * The "Download repo file (RHEL)" button will automatically download a personalized (to your user) crunchypg95.repo file
+Complete build and install documentation is found here: link:docs/install.asciidoc[Install Docs]
 
 === Examples
 
 Various examples are provided in the /examples directory and described
 in the documentation for running Standalone and Openshift examples..
+
+To run the examples, you will need to set the CCP_IMAGE_TAG
+environment variable which indicates which version of the 
+container you will pull down and execute, for example:
+....
+export CCP_IMAGE_TAG=centos7-9.5-1.2.2
+....
 
 === Testing
 
