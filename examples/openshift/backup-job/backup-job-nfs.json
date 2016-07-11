@@ -1,53 +1,71 @@
 {
-    "apiVersion": "extensions/v1beta1",
-    "kind": "Job",
+    "kind": "Template",
+    "apiVersion": "v1",
     "metadata": {
-        "name": "backup-job-nfs"
+        "name": "simple-master-example",
+        "creationTimestamp": null,
+        "annotations": {
+            "description": "Crunchy PostgreSQL Master Example",
+            "iconClass": "icon-database",
+            "tags": "database,postgresql,replication"
+        }
     },
-    "spec": {
-        "selector": {
-            "matchLabels": {
-                "app": "backup-job-nfs"
-            }
+    "parameters": [{
+        "name": "CCP_IMAGE_TAG",
+        "description": "image tag to use"
+    }],
+
+    "objects": [{
+        "kind": "Job",
+        "apiVersion": "extensions/v1beta1",
+        "metadata": {
+            "name": "backup-job-nfs"
         },
-        "template": {
-            "metadata": {
-                "name": "backup-job-nfs",
-                "labels": {
+        "spec": {
+            "selector": {
+                "matchLabels": {
                     "app": "backup-job-nfs"
                 }
             },
-            "spec": {
-                "volumes": [{
-                    "name": "pgdata",
-                    "persistentVolumeClaim": {
-                        "claimName": "backup-job-pvc"
-                    }
-                }],
-                "containers": [{
+            "template": {
+                "metadata": {
                     "name": "backup-job-nfs",
-                    "image": "crunchydata/crunchy-backup:centos7-9.5-1.2.1.1",
-                    "volumeMounts": [{
-                        "mountPath": "/pgdata",
+                    "labels": {
+                        "app": "backup-job-nfs"
+                    }
+                },
+                "spec": {
+                    "volumes": [{
                         "name": "pgdata",
-                        "readOnly": false
+                        "persistentVolumeClaim": {
+                            "claimName": "backup-job-pvc"
+                        }
                     }],
-                    "env": [{
-                        "name": "BACKUP_HOST",
-                        "value": "single-master"
-                    }, {
-                        "name": "BACKUP_USER",
-                        "value": "master"
-                    }, {
-                        "name": "BACKUP_PASS",
-                        "value": "password"
-                    }, {
-                        "name": "BACKUP_PORT",
-                        "value": "5432"
-                    }]
-                }],
-                "restartPolicy": "Never"
+                    "containers": [{
+                        "name": "backup-job-nfs",
+                        "image": "crunchydata/crunchy-backup:centos7-9.5-1.2.1.1",
+                        "volumeMounts": [{
+                            "mountPath": "/pgdata",
+                            "name": "pgdata",
+                            "readOnly": false
+                        }],
+                        "env": [{
+                            "name": "BACKUP_HOST",
+                            "value": "single-master"
+                        }, {
+                            "name": "BACKUP_USER",
+                            "value": "master"
+                        }, {
+                            "name": "BACKUP_PASS",
+                            "value": "password"
+                        }, {
+                            "name": "BACKUP_PORT",
+                            "value": "5432"
+                        }]
+                    }],
+                    "restartPolicy": "Never"
+                }
             }
         }
-    }
+    }]
 }
