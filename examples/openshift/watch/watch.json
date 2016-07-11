@@ -1,42 +1,59 @@
 {
-    "kind": "Pod",
+    "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "watch",
-        "labels": {
-            "name": "watch"
+        "name": "pg-replica-example",
+        "creationTimestamp": null,
+        "annotations": {
+            "description": "PostgreSQL Replication Example",
+            "iconClass": "icon-database",
+            "tags": "database,postgresql,replication"
         }
     },
-    "spec": {
-        "serviceAccount": "pg-watcher",
-        "containers": [{
+    "parameters": [{
+        "name": "CCP_IMAGE_TAG",
+        "description": "the image tag to use"
+    }],
+    "objects": [{
+        "kind": "Pod",
+        "apiVersion": "v1",
+        "metadata": {
             "name": "watch",
-            "image": "crunchydata/crunchy-watch:centos7-9.5-1.2.1.1",
-            "env": [{
-                "name": "OSE_PROJECT",
-                "value": "openshift"
-            }, {
-                "name": "SLEEP_TIME",
-                "value": "20"
-            }, {
-                "name": "SLAVE_TO_TRIGGER_LABEL",
-                "value": "thisone"
-            }, {
-                "name": "PG_MASTER_SERVICE",
-                "value": "m-s-rc-nfs-master"
-            }, {
-                "name": "PG_SLAVE_SERVICE",
-                "value": "m-s-rc-nfs-slave"
-            }, {
-                "name": "PG_MASTER_PORT",
-                "value": "5432"
-            }, {
-                "name": "PG_MASTER_USER",
-                "value": "master"
-            }, {
-                "name": "PG_DATABASE",
-                "value": "postgres"
+            "labels": {
+                "name": "watch"
+            }
+        },
+        "spec": {
+            "serviceAccount": "pg-watcher",
+            "containers": [{
+                "name": "watch",
+                "image": "crunchydata/crunchy-watch:${CCP_IMAGE_TAG}",
+                "env": [{
+                    "name": "OSE_PROJECT",
+                    "value": "openshift"
+                }, {
+                    "name": "SLEEP_TIME",
+                    "value": "20"
+                }, {
+                    "name": "SLAVE_TO_TRIGGER_LABEL",
+                    "value": "thisone"
+                }, {
+                    "name": "PG_MASTER_SERVICE",
+                    "value": "m-s-rc-nfs-master"
+                }, {
+                    "name": "PG_SLAVE_SERVICE",
+                    "value": "m-s-rc-nfs-slave"
+                }, {
+                    "name": "PG_MASTER_PORT",
+                    "value": "5432"
+                }, {
+                    "name": "PG_MASTER_USER",
+                    "value": "master"
+                }, {
+                    "name": "PG_DATABASE",
+                    "value": "postgres"
+                }]
             }]
-        }]
-    }
+        }
+    }]
 }
