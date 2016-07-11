@@ -14,4 +14,4 @@
 
 oc project jeff-project
 
-oc process -f $BUILDBASE/examples/dedicated/badger/master-badger.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $BUILDBASE/examples/dedicated/badger/master-badger.json | oc create -f -

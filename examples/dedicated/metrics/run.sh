@@ -20,6 +20,6 @@ oc project jeff-project
 
 LOC=$BUILDBASE/examples/dedicated/metrics
 
-oc process -f $LOC/prometheus.json | oc create -f -
-oc process -f $LOC/promgateway.json | oc create -f -
-oc process -f $LOC/grafana.json | oc create -f -
+oc process -f $LOC/prometheus.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $LOC/promgateway.json  -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG| oc create -f -
+oc process -f $LOC/grafana.json  -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG| oc create -f -

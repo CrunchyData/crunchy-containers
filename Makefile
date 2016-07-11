@@ -84,6 +84,7 @@ all:
 	make backup
 	make watch
 	make pgpool
+	make pgbouncer
 	make pgbadger
 	make collectserver
 	make dns
