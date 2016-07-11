@@ -88,7 +88,7 @@
         "spec": {
             "containers": [
 	    {
-                "name": "badger-example",
+                "name": "server",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
@@ -129,7 +129,7 @@
                 }]
             },
 	    {
-                "name": "pg-badger",
+                "name": "badger",
                 "image": "crunchydata/crunchy-pgbadger:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 15000,
