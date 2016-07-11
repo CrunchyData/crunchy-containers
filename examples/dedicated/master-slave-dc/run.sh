@@ -15,4 +15,4 @@
 oc project jeff-project
 LOC=$BUILDBASE/examples/dedicated/master-slave-dc
 
-oc process -f $LOC/master-slave-rc-dc-slaves-only.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/master-slave-rc-dc-slaves-only.json | oc create -f -

@@ -106,9 +106,9 @@ function ose_failover() {
 	oc login https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true --token="$TOKEN"
 	oc projects $OSE_PROJECT
 	echo "performing failover..."
-	echo "deleting master service to block slaves..."
-	oc get service $PG_MASTER_SERVICE -o json > /tmp/master-service.json
-	oc delete service $PG_MASTER_SERVICE
+#	echo "deleting master service to block slaves..."
+#	oc get service $PG_MASTER_SERVICE -o json > /tmp/master-service.json
+#	oc delete service $PG_MASTER_SERVICE
 	echo "sleeping for 10 to give slaves chance to halt..."
 	sleep 10
 
@@ -135,8 +135,8 @@ function ose_failover() {
 			sleep 60
 			echo "changing label of slave to " $PG_MASTER_SERVICE
 			oc label --overwrite=true pod $i name=$PG_MASTER_SERVICE
-			echo "recreating master service..."
-			oc create -f /tmp/master-service.json
+#			echo "recreating master service..."
+#			oc create -f /tmp/master-service.json
 		else
 			echo "deleting old slave " $i 
 			oc delete pod $i

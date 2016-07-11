@@ -18,6 +18,6 @@ LOC=$BUILDBASE/examples/dedicated/sync
 
 oc create -f $LOC/master-service.json
 oc create -f $LOC/slave-service.json
-oc create -f $LOC/master-pod.json
-oc create -f $LOC/slave-pod.json
-oc create -f $LOC/sync-slave-pod.json
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/master-pod.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/slave-pod.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/sync-slave-pod.json | oc create -f -
