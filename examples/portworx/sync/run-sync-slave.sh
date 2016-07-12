@@ -14,13 +14,14 @@
 # limitations under the License.
 
 echo "starting sync-slave container..."
+$BUILDBASE/examples/envvars.sh
 
 sudo docker stop sync-slave
 sudo docker rm sync-slave
 
 sudo docker run \
 	--security-opt=label:disable \
-	-p 12012:5432 \
+	-p $LOCAL_IP:12012:5432 \
 	-v sync-slave-volume:/pgdata \
 	-e PG_MODE=slave \
 	-e PG_MASTER_USER=masteruser \
@@ -35,5 +36,5 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=sync-slave \
 	--hostname=sync-slave \
-	-d crunchydata/crunchy-postgres:centos7-9.5-$CCP_VERSION
+	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 

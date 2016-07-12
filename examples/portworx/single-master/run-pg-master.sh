@@ -1,4 +1,4 @@
-ecurity-opt=label:disable \!/bin/bash 
+#/bin/bash 
 
 # Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +14,11 @@ ecurity-opt=label:disable \!/bin/bash
 # limitations under the License.
 
 echo "starting master container..."
+$BUILDBASE/examples/envvars.sh
 
 sudo docker run \
 	--security-opt=label:disable \
-	-p 192.168.0.112:12000:5432 \
+	-p $LOCAL_IP:12000:5432 \
 	-v master-volume:/pgdata \
 	-e TEMP_BUFFERS=9MB \
 	-e MAX_CONNECTIONS=101 \
@@ -33,5 +34,5 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=master \
 	--hostname=master \
-	-d crunchydata/crunchy-postgres:centos7-9.5-$CCP_VERSION
+	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 

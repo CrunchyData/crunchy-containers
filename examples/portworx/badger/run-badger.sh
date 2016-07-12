@@ -15,15 +15,17 @@
 
 echo "starting badger..."
 
+$BUILDBASE/examples/envvars.sh
+
 docker stop badger
 docker rm badger
 
 sudo docker run \
 	--security-opt=label:disable \
-	-p 14000:10000 \
+	-p $LOCAL_IP:14000:10000 \
 	-v master-volume:/pgdata:ro \
 	-e BADGER_TARGET=master \
 	--name=badger \
 	--hostname=badger \
-	-d crunchydata/crunchy-pgbadger:centos7-9.5-$CCP_VERSION
+	-d crunchydata/crunchy-pgbadger:$CCP_IMAGE_TAG
 

@@ -15,11 +15,13 @@
 
 echo "starting restoredmaster container..."
 
-BACKUP_PATH=master/2016-07-07-18-46-15
+$BUILDBASE/examples/envvars.sh
+
+BACKUP_PATH=master/2016-07-12-19-36-30
 
 docker run \
 	--security-opt=label:disable \
-        -p 12002:5432 \
+        -p $LOCAL_IP:12002:5432 \
         -v restoredmaster-volume:/pgdata \
         -v backup-volume:/backup \
         -e BACKUP_PATH=$BACKUP_PATH \
@@ -37,6 +39,6 @@ docker run \
         -e PG_DATABASE=userdb \
         --name=restoredmaster \
         --hostname=restoredmaster \
-        -d crunchydata/crunchy-postgres:centos7-9.5-$CCP_VERSION
+        -d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 
 

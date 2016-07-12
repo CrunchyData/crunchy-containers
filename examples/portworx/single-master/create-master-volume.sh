@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+docker volume rm master-volume
+
 echo "creating master volume..."
 
 docker volume create --name=master-volume \

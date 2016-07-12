@@ -15,12 +15,14 @@
 
 echo "starting custom container..."
 
+$BUILDBASE/examples/envvars.sh
+
 sudo docker stop custom
 sudo docker rm custom
 
 sudo docker run \
 	--security-opt=label:disable \
-	-p 12004:5432 \
+	-p $LOCAL_IP:12004:5432 \
 	-v custom-conf-volume:/pgconf \
 	-v custom-volume:/pgdata \
 	-e PG_MODE=master \
@@ -32,5 +34,5 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=custom \
 	--hostname=custom \
-	-d crunchydata/crunchy-postgres:centos7-9.5-$CCP_VERSION
+	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 

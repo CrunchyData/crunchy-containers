@@ -14,6 +14,7 @@
 # limitations under the License.
 
 echo "starting backup container..."
+$BUILDBASE/examples/envvars.sh
 
 docker run \
 	--security-opt=label:disable \
@@ -25,5 +26,5 @@ docker run \
 	--link master:master\
 	--name=masterbackup \
 	--hostname=masterbackup \
-	-d crunchydata/crunchy-backup:centos7-9.5-$CCP_VERSION
+	-d crunchydata/crunchy-backup:$CCP_IMAGE_TAG
 

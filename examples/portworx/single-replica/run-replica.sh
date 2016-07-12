@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting replica container..."
+echo "starting replica container "
+$BUILDBASE/examples/envvars.sh
 
 sudo docker run \
 	--security-opt=label:disable \
-	-p 192.168.0.112:12001:5432 \
+	-p $LOCAL_IP:12001:5432 \
 	-v replica-volume:/pgdata \
 	-e TEMP_BUFFERS=9MB \
 	-e MAX_CONNECTIONS=101 \
@@ -36,5 +37,5 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=replica \
 	--hostname=replica \
-	-d crunchydata/crunchy-postgres:centos7-9.5-$CCP_VERSION
+	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 

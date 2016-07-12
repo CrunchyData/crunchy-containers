@@ -15,12 +15,14 @@
 
 echo "starting async-slave container..."
 
+$BUILDBASE/examples/envvars.sh
+
 sudo docker stop async-slave
 sudo docker rm async-slave
 
 sudo docker run \
 --security-opt=label:disable \
-	-p 12013:5432 \
+	-p $LOCAL_IP:12013:5432 \
 	-v async-slave-volume:/pgdata \
 	-e PG_MODE=slave \
 	-e PG_MASTER_USER=masteruser \
@@ -34,5 +36,5 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=async-slave \
 	--hostname=async-slave \
-	-d crunchydata/crunchy-postgres:centos7-9.5-$CCP_VERSION
+	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 

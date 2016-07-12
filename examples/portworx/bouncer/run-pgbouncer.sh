@@ -14,6 +14,7 @@
 # limitations under the License.
 
 echo "starting pgbouncer container...."
+$BUILDBASE/examples/envvars.sh
 
 sudo docker stop pgbouncer
 sudo docker rm pgbouncer
@@ -21,7 +22,7 @@ sudo docker rm pgbouncer
 sudo docker run \
 	--security-opt=label:disable \
 	-v bouncer-conf-volume:/pgconf \
-	-p 12005:5432 \
+	-p $LOCAL_IP:12005:5432 \
 	--privileged \
 	-v /run/docker.sock:/run/docker.sock \
 	-e FAILOVER=true \
@@ -35,5 +36,5 @@ sudo docker run \
 	--link replica:replica \
 	--name=pgbouncer \
 	--hostname=pgbouncer \
-	-d crunchydata/crunchy-pgbouncer:centos7-9.5-$CCP_VERSION
+	-d crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG
 

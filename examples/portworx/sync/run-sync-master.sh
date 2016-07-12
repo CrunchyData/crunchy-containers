@@ -15,12 +15,14 @@
 
 echo "starting master container..."
 
+$BUILDBASE/examples/envvars.sh
+
 sudo docker stop sync-master
 sudo docker rm sync-master
 
 sudo docker run \
 	--security-opt=label:disable \
-	-p 12010:5432 \
+	-p $LOCAL_IP:12010:5432 \
 	-v sync-master-volume:/pgdata \
 	-e PG_MODE=master \
 	-e SYNC_SLAVE=sync-slave \
@@ -32,5 +34,5 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=sync-master \
 	--hostname=sync-master \
-	-d crunchydata/crunchy-postgres:centos7-9.5-$CCP_VERSION
+	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 

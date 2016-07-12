@@ -21,6 +21,7 @@
 #
 # initialize the pgbench database
 #
+/usr/pgsql-9.5/bin/psql -p $2 -h $1 -c 'create database pgbench' -U $3 postgres 
 /usr/pgsql-9.5/bin/pgbench --host=$1 \
 	--port=$2 \
 	--username=$3 \

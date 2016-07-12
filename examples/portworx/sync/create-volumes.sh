@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+echo "deleting containers..."
+docker stop sync-master sync-slave async-slave
+docker rm sync-master sync-slave async-slave
+
 echo "creating volumes..."
 
 docker volume rm async-slave-volume

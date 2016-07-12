@@ -17,5 +17,3 @@ echo "deleting master container..."
 docker stop master
 docker rm master
 
-echo "deleting master volume..."
-docker volume rm master-volume 
