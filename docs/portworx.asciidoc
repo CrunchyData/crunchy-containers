@@ -14,6 +14,56 @@ explained below.
 For these examples, I built a centos7.2 VM, and configured it
 according to the Portworx documentation link:https://github.com/portworx/px-dev[here].
 
+The short list of setup commands is like this on a Centos7.2 host:
+....
+sudo yum -y install etcd
+....
+
+Edit the etcd config file to listen to the host IP address instead
+of only localhost, edit as follows :
+....
+sudo vi /etc/etcd/etcd.conf
+ETCD_LISTEN_CLIENT_URLS="http://yourhostname:2379"
+ETCD_ADVERTISE_CLIENT_URLS="http://yourhostname:2379"
+....
+
+Next start up etcd:
+....
+sudo systemctl enable etcd.service
+sudo systemctl start etcd.service
+....
+
+Next, edit the docker daemon config file as follows:
+....
+sudo vi /usr/lib/systemd/system/docker.service
+MountFlags=shared
+sudo systemctl daemon-reload
+sudo systemctl restart docker.service
+....
+
+Set up the portworx config file at /etc/pwx/config.json to
+look like this:
+....
+{
+  "clusterid": "5ac2ed6f-7e4e-4e1d-8e8c-3a6df1fb61a5",
+  "kvdb": [ 
+      "etcd:http://yourhostname:2379",
+      "etcd:http://yourotherhostname:2379"
+    ],
+  "storage": {
+    "devices": [
+      "/dev/vdb",
+      "/dev/vdc"
+    ]
+  }
+}
+....
+
+In the example above, I have specified 2 disks to use by portworx
+for storage exclusively. Also notice that I have 2 hosts configured
+for portworx to replicate across in this example.  Also, notice that
+the cluster ID has to be the same across all cluster hosts.
+
 Each container has been tested running in selinux enforcing mode.  To
 have this work, you will see the following line in the Docker run
 commands:
