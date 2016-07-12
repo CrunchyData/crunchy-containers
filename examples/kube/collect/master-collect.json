@@ -10,7 +10,7 @@
     "spec": {
         "containers": [{
             "name": "collect",
-            "image": "crunchydata/crunchy-collect:1.2",
+            "image": "crunchydata/crunchy-collect:$CCP_IMAGE_TAG",
             "env": [{
                 "name": "PG_MASTER_USER",
                 "value": "master"
@@ -34,7 +34,7 @@
             }]
         }, {
             "name": "server",
-            "image": "crunchydata/crunchy-postgres:1.2",
+            "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5432,
                 "protocol": "TCP"

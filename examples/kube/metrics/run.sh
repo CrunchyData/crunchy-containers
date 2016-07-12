@@ -16,9 +16,10 @@
 #
 # this example creates the metrics backends using emptyDir volumes
 #
-kubectl create -f $BUILDBASE/examples/kube/metrics/prometheus-service.json 
-kubectl create -f $BUILDBASE/examples/kube/metrics/prometheus.json 
-kubectl create -f $BUILDBASE/examples/kube/metrics/promgateway-service.json 
-kubectl create -f $BUILDBASE/examples/kube/metrics/promgateway.json 
-kubectl create -f $BUILDBASE/examples/kube/metrics/grafana-service.json 
-kubectl create -f $BUILDBASE/examples/kube/metrics/grafana.json 
+LOC=$BUILDBASE/examples/kube/metrics
+kubectl create -f $LOC/prometheus-service.json
+envsubst <  $LOC/prometheus.json  | kubectl create -f -
+kubectl create -f $LOC/promgateway-service.json 
+envsubst <  $LOC/promgateway.json  | kubectl create -f -
+kubectl create -f $LOC/grafana-service.json 
+envsubst <  $LOC/grafana.json  | kubectl create -f -

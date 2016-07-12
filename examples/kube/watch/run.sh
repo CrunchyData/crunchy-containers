@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl create -f $BUILDBASE/examples/kube/watch/watch-sa.json
+LOC=$BUILDBASE/examples/kube/watch
+
+kubectl create -f $LOC/watch-sa.json
 #kubectl.sh policy add-role-to-group edit system:serviceaccounts -n openshift
 #kubectl.sh policy add-role-to-group edit system:serviceaccounts -n default
-kubectl create -f $BUILDBASE/examples/kube/watch/watch-pod.json
+envsubst < $LOC/watch-pod.json | kubectl create -f -

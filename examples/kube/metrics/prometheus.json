@@ -10,7 +10,7 @@
     "spec": {
         "containers": [{
             "name": "crunchy-prometheus",
-            "image": "crunchydata/crunchy-prometheus:1.2",
+            "image": "crunchydata/crunchy-prometheus:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 9090,
                 "protocol": "TCP"

@@ -39,7 +39,17 @@ search default.svc.cluster.local crunchy.lab
 nameserver 10.0.0.10
 ....
 
+
 ===  Run Kube
+
+*Make sure your hostname resolves to a single IP address in your
+/etc/hosts file!  If not, the NFS examples will not work.*
+
+You should see a single IP address returned from this command:
+....
+hostname --ip-address
+....
+
 ....
 sudo ./hack/local-up-cluster.sh
 ....

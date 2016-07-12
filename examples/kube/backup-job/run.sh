@@ -13,7 +13,10 @@
 # limitations under the License.
 
 
+LOC=$BUILDBASE/examples/kube/backup-job
+
 IPADDRESS=`hostname --ip-address`
 cat $BUILDBASE/examples/openshift/backup-job/backup-job-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | kubectl create -f -
-kubectl create -f $BUILDBASE/examples/kube/backup-job/backup-job-pvc.json
-kubectl create -f $BUILDBASE/examples/kube/backup-job/backup-job-nfs.json
+
+kubectl create -f $LOC/backup-job-pvc.json
+envsubst < $LOC/backup-job-nfs.json | kubectl create -f -

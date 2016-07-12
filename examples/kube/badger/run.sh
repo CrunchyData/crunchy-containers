@@ -12,5 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl create -f badger-service.json 
-kubectl create -f badger-pod.json 
+LOC=$BUILDBASE/examples/kube/badger
+
+kubectl create -f $LOC/badger-service.json 
+envsubst < $LOC/badger-pod.json  | kubectl create -f -

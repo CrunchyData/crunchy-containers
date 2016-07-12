@@ -10,7 +10,7 @@
         "spec": {
             "containers": [{
                 "name": "single-master",
-                "image": "crunchydata/crunchy-postgres:1.2.1",
+                "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

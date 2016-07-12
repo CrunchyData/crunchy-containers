@@ -13,9 +13,12 @@
 # limitations under the License.
 
 
-IPADDRESS=`hostname --ip-address`
-cat $BUILDBASE/examples/kube/master-restore/master-restore-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | kubectl create -f -
+LOC=$BUILDBASE/examples/kube/master-restore
 
-kubectl create -f master-restore-service.json
-kubectl create -f master-restore-pvc.json
-kubectl create -f master-restore.json 
+IPADDRESS=`hostname --ip-address`
+cat $LOC/master-restore-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | kubectl create -f -
+
+kubectl create -f $LOC/master-restore-service.json
+kubectl create -f $LOC/master-restore-pvc.json
+
+envsubst <  $LOC/master-restore.json  | kubectl create -f -

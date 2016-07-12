@@ -10,7 +10,7 @@
     "spec": {
         "containers": [{
             "name": "pgpool",
-            "image": "crunchydata/crunchy-pgpool:1.2",
+            "image": "crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5432,
                 "protocol": "TCP"

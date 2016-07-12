@@ -12,5 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl create -f $BUILDBASE/examples/kube/pgpool/pgpool-pod.json 
-kubectl create -f $BUILDBASE/examples/kube/pgpool/pgpool-service.json 
+LOC=$BUILDBASE/examples/kube/pgpool
+
+envsubst < $LOC/pgpool-pod.json  | kubectl create -f -
+kubectl create -f $LOC/pgpool-service.json 

@@ -12,5 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl create -f master-collect.json
-kubectl create -f master-collect-service.json
+LOC=$BUILDBASE/examples/kube/collect
+
+envsubst < $LOC/master-collect.json | kubectl create -f -
+kubectl create -f $LOC/master-collect-service.json

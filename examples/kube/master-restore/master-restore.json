@@ -10,7 +10,7 @@
     "spec": {
         "containers": [{
             "name": "restored-master",
-            "image": "crunchydata/crunchy-postgres:1.2",
+            "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5432,
                 "protocol": "TCP"
@@ -23,7 +23,7 @@
                 "value": "master"
             }, {
                 "name": "BACKUP_PATH",
-                "value": "single-master/2016-05-27-14-35-33"
+                "value": "single-master/2016-07-12-14-58-37"
             }, {
                 "name": "PG_MASTER_PASSWORD",
                 "value": "password"

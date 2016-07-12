@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl create -f master-service.json
-kubectl create -f slave-service.json
-kubectl create -f master-pod.json
+LOC=$BUILDBASE/examples/kube/master-slave-dc
+
+kubectl create -f $LOC/master-service.json
+kubectl create -f $LOC/slave-service.json
+envsubst < $LOC/master-pod.json | kubectl create -f -
 echo "sleeping till master is alive..."
 sleep 30
-kubectl create -f slave-dc.json
+envsubst < $LOC/slave-dc.json | kubectl create -f -

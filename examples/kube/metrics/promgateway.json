@@ -10,7 +10,7 @@
     "spec": {
         "containers": [{
             "name": "crunchy-promgateway",
-            "image": "crunchydata/crunchy-promgateway:1.2",
+            "image": "crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 9091,
                 "protocol": "TCP"
