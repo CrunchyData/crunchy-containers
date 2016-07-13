@@ -13,21 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-OSFLAVOR=centos7
-PGVERSION=9.5
-if [ -z "$CCP_VERSION" ]; then
-	echo "CCP_VERSION not set"
-	exit 1
-fi
-docker push  crunchydata/crunchy-prometheus:$OSFLAVOR-$PGVERSION-$CCP_VERSION
-docker push  crunchydata/crunchy-promgateway:$OSFLAVOR-$PGVERSION-$CCP_VERSION
-docker push  crunchydata/crunchy-grafana:$OSFLAVOR-$PGVERSION-$CCP_VERSION
-docker push  crunchydata/crunchy-dns:$OSFLAVOR-$PGVERSION-$CCP_VERSION
-docker push  crunchydata/crunchy-collect:$OSFLAVOR-$PGVERSION-$CCP_VERSION
-docker push  crunchydata/crunchy-pgbadger:$OSFLAVOR-$PGVERSION-$CCP_VERSION
-docker push  crunchydata/crunchy-pgpool:$OSFLAVOR-$PGVERSION-$CCP_VERSION
-docker push  crunchydata/crunchy-watch:$OSFLAVOR-$PGVERSION-$CCP_VERSION
-docker push  crunchydata/crunchy-backup:$OSFLAVOR-$PGVERSION-$CCP_VERSION
-docker push  crunchydata/crunchy-postgres:$OSFLAVOR-$PGVERSION-$CCP_VERSION
-docker push  crunchydata/crunchy-pgbouncer:$OSFLAVOR-$PGVERSION-$CCP_VERSION
+docker push  crunchydata/crunchy-prometheus:$CCP_IMAGE_TAG
+docker push  crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG
+docker push  crunchydata/crunchy-grafana:$CCP_IMAGE_TAG
+docker push  crunchydata/crunchy-dns:$CCP_IMAGE_TAG
+docker push  crunchydata/crunchy-collect:$CCP_IMAGE_TAG
+docker push  crunchydata/crunchy-pgbadger:$CCP_IMAGE_TAG
+docker push  crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG
+docker push  crunchydata/crunchy-watch:$CCP_IMAGE_TAG
+docker push  crunchydata/crunchy-backup:$CCP_IMAGE_TAG
+docker push  crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+docker push  crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG
 
