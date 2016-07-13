@@ -382,6 +382,19 @@ psql -h 127.0.0.1 -p 12002 -U postgres postgres -c 'table foo'
 psql -h 127.0.0.1 -p 12003 -U postgres postgres -c 'table foo'
 ....
 
+=== Tips - send a signal to postgres
+
+first, find the PID of the postmaster:
+
+....
+docker exec -it master cat /pgdata/master/postmaster.pid
+....
+
+then, send it the signal to kill it or other signal depending on what you want to do:
+
+....
+docker exec -it master kill -SIGTERM 22
+....
 
 == Legal Notices
 
