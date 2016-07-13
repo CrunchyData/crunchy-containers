@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $BUILDBASE/examples/envvars.sh
 
 oc project openshift
 
-IPADDRESS=`hostname --ip-address`
-cat master-nfs-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
+envsubst < master-nfs-pv.json  oc create -f -
 oc create -f master-nfs-pvc.json
 oc process -f master-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

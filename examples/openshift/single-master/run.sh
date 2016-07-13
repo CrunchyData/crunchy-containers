@@ -13,6 +13,9 @@
 # limitations under the License.
 
 oc project openshift
+
+source $BUILDBASE/examples/envvars.sh
+
 LOC=$BUILDBASE/examples/openshift/single-master
 
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/master.json | oc create -f -

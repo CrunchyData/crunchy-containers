@@ -18,13 +18,14 @@
 # for storing their data
 #
 
+source $BUILDBASE/examples/envvars.sh
+
 oc project openshift
 
 LOC=$BUILDBASE/examples/openshift/metrics
 
-IPADDRESS=`hostname --ip-address`
-cat $LOC/grafana-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
-cat $LOC/prometheus-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
+envsubst <  $LOC/grafana-pv.json  | oc create -f -
+envsubst <  $LOC/prometheus-pv.json | oc create -f -
 
 oc create -f $LOC/grafana-pvc.json
 oc create -f $LOC/prometheus-pvc.json

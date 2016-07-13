@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $BUILDBASE/examples/envvars.sh
 
 oc project openshift
 
-IPADDRESS=`hostname --ip-address`
 LOC=$BUILDBASE/examples/openshift/master-nfs-badger
 
-cat $LOC/master-nfs-badger-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
+envsubst <  $LOC/master-nfs-badger-pv.json  | oc create -f -
 oc create -f $LOC/master-nfs-badger-pvc.json
 oc process -f $LOC/master-nfs-badger.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

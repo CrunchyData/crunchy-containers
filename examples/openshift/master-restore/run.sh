@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $BUILDBASE/examples/envvars.sh
 
 oc project openshift
 LOC=$BUILDBASE/examples/openshift/master-restore
 
-IPADDRESS=`hostname --ip-address`
-cat $LOC/master-restore-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
+envsubst <  $LOC/master-restore-pv.json  | oc create -f -
 
 oc create -f $LOC/master-restore-pvc.json
 oc process -f $LOC/master-restore.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

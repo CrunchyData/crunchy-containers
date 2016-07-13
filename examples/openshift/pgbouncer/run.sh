@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $BUILDBASE/examples/envvars.sh
+
 oc project openshift
 
 echo "this example depends upon the master-slave-dc example being run prior!"
@@ -27,7 +29,6 @@ LOC=$BUILDBASE/examples/openshift/pgbouncer
 cp $LOC/pgbouncer.ini $CONFIGDIR
 cp $LOC/users.txt $CONFIGDIR
 
-IPADDRESS=`hostname --ip-address`
-cat $LOC/pgbouncer-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
+envsubst < $LOC/pgbouncer-pv.json  | oc create -f -
 oc create -f $LOC/pgbouncer-pvc.json
 oc process -f $LOC/pgbouncer.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

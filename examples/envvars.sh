@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,7 +23,8 @@ if [ $? -ne 0 ]; then
 	echo "hostname is not in /etc/hosts which is required for the examples"
 	exit 1
 fi
-LOCAL_IP=`hostname --ip-address`
+
+export LOCAL_IP=`hostname --ip-address`
 
 if [ -v $CCP_IMAGE_TAG ]; then
 	export CCP_IMAGE_TAG=centos7-9.5-1.2.1.1

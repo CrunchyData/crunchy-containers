@@ -16,6 +16,8 @@
 #
 # this example creates the metrics backends using emptyDir volumes
 #
+source $BUILDBASE/examples/envvars.sh
+
 oc project openshift
 
 LOC=$BUILDBASE/examples/openshift/metrics

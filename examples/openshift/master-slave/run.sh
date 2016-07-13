@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $BUILDBASE/examples/envvars.sh
+
 oc project openshift
 
 LOC=$BUILDBASE/examples/openshift/master-slave
