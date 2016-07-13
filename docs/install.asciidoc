@@ -395,7 +395,12 @@ https://docs.openshift.com/enterprise/3.1/install_config/aggregate_logging.html
 
 golang is required to build the pgbadger container, on RH 7.2, golang
 is found in the 'server optional' repository and needs to be enabled
-to install.
+to install. For example:
+....
+subscription-manager repos --enable=rhel-7-server-optional-rpms
+sudo yum -y install golang
+....
+
 
 === Tip 9: encoding secrets
 
