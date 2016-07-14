@@ -27,6 +27,6 @@ fi
 export LOCAL_IP=`hostname --ip-address`
 
 if [ -v $CCP_IMAGE_TAG ]; then
-	export CCP_IMAGE_TAG=centos7-9.5-1.2.1.1
+	export CCP_IMAGE_TAG=centos7-9.5-1.2.2
 	echo "CCP_IMAGE_TAG was not found...using current tag of " $CCP_IMAGE_TAG
 fi
