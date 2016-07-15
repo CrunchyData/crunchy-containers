@@ -1,0 +1,59 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "kitchensink-watch-example",
+        "creationTimestamp": null,
+        "annotations": {
+            "description": "PostgreSQL Replication Example",
+            "iconClass": "icon-database",
+            "tags": "database,postgresql,replication"
+        }
+    },
+    "parameters": [{
+        "name": "CCP_IMAGE_TAG",
+        "description": "the image tag to use"
+    }],
+    "objects": [{
+        "kind": "Pod",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "kitchensink-watch",
+            "labels": {
+                "name": "kitchensink-watch"
+            }
+        },
+        "spec": {
+            "serviceAccount": "pg-watcher",
+            "containers": [{
+                "name": "watch",
+                "image": "crunchydata/crunchy-watch:${CCP_IMAGE_TAG}",
+                "env": [{
+                    "name": "OSE_PROJECT",
+                    "value": "jeff-project"
+                }, {
+                    "name": "SLEEP_TIME",
+                    "value": "20"
+                }, {
+                    "name": "SLAVE_TO_TRIGGER_LABEL",
+                    "value": "thisone"
+                }, {
+                    "name": "PG_MASTER_SERVICE",
+                    "value": "kitchensink-master"
+                }, {
+                    "name": "PG_SLAVE_SERVICE",
+                    "value": "kitchensink-slave"
+                }, {
+                    "name": "PG_MASTER_PORT",
+                    "value": "5432"
+                }, {
+                    "name": "PG_MASTER_USER",
+                    "value": "master"
+                }, {
+                    "name": "PG_DATABASE",
+                    "value": "postgres"
+                }]
+            }]
+        }
+    }]
+}
