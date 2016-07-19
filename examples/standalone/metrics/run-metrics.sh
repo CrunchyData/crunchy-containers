@@ -39,7 +39,7 @@ sudo docker run \
 	-d crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG
 
 sudo docker run \
-	-p $HOSTIP:9090:9090/tcp \
+	-p $HOSTIP:19090:9090/tcp \
 	-v $DATA_DIR:/data \
 	--name=crunchy-prometheus \
 	--hostname=crunchy-prometheus \

@@ -14,8 +14,8 @@ sudo yum -y install net-tools bind-utils wget unzip git golang
 #
 # download the metrics products, only required to build the containers
 #
-wget -O $BUILDBASE/prometheus-pushgateway.tar.gz https://github.com/prometheus/pushgateway/releases/download/0.2.0/pushgateway-0.2.0.linux-amd64.tar.gz
-wget -O $BUILDBASE/prometheus.tar.gz https://github.com/prometheus/prometheus/releases/download/0.17.0/prometheus-0.17.0.linux-amd64.tar.gz 
+wget -O $BUILDBASE/prometheus-pushgateway.tar.gz https://github.com/prometheus/pushgateway/releases/download/0.3.0/pushgateway-0.3.0.linux-amd64.tar.gz
+wget -O $BUILDBASE/prometheus.tar.gz https://github.com/prometheus/prometheus/releases/download/v1.0.0/prometheus-1.0.0.linux-amd64.tar.gz
 wget -O $BUILDBASE/grafana.tar.gz  https://grafanarel.s3.amazonaws.com/builds/grafana-2.6.0.linux-x64.tar.gz
 wget -O /tmp/consul_0.6.4_linux_amd64.zip https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip
 unzip /tmp/consul*.zip -d /tmp

@@ -15,8 +15,6 @@
 
 export PATH=$PATH:/opt/cpm/bin
 
-/opt/cpm/bin/pushgateway &
-
 DATA=/data/prometheus
 
 if [ ! -d $DATA ]; then

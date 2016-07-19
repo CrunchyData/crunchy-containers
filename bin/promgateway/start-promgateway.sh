@@ -17,7 +17,7 @@ export PATH=$PATH:/opt/cpm/bin
 
 echo "before pushgateway started..."
 
-/opt/cpm/bin/pushgateway 
+/opt/cpm/bin/pushgateway*/pushgateway 
 
 echo "after pushgateway started..."
 #while true; do

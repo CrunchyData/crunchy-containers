@@ -116,6 +116,9 @@
                     "name": "PG_MASTER_PASSWORD",
                     "value": "${PG_MASTER_PASSWORD}"
                 }, {
+                    "name": "PGHOST",
+                    "value": "/tmp"
+                }, {
                     "name": "PG_USER",
                     "value": "${PG_USER}"
                 }, {
