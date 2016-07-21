@@ -1,0 +1,23 @@
+{
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "master-sync",
+            "labels": {
+                "name": "master-sync"
+            }
+        },
+        "spec": {
+            "ports": [{
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }],
+            "selector": {
+                "name": "master-sync"
+            },
+            "type": "ClusterIP",
+            "sessionAffinity": "None"
+        }
+}

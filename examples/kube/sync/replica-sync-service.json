@@ -1,0 +1,23 @@
+{
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "replica-sync",
+            "labels": {
+                "name": "replica-sync"
+            }
+        },
+        "spec": {
+            "ports": [{
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }],
+            "selector": {
+                "name": "replica-sync"
+            },
+            "type": "ClusterIP",
+            "sessionAffinity": "None"
+        }
+}
