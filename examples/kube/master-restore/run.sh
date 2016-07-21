@@ -16,8 +16,7 @@ source $BUILDBASE/examples/envvars.sh
 
 LOC=$BUILDBASE/examples/kube/master-restore
 
-IPADDRESS=`hostname --ip-address`
-cat $LOC/master-restore-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | kubectl create -f -
+envsubst <  $LOC/master-restore-pv.json | kubectl create -f -
 
 kubectl create -f $LOC/master-restore-service.json
 kubectl create -f $LOC/master-restore-pvc.json

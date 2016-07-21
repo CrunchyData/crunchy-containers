@@ -16,6 +16,8 @@
 #
 # this example creates the metrics backends using emptyDir volumes
 #
+source $BUILDBASE/examples/envvars.sh
+
 LOC=$BUILDBASE/examples/kube/metrics
 kubectl create -f $LOC/prometheus-service.json
 envsubst <  $LOC/prometheus.json  | kubectl create -f -

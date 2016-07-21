@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $BUILDBASE/examples/envvars.sh
 
-IPADDRESS=`hostname --ip-address`
-cat master-nfs-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | kubectl create -f -
+envsubst <  master-nfs-pv.json | kubectl create -f -
 kubectl create -f master-nfs-pvc.json
-kubectl create -f master-nfs-pod.json 
+envsubst < master-nfs-pod.json | kubectl create -f -
 kubectl create -f master-nfs-service.json 

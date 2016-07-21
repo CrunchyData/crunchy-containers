@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $BUILDBASE/examples/envvars.sh
+
 LOC=$BUILDBASE/examples/kube/pgbouncer
 
 CONF_DIR=/nfsfileshare/bouncerconfig
@@ -20,10 +22,7 @@ sudo mkdir $CONF_DIR
 sudo cp $LOC/pgbouncer.ini $CONF_DIR
 sudo cp $LOC/users.txt $CONF_DIR
 
-IPADDRESS=`hostname --ip-address`
-echo $IPADDRESS
-exit
-cat $LOC/pgbouncer-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | kubectl create -f -
+envsubst<  $LOC/pgbouncer-pv.json  kubectl create -f -
 kubectl create -f $LOC/pgbouncer-pvc.json
 kubectl create -f $LOC/pgbouncer-service.json
 envsubst < $LOC/pgbouncer.json | kubectl create -f -

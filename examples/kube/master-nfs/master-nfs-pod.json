@@ -10,12 +10,15 @@
         "spec": {
             "containers": [{
                 "name": "master-nfs",
-                "image": "crunchydata/crunchy-postgres:1.2",
+                "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
                 }],
                 "env": [{
+                    "name": "PGHOST",
+                    "value": "/tmp"
+                }, {
                     "name": "PG_MASTER_USER",
                     "value": "master"
                 }, {

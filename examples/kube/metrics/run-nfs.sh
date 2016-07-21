@@ -17,16 +17,19 @@
 # this example creates the metrics backends with NFS volumes
 # for storing their data
 #
-IPADDRESS=`hostname --ip-address`
-cat $BUILDBASE/examples/kube/metrics/grafana-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
-cat $BUILDBASE/examples/kube/metrics/prometheus-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | kubectl create -f -
+source $BUILDBASE/examples/envvars.sh
+LOC=$BUILDBASE/examples/kube/metrics
 
-kubectl create -f $BUILDBASE/examples/kube/metrics/grafana-pvc.json
-kubectl create -f $BUILDBASE/examples/kube/metrics/prometheus-pvc.json
+envsubst <  $LOC/grafana-pv.json |  kubectl create -f -
+envsubst <  $LOC/prometheus-pv.json | kubectl create -f -
 
-kubectl.sh create -f $BUILDBASE/examples/kube/metrics/prometheus-nfs.json
-kubectl.sh create -f $BUILDBASE/examples/kube/metrics/prometheus-service.json
-kubectl.sh create -f $BUILDBASE/examples/kube/metrics/promgateway.json
-kubectl.sh create -f $BUILDBASE/examples/kube/metrics/promgateway-service.json
-kubectl.sh create -f $BUILDBASE/examples/kube/metrics/grafana-nfs.json
-kubectl.sh create -f $BUILDBASE/examples/kube/metrics/grafana-service.json
+kubectl create -f $LOC/grafana-pvc.json
+kubectl create -f $LOC/prometheus-pvc.json
+
+kubectl create -f $LOC/prometheus-service.json
+kubectl create -f $LOC/promgateway-service.json
+kubectl create -f $LOC/grafana-service.json
+
+envsubst < $LOC/prometheus-nfs.json | kubectl create -f -
+envsubst < $LOC/promgateway.json | kubectl create -f -
+envsubst < $LOC/grafana-nfs.json | kubectl create -f -
