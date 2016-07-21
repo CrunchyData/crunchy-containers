@@ -2,22 +2,25 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "slave",
+            "name": "slave-1",
             "labels": {
-                "name": "slave"
+                "name": "slave-1"
             }
         },
         "spec": {
             "containers": [{
-                "name": "slave",
+                "name": "slave-1",
                 "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
                 }],
                 "env": [{
+                    "name": "PGHOST",
+                    "value": "/tmp"
+                }, {
                     "name": "PG_MASTER_HOST",
-                    "value": "master"
+                    "value": "master-1"
                 }, {
                     "name": "PG_MASTER_USER",
                     "value": "master"

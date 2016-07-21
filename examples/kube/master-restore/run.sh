@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $BUILDBASE/examples/envvars.sh
 
 LOC=$BUILDBASE/examples/kube/master-restore
 

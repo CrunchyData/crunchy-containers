@@ -2,9 +2,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master",
+            "name": "master-1",
             "labels": {
-                "name": "master"
+                "name": "master-1"
             }
         },
         "spec": {
@@ -16,6 +16,9 @@
                     "protocol": "TCP"
                 }],
                 "env": [{
+                    "name": "PGHOST",
+                    "value": "/tmp"
+                }, {
                     "name": "PG_MASTER_USER",
                     "value": "master"
                 }, {
