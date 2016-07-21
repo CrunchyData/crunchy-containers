@@ -16,8 +16,9 @@ source $BUILDBASE/examples/envvars.sh
 
 LOC=$BUILDBASE/examples/kube/sync
 
-kubectl create -f $LOC/master-service.json
-kubectl create -f $LOC/slave-service.json
-envsubst < $LOC/master-pod.json | kubectl create -f -
-envsubst < $LOC/slave-pod.json | kubectl create -f -
-envsubst < $LOC/sync-slave-pod.json | kubectl create -f -
+kubectl create -f $LOC/master-sync-service.json
+kubectl create -f $LOC/replica-sync-service.json
+
+envsubst < $LOC/master-sync-pod.json | kubectl create -f -
+envsubst < $LOC/replica-async-pod.json | kubectl create -f -
+envsubst < $LOC/replica-sync-pod.json | kubectl create -f -

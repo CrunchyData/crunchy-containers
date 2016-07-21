@@ -44,7 +44,7 @@
                 "value": "master"
             }, {
                 "name": "PG_SLAVE_SERVICE",
-                "value": "slave"
+                "value": "replica"
             }],
             "volumeMounts": [{
                 "mountPath": "/pgconf",

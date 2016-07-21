@@ -1,1 +1,0 @@
-< 2016-05-25 14:14:05.782 EDT >FATAL:  could not create lock file "/var/run/postgresql/.s.PGSQL.5432.lock": Permission denied

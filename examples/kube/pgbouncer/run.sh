@@ -22,7 +22,7 @@ sudo mkdir $CONF_DIR
 sudo cp $LOC/pgbouncer.ini $CONF_DIR
 sudo cp $LOC/users.txt $CONF_DIR
 
-envsubst<  $LOC/pgbouncer-pv.json  kubectl create -f -
+envsubst < $LOC/pgbouncer-pv.json |  kubectl create -f -
 kubectl create -f $LOC/pgbouncer-pvc.json
 kubectl create -f $LOC/pgbouncer-service.json
 envsubst < $LOC/pgbouncer.json | kubectl create -f -
