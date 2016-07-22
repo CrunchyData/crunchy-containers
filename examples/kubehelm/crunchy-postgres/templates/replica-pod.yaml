@@ -32,21 +32,21 @@ spec:
     - name: PG_MASTER_USER
       value: master
     - name: PG_MASTER_HOST
-      value: {{.Values.MasterName}}
+      value: "{{.Values.MasterName}}"
     - name: PG_MASTER_PORT
       value: "5432"
     - name: PG_MODE
       value: slave
     - name: PG_MASTER_PASSWORD
-      value: {{.Values.MasterPassword}}
+      value: "{{.Values.MasterPassword}}"
     - name: PG_USER
       value: testuser
     - name: PG_PASSWORD
-      value: {{.Values.UserPassword}}
+      value: "{{.Values.UserPassword}}"
     - name: PG_DATABASE
       value: userdb
     - name: PG_ROOT_PASSWORD
-      value: {{.Values.RootPassword}}
+      value: "{{.Values.RootPassword}}"
     volumeMounts:
     - mountPath: /pgdata
       name: pgdata
