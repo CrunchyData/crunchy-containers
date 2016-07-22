@@ -10,6 +10,7 @@ This is an example of running the Crunchy Postgres containers
 using the Helm project!
 
 This example will create the following in your Kubernetes cluster:
+
  * postgres master service
  * postgres replica service
  * postgres master database pod
