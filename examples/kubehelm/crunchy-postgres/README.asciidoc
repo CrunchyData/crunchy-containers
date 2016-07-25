@@ -14,12 +14,13 @@ This example will create the following in your Kubernetes cluster:
 
  * postgres master service
  * postgres replica service
- * postgres 9.5 master database pod
- * postgres 9.5 replica database pod
+ * postgres 9.5 master database (pod)
+ * postgres 9.5 replica database (replication controller)
 
 This example creates a simple Postgres streaming replication 
 deployment with a master (read-write), and a single asyncronous
-replica (read-only).
+replica (read-only).  You can scale up the number of replicas
+dynamically.
 
 === Installation
 
@@ -60,6 +61,16 @@ Then verify that the data is replicated to the slave:
 ....
 psql -h crunchy-replica -U postgres postgres -c 'table foo'
 ....
+
+You can scale up the number of read-only replicas by running
+the following kubernetes command:
+....
+kubectl scale rc crunchy-replica --replicas=2
+....
+
+It takes 60 seconds for the replica to start and begin replicating
+from the master.
+
 
 == Legal Notices
 
