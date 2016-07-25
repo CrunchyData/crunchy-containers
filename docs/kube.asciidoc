@@ -486,6 +486,51 @@ container, notice it changes because of the round-robin Service proxy
 we are using for both slaves.  The example queries also show that both
 slaves are replicating from the master.
 
+=== Kube Example 13 - kitchensink
+
+This example deploys many of the components all in a single example
+to demonstrate a more complex overall deployment examples.  This
+examples includes the following objects:
+ * master database service (kitchensink-master)
+ * replica database service (kitchensink-slave)
+ * pgpool database service (kitchensink-pgpool)
+ * master database pod (kitchensink-master)
+ * metrics collection container (kitchensink-master)
+ * pgbadger container (kitchensink-master)
+ * async replica database Deployment (kitchensink-slave-dc-XXXXX)
+ * sync rdatabase pod (kitchensink-sync-slave)
+ * pgpool Replication Controller (kitchensink-pgpool-XXXXX)
+ * watch pod (kitchensink-watch)
+
+Running the example:
+....
+examples/kube/sync/run.sh
+....
+
+The master database pod has the following containers running 
+inside it:
+ * kitchensink-master (postgres container)
+ * pg-badger (pgbadger container)
+ * collect (metrics collection container)
+
+You can scale up the number of async slaves as follows:
+....
+kubectl get deployment
+kubectl scale --current-replicas=1 --replicas=2 deployment/kitchensink-slave-dc
+kubectl get deployment
+....
+
+Connect to the *master* and *slave* databases as follows:
+....
+psql -h kitchensink-master -U postgres postgres -c 'table pg_stat_replication'
+psql -h kitchensink-master -U testuser userdb -c 'create table mister (id int)'
+psql -h kitchensink-master -U testuser userdb -c 'insert into mister values (12)'
+psql -h kitchensink-slave -U testuser userdb -c 'table mister'
+psql -h kitchensink-pgpool -U testuser userdb -c 'table mister' 
+psql -h kitchensink-master -U testuser userdb -c 'insert into mister values (112)'
+....
+
+
 === Tip 1
 
 create a static route from your host to 10.0.0.0/16 if you

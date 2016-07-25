@@ -1,0 +1,52 @@
+{
+    "kind": "ReplicationController",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "kitchensink-pgpool",
+        "labels": {
+            "name": "kitchensink-pgpool"
+        }
+    },
+    "spec": {
+        "replicas": 1,
+        "selector": {
+            "name": "kitchensink-pgpool"
+        },
+        "template": {
+            "metadata": {
+                "name": "kitchensink-pgpool",
+                "labels": {
+                    "name": "kitchensink-pgpool"
+                }
+            },
+            "spec": {
+                "containers": [{
+                    "name": "server",
+                    "image": "crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG",
+                    "ports": [{
+                        "containerPort": 5432,
+                        "protocol": "TCP"
+                    }],
+                    "env": [{
+                        "name": "PG_USERNAME",
+                        "value": "testuser"
+                    }, {
+                        "name": "PG_PASSWORD",
+                        "value": "password"
+                    }, {
+                        "name": "PG_MASTER_SERVICE_NAME",
+                        "value": "kitchensink-master"
+                    }, {
+                        "name": "PG_SLAVE_SERVICE_NAME",
+                        "value": "kitchensink-slave"
+                    }],
+                    "terminationMessagePath": "/dev/termination-log",
+                    "volumeMounts": []
+                }],
+                "volumes": [],
+                "restartPolicy": "Always",
+                "dnsPolicy": "ClusterFirst"
+            }
+        }
+    }
+}

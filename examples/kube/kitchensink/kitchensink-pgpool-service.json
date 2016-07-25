@@ -1,0 +1,24 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "kitchensink-pgpool",
+        "labels": {
+            "name": "kitchensink-pgpool"
+        }
+    },
+    "spec": {
+        "ports": [{
+            "protocol": "TCP",
+            "port": 5432,
+            "targetPort": 5432,
+            "nodePort": 0
+        }],
+        "selector": {
+            "name": "kitchensink-pgpool"
+        }
+    },
+    "status": {
+        "loadBalancer": {}
+    }
+}
