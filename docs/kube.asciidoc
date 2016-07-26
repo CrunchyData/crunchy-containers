@@ -51,8 +51,18 @@ hostname --ip-address
 ....
 
 ....
-sudo ./hack/local-up-cluster.sh
+sudo PATH=$PATH ALLOW_PRIVILEGED=true ./hack/local-up-cluster.sh
 ....
+
+Note:  specifying ALLOW_PRIVILEGED=true is required if you are running
+in selinux enforcing mode. This allows you to specify the following
+in your pod spec to run the container as priviledged:
+....
+"securityContext": {
+	"privileged": true
+},
+....
+
 
 === Old Notes Not Used!!
 
