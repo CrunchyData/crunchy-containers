@@ -504,13 +504,13 @@ examples includes the following objects:
 
 Running the example:
 ....
-examples/kube/sync/run.sh
+examples/kube/kitchensink/run.sh
 ....
 
 The master database pod has the following containers running 
 inside it:
- * kitchensink-master (postgres container)
- * pg-badger (pgbadger container)
+ * server (postgres container)
+ * pgbadger (pgbadger container)
  * collect (metrics collection container)
 
 You can scale up the number of async slaves as follows:
