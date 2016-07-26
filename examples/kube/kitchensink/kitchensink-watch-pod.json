@@ -13,7 +13,7 @@
             "name": "watch",
             "image": "crunchydata/crunchy-watch:$CCP_IMAGE_TAG",
             "env": [{
-                "name": "OSE_PROJECT",
+                "name": "KUBE_PROJECT",
                 "value": "default"
             }, {
                 "name": "SLEEP_TIME",
