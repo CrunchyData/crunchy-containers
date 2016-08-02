@@ -382,6 +382,23 @@ psql -h 127.0.0.1 -p 12002 -U postgres postgres -c 'table foo'
 psql -h 127.0.0.1 -p 12003 -U postgres postgres -c 'table foo'
 ....
 
+
+=== Example 14 - pgadmin4
+
+This example, examples/standalone/pgadmin4, provides a 
+container that runs the pgadmin4 web application.
+
+To run this example, run the following:
+
+....
+./examples/standalone/pgadmin4/run-pgadmin4.sh
+....
+
+You should now be able to browse to http://YOURLOCALIP:5050
+and log into the web application using a user ID of *admin@admin.org*
+and password of *password*.  Replace YOURLOCALIP with whatever
+your local IP address happens to be.
+
 === Tips - send a signal to postgres
 
 first, find the PID of the postmaster:
