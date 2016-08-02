@@ -65,6 +65,10 @@ backup:
 	make versiontest
 	sudo docker build -t crunchy-backup -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backup.$(CCP_BASEOS) .
 	docker tag -f crunchy-backup crunchydata/crunchy-backup:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
+pgadmin4: 
+	make versiontest
+	sudo docker build -t crunchy-pgadmin4 -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgadmin4.$(CCP_BASEOS) .
+	docker tag crunchy-pgadmin4 crunchydata/crunchy-pgadmin4:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 prometheus: 
 	make versiontest
 	sudo docker build -t crunchy-prometheus -f $(CCP_BASEOS)/Dockerfile.prometheus.$(CCP_BASEOS) .

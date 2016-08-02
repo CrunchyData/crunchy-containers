@@ -12,6 +12,10 @@ sudo yum -y install postgresql95-server
 sudo yum -y install net-tools bind-utils wget unzip git golang
 
 #
+# download the pgadmin4 python wheel distro
+#
+wget -O $BUILDBASE https://ftp.postgresql.org/pub/pgadmin3/pgadmin4/v1.0-beta3/pip/pgadmin4-1.0b3-py2-none-any.whl
+#
 # download the metrics products, only required to build the containers
 #
 wget -O $BUILDBASE/prometheus-pushgateway.tar.gz https://github.com/prometheus/pushgateway/releases/download/0.3.0/pushgateway-0.3.0.linux-amd64.tar.gz

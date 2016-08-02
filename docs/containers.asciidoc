@@ -469,6 +469,36 @@ The following features are supported by the crunchy-postgres container:
    to be *master*
  * for configuration, has to have users.txt and pgbouncer.ini files mounted in /pgconf
 
+
+== crunchy-pgadmin4
+
+The crunchy-ppgadmin4 container executes the pgadmin4 web application.
+
+pgadmin4 provides a web user interface to postgresql databases.  A
+sample screenshot is below:
+
+image::pgadmin4-screenshot.png?raw=true[]
+
+
+=== Environment Variables
+ 
+ * none
+
+=== Features
+
+The following features are supported by the crunchy-pgadmin4 container:
+
+ * mount config_local.py and pgadmin4.db to /data volume inside the
+   container to support customization and store the pgadmin4 database
+   file
+ * expose port 5050 which is the web server port
+ * a sample pgadmin4 database is provided with an initial administrator
+   user *admin@admin.org* and password of *password*
+
+=== Restrictions
+
+ * na
+
 == Legal Notices 
 
 Copyright © 2016 Crunchy Data Solutions, Inc.
