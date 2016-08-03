@@ -10,8 +10,6 @@ RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.
 
 RUN yum -y install epel-release && yum -y install gcc python-devel python-pip  procps-ng openssh-clients hostname  && yum -y install postgresql9?-devel postgresql9?-server && yum clean all -y
 
-VOLUME ["/data"]
-
 # set up cpm directory
 #
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf

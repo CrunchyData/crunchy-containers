@@ -16,9 +16,9 @@
 export PATH=$PATH:/usr/pgsql-9.*/bin
 
 echo $PATH is the path
-mkdir $HOME/.pgadmin
-cp /data/pgadmin4.db $HOME/.pgadmin/
-cp /data/config_local.py /usr/lib/python2.7/site-packages/pgadmin4
+#mkdir $HOME/.pgadmin
+#cp /data/pgadmin4.db $HOME/.pgadmin/
+cp $HOME/.pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4
 
 python /usr/lib/python2.7/site-packages/pgadmin4/pgAdmin4.py
 
