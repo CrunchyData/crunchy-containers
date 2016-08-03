@@ -20,13 +20,15 @@ docker rm crunchy-pgadmin4
 
 echo "setting up pgadmin4 data directory..."
 DATA_DIR=/tmp/pgadmin4-data
-sudo rm -rf $DATA_DIR
-sudo mkdir -p $DATA_DIR
-sudo chown root:root $DATA_DIR
-sudo chmod 777 $DATA_DIR
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
-sudo cp $BUILDBASE/conf/pgadmin4/config_local.py $DATA_DIR
-sudo cp $BUILDBASE/conf/pgadmin4/pgadmin4.db $DATA_DIR
+if [ ! -d "$DATA_DIR" ]; then
+	echo "setting up local data directory..."
+	sudo mkdir -p $DATA_DIR
+	sudo chown root:root $DATA_DIR
+	sudo chmod 777 $DATA_DIR
+	sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
+	sudo cp $BUILDBASE/conf/pgadmin4/config_local.py $DATA_DIR
+	sudo cp $BUILDBASE/conf/pgadmin4/pgadmin4.db $DATA_DIR
+fi
 
 export HOSTIP=`hostname --ip-address`
 echo $HOSTIP
@@ -34,6 +36,7 @@ echo $HOSTIP
 sudo docker run \
 	-p $HOSTIP:5050:5050 \
 	-v $DATA_DIR:/data \
+	-v $DATA_DIR:/root/.pgadmin \
 	--name=crunchy-pgadmin4 \
 	--hostname=crunchy-pgadmin4 \
 	-d crunchydata/crunchy-pgadmin4:$CCP_IMAGE_TAG
