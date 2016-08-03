@@ -16,8 +16,8 @@ source $BUILDBASE/examples/envvars.sh
 
 LOC=$BUILDBASE/examples/kube/pgadmin4	
 
-sudo cp config_local.py /nfsfileshare/pgadmin4/
-sudo cp pgadmin4.db /nfsfileshare/pgadmin4/
+sudo cp $BUILDBASE/conf/pgadmin4/config_local.py /nfsfileshare/pgadmin4/
+sudo cp $BUILDBASE/conf/pgadmin4/pgadmin4.db /nfsfileshare/pgadmin4/
 
 envsubst <  pgadmin4-nfs-pv.json | kubectl create -f -
 kubectl create -f pgadmin4-nfs-pvc.json

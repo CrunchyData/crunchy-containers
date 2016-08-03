@@ -25,8 +25,8 @@ sudo mkdir -p $DATA_DIR
 sudo chown root:root $DATA_DIR
 sudo chmod 777 $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
-sudo cp config_local.py $DATA_DIR
-sudo cp pgadmin4.db $DATA_DIR
+sudo cp $BUILDBASE/conf/pgadmin4/config_local.py $DATA_DIR
+sudo cp $BUILDBASE/conf/pgadmin4/pgadmin4.db $DATA_DIR
 
 export HOSTIP=`hostname --ip-address`
 echo $HOSTIP

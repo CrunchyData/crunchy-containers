@@ -659,6 +659,27 @@ container, notice it changes because of the round-robin Service proxy
 we are using for both slaves.  The example queries also show that both
 slaves are replicating from the master.
 
+=== Openshift Example 18 - pgadmin4
+
+This example, examples/openshift/pgadmin4, provides a
+container that runs the pgadmin4 web application.
+
+To run this example, run the following:
+
+....
+cd $BUILDBASE/examples/openshift/pgadmin4
+./run.sh
+....
+
+This script creates the *pgadmin4* pod and service, it will
+expose port 5050.
+
+You should now be able to browse to http://pgadmin4.openshift.svc.cluster.local:5050
+and log into the web application using a user ID of *admin@admin.org*
+and password of *password*.  Replace YOURLOCALIP with whatever
+your local IP address happens to be.
+
+
 == Openshift Tips
 
 === Tip 1: Finding the Postgresql Passwords
