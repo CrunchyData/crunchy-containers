@@ -1,0 +1,10 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'codelab-monitor'
+  scrape_configs:
+    - job_name: 'crunchycollect'
+  scrape_interval: 5s
+  target_groups:
+    - targets: ['crunchy-promgateway:9091']
