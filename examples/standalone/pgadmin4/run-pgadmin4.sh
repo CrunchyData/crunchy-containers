@@ -15,8 +15,8 @@
 
 echo "stopping and removing pgadmin4 container..."
 
-docker stop crunchy-pgadmin4
-docker rm crunchy-pgadmin4
+docker stop pgadmin4
+docker rm pgadmin4
 
 echo "setting up pgadmin4 data directory..."
 DATA_DIR=/tmp/pgadmin4-data
@@ -35,9 +35,8 @@ echo $HOSTIP
 
 sudo docker run \
 	-p $HOSTIP:5050:5050 \
-	-v $DATA_DIR:/data \
 	-v $DATA_DIR:/root/.pgadmin \
-	--name=crunchy-pgadmin4 \
-	--hostname=crunchy-pgadmin4 \
+	--name=pgadmin4 \
+	--hostname=pgadmin4 \
 	-d crunchydata/crunchy-pgadmin4:$CCP_IMAGE_TAG
 
