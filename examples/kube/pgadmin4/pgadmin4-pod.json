@@ -20,13 +20,13 @@
             }],
             "env": [ ],
             "volumeMounts": [{
-                "mountPath": "/data",
-                "name": "data",
+                "mountPath": "/root/.pgadmin",
+                "name": "rootdata",
                 "readOnly": false
             }]
         }],
         "volumes": [{
-            "name": "data",
+            "name": "rootdata",
             "persistentVolumeClaim": {
 	    	"claimName":"pgadmin4-nfs-pvc"
 	    }

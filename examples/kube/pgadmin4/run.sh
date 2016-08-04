@@ -15,9 +15,15 @@
 source $BUILDBASE/examples/envvars.sh
 
 LOC=$BUILDBASE/examples/kube/pgadmin4	
+DATADIR=/nfsfileshare/pgadmin4
 
-sudo cp $BUILDBASE/conf/pgadmin4/config_local.py /nfsfileshare/pgadmin4/
-sudo cp $BUILDBASE/conf/pgadmin4/pgadmin4.db /nfsfileshare/pgadmin4/
+if [ ! -d "$DATADIR"]; then
+	echo "setting up pg4admin data directory...."
+	sudo mkdir $DATADIR
+	sudo cp $BUILDBASE/conf/pgadmin4/config_local.py $DATADIR
+	sudo cp $BUILDBASE/conf/pgadmin4/pgadmin4.db $DATADIR
+	sudo chmod -R 777 $DATADIR
+fi
 
 envsubst <  pgadmin4-nfs-pv.json | kubectl create -f -
 kubectl create -f pgadmin4-nfs-pvc.json

@@ -541,6 +541,28 @@ psql -h kitchensink-master -U testuser userdb -c 'insert into mister values (112
 ....
 
 
+=== Kube Example 14 - pgadmin4
+
+This example deploys the pgadmin4 (beta4) web user interface
+for Postgresql. 
+
+Start the container as follows:
+....
+cd $BUILDBASE/examples/kube/pgadmin4
+./run.sh
+....
+
+This will start a container and service for pgadmin4.  You can browse
+the user interface at link:http://pgadmin4.default.svc.cluster.local:5050
+
+See the pgadmin4 documentation for more details at link:http://pgadmin.org
+
+The example uses pgadmin4 configuration files which are mounted
+at an NFS mount point, this NFS data directory is mounted into
+the container and used by the pgadmin4 application to persist
+metadata.
+
+
 === Tip 1
 
 create a static route from your host to 10.0.0.0/16 if you
