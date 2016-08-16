@@ -13,7 +13,7 @@ ADD conf/crunchypg95.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN yum -y install gettext libxslt libxml2 procps-ng \
-pgpool-II* \
+pgpool-II-95-*3.5.3* \
 postgresql9? \
 openssh-clients \
 hostname  \
