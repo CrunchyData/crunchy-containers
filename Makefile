@@ -45,7 +45,7 @@ pgbadger:
 	make versiontest
 	cd badger && godep go install badgerserver.go
 	cp $(GOBIN)/badgerserver bin/pgbadger
-	sudo docker build -t crunchy-pgbadger -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbadger.$(CCP_BASEOS) .
+	docker build -t crunchy-pgbadger -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbadger.$(CCP_BASEOS) .
 	docker tag -f crunchy-pgbadger crunchydata/crunchy-pgbadger:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 collectserver:
 	make versiontest
