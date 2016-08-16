@@ -23,10 +23,10 @@
                 "value": "slave"
             }, {
                 "name": "PG_MASTER_SERVICE",
-                "value": "master"
+                "value": "master-1"
             }, {
                 "name": "PG_SLAVE_SERVICE",
-                "value": "slave"
+                "value": "slave-1"
             }, {
                 "name": "PG_MASTER_PORT",
                 "value": "5432"
