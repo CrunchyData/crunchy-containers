@@ -20,7 +20,7 @@ wget https://ftp.postgresql.org/pub/pgadmin3/pgadmin4/v1.0-beta3/pip/pgadmin4-1.
 #
 wget -O $BUILDBASE/prometheus-pushgateway.tar.gz https://github.com/prometheus/pushgateway/releases/download/0.3.0/pushgateway-0.3.0.linux-amd64.tar.gz
 wget -O $BUILDBASE/prometheus.tar.gz https://github.com/prometheus/prometheus/releases/download/v1.0.0/prometheus-1.0.0.linux-amd64.tar.gz
-wget -O $BUILDBASE/grafana.tar.gz https://grafanarel.s3.amazonaws.com/builds/grafana-3.1.1-1470047149.x86_64.rpm 
+wget -O $BUILDBASE/grafana.tar.gz https://grafanarel.s3.amazonaws.com/builds/grafana-3.1.1-1470047149.linux-x64.tar.gz
 wget -O /tmp/consul_0.6.4_linux_amd64.zip https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip
 unzip /tmp/consul*.zip -d /tmp
 rm /tmp/consul*.zip
