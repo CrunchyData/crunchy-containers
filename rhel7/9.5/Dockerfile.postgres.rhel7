@@ -1,0 +1,56 @@
+FROM rhel7.2
+
+LABEL Release="1.2.1.1"
+LABEL Vendor="Crunchy Data Solutions"
+LABEL PostgresVersion="9.5"
+
+# PGDG Postgres repo
+#RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
+
+# Crunchy Postgres repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg95.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+#RUN yum -y install rsync nss_wrapper gettext bind-utils libxslt libxml2 procps-ng \
+RUN yum -y install rsync nss_wrapper gettext bind-utils procps-ng \
+openssh-clients  hostname && yum -y reinstall glibc-common && \ 
+yum -y install postgresql9? postgresql9?-contrib postgresql9?-server \
+postgis2_9? postgis2_9?-client pgrouting* && yum clean all -y
+
+# set up cpm directory
+#
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /backup
+
+RUN chown -R postgres:postgres /opt/cpm /pgdata /backup
+
+# add path settings for postgres user
+ADD conf/.bash_profile /var/lib/pgsql/
+
+# add volumes to allow override of pg_hba.conf and postgresql.conf
+VOLUME ["/pgconf"]
+
+# add volumes to allow backup of postgres files
+VOLUME ["/pgdata"]
+
+# add volumes to offer a restore feature
+VOLUME ["/backup"]
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin/postgres /opt/cpm/bin
+ADD conf/postgres /opt/cpm/conf
+
+#RUN setcap cap_chown,cap_fowner+ep /usr/bin/chown
+#RUN setcap cap_chown,cap_fowner+ep /usr/bin/chmod
+#RUN setcap cap_chown,cap_fowner+ep /opt/cpm/bin/start.sh
+#RUN setcap cap_chown,cap_fowner+ep /usr/pgsql-9.4/bin/pg_ctl
+#RUN setcap cap_chown,cap_fowner+ep /usr/pgsql-9.4/bin/initdb
+
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]
+

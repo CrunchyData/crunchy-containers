@@ -1,0 +1,34 @@
+FROM rhel7.2
+
+LABEL Release="1.2.1"
+LABEL Vendor="Crunchy Data Solutions"
+LABEL PostgresRelease="9.5"
+
+# PGDG Postgres repo
+#RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
+
+# Crunchy Postgres repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg95.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+# install deps
+RUN yum -y install nss_wrapper gettext procps-ng \
+postgresql9?-server  \
+postgresql9? \
+openssh-clients \
+hostname bind-utils \
+ && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
+ADD bin/backup/ /opt/cpm/bin
+ADD conf/backup/ /opt/cpm/conf
+RUN chown -R 26:26 /opt/cpm /pgdata
+
+VOLUME ["/pgdata"]
+
+USER 26
+
+CMD ["/opt/cpm/bin/start-backupjob.sh"]
