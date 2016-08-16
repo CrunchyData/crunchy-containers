@@ -24,6 +24,7 @@ export PATH=$PATH:~/kubernetes/_output/release-stage/client/linux-amd64/kubernet
 * Turn off selinux, there is a policy in place that prevents local registry
 lookups, need to figure this out.
 
+
 ==== Setup DNS
 edit hack/local-up-cluster.sh
 ....
@@ -37,6 +38,12 @@ the DNS server
 ....
 search default.svc.cluster.local crunchy.lab
 nameserver 10.0.0.10
+....
+
+Starting with Kube 1.3.4, I had to add these into the local-config-up.sh script in order to get DNS to work:
+....
+export KUBERNETES_PROVIDER=local
+export API_HOST=<<docker0 ip address>>
 ....
 
 
