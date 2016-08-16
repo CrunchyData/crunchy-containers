@@ -1,0 +1,17 @@
+FROM rhel7.2
+
+LABEL Release="1.2.1"
+LABEL Vendor="Crunchy Data Solutions"
+
+RUN yum -y install procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
+
+# set up cpm directory
+#
+RUN mkdir -p /opt/cpm/bin
+
+ADD bin/vacuum /opt/cpm/bin
+
+USER root
+
+CMD ["/opt/cpm/bin/start-vacuum.sh"]
+

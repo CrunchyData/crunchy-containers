@@ -1,0 +1,29 @@
+FROM rhel7.2
+
+LABEL Release="1.2.1"
+LABEL Vendor="Crunchy Data Solutions"
+
+RUN yum -y install procps-ng openssh-clients hostname  && yum clean all -y
+
+VOLUME ["/data"]
+
+# set up cpm directory
+#
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+RUN chown -R daemon:daemon /opt/cpm
+
+# open up the prometheus port
+EXPOSE 9090
+# open up the prometheus pushgateway port
+EXPOSE 9091
+
+ADD prometheus.tar.gz /opt/cpm/bin
+ADD prometheus-pushgateway.tar.gz /opt/cpm/bin
+ADD bin/prometheus /opt/cpm/bin
+ADD conf/prometheus /opt/cpm/conf
+
+
+USER root
+
+CMD ["/opt/cpm/bin/start-prometheus.sh"]
+

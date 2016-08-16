@@ -1,0 +1,23 @@
+FROM rhel7.2
+
+LABEL Release="1.2.1"
+LABEL Vendor="Crunchy Data Solutions"
+
+RUN yum -y install procps-ng openssh-clients  hostname   && yum clean all -y
+
+VOLUME ["/data"]
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+RUN chown -R daemon:daemon /opt/cpm
+
+# open up the grafana port
+EXPOSE 3000
+
+ADD grafana.tar.gz /opt/cpm/bin
+ADD bin/grafana /opt/cpm/bin
+ADD conf/grafana /opt/cpm/conf
+
+USER root
+
+CMD ["/opt/cpm/bin/start-grafana.sh"]
+
