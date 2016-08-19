@@ -17,12 +17,9 @@ sudo yum -y install etcd-2.2.5
 git clone https://github.com/kubernetes/kubernetes.git
 cd kubernetes
 git checkout v1.2.4
-make release-skip-tests
-export PATH=$PATH:~/kubernetes/_output/release-stage/client/linux-amd64/kubernetes/client/bin
+cd hack
+./build-go.sh
 ....
-
-* Turn off selinux, there is a policy in place that prevents local registry
-lookups, need to figure this out.
 
 
 ==== Setup DNS
