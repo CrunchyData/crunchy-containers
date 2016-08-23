@@ -1,0 +1,39 @@
+{
+  "id": "pgmaster",
+  "cmd": null,
+  "cpus": 1,
+  "mem": 128,
+  "disk": 0,
+  "instances": 1,
+  "container": {
+    "docker": {
+      "image": "crunchydata/crunchy-postgres:centos7-9.5-1.2.2",
+      "network": "BRIDGE",
+      "parameters": [{
+	"key": "hostname",
+	"value": "pgmaster"
+ 	}],
+      "portMappings": [
+      ]
+    },
+    "type": "DOCKER",
+    "volumes": [
+      {
+        "hostPath": "/tmp/pgdata-pgmaster",
+        "containerPath": "/pgdata",
+        "mode": "RW"
+      }
+    ]
+  },
+  "env": {
+    "PG_MODE": "master",
+    "PG_USER": "testuser",
+    "PG_PASSWORD": "testuser",
+    "PG_DATABASE": "userdb",
+    "PG_ROOT_PASSWORD": "password",
+    "PG_MASTER_USER": "master",
+    "PG_MASTER_PASSWORD": "password"
+  },
+  "labels": {},
+  "healthChecks": []
+}

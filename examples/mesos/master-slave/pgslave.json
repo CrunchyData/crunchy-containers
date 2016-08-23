@@ -1,0 +1,42 @@
+{
+  "id": "pgslave",
+  "cmd": null,
+  "cpus": 1,
+  "mem": 128,
+  "disk": 0,
+  "instances": 1,
+  "container": {
+    "docker": {
+      "image": "crunchydata/crunchy-postgres:centos7-9.5-1.2.2",
+      "network": "BRIDGE",
+      "parameters": [
+	{
+	"key": "hostname",
+	"value": "pgslave"
+ 	}
+	],
+      "portMappings": [
+      ]
+    },
+    "volumes": [
+      {
+        "hostPath": "/tmp/pgdata-pgslave",
+        "containerPath": "/pgdata",
+        "mode": "RW"
+      }
+    ]
+  },
+  "env": {
+    "PG_MODE": "slave",
+    "PG_USER": "testuser",
+    "PG_PASSWORD": "testuser",
+    "PG_DATABASE": "userdb",
+    "PG_ROOT_PASSWORD": "password",
+    "PG_MASTER_HOST": "pgmaster.marathon.mesos",
+    "PG_MASTER_PORT": "5432",
+    "PG_MASTER_USER": "master",
+    "PG_MASTER_PASSWORD": "password"
+  },
+  "labels": {},
+  "healthChecks": []
+}
