@@ -1,0 +1,138 @@
+= Mesosphere Examples - Crunchy Containers for PostgreSQL
+Crunchy Data Solutions, Inc.
+v1.2.2, {docdate}
+:title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
+
+== Mesos Environment
+
+Here are instructions for running examples on a mesosphere cluster.
+
+=== Installation
+
+Some steps to follow:
+
+==== Create Centos 7 VM
+
+==== Install Mesosphere and Marathon and Mesos-DNS
+....
+sudo yum -y install etcd-2.2.5
+git clone https://github.com/kubernetes/kubernetes.git
+cd kubernetes
+git checkout v1.2.4
+cd hack
+./build-go.sh
+....
+
+
+==== Setup DNS
+edit hack/local-up-cluster.sh
+....
+ENABLE_CLUSTER_DNS=true
+DNS_SERVER_IP="10.0.0.10"
+DNS_DOMAIN="cluster.local"
+....
+
+edit /etc/resolv.conf or configure your network settings to add
+the DNS server
+....
+search default.svc.cluster.local crunchy.lab
+nameserver 10.0.0.10
+....
+
+Starting with Kube 1.3.4, I had to add these into the local-config-up.sh script in order to get DNS to work:
+....
+export KUBERNETES_PROVIDER=local
+export API_HOST=<<docker0 ip address>>
+....
+
+
+===  Start Mesos Services
+
+*Make sure your hostname resolves to a single IP address in your
+/etc/hosts file!  If not, the NFS examples will not work.*
+
+You should see a single IP address returned from this command:
+....
+hostname --ip-address
+....
+
+....
+sudo PATH=$PATH ALLOW_PRIVILEGED=true ./hack/local-up-cluster.sh
+....
+
+Note:  specifying ALLOW_PRIVILEGED=true is required if you are running
+in selinux enforcing mode. This allows you to specify the following
+in your pod spec to run the container as priviledged:
+....
+"securityContext": {
+	"privileged": true
+},
+....
+
+
+== Examples for the Mesos Environment
+
+The examples/mesos directory containers examples for 
+running the Crunchy containers in a mesos environment.
+
+The examples are explained below.
+
+=== mesos Example 1 - single-master
+
+This example starts a single postgres container and service, the most simple
+of examples.
+
+Running the example:
+....
+examples/kube/single-master/run.sh
+kubectl get pod single-master
+kubectl get service single-master
+kubectl logs single-master
+....
+
+After the database starts up you can connect to it as follows:
+....
+psql -h single-master -U postgres postgres
+....
+
+=== mesos Example 2 - master-slave
+
+This example starts a master pod, master service, slave pod, and slave
+service.  The slave is a replica of the master.  This example uses
+emptyDir volumes for persistence.  This example does not allow
+you to scale up the slaves.
+
+Running the example:
+....
+examples/kube/master-slave/run.sh
+....
+
+It takes about a minute for the slave to begin replicating with the
+master.  To test out replication, see if replication is underway
+with this command:
+....
+psql -h master -U postgres postgres -c 'table pg_stat_replication'
+....
+
+If you see a line returned from that query it means the master is replicating
+to the slave.  Try creating some data on the master:
+
+....
+psql -h master -U postgres postgres -c 'create table foo (id int)'
+psql -h master -U postgres postgres -c 'insert into foo values (1)'
+....
+
+Then verify that the data is replicated to the slave:
+....
+psql -h slave -U postgres postgres -c 'table foo'
+....
+
+
+== Legal Notices
+
+Copyright © 2016 Crunchy Data Solutions, Inc.
+
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
+
