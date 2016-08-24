@@ -17,7 +17,7 @@ source $BUILDBASE/examples/envvars.sh
 LOC=$BUILDBASE/examples/kube/pgadmin4	
 DATADIR=/nfsfileshare/pgadmin4
 
-if [ ! -d "$DATADIR"]; then
+if [ ! -d "$DATADIR" ]; then
 	echo "setting up pg4admin data directory...."
 	sudo mkdir $DATADIR
 	sudo cp $BUILDBASE/conf/pgadmin4/config_local.py $DATADIR
