@@ -35,5 +35,17 @@
     "PG_MASTER_PASSWORD": "password"
   },
   "labels": {},
-  "healthChecks": []
+  "healthChecks": [
+    {
+      "protocol": "COMMAND",
+      "command": {
+        "value": "/usr/pgsql-9.5/bin/pg_isready --host=pgmaster.marathon.mesos"
+      },
+      "gracePeriodSeconds": 300,
+      "intervalSeconds": 60,
+      "timeoutSeconds": 20,
+      "maxConsecutiveFailures": 3,
+      "ignoreHttp1xx": false
+    }
+  ]
 }
