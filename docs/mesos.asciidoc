@@ -77,10 +77,10 @@ running the Crunchy containers in a mesos environment.
 
 The examples are explained below.
 
-=== mesos Example 1 - single-master
+=== mesos Example 1 - master-slave
 
-This example starts a single postgres container and service, the most simple
-of examples.
+This example starts a postgres master container and a replica container
+to form a cluster.
 
 Running the example:
 ....
@@ -90,9 +90,11 @@ marathonctl -h http://10.0.2.15:8080 app list
 
 After the database starts up you can connect to it as follows:
 ....
-psql -h single-master -U postgres postgres
+psql -h pgmaster.marathon.mesos -U postgres postgres
+psql -h pgslave.marathon.mesos -U postgres postgres
 ....
 
+This example currently uses manually provisioned volumes.
 
 == Legal Notices
 
