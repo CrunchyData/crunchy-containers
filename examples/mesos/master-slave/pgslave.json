@@ -20,7 +20,7 @@
     },
     "volumes": [
       {
-        "hostPath": "/tmp/pgdata-pgslave",
+        "hostPath": "/nfsfileshare/pgdata",
         "containerPath": "/pgdata",
         "mode": "RW"
       }

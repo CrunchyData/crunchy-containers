@@ -94,7 +94,8 @@ psql -h pgmaster.marathon.mesos -U postgres postgres
 psql -h pgslave.marathon.mesos -U postgres postgres
 ....
 
-This example currently uses manually provisioned volumes.
+This example currently uses a NFS mounted volume path to persist
+both the master and slave data files.  
 
 == Legal Notices
 

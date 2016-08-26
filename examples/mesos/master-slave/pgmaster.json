@@ -19,7 +19,7 @@
     "type": "DOCKER",
     "volumes": [
       {
-        "hostPath": "/tmp/pgdata-pgmaster",
+        "hostPath": "/nfsfileshare/pgdata",
         "containerPath": "/pgdata",
         "mode": "RW"
       }
