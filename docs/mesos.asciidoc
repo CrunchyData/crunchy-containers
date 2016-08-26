@@ -15,21 +15,15 @@ Some steps to follow:
 
 ==== Install Mesosphere and Marathon and Mesos-DNS
 ....
-sudo yum -y install etcd-2.2.5
-git clone https://github.com/kubernetes/kubernetes.git
-cd kubernetes
-git checkout v1.2.4
-cd hack
-./build-go.sh
+sudo yum -y install mesos marathon mesosphere-zookeeper
 ....
 
 
 ==== Setup DNS
 edit hack/local-up-cluster.sh
 ....
-ENABLE_CLUSTER_DNS=true
-DNS_SERVER_IP="10.0.0.10"
-DNS_DOMAIN="cluster.local"
+sudo mkdir /opt/mesos-dns
+sudo /opt/mesos-dns/mesos-dns -config=/opt/mesos-dns/config.json
 ....
 
 edit /etc/resolv.conf or configure your network settings to add
