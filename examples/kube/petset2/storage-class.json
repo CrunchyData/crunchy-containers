@@ -1,0 +1,9 @@
+{
+"kind": "StorageClass",
+"apiVersion": "extensions/v1beta1",
+"endpoint": "glusterfs-cluster",
+"resturl": "http://127.0.0.1:8081",
+"restauthenabled":false,
+"restuser":"",
+"restuserkey":""
+}

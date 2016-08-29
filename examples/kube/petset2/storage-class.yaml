@@ -1,0 +1,11 @@
+kind: StorageClass
+apiVersion: extensions/v1beta1
+metadata:
+  name: slow
+provisioner: kubernetes.io/glusterfs
+parameters:
+  endpoint: "glusterfs-cluster"
+  resturl: "http://127.0.0.1:8081"
+  restauthenabled: "false"
+  restuser: "admin"
+  restuserkey: "password"

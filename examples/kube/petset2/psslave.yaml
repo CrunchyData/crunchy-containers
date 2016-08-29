@@ -1,0 +1,61 @@
+apiVersion: apps/v1alpha1
+kind: PetSet
+metadata:
+  name: slave
+spec:
+  serviceName: "psslave"
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: psslave
+      annotations:
+        pod.alpha.kubernetes.io/initialized: "true"
+    spec:
+      terminationGracePeriodSeconds: 0
+      volumes:
+      - name: pgdata
+        persistentVolumeClaim:
+          claimName: petset-nfs-pvc
+      containers:
+      - env:
+        - name: PGHOST
+          value: /tmp
+        - name: PG_MASTER_USER
+          value: master
+        - name: PG_MODE
+          value: slave
+        - name: PG_MASTER_PASSWORD
+          value: password
+        - name: PG_MASTER_HOST
+          value: psmaster
+        - name: PG_MASTER_PORT
+          value: "5432"
+        - name: PG_USER
+          value: testuser
+        - name: PG_PASSWORD
+          value: password
+        - name: PG_DATABASE
+          value: userdb
+        - name: PG_ROOT_PASSWORD
+          value: password
+        name: pg
+        image: crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+        ports:
+        - containerPort: 5432
+          name: db
+        command:
+        volumeMounts:
+        - name: pgdata
+          mountPath: /pgdata
+  volumeClaimTemplates:
+  - metadata:
+      name: pgdata
+      annotations:
+        volume.alpha.kubernetes.io/storage-class: anything
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 90M
+
