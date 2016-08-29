@@ -2,16 +2,16 @@
   "apiVersion": "v1",
   "kind": "PersistentVolume",
   "metadata": {
-    "name": "gluster-pv"
+    "name": "petset-nfs-pv"
   },
   "spec": {
     "capacity": {
-        "storage": "75M"
+        "storage": "150M"
     },
     "accessModes": [ "ReadWriteMany" ],
-    "glusterfs": {
-        "path": "/gv0",
-        "endpoints": "glusterfs-cluster"
+    "nfs": {
+        "path": "/nfsfileshare",
+        "server": "$LOCAL_IP"
     },
     "persistentVolumeReclaimPolicy": "Retain"
   }

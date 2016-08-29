@@ -6,7 +6,7 @@
     },
     "subsets": [{
         "addresses": [{
-            "ip": "192.168.0.115"
+            "ip": "$LOCAL_IP"
         }],
         "ports": [{
             "port": 1,

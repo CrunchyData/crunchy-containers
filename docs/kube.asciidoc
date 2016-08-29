@@ -567,6 +567,64 @@ the container and used by the pgadmin4 application to persist
 metadata.
 
 
+=== Kube Example 15 - master using gluster fs
+
+This example deploys a master database container that uses
+a gluster file system as the persistent volume.
+
+Setup gluster according to
+link:https://wiki.centos.org/SpecialInterestGroup/Storage/gluster-Quickstart
+
+
+Start the example as follows:
+....
+cd $BUILDBASE/examples/kube/gluster
+./run.sh
+....
+
+This will start a container and service for the master database. 
+
+You can access the master database as follows:
+....
+psql -h master-gluster -U postgres postgres
+....
+
+This example has a mount point of /mnt/gluster which is mapped
+to the gluster fs at yourhost:/gv0
+
+=== Kube Example 15 - petsets (only for kube 1.3 and greater)
+
+This example deploys a master database container and 2 slave
+containers.  The slaves are deployed using a PetSet.  The Petset
+references a pre-provisioned persistent volume claim created using NFS.
+
+Start the example as follows:
+....
+cd $BUILDBASE/examples/kube/petset
+./run.sh
+....
+
+This will start a container and service for pgadmin4.  You can browse
+the user interface at link:http://pgadmin4.default.svc.cluster.local:5050
+
+You can access the master database as follows:
+....
+psql -h psmaster.default.svc.cluster.local -U postgres postgres
+....
+
+You can access the slave databases as follows:
+....
+psql -h slave-0.psslave.default.svc.cluster.local -U postgres postgres
+psql -h slave-1.psslave.default.svc.cluster.local -U postgres postgres
+....
+
+You can scale the petset using this command:
+....
+kubectl patch petset slave -p '{"spec":{"replicas":3}}'
+....
+
+
+
 === Tip 1
 
 create a static route from your host to 10.0.0.0/16 if you
