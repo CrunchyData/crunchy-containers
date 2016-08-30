@@ -40,7 +40,7 @@ The pgadmin4 container provides a web console where SQL queries can
 be entered for configured databases.
 
 To execute the examples, pull down the container images
-from Dockerhub:
+from Dockerhub onto the VM host:
 ....
 docker pull crunchydata/crunchy-postgres:centos7-9.5-1.2.2
 docker pull crunchydata/crunchy-backup:centos7-9.5-1.2.2
@@ -60,6 +60,44 @@ git clone https://github.com/crunchydata/crunchy-containers.git
 cd crunchy-containers/examples/tutorial
 ./run.sh
 ....
+
+
+==== Openshift Console
+
+You can browse to the openshift console at this URL:
+
+....
+https://10.2.2.2:8443/console/
+....
+
+==== Metrics
+
+Routes have been exposed to allow access to the metrics
+web applications.  You can point your browser to
+the following URLs after starting the containers:
+....
+http://grafana-default.apps.10.2.2.2.xip.io
+http://prometheus-default.apps.10.2.2.2.xip.io
+....
+
+==== postgres web console
+
+There is a route created to the pgadmin4 web application at the
+following URL:
+....
+http://pgadmin4-default.apps.10.2.2.2.xip.io
+....
+
+==== pgbadger web application
+
+There is a route created to the pgbadger container within the pgmaster
+pod at at the following URL:
+....
+http://pgmaster-default.apps.10.2.2.2.xip.io/api/badgergenerate
+....
+
+
+=== Postgres access from your host
 
 The value of all passwords for the database is *password*, to 
 access the database, you can enter the following command:

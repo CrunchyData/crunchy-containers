@@ -22,6 +22,7 @@ RUN pip install --upgrade setuptools
 EXPOSE 5050
 
 ADD bin/pgadmin4/ /opt/cpm/bin
+ADD conf/pgadmin4/ /opt/cpm/conf
 ADD pgadmin4*.whl /tmp
 RUN export PATH=$PATH:/usr/pgsql-9.5/bin && pip install /tmp/pgadmin4*.whl
 

@@ -12,46 +12,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $BUILDBASE/examples/envvars.sh
-
-LOC=$BUILDBASE/examples/openshift/tutorial
+export CCP_IMAGE_TAG=centos7-9.5-1.2.2
 
 echo "create services for master and replicas..."
-oc create -f $LOC/master-service.json
-oc create -f $LOC/replica-service.json
+oc create -f ./master-service.json
+oc create -f ./replica-service.json
 
 echo "create prometheus pod.."
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/prometheus.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f ./prometheus.json | oc create -f -
 echo "create promgateway pod.."
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/promgateway.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f ./promgateway.json | oc create -f -
 echo "create grafana pod.."
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/grafana.json | oc create -f -
-
-echo "setting up NFS data directory for pgadmin4..."
-DATADIR=/nfsvolumes
-
-array=( 01 02 03 04 05 06 07 08 09 10 )
-for i in "${array[@]}"
-do
-	mkdir -p $DATADIR/pv$i/pgadmin4 
-	cp ./config_local.py $DATADIR/pv$i/pgadmin4
-	cp ./pgadmin4.db $DATADIR/pv$i/pgadmin4
-	chmod -R 777 $DATADIR/pv$i
-done
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f ./grafana.json | oc create -f -
 
 echo "create pgadmin4 pod.."
 
-# for the tutorial, we have a VM that already has the PVs created so
-# we comment out this next line for that environment
+# for the tutorial, we will not have pgadmin4 uses NFS volumes
+# to make it easier for the students...normally you would want
+# to persist the pgadmin database and config files...see the pgadmin4
+# example if you ever want to do this
 #envsubst < pgadmin4-nfs-pv.json |  oc create -f -
-oc create -f pgadmin4-nfs-pvc.json
+#oc create -f pgadmin4-nfs-pvc.json
 
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/pgadmin4.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f ./pgadmin4.json | oc create -f -
 echo "create master pod.."
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/master-pod.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f ./master-pod.json | oc create -f -
 echo "sleeping 20 secs before creating slaves..."
 sleep 20
 echo "create slave pod.."
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/replica-dc.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f ./replica-dc.json | oc create -f -
 echo "create pgpool dc..."
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/pgpool-dc.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f ./pgpool-dc.json | oc create -f -
+
+# expose routes for the web interfaces
+oc expose service prometheus
+oc expose service promgateway
+oc expose service grafana
+oc expose service pgadmin4
+
+oc create -f ./pgbadger-route.json
+

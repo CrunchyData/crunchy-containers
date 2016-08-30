@@ -1,0 +1,20 @@
+{
+	"kind": "Route",
+	"apiVersion": "v1",
+	"metadata": {
+		"name": "pgmaster",
+		"labels": {
+			"name": "pgmaster"
+		}
+	},
+	"spec": {
+		"to": {
+			"kind": "Service",
+			"name": "pgmaster"
+		},
+		"port": {
+			"targetPort": "pgbadger"
+		}
+	}
+}
+

@@ -75,9 +75,7 @@
             "volumes": [
 	    {
                 "name": "rootdata",
-                "persistentVolumeClaim": {
-                    "claimName": "pgadmin4-nfs-pvc"
-                }
+                "emptyDir": {}
             }
 	    ]
         }

@@ -31,7 +31,7 @@
                 "name": "pgbadger",
                 "image": "crunchydata/crunchy-pgbadger:${CCP_IMAGE_TAG}",
                 "ports": [{
-                    "containerPort": 15000,
+                    "containerPort": 10000,
                     "protocol": "TCP"
                 }],
                 "env": [],
@@ -57,7 +57,7 @@
                     "value": "5432"
                 }, {
                     "name": "PROM_GATEWAY",
-                    "value": "http://crunchy-promgateway:9091"
+                    "value": "http://promgateway:9091"
                 }, {
                     "name": "PG_ROOT_PASSWORD",
                     "value": "password"

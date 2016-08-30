@@ -12,11 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete service pgmaster 
-oc delete service replica pgadmin4 grafana prometheus promgateway
-oc delete pod pgmaster
-oc delete pod replica pgadmin4
-oc delete pod prometheus promgateway grafana
-oc delete dc replica-dc
-oc delete route pgadmin4 promgateway prometheus grafana 
+export CCP_IMAGE_TAG=centos7-9.5-1.2.2
 
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f ./pgadmin4.json | oc create -f -
