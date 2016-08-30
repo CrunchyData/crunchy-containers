@@ -1,0 +1,23 @@
+{
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "pgmaster",
+            "labels": {
+                "name": "pgmaster"
+            }
+        },
+        "spec": {
+            "ports": [{
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }],
+            "selector": {
+                "name": "pgmaster"
+            },
+            "type": "ClusterIP",
+            "sessionAffinity": "None"
+        }
+}
