@@ -17,17 +17,11 @@ oc project openshift
 source $BUILDBASE/examples/envvars.sh
 
 LOC=$BUILDBASE/examples/openshift/pgadmin4
-#DATADIR=/nfsfileshare/pgadmin4
 
-#if [ ! -d "$DATADIR" ]; then
-#	echo "setting up NFS data directory for pgadmin4..."
-#	sudo mkdir $DATADIR
-#	sudo cp $BUILDBASE/conf/pgadmin4/config_local.py $DATADIR
-#	sudo cp $BUILDBASE/conf/pgadmin4/pgadmin4.db $DATADIR
-#	sudo chmod -R 777 $DATADIR
-#fi
-
+# uncomment the next line if you need to create an NFS PV for
+# your environment
 #envsubst < pgadmin4-nfs-pv.json |  oc create -f -
-#oc create -f pgadmin4-nfs-pvc.json
+
+oc create -f pgadmin4-nfs-pvc.json
 
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/pgadmin4.json | oc create -f -
