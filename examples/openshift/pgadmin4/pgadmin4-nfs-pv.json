@@ -10,7 +10,7 @@
     },
     "accessModes": [ "ReadWriteMany" ],
     "nfs": {
-        "path": "/nfsfileshare/pgadmin4",
+        "path": "/nfsfileshare",
         "server": "$LOCAL_IP"
     },
     "persistentVolumeReclaimPolicy": "Retain"
