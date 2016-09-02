@@ -1,6 +1,6 @@
 FROM centos:7
 
-LABEL Release="1.2.1"
+LABEL Release="1.2.3"
 LABEL Vendor="Crunchy Data Solutions"
 
 LABEL PostgresVersion="9.5"
@@ -14,7 +14,7 @@ RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.
 #RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN yum -y install gettext libxslt libxml2 procps-ng \
-pgbadger-8.2* \
+pgbadger-8.3* \
 postgresql9?-server \
 openssh-clients \
 hostname  \
