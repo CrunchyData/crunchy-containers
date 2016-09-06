@@ -188,8 +188,10 @@ The following features are supported by the crunchy-pgpool container:
 
 == crunchy-watch
 
-We create a container, crunchy-watch, that lives inside a pod
-with a master container.
+We create a container, crunchy-watch, that runs as a pod unto itself
+typically.  The watch container essentially does a health check
+on a master database container and performs a failover sequence
+if the master is not reached.
 
 The watch container has access to a service account that is used
 inside the container to issue commands to openshift.
