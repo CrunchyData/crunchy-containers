@@ -52,3 +52,10 @@ oc expose service pgadmin4
 
 oc create -f ./pgbadger-route.json
 
+# create the watch pod
+oc create -f ./watch-sa.json
+oc policy add-role-to-group edit system:serviceaccounts -n openshift
+oc policy add-role-to-group edit system:serviceaccounts -n default
+oc process -f ./watch.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+
+
