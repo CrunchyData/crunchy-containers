@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "replica-dc-example",
+        "name": "replica",
         "creationTimestamp": null,
         "annotations": {
             "description": "PostgreSQL Replication Example",
