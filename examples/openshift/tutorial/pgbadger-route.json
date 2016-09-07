@@ -1,4 +1,16 @@
 {
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pgbadger-route",
+        "creationTimestamp": null,
+        "annotations": {
+            "description": "Crunchy PostgreSQL prometheus Example",
+            "iconClass": "icon-database",
+            "tags": "database,postgresql,replication"
+        }
+    },
+  "objects": [{
 	"kind": "Route",
 	"apiVersion": "v1",
 	"metadata": {
@@ -12,9 +24,11 @@
 			"kind": "Service",
 			"name": "pgmaster"
 		},
+		"path":"/api/badgergenerate",
+		"host":"",
 		"port": {
 			"targetPort": "pgbadger"
 		}
 	}
+}]
 }
-

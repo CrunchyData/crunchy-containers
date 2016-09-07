@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "tutorial-pgmaster-pod",
+        "name": "master",
         "creationTimestamp": null,
         "annotations": {
             "description": "PostgreSQL Replication Example",
@@ -18,9 +18,9 @@
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-          "name": "pgmaster",
+          "name": "master",
           "labels": {
-              "name": "pgmaster"
+              "name": "master"
           }
       },
       "spec": {
@@ -41,7 +41,7 @@
           }
     ],
           "selector": {
-              "name": "pgmaster"
+              "name": "master"
           },
           "type": "ClusterIP",
           "sessionAffinity": "None"
@@ -51,9 +51,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "pgmaster",
+            "name": "master",
             "labels": {
-                "name": "pgmaster"
+                "name": "master"
             }
         },
         "spec": {
@@ -77,7 +77,7 @@
                     "readOnly": true
                 }]
             }, {
-                "name": "collect",
+                "name": "pgcollect",
                 "image": "crunchydata/crunchy-collect:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "PG_MASTER_USER",
