@@ -115,7 +115,7 @@ crunchy-collect container into the pod that holds the crunchy-pg container.
 === Requirements
 Metrics are stored in the crunchy-prometheus container.  crunchy-prometheus runs
 the prometheus time series database. Metrics are pushed from 
-crunchy-collect to the prometheus pushgateway found in the crunchy-pushgateway
+crunchy-collect to the prometheus promgateway found in the crunchy-promgateway
 container.  Metrics dashboards are created using the grafana web application
 which is found in the crunchy-grafana container.  
 
@@ -133,13 +133,13 @@ use NFS volume types as specified in *examples/openshift/metrics/run-nfs.json*.
 When running the metrics containers, the following ports are available:
 
  * crunchy-prometheus:9090 - the prometheus web user interface
- * crunchy-pushgateway:9091 - the prometheus pushgateway REST API
+ * crunchy-promgateway:9091 - the prometheus promgateway REST API
  * crunchy-grafana:3000 - the grafana web user interface
 
 === crunchy-collect Environment Variables
 
  * POLL_INT - number of minutes to sleep until metrics are collected.  defaults to 15 minutes
- * PROM_GATEWAY - the http URL of the prometheus pushgateway into which the metrics will be pushed.  defaults to http://crunchy-pushgateway:9091
+ * PROM_GATEWAY - the http URL of the prometheus promgateway into which the metrics will be pushed.  defaults to http://crunchy-promgateway:9091
 
 == crunchy-pgbadger
 
