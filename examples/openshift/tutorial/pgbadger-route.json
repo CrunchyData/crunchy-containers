@@ -14,15 +14,15 @@
 	"kind": "Route",
 	"apiVersion": "v1",
 	"metadata": {
-		"name": "pgmaster",
+		"name": "master",
 		"labels": {
-			"name": "pgmaster"
+			"name": "master"
 		}
 	},
 	"spec": {
 		"to": {
 			"kind": "Service",
-			"name": "pgmaster"
+			"name": "master"
 		},
 		"path":"/api/badgergenerate",
 		"host":"",

@@ -80,9 +80,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "promgateway",
+            "name": "crunchy-promgateway",
             "labels": {
-                "name": "promgateway"
+                "name": "crunchy-promgateway"
             }
         },
         "spec": {

@@ -50,10 +50,10 @@
                         }],
                         "env": [{
                             "name": "PG_MASTER_HOST",
-                            "value": "pgmaster"
+                            "value": "master"
                         }, {
                             "name": "PG_MASTER_SERVICE_NAME",
-                            "value": "pgmaster"
+                            "value": "master"
                         }, {
                             "name": "PG_MASTER_PORT",
                             "value": "5432"

@@ -30,7 +30,7 @@
                 "image": "crunchydata/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
-                    "value": "openshift"
+                    "value": "default"
                 }, {
                     "name": "SLEEP_TIME",
                     "value": "20"
@@ -39,7 +39,7 @@
                     "value": "thisone"
                 }, {
                     "name": "PG_MASTER_SERVICE",
-                    "value": "pgmaster"
+                    "value": "master"
                 }, {
                     "name": "PG_SLAVE_SERVICE",
                     "value": "replica"
