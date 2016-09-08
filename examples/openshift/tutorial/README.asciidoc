@@ -50,6 +50,7 @@ docker pull crunchydata/crunchy-pgadmin4:centos7-9.5-1.2.2
 docker pull crunchydata/crunchy-prometheus:centos7-9.5-1.2.2
 docker pull crunchydata/crunchy-promgateway:centos7-9.5-1.2.2
 docker pull crunchydata/crunchy-grafana:centos7-9.5-1.2.2
+docker pull crunchydata/crunchy-watch:centos7-9.5-1.2.2
 ....
 
 
