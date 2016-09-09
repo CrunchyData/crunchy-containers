@@ -59,8 +59,21 @@ Running the example:
 ....
 git clone https://github.com/crunchydata/crunchy-containers.git
 cd crunchy-containers/examples/tutorial
-./run.sh
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.2.2 -f master.json
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.2.2 -f replicas.json
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.2.2 -f pgadmin4.json
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.2.2 -f metrics.json
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.2.2 -f watch.json
+oc create -f jeff-route.json
 ....
+
+You can scale up the replicas using this command:
+....
+oc scale --replicas=2 dc replica-dc
+....
+
+It takes about 1 minute for the new replica to become in sync
+with the master.
 
 
 ==== Openshift Console
@@ -94,7 +107,7 @@ http://pgadmin4-default.apps.10.2.2.2.xip.io
 There is a route created to the pgbadger container within the pgmaster
 pod at at the following URL:
 ....
-http://pgmaster-default.apps.10.2.2.2.xip.io/api/badgergenerate
+http://master-default.apps.10.2.2.2.xip.io/api/badgergenerate
 ....
 
 
