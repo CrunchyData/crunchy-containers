@@ -80,15 +80,15 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "crunchy-promgateway",
+            "name": "promgateway",
             "labels": {
-                "name": "crunchy-promgateway"
+                "name": "promgateway"
             }
         },
         "spec": {
             "ports": [
 	    {
-                "name": "pushgateway",
+                "name": "promgateway",
                 "protocol": "TCP",
                 "port": 9091,
                 "targetPort": 9091,
@@ -192,13 +192,16 @@
           "metadata": {
               "name": "grafana",
               "labels": {
-                  "name": "pgadmin4"
+                  "name": "grafana"
               }
           },
           "spec": {
               "to": {
                   "kind": "Service",
                   "name": "grafana"
+              },
+              "port": {
+                   "targetPort": "grafana"
               }
 
           }
@@ -216,6 +219,8 @@
                 "to": {
                     "kind": "Service",
                     "name": "promgateway"
+                },"port": {
+			               "targetPort": "promgateway"
                 }
 
             }
@@ -233,6 +238,8 @@
                   "to": {
                       "kind": "Service",
                       "name": "prometheus"
+                  },"port": {
+  			               "targetPort": "prometheus"
                   }
 
               }
