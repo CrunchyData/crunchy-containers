@@ -30,7 +30,7 @@
                 "image": "crunchydata/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
-                    "value": "default"
+                    "value": "myspatial"
                 }, {
                     "name": "SLEEP_TIME",
                     "value": "20"
