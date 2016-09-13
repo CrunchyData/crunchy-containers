@@ -2,7 +2,7 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "backup-job-pvc"
+        "name": "pgbouncer-pvc"
       },
       "spec": {
         "accessModes": [
@@ -10,7 +10,7 @@
         ],
         "resources": {
           "requests": {
-            "storage": "175M"
+            "storage": "10M"
           }
         }
       }

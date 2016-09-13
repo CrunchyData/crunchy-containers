@@ -19,31 +19,32 @@
         "kind": "Job",
         "apiVersion": "extensions/v1beta1",
         "metadata": {
-            "name": "backup-job-nfs"
+            "name": "single-master-backup-job"
         },
         "spec": {
             "selector": {
                 "matchLabels": {
-                    "app": "backup-job-nfs"
+                    "app": "single-master-backup-job"
                 }
             },
             "template": {
                 "metadata": {
-                    "name": "backup-job-nfs",
+                    "name": "single-master-backup-job",
                     "labels": {
-                        "app": "backup-job-nfs"
+                        "app": "single-master-backup-job"
                     }
                 },
                 "spec": {
                     "volumes": [{
                         "name": "pgdata",
                         "persistentVolumeClaim": {
-                            "claimName": "backup-job-pvc"
+                            "claimName": "single-master-backups-pvc"
                         }
                     }],
                     "containers": [{
-                        "name": "backup-job-nfs",
-                        "image": "crunchydata/crunchy-backup:${CCP_IMAGE_TAG}",
+                        "name": "single-master-backup-job",
+                        "image": "172.30.240.45:5000/jeff-project/crunchy-backup:${CCP_IMAGE_TAG}",
+			"imagePullPolicy":"Always",
                         "volumeMounts": [{
                             "mountPath": "/pgdata",
                             "name": "pgdata",
@@ -51,7 +52,7 @@
                         }],
                         "env": [{
                             "name": "BACKUP_HOST",
-                            "value": "master"
+                            "value": "single-master"
                         }, {
                             "name": "BACKUP_USER",
                             "value": "master"

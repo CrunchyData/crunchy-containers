@@ -1,0 +1,23 @@
+{
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "slave",
+            "labels": {
+                "name": "slave"
+            }
+        },
+        "spec": {
+            "ports": [{
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }],
+            "selector": {
+                "name": "slave"
+            },
+            "type": "ClusterIP",
+            "sessionAffinity": "None"
+        }
+}
