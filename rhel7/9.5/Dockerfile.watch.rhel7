@@ -1,6 +1,6 @@
 FROM rhel7.2
 
-LABEL Release="1.2.1"
+LABEL Release="1.2.3"
 LABEL Vendor="Crunchy Data Solutions"
 LABEL PostgresVersion="9.5"
 
