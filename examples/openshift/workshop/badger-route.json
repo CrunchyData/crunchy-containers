@@ -1,0 +1,19 @@
+{
+    "kind": "Route",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "master",
+        "labels": {
+            "name": "master"
+        }
+    },
+    "spec": {
+        "to": {
+            "kind": "Service",
+            "name": "master"
+        },
+        "port": {
+            "targetPort": "pgbadger"
+        }
+    }
+}
