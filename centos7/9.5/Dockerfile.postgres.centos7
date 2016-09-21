@@ -16,9 +16,9 @@ RUN yum -y install epel-release && yum -y reinstall glibc-common && \
 
 # set up cpm directory
 #
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /backup /pgconf
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgarchive /backup /pgconf
 
-RUN chown -R postgres:postgres /opt/cpm /pgdata /backup /pgconf
+RUN chown -R postgres:postgres /opt/cpm /pgdata /pgarchive /backup /pgconf
 
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/
@@ -31,6 +31,9 @@ VOLUME ["/pgdata"]
 
 # add volumes to offer a restore feature
 VOLUME ["/backup"]
+
+# add volumes to allow storage of postgres WAL segment files
+VOLUME ["/pgarchive"]
 
 # open up the postgres port
 EXPOSE 5432

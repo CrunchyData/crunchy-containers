@@ -59,10 +59,17 @@ export PG_ROOT_PASSWORD=$PG_ROOT_PASSWORD
 mkdir -p /pgdata/$HOSTNAME
 chmod 0700 /pgdata/$HOSTNAME
 
+if [[ -v ARCHIVE_MODE ]]; then
+	if [ $ARCHIVE_MODE == "on" ]; then
+		mkdir -p /pgdata/$HOSTNAME-wal
+		chmod 0700 /pgdata/$HOSTNAME-wal
+		echo "creating wal directory at " /pgdata/$HOSTNAME-wal
+	fi
+fi
 
 start-pg-wrapper.sh 
 
-while true; do
-	echo "sleeping "
-	sleep 1000
-done
+#while true; do
+#	echo "sleeping "
+#	sleep 1000
+#done

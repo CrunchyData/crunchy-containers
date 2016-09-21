@@ -62,6 +62,35 @@ function check_for_restore() {
 		fi
 	fi
 }
+function check_for_pitr() {
+	echo "checking for PITR WAL files to recover with.."
+	if [ "$(ls -A /pgarchive)" ]; then
+		echo "found non-empty /pgarchive ...assuming a PITR is requested"
+		ls -l /pgarchive
+		cp /opt/cpm/conf/pitr-recovery.conf /tmp
+		export ENABLE_RECOVERY_TARGET_NAME=#
+		export ENABLE_RECOVERY_TARGET_TIME=#
+		export ENABLE_RECOVERY_TARGET_XID=#
+		if [[ -v RECOVERY_TARGET_NAME ]]; then
+			export ENABLE_RECOVERY_TARGET_NAME=" "
+		elif [[ -v RECOVERY_TARGET_TIME ]]; then
+			export ENABLE_RECOVERY_TARGET_TIME=" "
+		elif [[ -v RECOVERY_TARGET_XID ]]; then
+			export ENABLE_RECOVERY_TARGET_XID=" "
+		fi
+		sed -i "s/ENABLE_RECOVERY_TARGET_NAME/$ENABLE_RECOVERY_TARGET_NAME/g" /tmp/pitr-recovery.conf
+		sed -i "s/ENABLE_RECOVERY_TARGET_TIME/$ENABLE_RECOVERY_TARGET_TIME/g" /tmp/pitr-recovery.conf
+		sed -i "s/ENABLE_RECOVERY_TARGET_XID/$ENABLE_RECOVERY_TARGET_XID/g" /tmp/pitr-recovery.conf
+		sed -i "s/RECOVERY_TARGET_NAME/$RECOVERY_TARGET_NAME/g" /tmp/pitr-recovery.conf
+		sed -i "s/RECOVERY_TARGET_TIME/$RECOVERY_TARGET_TIME/g" /tmp/pitr-recovery.conf
+		sed -i "s/RECOVERY_TARGET_XID/$RECOVERY_TARGET_XID/g" /tmp/pitr-recovery.conf
+		if [[ ! -v RECOVERY_TARGET_INCLUSIVE ]]; then
+			RECOVERY_TARGET_INCLUSIVE=true
+		fi
+		sed -i "s/RECOVERY_TARGET_INCLUSIVE/$RECOVERY_TARGET_INCLUSIVE/g" /tmp/pitr-recovery.conf
+		cp /tmp/pitr-recovery.conf $PGDATA/recovery.conf
+	fi
+}
 
 function fill_conf_file() {
 	if [[ -v TEMP_BUFFERS ]]; then
@@ -89,6 +118,16 @@ function fill_conf_file() {
 	else
 		MAX_WAL_SENDERS=6
 	fi
+	if [[ -v ARCHIVE_MODE ]]; then
+		echo "overriding ARCHIVE_MODE setting to " + $ARCHIVE_MODE
+	else
+		ARCHIVE_MODE=off
+	fi
+	if [[ -v ARCHIVE_TIMEOUT ]]; then
+		echo "overriding ARCHIVE_TIMEOUT setting to " + $ARCHIVE_TIMEOUT
+	else
+		ARCHIVE_MODE=60
+	fi
 
 	cp /opt/cpm/conf/postgresql.conf.template /tmp/postgresql.conf
 	sed -i "s/TEMP_BUFFERS/$TEMP_BUFFERS/g" /tmp/postgresql.conf
@@ -96,6 +135,8 @@ function fill_conf_file() {
 	sed -i "s/SHARED_BUFFERS/$SHARED_BUFFERS/g" /tmp/postgresql.conf
 	sed -i "s/MAX_WAL_SENDERS/$MAX_WAL_SENDERS/g" /tmp/postgresql.conf
 	sed -i "s/WORK_MEM/$WORK_MEM/g" /tmp/postgresql.conf
+	sed -i "s/ARCHIVE_MODE/$ARCHIVE_MODE/g" /tmp/postgresql.conf
+	sed -i "s/ARCHIVE_TIMEOUT/$ARCHIVE_TIMEOUT/g" /tmp/postgresql.conf
 }
 
 function create_pgpass() {
@@ -202,6 +243,7 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	if [[ -v SYNC_SLAVE ]]; then
 		echo "synchronous_standby_names = '" $SYNC_SLAVE "'" >> $PGDATA/postgresql.conf
 	fi
+	check_for_pitr
 fi
 }
 

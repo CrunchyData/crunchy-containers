@@ -399,6 +399,91 @@ and log into the web application using a user ID of *admin@admin.org*
 and password of *password*.  Replace YOURLOCALIP with whatever
 your local IP address happens to be.
 
+
+=== Example 15 - PITR (point in time recovery)
+
+This example, examples/standalone/pitr, provides an
+example of performing a point in time recovery.
+
+To run this example, run the following to create a 
+database container:
+
+....
+cd ./examples/standalone/pitr
+./run-master-pitr.sh
+....
+
+This database is created with the ARCHIVE_MODE and ARCHIVE_TIMEOUT
+environment variables set.  See the pitr.asciidoc for more details
+on these settings.  Warning:  this example writes the WAL segment
+files to the /tmp directory...running it for a long time could
+fill up your /tmp!
+
+Next, we will create a base backup of that database using
+this:
+....
+./run-backup.sh
+....
+
+At this point, WAL segment files are created every 60 seconds that
+contain any database changes.  These segments are stored in
+the /tmp/master-data/master-wal directory.
+
+Next, create some data in your database using this command:
+....
+psql -h 127.0.0.1 -p 12000 -U postgres postgres -c "select pg_create_restore_point('beforechanges')"
+psql -h 127.0.0.1 -p 12000 -U postgres postgres -c 'create table pitrtest (id int)'
+psql -h 127.0.0.1 -p 12000 -U postgres postgres -c "select pg_create_restore_point('afterchanges')"
+psql -h 127.0.0.1 -p 12000 -U postgres postgres -c "select pg_create_restore_point('nomorechanges')"
+psql -h 127.0.0.1 -p 12000 -U postgres postgres -c "checkpoint"
+....
+
+The commands above set restore point labels which we can
+use to mark the points in the recovery process we want to
+reference when creating our restored database.  Points before
+and after the test table were made.
+
+Next, lets edit the restore script to use the base backup files
+created in the step above.  You can view the backup path name
+under /tmp/backups/master directory.  You will see a value like
+*2016-09-21-21-03-29*.  Copy and paste that value into the 
+run-restore-pitr.sh script in the *BACKUP* environment variable.
+....
+vi ./run-restore-pitr.sh
+....
+
+Next, lets see if we can restore the database before we created the
+test table in the last command, we will restore using the backup and
+will use the *beforechanges* label as the restore target name in the PITR:
+....
+./run-restore-pitr.sh
+....
+
+The WAL segments are read and applied when restoring from the database
+backup.  At this point, you should be able to verify that the
+database was restored to the point before creating the test table:
+....
+psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
+....
+
+You should not see the test table since we referenced the restore
+label created prior to the test table being created.
+
+Next, run the following script to restore the database
+to the *afterchanges* restore point:
+....
+./run-restore-pitr-after.sh
+....
+
+After this restore, you should be able to see the test table:
+....
+psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
+....
+
+Other options exist for performing a PITR, see the pitr.asciidoc for
+full details.
+
+
 === Tips - send a signal to postgres
 
 first, find the PID of the postmaster:

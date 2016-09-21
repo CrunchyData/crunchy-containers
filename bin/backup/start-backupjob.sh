@@ -49,6 +49,11 @@ if [ ! -d "$BACKUPBASE" ]; then
 	mkdir -p $BACKUPBASE
 fi
 
+if [[ ! -v "BACKUP_LABEL" ]]; then
+	BACKUP_LABEL="crunchy backup"
+fi
+echo "BACKUP_LABEL is set to " $BACKUP_LABEL
+
 TS=`date +%Y-%m-%d-%H-%M-%S`
 BACKUP_PATH=$BACKUPBASE/$TS
 mkdir $BACKUP_PATH
@@ -64,7 +69,7 @@ chown $UID:$UID $PGPASSFILE
 
 cat $PGPASSFILE
 
-pg_basebackup --xlog --pgdata $BACKUP_PATH --host=$BACKUP_HOST --port=$BACKUP_PORT -U $BACKUP_USER
+pg_basebackup --label=$BACKUP_LABEL --xlog --pgdata $BACKUP_PATH --host=$BACKUP_HOST --port=$BACKUP_PORT -U $BACKUP_USER
 
 chown -R $UID:$UID $BACKUP_PATH
 # 

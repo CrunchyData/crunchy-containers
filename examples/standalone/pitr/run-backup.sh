@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/bin/bash 
+
 
 # Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,19 +14,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if [ -d /usr/pgsql-9.5 ]; then
-	export PGROOT=/usr/pgsql-9.5
-elif [ -d /usr/pgsql-9.4 ]; then
-	export PGROOT=/usr/pgsql-9.4
-else
-	export PGROOT=/usr/pgsql-9.3
+echo "starting backup container..."
+
+PGDATA=/tmp/backups
+
+if [ ! -d "$PGDATA" ]; then
+	echo "creating pgdata directory..."
+	mkdir -p $PGDATA
 fi
 
-echo "setting PGROOT to " $PGROOT
+sudo chown postgres:postgres $PGDATA
+sudo chcon -Rt svirt_sandbox_file_t $PGDATA
 
-export PGDATA=/pgdata/$HOSTNAME
-export PGARCHIVE=/pgdata/$HOSTNAME-wal
-export PATH=/opt/cpm/bin:$PGROOT/bin:$PATH
-export LD_LIBRARY_PATH=$PGROOT/lib
+docker stop masterbackup
+docker rm masterbackup
 
-chown postgres $PGDATA $PGARCHIVE
+docker run \
+	-v $PGDATA:/pgdata \
+	-e BACKUP_HOST=master \
+	-e BACKUP_USER=masteruser \
+	-e BACKUP_PASS=password \
+	-e BACKUP_PORT=5432 \
+	-e BACKUP_LABEL=mybackup1 \
+	--link master:master\
+	--name=masterbackup \
+	--hostname=masterbackup \
+	-d crunchydata/crunchy-backup:$CCP_IMAGE_TAG
+

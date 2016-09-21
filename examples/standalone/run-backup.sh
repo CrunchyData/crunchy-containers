@@ -35,6 +35,7 @@ docker run \
 	-e BACKUP_USER=masteruser \
 	-e BACKUP_PASS=password \
 	-e BACKUP_PORT=5432 \
+	-e BACKUP_LABEL=mybackup \
 	--link master:master\
 	--name=masterbackup \
 	--hostname=masterbackup \
