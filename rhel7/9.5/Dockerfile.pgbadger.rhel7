@@ -1,6 +1,6 @@
 FROM rhel7.2
 
-LABEL Release="1.2.1"
+LABEL Release="1.2.3"
 LABEL Vendor="Crunchy Data Solutions"
 LABEL PostgresVersion="9.5"
 
@@ -13,7 +13,7 @@ ADD conf/crunchypg95.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN yum -y install gettext libxslt libxml2 procps-ng \
-pgbadger-8.3* \
+pgbadger-9.0* \
 postgresql9?-server \
 openssh-clients \
 hostname  \

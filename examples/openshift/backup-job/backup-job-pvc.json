@@ -10,7 +10,7 @@
         ],
         "resources": {
           "requests": {
-            "storage": "75M"
+            "storage": "175M"
           }
         }
       }

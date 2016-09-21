@@ -1,6 +1,6 @@
 = Openshift Examples - Crunchy Containers
 Crunchy Data Solutions, Inc.
-v1.2.2, {docdate}
+v1.2.3, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Examples for the Openshift Environment
@@ -678,6 +678,24 @@ You should now be able to browse to http://pgadmin4.openshift.svc.cluster.local:
 and log into the web application using a user ID of *admin@admin.org*
 and password of *password*.  Replace YOURLOCALIP with whatever
 your local IP address happens to be.
+
+
+=== Openshift Example 19 - workshop
+
+This example, examples/openshift/workshop, provides an
+example of using Openshift Templates to build pods, routes, services, etc.
+
+You use the *oc new-app* command to create objects from the
+JSON templates.  This is an alternative way to create Openshift objects
+instead of using *oc create*.
+
+This example is used within a joint Redhat-Crunchy workshop that is 
+given at various conferences to demonstrate Openshift and Crunchy Containers
+working together.  Thanks to Steven Pousty from Redhat for this 
+example!
+
+See the README file within the workshop directory for instructions
+on running the example.
 
 
 == Openshift Tips

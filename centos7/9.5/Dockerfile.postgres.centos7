@@ -1,6 +1,6 @@
 FROM centos:7
 
-LABEL Release="1.2.2"
+LABEL Release="1.2.3"
 LABEL Vendor="Crunchy Data Solutions"
 
 LABEL PostgresVersion="9.5"

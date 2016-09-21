@@ -20,7 +20,7 @@ LOC=$BUILDBASE/examples/openshift/pgadmin4
 
 # uncomment the next line if you need to create an NFS PV for
 # your environment
-#envsubst < pgadmin4-nfs-pv.json |  oc create -f -
+envsubst < pgadmin4-nfs-pv.json |  oc create -f -
 
 oc create -f pgadmin4-nfs-pvc.json
 

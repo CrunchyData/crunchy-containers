@@ -43,7 +43,7 @@
                     }],
                     "containers": [{
                         "name": "backup-job-nfs",
-                        "image": "crunchydata/crunchy-backup:centos7-9.5-1.2.1.1",
+                        "image": "crunchydata/crunchy-backup:${CCP_IMAGE_TAG}",
                         "volumeMounts": [{
                             "mountPath": "/pgdata",
                             "name": "pgdata",
@@ -51,7 +51,7 @@
                         }],
                         "env": [{
                             "name": "BACKUP_HOST",
-                            "value": "single-master"
+                            "value": "master"
                         }, {
                             "name": "BACKUP_USER",
                             "value": "master"

@@ -1,6 +1,6 @@
 = Origin Installation Notes - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.2.2, {docdate}
+v1.2.3, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Installation Instructions

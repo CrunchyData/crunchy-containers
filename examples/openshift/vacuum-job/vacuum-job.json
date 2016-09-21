@@ -1,0 +1,74 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "vac-example",
+        "creationTimestamp": null,
+        "annotations": {
+            "description": "Crunchy PostgreSQL vac Example",
+            "iconClass": "icon-database",
+            "tags": "database,postgresql,replication"
+        }
+    },
+    "parameters": [{
+        "name": "CCP_IMAGE_TAG",
+        "description": "image tag to use"
+    }],
+
+    "objects": [{
+        "apiVersion": "extensions/v1beta1",
+        "kind": "Job",
+        "metadata": {
+            "name": "vacuum-job"
+        },
+        "spec": {
+            "selector": {
+                "matchLabels": {
+                    "app": "vacuum-job"
+                }
+            },
+            "template": {
+                "metadata": {
+                    "name": "vacuum-job",
+                    "labels": {
+                        "app": "vacuum-job"
+                    }
+                },
+                "spec": {
+                    "volumes": [],
+                    "containers": [{
+                        "name": "vacuum-job",
+                        "image": "crunchydata/crunchy-vacuum:${CCP_IMAGE_TAG}",
+                        "volumeMounts": [],
+                        "env": [{
+                            "name": "VAC_FULL",
+                            "value": "true"
+                        }, {
+                            "name": "VAC_TABLE",
+                            "value": "testtable"
+                        }, {
+                            "name": "JOB_HOST",
+                            "value": "master"
+                        }, {
+                            "name": "CCP_IMAGE_TAG",
+                            "value": "${CCP_IMAGE_TAG}"
+                        }, {
+                            "name": "PG_USER",
+                            "value": "testuser"
+                        }, {
+                            "name": "PG_DATABASE",
+                            "value": "userdb"
+                        }, {
+                            "name": "PG_PASSWORD",
+                            "value": "password"
+                        }, {
+                            "name": "PG_PORT",
+                            "value": "5432"
+                        }]
+                    }],
+                    "restartPolicy": "Never"
+                }
+            }
+        }
+    }]
+}
