@@ -28,7 +28,7 @@ sudo docker rm master-restore-pitr
 
 # the following path is where the base backup files
 # are located for doing the database restore
-BACKUP=/tmp/backups/master-pitr/2016-09-22-22-12-41
+BACKUP=/tmp/backups/master-pitr/2016-09-22-22-39-00
 
 # WAL_DIR contains the WAL files generated from
 # this database after recovery and ongoing afterwards
@@ -48,8 +48,8 @@ sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR $WAL_DIR
 #	-e RECOVERY_TARGET_TIME='2016-09-21 16:05:00' \
 
 sudo docker run \
+	-e RECOVERY_TARGET_NAME=beforechanges \
 	-p 12001:5432 \
-	-e RECOVERY_TARGET_NAME=afterchanges \
 	-v $DATA_DIR:/pgdata \
 	-v $WAL_DIR:/pgwal \
 	-v "$BACKUP":/backup \
