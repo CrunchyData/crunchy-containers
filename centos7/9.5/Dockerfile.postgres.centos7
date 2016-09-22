@@ -16,9 +16,9 @@ RUN yum -y install epel-release && yum -y reinstall glibc-common && \
 
 # set up cpm directory
 #
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgarchive /backup /pgconf
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /backup /pgconf /recover
 
-RUN chown -R postgres:postgres /opt/cpm /pgdata /pgarchive /backup /pgconf
+RUN chown -R postgres:postgres /opt/cpm /pgdata /pgwal /backup /pgconf /recover
 
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/
@@ -33,19 +33,16 @@ VOLUME ["/pgdata"]
 VOLUME ["/backup"]
 
 # add volumes to allow storage of postgres WAL segment files
-VOLUME ["/pgarchive"]
+VOLUME ["/pgwal"]
+
+# add volumes to locate WAL files to recover with
+VOLUME ["/recover"]
 
 # open up the postgres port
 EXPOSE 5432
 
 ADD bin/postgres /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
-
-#RUN setcap cap_chown,cap_fowner+ep /usr/bin/chown
-#RUN setcap cap_chown,cap_fowner+ep /usr/bin/chmod
-#RUN setcap cap_chown,cap_fowner+ep /opt/cpm/bin/start.sh
-#RUN setcap cap_chown,cap_fowner+ep /usr/pgsql-9.4/bin/pg_ctl
-#RUN setcap cap_chown,cap_fowner+ep /usr/pgsql-9.4/bin/initdb
 
 USER 26
 

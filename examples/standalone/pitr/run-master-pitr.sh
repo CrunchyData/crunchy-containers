@@ -29,12 +29,19 @@ sudo mkdir -p $DATA_DIR
 sudo chown postgres:postgres $DATA_DIR 
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR 
 
+WAL_DIR=/tmp/master-pitr-wal
+sudo rm -rf $WAL_DIR 
+sudo mkdir -p $WAL_DIR 
+sudo chown postgres:postgres $WAL_DIR 
+sudo chcon -Rt svirt_sandbox_file_t $WAL_DIR 
+
 sudo docker stop master-pitr
 sudo docker rm master-pitr
 
 sudo docker run \
 	-p 12000:5432 \
 	-v $DATA_DIR:/pgdata \
+	-v $WAL_DIR:/pgwal \
 	-e TEMP_BUFFERS=9MB \
 	-e MAX_CONNECTIONS=101 \
 	-e SHARED_BUFFERS=129MB \

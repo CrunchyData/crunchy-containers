@@ -61,9 +61,9 @@ chmod 0700 /pgdata/$HOSTNAME
 
 if [[ -v ARCHIVE_MODE ]]; then
 	if [ $ARCHIVE_MODE == "on" ]; then
-		mkdir -p /pgdata/$HOSTNAME-wal
-		chmod 0700 /pgdata/$HOSTNAME-wal
-		echo "creating wal directory at " /pgdata/$HOSTNAME-wal
+		mkdir -p /pgwal/$HOSTNAME
+		chmod 0700 /pgwal/$HOSTNAME
+		echo "creating wal directory at " /pgwal/$HOSTNAME
 	fi
 fi
 

@@ -441,6 +441,12 @@ psql -h 127.0.0.1 -p 12000 -U postgres postgres -c "select pg_create_restore_poi
 psql -h 127.0.0.1 -p 12000 -U postgres postgres -c "checkpoint"
 ....
 
+Next, stop the database to avoid conflicts with the WAL files while
+attempting to do a restore from them:
+....
+docker stop master-pitr
+....
+
 The commands above set restore point labels which we can
 use to mark the points in the recovery process we want to
 reference when creating our restored database.  Points before
@@ -448,7 +454,7 @@ and after the test table were made.
 
 Next, lets edit the restore script to use the base backup files
 created in the step above.  You can view the backup path name
-under /tmp/backups/master directory.  You will see a value like
+under /tmp/backups/master-pitr directory.  You will see a value like
 *2016-09-21-21-03-29*.  Copy and paste that value into the 
 run-restore-pitr.sh script in the *BACKUP* environment variable.
 ....

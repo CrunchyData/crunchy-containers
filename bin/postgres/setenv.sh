@@ -24,8 +24,8 @@ fi
 echo "setting PGROOT to " $PGROOT
 
 export PGDATA=/pgdata/$HOSTNAME
-export PGARCHIVE=/pgdata/$HOSTNAME-wal
+export PGWAL=/pgwal/$HOSTNAME
 export PATH=/opt/cpm/bin:$PGROOT/bin:$PATH
 export LD_LIBRARY_PATH=$PGROOT/lib
 
-chown postgres $PGDATA $PGARCHIVE
+chown postgres $PGDATA $PGWAL

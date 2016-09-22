@@ -28,28 +28,32 @@ sudo docker rm master-restore-pitr
 
 # the following path is where the base backup files
 # are located for doing the database restore
-BACKUP=/tmp/backups/master-pitr/2016-09-22-16-03-48
+BACKUP=/tmp/backups/master-pitr/2016-09-22-22-12-41
 
-# ARCHIVE_DIR contains the WAL files from where you want
-# to recover from...this example uses WAL files from 
-# the run-master-pitr.sh example
-ARCHIVE_DIR=/tmp/master-pitr/master-pitr-wal
+# WAL_DIR contains the WAL files generated from
+# this database after recovery and ongoing afterwards
+WAL_DIR=/tmp/master-pitr-restore-wal
+
+# RECOVER_DIR contains the WAL files from where we
+# want to recover from 
+RECOVER_DIR=/tmp/master-pitr-wal/master-pitr
 
 DATA_DIR=/tmp/master-pitr-restore
-sudo rm -rf $DATA_DIR
-sudo mkdir -p $DATA_DIR
-sudo chown postgres:postgres $DATA_DIR $ARCHIVE_DIR
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR $ARCHIVE_DIR
+sudo rm -rf $DATA_DIR $WAL_DIR
+sudo mkdir -p $DATA_DIR $WAL_DIR
+sudo chown postgres:postgres $DATA_DIR $WAL_DIR
+sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR $WAL_DIR
 #	-e RECOVERY_TARGET_NAME=beforechanges \
 #	-e RECOVERY_TARGET_NAME=afterchanges \
 #	-e RECOVERY_TARGET_TIME='2016-09-21 16:05:00' \
 
 sudo docker run \
 	-p 12001:5432 \
-	-e RECOVERY_TARGET_NAME=beforechanges \
+	-e RECOVERY_TARGET_NAME=afterchanges \
 	-v $DATA_DIR:/pgdata \
-	-v $ARCHIVE_DIR:/pgarchive \
+	-v $WAL_DIR:/pgwal \
 	-v "$BACKUP":/backup \
+	-v $RECOVER_DIR:/recover \
 	-e ARCHIVE_MODE=on \
 	-e ARCHIVE_TIMEOUT=60 \
 	-e TEMP_BUFFERS=9MB \
