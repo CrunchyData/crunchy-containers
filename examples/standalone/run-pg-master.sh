@@ -35,7 +35,6 @@ sudo docker rm master
 sudo docker run \
 	-p 12000:5432 \
 	-v $DATA_DIR:/pgdata \
-	-e CHECKSUMS=true \
 	-e TEMP_BUFFERS=9MB \
 	-e MAX_CONNECTIONS=101 \
 	-e SHARED_BUFFERS=129MB \
