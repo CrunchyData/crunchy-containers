@@ -413,6 +413,9 @@ cd ./examples/standalone/pitr
 ./run-master-pitr.sh
 ....
 
+It takes about 1 minute for the database to become ready
+for use after initially starting.
+
 This database is created with the ARCHIVE_MODE and ARCHIVE_TIMEOUT
 environment variables set.  See the pitr.asciidoc for more details
 on these settings.  Warning:  this example writes the WAL segment
@@ -465,6 +468,17 @@ database was restored to the point before creating the test table:
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
 ....
+
+PostgreSQL allows you to pause the recovery process if the target name
+or time is specified.  This pause would allow a DBA a chance to review
+the recovery time/name and see if this is what they want or expect.  If so,
+the DBA can run the following command to resume and complete the recovery:
+....
+psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
+....
+
+Until you run the statement above, the database will be left in read-only
+mode.
 
 You should not see the test table since we referenced the restore
 label created prior to the test table being created.

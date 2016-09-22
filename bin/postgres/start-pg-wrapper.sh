@@ -66,6 +66,7 @@ function check_for_pitr() {
 	echo "checking for PITR WAL files to recover with.."
 	if [ "$(ls -A /pgarchive)" ]; then
 		echo "found non-empty /pgarchive ...assuming a PITR is requested"
+		rm $PGDATA/pg_xlog/*0* $PGDATA/pg_xlog/archive_status/*0*
 		ls -l /pgarchive
 		cp /opt/cpm/conf/pitr-recovery.conf /tmp
 		export ENABLE_RECOVERY_TARGET_NAME=#
@@ -205,6 +206,10 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	mkdir -p $PGDATA
 
 	check_for_restore
+	if [ "$(ls -A /pgarchive)" ]; then
+		echo "found non-empty /pgarchive ...assuming a PITR is requested...removing any pg_xlog files"
+		rm $PGDATA/pg_xlog/*0* $PGDATA/pg_xlog/archive_status/*0*
+	fi
 
         echo "starting db" >> /tmp/start-db.log
 	if [ -f /pgconf/postgresql.conf ]; then
