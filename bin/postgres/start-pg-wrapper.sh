@@ -34,11 +34,17 @@ function initdb_logic() {
 	echo "doing initdb...."
 
 #	tar xzf /opt/cpm/conf/data.tar.gz --directory=$PGDATA
+	cmd="initdb -D $PGDATA "
 	if [[ -v PG_LOCALE ]]; then
-		initdb --locale=$PG_LOCALE -D $PGDATA  > /tmp/initdb.log &> /tmp/initdb.err
-	else
-		initdb -D $PGDATA  > /tmp/initdb.log &> /tmp/initdb.err
+		cmd+=" --locale="$PG_LOCALE
 	fi
+	if [[ -v CHECKSUMS ]]; then
+		cmd+=" --data-checksums"
+	fi
+	cmd+=" > /tmp/initdb.log &> /tmp/initdb.err"
+
+	echo $cmd
+	eval $cmd
 
 	echo "overlay pg config with your settings...."
 	cp /tmp/postgresql.conf $PGDATA
@@ -127,7 +133,7 @@ function fill_conf_file() {
 	if [[ -v ARCHIVE_TIMEOUT ]]; then
 		echo "overriding ARCHIVE_TIMEOUT setting to " + $ARCHIVE_TIMEOUT
 	else
-		ARCHIVE_MODE=60
+		ARCHIVE_TIMEOUT=60
 	fi
 
 	cp /opt/cpm/conf/postgresql.conf.template /tmp/postgresql.conf
