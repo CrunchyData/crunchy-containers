@@ -54,6 +54,15 @@ executed when the database is first created.
    not set, the default locale is used
  * SYNC_SLAVE - if set, this value is used to specify the application_name
    of a slave that will be used for a synchronous replication
+ * CHECKSUMS - if set, this value is used to enable the *--data-checksums*
+   option when initdb is executed at initialization, if not set, the
+   default is to *not* enable data checksums
+ * ARCHIVE_MODE - if set to *on*, will enable continious WAL archiving
+   by setting the value within the postgresql.conf file *archive_mode*
+   setting, if not set, the default is *off*
+ * ARCHIVE_TIMEOUT - if set to a number (in seconds) , will specify
+   the postgresql.conf *archive_timeout* setting, if not set, the 
+   default value of *60* is used.
 
 === Features
 
@@ -66,6 +75,9 @@ The following features are supported by the crunchy-postgres container:
  * ability to override the default setup.sql script
  * ability to set the database locale
  * ability to specify a synchronous slave application_name
+ * ability to specify a recovery using PITR and WAL files, see
+   pitr.asciidoc for a detailed design explaination of how PITR
+   is implemented within the container suite
 
 === Locale Support
 
@@ -103,6 +115,19 @@ a database restore.
 
 The container is meant to be using a NFS or similar network file system
 to persist database backups.
+
+=== Environment Variables
+
+ * BACKUP_LABEL - when set, will set the label of the backup, if not
+   set the default label used is *crunchy-backup*
+ * BACKUP_HOST - required, this is the database we will be doing the
+   backup for
+ * BACKUP_USER - required, this is the database user we will be doing the
+   backup with
+ * BACKUP_PASS - required, this is the database password we will be doing the
+   backup with
+ * BACKUP_PORT - required, this is the database port we will be doing the
+   backup with
 
 == crunchy-collect 
 
