@@ -425,7 +425,7 @@ fill up your /tmp!
 Next, we will create a base backup of that database using
 this:
 ....
-./run-backup.sh
+./run-master-pitr-backup.sh
 ....
 
 At this point, WAL segment files are created every 60 seconds that
@@ -469,6 +469,9 @@ database was restored to the point before creating the test table:
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
 ....
 
+This sql command should show that the pitrtest table does not exist
+at this recovery time.
+
 PostgreSQL allows you to pause the recovery process if the target name
 or time is specified.  This pause would allow a DBA a chance to review
 the recovery time/name and see if this is what they want or expect.  If so,
@@ -480,19 +483,35 @@ psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume
 Until you run the statement above, the database will be left in read-only
 mode.
 
-You should not see the test table since we referenced the restore
-label created prior to the test table being created.
+Next, run the script to restore the database
+to the *afterchanges* restore point, do this by updating the
+RECOVERY_TARGET_NAME to *afterchanges*:
+....
+vi ./run-restore-pitr.sh
+./run-restore-pitr.sh
+....
 
-Next, run the following script to restore the database
-to the *afterchanges* restore point:
-....
-./run-restore-pitr-after.sh
-....
 
 After this restore, you should be able to see the test table:
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
+psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
 ....
+
+
+Lastly, lets recovery using all of the WAL files, this will get the
+restored database as current as possible, edit the script
+to remove the RECOVERY_TARGET_NAME environment setting completely:
+....
+./run-restore-pitr.sh
+sleep 30
+psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
+psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'create table foo (id int)'
+....
+
+At this point, you should be able to create new data in the restored database
+and the test table should be present.  When you recover the entire
+WAL history, resuming the recovery is not necessary to enable writes.
 
 Other options exist for performing a PITR, see the pitr.asciidoc for
 full details.

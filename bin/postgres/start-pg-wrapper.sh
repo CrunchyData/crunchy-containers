@@ -48,6 +48,7 @@ function initdb_logic() {
 }
 
 function check_for_restore() {
+	echo "checking_for_restore"
 	ls -l /backup
 	if [ ! -f /backup/$BACKUP_PATH/postgresql.conf ]; then
 		echo "no backup file found..."
@@ -66,7 +67,6 @@ function check_for_pitr() {
 	echo "checking for PITR WAL files to recover with.."
 	if [ "$(ls -A /pgarchive)" ]; then
 		echo "found non-empty /pgarchive ...assuming a PITR is requested"
-		rm $PGDATA/pg_xlog/*0* $PGDATA/pg_xlog/archive_status/*0*
 		ls -l /pgarchive
 		cp /opt/cpm/conf/pitr-recovery.conf /tmp
 		export ENABLE_RECOVERY_TARGET_NAME=#
@@ -169,6 +169,7 @@ function waitforpg() {
 }
 
 function initialize_replica() {
+echo "initialize_replica"
 rm -rf $PGDATA/*
 chmod 0700 $PGDATA
 
@@ -200,6 +201,7 @@ cp /tmp/pgrepl-recovery.conf $PGDATA/recovery.conf
 # the initial start of postgres will create the database
 #
 function initialize_master() {
+echo "initialize_master"
 if [ ! -f $PGDATA/postgresql.conf ]; then
         echo "pgdata is empty and id is..."
 	id
@@ -284,6 +286,9 @@ case "$PG_MODE" in
 	"master")
 	echo "working on master..."
 	initialize_master
+	;;
+	*)
+	echo "FATAL:  PG_MODE is not an accepted value...check your PG_MODE env var"
 	;;
 esac
 
