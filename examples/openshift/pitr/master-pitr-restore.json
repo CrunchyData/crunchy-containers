@@ -77,7 +77,17 @@
         "spec": {
             "volumes": [{
                 "name": "pgdata",
+                "persistentVolumeClaim": {
+                    "claimName": "master-pitr-restore-pgdata-pvc"
+                }
+            }, {
+                "name": "pgwal",
                 "emptyDir": {}
+            }, {
+                "name": "recover",
+                "persistentVolumeClaim": {
+                    "claimName": "master-pitr-recover-pvc"
+                }
             }, {
                 "name": "backup",
                 "persistentVolumeClaim": {
@@ -108,7 +118,7 @@
                     "value": "password"
                 }, {
                     "name": "BACKUP_PATH",
-                    "value": "master-pitr/2016-09-22-20-27-21"
+                    "value": "master-pitr/2016-09-23-20-03-00"
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"
@@ -127,8 +137,12 @@
                     "name": "pgdata",
                     "readOnly": false
                 }, {
-                    "mountPath": "/pgarchive",
-                    "name": "pgarchive",
+                    "mountPath": "/pgwal",
+                    "name": "pgwal",
+                    "readOnly": false
+                }, {
+                    "mountPath": "/recover",
+                    "name": "recover",
                     "readOnly": true
                 }, {
                     "mountPath": "/backup",

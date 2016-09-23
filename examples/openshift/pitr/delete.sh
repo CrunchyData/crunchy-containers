@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete service single-master single-slave
-oc delete pod single-master
-oc delete pod single-slave
-$BUILDBASE/examples/waitforterm.sh single-master oc
+oc delete service master-pitr master-pitr-restore
+oc delete pod master-pitr
+oc delete job master-pitr-backup-job
+oc delete pvc master-pitr-pvc backup-master-pitr-pvc master-pitr-recover-pvc master-pitr-restore-pvc master-pitr-wal-pvc
+oc delete pv master-pitr-pv backup-master-pitr-pv master-pitr-recover-pv master-pitr-restore-pv master-pitr-wal-pv
+
+sudo rm -rf /nfsfileshare/WAL/master-pitr
+sudo rm -rf /nfsfileshare/master-pitr

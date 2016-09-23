@@ -1,0 +1,20 @@
+  {
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+          "name": "master-pitr-pvc"
+      },
+      "spec": {
+          "labels": {
+              "name": "master-pitr-pv"
+          },
+          "accessModes": [
+              "ReadWriteMany"
+          ],
+          "resources": {
+              "requests": {
+                  "storage": "178M"
+              }
+          }
+      }
+  }

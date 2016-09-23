@@ -53,6 +53,9 @@
                             "name": "BACKUP_HOST",
                             "value": "master-pitr"
                         }, {
+                            "name": "BACKUP_LABEL",
+                            "value": "somebackup"
+                        }, {
                             "name": "BACKUP_USER",
                             "value": "master"
                         }, {

@@ -50,7 +50,7 @@ if [ ! -d "$BACKUPBASE" ]; then
 fi
 
 if [[ ! -v "BACKUP_LABEL" ]]; then
-	BACKUP_LABEL="crunchy backup"
+	BACKUP_LABEL="crunchybackup"
 fi
 echo "BACKUP_LABEL is set to " $BACKUP_LABEL
 

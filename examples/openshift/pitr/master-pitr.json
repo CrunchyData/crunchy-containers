@@ -126,6 +126,11 @@
                     "readOnly": false
                 },
 		{
+                    "mountPath": "/pgwal",
+                    "name": "pgwal",
+                    "readOnly": false
+                },
+		{
                     "mountPath": "/backup",
                     "name": "backup",
                     "readOnly": true
@@ -135,7 +140,15 @@
             "volumes": [
 	    {
                 "name": "pgdata",
-                "emptyDir": {}
+		"persistentVolumeClaim": {
+			"claimName": "master-pitr-pvc"
+		}
+            },
+	    {
+                "name": "pgwal",
+		"persistentVolumeClaim": {
+			"claimName": "master-pitr-wal-pvc"
+		}
             },
 	    {
                 "name": "backup",

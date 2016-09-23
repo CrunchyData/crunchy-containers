@@ -2,18 +2,18 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "master-pitr-restore-pv",
+        "name": "master-pitr-recover-pv",
         "labels": {
-            "name": "master-pitr-restore-pv"
+            "name": "master-pitr-recover-pv"
         }
     },
     "spec": {
         "capacity": {
             "storage": "199M"
         },
-        "accessModes": ["ReadWriteMany"],
+        "accessModes": ["ReadOnlyMany"],
         "nfs": {
-            "path": "/nfsfileshare/backups",
+            "path": "/nfsfileshare/WAL/master-pitr",
             "server": "$LOCAL_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"
