@@ -41,10 +41,10 @@
                 "value": "5432"
             }, {
                 "name": "PG_MASTER_SERVICE",
-                "value": "master"
+                "value": "master-1"
             }, {
                 "name": "PG_SLAVE_SERVICE",
-                "value": "replica"
+                "value": "slave-1"
             }],
             "volumeMounts": [{
                 "mountPath": "/pgconf",
