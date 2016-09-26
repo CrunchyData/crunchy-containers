@@ -12,7 +12,7 @@ explained below.
 
 === Setup
 For these examples, I built a centos7.2 VM, and configured it
-according to the Portworx documentation link:https://github.com/portworx/px-dev[here].
+according to the Portworx documentation link:http://docs.portworx.com/[here].
 
 The short list of setup commands is like this on a Centos7.2 host:
 ....
