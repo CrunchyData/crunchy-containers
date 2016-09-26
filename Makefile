@@ -81,6 +81,19 @@ grafana:
 	make versiontest
 	sudo docker build -t crunchy-grafana -f $(CCP_BASEOS)/Dockerfile.grafana.$(CCP_BASEOS) .
 	docker tag crunchy-grafana crunchydata/crunchy-grafana:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
+vac:
+	make versiontest
+	cd vacuum && godep go install vacuum.go
+	cp $(GOBIN)/vacuum bin/vacuum
+	sudo docker build -t crunchy-vacuum -f $(CCP_BASEOS)/Dockerfile.vacuum.$(CCP_BASEOS) .
+	docker tag crunchy-vacuum crunchydata/crunchy-vacuum:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
+dbaserver:
+	cp /usr/bin/oc bin/dba
+	cp /usr/bin/kubectl bin/dba
+	cd dba && godep go install dbaserver.go
+	cp $(GOBIN)/dbaserver bin/dba
+	sudo docker build -t crunchy-dba -f $(CCP_BASEOS)/Dockerfile.dba.$(CCP_BASEOS) .
+	docker tag crunchy-dba crunchydata/crunchy-dba:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
 all:
 	make versiontest
@@ -95,6 +108,8 @@ all:
 	make grafana
 	make promgateway
 	make prometheus
+	make vac
+	make pgadmin4
 push:
 	./bin/push-to-dockerhub.sh
 default:
