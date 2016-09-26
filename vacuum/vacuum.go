@@ -32,6 +32,7 @@ func main() {
 	logger.Println("vacuum " + VERSION + ": starting")
 
 	parms, err := vacuumapi.GetParms(logger)
+	parms.Print(logger)
 
 	var conn *sql.DB
 
