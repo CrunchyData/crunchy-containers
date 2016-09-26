@@ -1,0 +1,26 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "master-pitr-restore",
+        "labels": {
+            "name": "master-pitr-restore"
+        }
+    },
+    "spec": {
+        "ports": [{
+            "protocol": "TCP",
+            "port": 5432,
+            "targetPort": 5432,
+            "nodePort": 0
+        }],
+        "selector": {
+            "name": "master-pitr-restore"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+    },
+    "status": {
+        "loadBalancer": {}
+    }
+}

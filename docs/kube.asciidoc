@@ -624,6 +624,23 @@ kubectl patch petset slave -p '{"spec":{"replicas":3}}'
 ....
 
 
+=== Kube Example 16 - PITR (point in time recovery)
+
+This example is identical to the openshift PITR example, see
+the openshift.asciidoc, Example 20 for details on how
+the PITR example works.
+
+The only differences are the following:
+ 
+ * paths are *examples/kube/pitr*
+ * JSON and scripts are modifed to work with Kube
+ * *kubectl* commands are used instead of *oc* commands
+ * database services resolve to *default.svc.cluster.local* instead
+   of *openshift.svc.cluster.local*
+
+See link:pitr.asciidoc for details on PITR concepts and how PITR is implemented
+within the Suite.
+
 
 === Tip 1
 

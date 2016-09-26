@@ -1,0 +1,17 @@
+  {
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+          "name": "master-pitr-recover-pvc"
+      },
+      "spec": {
+          "accessModes": [
+              "ReadOnlyMany"
+          ],
+          "resources": {
+              "requests": {
+                  "storage": "178M"
+              }
+          }
+      }
+  }

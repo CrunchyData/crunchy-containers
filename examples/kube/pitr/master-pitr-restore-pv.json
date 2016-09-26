@@ -1,0 +1,21 @@
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "master-pitr-restore-pv",
+        "labels": {
+            "name": "master-pitr-restore-pv"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "199M"
+        },
+        "accessModes": ["ReadWriteMany"],
+        "nfs": {
+            "path": "/nfsfileshare/backups",
+            "server": "$LOCAL_IP"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
