@@ -701,7 +701,7 @@ on running the example.
 === Openshift Example 20 - PITR (point in time recovery)
 
 This is a complex example.  For details on how PITR is implemented
-within the Suite, see the pitr.asciidoc for details and background.
+within the Suite, see the link:pitr.asciidoc[PITR Documentation] for details and background.
 
 This example, examples/openshift/pitr, provides an
 example of performing a PITR using Openshift.

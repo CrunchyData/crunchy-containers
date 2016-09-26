@@ -638,7 +638,7 @@ The only differences are the following:
  * database services resolve to *default.svc.cluster.local* instead
    of *openshift.svc.cluster.local*
 
-See link:pitr.asciidoc for details on PITR concepts and how PITR is implemented
+See link:pitr.asciidoc[PITR Documentation] for details on PITR concepts and how PITR is implemented
 within the Suite.
 
 
