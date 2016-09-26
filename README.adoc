@@ -47,7 +47,7 @@ On an EL7 system, docker can be installed with the following commands:
 
 2) Building the Containers (Optional)
 
-If you don't want to pull the containers from link:https://hub.docker.com/u/crunchydata/dashboard/[DockerHub], you can perform a build of
+If you don't want to pull the containers from link:https://hub.docker.com/u/crunchydata/[DockerHub], you can perform a build of
 all the containers locally on your development host.
 
 Complete build and install documentation is found here: link:docs/install.asciidoc[Install Docs].  The provided Dockerfiles build the containers
