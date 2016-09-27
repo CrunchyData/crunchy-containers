@@ -34,7 +34,8 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
 export CCP_PGVERSION=9.5
-export CCP_VERSION=1.2.1
+export CCP_VERSION=1.2.2
+export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PGVERSION-$CCP_VERSION
 export BUILDBASE=$GOPATH/src/github.com/crunchydata/crunchy-containers
 ....
 
