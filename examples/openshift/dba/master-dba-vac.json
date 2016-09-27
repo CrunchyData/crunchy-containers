@@ -32,7 +32,7 @@
     }, {
         "name": "PG_DATABASE",
         "description": "The name of the database that will be created",
-        "value": "userdb"
+        "value": "postgres"
     }, {
         "name": "PG_ROOT_PASSWORD",
         "description": "The password for the PG adminitrator",

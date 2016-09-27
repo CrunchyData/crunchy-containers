@@ -23,17 +23,18 @@ import (
 )
 
 type Parms struct {
-	JOB_HOST    string
-	VAC_FULL    bool
-	VAC_ANALYZE bool
-	VAC_VERBOSE bool
-	VAC_FREEZE  bool
-	VAC_TABLE   string
-	PG_USER     string
-	PG_PORT     string
-	PG_DATABASE string
-	PG_PASSWORD string
-	CMD         string
+	JOB_HOST      string
+	VAC_FULL      bool
+	VAC_ANALYZE   bool
+	VAC_VERBOSE   bool
+	VAC_FREEZE    bool
+	VAC_TABLE     string
+	CCP_IMAGE_TAG string
+	PG_USER       string
+	PG_PORT       string
+	PG_DATABASE   string
+	PG_PASSWORD   string
+	CMD           string
 }
 
 func GetParms(logger *log.Logger) (*Parms, error) {

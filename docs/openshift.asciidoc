@@ -94,6 +94,12 @@ pgpool will proxy the SQL commands to the master or slave(s)
 depending on the type of SQL command.  Writes will always
 be sent to the master, and reads will be sent (round-robin)
 to the slave(s).
+
+You can view the nodes that pgpool is configured for by
+running:
+....
+psql -h pgpool-rc -U testuser userdb -c 'show pool_nodes'
+....
  
 === Openshift Example 4 - master-slave-rc-dc-slaves-only.json
 

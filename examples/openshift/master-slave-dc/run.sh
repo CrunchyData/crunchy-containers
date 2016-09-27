@@ -14,7 +14,6 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-oc project pg-project
 LOC=$BUILDBASE/examples/openshift/master-slave-dc
 
 oc process -f $LOC/master-slave-rc-dc-slaves-only.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
