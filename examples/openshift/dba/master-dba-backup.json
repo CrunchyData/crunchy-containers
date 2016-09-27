@@ -102,7 +102,7 @@
                     "value": "0 5,10,15,20,25,30,35,40,45,50,55 * * * *"
                 }, {
                     "name": "BACKUP_PV_CAPACITY",
-                    "value": "1Gi"
+                    "value": "150M"
                 }, {
                     "name": "BACKUP_PV_PATH",
                     "value": "/nfsfileshare"
