@@ -10,28 +10,24 @@ LABEL PostgresVersion="9.5"
 # Crunchy repo
 ADD conf/CRUNCHY-GPG-KEY.public  /
 ADD conf/crunchypg95.repo /etc/yum.repos.d/
-RUN rpm --import CRUNCHY-GPG-KEY.public
+RUN rpm --import CRUNCHY-GPG-KEY.public && groupadd -g 26 postgres && useradd -g 26 -u 26 postgres
 
-RUN yum -y install gettext libxslt libxml2 procps-ng \
-pgbadger-9.0* \
-postgresql9?-server \
-openssh-clients \
-hostname  \
- && yum clean all -y
+RUN yum -y install procps-ng pgbadger-9.0* openssh-clients hostname && yum clean all -y
 
 # set up cpm directory
 #
 RUN mkdir -p /opt/cpm/bin
 
-# open up the postgres port
+# open up the badger port
 EXPOSE 10000
 
 ADD bin/pgbadger /opt/cpm/bin
-ADD bin /opt/cpm/bin
 
 RUN chown -R postgres:postgres /opt/cpm/bin
 
 USER postgres
+
+VOLUME ["/pgdata"]
 
 CMD ["/opt/cpm/bin/start-pgbadger.sh"]
 
