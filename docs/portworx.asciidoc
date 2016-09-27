@@ -101,12 +101,12 @@ These steps perform the following:
  * the container maps the PostgreSQL port of 5432 in the container to your 
    local host port of 12000.
 
-The container creates a default database called 'testdb', a default
-user called 'testuser' with a default password of 'testpsw', you can
+The container creates a default database called 'userdb', a default
+user called 'testuser' with a default password of 'password', you can
 use this to connect from your local host as follows:
 ....
-psql -h localhost -p 12000 -U testuser -W testdb
-psql -h localhost -p 12000 -U postgres -W postgres
+psql -h localhost -p 12000 -U testuser  userdb
+psql -h localhost -p 12000 -U postgres  postgres
 ....
 
 === Example 2 - Creating a replica database 
