@@ -13,18 +13,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if [ -z "$CCP_VERSION" ]; then
-	echo "CCP_VERSION not set"
+if [ -z "$CCP_IMAGE_TAG" ]; then
+	echo "CCP_IMAGE_TAG not set"
 	exit 1
 fi
-docker pull crunchydata/crunchy-prometheus:$CCP_VERSION
-docker pull crunchydata/crunchy-promgateway:$CCP_VERSION
-docker pull crunchydata/crunchy-grafana:$CCP_VERSION
-docker pull crunchydata/crunchy-dns:$CCP_VERSION
-docker pull crunchydata/crunchy-collect:$CCP_VERSION
-docker pull crunchydata/crunchy-pgbadger:$CCP_VERSION
-docker pull crunchydata/crunchy-pgpool:$CCP_VERSION
-docker pull crunchydata/crunchy-watch:$CCP_VERSION
-docker pull crunchydata/crunchy-backup:$CCP_VERSION
-docker pull crunchydata/crunchy-postgres:$CCP_VERSION
-docker pull crunchydata/crunchy-pgbouncer:$CCP_VERSION
+docker pull crunchydata/crunchy-prometheus:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-grafana:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-dns:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-collect:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-pgbadger:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-watch:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-backup:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-pgadmin4:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-dba:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-vacuum:$CCP_IMAGE_TAG
