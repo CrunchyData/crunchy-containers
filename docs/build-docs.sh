@@ -73,3 +73,13 @@ asciidoc \
 ./kube.asciidoc
 
 asciidoctor-pdf ./kube.asciidoc --out-file ./pdf/kube.pdf
+
+asciidoc \
+-b bootstrap \
+-f ./demo.conf \
+-o ./htmldoc/pitr.html \
+-a toc2 \
+-a toc-placement=right \
+./pitr.asciidoc
+
+asciidoctor-pdf ./pitr.asciidoc --out-file ./pdf/pitr.pdf
