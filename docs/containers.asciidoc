@@ -504,8 +504,6 @@ The crunchy-ppgadmin4 container executes the pgadmin4 web application.
 The pgadmin4 project is found at the following location:
 link:https://www.pgadmin.org/
 
-The crunchy-pgadmin4 container (version 1.2.2) is built using the v1.0 Beta 3 version of pgadmin4.
-
 pgadmin4 provides a web user interface to postgresql databases.  A
 sample screenshot is below:
 
