@@ -134,7 +134,7 @@ function fill_conf_file() {
 	if [[ -v ARCHIVE_TIMEOUT ]]; then
 		echo "overriding ARCHIVE_TIMEOUT setting to " + $ARCHIVE_TIMEOUT
 	else
-		ARCHIVE_TIMEOUT=60
+		ARCHIVE_TIMEOUT=0
 	fi
 
 	cp /opt/cpm/conf/postgresql.conf.template /tmp/postgresql.conf
