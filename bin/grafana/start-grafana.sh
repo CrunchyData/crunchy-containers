@@ -15,12 +15,9 @@
 
 export PATH=$PATH:/opt/cpm/bin
 
-# overlay grafana defaults with our own
-cp /opt/cpm/conf/defaults.ini /opt/cpm/bin/grafana*/conf
-
 # start up grafana server 
 cd /opt/cpm/bin/grafana*
-./bin/grafana-server web 
+./bin/grafana-server -config /opt/cpm/conf/defaults.ini web 
 
 while true; do
 	echo "sleeping"

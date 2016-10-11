@@ -974,6 +974,9 @@ exclude=docker-1.9* docker-selinux-1.9*
 
 === Tip 12: DNS configuration for Openshift development
 
+As of OSE 3.3, the following DNS modifications are not typically necessary
+any longer....but I'm leaving them here as a reference....
+
 Luke Meyer from Redhat wrote an excellent blog on how
 to configure dnsmasq and Openshift, it is located here:
 
@@ -997,6 +1000,20 @@ prepend domain-name-servers 192.168.0.109;
 If you dont have your DNS configured correctly, replication controllers
 and deployment configs basically will not work.
 
+=== Tip 13: system policys for pv creation and listing	
+
+For my testing, I wanted to allow the *system* user to be able
+to create and list persistent volumes, as of OSE 3.3, I had to
+enter these commands as the *root* user after installation to
+modify the policies:
+....
+oadm policy add-role-to-user cluster-reader system
+oc describe clusterPolicyBindings :default
+oadm policy add-cluster-role-to-user cluster-reader system
+oc describe clusterPolicyBindings :default
+oc describe clusterPolicyBindings :default
+oadm policy add-cluster-role-to-user cluster-admin system
+....
 
 == Legal Notices
 

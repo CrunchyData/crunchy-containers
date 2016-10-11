@@ -14,8 +14,6 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-oc project openshift
-
 envsubst < master-nfs-pv.json |  oc create -f -
 oc create -f master-nfs-pvc.json
 oc process -f master-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

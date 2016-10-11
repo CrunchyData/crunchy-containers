@@ -18,10 +18,8 @@
 #
 source $BUILDBASE/examples/envvars.sh
 
-oc project openshift
-
 LOC=$BUILDBASE/examples/openshift/metrics
 
-oc process -f $LOC/prometheus.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-oc process -f $LOC/promgateway.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+#oc process -f $LOC/prometheus.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+#oc process -f $LOC/promgateway.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
 oc process -f $LOC/grafana.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
