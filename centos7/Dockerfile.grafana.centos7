@@ -8,7 +8,6 @@ RUN yum -y install procps-ng openssh-clients  hostname   && yum clean all -y
 VOLUME ["/data"]
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
-RUN chown -R daemon:daemon /opt/cpm
 
 # open up the grafana port
 EXPOSE 3000
@@ -17,7 +16,8 @@ ADD grafana.tar.gz /opt/cpm/bin
 ADD bin/grafana /opt/cpm/bin
 ADD conf/grafana /opt/cpm/conf
 
-USER root
+RUN chown -R daemon:daemon /opt/cpm
+USER daemon
 
 CMD ["/opt/cpm/bin/start-grafana.sh"]
 
