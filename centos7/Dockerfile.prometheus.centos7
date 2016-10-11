@@ -10,7 +10,6 @@ VOLUME ["/data"]
 # set up cpm directory
 #
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
-RUN chown -R daemon:daemon /opt/cpm
 
 # open up the prometheus port
 EXPOSE 9090
@@ -19,7 +18,8 @@ ADD prometheus.tar.gz /opt/cpm/bin
 ADD bin/prometheus /opt/cpm/bin
 ADD conf/prometheus /opt/cpm/conf
 
-USER root
+RUN chown -R daemon:daemon /opt/cpm
+USER daemon
 
 CMD ["/opt/cpm/bin/start-prometheus.sh"]
 
