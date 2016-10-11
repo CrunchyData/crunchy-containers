@@ -14,7 +14,6 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-oc project openshift
 LOC=$BUILDBASE/examples/openshift/master-restore
 
 envsubst <  $LOC/master-restore-pv.json  | oc create -f -
