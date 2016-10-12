@@ -17,6 +17,5 @@ source $BUILDBASE/examples/envvars.sh
 LOC=$BUILDBASE/examples/openshift/watch
 
 oc create -f $LOC/watch-sa.json
-oc policy add-role-to-group edit system:serviceaccounts -n openshift
-oc policy add-role-to-group edit system:serviceaccounts -n default
+oc policy add-role-to-group edit system:serviceaccounts -n pgproject
 oc process -f $LOC/watch.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
