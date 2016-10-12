@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc project openshift
-
 LOC=$BUILDBASE/examples/openshift/master-restore-nfs
 
 IPADDRESS=`hostname --ip-address`

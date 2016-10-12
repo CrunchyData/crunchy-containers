@@ -13,8 +13,6 @@
 # limitations under the License.
 source $BUILDBASE/examples/envvars.sh
 
-oc project openshift
-
 LOC=$BUILDBASE/examples/openshift/watchtest
 
 oc create -f $LOC/watch-sa.json

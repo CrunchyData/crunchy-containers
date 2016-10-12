@@ -14,8 +14,6 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-oc project openshift
-
 LOC=$BUILDBASE/examples/openshift/secret
 
 oc create -f $LOC/pguser-secret.json

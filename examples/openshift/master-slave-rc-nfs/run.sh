@@ -14,7 +14,6 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-oc project openshift
 LOC=$BUILDBASE/examples/openshift/master-slave-rc-nfs
 
 envsubst <  $LOC/master-slave-rc-nfs-pv.json  | oc create -f -

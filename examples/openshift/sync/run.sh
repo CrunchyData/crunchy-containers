@@ -14,8 +14,6 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-oc project openshift
-
 LOC=$BUILDBASE/examples/openshift/sync
 
 oc create -f $LOC/master-service.json

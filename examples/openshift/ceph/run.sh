@@ -15,8 +15,6 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-oc project openshift
-
 LOC=$BUILDBASE/examples/openshift/ceph
 
 oc create -f $LOC/ceph-secret.json

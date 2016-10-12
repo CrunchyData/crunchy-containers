@@ -15,8 +15,6 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-oc project openshift
-
 LOC=$BUILDBASE/examples/openshift/custom-config
 NFS=/nfsfileshare/custom-config
 sudo mkdir $NFS

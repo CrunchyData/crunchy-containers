@@ -16,7 +16,6 @@ source $BUILDBASE/examples/envvars.sh
 
 echo "WARNING: make sure to edit the gluster-endpoint.json with your gluster IP address"
 
-oc project openshift
 LOC=$BUILDBASE/examples/openshift/gluster
 
 oc create -f $LOC/gluster-endpoint.json

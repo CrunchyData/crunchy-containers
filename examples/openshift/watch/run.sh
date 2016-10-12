@@ -14,7 +14,6 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-oc project openshift
 LOC=$BUILDBASE/examples/openshift/watch
 
 oc create -f $LOC/watch-sa.json
