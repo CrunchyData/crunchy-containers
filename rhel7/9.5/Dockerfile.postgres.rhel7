@@ -43,13 +43,6 @@ EXPOSE 5432
 ADD bin/postgres /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
 
-#RUN setcap cap_chown,cap_fowner+ep /usr/bin/chown
-#RUN setcap cap_chown,cap_fowner+ep /usr/bin/chmod
-#RUN setcap cap_chown,cap_fowner+ep /opt/cpm/bin/start.sh
-#RUN setcap cap_chown,cap_fowner+ep /usr/pgsql-9.4/bin/pg_ctl
-#RUN setcap cap_chown,cap_fowner+ep /usr/pgsql-9.4/bin/initdb
-
-
 USER 26
 
 CMD ["/opt/cpm/bin/start.sh"]

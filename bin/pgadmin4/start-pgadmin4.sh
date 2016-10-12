@@ -15,20 +15,36 @@
 
 export PATH=$PATH:/usr/pgsql-9.*/bin
 
+# this lets us run initdb and postgres on Openshift
+# when it is configured to use random UIDs
+function ose_hack() {
+        export USER_ID=$(id -u)
+        export GROUP_ID=$(id -g)
+        envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
+        export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
+        export NSS_WRAPPER_PASSWD=/tmp/passwd
+        export NSS_WRAPPER_GROUP=/etc/group
+}
+
+id
+ose_hack
+id
+
 echo $PATH is the path
-#mkdir $HOME/.pgadmin
-#cp /data/pgadmin4.db $HOME/.pgadmin/
-if [ ! -f "$HOME/.pgadmin/config_local.py" ]; then
-	echo "WARNING: could not find mounted config files...using defaults which will not get saved if the container is deleted"
-	mkdir $HOME/.pgadmin
-	cp /opt/cpm/conf/config_local.py $HOME/.pgadmin
-	cp /opt/cpm/conf/pgadmin4.db $HOME/.pgadmin
+export THISDIR=~/.pgadmin
+if [ ! -f "$THISDIR/config_local.py" ]; then
+	echo "WARNING: could not find mounted config files...using defaults as starting point"
+	mkdir $THISDIR
+	cp /opt/cpm/conf/config_local.py $THISDIR/
+	cp /opt/cpm/conf/pgadmin4.db $THISDIR/
 fi
-cp $HOME/.pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4
+
+cp $THISDIR/config_local.py /usr/lib/python2.7/site-packages/pgadmin4
 
 python /usr/lib/python2.7/site-packages/pgadmin4/pgAdmin4.py
 
-#while true; do
-#sleep 1000
-#one
+while true; do
+	echo "debug sleeping..."
+	sleep 1000
+done
 

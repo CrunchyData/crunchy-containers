@@ -8,25 +8,34 @@ LABEL PostgresVersion="9.5"
 # PGDG Postgres repo
 RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-1.noarch.rpm
 
-RUN yum -y install epel-release && yum -y install gcc python-devel python-pip  procps-ng openssh-clients hostname  && yum -y install postgresql9?-devel postgresql9?-server && yum clean all -y
+RUN yum -y install epel-release && yum -y install gcc python-devel python-pip  procps-ng openssh-clients hostname  && yum -y install postgresql9?-devel postgresql9?-server nss_wrapper gettext && yum clean all -y
 
 # set up cpm directory
 #
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
-RUN chown -R root:root /opt/cpm
 RUN export PATH=$PATH:/usr/pgsql-9.5/bin
+RUN chown -R postgres:postgres /opt/cpm
 RUN pip install --upgrade pip
 RUN pip install --upgrade setuptools
 
 # open up the pgadmin4 http port
 EXPOSE 5050
 
+#
+RUN mkdir -p /.pgadmin
+RUN chown -R postgres:postgres /.pgadmin
+VOLUME ["/.pgadmin"]
+
 ADD bin/pgadmin4/ /opt/cpm/bin
 ADD conf/pgadmin4/ /opt/cpm/conf
 ADD pgadmin4*.whl /tmp
 RUN export PATH=$PATH:/usr/pgsql-9.5/bin && pip install /tmp/pgadmin4*.whl
 
-USER root
+RUN chown -R postgres:postgres /opt/cpm /usr/lib/python2.7/site-packages/pgadmin4
+RUN chmod -R 777 /usr/lib/python2.7/site-packages/pgadmin4
+
+
+USER 26
 
 CMD ["/opt/cpm/bin/start-pgadmin4.sh"]
 
