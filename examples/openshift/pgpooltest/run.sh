@@ -14,9 +14,7 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-oc project openshift
-
-echo "this example depends on the master-slave example being run prior"
+echo "this example depends on the single-master example being run prior"
 LOC=$BUILDBASE/examples/openshift/pgpooltest
 
 oc process -f $LOC/pgpool-rc.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
