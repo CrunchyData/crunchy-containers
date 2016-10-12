@@ -118,7 +118,7 @@
                     "value": "password"
                 }, {
                     "name": "BACKUP_PATH",
-                    "value": "master-pitr/2016-09-23-20-03-00"
+                    "value": "master-pitr/2016-10-12-16-48-21"
                 }, {
                     "name": "RECOVERY_TARGET_NAME",
                     "value": "beforechanges"

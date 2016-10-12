@@ -3,7 +3,7 @@
     "kind": "PersistentVolume",
     "metadata": {
         "name": "master-pitr-pv",
-        "labels": {
+  	"labels": {
             "name": "master-pitr-pv"
         }
     },
