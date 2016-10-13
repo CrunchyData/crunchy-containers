@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+oc delete template crunchy-pgadmin4-ebs
+oc delete route pgadmin4
 oc delete service pgadmin4
 oc delete pod pgadmin4
-oc delete pvc pgadmin4-nfs-pvc
-oc delete pv pgadmin4-nfs-pv
+oc delete pvc pgadmin4-ebs-pvc
 
 $BUILDBASE/examples/waitforterm.sh pgadmin4 oc

@@ -2,37 +2,57 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pgadmin4-example",
+        "name": "crunchy-pgadmin4-ebs",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy pgadmin4 Example",
+            "description": "Crunchy pgadmin4 using EBS persistence",
             "iconClass": "icon-database",
             "tags": "database,postgresql,replication"
         }
     },
-    "parameters": [{
-        "name": "CCP_IMAGE_TAG",
-        "description": "image tag to use"
-    }],
+    "parameters": [
+{ "name": "CCP_IMAGE_TAG", "description": "image tag to use" },
+{ "name": "PVC_NAME", "description": "name to use for the PVC", "value": "pgadmin4-ebs-pvc" },
+{ "name": "SERVICE_NAME", "description": "The name to use for the service and container", "value": "pgadmin4" }
+	],
 
-    "objects": [{
+    "objects": [
+{
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${PVC_NAME}"
+      },
+      "spec": {
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "resources": {
+          "requests": {
+            "storage": "500M"
+          }
+        }
+      }
+    },
+{
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "pgadmin4",
+            "name": "${SERVICE_NAME}",
             "labels": {
-                "name": "pgadmin4"
+                "name": "${SERVICE_NAME}"
             }
         },
         "spec": {
             "ports": [{
                 "protocol": "TCP",
+                "name": "pgadmin",
                 "port": 5050,
                 "targetPort": 5050,
                 "nodePort": 0
             }],
             "selector": {
-                "name": "pgadmin4"
+                "name": "${SERVICE_NAME}"
             },
             "portalIP": "None",
             "type": "ClusterIP",
@@ -45,14 +65,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "pgadmin4",
+            "name": "${SERVICE_NAME}",
             "labels": {
-                "name": "pgadmin4"
+                "name": "${SERVICE_NAME}"
             }
         },
         "spec": {
             "containers": [{
-                "name": "pgadmin4",
+                "name": "${SERVICE_NAME}",
                 "image": "172.30.240.45:5000/jeff-project/crunchy-pgadmin4:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5050,
@@ -66,7 +86,7 @@
 
                 "volumeMounts": [
 		{
-                    "mountPath": "/root/.pgadmin",
+                    "mountPath": "/.pgadmin",
                     "name": "rootdata",
                     "readOnly": false
                 }
@@ -76,7 +96,7 @@
 	    {
                 "name": "rootdata",
                 "persistentVolumeClaim": {
-                    "claimName": "pgadmin4-ebs-pvc"
+                    "claimName": "${PVC_NAME}"
                 }
             }
 	    ]
