@@ -2,12 +2,12 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pg-replica-example",
+        "name": "crunchy-postgres-pgpool-template",
         "creationTimestamp": null,
         "annotations": {
-            "description": "PostgreSQL Replication Example",
+            "description": "Crunchy PostgreSQL template that executes pgpool",
             "iconClass": "icon-database",
-            "tags": "database,postgresql,replication"
+            "tags": "database,postgresql,crunchy"
         }
     },
     "parameters": [{
@@ -24,15 +24,15 @@
     }, {
         "name": "PGPOOL_SERVICE_NAME",
         "description": "The name of the pgpool Service",
-        "value": "pgpool-rc"
+        "value": "pgpool-dc"
     }, {
         "name": "PG_MASTER_SERVICE_NAME",
-        "description": "The master configured in pgpool",
-        "value": "single-master"
+        "description": "The database master configured in pgpool",
+        "value": "pgmaster"
     }, {
         "name": "PG_SLAVE_SERVICE_NAME",
-        "description": "The slave configured in pgpool",
-        "value": "single-slave"
+        "description": "The database slave configured in pgpool",
+        "value": "pgslave"
     }],
     "objects": [{
         "kind": "Service",

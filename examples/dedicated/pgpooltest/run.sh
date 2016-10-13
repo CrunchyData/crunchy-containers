@@ -14,7 +14,6 @@
 
 oc project jeff-project
 
-echo "this example depends on the single-master example being run prior"
-LOC=$BUILDBASE/examples/dedicated/pgpooltest
+oc create -f ./pgpool-dc.json
 
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/pgpool-rc.json | oc create -f -
+#oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/pgpool-rc.json | oc create -f -
