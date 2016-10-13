@@ -73,6 +73,9 @@
                 },
             "selector": { "matchLabels": { "app": "${JOB_NAME}" } },
             "template": {
+                "securityContext": {
+                    "fsGroup": 26
+                },
                 "metadata": {
                     "name": "${JOB_NAME}", "labels": { "app": "${JOB_NAME}" }
                 },

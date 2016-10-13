@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-postgres-master-replica-dc-ebs",
+        "name": "crunchy-postgres-master-replica-dc-pvc",
         "creationTimestamp": null,
         "annotations": {
             "description": "Crunchy Postgresql master (pvc) with replicas (emptydir), replicas can scale up",
@@ -14,7 +14,7 @@
     {
         "name": "PVC_NAME",
         "description": "The name of the master pvc",
-        "value": "master-dc-pvc"
+        "value": "master-slave-dc-pvc"
     }, {
         "name": "PVC_SIZE",
         "description": "The size of the master pvc",
@@ -151,6 +151,9 @@
 
         },
         "spec": {
+                "securityContext": {
+                    "fsGroup": 26
+                },
             "containers": [
                 {
                     "name": "server",
