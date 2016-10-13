@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pod crunchy-prometheus crunchy-grafana crunchy-promgateway
-oc delete service crunchy-prometheus crunchy-grafana crunchy-promgateway
-$BUILDBASE/examples/waitforterm.sh crunchy-prometheus oc
+oc delete route crunchy-grafana crunchy-prometheus crunchy-promgateway
+oc delete pod crunchy-metrics
+oc delete service crunchy-metrics
+$BUILDBASE/examples/waitforterm.sh crunchy-metrics oc

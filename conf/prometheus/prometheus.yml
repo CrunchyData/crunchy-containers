@@ -27,4 +27,4 @@ scrape_configs:
     # scheme defaults to 'http'.
 
     static_configs:
-      - targets: ['crunchy-promgateway:9091']
+      - targets: ['crunchy-metrics:9091']

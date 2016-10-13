@@ -2,15 +2,19 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-pg-badger-example",
+        "name": "crunchy-postgres-database-with-pgbadger",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy PostgreSQL badger Example",
+            "description": "Crunchy PostgreSQL Database with pgbadger",
             "iconClass": "icon-database",
             "tags": "database,postgresql,replication"
         }
     },
     "parameters": [{
+        "name": "SERVICE_NAME",
+        "description": "The name to use for the service and container",
+        "value": "badger"
+    }, {
         "name": "PG_MASTER_USER",
         "description": "The username used for master-slave replication",
         "value": "master"
@@ -43,9 +47,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "badger-example",
+            "name": "${SERVICE_NAME}",
             "labels": {
-                "name": "badger-example"
+                "name": "${SERVICE_NAME}"
             }
         },
         "spec": {
@@ -63,7 +67,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "badger-example"
+                "name": "${SERVICE_NAME}"
             },
             "portalIP": "None",
             "type": "ClusterIP",
@@ -76,14 +80,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "badger-example",
+            "name": "${SERVICE_NAME}",
             "labels": {
-                "name": "badger-example"
+                "name": "${SERVICE_NAME}"
             }
         },
         "spec": {
             "containers": [{
-                "name": "server",
+                "name": "postgres",
                 "image": "172.30.240.45:5000/jeff-project/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "ports": [{
@@ -99,6 +103,9 @@
                 }, {
                     "name": "PG_MASTER_PASSWORD",
                     "value": "${PG_MASTER_PASSWORD}"
+                }, {
+                    "name": "PGHOST",
+                    "value": "/tmp"
                 }, {
                     "name": "PG_USER",
                     "value": "${PG_USER}"
@@ -116,42 +123,21 @@
                     "capabilities": {}
                 },
 
-
                 "volumeMounts": [{
                     "mountPath": "/pgdata",
                     "name": "pgdata",
                     "readOnly": false
                 }]
             }, {
-                "name": "pg-badger",
+                "name": "pgbadger",
                 "image": "172.30.240.45:5000/jeff-project/crunchy-pgbadger:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "ports": [{
-                    "containerPort": 15000,
+                    "containerPort": 10000,
                     "protocol": "TCP"
                 }],
-                "env": [{
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
-                }, {
-                    "name": "PG_MODE",
-                    "value": "master"
-                }, {
-                    "name": "PG_MASTER_PASSWORD",
-                    "value": "${PG_MASTER_PASSWORD}"
-                }, {
-                    "name": "PG_USER",
-                    "value": "${PG_USER}"
-                }, {
-                    "name": "PG_PASSWORD",
-                    "value": "${PG_PASSWORD}"
-                }, {
-                    "name": "PG_DATABASE",
-                    "value": "${PG_DATABASE}"
-                }, {
-                    "name": "PG_ROOT_PASSWORD",
-                    "value": "${PG_ROOT_PASSWORD}"
-                }],
+                "env": [
+                ],
                 "securityContext": {
                     "capabilities": {}
                 },
