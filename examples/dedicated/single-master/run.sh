@@ -15,5 +15,6 @@
 oc project jeff-project
 LOC=$BUILDBASE/examples/dedicated/single-master
 
+oc create -f $LOC/master.json 
+
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/master.json | oc create -f -
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/slave.json | oc create -f -

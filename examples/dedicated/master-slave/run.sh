@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete service pgdatabase
-oc delete pod pgdatabase
-$BUILDBASE/examples/waitforterm.sh pgdatabase oc
+oc project jeff-project
+
+LOC=$BUILDBASE/examples/dedicated/master-slave
+
+oc create -f $LOC/master-slave.json
+
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/master-slave.json | oc create -f -
