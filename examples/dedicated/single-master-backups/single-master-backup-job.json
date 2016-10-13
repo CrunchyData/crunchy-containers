@@ -2,47 +2,92 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "simple-master-example",
+        "name": "crunchy-postgres-database-backup",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy PostgreSQL Master Example",
+            "description": "Crunchy PostgreSQL backup of a single database",
             "iconClass": "icon-database",
-            "tags": "database,postgresql,replication"
+            "tags": "database,postgresql,crunchy"
         }
     },
-    "parameters": [{
+    "parameters": [
+	{
+        "name": "JOB_NAME",
+        "description": "the name to give the backup job"
+    },
+	{
+        "name": "DB_NAME",
+        "description": "the service name of the database to backup"
+    },
+	{
+        "name": "PVC_NAME",
+        "description": "the name to give the backup PVC "
+    },
+	{
+        "name": "PVC_SIZE",
+        "value": "1Gi",
+        "description": "the size to give the backup PVC "
+    },
+	{
+        "name": "BACKUP_USER",
+        "value": "master",
+        "description": "the name of the database user to perform the backup"
+    },
+	{
+        "name": "BACKUP_PASS",
+        "value": "password",
+        "description": "the password of the database user to perform the backup"
+    },
+	{
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use"
-    }],
+    }
+	],
 
-    "objects": [{
+    "objects": [
+ {
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${PVC_NAME}"
+      },
+      "spec": {
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "resources": {
+          "requests": {
+            "storage": "${PVC_SIZE}"
+          }
+        }
+      }
+    },
+	{
         "kind": "Job",
         "apiVersion": "extensions/v1beta1",
-        "metadata": {
-            "name": "single-master-backup-job"
-        },
-        "spec": {
-            "selector": {
-                "matchLabels": {
-                    "app": "single-master-backup-job"
-                }
-            },
+        "metadata": { "name": "${JOB_NAME}" },
+        "spec": 
+		{
+                "securityContext": {
+                    "fsGroup": 26
+                },
+            "selector": { "matchLabels": { "app": "${JOB_NAME}" } },
             "template": {
                 "metadata": {
-                    "name": "single-master-backup-job",
-                    "labels": {
-                        "app": "single-master-backup-job"
-                    }
+                    "name": "${JOB_NAME}", "labels": { "app": "${JOB_NAME}" }
                 },
                 "spec": {
                     "volumes": [{
                         "name": "pgdata",
                         "persistentVolumeClaim": {
-                            "claimName": "single-master-backups-pvc"
+                            "claimName": "${PVC_NAME}"
                         }
                     }],
                     "containers": [{
-                        "name": "single-master-backup-job",
+                "securityContext": {
+                    "fsGroup": 26
+                },
+                        "name": "${JOB_NAME}",
                         "image": "172.30.240.45:5000/jeff-project/crunchy-backup:${CCP_IMAGE_TAG}",
 			"imagePullPolicy":"Always",
                         "volumeMounts": [{
@@ -50,23 +95,16 @@
                             "name": "pgdata",
                             "readOnly": false
                         }],
-                        "env": [{
-                            "name": "BACKUP_HOST",
-                            "value": "single-master"
-                        }, {
-                            "name": "BACKUP_USER",
-                            "value": "master"
-                        }, {
-                            "name": "BACKUP_PASS",
-                            "value": "password"
-                        }, {
-                            "name": "BACKUP_PORT",
-                            "value": "5432"
+                        "env": [{ "name": "BACKUP_HOST", "value": "${DB_NAME}"
+                        }, { "name": "BACKUP_USER", "value": "${BACKUP_USER}"
+                        }, { "name": "BACKUP_PASS", "value": "${BACKUP_PASS}"
+                        }, { "name": "BACKUP_PORT", "value": "5432"
                         }]
                     }],
                     "restartPolicy": "Never"
                 }
             }
         }
-    }]
+    }
+	]
 }

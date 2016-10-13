@@ -15,6 +15,6 @@
 
 oc project jeff-project
 
-LOC=$BUILDBASE/examples/dedicated/single-master-backups
-oc create -f $LOC/single-master-backups-pvc.json
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/single-master-backup-job.json | oc create -f -
+oc create -f ./single-master-backup-job.json
+
+#oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/single-master-backup-job.json | oc create -f -

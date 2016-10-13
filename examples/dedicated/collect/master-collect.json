@@ -2,15 +2,20 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-pg-collect-example",
+        "name": "crunchy-postgres-database-with-collect",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy PostgreSQL collect Example",
+            "description": "Crunchy PostgreSQL Single Database with metrics collector using EmptyDir",
             "iconClass": "icon-database",
-            "tags": "database,postgresql,replication"
+            "tags": "database,crunchy,postgresql"
         }
     },
-    "parameters": [{
+    "parameters": [
+	{
+        "name": "SERVICE_NAME",
+        "description": "The name to use for the service and pod",
+        "value": "pgdbcollect"
+    }, {
         "name": "PG_MASTER_USER",
         "description": "The username used for master-slave replication",
         "value": "master"
@@ -43,9 +48,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-collect",
+            "name": "${SERVICE_NAME}",
             "labels": {
-                "name": "master-collect"
+                "name": "${SERVICE_NAME}"
             }
         },
         "spec": {
@@ -56,7 +61,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-collect"
+                "name": "${SERVICE_NAME}"
             },
             "portalIP": "None",
             "type": "ClusterIP",
@@ -69,9 +74,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-collect",
+            "name": "${SERVICE_NAME}",
             "labels": {
-                "name": "master-collect"
+                "name": "${SERVICE_NAME}"
             }
         },
         "spec": {
@@ -90,7 +95,7 @@
                     "value": "5432"
                 }, {
                     "name": "PROM_GATEWAY",
-                    "value": "http://crunchy-promgateway:9091"
+                    "value": "http://crunchy-metrics:9091"
                 }, {
                     "name": "PG_ROOT_PASSWORD",
                     "value": "${PG_ROOT_PASSWORD}"
@@ -101,7 +106,7 @@
                     "readOnly": true
                 }]
             }, {
-                "name": "pg-master",
+                "name": "postgres",
                 "image": "172.30.240.45:5000/jeff-project/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "ports": [{

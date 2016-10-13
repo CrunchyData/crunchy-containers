@@ -16,8 +16,6 @@ oc project jeff-project
 
 source $BUILDBASE/examples/envvars.sh
 
-#oc create -f pgadmin4-ebs-pvc.json
-
 oc create -f pgadmin4.json
 
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f ./pgadmin4.json | oc create -f -

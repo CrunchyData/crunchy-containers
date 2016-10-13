@@ -7,7 +7,7 @@
         "annotations": {
             "description": "Crunchy PostgreSQL Metrics Backend",
             "iconClass": "icon-database",
-            "tags": "database"
+            "tags": "database,crunchy,postgresql"
         }
     },
     "parameters": [ 

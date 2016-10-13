@@ -14,4 +14,6 @@
 
 oc project jeff-project
 
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $BUILDBASE/examples/dedicated/collect/master-collect.json | oc create -f -
+oc create -f master-collect.json
+
+#oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f ./master-collect.json | oc create -f -

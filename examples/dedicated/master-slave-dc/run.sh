@@ -13,6 +13,9 @@
 # limitations under the License.
 
 oc project jeff-project
+
 LOC=$BUILDBASE/examples/dedicated/master-slave-dc
 
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/master-slave-rc-dc-slaves-only.json | oc create -f -
+oc create -f master-slave-dc.json
+
+#oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/master-slave-dc.json | oc create -f -
