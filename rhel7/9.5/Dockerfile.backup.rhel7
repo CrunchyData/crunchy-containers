@@ -25,7 +25,7 @@ hostname bind-utils \
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
 ADD bin/backup/ /opt/cpm/bin
 ADD conf/backup/ /opt/cpm/conf
-RUN chown -R 26:26 /opt/cpm /pgdata
+RUN chown -R postgres:postgres /opt/cpm /pgdata
 
 VOLUME ["/pgdata"]
 

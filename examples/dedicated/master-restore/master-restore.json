@@ -2,12 +2,12 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-pg-replication-example",
+        "name": "crunchy-postgres-database-restore-emptydir",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy PostgreSQL Replication Example",
+            "description": "Crunchy PostgreSQL Restore to an emptyDir",
             "iconClass": "icon-database",
-            "tags": "database,postgresql,replication"
+            "tags": "database,postgresql,crunchy"
         }
     },
     "parameters": [{
@@ -30,9 +30,25 @@
         "description": "The password for the PG master user",
         "value": "password"
     }, {
+        "name": "SERVICE_NAME",
+        "description": "The name for the service and pod",
+        "value": "masterrestored"
+    }, {
+        "name": "BACKUP_PVC_NAME",
+        "description": "The name of the PVC that holds the backup archives",
+        "value": "pgdatabase-backups"
+    }, {
+        "name": "BACKUP_PATH",
+        "description": "The path to files which will be used for the restore",
+        "value": "pgdatabase/2016-10-14-13-51-22"
+    }, {
         "name": "PG_DATABASE",
         "description": "The name of the database that will be created",
         "value": "userdb"
+    }, {
+        "name": "PG_PASSWORD",
+        "description": "The password for the test user",
+        "value": "password"
     }, {
         "name": "PG_ROOT_PASSWORD",
         "description": "The password for the PG adminitrator",
@@ -43,9 +59,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-restore",
+            "name": "${SERVICE_NAME}",
             "labels": {
-                "name": "master-restore"
+                "name": "${SERVICE_NAME}"
             }
         },
         "spec": {
@@ -56,7 +72,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-restore"
+                "name": "${SERVICE_NAME}"
             },
             "portalIP": "None",
             "type": "ClusterIP",
@@ -69,23 +85,26 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-restore",
+            "name": "${SERVICE_NAME}",
             "labels": {
-                "name": "master-restore"
+                "name": "${SERVICE_NAME}"
             }
         },
         "spec": {
+                "securityContext": {
+                    "fsGroup": 26
+                },
             "volumes": [{
                 "name": "pgdata",
                 "emptyDir": {}
             }, {
                 "name": "backup",
                 "persistentVolumeClaim": {
-                    "claimName": "single-master-backups-pvc"
+                    "claimName": "${BACKUP_PVC_NAME}"
                 }
             }],
             "containers": [{
-                "name": "master-restore",
+                "name": "postgres",
                 "image": "172.30.240.45:5000/jeff-project/crunchy-postgres:${CCP_IMAGE_TAG}",
 		"imagePullPolicy": "Always",
                 "ports": [{
@@ -100,16 +119,16 @@
                     "value": "master"
                 }, {
                     "name": "PG_MASTER_PASSWORD",
-                    "value": "password"
+                    "value": "${PG_MASTER_PASSWORD}"
                 }, {
                     "name": "PG_USER",
                     "value": "${PG_USER}"
                 }, {
                     "name": "PG_PASSWORD",
-                    "value": "password"
+                    "value": "${PG_PASSWORD}"
                 }, {
                     "name": "BACKUP_PATH",
-                    "value": "single-master/2016-07-08-16-54-28"
+                    "value": "${BACKUP_PATH}"
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"
@@ -118,7 +137,7 @@
                     "value": "${PG_DATABASE}"
                 }, {
                     "name": "PG_ROOT_PASSWORD",
-                    "value": "password"
+                    "value": "${PG_ROOT_PASSWORD}"
                 }],
                 "securityContext": {
                     "capabilities": {}
