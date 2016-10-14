@@ -15,5 +15,7 @@
 oc project jeff-project
 
 oc delete template  crunchy-postgres-replica-emptydir
+oc delete template  crunchy-postgres-replica-pvc
 
 oc create -f ./slave.json
+oc create -f ./slave-with-pvc.json
