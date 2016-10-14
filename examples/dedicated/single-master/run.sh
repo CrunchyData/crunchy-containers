@@ -15,5 +15,7 @@
 oc project jeff-project
 
 oc delete template crunchy-postgres-database-emptydir
+oc delete template crunchy-postgres-database-pvc
 
 oc create -f ./master.json 
+oc create -f ./master-using-pvc.json 

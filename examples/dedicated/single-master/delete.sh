@@ -13,3 +13,4 @@
 # limitations under the License.
 
 oc delete template crunchy-postgres-database-emptydir
+oc delete template crunchy-postgres-database-pvc
