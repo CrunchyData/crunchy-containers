@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete service master
-oc delete service slave
-oc delete pod master
-oc delete pod slave
-oc delete pod sync-slave
-$BUILDBASE/examples/waitforterm.sh master oc
-$BUILDBASE/examples/waitforterm.sh slave oc
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+oc project jeff-project
+
+oc delete template crunchy-postgres-master-sync-replica-pvc
