@@ -2,53 +2,87 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pg-replica-example",
+        "name": "crunchy-cluster-watch-template",
         "creationTimestamp": null,
         "annotations": {
-            "description": "PostgreSQL Replication Example",
+            "description": "Crunchy PostgreSQL cluster watch template ",
             "iconClass": "icon-database",
-            "tags": "database,postgresql,replication"
+            "tags": "database,postgresql,crunchy"
         }
     },
-    "parameters": [{
+    "parameters": [
+	{
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
-    }],
+	}, {
+        "name": "SERVICE_NAME",
+        "description": "the name to use for the watch service",
+	"value": "pgwatch"
+    	}, {
+        "name": "SERVICE_ACCOUNT_NAME",
+        "description": "the name of the service account to use",
+	"value": "pg-watcher"
+    	}, {
+        "name": "OSE_PROJECT",
+        "description": "the name of the OSE project to use",
+	"value": "jeff-project"
+    	}, {
+        "name": "SLEEP_TIME",
+        "description": "the time to sleep for polling the master",
+	"value": "20"
+    	}, {
+        "name": "SLAVE_TO_TRIGGER",
+        "description": "the name of a slave to trigger a failover upon",
+	"value": "thisone"
+    	}, {
+        "name": "MASTER_TO_WATCH",
+        "description": "the name of a master service to watch",
+	"value": "pgmaster"
+    	}, {
+        "name": "SLAVE_TO_WATCH",
+        "description": "the name of a slave service to watch",
+	"value": "pgslave"
+    	}, {
+        "name": "MASTER_USER",
+        "description": "the master user to watch with",
+	"value": "master"
+    	}
+	],
     "objects": [{
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "watch",
+            "name": "${SERVICE_NAME}",
             "labels": {
-                "name": "watch"
+                "name": "${SERVICE_NAME}"
             }
         },
         "spec": {
-            "serviceAccount": "pg-watcher",
+            "serviceAccount": "${SERVICE_ACCOUNT_NAME}",
             "containers": [{
                 "name": "watch",
                 "image": "172.30.240.45:5000/jeff-project/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
-                    "value": "jeff-project"
+                    "value": "${OSE_PROJECT}"
                 }, {
                     "name": "SLEEP_TIME",
-                    "value": "20"
+                    "value": "${SLEEP_TIME}"
                 }, {
                     "name": "SLAVE_TO_TRIGGER_LABEL",
-                    "value": "thisone"
+                    "value": "${SLAVE_TO_TRIGGER}"
                 }, {
                     "name": "PG_MASTER_SERVICE",
-                    "value": "pg-master-rc-dc"
+                    "value": "${MASTER_TO_WATCH}"
                 }, {
                     "name": "PG_SLAVE_SERVICE",
-                    "value": "pg-slave-rc-dc"
+                    "value": "${SLAVE_TO_WATCH}"
                 }, {
                     "name": "PG_MASTER_PORT",
                     "value": "5432"
                 }, {
                     "name": "PG_MASTER_USER",
-                    "value": "master"
+                    "value": "${MASTER_USER}"
                 }, {
                     "name": "PG_DATABASE",
                     "value": "postgres"
