@@ -12,6 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pod badger-example
-oc delete service badger-example
-$BUILDBASE/examples/waitforterm.sh badger-example oc
+oc delete template crunchy-postgres-database-with-pgbadger

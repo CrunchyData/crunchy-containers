@@ -15,4 +15,4 @@
 oc project jeff-project
 
 oc delete template crunchy-postgres-master-sync-replica-pvc
-oc create -f ./master-sync-slave-pvc.json
+oc create -f ./master-sync-replica-pvc.json

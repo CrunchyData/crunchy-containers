@@ -12,6 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete dc pgpool-rc
-oc delete service pgpool-rc
-oc delete pod -l name=pgpool-rc
+oc delete template crunchy-postgres-pgpool-template

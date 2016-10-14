@@ -12,6 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete service pgmaster pgslave
-oc delete pod pgmaster pgslave
-$BUILDBASE/examples/waitforterm.sh pgmaster oc
+oc delete template  crunchy-postgres-master-replica-emptydir

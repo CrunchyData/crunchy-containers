@@ -13,9 +13,3 @@
 # limitations under the License.
 
 oc delete template crunchy-pgadmin4-ebs
-oc delete route pgadmin4
-oc delete service pgadmin4
-oc delete pod pgadmin4
-oc delete pvc pgadmin4-ebs-pvc
-
-$BUILDBASE/examples/waitforterm.sh pgadmin4 oc

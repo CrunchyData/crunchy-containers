@@ -13,10 +13,8 @@
 # limitations under the License.
 
 oc project jeff-project
-LOC=$BUILDBASE/examples/dedicated/watch
 
-#oc create -f $LOC/watch-sa.json
-oc create -f $LOC/watch.json
+oc delete template crunchy-cluster-watch-template
 
-#oc policy add-role-to-group edit system:serviceaccounts -n jeff-project
-#oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG  -f $LOC/watch.json | oc create -f -
+oc create -f ./watch.json
+

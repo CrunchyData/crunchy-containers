@@ -12,6 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pod watch
-oc delete sa pg-watcher
-$BUILDBASE/examples/waitforterm.sh watch oc
+oc delete template crunchy-cluster-watch-template

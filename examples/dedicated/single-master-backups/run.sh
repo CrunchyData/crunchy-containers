@@ -15,6 +15,7 @@
 
 oc project jeff-project
 
+oc delete template crunchy-postgres-database-backup
+
 oc create -f ./single-master-backup-job.json
 
-#oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/single-master-backup-job.json | oc create -f -

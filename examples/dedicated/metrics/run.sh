@@ -18,8 +18,7 @@
 #
 oc project jeff-project
 
-LOC=$BUILDBASE/examples/dedicated/metrics
+oc delete template  crunchy-metrics-backend-using-ebs
 
 oc create -f metrics.json
 
-oc process -f $LOC/metrics.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

@@ -14,6 +14,7 @@
 
 oc project jeff-project
 
+oc delete template crunchy-postgres-pgpool-template
+
 oc create -f ./pgpool-dc.json
 
-#oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/pgpool-rc.json | oc create -f -

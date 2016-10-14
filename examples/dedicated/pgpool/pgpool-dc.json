@@ -92,31 +92,29 @@
                             "containerPort": 5432,
                             "protocol": "TCP"
                         }],
-                        "env": [ {
+                        "env": [{
                             "name": "PG_USERNAME",
                             "value": "${PG_USERNAME}"
                         }, {
                             "name": "PG_PASSWORD",
                             "value": "${PG_PASSWORD}"
                         }, {
-        			"name": "PG_MASTER_SERVICE_NAME",
-        			"value": "${PG_MASTER_SERVICE_NAME}"
-    			}, {
-        			"name": "PG_SLAVE_SERVICE_NAME",
-        			"value": "${PG_SLAVE_SERVICE_NAME}"
+                            "name": "PG_MASTER_SERVICE_NAME",
+                            "value": "${PG_MASTER_SERVICE_NAME}"
+                        }, {
+                            "name": "PG_SLAVE_SERVICE_NAME",
+                            "value": "${PG_SLAVE_SERVICE_NAME}"
                         }],
                         "resources": {},
                         "terminationMessagePath": "/dev/termination-log",
                         "securityContext": {
                             "privileged": false
                         },
-			"volumeMounts": [
-			]
+                        "volumeMounts": []
 
                     }],
 
-		"volumes": [
-		],
+                    "volumes": [],
                     "restartPolicy": "Always",
                     "dnsPolicy": "ClusterFirst"
                 }

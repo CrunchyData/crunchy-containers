@@ -14,7 +14,6 @@
 
 oc project jeff-project
 
-oc create -f master-slave-dc.json
-oc create -f master-slave-dc-pvc.json
+oc delete template crunchy-postgres-master-replica-deployment-emptydir
 
-#oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/master-slave-dc.json | oc create -f -
+oc create -f master-slave-dc.json

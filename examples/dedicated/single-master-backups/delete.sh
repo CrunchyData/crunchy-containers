@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete job single-master-backup-job
+oc delete template crunchy-postgres-database-backup

@@ -10,123 +10,131 @@
             "tags": "database,crunchy,postgresql"
         }
     },
-    "parameters": [ 
-	{ "name": "CCP_IMAGE_TAG",
-        "description": "The image tag to use" },
-	{ "name": "PVC_NAME",
+    "parameters": [{
+        "name": "CCP_IMAGE_TAG",
+        "description": "The image tag to use"
+    }, {
+        "name": "PVC_NAME",
         "description": "The name of the PVC used for storage",
-        "value": "crunchy-metrics-pvc" }
-	],
-    "objects": [
-  {
-      "kind": "PersistentVolumeClaim",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${PVC_NAME}"
-      },
-      "spec": {
-        "accessModes": [
-          "ReadWriteOnce"
-        ],
-        "resources": {
-          "requests": {
-            "storage": "1Gi"
-          }
-        }
-      }
-    },
+        "value": "crunchy-metrics-pvc"
+    }],
+    "objects": [{
+            "kind": "PersistentVolumeClaim",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${PVC_NAME}"
+            },
+            "spec": {
+                "accessModes": [
+                    "ReadWriteOnce"
+                ],
+                "resources": {
+                    "requests": {
+                        "storage": "1Gi"
+                    }
+                }
+            }
+        },
 
- 	{
-        "kind": "Service",
-        "apiVersion": "v1",
-        "metadata": {
-            "name": "crunchy-metrics",
-            "labels": { "name": "crunchy-metrics" }
-        },
-        "spec": {
-            "ports": [
-		{
-                "name": "prometheus",
-                "protocol": "TCP",
-                "port": 9090,
-                "targetPort": 9090,
-                "nodePort": 0
+        {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "crunchy-metrics",
+                "labels": {
+                    "name": "crunchy-metrics"
+                }
             },
-		{
-                "name": "promgateway",
-                "protocol": "TCP",
-                "port": 9091,
-                "targetPort": 9091,
-                "nodePort": 0
+            "spec": {
+                "ports": [{
+                    "name": "prometheus",
+                    "protocol": "TCP",
+                    "port": 9090,
+                    "targetPort": 9090,
+                    "nodePort": 0
+                }, {
+                    "name": "promgateway",
+                    "protocol": "TCP",
+                    "port": 9091,
+                    "targetPort": 9091,
+                    "nodePort": 0
+                }, {
+                    "name": "grafana",
+                    "protocol": "TCP",
+                    "port": 3000,
+                    "targetPort": 3000,
+                    "nodePort": 0
+                }],
+                "selector": {
+                    "name": "crunchy-metrics"
+                }
             },
-		{
-                "name": "grafana",
-                "protocol": "TCP",
-                "port": 3000,
-                "targetPort": 3000,
-                "nodePort": 0
+            "status": {
+                "loadBalancer": {}
             }
-		],
-            "selector": { "name": "crunchy-metrics" }
-        },
-        "status": { "loadBalancer": {} }
-    }, 
-	{
-        "kind": "Pod",
-        "apiVersion": "v1",
-        "metadata": {
-            "name": "crunchy-metrics",
-            "labels": {
-                "name": "crunchy-metrics"
-            }
-        },
-        "spec": {
- 		"securityContext": {
+        }, {
+            "kind": "Pod",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "crunchy-metrics",
+                "labels": {
+                    "name": "crunchy-metrics"
+                }
+            },
+            "spec": {
+                "securityContext": {
                     "fsGroup": 2
                 },
 
-            "containers": [
-		{
-                "name": "prometheus",
-                "image": "172.30.240.45:5000/jeff-project/crunchy-prometheus:${CCP_IMAGE_TAG}",
-                "imagePullPolicy": "Always",
-                "ports": [{ "containerPort": 9090, "protocol": "TCP" }],
-                "env": [],
-                "volumeMounts": [{
-                    "mountPath": "/data",
+                "containers": [{
+                    "name": "prometheus",
+                    "image": "172.30.240.45:5000/jeff-project/crunchy-prometheus:${CCP_IMAGE_TAG}",
+                    "imagePullPolicy": "Always",
+                    "ports": [{
+                        "containerPort": 9090,
+                        "protocol": "TCP"
+                    }],
+                    "env": [],
+                    "volumeMounts": [{
+                        "mountPath": "/data",
+                        "name": "data",
+                        "readOnly": false
+                    }]
+                }, {
+                    "name": "promgateway",
+                    "image": "172.30.240.45:5000/jeff-project/crunchy-promgateway:${CCP_IMAGE_TAG}",
+                    "imagePullPolicy": "Always",
+                    "ports": [{
+                        "containerPort": 9091,
+                        "protocol": "TCP"
+                    }],
+                    "env": [],
+                    "volumeMounts": []
+                }, {
+                    "name": "grafana",
+                    "image": "172.30.240.45:5000/jeff-project/crunchy-grafana:${CCP_IMAGE_TAG}",
+                    "imagePullPolicy": "Always",
+                    "ports": [{
+                        "containerPort": 3000,
+                        "protocol": "TCP"
+                    }],
+                    "env": [],
+                    "securityContext": {
+                        "capabilities": {}
+                    },
+                    "volumeMounts": [{
+                        "mountPath": "/data",
+                        "name": "data",
+                        "readOnly": false
+                    }]
+                }],
+                "volumes": [{
                     "name": "data",
-                    "readOnly": false
-                }]
-            }, {
-                "name": "promgateway",
-                "image": "172.30.240.45:5000/jeff-project/crunchy-promgateway:${CCP_IMAGE_TAG}",
-                "imagePullPolicy": "Always",
-                "ports": [{ "containerPort": 9091, "protocol": "TCP" }],
-                "env": [],
-                "volumeMounts": []
-            }, {
-                "name": "grafana",
-                "image": "172.30.240.45:5000/jeff-project/crunchy-grafana:${CCP_IMAGE_TAG}",
-                "imagePullPolicy": "Always",
-                "ports": [{ "containerPort": 3000, "protocol": "TCP" }],
-                "env": [],
-                "securityContext": {
-                    "capabilities": {}
-                },
-                "volumeMounts": [{
-                    "mountPath": "/data",
-                    "name": "data",
-                    "readOnly": false
+                    "persistentVolumeClaim": {
+                        "claimName": "${PVC_NAME}"
+                    }
                 }]
             }
-		],
-            "volumes": [{
-                "name": "data",
-                "persistentVolumeClaim": {
-                        "claimName":"${PVC_NAME}"
-                }
-            }]
         }
-    }
-	]
+    ]
 }

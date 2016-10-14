@@ -12,6 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete service pgdatabase
-oc delete pod pgdatabase
-$BUILDBASE/examples/waitforterm.sh pgdatabase oc
+oc delete template crunchy-postgres-database-emptydir

@@ -136,8 +136,7 @@
                     "containerPort": 10000,
                     "protocol": "TCP"
                 }],
-                "env": [
-                ],
+                "env": [],
                 "securityContext": {
                     "capabilities": {}
                 },

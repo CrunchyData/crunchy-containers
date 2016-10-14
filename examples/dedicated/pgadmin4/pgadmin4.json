@@ -10,31 +10,36 @@
             "tags": "database,postgresql,crunchy"
         }
     },
-    "parameters": [
-{ "name": "CCP_IMAGE_TAG", "description": "image tag to use" },
-{ "name": "PVC_NAME", "description": "name to use for the PVC", "value": "pgadmin4-ebs-pvc" },
-{ "name": "SERVICE_NAME", "description": "The name to use for the service and container", "value": "pgadmin4" }
-	],
+    "parameters": [{
+        "name": "CCP_IMAGE_TAG",
+        "description": "image tag to use"
+    }, {
+        "name": "PVC_NAME",
+        "description": "name to use for the PVC",
+        "value": "pgadmin4-ebs-pvc"
+    }, {
+        "name": "SERVICE_NAME",
+        "description": "The name to use for the service and container",
+        "value": "pgadmin4"
+    }],
 
-    "objects": [
-{
-      "kind": "PersistentVolumeClaim",
-      "apiVersion": "v1",
-      "metadata": {
-        "name": "${PVC_NAME}"
-      },
-      "spec": {
-        "accessModes": [
-          "ReadWriteOnce"
-        ],
-        "resources": {
-          "requests": {
-            "storage": "500M"
-          }
+    "objects": [{
+        "kind": "PersistentVolumeClaim",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "${PVC_NAME}"
+        },
+        "spec": {
+            "accessModes": [
+                "ReadWriteOnce"
+            ],
+            "resources": {
+                "requests": {
+                    "storage": "500M"
+                }
+            }
         }
-      }
-    },
-{
+    }, {
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
@@ -84,22 +89,18 @@
                 },
 
 
-                "volumeMounts": [
-		{
+                "volumeMounts": [{
                     "mountPath": "/.pgadmin",
                     "name": "rootdata",
                     "readOnly": false
-                }
-		]
+                }]
             }],
-            "volumes": [
-	    {
+            "volumes": [{
                 "name": "rootdata",
                 "persistentVolumeClaim": {
                     "claimName": "${PVC_NAME}"
                 }
-            }
-	    ]
+            }]
         }
     }]
 }

@@ -13,8 +13,7 @@
 # limitations under the License.
 
 oc project jeff-project
-LOC=$BUILDBASE/examples/dedicated/single-master
 
-oc create -f $LOC/master.json 
+oc delete template crunchy-postgres-database-emptydir
 
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/master.json | oc create -f -
+oc create -f ./master.json 

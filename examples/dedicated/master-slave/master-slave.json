@@ -47,8 +47,7 @@
         "value": "password"
     }],
 
-    "objects": [
-{
+    "objects": [{
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
@@ -74,8 +73,7 @@
         "status": {
             "loadBalancer": {}
         }
-    }, 
-{
+    }, {
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
@@ -101,8 +99,7 @@
         "status": {
             "loadBalancer": {}
         }
-    }, 
-{
+    }, {
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
@@ -117,31 +114,56 @@
                 "image": "172.30.240.45:5000/jeff-project/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "ports": [{
-                    "containerPort": 5432, "protocol": "TCP"
+                    "containerPort": 5432,
+                    "protocol": "TCP"
                 }],
                 "env": [{
-                    "name": "PG_MASTER_USER", "value": "${PG_MASTER_USER}"
-                }, { "name": "PG_MODE", "value": "master"
-                }, { "name": "PG_MASTER_PASSWORD", "value": "password"
-                }, { "name": "PG_USER", "value": "${PG_USER}"
-                }, { "name": "PG_PASSWORD", "value": "password"
-                }, { "name": "PG_DATABASE", "value": "${PG_DATABASE}"
-                }, { "name": "PGHOST", "value": "/tmp"
-                }, { "name": "PG_ROOT_PASSWORD", "value": "password"
+                    "name": "PG_MASTER_USER",
+                    "value": "${PG_MASTER_USER}"
+                }, {
+                    "name": "PG_MODE",
+                    "value": "master"
+                }, {
+                    "name": "PG_MASTER_PASSWORD",
+                    "value": "password"
+                }, {
+                    "name": "PG_USER",
+                    "value": "${PG_USER}"
+                }, {
+                    "name": "PG_PASSWORD",
+                    "value": "password"
+                }, {
+                    "name": "PG_DATABASE",
+                    "value": "${PG_DATABASE}"
+                }, {
+                    "name": "PGHOST",
+                    "value": "/tmp"
+                }, {
+                    "name": "PG_ROOT_PASSWORD",
+                    "value": "password"
                 }],
-                "securityContext": { "capabilities": { } },
-                "volumeMounts": [ 
-{ "mountPath": "/pgdata", "name": "pgdata", "readOnly": false },
-{ "mountPath": "/backup", "name": "backup", "readOnly": true }
-		]
+                "securityContext": {
+                    "capabilities": {}
+                },
+                "volumeMounts": [{
+                    "mountPath": "/pgdata",
+                    "name": "pgdata",
+                    "readOnly": false
+                }, {
+                    "mountPath": "/backup",
+                    "name": "backup",
+                    "readOnly": true
+                }]
             }],
-            "volumes": [
-	    { "name": "pgdata", "emptyDir": {} },
-	    { "name": "backup", "emptyDir": {} }
-	    ]
+            "volumes": [{
+                "name": "pgdata",
+                "emptyDir": {}
+            }, {
+                "name": "backup",
+                "emptyDir": {}
+            }]
         }
-    },
-{
+    }, {
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
@@ -156,31 +178,60 @@
                 "image": "172.30.240.45:5000/jeff-project/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "ports": [{
-                    "containerPort": 5432, "protocol": "TCP"
+                    "containerPort": 5432,
+                    "protocol": "TCP"
                 }],
-                "env": [
-                { "name": "PG_MODE", "value": "slave"
-                }, { "name": "PG_MASTER_HOST", "value": "${MASTER_SERVICE_NAME}"
-                }, { "name": "PG_MASTER_PORT", "value": "5432"
-                }, { "name": "PG_MASTER_USER", "value": "${PG_MASTER_USER}"
-                }, { "name": "PG_MASTER_PASSWORD", "value": "password"
-                }, { "name": "PG_USER", "value": "${PG_USER}"
-                }, { "name": "PG_PASSWORD", "value": "password"
-                }, { "name": "PG_DATABASE", "value": "${PG_DATABASE}"
-                }, { "name": "PGHOST", "value": "/tmp"
-                }, { "name": "PG_ROOT_PASSWORD", "value": "password"
+                "env": [{
+                    "name": "PG_MODE",
+                    "value": "slave"
+                }, {
+                    "name": "PG_MASTER_HOST",
+                    "value": "${MASTER_SERVICE_NAME}"
+                }, {
+                    "name": "PG_MASTER_PORT",
+                    "value": "5432"
+                }, {
+                    "name": "PG_MASTER_USER",
+                    "value": "${PG_MASTER_USER}"
+                }, {
+                    "name": "PG_MASTER_PASSWORD",
+                    "value": "password"
+                }, {
+                    "name": "PG_USER",
+                    "value": "${PG_USER}"
+                }, {
+                    "name": "PG_PASSWORD",
+                    "value": "password"
+                }, {
+                    "name": "PG_DATABASE",
+                    "value": "${PG_DATABASE}"
+                }, {
+                    "name": "PGHOST",
+                    "value": "/tmp"
+                }, {
+                    "name": "PG_ROOT_PASSWORD",
+                    "value": "password"
                 }],
-                "securityContext": { "capabilities": { } },
-                "volumeMounts": [ 
-{ "mountPath": "/pgdata", "name": "pgdata", "readOnly": false },
-{ "mountPath": "/backup", "name": "backup", "readOnly": true }
-		]
+                "securityContext": {
+                    "capabilities": {}
+                },
+                "volumeMounts": [{
+                    "mountPath": "/pgdata",
+                    "name": "pgdata",
+                    "readOnly": false
+                }, {
+                    "mountPath": "/backup",
+                    "name": "backup",
+                    "readOnly": true
+                }]
             }],
-            "volumes": [
-	    { "name": "pgdata", "emptyDir": {} },
-	    { "name": "backup", "emptyDir": {} }
-	    ]
+            "volumes": [{
+                "name": "pgdata",
+                "emptyDir": {}
+            }, {
+                "name": "backup",
+                "emptyDir": {}
+            }]
         }
-    }
-]
+    }]
 }
