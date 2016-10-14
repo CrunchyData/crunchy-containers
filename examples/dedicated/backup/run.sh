@@ -17,5 +17,5 @@ oc project jeff-project
 
 oc delete template crunchy-postgres-database-backup
 
-oc create -f ./single-master-backup-job.json
+oc create -f ./backup-job.json
 

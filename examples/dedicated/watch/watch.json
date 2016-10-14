@@ -12,6 +12,7 @@
     },
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
+        "value": "rhel-9.5-1.2.4",
         "description": "the image tag to use"
     }, {
         "name": "SERVICE_NAME",

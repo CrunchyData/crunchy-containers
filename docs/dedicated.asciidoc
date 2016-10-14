@@ -27,6 +27,8 @@ this value to meet your needs.
 
 === Badger
 
+Template Name is *crunchy-postgres-database-with-pgbadger*
+
 Example is found here:
 ....
 examples/dedicated/badger
@@ -38,6 +40,8 @@ This template will create the following:
  * database service
 
 === Metrics Collection
+
+Template Name is *crunchy-metrics-backend-using-ebs*
 
 Example is found here:
 ....
@@ -54,6 +58,8 @@ and push them to the metrics backend.
 
 === Restore Database
 
+Template Name is *crunchy-postgres-database-restore-emptydir*
+
 Example is found here:
 ....
 examples/dedicated/master-restore
@@ -68,9 +74,11 @@ found in a PVC.
 
 === Master - Replica Database Cluster
 
+Template Name is *crunchy-postgres-master-replica-emptydir*
+
 Example is found here:
 ....
-examples/dedicated/master-slave
+examples/dedicated/master-replica
 ....
 
 This template will create the following:
@@ -79,10 +87,12 @@ This template will create the following:
  * database service for the master
  * database service for the replica
 
-This example deploys a master-slave configuration
+This example deploys a master-replica configuration
 which uses emptyDir for persistence. 
 
 === Master - Replica Database Cluster using DeploymentConfig for Replica
+
+Template Name is *crunchy-postgres-master-replica-deployment-emptydir*
 
 Example is found here:
 ....
@@ -100,6 +110,8 @@ which uses emptyDir for persistence.  The DeploymentConfig allows
 you to scale up the number of replica containers.
 
 === Metrics 
+
+Template Name is *crunchy-metrics-backend-using-ebs*
 
 Example is found here:
 ....
@@ -119,6 +131,8 @@ dashboard data.
 
 === pgadmin4 
 
+Template Name is *crunchy-pgadmin4-ebs*
+
 Example is found here:
 ....
 examples/dedicated/pgadmin4
@@ -134,6 +148,8 @@ a PVC to persist the data.
 
 === pgpool 
 
+Template Name is *crunchy-postgres-pgpool-template*
+
 Example is found here:
 ....
 examples/dedicated/pgpool
@@ -148,23 +164,28 @@ allows you to scale up the pgpool container.
 
 === single master database 
 
+Template names are *crunchy-postgres-database-emptydir* and
+*crunchy-postgres-database-pvc*
+
 Example is found here:
 ....
 examples/dedicated/single-master
 ....
 
-This template will create the following:
- * master database container using emptyDir volume
+These templates create the following:
+ * master database container using emptyDir volume or a PVC
  * service for database 
 
 This example deploys a single database container which
-uses emptyDir for volume persistence.
+uses emptyDir or a PVC for volume persistence.
 
 === database backup
 
+Template Name is *crunchy-postgres-database-backup*
+
 Example is found here:
 ....
-examples/dedicated/single-master-backups
+examples/dedicated/backup
 ....
 
 This template will create the following:
@@ -176,6 +197,9 @@ will create a backup of a database and store the backup
 files in a PVC.
 
 === replica database
+
+Template names are *crunchy-postgres-replica-emptydir* and
+*crunchy-postgres-replica-pvc*.
 
 Example is found here:
 ....
@@ -191,6 +215,8 @@ emptyDir or a PVC to store data.  A service is also
 created to the database.
 
 === synchronous replica database
+
+Template Name is *crunchy-postgres-master-sync-replica-pvc*
 
 Example is found here:
 ....
@@ -210,6 +236,8 @@ A service is also created to the database.  This example creates
 a synchronous replica.
 
 === watch
+
+Template Name is *crunchy-cluster-watch-template*
 
 Example is found here:
 ....
