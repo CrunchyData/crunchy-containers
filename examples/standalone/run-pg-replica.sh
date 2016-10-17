@@ -28,6 +28,7 @@ sudo docker run \
 	-p 12002:5432 \
 	-v $DATA_DIR:/pgdata \
 	-e TEMP_BUFFERS=9MB \
+	-e PGHOST=/tmp \
 	-e MAX_CONNECTIONS=101 \
 	-e SHARED_BUFFERS=129MB \
 	-e MAX_WAL_SENDERS=7 \

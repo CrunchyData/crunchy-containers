@@ -25,7 +25,7 @@ docker rm crunchy-grafana
 DATA_DIR=/tmp/crunchy-metrics-data
 sudo rm -rf $DATA_DIR
 sudo mkdir -p $DATA_DIR
-sudo chown root:root $DATA_DIR
+sudo chown daemon:daemon $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
 export HOSTIP=`hostname --ip-address`
@@ -46,6 +46,9 @@ sudo docker run \
 	--link crunchy-promgateway:crunchy-promgateway \
 	-d crunchydata/crunchy-prometheus:$CCP_IMAGE_TAG
 
+
+echo "sleeping 20 secs to give prometheus time to start up..."
+sleep 20
 
 sudo docker run \
 	-p $HOSTIP:3000:3000/tcp \
