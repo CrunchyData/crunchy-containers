@@ -56,6 +56,26 @@ This template will create the following:
 This example will pull postgres metrics from the database
 and push them to the metrics backend.
 
+=== Metrics Collection and Badger Analysis
+
+Template Name is *crunchy-postgres-database-with-collect-badger*
+Template Name is *crunchy-postgres-database-with-collect-badger-pvc*
+
+Example is found here:
+....
+examples/dedicated/master-collect-badger
+....
+
+This template will create the following:
+ * master database container (emptyDir or PVC)
+ * collect container
+ * badger container
+ * master database service
+
+This example will pull postgres metrics from the database
+and push them to the metrics backend as well as provide
+a pgbadger container for log analysis.
+
 === Restore Database
 
 Template Name is *crunchy-postgres-database-restore-emptydir*
