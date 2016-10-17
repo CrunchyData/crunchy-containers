@@ -13,11 +13,8 @@ RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
 # open up the prometheus port
 EXPOSE 9090
-# open up the prometheus pushgateway port
-EXPOSE 9091
 
 ADD prometheus.tar.gz /opt/cpm/bin
-ADD prometheus-pushgateway.tar.gz /opt/cpm/bin
 ADD bin/prometheus /opt/cpm/bin
 ADD conf/prometheus /opt/cpm/conf
 

@@ -14,7 +14,7 @@ EXPOSE 9091
 ADD prometheus-pushgateway.tar.gz /opt/cpm/bin
 ADD bin/promgateway /opt/cpm/bin
 
-USER root
+USER daemon
 
 CMD ["/opt/cpm/bin/start-promgateway.sh"]
 
