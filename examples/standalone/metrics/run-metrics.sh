@@ -43,7 +43,7 @@ sudo docker run \
 	-v $DATA_DIR:/data \
 	--name=crunchy-prometheus \
 	--hostname=crunchy-prometheus \
-	--link crunchy-promgateway:crunchy-promgateway \
+	--link crunchy-promgateway:crunchy-metrics \
 	-d crunchydata/crunchy-prometheus:$CCP_IMAGE_TAG
 
 

@@ -15,5 +15,5 @@
 
 kubectl delete pvc  prometheus-pvc grafana-pvc
 kubectl delete pv prometheus-pv grafana-pv
-kubectl delete pod crunchy-prometheus crunchy-grafana crunchy-promgateway
-kubectl delete service crunchy-prometheus crunchy-grafana crunchy-promgateway
+kubectl delete pod crunchy-metrics
+kubectl delete service crunchy-metrics

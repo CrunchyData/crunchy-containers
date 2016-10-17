@@ -19,9 +19,5 @@
 source $BUILDBASE/examples/envvars.sh
 
 LOC=$BUILDBASE/examples/kube/metrics
-kubectl create -f $LOC/prometheus-service.json
-envsubst <  $LOC/prometheus.json  | kubectl create -f -
-kubectl create -f $LOC/promgateway-service.json 
-envsubst <  $LOC/promgateway.json  | kubectl create -f -
-kubectl create -f $LOC/grafana-service.json 
-envsubst <  $LOC/grafana.json  | kubectl create -f -
+kubectl create -f $LOC/metrics-service.json 
+envsubst <  $LOC/metrics.json  | kubectl create -f -

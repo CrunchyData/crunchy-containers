@@ -1,0 +1,64 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "crunchy-metrics",
+        "labels": {
+            "name": "crunchy-metrics"
+        }
+    },
+    "spec": {
+        "containers": [{
+            "name": "crunchy-promgateway",
+            "image": "crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG",
+            "ports": [{
+                "containerPort": 9091,
+                "protocol": "TCP"
+            }],
+            "env": [],
+            "volumeMounts": []
+        }, {
+            "name": "crunchy-grafana",
+            "image": "crunchydata/crunchy-grafana:$CCP_IMAGE_TAG",
+            "ports": [{
+                "containerPort": 3000,
+                "protocol": "TCP"
+            }],
+            "env": [],
+            "securityContext": {
+                "capabilities": {}
+            },
+            "volumeMounts": [{
+                "mountPath": "/data",
+                "name": "grafanadata",
+                "readOnly": false
+            }]
+        }, {
+            "name": "crunchy-prometheus",
+            "image": "crunchydata/crunchy-prometheus:$CCP_IMAGE_TAG",
+            "ports": [{
+                "containerPort": 9090,
+                "protocol": "TCP"
+            }],
+            "env": [],
+            "volumeMounts": [{
+                "mountPath": "/data",
+                "name": "prometheusdata",
+                "readOnly": false
+            }]
+        }],
+        "volumes": [{
+            "name": "prometheusdata",
+            "persistentVolumeClaim": {
+                "claimName": "prometheus-pvc"
+            }
+
+        }, {
+            "name": "grafanadata",
+            "persistentVolumeClaim": {
+                "claimName": "grafana-pvc"
+            }
+
+        }]
+    }
+}
