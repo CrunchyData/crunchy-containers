@@ -6,12 +6,12 @@
   },
   "spec": {
     "capacity": {
-        "storage": "1Gi"
+        "storage": "100M"
     },
     "accessModes": [ "ReadWriteOnce" ],
     "nfs": {
         "path": "/nfsfileshare",
-        "server": "IPADDRESS"
+        "server": "$LOCAL_IP"
     },
     "persistentVolumeReclaimPolicy": "Retain"
   }
