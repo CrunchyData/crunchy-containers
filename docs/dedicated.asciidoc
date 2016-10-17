@@ -179,6 +179,23 @@ These templates create the following:
 This example deploys a single database container which
 uses emptyDir or a PVC for volume persistence.
 
+=== replica with DeploymentConfig
+
+Template names is *crunchy-postgres-replica-deployment-emptydir*
+
+Example is found here:
+....
+examples/dedicated/replica-dc
+....
+
+These templates create the following:
+ * replica database container using emptyDir volume and a DeploymentConfig
+   allowing scaling
+ * service for replica 
+
+This example deploys a single replica container which
+uses emptyDir that can be scaled up within a DeploymentConfig.
+
 === database backup
 
 Template Name is *crunchy-postgres-database-backup*
@@ -207,12 +224,12 @@ examples/dedicated/single-replica
 ....
 
 This template will create the following:
- * database container using emptyDir or PVC as the data volume
- * service to the database
+ * replica database container using emptyDir or PVC as the data volume
+ * service to the replica
 
-This example deploys a database pod using either
+This example deploys a replica database pod using either
 emptyDir or a PVC to store data.  A service is also
-created to the database.
+created to the replica.
 
 === synchronous replica database
 
