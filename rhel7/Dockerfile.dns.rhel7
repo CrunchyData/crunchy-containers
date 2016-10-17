@@ -1,6 +1,6 @@
 FROM rhel7.2
 
-LABEL Release="1.2.3"
+LABEL Release="1.2.4"
 LABEL Vendor="Crunchy Data Solutions"
 
 #RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
