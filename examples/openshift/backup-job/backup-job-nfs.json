@@ -41,9 +41,6 @@
                             "claimName": "backup-job-pvc"
                         }
                     }],
-                    "securityContext": {
-                        "fsGroup": 26
-                    },
                     "containers": [{
                         "name": "backup-job-nfs",
                         "image": "crunchydata/crunchy-backup:${CCP_IMAGE_TAG}",
