@@ -67,7 +67,7 @@ function kube_failover() {
 
 	TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
 	#oc login https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true --token="$TOKEN"
-	#oc projects $OSE_PROJECT
+	#oc project $OSE_PROJECT
 	echo "performing failover..."
 
 	TRIGGERSLAVES=`kubectl get pod --selector=name=$PG_SLAVE_SERVICE --selector=slavetype=trigger --no-headers | cut -f1 -d' '`
@@ -104,7 +104,7 @@ function ose_failover() {
 
 	TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
 	oc login https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true --token="$TOKEN"
-	oc projects $OSE_PROJECT
+	oc project $OSE_PROJECT
 	echo "performing failover..."
 #	echo "deleting master service to block slaves..."
 #	oc get service $PG_MASTER_SERVICE -o json > /tmp/master-service.json
