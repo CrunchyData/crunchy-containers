@@ -13,7 +13,7 @@
     "parameters": [{
         "name": "PGBOUNCER_SERVICE_NAME",
         "value": "pgbouncer"
-    },{
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
     }],
@@ -50,6 +50,11 @@
             }
         },
         "spec": {
+            "metadata": {
+                "annotations": {
+                    "openshift.io/scc": "privileged"
+                }
+            },
             "volumes": [{
                 "name": "pgconf",
                 "persistentVolumeClaim": {

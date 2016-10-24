@@ -13,35 +13,47 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+function ose_hack() {
+	export USER_ID=$(id -u)
+	export GROUP_ID=$(id -g)
+	envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
+	export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
+	export NSS_WRAPPER_PASSWD=/tmp/passwd
+	export NSS_WRAPPER_GROUP=/etc/group
+}
+
+ose_hack
+
 rm -rf /tmp/pgbouncer.pid
 
 BINDIR=/opt/cpm/bin
 CONFDIR=/pgconf
 
-function check_conf() {
-        if [ -f $CONFDIR/users.txt ]; then
-                echo "users.txt found in " $CONFDIR
-	else
-                echo "users.txt NOT found in " $CONFDIR
-	fi
-        if [ -f $CONFDIR/pgbouncer.ini ]; then
-                echo "pgbouncer.ini found in " $CONFDIR
-		cp $CONFDIR/pgbouncer.ini /tmp
-	else
-                echo "pgbouncer.ini NOT found in " $CONFDIR
-        fi
-}
+if [ -f $CONFDIR/users.txt ]; then
+	echo "users.txt found in " $CONFDIR
+	CONFDIR=/pgconf
+else
+	echo "users.txt NOT found in " $CONFDIR
+fi
 
-check_conf
+if [ -f $CONFDIR/pgbouncer.ini ]; then
+	echo "pgbouncer.ini found in " $CONFDIR
+	CONFDIR=/pgconf
+else
+	echo "pgbouncer.ini NOT found in " $CONFDIR
+	echo "will use default config files out of /tmp"
+	CONFDIR=/tmp
+fi
 
 if [ -v FAILOVER ]; then
 	echo "FAILOVER is set and a watch will be started on the master"
 	/opt/cpm/bin/pgbouncer-watch.sh &
 fi
 
-pgbouncer /tmp/pgbouncer.ini
+pgbouncer $CONFDIR/pgbouncer.ini -u pgbouncer
 
-#while true; do
-#	echo "main sleeping..."
-#	sleep 100
-#done
+while true; do
+	echo "main sleeping..."
+	sleep 100
+done
