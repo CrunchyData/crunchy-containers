@@ -26,13 +26,7 @@ sudo docker rm master-restore
 #sudo chcon -Rt svirt_sandbox_file_t $PGCONF
 # add this next line to the docker run to override pg config files
 
-if [ -z "$1" ]; then
-	BACKUP=/tmp/backups/master/2016-03-08-15-43-28
-	echo "using the run script BACKUP "
-else
-	BACKUP=$1
-	echo "using the passed parm for BACKUP " $BACKUP
-fi
+BACKUP=/nfsfileshare/single-master/2016-10-24-10-03-26
 
 DATA_DIR=/tmp/master-restore
 sudo rm -rf $DATA_DIR
