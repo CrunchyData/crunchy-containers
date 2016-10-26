@@ -12,7 +12,6 @@ setup:
 gendeps:
 	godep save \
 	github.com/crunchydata/crunchy-containers/collectapi \
-	github.com/crunchydata/crunchy-containers/dnsbridgeapi \
 	github.com/crunchydata/crunchy-containers/badger 
 
 docbuild:
@@ -57,14 +56,6 @@ collectserver:
 	cp $(GOBIN)/collectserver bin/collect
 	sudo docker build -t crunchy-collect -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.collect.$(CCP_BASEOS) .
 	docker tag crunchy-collect crunchydata/crunchy-collect:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
-dns: 
-	cd dnsbridge && godep go install dnsbridgeserver.go
-	cd dnsbridge && godep go install consulclient.go
-	cp $(GOBIN)/consul bin/dns/
-	cp $(GOBIN)/dnsbridgeserver bin/dns/
-	cp $(GOBIN)/consulclient bin/dns/
-	sudo docker build -t crunchy-dns -f $(CCP_BASEOS)/Dockerfile.dns.$(CCP_BASEOS) .
-	docker tag crunchy-dns crunchydata/crunchy-dns:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 backup:
 	make versiontest
 	sudo docker build -t crunchy-backup -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backup.$(CCP_BASEOS) .
@@ -108,7 +99,6 @@ all:
 	make pgbouncer
 	make pgbadger
 	make collectserver
-	make dns
 	make grafana
 	make promgateway
 	make prometheus
