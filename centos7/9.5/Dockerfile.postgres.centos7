@@ -1,6 +1,6 @@
 FROM centos:7
 
-LABEL Release="1.2.4"
+LABEL Release="1.2.5"
 LABEL Vendor="Crunchy Data Solutions"
 
 LABEL PostgresVersion="9.5"
@@ -11,8 +11,8 @@ RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.
 RUN yum -y install epel-release && yum -y reinstall glibc-common && \
 	yum install -y rsync procps-ng  \
 	openssh-clients nss_wrapper gettext hostname bind-utils && yum clean all -y && \
-	yum -y install postgresql9? postgresql9?-contrib postgresql9?-server \
-	postgis2_9? postgis2_9?-client pgrouting* && yum clean all -y
+	yum -y install postgresql95 postgresql95-contrib postgresql95-server \
+	postgis2_95 postgis2_95-client pgrouting* && yum clean all -y
 
 # set up cpm directory
 #

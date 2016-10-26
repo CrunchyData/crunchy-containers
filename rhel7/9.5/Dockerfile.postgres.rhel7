@@ -1,6 +1,6 @@
 FROM rhel7.2
 
-LABEL Release="1.2.4"
+LABEL Release="1.2.5"
 LABEL Vendor="Crunchy Data Solutions"
 LABEL PostgresVersion="9.5"
 
@@ -16,8 +16,8 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 #RUN yum -y install rsync nss_wrapper gettext bind-utils libxslt libxml2 procps-ng \
 RUN yum -y install rsync nss_wrapper gettext bind-utils procps-ng \
 openssh-clients  hostname && yum -y reinstall glibc-common && \ 
-yum -y install postgresql9? postgresql9?-contrib postgresql9?-server \
-postgis2_9? postgis2_9?-client pgrouting* && yum clean all -y
+yum -y install postgresql95 postgresql95-contrib postgresql95-server \
+postgis2_95 postgis2_95-client pgrouting* && yum clean all -y
 
 # set up cpm directory
 #
