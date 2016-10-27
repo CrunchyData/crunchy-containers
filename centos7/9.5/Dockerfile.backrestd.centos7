@@ -8,7 +8,7 @@ LABEL PostgresVersion="9.5"
 RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
 
 RUN yum -y install epel-release && yum -y install rsync nss_wrapper gettext bind-utils procps-ng \
-openssh-clients  passwd hostname && yum -y reinstall glibc-common && \ 
+openssh-server openssh-clients passwd hostname && yum -y reinstall glibc-common && \ 
 yum -y install postgresql95-server \
 pgbackrest-1.05* && yum clean all -y
 
@@ -27,14 +27,15 @@ VOLUME ["/pgconf"]
 # add volumes to allow backup of postgres files
 VOLUME ["/pgdata"]
 
-# keys holds the public key for authenticating to the backrestd sshd 
+# openssh keys for pgbackrest ssh communications
 VOLUME ["/keys"]
 
 # open up the postgres port
 EXPOSE 5432
 
-ADD bin/backrest /opt/cpm/bin
-ADD conf/backrest /opt/cpm/conf
+ADD bin/backrestd /opt/cpm/bin
+ADD conf/backrestd /opt/cpm/conf
+
 RUN passwd -f -u postgres
 
 USER 26

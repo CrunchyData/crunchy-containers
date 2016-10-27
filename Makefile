@@ -32,6 +32,10 @@ backrest:
 	make versiontest
 	sudo docker build -t crunchy-backrest -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backrest.$(CCP_BASEOS) .
 	docker tag crunchy-backrest crunchydata/crunchy-backrest:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
+backrestd:
+	make versiontest
+	sudo docker build -t crunchy-backrestd -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backrestd.$(CCP_BASEOS) .
+	docker tag crunchy-backrestd crunchydata/crunchy-backrestd:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 pgbouncer:
 	make versiontest
 	cp /usr/bin/oc bin/pgbouncer
@@ -105,7 +109,6 @@ all:
 	make vac
 	make pgadmin4
 	make dbaserver
-	make backrest
 push:
 	./bin/push-to-dockerhub.sh
 default:
