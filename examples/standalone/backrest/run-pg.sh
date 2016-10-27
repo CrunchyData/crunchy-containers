@@ -13,52 +13,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-DATA_DIR=/tmp/master-data
+echo "starting master container..."
+
+# uncomment these lines to override the pg config files with
+# your own versions of pg_hba.conf and postgresql.conf
+#PGCONF=$HOME/openshift-dedicated-container/pgconf
+#sudo chown postgres:postgres $PGCONF
+#sudo chmod 0700 $PGCONF
+#sudo chcon -Rt svirt_sandbox_file_t $PGCONF
+# add this next line to the docker run to override pg config files
+
+DATA_DIR=/tmp/backtestdb-data
 sudo rm -rf $DATA_DIR
 sudo mkdir -p $DATA_DIR
 sudo chown postgres:postgres $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-CONF_DIR=/tmp/backrestd-conf
-sudo rm -rf $CONF_DIR
-sudo mkdir -p $CONF_DIR
-sudo chcon -Rt svirt_sandbox_file_t $CONF_DIR
-sudo cp ./sshd-config/sshd_config $CONF_DIR
-sudo chown -R postgres:postgres $CONF_DIR
-
-KEYS=/tmp/backrestd-keys
-sudo rm -rf $KEYS
-sudo mkdir -p $KEYS
-sudo chcon -Rt svirt_sandbox_file_t $KEYS
-sudo cp ./sshd-keys/ssh_host_dsa_key $KEYS
-sudo cp ./sshd-keys/ssh_host_ecdsa_key $KEYS
-sudo cp ./sshd-keys/ssh_host_rsa_key $KEYS
-sudo cp ./sshd-keys/authorized_keys $KEYS
-sudo chown -R postgres:postgres $KEYS
-
-CONTAINER=backrestd
-echo "starting " $CONTAINER " container..."
+CONTAINER=backtestdb
 sudo docker stop $CONTAINER
 sudo docker rm $CONTAINER
 
 sudo docker run \
-	-v $CONF_DIR:/pgconf \
+	-p 12000:5432 \
 	-v $DATA_DIR:/pgdata \
-	-v $KEYS:/keys \
 	-e TEMP_BUFFERS=9MB \
 	-e PGHOST=/tmp \
 	-e MAX_CONNECTIONS=101 \
 	-e SHARED_BUFFERS=129MB \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
+	-e PG_MODE=master \
 	-e PG_MASTER_USER=masteruser \
 	-e PG_MASTER_PASSWORD=password \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--link backtestdb:backtestdb\
 	--name=$CONTAINER \
 	--hostname=$CONTAINER \
-	-d crunchydata/crunchy-backrestd:$CCP_IMAGE_TAG
+	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 
