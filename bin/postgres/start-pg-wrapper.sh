@@ -128,6 +128,7 @@ function fill_conf_file() {
 	fi
 	if [[ -v ARCHIVE_MODE ]]; then
 		echo "overriding ARCHIVE_MODE setting to " + $ARCHIVE_MODE
+		ARCHIVE_COMMAND="test ! -f $PGWAL/%f && cp %p $PGWAL/%f"
 	else
 		ARCHIVE_MODE=off
 	fi
@@ -137,6 +138,12 @@ function fill_conf_file() {
 		ARCHIVE_TIMEOUT=0
 	fi
 
+	if [ -f /pgconf/pgbackrest.conf ]; then
+		echo "using pgbackrest archive command"
+		ARCHIVE_MODE=on
+		ARCHIVE_COMMAND="pgbackrest --config=\/pgconf\/pgbackrest.conf --stanza=db archive-push %p"
+	fi
+
 	cp /opt/cpm/conf/postgresql.conf.template /tmp/postgresql.conf
 	sed -i "s/TEMP_BUFFERS/$TEMP_BUFFERS/g" /tmp/postgresql.conf
 	sed -i "s/MAX_CONNECTIONS/$MAX_CONNECTIONS/g" /tmp/postgresql.conf
@@ -144,6 +151,7 @@ function fill_conf_file() {
 	sed -i "s/MAX_WAL_SENDERS/$MAX_WAL_SENDERS/g" /tmp/postgresql.conf
 	sed -i "s/WORK_MEM/$WORK_MEM/g" /tmp/postgresql.conf
 	sed -i "s/ARCHIVE_MODE/$ARCHIVE_MODE/g" /tmp/postgresql.conf
+	sed -i "s/ARCHIVE_COMMAND/$ARCHIVE_COMMAND/g" /tmp/postgresql.conf
 	sed -i "s/ARCHIVE_TIMEOUT/$ARCHIVE_TIMEOUT/g" /tmp/postgresql.conf
 }
 

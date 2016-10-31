@@ -12,13 +12,13 @@ RUN yum -y install epel-release && yum -y reinstall glibc-common && \
 	yum install -y rsync procps-ng  \
 	openssh-clients nss_wrapper gettext hostname bind-utils && yum clean all -y && \
 	yum -y install postgresql95 postgresql95-contrib postgresql95-server \
-	postgis2_95 postgis2_95-client pgrouting* && yum clean all -y
+	postgis2_95 postgis2_95-client pgrouting* pgbackrest-1.05* && yum clean all -y
 
 # set up cpm directory
 #
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /backup /pgconf /recover
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /backup /pgconf /recover /backrestrepo
 
-RUN chown -R postgres:postgres /opt/cpm /pgdata /pgwal /backup /pgconf /recover
+RUN chown -R postgres:postgres /opt/cpm /pgdata /pgwal /backup /pgconf /recover /backrestrepo
 
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/
@@ -37,6 +37,9 @@ VOLUME ["/pgwal"]
 
 # add volumes to locate WAL files to recover with
 VOLUME ["/recover"]
+
+# volume for pgbackrest to write to
+VOLUME ["/backrestrepo"]
 
 # open up the postgres port
 EXPOSE 5432

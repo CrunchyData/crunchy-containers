@@ -17,10 +17,22 @@ echo "starting master container..."
 
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
-#PGCONF=$HOME/openshift-dedicated-container/pgconf
-#sudo chown postgres:postgres $PGCONF
-#sudo chmod 0700 $PGCONF
-#sudo chcon -Rt svirt_sandbox_file_t $PGCONF
+PGCONF=/tmp/backtestdb-pgconf
+sudo rm -rf $PGCONF
+sudo mkdir $PGCONF
+sudo chmod 0700 $PGCONF
+sudo chcon -Rt svirt_sandbox_file_t $PGCONF
+sudo cp pgbackrest.conf $PGCONF
+sudo chown -R postgres:postgres $PGCONF
+
+# the backrest repo that backrest will write to
+BACKRESTREPO=/tmp/backtestdb-backrestrepo
+sudo rm -rf $BACKRESTREPO
+sudo mkdir $BACKRESTREPO
+sudo chmod 0700 $BACKRESTREPO
+sudo chcon -Rt svirt_sandbox_file_t $BACKRESTREPO
+sudo chown postgres:postgres $BACKRESTREPO
+
 # add this next line to the docker run to override pg config files
 
 DATA_DIR=/tmp/backtestdb-data
@@ -35,7 +47,10 @@ sudo docker rm $CONTAINER
 
 sudo docker run \
 	-p 12000:5432 \
+	-v $BACKRESTREPO:/backrestrepo \
+	-v $PGCONF:/pgconf \
 	-v $DATA_DIR:/pgdata \
+	-e ARCHIVE_TIMEOUT=60 \
 	-e TEMP_BUFFERS=9MB \
 	-e PGHOST=/tmp \
 	-e MAX_CONNECTIONS=101 \
