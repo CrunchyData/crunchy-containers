@@ -1,0 +1,8 @@
+[db]
+db-host=backtestdb
+db-user=postgres
+db-path=/pgdata/backtestdb
+
+[global]
+repo-path=/backrestrepo
+start-fast=y

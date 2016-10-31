@@ -260,7 +260,7 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	export PGHOST=/tmp
         psql -U postgres < /tmp/setup.sql
 
-	pg_ctl -D $PGDATA stop
+	pg_ctl -D $PGDATA --mode=fast stop
 
 	if [[ -v SYNC_SLAVE ]]; then
 		echo "synchronous_standby_names = '" $SYNC_SLAVE "'" >> $PGDATA/postgresql.conf

@@ -20,7 +20,7 @@ sudo rm -rf $CONF_DIR
 sudo mkdir -p $CONF_DIR
 sudo chcon -Rt svirt_sandbox_file_t $CONF_DIR
 sudo cp ./sshd-config/sshd_config $CONF_DIR
-sudo cp ./pgbackrest.conf $CONF_DIR
+sudo cp ./pgbackrest.conf.backrestd $CONF_DIR/pgbackrest.conf
 sudo chown -R postgres:postgres $CONF_DIR
 
 KEYS=/tmp/backrestd-keys
@@ -33,8 +33,12 @@ sudo cp ./sshd-keys/ssh_host_rsa_key $KEYS
 sudo cp ./sshd-keys/authorized_keys $KEYS
 sudo chown -R postgres:postgres $KEYS
 
-# the backrest repo that backrest will write to
-BACKRESTREPO=/tmp/backtestdb-backrestrepo
+# the backup server repo dir where backups will reside
+BACKRESTREPO=/tmp/backrestd-backrestrepo
+sudo rm -rf $BACKRESTREPO
+sudo mkdir -p $BACKRESTREPO
+sudo chcon -Rt svirt_sandbox_file_t $BACKRESTREPO
+sudo chown -R postgres:postgres $BACKRESTREPO
 
 CONTAINER=backrestd
 echo "starting " $CONTAINER " container..."
