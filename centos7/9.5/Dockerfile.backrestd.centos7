@@ -14,9 +14,9 @@ pgbackrest-1.05* && yum clean all -y
 
 # set up cpm directory
 #
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /backup
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /backup /backrestrepo
 
-RUN chown -R postgres:postgres /opt/cpm /pgdata /backup
+RUN chown -R postgres:postgres /opt/cpm /pgdata /backup /backrestrepo
 
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/
@@ -29,6 +29,9 @@ VOLUME ["/pgdata"]
 
 # openssh keys for pgbackrest ssh communications
 VOLUME ["/keys"]
+
+# backrest repo location
+VOLUME ["/backrestrepo"]
 
 # open up the postgres port
 EXPOSE 5432
