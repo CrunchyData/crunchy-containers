@@ -17,13 +17,13 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 RUN yum -y install rsync nss_wrapper gettext bind-utils procps-ng \
 openssh-clients  hostname && yum -y reinstall glibc-common && \ 
 yum -y install postgresql95 postgresql95-contrib postgresql95-server \
-postgis2_95 postgis2_95-client pgrouting* && yum clean all -y
+postgis2_95 postgis2_95-client crunchy-backrest-1.09-0* pgrouting* && yum clean all -y
 
 # set up cpm directory
 #
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /backup
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /backup /backrestrepo
 
-RUN chown -R postgres:postgres /opt/cpm /pgdata /backup
+RUN chown -R postgres:postgres /opt/cpm /pgdata /backup /backrestrepo
 
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/
@@ -36,6 +36,9 @@ VOLUME ["/pgdata"]
 
 # add volumes to offer a restore feature
 VOLUME ["/backup"]
+
+# volume for pgbackrest to write to
+VOLUME ["/backrestrepo"]
 
 # open up the postgres port
 EXPOSE 5432

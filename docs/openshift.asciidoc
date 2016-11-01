@@ -803,6 +803,37 @@ system with the following path configurations be present:
 /nfsfileshare/WAL
 ....
 
+=== Openshift Example 21 - pgbackrest
+
+This example shows how to enable pgbackrest as the archiver
+within the crunchy-postgres container.  
+See the link:backrest.asciidoc[pgbackrest Documentation] for details and background.
+
+Start by running the example database container:
+....
+cd $BUILDBASE/examples/openshift/backrest
+./run.sh
+....
+
+This will create the following:
+ * PV/PVC for /pgconf and /backrestrepo volumes
+ * master database pod 
+ * master service
+
+The run.sh script copies the pgbackrest.conf configuration file
+to /nfsfileshare/pgconf which is our NFS file path.
+
+The archive files are written to the NFS path of /nfsfileshare/backrestrepo.
+
+The presence of /pgconf/pgbackrest.conf is what is used to
+determine whether pgbackrest will be used as the archive command or not.
+You will need to specify the ARCHIVE_TIMEOUT environment variable
+as well to use this.
+
+After you run the example, you should see archive files 
+being written to the /backrestrepo volume (/nfsfileshare/backrestrepo).
+
+
 == Openshift Tips
 
 === Tip 1: Finding the Postgresql Passwords
