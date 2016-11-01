@@ -641,6 +641,33 @@ The only differences are the following:
 See link:pitr.asciidoc[PITR Documentation] for details on PITR concepts and how PITR is implemented
 within the Suite.
 
+=== Kube Example 17 - pgbackrest
+
+Starting in release 1.2.5, the pgbackrest utility has been
+added to the crunchy-postgres container.  See the 
+link:backrest.asciidoc[pgbackrest Documentation] for details
+on how this feature works within the container suite.
+
+Start the example as follows:
+....
+cd $BUILDBASE/examples/kube/backrest
+./run.sh
+....
+
+This will create the following in your Kube environment:
+ * PVC for /pgconf which holds the pgbackrest configuration file, this
+  example uses NFS for the Persistent volumes, so the run.sh script
+  can copy the pgbackrest.conf file to the PV location
+ * PV for /pgconf, NFS location is /nfsfileshare/pgconf for this example
+ * PVC for /backrestrepo, this holds the archive files that pgbackrest
+   will write out
+ * PV for /backrestrepo, maps to the NFS location of /nfsfileshare/backrestrepo
+ * master-backrest pod with pgbackrest archive enabled
+ * master-backrest service
+
+After some execution time, examing the contents of /nfsfileshare/backrestrepo
+to view the pgbackrest archive files.
+
 
 === Tip 1
 
