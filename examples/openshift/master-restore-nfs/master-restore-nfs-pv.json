@@ -14,7 +14,7 @@
         "accessModes": ["ReadWriteMany"],
         "nfs": {
             "path": "/nfsfileshare",
-            "server": "IPADDRESS"
+            "server": "$LOCAL_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }
