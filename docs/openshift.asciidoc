@@ -1046,6 +1046,20 @@ oc describe clusterPolicyBindings :default
 oadm policy add-cluster-role-to-user cluster-admin system
 ....
 
+=== Tip 14: anyuid permissions
+
+For my testing, I create a user named *test* on OSE, then
+I run the following command to grant it permission to use the *anyuid* SCC:
+
+....
+oc adm policy add-scc-to-group anyuid system:authenticated
+....
+
+This says that any authenticate user can run with the anyuid SCC which lets
+them create PVCs and use the *fsGroup* setting for the Postgres containers to
+work using NFS.  There is probably a smarter and more precise way to grant
+this permission?
+
 == Legal Notices
 
 Copyright © 2016 Crunchy Data Solutions, Inc.
