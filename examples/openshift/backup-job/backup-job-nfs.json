@@ -35,6 +35,9 @@
                     }
                 },
                 "spec": {
+                    "securityContext": {
+                        "fsGroup": 26
+                    },
                     "volumes": [{
                         "name": "pgdata",
                         "persistentVolumeClaim": {

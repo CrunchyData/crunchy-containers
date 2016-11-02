@@ -75,6 +75,9 @@
             }
         },
         "spec": {
+            "securityContext": {
+                "fsGroup": 26
+            },
             "containers": [{
                 "name": "single-master",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
@@ -108,34 +111,27 @@
                     "value": "password"
                 }],
                 "securityContext": {
-                    "capabilities": {
-                    }
+                    "capabilities": {}
                 },
 
 
-                "volumeMounts": [
-		{
+                "volumeMounts": [{
                     "mountPath": "/pgdata",
                     "name": "pgdata",
                     "readOnly": false
-                },
-		{
+                }, {
                     "mountPath": "/backup",
                     "name": "backup",
                     "readOnly": true
-                }
-		]
+                }]
             }],
-            "volumes": [
-	    {
+            "volumes": [{
                 "name": "pgdata",
                 "emptyDir": {}
-            },
-	    {
+            }, {
                 "name": "backup",
                 "emptyDir": {}
-            }
-	    ]
+            }]
         }
     }]
 }

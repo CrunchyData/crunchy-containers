@@ -75,6 +75,9 @@
             }
         },
         "spec": {
+            "securityContext": {
+                "fsGroup": 26
+            },
             "volumes": [{
                 "name": "pgdata",
                 "emptyDir": {}
@@ -108,7 +111,7 @@
                     "value": "password"
                 }, {
                     "name": "BACKUP_PATH",
-                    "value": "single-master/2016-10-11-13-54-15"
+                    "value": "single-master/2016-11-02-17-30-44"
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"

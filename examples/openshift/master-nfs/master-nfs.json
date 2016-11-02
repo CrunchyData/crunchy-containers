@@ -75,11 +75,14 @@
             }
         },
         "spec": {
+            "securityContext": {
+                "fsGroup": 26
+            },
             "volumes": [{
                 "name": "pgdata",
-		"persistentVolumeClaim": {
-                "claimName": "master-nfs-pvc"
-		}
+                "persistentVolumeClaim": {
+                    "claimName": "master-nfs-pvc"
+                }
             }],
             "containers": [{
                 "name": "master-nfs",
@@ -114,8 +117,7 @@
                     "value": "${PG_ROOT_PASSWORD}"
                 }],
                 "securityContext": {
-                    "capabilities": {
-                    }
+                    "capabilities": {}
                 },
 
 
