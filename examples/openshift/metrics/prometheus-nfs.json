@@ -10,7 +10,10 @@
             "tags": "database,postgresql,replication"
         }
     },
-    "parameters": [],
+    "parameters": [{
+        "name": "CCP_IMAGE_TAG",
+        "description": "The image tag to use"
+    }],
 
     "objects": [{
         "kind": "Service",
@@ -63,7 +66,7 @@
         "spec": {
             "containers": [{
                 "name": "crunchy-prometheus",
-                "image": "crunchydata/crunchy-prometheus:1.2.1",
+                "image": "crunchydata/crunchy-prometheus:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 9090,
                     "protocol": "TCP"

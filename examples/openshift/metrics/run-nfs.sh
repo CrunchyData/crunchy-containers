@@ -20,8 +20,6 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-oc project openshift
-
 LOC=$BUILDBASE/examples/openshift/metrics
 
 envsubst <  $LOC/grafana-pv.json  | oc create -f -

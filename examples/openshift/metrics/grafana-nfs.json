@@ -10,7 +10,10 @@
             "tags": "database,postgresql,replication"
         }
     },
-    "parameters": [],
+    "parameters": [{
+        "name": "CCP_IMAGE_TAG",
+        "description": "The image tag to use"
+    }],
     "objects": [{
         "kind": "Service",
         "apiVersion": "v1",
@@ -21,15 +24,13 @@
             }
         },
         "spec": {
-            "ports": [
-	    {
+            "ports": [{
                 "name": "grafana",
                 "protocol": "TCP",
                 "port": 3000,
                 "targetPort": 3000,
                 "nodePort": 0
-            }
-	    ],
+            }],
             "selector": {
                 "name": "crunchy-grafana"
             }
@@ -49,7 +50,7 @@
         "spec": {
             "containers": [{
                 "name": "crunchy-grafana",
-                "image": "crunchydata/crunchy-grafana:1.2.1",
+                "image": "crunchydata/crunchy-grafana:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 3000,
                     "protocol": "TCP"
@@ -67,8 +68,8 @@
             "volumes": [{
                 "name": "data",
                 "persistentVolumeClaim": {
-			"claimName":"grafana-pvc"
-		}
+                    "claimName": "grafana-pvc"
+                }
             }]
         }
     }]
