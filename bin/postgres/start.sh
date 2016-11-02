@@ -338,7 +338,6 @@ ose_hack
 
 fill_conf_file
 
-
 case "$PG_MODE" in 
 	"slave")
 	echo "working on slave"
@@ -359,9 +358,9 @@ esac
 
 if [ -f /pgconf/postgresql.conf ]; then
        	echo "pgconf postgresql.conf is being used"
-	postgres -c config_file=/pgconf/postgresql.conf -c hba_file=/pgconf/pg_hba.conf -D $PGDATA 
+	exec postgres -c config_file=/pgconf/postgresql.conf -c hba_file=/pgconf/pg_hba.conf -D $PGDATA 
 else
-	postgres -D $PGDATA 
+	exec postgres -D $PGDATA 
 fi
 
 #while true; do
