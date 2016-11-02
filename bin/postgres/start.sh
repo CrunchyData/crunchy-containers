@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash  
 
 # Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,6 +12,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+function trap_sigterm() {
+	echo "doing trap logic..." >> $PGDATA/trap.output
+	kill -SIGINT `head -1 $PGDATA/postmaster.pid` >> $PGDATA/trap.output
+}
+
+trap 'trap_sigterm' SIGINT SIGTERM
 
 source /opt/cpm/bin/setenv.sh
 source check-for-secrets.sh
@@ -358,10 +365,16 @@ esac
 
 if [ -f /pgconf/postgresql.conf ]; then
        	echo "pgconf postgresql.conf is being used"
-	exec postgres -c config_file=/pgconf/postgresql.conf -c hba_file=/pgconf/pg_hba.conf -D $PGDATA 
+	postgres -c config_file=/pgconf/postgresql.conf -c hba_file=/pgconf/pg_hba.conf -D $PGDATA  &
 else
-	exec postgres -D $PGDATA 
+	postgres -D $PGDATA  &
 fi
+
+echo "waiting here...enter docker stop to gracefully stop postgres"
+
+wait
+
+echo "exiting...at end"
 
 #while true; do
 #	echo "sleeping "
