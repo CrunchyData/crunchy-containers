@@ -8,6 +8,9 @@
         }
     },
     "spec": {
+        "securityContext": {
+            "supplementalGroups": [65534]
+        },
         "containers": [{
             "name": "pgadmin4",
             "securityContext": {
@@ -18,7 +21,7 @@
                 "containerPort": 5050,
                 "protocol": "TCP"
             }],
-            "env": [ ],
+            "env": [],
             "volumeMounts": [{
                 "mountPath": "/.pgadmin",
                 "name": "rootdata",
@@ -28,8 +31,8 @@
         "volumes": [{
             "name": "rootdata",
             "persistentVolumeClaim": {
-	    	"claimName":"pgadmin4-nfs-pvc"
-	    }
+                "claimName": "pgadmin4-nfs-pvc"
+            }
         }]
     }
 }

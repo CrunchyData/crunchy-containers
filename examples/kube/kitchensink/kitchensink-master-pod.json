@@ -8,6 +8,9 @@
         }
     },
     "spec": {
+        "securityContext": {
+            "supplementalGroups": [65534]
+        },
         "containers": [{
             "name": "pgbadger",
             "image": "crunchydata/crunchy-pgbadger:$CCP_IMAGE_TAG",

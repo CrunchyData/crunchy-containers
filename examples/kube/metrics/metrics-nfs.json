@@ -8,6 +8,9 @@
         }
     },
     "spec": {
+        "securityContext": {
+            "supplementalGroups": [65534]
+        },
         "containers": [{
             "name": "crunchy-promgateway",
             "image": "crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG",

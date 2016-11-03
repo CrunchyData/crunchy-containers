@@ -8,6 +8,9 @@
         }
     },
     "spec": {
+        "securityContext": {
+            "supplementalGroups": [65534]
+        },
         "containers": [{
             "name": "kitchensink-sync-slave",
             "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",

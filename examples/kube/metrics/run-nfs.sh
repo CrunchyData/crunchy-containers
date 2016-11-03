@@ -20,12 +20,12 @@
 source $BUILDBASE/examples/envvars.sh
 LOC=$BUILDBASE/examples/kube/metrics
 
-#envsubst <  $LOC/grafana-pv.json |  kubectl create -f -
-#envsubst <  $LOC/prometheus-pv.json | kubectl create -f -
+envsubst <  $LOC/grafana-pv.json |  kubectl create -f -
+envsubst <  $LOC/prometheus-pv.json | kubectl create -f -
 
-#kubectl create -f $LOC/grafana-pvc.json
-#kubectl create -f $LOC/prometheus-pvc.json
+kubectl create -f $LOC/grafana-pvc.json
+kubectl create -f $LOC/prometheus-pvc.json
 
-#kubectl create -f $LOC/metrics-service.json
+kubectl create -f $LOC/metrics-service.json
 
 envsubst < $LOC/metrics-nfs.json | kubectl create -f -
