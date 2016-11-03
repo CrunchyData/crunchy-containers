@@ -16,7 +16,7 @@ oc delete service master-pitr master-pitr-restore
 oc delete pod master-pitr master-pitr-restore
 oc delete job backup-master-pitr-nfs
 oc delete pvc master-pitr-pvc backup-master-pitr-pvc master-pitr-recover-pvc master-pitr-restore-pvc master-pitr-wal-pvc
-oc delete pv master-pitr-pv backup-master-pitr-pv master-pitr-recover-pv master-pitr-restore-pv master-pitr-wal-pv
+
 
 sudo rm -rf /nfsfileshare/WAL/master-pitr
 sudo rm -rf /nfsfileshare/master-pitr

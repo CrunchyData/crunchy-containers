@@ -20,10 +20,6 @@ echo "create services for master and slaves..."
 oc create -f $LOC/kitchensink-master-service.json
 oc create -f $LOC/kitchensink-slave-service.json
 
-echo "create PVs for master and sync slave..."
-envsubst < $LOC/kitchensink-sync-slave-pv.json | oc create -f -
-envsubst < $LOC/kitchensink-master-pv.json | oc create -f -
-
 echo "create PVCs for master and sync slave..."
 oc create -f $LOC/kitchensink-sync-slave-pvc.json
 oc create -f $LOC/kitchensink-master-pvc.json

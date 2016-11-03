@@ -16,6 +16,5 @@ source $BUILDBASE/examples/envvars.sh
 
 LOC=$BUILDBASE/examples/openshift/pitr
 
-envsubst < $LOC/backup-master-pitr-pv.json  | oc create -f -
 oc create -f $LOC/backup-master-pitr-pvc.json
 oc process -f $LOC/backup-master-pitr-job.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

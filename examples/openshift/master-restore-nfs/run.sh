@@ -17,7 +17,5 @@ source $BUILDBASE/examples/envvars.sh
 
 LOC=$BUILDBASE/examples/openshift/master-restore-nfs
 
-envsubst <  master-restore-nfs-pv.json | oc create -f -
-
 oc create -f $LOC/master-restore-nfs-pvc.json
 oc process -f $LOC/master-restore-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

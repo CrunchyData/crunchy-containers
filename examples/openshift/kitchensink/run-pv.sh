@@ -12,6 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pod master-restore-nfs
-oc delete service master-restore-nfs
-oc delete pvc master-restore-nfs-pvc
+# typically the PVs are created by an admin so I split this out
+# into its own script
+
+source $BUILDBASE/examples/envvars.sh
+
+LOC=$BUILDBASE/examples/openshift/kitchensink
+
+echo "create PVs for master and sync slave..."
+envsubst < $LOC/kitchensink-sync-slave-pv.json | oc create -f -
+envsubst < $LOC/kitchensink-master-pv.json | oc create -f -
+

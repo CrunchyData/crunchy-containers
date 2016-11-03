@@ -16,10 +16,5 @@
 source $BUILDBASE/examples/envvars.sh
 
 LOC=$BUILDBASE/examples/openshift/custom-config
-NFS=/nfsfileshare/custom-config
-sudo mkdir $NFS
-sudo cp $LOC/setup.sql $NFS
-
-envsubst < $LOC/custom-config-pv.json  | oc create -f -
 oc create -f $LOC/custom-config-pvc.json
 oc process -f $LOC/custom-config.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

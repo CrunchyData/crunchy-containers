@@ -48,6 +48,10 @@
             }
         },
         "spec": {
+            "securityContext": {
+                "supplementalGroups": [65534]
+            },
+
             "containers": [{
                 "name": "crunchy-grafana",
                 "image": "crunchydata/crunchy-grafana:${CCP_IMAGE_TAG}",

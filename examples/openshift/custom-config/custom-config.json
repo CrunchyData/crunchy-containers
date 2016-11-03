@@ -75,18 +75,18 @@
             }
         },
         "spec": {
-            "volumes": [
-	    {
-                "name": "pgconf",
-		"persistentVolumeClaim": {
-                "claimName": "custom-config-pvc"
-		}
+            "securityContext": {
+                "supplementalGroups": [65534]
             },
-	    {
+            "volumes": [{
+                "name": "pgconf",
+                "persistentVolumeClaim": {
+                    "claimName": "custom-config-pvc"
+                }
+            }, {
                 "name": "pgdata",
-		"emptyDir": {}
-            }
-	    ],
+                "emptyDir": {}
+            }],
             "containers": [{
                 "name": "custom-config",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
@@ -120,23 +120,19 @@
                     "value": "${PG_ROOT_PASSWORD}"
                 }],
                 "securityContext": {
-                    "capabilities": {
-                    }
+                    "capabilities": {}
                 },
 
 
-                "volumeMounts": [
-		{
+                "volumeMounts": [{
                     "mountPath": "/pgconf",
                     "name": "pgconf",
                     "readOnly": true
-                },
-		{
+                }, {
                     "mountPath": "/pgdata",
                     "name": "pgdata",
                     "readOnly": false
-                }
-		]
+                }]
             }]
         }
     }]

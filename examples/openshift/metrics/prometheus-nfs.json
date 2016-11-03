@@ -64,6 +64,10 @@
             }
         },
         "spec": {
+            "securityContext": {
+                "supplementalGroups": [65534]
+            },
+
             "containers": [{
                 "name": "crunchy-prometheus",
                 "image": "crunchydata/crunchy-prometheus:${CCP_IMAGE_TAG}",

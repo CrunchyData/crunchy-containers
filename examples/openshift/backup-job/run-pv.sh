@@ -12,6 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pod master-restore-nfs
-oc delete service master-restore-nfs
-oc delete pvc master-restore-nfs-pvc
+#
+# typically the PV creation is done by an admin user so I split this out
+# into its own script
+
+source $BUILDBASE/examples/envvars.sh
+
+LOC=$BUILDBASE/examples/openshift/backup-job
+oc delete pv backup-job-pv
+
+envsubst < $LOC/backup-job-pv.json  | oc create -f -

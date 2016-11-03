@@ -15,6 +15,5 @@
 source $BUILDBASE/examples/envvars.sh
 
 LOC=$BUILDBASE/examples/openshift/backup-job
-envsubst < $LOC/backup-job-pv.json  | oc create -f -
 oc create -f $LOC/backup-job-pvc.json
 oc process -f $LOC/backup-job-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

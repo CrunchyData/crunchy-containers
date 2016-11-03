@@ -75,6 +75,10 @@
             }
         },
         "spec": {
+            "securityContext": {
+                "supplementalGroups": [65534]
+            },
+
             "containers": [{
                 "name": "master-pitr",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
@@ -114,47 +118,38 @@
                     "value": "60"
                 }],
                 "securityContext": {
-                    "capabilities": {
-                    }
+                    "capabilities": {}
                 },
 
 
-                "volumeMounts": [
-		{
+                "volumeMounts": [{
                     "mountPath": "/pgdata",
                     "name": "pgdata",
                     "readOnly": false
-                },
-		{
+                }, {
                     "mountPath": "/pgwal",
                     "name": "pgwal",
                     "readOnly": false
-                },
-		{
+                }, {
                     "mountPath": "/backup",
                     "name": "backup",
                     "readOnly": true
-                }
-		]
+                }]
             }],
-            "volumes": [
-	    {
+            "volumes": [{
                 "name": "pgdata",
-		"persistentVolumeClaim": {
-			"claimName": "master-pitr-pvc"
-		}
-            },
-	    {
+                "persistentVolumeClaim": {
+                    "claimName": "master-pitr-pvc"
+                }
+            }, {
                 "name": "pgwal",
-		"persistentVolumeClaim": {
-			"claimName": "master-pitr-wal-pvc"
-		}
-            },
-	    {
+                "persistentVolumeClaim": {
+                    "claimName": "master-pitr-wal-pvc"
+                }
+            }, {
                 "name": "backup",
                 "emptyDir": {}
-            }
-	    ]
+            }]
         }
     }]
 }

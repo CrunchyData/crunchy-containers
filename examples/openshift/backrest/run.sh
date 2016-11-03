@@ -14,14 +14,8 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-sudo mkdir /nfsfileshare/pgconf /nfsfileshare/backrestrepo
-sudo chown -R postgres:postgres  /nfsfileshare/pgconf /nfsfileshare/backrestrepo
-sudo cp ./pgbackrest.conf /nfsfileshare/pgconf
-
-envsubst <  backrestrepo-nfs-pv.json | oc create -f -
 oc create -f backrestrepo-nfs-pvc.json
 
-envsubst <  pgconf-nfs-pv.json | oc create -f -
 oc create -f pgconf-nfs-pvc.json
 
 oc process -f master-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

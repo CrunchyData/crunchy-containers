@@ -51,6 +51,10 @@
             }
         },
         "spec": {
+            "securityContext": {
+                "supplementalGroups": [65534]
+            },
+
             "containers": [{
                 "name": "pgadmin4",
                 "image": "crunchydata/crunchy-pgadmin4:${CCP_IMAGE_TAG}",
@@ -64,22 +68,18 @@
                 },
 
 
-                "volumeMounts": [
-		{
+                "volumeMounts": [{
                     "mountPath": "/.pgadmin",
                     "name": "rootdata",
                     "readOnly": false
-                }
-		]
+                }]
             }],
-            "volumes": [
-	    {
+            "volumes": [{
                 "name": "rootdata",
                 "persistentVolumeClaim": {
                     "claimName": "pgadmin4-nfs-pvc"
                 }
-            }
-	    ]
+            }]
         }
     }]
 }

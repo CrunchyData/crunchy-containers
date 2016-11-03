@@ -16,6 +16,5 @@ source $BUILDBASE/examples/envvars.sh
 
 LOC=$BUILDBASE/examples/openshift/master-slave-rc-nfs
 
-envsubst <  $LOC/master-slave-rc-nfs-pv.json  | oc create -f -
 oc create -f $LOC/master-slave-rc-nfs-pvc.json
 oc process -f $LOC/master-slave-rc-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

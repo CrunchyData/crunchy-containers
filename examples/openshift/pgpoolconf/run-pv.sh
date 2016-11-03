@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pod master-restore-nfs
-oc delete service master-restore-nfs
-oc delete pvc master-restore-nfs-pvc
+source $BUILDBASE/examples/envvars.sh
+
+echo "this example depends on the single-master example being run prior"
+oc delete pv pgpool-pv
+
+envsubst < pgpool-pv.json |  oc create -f -

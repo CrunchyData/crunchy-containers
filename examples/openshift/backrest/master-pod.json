@@ -76,7 +76,7 @@
         },
         "spec": {
             "securityContext": {
-                "fsGroup": 26
+                "supplementalGroups": [65534]
             },
             "volumes": [{
                 "name": "pgdata",

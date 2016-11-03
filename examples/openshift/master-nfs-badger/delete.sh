@@ -14,5 +14,5 @@
 
 oc delete pod master-nfs-badger
 oc delete pvc master-nfs-badger-pvc
-oc delete pv master-nfs-badger-pv
+
 $BUILDBASE/examples/waitforterm.sh master-nfs-badger oc

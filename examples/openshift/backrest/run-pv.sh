@@ -12,6 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pod master-restore-nfs
-oc delete service master-restore-nfs
-oc delete pvc master-restore-nfs-pvc
+# typically the PV creation is done by an admin, so I split this out
+# into its own script
+
+source $BUILDBASE/examples/envvars.sh
+
+sudo mkdir /nfsfileshare/pgconf /nfsfileshare/backrestrepo
+sudo chown -R postgres:postgres  /nfsfileshare/pgconf /nfsfileshare/backrestrepo
+sudo cp ./pgbackrest.conf /nfsfileshare/pgconf
+
+envsubst <  backrestrepo-nfs-pv.json | oc create -f -
+
+envsubst <  pgconf-nfs-pv.json | oc create -f -
+

@@ -49,22 +49,19 @@
             }
         },
         "spec": {
-            "ports": [
-            {
+            "ports": [{
                 "name": "dbport",
                 "protocol": "TCP",
                 "port": 5432,
                 "targetPort": 5432,
                 "nodePort": 0
-            },
-            {
+            }, {
                 "name": "badgerport",
                 "protocol": "TCP",
                 "port": 10000,
                 "targetPort": 10000,
                 "nodePort": 0
-            }
-            ],
+            }],
             "selector": {
                 "name": "master-nfs-badger"
             },
@@ -85,15 +82,17 @@
             }
         },
         "spec": {
+            "securityContext": {
+                "supplementalGroups": [65534]
+            },
             "volumes": [{
                 "name": "pgdata",
-		"persistentVolumeClaim": {
-                "claimName": "master-nfs-badger-pvc"
-		}
+                "persistentVolumeClaim": {
+                    "claimName": "master-nfs-badger-pvc"
+                }
             }],
-            "containers": [
-            {
-                "name": "pg-badger",
+            "containers": [{
+                "name": "pgbadger",
                 "image": "crunchydata/crunchy-pgbadger:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 10000,
@@ -122,8 +121,7 @@
                     "value": "${PG_ROOT_PASSWORD}"
                 }],
                 "securityContext": {
-                    "capabilities": {
-                    }
+                    "capabilities": {}
                 },
 
 
@@ -132,9 +130,8 @@
                     "name": "pgdata",
                     "readOnly": true
                 }]
-            },
-		{
-                "name": "master-nfs-badger",
+            }, {
+                "name": "postgres",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
@@ -162,11 +159,6 @@
                     "name": "PG_ROOT_PASSWORD",
                     "value": "${PG_ROOT_PASSWORD}"
                 }],
-                "securityContext": {
-                    "capabilities": {
-                    }
-                },
-
 
                 "volumeMounts": [{
                     "mountPath": "/pgdata",

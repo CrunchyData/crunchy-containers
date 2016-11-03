@@ -15,5 +15,5 @@
 #oc delete service master-nfs
 oc delete pod master-nfs
 oc delete pvc master-nfs-pvc
-#oc delete pv master-nfs-pv
+
 $BUILDBASE/examples/waitforterm.sh master-nfs oc

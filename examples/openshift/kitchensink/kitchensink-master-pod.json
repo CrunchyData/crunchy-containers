@@ -25,7 +25,7 @@
         },
         "spec": {
             "securityContext": {
-                "fsGroup": 26
+                "supplementalGroups": [65534]
             },
             "containers": [{
                 "name": "pg-badger",

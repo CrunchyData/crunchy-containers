@@ -12,6 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pod master-restore-nfs
-oc delete service master-restore-nfs
-oc delete pvc master-restore-nfs-pvc
+
+# typically PVs are created by an admin so I split this out
+
+source $BUILDBASE/examples/envvars.sh
+
+LOC=$BUILDBASE/examples/openshift/master-restore-nfs
+
+oc delete pv master-restore-nfs-pv
+
+envsubst <  master-restore-nfs-pv.json | oc create -f -
+

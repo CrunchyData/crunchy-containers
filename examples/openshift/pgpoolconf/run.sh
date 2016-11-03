@@ -16,7 +16,6 @@ source $BUILDBASE/examples/envvars.sh
 
 echo "this example depends on the single-master example being run prior"
 
-envsubst < pgpool-pv.json |  oc create -f -
 oc create -f pgpool-pvc.json
 
 oc process -f ./pgpool-rc.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

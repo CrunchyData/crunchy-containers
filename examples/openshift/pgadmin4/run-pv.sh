@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pod master-restore-nfs
-oc delete service master-restore-nfs
-oc delete pvc master-restore-nfs-pvc
+source $BUILDBASE/examples/envvars.sh
+
+LOC=$BUILDBASE/examples/openshift/pgadmin4
+
+oc delete pv pgadmin4-nfs-pv
+
+envsubst < pgadmin4-nfs-pv.json |  oc create -f -
+

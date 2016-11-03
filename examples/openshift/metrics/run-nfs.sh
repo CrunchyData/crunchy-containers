@@ -22,9 +22,6 @@ source $BUILDBASE/examples/envvars.sh
 
 LOC=$BUILDBASE/examples/openshift/metrics
 
-envsubst <  $LOC/grafana-pv.json  | oc create -f -
-envsubst <  $LOC/prometheus-pv.json | oc create -f -
-
 oc create -f $LOC/grafana-pvc.json
 oc create -f $LOC/prometheus-pvc.json
 

@@ -14,7 +14,7 @@
 # limitations under the License.
 
 oc delete pvc pgbouncer-pvc
-oc delete pv pgbouncer-pv
+
 oc delete pod pgbouncer
 oc delete service pgbouncer
 $BUILDBASE/examples/waitforterm.sh pgbouncer oc

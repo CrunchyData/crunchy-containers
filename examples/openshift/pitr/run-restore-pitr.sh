@@ -25,15 +25,12 @@ oc delete pvc master-pitr-restore-pvc master-pitr-restore-pgdata-pvc master-pitr
 oc delete pv master-pitr-restore-pv master-pitr-restore-pgdata-pv master-pitr-recover-pv
 
 # set up the claim for the backup archive 
-envsubst <  $LOC/master-pitr-restore-pv.json  | oc create -f -
 oc create -f $LOC/master-pitr-restore-pvc.json
 
 # set up the claim for the pgdata to live
-envsubst <  $LOC/master-pitr-restore-pgdata-pv.json  | oc create -f -
 oc create -f $LOC/master-pitr-restore-pgdata-pvc.json
 
 # set up the claim for the WAL to recover with
-envsubst <  $LOC/master-pitr-recover-pv.json  | oc create -f -
 oc create -f $LOC/master-pitr-recover-pvc.json
 
 # start up the database container

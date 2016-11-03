@@ -84,6 +84,10 @@
                     }
                 },
                 "spec": {
+                    "securityContext": {
+                        "supplementalGroups": [65534]
+                    },
+
                     "containers": [{
                         "name": "server",
                         "image": "crunchydata/crunchy-pgpool:${CCP_IMAGE_TAG}",
