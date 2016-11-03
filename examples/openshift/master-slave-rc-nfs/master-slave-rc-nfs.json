@@ -110,6 +110,28 @@
             "containers": [{
                 "name": "${PG_MASTER_SERVICE_NAME}",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "readinessProbe": {
+                    "exec": {
+                        "command": [
+                            "/usr/pgsql-9.5/bin/psql",
+                            "-f",
+                            "/opt/cpm/bin/readiness.sql"
+                        ]
+                    },
+                    "initialDelaySeconds": 50,
+                    "timeoutSeconds": 1
+                },
+                "livenessProbe": {
+                    "exec": {
+                        "command": [
+                            "/usr/pgsql-9.5/bin/pg_isready",
+                            "--dbname=postgres"
+                        ]
+                    },
+                    "initialDelaySeconds": 50,
+                    "timeoutSeconds": 1
+                },
+
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
@@ -123,6 +145,9 @@
                 }, {
                     "name": "PG_MODE",
                     "value": "master"
+                }, {
+                    "name": "PGHOST",
+                    "value": "/tmp"
                 }, {
                     "name": "PG_USER",
                     "value": "${PG_USER}"
@@ -184,6 +209,28 @@
                     "containers": [{
                         "name": "server",
                         "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                        "readinessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/usr/pgsql-9.5/bin/psql",
+                                    "-f",
+                                    "/opt/cpm/bin/readiness.sql"
+                                ]
+                            },
+                            "initialDelaySeconds": 90,
+                            "timeoutSeconds": 1
+                        },
+                        "livenessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/usr/pgsql-9.5/bin/pg_isready",
+                                    "--dbname=postgres"
+                                ]
+                            },
+                            "initialDelaySeconds": 90,
+                            "timeoutSeconds": 1
+                        },
+
                         "ports": [{
                             "containerPort": 5432,
                             "protocol": "TCP"
@@ -197,6 +244,9 @@
                         }, {
                             "name": "PG_MASTER_PORT",
                             "value": "5432"
+                        }, {
+                            "name": "PGHOST",
+                            "value": "/tmp"
                         }, {
                             "name": "PG_MODE",
                             "value": "slave"

@@ -75,9 +75,6 @@
             }
         },
         "spec": {
-            "securityContext": {
-                "fsGroup": 26
-            },
             "containers": [{
                 "name": "single-slave",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
