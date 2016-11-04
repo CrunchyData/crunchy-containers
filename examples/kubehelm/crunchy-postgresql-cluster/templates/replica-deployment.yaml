@@ -1,5 +1,5 @@
-apiVersion: v1
-kind: ReplicationController
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
   name: "{{.Values.ReplicaName}}"
   labels:
@@ -12,7 +12,8 @@ metadata:
 spec:
   replicas: 1
   selector:
-    name: "{{.Values.ReplicaName}}"
+    matchLabels: 
+      name: "{{.Values.ReplicaName}}"
   template:
     metadata:
       labels:
@@ -21,7 +22,7 @@ spec:
     spec:
       containers:
       - env:
-        - name: PG_HOST
+        - name: PGHOST
           value: /tmp
         - name: PG_MASTER_HOST
           value: "{{.Values.MasterName}}"
@@ -41,13 +42,16 @@ spec:
           value: userdb
         - name: PG_ROOT_PASSWORD
           value: "{{.Values.RootPassword}}"
-        image: crunchydata/crunchy-postgres:centos7-9.5-1.2.2
+        image: crunchydata/crunchy-postgres:centos7-9.5-1.2.5
         imagePullPolicy: IfNotPresent
         name: "{{.Values.ReplicaName}}"
         ports:
         - containerPort: 5432
           protocol: TCP
-        resources: {}
+        resources:
+          requests:
+            cpu: {{default "100m" .Values.Cpu}}
+            memory: {{default "100M" .Values.Memory}}
         terminationMessagePath: /dev/termination-log
         volumeMounts:
         - mountPath: /pgdata

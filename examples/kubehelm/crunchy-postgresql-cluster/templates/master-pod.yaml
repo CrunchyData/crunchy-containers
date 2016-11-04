@@ -23,9 +23,13 @@ spec:
   restartPolicy: {{default "Never" .Values.restartPolicy}}
   containers:
   - name: server
-    image: "crunchydata/crunchy-postgres:centos7-9.5-1.2.2"
+    image: "crunchydata/crunchy-postgres:centos7-9.5-1.2.5"
     ports:
     - containerPort: 5432
+    resources:
+      requests:
+        cpu: {{default "100m" .Values.Cpu}}
+        memory: {{default "100M" .Values.Memory}}
     env:
     - name: PGHOST
       value: /tmp

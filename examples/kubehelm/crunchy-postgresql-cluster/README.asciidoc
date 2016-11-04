@@ -1,6 +1,6 @@
 = Helm Examples - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.2.2, {docdate}
+v1.2.5, {docdate}
 image::crunchy_logo.png?raw=true[]
 
 == Helm Example for Crunchy Postgres
@@ -27,7 +27,7 @@ dynamically.
 Install helm according to their github documentation
 and then install the examples as follows:
 ....
-helm install ./crunchy-postgres
+helm install ./crunchy-postgres-cluster
 ....
 
 === Testing
