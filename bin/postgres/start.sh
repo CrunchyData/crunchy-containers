@@ -20,6 +20,8 @@ function trap_sigterm() {
 
 trap 'trap_sigterm' SIGINT SIGTERM
 
+date
+
 source /opt/cpm/bin/setenv.sh
 source check-for-secrets.sh
 
@@ -378,6 +380,8 @@ if [ -f /pgconf/postgresql.conf ]; then
 else
 	postgres -D $PGDATA  &
 fi
+
+date 
 
 echo "waiting here...enter docker stop to gracefully stop postgres"
 

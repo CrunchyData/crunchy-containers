@@ -128,6 +128,28 @@
             "containers": [{
                 "name": "server",
                 "image": "172.30.240.45:5000/jeff-project/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "readinessProbe": {
+                    "exec": {
+                        "command": [
+                            "/usr/pgsql-9.5/bin/psql",
+                            "-f",
+                            "/opt/cpm/bin/readiness.sql"
+                        ]
+                    },
+                    "initialDelaySeconds": 45,
+                    "timeoutSeconds": 1
+                },
+                "livenessProbe": {
+                    "exec": {
+                        "command": [
+                            "/usr/pgsql-9.5/bin/pg_isready",
+                            "--dbname=postgres"
+                        ]
+                    },
+                    "initialDelaySeconds": 45,
+                    "timeoutSeconds": 1
+                },
+
                 "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 5432,
@@ -230,6 +252,28 @@
                     "containers": [{
                         "name": "server",
                         "image": "172.30.240.45:5000/jeff-project/crunchy-postgres:${CCP_IMAGE_TAG}",
+                        "readinessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/usr/pgsql-9.5/bin/psql",
+                                    "-f",
+                                    "/opt/cpm/bin/readiness.sql"
+                                ]
+                            },
+                            "initialDelaySeconds": 65,
+                            "timeoutSeconds": 1
+                        },
+                        "livenessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/usr/pgsql-9.5/bin/pg_isready",
+                                    "--dbname=postgres"
+                                ]
+                            },
+                            "initialDelaySeconds": 85,
+                            "timeoutSeconds": 1
+                        },
+
                         "imagePullPolicy": "Always",
                         "ports": [{
                             "containerPort": 5432,
