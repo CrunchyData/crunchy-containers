@@ -14,6 +14,28 @@
                 "privileged": false
             },
             "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
+            "readinessProbe": {
+                "exec": {
+                    "command": [
+                        "/usr/pgsql-9.5/bin/psql",
+                        "-f",
+                        "/opt/cpm/bin/readiness.sql"
+                    ]
+                },
+                "initialDelaySeconds": 10,
+                "timeoutSeconds": 1
+            },
+            "livenessProbe": {
+                "exec": {
+                    "command": [
+                        "/usr/pgsql-9.5/bin/pg_isready",
+                        "--dbname=postgres"
+                    ]
+                },
+                "initialDelaySeconds": 120,
+                "timeoutSeconds": 1
+            },
+
             "ports": [{
                 "containerPort": 5432,
                 "protocol": "TCP"
@@ -21,6 +43,9 @@
             "env": [{
                 "name": "PG_MASTER_USER",
                 "value": "master"
+            }, {
+                "name": "PGHOST",
+                "value": "/tmp"
             }, {
                 "name": "PG_MODE",
                 "value": "master"

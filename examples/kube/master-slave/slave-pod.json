@@ -1,73 +1,89 @@
 {
-        "kind": "Pod",
-        "apiVersion": "v1",
-        "metadata": {
-            "name": "slave-1",
-            "labels": {
-                "name": "slave-1"
-            }
-        },
-        "spec": {
-            "containers": [{
-                "name": "slave-1",
-                "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
-                "ports": [{
-                    "containerPort": 5432,
-                    "protocol": "TCP"
-                }],
-                "env": [{
-                    "name": "PGHOST",
-                    "value": "/tmp"
-                }, {
-                    "name": "PG_MASTER_HOST",
-                    "value": "master-1"
-                }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "master"
-                }, {
-                    "name": "PG_MASTER_PORT",
-                    "value": "5432"
-                }, {
-                    "name": "PG_MODE",
-                    "value": "slave"
-                }, {
-                    "name": "PG_MASTER_PASSWORD",
-                    "value": "password"
-                }, {
-                    "name": "PG_USER",
-                    "value": "testuser"
-                }, {
-                    "name": "PG_PASSWORD",
-                    "value": "password"
-                }, {
-                    "name": "PG_DATABASE",
-                    "value": "userdb"
-                }, {
-                    "name": "PG_ROOT_PASSWORD",
-                    "value": "password"
-                }],
-                "volumeMounts": [
-		{
-                    "mountPath": "/pgdata",
-                    "name": "pgdata",
-                    "readOnly": false
-                },
-		{
-                    "mountPath": "/backup",
-                    "name": "backup",
-                    "readOnly": true
-                }
-		]
-            }],
-            "volumes": [
-	    {
-                "name": "pgdata",
-                "emptyDir": {}
-            },
-	    {
-                "name": "backup",
-                "emptyDir": {}
-            }
-	    ]
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "slave-1",
+        "labels": {
+            "name": "slave-1"
         }
+    },
+    "spec": {
+        "containers": [{
+            "name": "slave-1",
+            "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
+            "readinessProbe": {
+                "exec": {
+                    "command": [
+                        "/usr/pgsql-9.5/bin/psql",
+                        "-f",
+                        "/opt/cpm/bin/readiness.sql"
+                    ]
+                },
+                "initialDelaySeconds": 70,
+                "timeoutSeconds": 1
+            },
+            "livenessProbe": {
+                "exec": {
+                    "command": [
+                        "/usr/pgsql-9.5/bin/pg_isready",
+                        "--dbname=postgres"
+                    ]
+                },
+                "initialDelaySeconds": 70,
+                "timeoutSeconds": 1
+            },
+
+            "ports": [{
+                "containerPort": 5432,
+                "protocol": "TCP"
+            }],
+            "env": [{
+                "name": "PGHOST",
+                "value": "/tmp"
+            }, {
+                "name": "PG_MASTER_HOST",
+                "value": "master-1"
+            }, {
+                "name": "PG_MASTER_USER",
+                "value": "master"
+            }, {
+                "name": "PG_MASTER_PORT",
+                "value": "5432"
+            }, {
+                "name": "PG_MODE",
+                "value": "slave"
+            }, {
+                "name": "PG_MASTER_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_USER",
+                "value": "testuser"
+            }, {
+                "name": "PG_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_DATABASE",
+                "value": "userdb"
+            }, {
+                "name": "PG_ROOT_PASSWORD",
+                "value": "password"
+            }],
+            "volumeMounts": [{
+                "mountPath": "/pgdata",
+                "name": "pgdata",
+                "readOnly": false
+            }, {
+                "mountPath": "/backup",
+                "name": "backup",
+                "readOnly": true
+            }]
+        }],
+        "volumes": [{
+            "name": "pgdata",
+            "emptyDir": {}
+        }, {
+            "name": "backup",
+            "emptyDir": {}
+        }]
     }
+}
