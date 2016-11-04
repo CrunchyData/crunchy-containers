@@ -221,12 +221,21 @@ chmod 0600 .pgpass
 }
 
 function waitforpg() {
+	export PGPASSFILE=/tmp/.pgpass
 	CONNECTED=false
-	for i in `seq 1 40`;
-	do
+	while true; do
 		pg_isready --dbname=$PG_DATABASE --host=$PG_MASTER_HOST \
-			--port=$PG_MASTER_PORT \
-			--username=$PG_MASTER_USER --timeout=2
+		--port=$PG_MASTER_PORT \
+		--username=$PG_MASTER_USER --timeout=2
+		if [ $? -eq 0 ]; then
+			echo "database is ready"
+			break
+		fi
+		sleep 2
+	done
+
+	while true; do
+		psql -h $PG_MASTER_HOST -p $PG_MASTER_PORT -U $PG_MASTER_USER $PG_DATABASE -f /opt/cpm/bin/readiness.sql
 		if [ $? -eq 0 ]; then
 			echo "database is ready"
 			CONNECTED=true
@@ -234,10 +243,9 @@ function waitforpg() {
 		fi
 
 		echo "trying pg_isready on master " $i
+		sleep 2
 	done
-	if [ "$CONNECTED" = false ]; then
-		echo "could not connect"
-	fi
+
 }
 
 function initialize_replica() {
@@ -245,8 +253,9 @@ echo "initialize_replica"
 rm -rf $PGDATA/*
 chmod 0700 $PGDATA
 
-echo "waiting to give the master time to start up before performing the initial backup...."
-sleep 60
+echo "waiting 30sec to give the master time to start up and register its hostname with docker before performing the initial backup...."
+sleep 30
+
 waitforpg
 
 pg_basebackup -x --no-password --pgdata $PGDATA --host=$PG_MASTER_HOST --port=$PG_MASTER_PORT -U $PG_MASTER_USER
