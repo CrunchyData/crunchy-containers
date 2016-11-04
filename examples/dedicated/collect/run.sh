@@ -14,6 +14,7 @@
 
 oc project jeff-project
 
+oc delete template crunchy-postgres-database-with-collect
 oc create -f master-collect.json
 
 #oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f ./master-collect.json | oc create -f -
