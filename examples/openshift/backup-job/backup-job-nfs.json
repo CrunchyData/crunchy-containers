@@ -13,6 +13,30 @@
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use"
+    },
+    {
+      "name": "DATABASE_HOST",
+      "displayName": "Database Host",
+      "description": "This is the database the backup will be done for.",
+      "value": "single-master"
+    },
+    {
+      "name": "DATABASE_PORT",
+      "displayName": "Database Port",
+      "description": "The database port of the database the backup will be done for.",
+      "value": "5432"
+    },
+    {
+      "name": "DATABASE_USER",
+      "displayName": "Database User",
+      "description": "The database user the backup will be done with.",
+      "value": "master"
+    },
+    {
+      "name": "DATABASE_PASS",
+      "displayName": "Database User Password",
+      "description": "Password of the database backup user.",
+      "value": "password"
     }],
 
     "objects": [{
@@ -54,16 +78,16 @@
                         }],
                         "env": [{
                             "name": "BACKUP_HOST",
-                            "value": "single-master"
+                            "value": "${DATABASE_HOST}"
                         }, {
                             "name": "BACKUP_USER",
-                            "value": "master"
+                            "value": "${DATABASE_USER}"
                         }, {
                             "name": "BACKUP_PASS",
-                            "value": "password"
+                            "value": "${DATABASE_PASS}"
                         }, {
                             "name": "BACKUP_PORT",
-                            "value": "5432"
+                            "value": "${DATABASE_PORT}"
                         }]
                     }],
                     "restartPolicy": "Never"
