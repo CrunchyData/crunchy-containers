@@ -26,6 +26,7 @@ The project includes the following containers:
  * link:docs/containers.asciidoc#crunchy-dns[crunchy-dns] - standalone DNS server useful for standalone execution
  * link:docs/containers.asciidoc#crunchy-pgbouncer[crunchy-pgbouncer] - pgbouncer connection pooler and simple form of failover
  * link:docs/containers.asciidoc#crunchy-pgadmin4[crunchy-pgadmin4] - pgadmin4 web application
+ * link:docs/containers.asciidoc#crunchy-dba[crunchy-dba] - implements a cron scheduler to perform simple DBA tasks
 
 
 image::docs/containers.png?raw=true[]
