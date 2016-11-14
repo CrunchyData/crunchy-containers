@@ -15,6 +15,14 @@
 
 export PATH=$PATH:/usr/pgsql-9.*/bin
 
+function trap_sigterm() {
+	echo "doing trap logic..."
+	kill -SIGINT $PGADMIN_PID
+}
+
+trap 'trap_sigterm' SIGINT SIGTERM
+
+
 # this lets us run initdb and postgres on Openshift
 # when it is configured to use random UIDs
 function ose_hack() {
@@ -41,10 +49,14 @@ fi
 
 cp $THISDIR/config_local.py /usr/lib/python2.7/site-packages/pgadmin4
 
-python /usr/lib/python2.7/site-packages/pgadmin4/pgAdmin4.py
+python /usr/lib/python2.7/site-packages/pgadmin4/pgAdmin4.py &
+export PGADMIN_PID=$!
+echo "waiting till docker stop or signal is sent to kill pgadmin4..."
 
-while true; do
-	echo "debug sleeping..."
-	sleep 1000
-done
+wait
+
+#while true; do
+#	echo "debug sleeping..."
+#	sleep 1000
+#done
 
