@@ -17,4 +17,6 @@ oc project jeff-project
 
 LOC=$BUILDBASE/examples/dedicated/master-restore
 
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/master-restore.json | oc create -f -
+oc delete template crunchy-postgres-database-restore-emptydir
+
+oc create -f ./master-restore.json

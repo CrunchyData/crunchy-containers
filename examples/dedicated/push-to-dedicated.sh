@@ -44,3 +44,6 @@ docker push  $NS/crunchy-postgres:$CCP_IMAGE_TAG
 docker tag  crunchy-pgbouncer:latest $NS/crunchy-pgbouncer:$CCP_IMAGE_TAG
 docker push  $NS/crunchy-pgbouncer:$CCP_IMAGE_TAG
 
+docker tag  crunchy-pgadmin4:latest $NS/crunchy-pgadmin4:$CCP_IMAGE_TAG
+docker push  $NS/crunchy-pgadmin4:$CCP_IMAGE_TAG
+

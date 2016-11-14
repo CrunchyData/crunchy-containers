@@ -20,7 +20,7 @@
         "value": "pgslave"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "rhel7-9.5-1.2.4",
+        "value": "rhel7-9.5-1.2.5",
         "description": "The image tag to pull with"
     }, {
         "name": "PG_MASTER_USER",

@@ -13,7 +13,7 @@
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use",
-        "value": "rhel7-9.5-1.2.4"
+        "value": "rhel7-9.5-1.2.5"
     }, {
         "name": "REPLICA_SERVICE_NAME",
         "description": "the name of the replica",
@@ -228,7 +228,7 @@
                                 "/opt/cpm/bin/readiness.sql"
                             ]
                         },
-                        "initialDelaySeconds": 65,
+                        "initialDelaySeconds": 45,
                         "timeoutSeconds": 1
                     },
                     "livenessProbe": {
@@ -238,7 +238,7 @@
                                 "--dbname=postgres"
                             ]
                         },
-                        "initialDelaySeconds": 85,
+                        "initialDelaySeconds": 45,
                         "timeoutSeconds": 1
                     },
 
@@ -250,6 +250,9 @@
                     "env": [{
                         "name": "PG_MASTER_USER",
                         "value": "master"
+                    }, {
+                        "name": "PGHOST",
+                        "value": "/tmp"
                     }, {
                         "name": "PG_MODE",
                         "value": "master"
