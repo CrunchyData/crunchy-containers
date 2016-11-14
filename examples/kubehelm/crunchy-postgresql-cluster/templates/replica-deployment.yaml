@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: "{{.Values.ReplicaName}}"
+  name: "{{.Release.Name}}-{{.Values.ReplicaName}}"
   labels:
-    name: "{{.Values.ReplicaName}}"
+    name: "{{.Release.Name}}-{{.Values.ReplicaName}}"
     heritage: {{.Release.Service | quote }}
     release: {{.Release.Name | quote }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
@@ -25,7 +25,7 @@ spec:
         - name: PGHOST
           value: /tmp
         - name: PG_MASTER_HOST
-          value: "{{.Values.MasterName}}"
+          value: "{{.Release.Name}}-{{.Values.MasterName}}"
         - name: PG_MASTER_PORT
           value: "5432"
         - name: PG_MODE
@@ -42,9 +42,9 @@ spec:
           value: userdb
         - name: PG_ROOT_PASSWORD
           value: "{{.Values.RootPassword}}"
-        image: crunchydata/crunchy-postgres:centos7-9.5-1.2.5
+        image: "{{.Values.PostgresImage}}"
         imagePullPolicy: IfNotPresent
-        name: "{{.Values.ReplicaName}}"
+        name: "{{.Release.Name}}-{{.Values.ReplicaName}}"
         ports:
         - containerPort: 5432
           protocol: TCP
@@ -59,6 +59,12 @@ spec:
         - mountPath: /backup
           name: backup
           readOnly: true
+        - mountPath: /pguser
+          name: pguser-volume
+        - mountPath: /pgmaster
+          name: pgmaster-volume
+        - mountPath: /pgroot
+          name: pgroot-volume
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       securityContext: {}
@@ -68,3 +74,12 @@ spec:
         name: pgdata
       - emptyDir: {}
         name: backup
+      - name: pguser-volume
+        secret:
+         secretName: pguser-secret
+      - name: pgmaster-volume
+        secret:
+         secretName: pgmaster-secret
+      - name: pgroot-volume
+        secret:
+         secretName: pgroot-secret
