@@ -23,6 +23,14 @@ BINDIR=/opt/cpm/bin
 CONFDIR=/opt/cpm/conf/pgpool
 CONFIGS=/tmp
 
+function trap_sigterm() {
+	echo "doing trap logic..."
+	kill -SIGINT $PGPOOL_PID
+}
+
+trap 'trap_sigterm' SIGINT SIGTERM
+
+
 # seed with defaults included in the container image, this is the
 # case when /pgconf is not specified
 cp $CONFDIR/* /tmp
@@ -41,4 +49,14 @@ sed -i "s/PG_PASSWORD/$PG_PASSWORD/g" $CONFIGS/pgpool.conf
 # populate pool_passwd file
 /bin/pg_md5 --md5auth --username=$PG_USERNAME --config=$CONFIGS/pgpool.conf $PG_PASSWORD
 
-/bin/pgpool -n -a $CONFIGS/pool_hba.conf -f $CONFIGS/pgpool.conf 
+/bin/pgpool -n -a $CONFIGS/pool_hba.conf -f $CONFIGS/pgpool.conf  &
+export PGPOOL_PID=$!
+
+echo "waiting for pgpool to be signaled..."
+wait
+
+#while true; do
+#       echo "debug sleeping..."
+#       sleep 1000
+#done
+
