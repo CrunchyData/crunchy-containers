@@ -15,7 +15,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 ADD conf/watch/docker-rhel.repo /etc/yum.repos.d/
 
 RUN yum -y install nss_wrapper gettext docker-engine curl rsync libxslt libxml2 procps-ng \
-postgresql95  openssh-clients atomic-openshift-clients hostname bind-utils \
+postgresql95-server  openssh-clients atomic-openshift-clients hostname bind-utils \
  && yum clean all -y
 
 # set up cpm directory
