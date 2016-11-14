@@ -4,30 +4,28 @@ LABEL Release="1.2.5"
 LABEL Vendor="Crunchy Data Solutions"
 LABEL PostgresVersion="9.5"
 
-# PGDG Postgres repo
-#RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
-
 # Install crunchy postgresql repo info
 ADD conf/CRUNCHY-GPG-KEY.public  /
 ADD conf/crunchypg95.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
 # install docker from docker repo
 ADD conf/watch/docker-rhel.repo /etc/yum.repos.d/
 
-RUN yum -y install docker-engine curl rsync libxslt libxml2 procps-ng \
-postgresql9?  openssh-clients atomic-openshift-clients hostname bind-utils \
+RUN yum -y install nss_wrapper gettext docker-engine curl rsync libxslt libxml2 procps-ng \
+postgresql95  openssh-clients atomic-openshift-clients hostname bind-utils \
  && yum clean all -y
 
 # set up cpm directory
-#
-RUN mkdir -p /opt/cpm/bin
-RUN mkdir -p /opt/cpm/conf
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+RUN chown -R postgres:postgres /opt/cpm
 
 ADD bin/watch /opt/cpm/bin
 ADD conf/watch /opt/cpm/conf
 
-USER root
+USER 26
 
 CMD ["/opt/cpm/bin/start-watch.sh"]
 
