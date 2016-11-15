@@ -13,6 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+function trap_sigterm() {
+        echo "doing trap logic..."
+	kill -SIGINT $PGBOUNCER_PID
+	kill -SIGTERM $PGBOUNCER_WATCH_PID
+}
+
+trap 'trap_sigterm' SIGINT SIGTERM
+
 
 function ose_hack() {
 	export USER_ID=$(id -u)
@@ -49,11 +57,18 @@ fi
 if [ -v FAILOVER ]; then
 	echo "FAILOVER is set and a watch will be started on the master"
 	/opt/cpm/bin/pgbouncer-watch.sh &
+	export PGBOUNCER_WATCH_PID=$!
 fi
 
-pgbouncer $CONFDIR/pgbouncer.ini -u pgbouncer
+pgbouncer $CONFDIR/pgbouncer.ini -u pgbouncer &
 
-while true; do
-	echo "main sleeping..."
-	sleep 100
-done
+export PGBOUNCER_PID=$!
+
+echo "waiting for sigterm or sigint to be received..."
+
+wait
+
+#while true; do
+#	echo "main sleeping..."
+#	sleep 100
+#done
