@@ -21,8 +21,8 @@
 #
 # initialize the pgbench database
 #
-/usr/pgsql-9.5/bin/psql -p $2 -h $1 -c 'create database pgbench' -U $3 postgres 
-/usr/pgsql-9.5/bin/pgbench --host=$1 \
+psql -p $2 -h $1 -c 'create database pgbench' -U $3 postgres 
+pgbench --host=$1 \
 	--port=$2 \
 	--username=$3 \
 	--scale=5 \
@@ -30,7 +30,7 @@
 #
 # run some load
 #
-/usr/pgsql-9.5/bin/pgbench --host=$1 \
+pgbench --host=$1 \
 	--port=$2 \
 	--username=$3 \
 	--time=10 \

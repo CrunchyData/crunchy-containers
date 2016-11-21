@@ -12,7 +12,7 @@ RUN yum -y install epel-release && yum -y reinstall glibc-common && \
 	yum install -y rsync procps-ng  \
 	openssh-clients nss_wrapper gettext hostname bind-utils && yum clean all -y && \
 	yum -y install postgresql95 postgresql95-contrib postgresql95-server \
-	postgis2_95 postgis2_95-client pgrouting* pgbackrest-1.05* && yum clean all -y
+	pgaudit_95 postgis2_95 postgis2_95-client pgrouting* pgbackrest-1.05* && yum clean all -y
 
 # set up cpm directory
 #
