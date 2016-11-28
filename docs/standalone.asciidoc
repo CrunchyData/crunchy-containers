@@ -523,6 +523,45 @@ Other options exist for performing a PITR, see the pitr.asciidoc for
 full details.
 
 
+=== Example 16 - pgaudit
+
+This example, examples/standalone/pgaudit, provides an
+example of enabling pgaudit output.  As of release 1.2.6,
+pgaudit is included in the crunchy-postgres container and is
+added to the postgres shared library list in the postgresql.conf.
+
+Given the numerous ways pgaudit can be configured, the exact
+pgaudit configuration is left to the user to define.  pgaudit
+allows you to configure auditing rules either in postgresql.conf
+or within your SQL script.
+
+For this test, we place pgaudit statements within a SQL script
+and verify that auditing is enabled and working.  If you choose
+to configure pgaudit via a postgresql.conf file, then you will
+need to define your own custom postgresql.conf file and mount
+it to override the default postgresql.conf file. 
+
+To run this example, run the following to create a 
+database container:
+
+....
+cd ./examples/standalone/pgaudit
+./run-testaudit.sh
+....
+
+This starts a database on port 12005 on localhost.  You can then
+run the test script as follows:
+....
+./test-pgaudit.sh
+....
+
+This test executes a SQL file which contains pgaudit configuration
+statements as well as executes some basic SQL commands.  These
+SQL commands will cause pgaudit to create audit log messages in
+the pg_log log file created by the database container.
+
+
+
 === Tips - send a signal to postgres
 
 first, find the PID of the postmaster:

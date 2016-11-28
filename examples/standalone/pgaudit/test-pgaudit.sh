@@ -13,21 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting pgpool container...."
+echo "test pgaudit..."
 
-sudo docker stop pgpool
-sudo docker rm pgpool
+psql -f ./test.sql -h localhost -p 12005 -U postgres postgres
 
-sudo docker run \
-	-p 12003:5432 \
-	--link master:master \
-	--link replica:replica \
-	-e PG_MASTER_SERVICE_NAME=master \
-	-e PG_SLAVE_SERVICE_NAME=replica \
-	-e PG_USERNAME=testuser \
-	-e PG_PASSWORD=password \
-	-e PG_DATABASE=postgres \
-	--name=pgpool \
-	--hostname=pgpool \
-	-d crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG
+echo -n "enter the sudo password : "
+su - -c 'grep AUDIT /tmp/audittest/audittest/pg_log/*'
 
+if [ $? -ne 0 ]; then
+	echo "test failed...no AUDIT msgs were found in the log file"
+	exit 1
+fi
+echo "test passed, AUDIT msgs were found in the postgres log file"
