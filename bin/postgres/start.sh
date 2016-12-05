@@ -327,6 +327,10 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	#to use /tmp instead of /var/run
 	export PGHOST=/tmp
         psql -U postgres < /tmp/setup.sql
+	if [ -f /pgconf/audit.sql ]; then
+		echo "using pgaudit_analyze audit.sql from /pgconf"
+		psql -U postgres < /pgconf/audit.sql
+	fi
 
 	pg_ctl -D $PGDATA --mode=fast stop
 
@@ -383,7 +387,10 @@ fi
 
 date 
 
-echo "waiting here...enter docker stop to gracefully stop postgres"
+if [ -f /usr/bin/pgaudit_analyze ]; then
+	echo "pgaudit_analyze is installed...starting it up..."
+	pgaudit_analyze /pgdata/pg/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
+fi
 
 wait
 

@@ -834,6 +834,25 @@ After you run the example, you should see archive files
 being written to the /backrestrepo volume (/nfsfileshare/backrestrepo).
 
 
+=== Openshift Example 22 - configmap
+
+This example shows how to use a configmap to store the
+postgresql.conf and pg_hba.conf files to be used when
+overriding the default configuration within the container.
+
+Start by running the database container:
+....
+cd $BUILDBASE/examples/openshift/configmap
+./run.sh
+....
+
+The files, pg_hba.conf and postgresql.conf, in the
+example directory are used to create a configmap object
+within OpenShift.  Within the run.sh script, the configmap
+is created, and notice within the configmap.json file
+how the /pgconf mount is related to the configmap.
+
+
 == Openshift Tips
 
 === Tip 1: Finding the Postgresql Passwords
