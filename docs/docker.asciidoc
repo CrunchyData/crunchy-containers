@@ -37,13 +37,11 @@ psql -h localhost -p 12000 -U testuser -W testdb
 ....
 
 To shut down the instance, run the following commands:
-
 ....
 docker stop basic
 ....
 	
 To start the instance, run the following commands:
-
 ....
 docker start basic
 ....
@@ -58,28 +56,29 @@ cd examples/docker/master-replica
 
 This script will do the following:
 
- * start up a container named master
- * create a data directory for the database in /tmp/master-data
+ * create a docker volume using the local driver for the master
+ * create a docker volume using the local driver for the replica
+ * start up a container named master binding to port 12000
+ * start up a container named replica binding to port 12002
  * initialize the database using the passed in environment variables, building a user, database, schema, and table based on the environment variable values.
  * maps the PostgreSQL port of 5432 in the container to your local host port of 12000.
 
-The container creates a default database called 'testdb', a default
-user called 'testuser' with a default password of 'testpsw', you can
+The container creates a default database called *testdb*, a default
+user called *testuser* with a default password of *testpsw*, you can
 use this to connect from your local host as follows:
 ....
-psql -h localhost -p 12000 -U testuser -W testdb
+psql -h localhost -p 12000 -U testuser -W userdb
+psql -h localhost -p 12002 -U testuser -W userdb
 ....
 
 To shut down the instance, run the following commands:
-
 ....
-docker stop master
+docker stop master replica
 ....
 	
 To start the instance, run the following commands:
-
 ....
-docker start master
+docker start master replica
 ....
 	
 === *backup* - Performing a backup

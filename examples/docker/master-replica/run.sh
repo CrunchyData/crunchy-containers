@@ -15,6 +15,10 @@
 
 echo "starting master container..."
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
+
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
 #PGCONF=$HOME/openshift-dedicated-container/pgconf
@@ -22,19 +26,25 @@ echo "starting master container..."
 #sudo chmod 0700 $PGCONF
 #sudo chcon -Rt svirt_sandbox_file_t $PGCONF
 # add this next line to the docker run to override pg config files
+#DATA_DIR=/tmp/master-data
+#sudo rm -rf $DATA_DIR
+#sudo mkdir -p $DATA_DIR
+#sudo chown postgres:postgres $DATA_DIR
+#sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
+#DATA_DIR=/tmp/pg-replica-data
+#sudo rm -rf $DATA_DIR
+#sudo mkdir -p $DATA_DIR
+#sudo chown postgres:postgres $DATA_DIR
+#sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-DATA_DIR=/tmp/master-data
-sudo rm -rf $DATA_DIR
-sudo mkdir -p $DATA_DIR
-sudo chown postgres:postgres $DATA_DIR
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
+VOLUME_NAME=master-volume
+MASTER_CONTAINER_NAME=master
+docker volume create --driver local --name=$VOLUME_NAME 
 
-sudo docker stop master
-sudo docker rm master
-
-sudo docker run \
+docker run \
 	-p 12000:5432 \
-	-v $DATA_DIR:/pgdata \
+	--privileged=true \
+	-v $VOLUME_NAME:/pgdata \
 	-e TEMP_BUFFERS=9MB \
 	-e PGHOST=/tmp \
 	-e MAX_CONNECTIONS=101 \
@@ -48,25 +58,21 @@ sudo docker run \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=master \
-	--hostname=master \
+	--name=$MASTER_CONTAINER_NAME \
+	--hostname=$MASTER_CONTAINER_NAME \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 
 echo "starting pg-replica container..."
 sleep 20
 
-DATA_DIR=/tmp/pg-replica-data
-sudo rm -rf $DATA_DIR
-sudo mkdir -p $DATA_DIR
-sudo chown postgres:postgres $DATA_DIR
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
+VOLUME_NAME=replica-volume
+CONTAINER_NAME=replica
+docker volume create --driver local --name=$VOLUME_NAME 
 
-sudo docker stop pg-replica
-sudo docker rm pg-replica
-
-sudo docker run \
+docker run \
 	-p 12002:5432 \
-	-v $DATA_DIR:/pgdata \
+	--privileged=true \
+	-v $VOLUME_NAME:/pgdata \
 	-e TEMP_BUFFERS=9MB \
 	-e PGHOST=/tmp \
 	-e MAX_CONNECTIONS=101 \
@@ -77,13 +83,13 @@ sudo docker run \
 	-e PG_MASTER_USER=masteruser \
 	-e PG_MASTER_PASSWORD=password \
 	-e PG_MASTER_HOST=master \
-	--link master:master \
+	--link $MASTER_CONTAINER_NAME:$MASTER_CONTAINER_NAME \
 	-e PG_MASTER_PORT=5432 \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=pg-replica \
-	--hostname=pg-replica \
+	--name=$CONTAINER_NAME \
+	--hostname=$CONTAINER_NAME \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 

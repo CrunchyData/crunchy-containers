@@ -34,9 +34,10 @@ echo "starting crunchy-container..."
 CONTAINER_NAME=basic
 VOLUME_NAME=basic-example-volume
 
-docker stop $CONTAINER_NAME
-docker rm $CONTAINER_NAME
-docker volume rm $VOLUME_NAME
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
+
 docker volume create --driver local --name=$VOLUME_NAME
 
 docker run \
