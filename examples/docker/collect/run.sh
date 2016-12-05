@@ -14,6 +14,8 @@
 # limitations under the License.
 
 echo "starting master and collect containers..."
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf

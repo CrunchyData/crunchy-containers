@@ -15,6 +15,8 @@
 
 echo "starting master container..."
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
 PGCONF=/tmp/backtestdb-pgconf
@@ -42,10 +44,10 @@ sudo chown postgres:postgres $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
 CONTAINER=backtestdb
-sudo docker stop $CONTAINER
-sudo docker rm $CONTAINER
+docker stop $CONTAINER
+docker rm $CONTAINER
 
-sudo docker run \
+docker run \
 	-p 12000:5432 \
 	-v $BACKRESTREPO:/backrestrepo \
 	-v $PGCONF:/pgconf \

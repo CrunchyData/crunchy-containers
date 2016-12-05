@@ -14,6 +14,8 @@
 # limitations under the License.
 
 echo "starting badger..."
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 
 docker stop badger-example
 docker rm badger-example
