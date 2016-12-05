@@ -3,16 +3,17 @@ Crunchy Data Solutions, Inc.
 v1.2.5, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
-== Standalone Examples
+== Docker Examples
 
-We provide some examples of running the Crunchy containers
-in the examples/standalone directory.  Those examples are 
-explained below.
+Examples of running the Crunchy containers in a pure Docker
+environment are found in the examples/docker directory.
+Those examples are explained below.
 
-=== Example 1 - Running a single standalone database
+=== *basic* - Running a single database container
 
 Create the container with this command:
 ....
+cd examples/docker/basic
 ./run-pg.sh
 ....
 
@@ -42,11 +43,12 @@ To start the instance, run the following commands:
 docker start crunchy-pg
 ....
 
-=== Example 2 - Creating a master database 
+=== *master-replica* - Creating a master and replica database cluster
 
 Run the container with this command:
 ....
-./run-pg-master.sh
+cd examples/docker/master-replica
+./run.sh
 ....
 
 This script will do the following:
@@ -75,7 +77,7 @@ To start the instance, run the following commands:
 docker start master
 ....
 	
-=== Example 3 - Performing a backup
+=== *backup* - Performing a backup
 
 In order to run this backup script, you first need to edit
 run-backup.sh to specify your host IP address you are running
@@ -84,6 +86,7 @@ created in Example 2.
 
 Run the backup with this command:
 ....
+cd examples/docker/backup
 ./run-backup.sh
 ....
 

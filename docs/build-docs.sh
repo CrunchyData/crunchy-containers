@@ -16,13 +16,13 @@
 asciidoc \
 -b bootstrap \
 -f ./demo.conf \
--o ./htmldoc/standalone.html \
+-o ./htmldoc/docker.html \
 -a toc2 \
 -a footer \
 -a toc-placement=right \
-./standalone.asciidoc
+./docker.asciidoc
 
-asciidoctor-pdf ./standalone.asciidoc --out-file ./pdf/standalone.pdf
+asciidoctor-pdf ./docker.asciidoc --out-file ./pdf/docker.pdf
 
 asciidoc \
 -b bootstrap \
