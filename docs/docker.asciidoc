@@ -7,7 +7,11 @@ v1.2.5, {docdate}
 
 Examples of running the Crunchy containers in a pure Docker
 environment are found in the examples/docker directory.
-Those examples are explained below.
+Those examples are explained below.  The examples make use of
+the local Docker volume driver and data volumes created 
+by the *docker create volume* command.  There is a bug however
+that requires the container to run as priviledged when in 
+selinux enforcing mode.  See link:https://github.com/docker/docker/issues/20859[here] for more details.  
 
 === *basic* - Running a single database container
 
@@ -19,13 +23,13 @@ cd examples/docker/basic
 
 This script will do the following:
 
- * start up a container named crunchy-pg
- * create a data directory for the database in /tmp/crunchy-pg
+ * create a data volume to persist PostgreSQL data files to
+ * start up a container named *basic*
  * initialize the database using the passed in environment variables, building a user, database, schema, and table based on the environment variable values.
  * maps the PostgreSQL port of 5432 in the container to your local host port of 12000.
 
-The container creates a default database called 'testdb', a default
-user called 'testuser' with a default password of 'testpsw', you can
+The container creates a default database called *testdb*, a default
+user called *testuser* with a default password of *testpsw*, you can
 use this to connect from your local host as follows:
 ....
 psql -h localhost -p 12000 -U testuser -W testdb
@@ -34,13 +38,13 @@ psql -h localhost -p 12000 -U testuser -W testdb
 To shut down the instance, run the following commands:
 
 ....
-docker stop crunchy-pg
+docker stop basic
 ....
 	
 To start the instance, run the following commands:
 
 ....
-docker start crunchy-pg
+docker start basic
 ....
 
 === *master-replica* - Creating a master and replica database cluster

@@ -14,23 +14,36 @@
 # limitations under the License.
 
 echo "starting crunchy-container..."
+
+# if you want to use local host directories for persistence
+# then uncomment out these lines below and use them instead
+# of the docker volume as used in this example
+
 #PGCONF=$HOME/openshift-dedicated-container/pgconf
 #sudo chown postgres:postgres $PGCONF
 #sudo chmod 0700 $PGCONF
 #sudo chcon -Rt svirt_sandbox_file_t $PGCONF
 #	-v $PGCONF:/pgconf \
 
-docker stop crunchy-pg
-docker rm crunchy-pg
+#DATA_DIR=/tmp/crunchy-pg-data
+#sudo rm -rf $DATA_DIR
+#sudo mkdir -p $DATA_DIR
+#sudo chown postgres:postgres $DATA_DIR
+#sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-DATA_DIR=/tmp/crunchy-pg-data
-sudo rm -rf $DATA_DIR
-sudo mkdir -p $DATA_DIR
-sudo chown postgres:postgres $DATA_DIR
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
-sudo docker run \
+CONTAINER_NAME=basic
+VOLUME_NAME=basic-example-volume
+
+docker stop $CONTAINER_NAME
+docker rm $CONTAINER_NAME
+docker volume rm $VOLUME_NAME
+docker volume create --driver local --name=$VOLUME_NAME
+
+docker run \
 	-p 12000:5432 \
-	-v $DATA_DIR:/pgdata \
+	--privileged=true \
+	--volume-driver=local \
+	-v $VOLUME_NAME:/pgdata:z \
 	-e TEMP_BUFFERS=9MB \
 	-e PGHOST=/tmp \
 	-e MAX_CONNECTIONS=101 \
@@ -44,7 +57,7 @@ sudo docker run \
 	-e PG_PASSWORD=password \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=crunchy-pg \
-	--hostname=crunchy-pg \
+	--name=$CONTAINER_NAME \
+	--hostname=$CONTAINER_NAME \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 
