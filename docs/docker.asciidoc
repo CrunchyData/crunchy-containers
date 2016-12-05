@@ -11,7 +11,8 @@ Those examples are explained below.  The examples make use of
 the local Docker volume driver and data volumes created 
 by the *docker create volume* command.  There is a bug however
 that requires the container to run as priviledged when in 
-selinux enforcing mode.  See link:https://github.com/docker/docker/issues/20859[here] for more details.  
+selinux enforcing mode.  See link:https://github.com/docker/docker/issues/20859[here] for more details.  Also, see link:https://github.com/docker/docker/pull/23024[here].  When this is fixed, you will not need to specify *priviledged*
+when starting the examples.
 
 === *basic* - Running a single database container
 
