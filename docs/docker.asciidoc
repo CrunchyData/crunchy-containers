@@ -97,7 +97,7 @@ This script will do the following:
  * store the backup in /tmp/backups/master directory
  * exit after the backup
 	
-=== Example 4 - Performing a restore
+=== *restore * - Performing a restore
 
 In order to run this backup script, you first need to edit
 run-restore.sh to specify your host IP address you are running
@@ -106,7 +106,8 @@ created in Example 2.
 
 Run the backup with this command:
 ....
-./run-restore.sh
+cd examples/docker/restore
+./run.sh
 ....
 
 This script will do the following:
@@ -116,7 +117,7 @@ This script will do the following:
  * start up the container using the backup files
  * maps the PostgreSQL port of 5432 in the container to your local host port of 12001 as to not conflict with the master running in the previous example.
 
-=== Example 5 - Running PostgreSQL in Master-Slave Configuration
+=== *master-replica* - Running PostgreSQL in Master-Slave Configuration
 
 The container can be passed environment variables that will cause
 it to assume a PostgreSQL replication configuration with 
@@ -136,7 +137,7 @@ container is running.
 
 For running the master-slave configuration , you can run the following scripts:
 ....
-run-pg-replica.sh
+run.sh
 ....
 
 You can verify that replication is working by connecting to
@@ -150,7 +151,7 @@ If you have created tables or data in the master database, they
 should show up in this replicated copy of that database.
 
 
-=== Example 6 - pgpool 
+=== *pgpool* - pgpool 
 
 A pgpool example is provided that will run a pgpool container that
 is configured to be used with the master and slave example provided
@@ -159,7 +160,8 @@ those commands to create a master and replica, you can
 create a pgpool container by running the following example command:
 
 ....
-sudo ./run-pgpool.sh
+cd examples/docker/pgpool
+./run.sh
 ....
 
 Enter the following command to connect to the pgpool that is
@@ -176,7 +178,7 @@ Pgpool will direct INSERT statements to the master and SELECT statements
 will be sent round-robin to both master and replica.
 
 
-=== Example 7 - pgbadger 
+=== *badger* - pgbadger 
 
 A pgbadger example is provided that will run a HTTP server that 
 when invoked, will generate a pgbadger report on a given database.
@@ -188,7 +190,8 @@ To run the example, modify the run-badger.sh script to refer to the
 Docker container that you want to run pgbadger against, also referring
 to the container's data directory, then run the example as follows:
 ....
-sudo ./run-badger.sh
+cd examples/docker/badger
+./run.sh
 ....
 
 After execution, the container will run and provide a simple HTTP
@@ -199,7 +202,7 @@ curl http://127.0.0.1:14000/api/badgergenerate
 ....
 
 
-=== Example 8 - dns 
+=== *dns* - dns 
 
 Some users will need or want a DNS name to resolve to their container
 names.  The crunchy-dns container provides the following:
@@ -212,7 +215,8 @@ names.  The crunchy-dns container provides the following:
 
 Start the crunchy-dns server by running its container as follows:
 ....
-sudo ./examples/standalone/run-dnsbridge.sh
+cd examples/docker/dns
+./run.sh
 ....
 
 This is a privledged container and will bind to your local IP address
@@ -235,7 +239,7 @@ http://<your ip address>:8500/ui
 ....
 
 
-=== Example 9 - metrics collection
+=== *metrics* - metrics collection
 
 You can collect various Postgres metrics from your database
 container by running a crunchy-collect container that points
@@ -250,7 +254,8 @@ that includes:
 
 To start this set of containers, run the following:
 ....
-sudo ./examples/standalone/metrics/run-metrics.sh
+cd examples/docker/metrics
+./run.sh
 ....
 
 These metrics are described in this link:/docs/metrics.asciidoc[document.] 
@@ -260,24 +265,24 @@ and also the associated metrics collection container, run the
 example as follows:
 
 ....
-sudo ./examples/standalone/run-collect.sh
+cd examples/docker/collect
+./run.sh
 ....
 
 Every 3 minutes the collection container will collect postgres
 metrics and push them to the crunchy prometheus database.  You
 can graph them using the crunchy grafana container.
 
-=== Example 10 - vacuum
+=== *vacuum* - vacuum
 
 You can perform a postgres vacuum command by running the crunchy-vacuum
 container.  You specify a database to vacuum using environment variables.
 
-An example is shown in the examples/standalone/run-vacuum.sh script
+An example is shown in the examples/docker/run-vacuum.sh script
 and can be run as follows:
 ....
-sudo ./examples/standalone/run-pg-master.sh
-sleep 30
-sudo ./examples/standalone/run-vacuum.sh
+cd examples/docker/master-replica
+./run.sh
 ....
 
 This example performs a vacuum on a single table in the master postgres
@@ -295,24 +300,25 @@ database.  Vacuum is controlled via the following environment variables:
  * VAC_VERBOSE - when set to true adds the VERBOSE parameter to the VACUUM command
  * VAC_FREEZE - when set to true adds the FREEZE parameter to the VACUUM command
 
-=== Example 11 - custom setup.sql
+=== *custom-setup*- custom setup.sql
 
 You can use your own version of the setup.sql SQL file to customize
 the initialization of database data and objects when the container and
 database are created.
 
-An example is shown in the examples/standalone/custom-setup/run.sh script
+An example is shown in the examples/docker/custom-setup/run.sh script
 and can be run as follows:
 
 ....
-sudo ./examples/standalone/custom-setup/run.sh
+cd examples/docker/custom-setup
+./run.sh
 ....
 
 This works by placing a file named, setup.sql, within the /pgconf mounted volume
 directory.  Portions of the setup.sql file are required for the crunchy container
 to work, see comments within the sample setup.sql file.
 
-=== Example 12 - pgbouncer
+=== *pgbouncer* - pgbouncer
 
 The pgbouncer utility can be used to provide a connection pool
 to postgres databases.  The crunchy-pgbouncer container also
@@ -323,16 +329,16 @@ To test this failover, you first create a running master/slave
 cluster as follows:
 
 ....
-sudo ./examples/standalone/run-master.sh
-sleep 20
-sudo ./examples/standalone/run-pg-replica.sh
+cd examples/docker/master-replica
+./run.sh
 ....
 
-An example is shown in the examples/standalone/pgbouncer/run-pgbouncer.sh script
+An example is shown in the examples/docker/pgbouncer/run-pgbouncer.sh script
 and can be run as follows:
 
 ....
-sudo ./examples/standalone/pgbouncer/run-pgbouncer.sh
+cd examples/docker/pgbouncer
+./run.sh
 ....
 
 This example configures pgbouncer to provide connection pooling
@@ -353,19 +359,20 @@ pgbouncer to relabel the slave database into the master database so clients
 to pgbouncer will be able to connect to the master as before the failover.
 
 
-=== Example 13 - synchronous replication
+=== *sync* - synchronous replication
 
-This example, examples/standalone/sync, provides a 
+This example, examples/docker/sync, provides a 
 streaming replication configuration that includes both
 synchronous and asynchronous slaves.
 
 To run this example, run the following:
 
 ....
-./examples/standalone/sync/run-sync-master.sh
+cd examples/docker/sync
+./run-sync-master.sh
 sleep 20
-./examples/standalone/sync/run-sync-slave.sh
-./examples/standalone/sync/run-async-slave.sh
+./run-sync-slave.sh
+./run-async-slave.sh
 ....
 
 You can test the replication status on the master by using the following command:
@@ -386,15 +393,16 @@ psql -h 127.0.0.1 -p 12003 -U postgres postgres -c 'table foo'
 ....
 
 
-=== Example 14 - pgadmin4
+=== *pgadmin* - pgadmin4
 
-This example, examples/standalone/pgadmin4, provides a 
+This example, examples/docker/pgadmin4, provides a 
 container that runs the pgadmin4 web application.
 
 To run this example, run the following:
 
 ....
-./examples/standalone/pgadmin4/run-pgadmin4.sh
+cd examples/docker/pgadmin4
+./run.sh
 ....
 
 You should now be able to browse to http://YOURLOCALIP:5050
@@ -403,16 +411,16 @@ and password of *password*.  Replace YOURLOCALIP with whatever
 your local IP address happens to be.
 
 
-=== Example 15 - PITR (point in time recovery)
+=== *pitr* - PITR (point in time recovery)
 
-This example, examples/standalone/pitr, provides an
+This example, examples/docker/pitr, provides an
 example of performing a point in time recovery.
 
 To run this example, run the following to create a 
 database container:
 
 ....
-cd ./examples/standalone/pitr
+cd ./examples/docker/pitr
 ./run-master-pitr.sh
 ....
 
@@ -526,9 +534,9 @@ Other options exist for performing a PITR, see the pitr.asciidoc for
 full details.
 
 
-=== Example 16 - pgaudit
+=== *pgaudit* - pgaudit
 
-This example, examples/standalone/pgaudit, provides an
+This example, examples/docker/pgaudit, provides an
 example of enabling pgaudit output.  As of release 1.2.6,
 pgaudit is included in the crunchy-postgres container and is
 added to the postgres shared library list in the postgresql.conf.
@@ -548,8 +556,8 @@ To run this example, run the following to create a
 database container:
 
 ....
-cd ./examples/standalone/pgaudit
-./run-testaudit.sh
+cd ./examples/docker/pgaudit
+./run.sh
 ....
 
 This starts a database on port 12005 on localhost.  You can then
