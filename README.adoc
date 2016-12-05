@@ -63,8 +63,8 @@ for more details at link:http://www.crunchydata.com.
 Various examples are provided in the /examples directory and described
 in the documentation for running Standalone and Openshift examples..
 
-See the following link for documentation on the standalone
-examples: link:docs/standalone.asciidoc[standalone-examples] 
+See the following link for documentation on the docker
+examples: link:docs/docker.asciidoc[docker-examples] 
 
 To run the examples, you will need to set the CCP_IMAGE_TAG
 environment variable which indicates which version of the 
