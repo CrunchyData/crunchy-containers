@@ -97,7 +97,7 @@ This script will do the following:
  * store the backup in /tmp/backups/master directory
  * exit after the backup
 	
-=== *restore * - Performing a restore
+=== *restore* - Performing a restore
 
 In order to run this backup script, you first need to edit
 run-restore.sh to specify your host IP address you are running
