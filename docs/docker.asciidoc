@@ -593,6 +593,21 @@ create.  Create the network like this:
 docker network create --driver overlay crunchynet
 ....
 
+We want to have the master database always placed on
+a specific node, we accomplish this using node constraints
+as follows:
+....
+docker node update --label-add type=master 18yrb7m650umx738rtevojpqy
+....
+
+In the above example, a node with ID 18yrb7m650umx738rtevojpqy has
+a user defined label of *master* added to it.  The master service
+specifies *master* as a constraint when created, this tells Swarm
+to place the service on that specific node.  The replica specifies
+a constraint of *node.labels.type != master* to have the replica
+always placed on a node that is not hosting the master service.
+
+
 After you set up the Swarm cluster, you can then
 run the *examples/docker/swarm-service* example as follows
 on the *Swarm Manager Node*:

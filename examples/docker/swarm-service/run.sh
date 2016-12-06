@@ -25,6 +25,7 @@ docker service create \
  --mount type=volume,src=$MASTER_SERVICE_NAME-volume,dst=/pgdata,volume-driver=local \
  --name $SERVICE_NAME \
  --network crunchynet \
+ --constraint 'node.labels.type == master' \
  --env PGHOST=/tmp \
  --env PG_USER=testuser \
  --env PG_MODE=master \
@@ -48,6 +49,7 @@ docker service create \
  --mount type=volume,src=$VOLUME_NAME,dst=/pgdata,volume-driver=local \
  --name $SERVICE_NAME \
  --network crunchynet \
+ --constraint 'node.labels.type != master' \
  --env PGHOST=/tmp \
  --env PG_USER=testuser \
  --env PG_MODE=slave \
