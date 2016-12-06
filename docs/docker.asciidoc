@@ -575,7 +575,39 @@ statements as well as executes some basic SQL commands.  These
 SQL commands will cause pgaudit to create audit log messages in
 the pg_log log file created by the database container.
 
+=== *swarm* - docker swarm 
 
+This example shows how to run a master and replica database
+container on a Docker Swarm (v.1.12) cluster.
+
+First, set up a cluster, the Kubernetes libvirt coreos cluster
+example works well, see link:http://kubernetes.io/docs/getting-started-guides/libvirt-coreos/[coreos-libvirt-cluster]
+
+Next, on each node, create the Swarm using these 
+link:https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/[Swarm Install]
+
+Before creating Swarm services, for service discovery you need 
+to define an overlay network to be used by the services you will 
+create.  Create the network like this:
+....
+docker network create --driver overlay crunchynet
+....
+
+After you set up the Swarm cluster, you can then
+run the *examples/docker/swarm-service* example as follows
+on the *Swarm Manager Node*:
+
+....
+cd examples/docker/swarm-service
+./run.sh
+....
+
+You can then find the nodes that are running the master and replica containers
+by:
+....
+docker service ps master
+docker service ps replica
+....
 
 === Tips - send a signal to postgres
 
@@ -590,6 +622,7 @@ then, send it the signal to kill it or other signal depending on what you want t
 ....
 docker exec -it master kill -SIGTERM 22
 ....
+
 
 == Legal Notices
 

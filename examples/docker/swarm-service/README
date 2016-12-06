@@ -1,0 +1,5 @@
+this example only works on a Docker Swarm of version 1.12 or
+greater...see the docs/docker.asciidoc for details on setting up
+a test Docker Swarm cluster
+
+This run.sh script is run on the Swarm Manager node.
