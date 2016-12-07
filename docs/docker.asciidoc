@@ -586,6 +586,18 @@ example works well, see link:http://kubernetes.io/docs/getting-started-guides/li
 Next, on each node, create the Swarm using these 
 link:https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/[Swarm Install]
 
+Includes the command on the manager node:
+....
+docker swarm init --advertise-addr 192.168.10.1
+....
+
+Then the command on all the worker nodes:
+....
+ docker swarm join \
+     --token SWMTKN-1-65cn5wa1qv76l8l45uvlsbprogyhlprjpn27p1qxjwqmncn37o-015egopg4jhtbmlu04faon82u \
+         192.168.10.1:2377
+....
+
 Before creating Swarm services, for service discovery you need 
 to define an overlay network to be used by the services you will 
 create.  Create the network like this:
@@ -597,11 +609,11 @@ We want to have the master database always placed on
 a specific node, we accomplish this using node constraints
 as follows:
 ....
+docker node inspect kubernetes-node-1 | grep ID
 docker node update --label-add type=master 18yrb7m650umx738rtevojpqy
 ....
 
-In the above example, a node with ID 18yrb7m650umx738rtevojpqy has
-a user defined label of *master* added to it.  The master service
+In the above example, the kubernetes-node-1 node with ID 18yrb7m650umx738rtevojpqy has a user defined label of *master* added to it.  The master service
 specifies *master* as a constraint when created, this tells Swarm
 to place the service on that specific node.  The replica specifies
 a constraint of *node.labels.type != master* to have the replica
@@ -623,6 +635,23 @@ by:
 docker service ps master
 docker service ps replica
 ....
+
+Given the PostgreSQL replica service is named *replica*, you can scale up 
+the number of replica containers by running this command:
+....
+docker service scale replica=2
+docker service ls
+....
+
+You can verify you have two replicas within PostgreSQL by viewing
+the *pg_stat_replication* table, the password is *password*, when
+logged into the kubernetes-node-1 host:
+....
+docker exec -it $(docker ps -q) psql -U postgres -c 'table pg_stat_replication' postgres
+....
+
+You should see a row for each replica along with its replication status.
+
 
 === Tips - send a signal to postgres
 

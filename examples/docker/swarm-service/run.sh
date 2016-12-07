@@ -23,7 +23,7 @@ MASTER_SERVICE_NAME=master
 
 docker service create \
  --mount type=volume,src=$MASTER_SERVICE_NAME-volume,dst=/pgdata,volume-driver=local \
- --name $SERVICE_NAME \
+ --name $MASTER_SERVICE_NAME \
  --network crunchynet \
  --constraint 'node.labels.type == master' \
  --env PGHOST=/tmp \
