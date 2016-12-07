@@ -13,27 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting vacuum container..."
+echo "cleaning up example..."
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-$DIR/cleanup.sh
-
-CONTAINER_NAME=vacuum
-
-docker run \
-	-e VAC_FULL="true" \
-	-e JOB_HOST="basic" \
-	-e VAC_ANALYZE="true" \
-	-e VAC_ALL="true" \
-	-e VAC_VERBOSE="true" \
-	-e VAC_FREEZE="true" \
-	-e VAC_TABLE="testtable" \
-	-e PG_USER="testuser" \
-	-e PG_PORT="5432" \
-	-e PG_PASSWORD="password" \
-	-e PG_DATABASE="userdb" \
-	--link basic:basic \
-	--name=$CONTAINER_NAME \
-	--hostname=$CONTAINER_NAME \
-	-d crunchydata/crunchy-vacuum:$CCP_IMAGE_TAG
+docker stop $CONTAINER_NAME
+docker rm $CONTAINER_NAME
 

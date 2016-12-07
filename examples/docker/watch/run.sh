@@ -15,20 +15,27 @@
 
 echo "starting crunchy-watch container"
 
-docker stop crunchy-watch
-docker rm crunchy-watch
+export CONTAINER_NAME=watch
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+$DIR/cleanup.sh
 
+#
+# make sure the docker socket has permissions that allow
+# the postgres user to read it or else this example will not
+# be able to read and write to mounted docker socket
+#
 sudo docker run \
 	--privileged \
 	-v /run/docker.sock:/run/docker.sock \
 	--link master:master \
+	--link replica:replica \
 	-e PG_MASTER_SERVICE=master \
-	-e PG_SLAVE_SERVICE=pg-replica \
+	-e PG_SLAVE_SERVICE=replica \
 	-e PG_MASTER_PORT=5432 \
 	-e PG_MASTER_USER=masteruser \
 	-e PG_DATABASE=postgres \
 	-e SLEEP_TIME=20 \
-	--name=crunchy-watch \
-	--hostname=crunchy-watch \
+	--name=$CONTAINER_NAME \
+	--hostname=$CONTAINER_NAME \
 	-d crunchydata/crunchy-watch:$CCP_IMAGE_TAG
 

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
 
 # Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,8 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#
-#
+echo "cleaning up example..."
 
-docker stop sync-slave sync-master async-slave
-docker rm sync-slave sync-master async-slave
+CONTAINER_NAME=vacuum
+
+docker stop $CONTAINER_NAME
+docker rm $CONTAINER_NAME
+
