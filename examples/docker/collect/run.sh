@@ -36,9 +36,10 @@ sudo docker run \
 	-v $BASIC_VOLUME:/pgdata:ro \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PORT=5432 \
-	-e PROM_GATEWAY=http://$HOSTIP:9091 \
+	-e PROM_GATEWAY=http://crunchy-promgateway:9091 \
 	-e HOSTNAME=basic \
 	--link basic:basic \
+	--link crunchy-promgateway:crunchy-promgateway \
 	--name=master-collect \
 	--hostname=master-collect \
 	-d crunchydata/crunchy-collect:$CCP_IMAGE_TAG
