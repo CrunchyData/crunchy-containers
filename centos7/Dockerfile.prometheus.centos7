@@ -5,11 +5,8 @@ LABEL Vendor="Crunchy Data Solutions"
 
 RUN yum -y install procps-ng openssh-clients hostname  && yum clean all -y
 
-# set up cpm directory
-#
 RUN mkdir -p /data /opt/cpm/bin /opt/cpm/conf
 
-# open up the prometheus port
 EXPOSE 9090
 
 ADD prometheus.tar.gz /opt/cpm/bin
