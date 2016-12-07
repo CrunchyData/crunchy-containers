@@ -158,8 +158,8 @@ should show up in this replicated copy of that database.
 === *pgpool* - pgpool 
 
 A pgpool example is provided that will run a pgpool container that
-is configured to be used with the master and slave example provided
-in the run-pg-master.sh and run-pg-replica.sh scripts.  After running
+is configured to be used with the master and replica example provided
+in the *master-replica* example.  After running
 those commands to create a master and replica, you can 
 create a pgpool container by running the following example command:
 
@@ -169,14 +169,12 @@ cd examples/docker/pgpool
 ....
 
 Enter the following command to connect to the pgpool that is
-mapped to your local port 12002, in this case the host is named
-jeffded.crunchy.lab, fill in your hostname instead:
-
+mapped to your local port 12003:
 ....
-psql -h jeffded.crunchy.lab -U testuser -p 12002 testdb
+psql -h localhost -U testuser -p 12003 userdb
 ....
 
-You will enter the password of testpsw when prompted.  At this point
+You will enter the password of *password* when prompted.  At this point
 you can execute both INSERT and SELECT statements on the pgpool connection.
 Pgpool will direct INSERT statements to the master and SELECT statements
 will be sent round-robin to both master and replica.

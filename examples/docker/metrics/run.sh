@@ -13,46 +13,44 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "stopping containers..."
+echo "starting metrics example.."
 
-docker stop crunchy-promgateway
-docker rm crunchy-promgateway
-docker stop crunchy-prometheus
-docker rm crunchy-prometheus
-docker stop crunchy-grafana
-docker rm crunchy-grafana
-
-DATA_DIR=/tmp/crunchy-metrics-data
-sudo rm -rf $DATA_DIR
-sudo mkdir -p $DATA_DIR
-sudo chown daemon:daemon $DATA_DIR
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+$DIR/cleanup.sh
 
 export HOSTIP=`hostname --ip-address`
 echo $HOSTIP
 
-sudo docker run \
+VOLUME_NAME=metrics-volume
+docker volume create --driver local --name=$VOLUME_NAME
+
+docker run \
 	-p $HOSTIP:9091:9091/tcp \
-	-v $DATA_DIR:/data \
 	--name=crunchy-promgateway \
 	--hostname=crunchy-promgateway \
 	-d crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG
 
-sudo docker run \
-	-p $HOSTIP:19090:9090/tcp \
-	-v $DATA_DIR:/data \
+echo "sleep a bit since we are linking to crunchy-promgateway..."
+sleep 10
+
+docker run \
+	-p $HOSTIP:9090:9090/tcp \
+	--privileged=true \
+	--volume-driver=local \
+	-v $VOLUME_NAME:/data:z \
 	--name=crunchy-prometheus \
 	--hostname=crunchy-prometheus \
 	--link crunchy-promgateway:crunchy-metrics \
 	-d crunchydata/crunchy-prometheus:$CCP_IMAGE_TAG
 
+echo "sleep a bit since we are linking to crunchy-prometheus..."
+sleep 10
 
-echo "sleeping 20 secs to give prometheus time to start up..."
-sleep 20
-
-sudo docker run \
+docker run \
 	-p $HOSTIP:3000:3000/tcp \
-	-v $DATA_DIR:/data \
+	--privileged=true \
+	--volume-driver=local \
+	-v $VOLUME_NAME:/data:z \
 	--link crunchy-prometheus:crunchy-prometheus \
 	--name=crunchy-grafana \
 	--hostname=crunchy-grafana \

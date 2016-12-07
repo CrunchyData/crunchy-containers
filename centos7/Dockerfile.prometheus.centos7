@@ -1,15 +1,13 @@
 FROM centos:7
 
-LABEL Release="1.2.4"
+LABEL Release="1.2.6"
 LABEL Vendor="Crunchy Data Solutions"
 
 RUN yum -y install procps-ng openssh-clients hostname  && yum clean all -y
 
-VOLUME ["/data"]
-
 # set up cpm directory
 #
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+RUN mkdir -p /data /opt/cpm/bin /opt/cpm/conf
 
 # open up the prometheus port
 EXPOSE 9090
@@ -18,8 +16,9 @@ ADD prometheus.tar.gz /opt/cpm/bin
 ADD bin/prometheus /opt/cpm/bin
 ADD conf/prometheus /opt/cpm/conf
 
-RUN chown -R daemon:daemon /opt/cpm
+RUN chown -R daemon:daemon /opt/cpm /data
 USER daemon
+VOLUME ["/data"]
 
 CMD ["/opt/cpm/bin/start-prometheus.sh"]
 

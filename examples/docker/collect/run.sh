@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting master and collect containers..."
+echo "make sure basic example is running....starting collect containers..."
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+$DIR/cleanup.sh
 
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
@@ -25,44 +26,19 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 #sudo chcon -Rt svirt_sandbox_file_t $PGCONF
 # add this next line to the docker run to override pg config files
 
-DATA_DIR=/tmp/master-data
-sudo rm -rf $DATA_DIR
-sudo mkdir -p $DATA_DIR
-sudo chown postgres:postgres $DATA_DIR
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
-
-sudo docker stop master
-sudo docker rm master
-
-sudo docker run \
-	-p 12000:5432 \
-	-v $DATA_DIR:/pgdata \
-	-e TEMP_BUFFERS=9MB \
-	-e MAX_CONNECTIONS=101 \
-	-e SHARED_BUFFERS=129MB \
-	-e MAX_WAL_SENDERS=7 \
-	-e WORK_MEM=5MB \
-	-e PG_MODE=master \
-	-e PG_MASTER_USER=masteruser \
-	-e PG_MASTER_PASSWORD=password \
-	-e PG_USER=testuser \
-	-e PG_ROOT_PASSWORD=password \
-	-e PG_PASSWORD=password \
-	-e PG_DATABASE=userdb \
-	--name=master \
-	--hostname=master \
-	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
-
 export HOSTIP=`hostname --ip-address`
-sudo docker stop master-collect
-sudo docker rm master-collect
+
+BASIC_VOLUME=basic-example-volume
+
 sudo docker run \
-	-v $DATA_DIR:/pgdata:ro \
+	--privileged=true \
+	--volume-driver=local \
+	-v $BASIC_VOLUME:/pgdata:ro \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PORT=5432 \
 	-e PROM_GATEWAY=http://$HOSTIP:9091 \
-	-e HOSTNAME=master \
-	--link master:master \
+	-e HOSTNAME=basic \
+	--link basic:basic \
 	--name=master-collect \
 	--hostname=master-collect \
 	-d crunchydata/crunchy-collect:$CCP_IMAGE_TAG
