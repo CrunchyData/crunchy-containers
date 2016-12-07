@@ -15,8 +15,10 @@
 
 echo "starting masterrestore container..."
 
-sudo docker stop master-restore
-sudo docker rm master-restore
+export CONTAINER_NAME=master-restore
+export CONTAINER_VOLUME=$CONTAINER_NAME-volume
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+$DIR/cleanup.sh
 
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
@@ -26,18 +28,15 @@ sudo docker rm master-restore
 #sudo chcon -Rt svirt_sandbox_file_t $PGCONF
 # add this next line to the docker run to override pg config files
 
-BACKUP=/nfsfileshare/single-master/2016-10-24-10-03-26
+docker volume create --driver local --name=$CONTAINER_VOLUME
+BACKUP_VOLUME=basicbackup-volume
 
-DATA_DIR=/tmp/master-restore
-sudo rm -rf $DATA_DIR
-sudo mkdir -p $DATA_DIR
-sudo chown postgres:postgres $DATA_DIR
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
-
-sudo docker run \
+docker run \
 	-p 12001:5432 \
-	-v $DATA_DIR:/pgdata \
-	-v "$BACKUP":/backup \
+	--privileged=true \
+	-v $CONTAINER_VOLUME:/pgdata:z \
+	-v $BACKUP_VOLUME:/backup:ro \
+	-e BACKUP_PATH="basic/2016-12-07-21-28-12" \
 	-e TEMP_BUFFERS=9MB \
 	-e MAX_CONNECTIONS=101 \
 	-e SHARED_BUFFERS=129MB \
@@ -50,7 +49,7 @@ sudo docker run \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=master-restore \
-	--hostname=master-restore \
+	--name=$CONTAINER_NAME \
+	--hostname=$CONTAINER_NAME \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 
