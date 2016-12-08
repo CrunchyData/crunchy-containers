@@ -17,4 +17,6 @@ source $BUILDBASE/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+$DIR/cleanup.sh
+
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/basic.json | oc create -f -

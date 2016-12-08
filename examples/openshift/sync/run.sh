@@ -14,10 +14,12 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/sync
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc create -f $LOC/master-service.json
-oc create -f $LOC/slave-service.json
-oc process -f $LOC/master-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-oc process -f $LOC/slave-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-oc process -f $LOC/sync-slave-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+$DIR/cleanup.sh
+
+oc create -f $DIR/master-service.json
+oc create -f $DIR/slave-service.json
+oc process -f $DIR/master-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/slave-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/sync-slave-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

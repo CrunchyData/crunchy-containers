@@ -17,6 +17,8 @@ source $BUILDBASE/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+$DIR/cleanup.sh
+
 oc create configmap postgresql-conf --from-file=postgresql.conf --from-file=pghba=pg_hba.conf
 
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/configmap.json | oc create -f -

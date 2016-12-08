@@ -16,6 +16,8 @@ source $BUILDBASE/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+$DIR/cleanup.sh
+
 oc create -f $DIR/backrestrepo-nfs-pvc.json
 
 oc create -f $DIR/pgconf-nfs-pvc.json

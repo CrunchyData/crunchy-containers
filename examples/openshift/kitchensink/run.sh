@@ -16,6 +16,8 @@ source $BUILDBASE/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+$DIR/cleanup.sh
+
 echo "create services for master and slaves..."
 oc create -f $DIR/kitchensink-master-service.json
 oc create -f $DIR/kitchensink-slave-service.json

@@ -18,6 +18,8 @@ echo "WARNING: make sure to edit the gluster-endpoint.json with your gluster IP 
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+$DIR/cleanup.sh
+
 oc create -f $DIR/gluster-endpoint.json
 oc create -f $DIR/gluster-pv.json
 oc create -f $DIR/gluster-pvc.json

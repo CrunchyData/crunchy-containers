@@ -24,6 +24,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete pv prometheus-pv grafana-pv
 
+$DIR/cleanup.sh
+
 envsubst <  $DIR/grafana-pv.json  | oc create -f -
 envsubst <  $DIR/prometheus-pv.json | oc create -f -
 

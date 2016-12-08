@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete service master-backrest
-kubectl delete pod master-backrest
-kubectl delete pvc backrestrepo-nfs-pvc pgconf-nfs-pvc
-kubectl delete pv backrestrepo-nfs-pv pgconf-nfs-pv
+oc delete service master-backrest
+oc delete pod master-backrest
+oc delete pvc backrestrepo-nfs-pvc pgconf-nfs-pvc
+oc delete pv backrestrepo-nfs-pv pgconf-nfs-pv

@@ -20,6 +20,8 @@ source $BUILDBASE/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+$DIR/cleanup.sh
+
 oc process -f $DIR/prometheus.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
 oc process -f $DIR/promgateway.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
 oc process -f $DIR/grafana.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

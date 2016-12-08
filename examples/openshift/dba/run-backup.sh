@@ -16,6 +16,9 @@
 oc project openshift
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
+
 oc create -f $DIR/dba-sa.json
 
 oc policy add-role-to-group edit system:serviceaccounts -n openshift

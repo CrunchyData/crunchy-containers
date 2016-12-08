@@ -16,6 +16,8 @@ source $BUILDBASE/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+$DIR/cleanup.sh
+
 oc create -f $DIR/pguser-secret.json
 oc create -f $DIR/pgmaster-secret.json 
 oc create -f $DIR/pgroot-secret.json 

@@ -17,6 +17,8 @@ source $BUILDBASE/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+$DIR/cleanup.sh
+
 oc create -f $DIR/ceph-secret.json
 oc create -f $DIR/ceph-pv.json
 oc create -f $DIR/ceph-pvc.json

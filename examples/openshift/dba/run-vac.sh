@@ -18,6 +18,8 @@
 #
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+$DIR/cleanup.sh
+
 oc project openshift
 
 oc create -f $DIR/dba-sa.json

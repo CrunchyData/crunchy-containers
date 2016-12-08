@@ -17,6 +17,9 @@ source $BUILDBASE/examples/envvars.sh
 echo "this example depends on the single-master example being run prior"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
+
 oc create -f $DIR/pgpool-pvc.json
 
 oc process -f $DIR/pgpool-rc.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

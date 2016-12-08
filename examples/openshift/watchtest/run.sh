@@ -13,11 +13,13 @@
 # limitations under the License.
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/watchtest
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc create -f $LOC/watch-sa.json
+$DIR/cleanup.sh
+
+oc create -f $DIR/watch-sa.json
 oc policy add-role-to-group edit system:serviceaccounts -n openshift
 oc policy add-role-to-group edit system:serviceaccounts -n default
 echo "sleep 20 to give master time to start..."
 sleep 20
-oc process -f $LOC/watch.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/watch.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

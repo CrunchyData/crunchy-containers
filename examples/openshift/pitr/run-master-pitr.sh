@@ -16,6 +16,8 @@ source $BUILDBASE/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+$DIR/cleanup.sh
+
 # set up the NFS claim to store the WAL into
 oc create -f $DIR/master-pitr-wal-pvc.json
 
