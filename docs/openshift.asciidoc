@@ -45,7 +45,7 @@ the master slave pods, then run the following command
 to deploy the pgpool service:
 
 ....
-cd examples/openshift/pgpooltest
+cd examples/openshift/pgpool
 ./run.sh
 ....
 
