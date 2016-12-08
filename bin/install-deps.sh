@@ -14,7 +14,7 @@ sudo yum -y install net-tools bind-utils wget unzip git golang
 #
 # download the pgadmin4 python wheel distro
 #
-wget https://ftp.postgresql.org/pub/pgadmin3/pgadmin4/v1.0/pip/pgadmin4-1.0-py2-none-any.whl
+wget https://ftp.postgresql.org/pub/pgadmin3/pgadmin4/v1.1/pip/pgadmin4-1.1-py2-none-any.whl
 #
 # download the metrics products, only required to build the containers
 #
