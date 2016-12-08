@@ -17,41 +17,41 @@ echo "starting master container..."
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# uncomment these lines to override the pg config files with
-# your own versions of pg_hba.conf and postgresql.conf
-PGCONF=/tmp/backtestdb-pgconf
-sudo rm -rf $PGCONF
-sudo mkdir $PGCONF
-sudo chmod 0700 $PGCONF
-sudo chcon -Rt svirt_sandbox_file_t $PGCONF
-sudo cp pgbackrest.conf $PGCONF
-sudo chown -R postgres:postgres $PGCONF
+$DIR/cleanup.sh
+
+CONTAINER=backrest
+PGCONF_VOLUME_NAME=$CONTAINER-pgconf
+
+docker volume create --driver local --name=$PGCONF_VOLUME_NAME
+
+docker run -it --privileged=true \
+	--volume-driver=local \
+	-v $DIR:/fromdir \
+	-v $PGCONF_VOLUME_NAME:/pgconf:z \
+	--name=backrest-setup \
+	crunchydata/crunchy-postgres:$CCP_IMAGE_TAG cp /fromdir/pgbackrest.conf /pgconf
+
+docker run -it --privileged=true \
+	--volume-driver=local \
+	-v $PGCONF_VOLUME_NAME:/pgconf:z \
+	--name=backrest-ls \
+	crunchydata/crunchy-postgres:$CCP_IMAGE_TAG ls /pgconf
 
 # the backrest repo that backrest will write to
-BACKRESTREPO=/tmp/backtestdb-backrestrepo
-sudo rm -rf $BACKRESTREPO
-sudo mkdir $BACKRESTREPO
-sudo chmod 0700 $BACKRESTREPO
-sudo chcon -Rt svirt_sandbox_file_t $BACKRESTREPO
-sudo chown postgres:postgres $BACKRESTREPO
+REPO_VOLUME_NAME=$CONTAINER-backrestrepo
 
-# add this next line to the docker run to override pg config files
+docker volume create --driver local --name=$REPO_VOLUME_NAME
 
-DATA_DIR=/tmp/backtestdb-data
-sudo rm -rf $DATA_DIR
-sudo mkdir -p $DATA_DIR
-sudo chown postgres:postgres $DATA_DIR
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
-
-CONTAINER=backtestdb
-docker stop $CONTAINER
-docker rm $CONTAINER
+DATA_VOLUME_NAME=$CONTAINER-pgdata
+docker volume create --driver local --name=$DATA_VOLUME_NAME
 
 docker run \
 	-p 12000:5432 \
-	-v $BACKRESTREPO:/backrestrepo \
-	-v $PGCONF:/pgconf \
-	-v $DATA_DIR:/pgdata \
+	--privileged=true \
+	--volume-driver=local \
+	-v $REPO_VOLUME_NAME:/backrestrepo:z \
+	-v $PGCONF_VOLUME_NAME:/pgconf:z \
+	-v $DATA_VOLUME_NAME:/pgdata:z \
 	-e ARCHIVE_TIMEOUT=60 \
 	-e TEMP_BUFFERS=9MB \
 	-e PGHOST=/tmp \

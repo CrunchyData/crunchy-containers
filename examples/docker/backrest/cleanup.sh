@@ -13,21 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "stopping and removing pgadmin4 container..."
+echo "cleaning up example.."
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-CONTAINER_NAME=pgadmin4
-VOLUME_NAME=$CONTAINER_NAME-volume
 
-$DIR/cleanup.sh
-
-docker volume create --driver local --name=$VOLUME_NAME
-
-docker run \
-	-p 5050:5050 \
-	--privileged=true \
-	--volume-driver=local \
-	-v $VOLUME_NAME:/root/.pgadmin:z \
-	--name=$CONTAINER_NAME \
-	--hostname=$CONTAINER_NAME \
-	-d crunchydata/crunchy-pgadmin4:$CCP_IMAGE_TAG
+CONTAINER=backrest
+docker rm -f --volumes $CONTAINER-ls $CONTAINER-setup
+docker rm -f --volumes $CONTAINER
 
