@@ -13,16 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "test pgaudit..."
+echo "cleaning up example..."
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+CONTAINER_NAME=audittest
+docker rm -f --volumes $CONTAINER_NAME
 
-psql -h localhost -p 12005 -U postgres -f $DIR/test.sql postgres
-
-docker exec audittest /bin/sh -c 'grep AUDIT /pgdata/audittest/pg_log/post*.log'
-
-if [ $? -ne 0 ]; then
-	echo "test failed...no AUDIT msgs were found in the log file"
-	exit 1
-fi
-echo "test passed, AUDIT msgs were found in the postgres log file"

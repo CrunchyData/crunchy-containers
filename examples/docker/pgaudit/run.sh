@@ -14,24 +14,20 @@
 # limitations under the License.
 
 echo "starting crunchy-container..."
-#PGCONF=$HOME/openshift-dedicated-container/pgconf
-#sudo chown postgres:postgres $PGCONF
-#sudo chmod 0700 $PGCONF
-#sudo chcon -Rt svirt_sandbox_file_t $PGCONF
-#	-v $PGCONF:/pgconf \
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+$DIR/cleanup.sh
 
 CONTAINER_NAME=audittest
-docker stop $CONTAINER_NAME
-docker rm $CONTAINER_NAME
+VOLUME_NAME=$CONTAINER_NAME-volume
 
-DATA_DIR=/tmp/$CONTAINER_NAME
-sudo rm -rf $DATA_DIR
-sudo mkdir -p $DATA_DIR
-sudo chown postgres:postgres $DATA_DIR
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
+docker volume create --driver local --name=$VOLUME_NAME
+
 sudo docker run \
 	-p 12005:5432 \
-	-v $DATA_DIR:/pgdata \
+	--privileged=true \
+	--volume-driver=local \
+	-v $VOLUME_NAME:/pgdata:z \
 	-e TEMP_BUFFERS=9MB \
 	-e PGHOST=/tmp \
 	-e MAX_CONNECTIONS=101 \
