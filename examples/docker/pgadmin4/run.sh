@@ -14,29 +14,32 @@
 # limitations under the License.
 
 echo "stopping and removing pgadmin4 container..."
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+CONTAINER_NAME=pgadmin4
+VOLUME_NAME=$CONTAINER_NAME-volume
 
-docker stop pgadmin4
-docker rm pgadmin4
+$DIR/cleanup.sh
 
-echo "setting up pgadmin4 data directory..."
-DATA_DIR=/tmp/pgadmin4-data
-if [ ! -d "$DATA_DIR" ]; then
-	echo "setting up local data directory..."
-	sudo mkdir -p $DATA_DIR
-	sudo chown root:root $DATA_DIR
-	sudo chmod 777 $DATA_DIR
-	sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
-	sudo cp $BUILDBASE/conf/pgadmin4/config_local.py $DATA_DIR
-	sudo cp $BUILDBASE/conf/pgadmin4/pgadmin4.db $DATA_DIR
-fi
+docker volume create --driver local --name=$VOLUME_NAME
 
-export HOSTIP=`hostname --ip-address`
-echo $HOSTIP
+#echo "setting up pgadmin4 data directory..."
+#DATA_DIR=/tmp/pgadmin4-data
+#if [ ! -d "$DATA_DIR" ]; then
+#	echo "setting up local data directory..."
+#	sudo mkdir -p $DATA_DIR
+#	sudo chown root:root $DATA_DIR
+#	sudo chmod 777 $DATA_DIR
+#	sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
+#	sudo cp $BUILDBASE/conf/pgadmin4/config_local.py $DATA_DIR
+#	sudo cp $BUILDBASE/conf/pgadmin4/pgadmin4.db $DATA_DIR
+#fi
 
-sudo docker run \
-	-p $HOSTIP:5050:5050 \
-	-v $DATA_DIR:/root/.pgadmin \
-	--name=pgadmin4 \
-	--hostname=pgadmin4 \
+docker run \
+	-p 5050:5050 \
+	--privileged=true \
+	--volume-driver=local \
+	-v $VOLUME_NAME:/root/.pgadmin:z \
+	--name=$CONTAINER_NAME \
+	--hostname=$CONTAINER_NAME \
 	-d crunchydata/crunchy-pgadmin4:$CCP_IMAGE_TAG
 
