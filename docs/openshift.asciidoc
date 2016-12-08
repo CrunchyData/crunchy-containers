@@ -140,7 +140,7 @@ allows any number of backups to be kept.
 The backup-job-pv.json specifies a *persistentVolumeReclaimPolicy* of *Retain* to tell Openshift
 that we want to keep the volume contents after the removal of the PV.
 
-=== Openshift Example 5 - NFS Example
+=== *master-nfs* - NFS Example
 
 I have provided an example of using NFS for the postgres data volume.
 On my test nfs server, I had to set the exports file entry as follows:
@@ -261,7 +261,7 @@ psql -c 'table foo' -U master -h pg-replica-rc postgres
 After a failover, you would most likely want to create a database
 backup and be prepared to recreate your cluster from that backup.
 
-=== Openshift Example 8 - Master Slave Deployment using NFS
+=== *master-replica-rc-nfs*  - Master Slave Deployment using NFS
 
 This example uses NFS volumes for the master and the replicas.  In
 some scenarios, customers might want to have all the Postgres
@@ -358,7 +358,7 @@ on installing the Openshift Router:
 https://docs.openshift.com/enterprise/3.0/install_config/install/deploy_router.html
 ....
 
-=== Openshift Example 11 - Master with secrets
+=== *secret* - database with secrets
 
 This example allows you to set the Postgresql passwords
 using Kube Secrets.
@@ -392,7 +392,7 @@ psql -h secret-pg -U postgres postgres
 psql -h secret-pg -U master postgres
 ....
 
-=== Openshift Example 12 - Automated Failover
+=== *watch* - Automated Failover
 
 This example shows how a form of automated failover can be
 configured for a master and replica deployment.
@@ -441,7 +441,7 @@ of replicas to its original configuration which each replica pointed to the
 new master.  Replication from the master to the new replicas will be
 started as each new replica is started by Openshift.
 
-=== Openshift Example 13 - Metrics Collection
+=== *metrics* - Metrics Collection
 
 This example shows how postgres metrics can be collected
 and stored in prometheus and graphed with grafana.
@@ -469,7 +469,7 @@ oc process -f master-collect.json | oc create -f -
 At this point, metrics will be collected every 3 minutes and pushed
 to prometheus.  You can build graphs off the metrics using grafana.
 
-=== Openshift Example 14 - Vacuum 
+=== *vacuum* - Vacuum  job
 
 This example shows how you can run a vacuum job against
 a postgres database container.
@@ -507,7 +507,7 @@ of environment variables read by the vacuum job include:
  * VAC_VERBOSE - when set to true adds the VERBOSE parameter to the VACUUM command
  * VAC_FREEZE - when set to true adds the FREEZE parameter to the VACUUM command
 
-=== Openshift Example 15 - Custom Configuration Files
+=== *custom-config* - Custom Configuration Files
 
 This example shows how you can use your own customized version of setup.sql 
 when creating a postgres database container.
@@ -527,7 +527,7 @@ This will start a database container that will use an NFS mounted /pgconf
 directory that will container the custom setup.sql file found in the example
 directory.
 
-=== Openshift Example 16 - pgbouncer
+=== *pgbouncer* - pgbouncer
 
 This example shows how you can use the crunchy-pgbouncer container 
 when running under Openshift.
@@ -580,7 +580,7 @@ or via the pgbouncer proxy as follows:
 psql -h pgbouncer.openshift.svc.cluster.local  -U master master
 ....
 
-=== Openshift Example 17 - synchrounous replica
+=== *sync* - synchrounous replica
 
 This example deploys a PostgreSQL cluster with a master,
 a synchrounous replica, and an asynchronous replica.  The
@@ -606,7 +606,7 @@ container, notice it changes because of the round-robin Service proxy
 we are using for both replicas.  The example queries also show that both
 replicas are replicating from the master.
 
-=== Openshift Example 18 - pgadmin4
+=== *pgadmin4* - pgadmin4
 
 This example, examples/openshift/pgadmin4, provides a
 container that runs the pgadmin4 web application.
@@ -627,7 +627,7 @@ and password of *password*.  Replace YOURLOCALIP with whatever
 your local IP address happens to be.
 
 
-=== Openshift Example 19 - workshop
+=== *workshop* - workshop
 
 This example, examples/openshift/workshop, provides an
 example of using Openshift Templates to build pods, routes, services, etc.
@@ -645,7 +645,7 @@ See the README file within the workshop directory for instructions
 on running the example.
 
 
-=== Openshift Example 20 - PITR (point in time recovery)
+=== *pitr* - PITR (point in time recovery)
 
 This is a complex example.  For details on how PITR is implemented
 within the Suite, see the link:pitr.asciidoc[PITR Documentation] for details and background.
@@ -775,7 +775,7 @@ After you run the example, you should see archive files
 being written to the /backrestrepo volume (/nfsfileshare/backrestrepo).
 
 
-=== Openshift Example 22 - configmap
+=== *configmap*- database credentials from a configmap
 
 This example shows how to use a configmap to store the
 postgresql.conf and pg_hba.conf files to be used when

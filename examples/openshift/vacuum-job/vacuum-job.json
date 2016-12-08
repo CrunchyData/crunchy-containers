@@ -48,7 +48,7 @@
                             "value": "testtable"
                         }, {
                             "name": "JOB_HOST",
-                            "value": "single-master"
+                            "value": "basic"
                         }, {
                             "name": "CCP_IMAGE_TAG",
                             "value": "${CCP_IMAGE_TAG}"

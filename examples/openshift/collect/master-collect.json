@@ -93,7 +93,7 @@
                     "value": "5432"
                 }, {
                     "name": "PROM_GATEWAY",
-                    "value": "http://crunchy-promgateway.testproject.svc.cluster.local:9091"
+                    "value": "http://crunchy-promgateway:9091"
                 }, {
                     "name": "PG_ROOT_PASSWORD",
                     "value": "${PG_ROOT_PASSWORD}"
