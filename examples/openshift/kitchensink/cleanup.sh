@@ -13,17 +13,17 @@
 # limitations under the License.
 
 oc delete pv kitchensink-master-pv
-oc delete pv kitchensink-sync-slave-pv
+oc delete pv kitchensink-sync-replica-pv
 oc delete pvc kitchensink-master-pvc
-oc delete pvc kitchensink-sync-slave-pvc
+oc delete pvc kitchensink-sync-replica-pvc
 oc delete service kitchensink-master
-oc delete service kitchensink-slave
+oc delete service kitchensink-replica
 oc delete pod kitchensink-watch
 oc delete pod kitchensink-master
-oc delete pod kitchensink-sync-slave
+oc delete pod kitchensink-sync-replica
 oc delete dc kitchensink-pgpool-rc
-oc delete dc kitchensink-slave-dc
+oc delete dc kitchensink-replica-dc
 oc delete service kitchensink-pgpool-rc
 
 $BUILDBASE/examples/waitforterm.sh kitchensink-master oc
-$BUILDBASE/examples/waitforterm.sh kitchensink-slave oc
+$BUILDBASE/examples/waitforterm.sh kitchensink-replica oc

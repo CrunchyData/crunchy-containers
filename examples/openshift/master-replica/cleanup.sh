@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete service ms-master ms-slave
-oc delete pod ms-master ms-slave
+oc delete service ms-master ms-replica
+oc delete pod ms-master ms-replica
 $BUILDBASE/examples/waitforterm.sh ms-master oc

@@ -12,14 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete dc m-s-rc-nfs-slave
+oc delete dc m-s-rc-nfs-replica
 oc delete pod m-s-rc-nfs-master 
-oc delete pod m-s-rc-nfs-slave
+oc delete pod m-s-rc-nfs-replica
 oc delete pod -l name=m-s-rc-nfs-master
 $BUILDBASE/examples/waitforterm.sh m-s-rc-nfs-master oc
-$BUILDBASE/examples/waitforterm.sh m-s-rc-nfs-slave oc
+$BUILDBASE/examples/waitforterm.sh m-s-rc-nfs-replica oc
 oc delete service m-s-rc-nfs-master
-oc delete service m-s-rc-nfs-slave
-oc delete pvc master-slave-rc-nfs-pvc
-oc delete pv  master-slave-rc-nfs-pv
+oc delete service m-s-rc-nfs-replica
+oc delete pvc master-replica-pvc
+oc delete pv  master-replica-pv
 sudo rm -rf /nfsfileshare/m-s-rc-nfs*

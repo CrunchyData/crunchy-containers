@@ -12,7 +12,7 @@
     },
     "parameters": [{
         "name": "PG_MASTER_USER",
-        "description": "The username used for master-slave replication",
+        "description": "The username used for master-replica replication",
         "value": "master"
     }, {
         "name": "CCP_IMAGE_TAG",
@@ -69,9 +69,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "ms-slave",
+            "name": "ms-replica",
             "labels": {
-                "name": "ms-slave"
+                "name": "ms-replica"
             }
         },
         "spec": {
@@ -82,7 +82,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "ms-slave"
+                "name": "ms-replica"
             },
             "portalIP": "None",
             "type": "ClusterIP",
@@ -171,14 +171,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "ms-slave",
+            "name": "ms-replica",
             "labels": {
-                "name": "ms-slave"
+                "name": "ms-replica"
             }
         },
         "spec": {
             "containers": [{
-                "name": "ms-slave",
+                "name": "ms-replica",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {

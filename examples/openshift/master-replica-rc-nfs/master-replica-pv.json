@@ -2,9 +2,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "master-slave-rc-nfs-pv",
+        "name": "master-replica-rc-nfs-pv",
         "labels": {
-            "name": "master-slave-rc-nfs-pv"
+            "name": "master-replica-rc-nfs-pv"
         }
     },
     "spec": {

@@ -31,8 +31,8 @@
         "value": "kitchensink-master"
     }, {
         "name": "PG_SLAVE_SERVICE_NAME",
-        "description": "The slave configured in pgpool",
-        "value": "kitchensink-slave"
+        "description": "The replica configured in pgpool",
+        "value": "kitchensink-replica"
     }],
     "objects": [{
         "kind": "Service",

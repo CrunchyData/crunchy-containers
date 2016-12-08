@@ -18,26 +18,26 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-echo "create PVs for master and sync slave..."
-envsubst < $DIR/kitchensink-sync-slave-pv.json | oc create -f -
+echo "create PVs for master and sync replica..."
+envsubst < $DIR/kitchensink-sync-replica-pv.json | oc create -f -
 envsubst < $DIR/kitchensink-master-pv.json | oc create -f -
 
-echo "create services for master and slaves..."
+echo "create services for master and replicas..."
 oc create -f $DIR/kitchensink-master-service.json
-oc create -f $DIR/kitchensink-slave-service.json
+oc create -f $DIR/kitchensink-replica-service.json
 
-echo "create PVCs for master and sync slave..."
-oc create -f $DIR/kitchensink-sync-slave-pvc.json
+echo "create PVCs for master and sync replica..."
+oc create -f $DIR/kitchensink-sync-replica-pvc.json
 oc create -f $DIR/kitchensink-master-pvc.json
 
 echo "create master pod.."
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/kitchensink-master-pod.json | oc create -f -
-echo "sleeping 20 secs before creating slaves..."
+echo "sleeping 20 secs before creating replicas..."
 sleep 20
-echo "create slave pod.."
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/kitchensink-slave-dc.json | oc create -f -
-echo "create sync slave pod.."
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/kitchensink-sync-slave-pod.json | oc create -f -
+echo "create replica pod.."
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/kitchensink-replica-dc.json | oc create -f -
+echo "create sync replica pod.."
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/kitchensink-sync-replica-pod.json | oc create -f -
 echo "create pgpool rc..."
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/kitchensink-pgpool-rc.json | oc create -f -
 echo "create watch service account and pod"

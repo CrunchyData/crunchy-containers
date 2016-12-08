@@ -13,9 +13,9 @@
 # limitations under the License.
 
 oc delete service master
-oc delete service slave
+oc delete service replica
 oc delete pod master
-oc delete pod slave
-oc delete pod sync-slave
+oc delete pod replica
+oc delete pod sync-replica
 $BUILDBASE/examples/waitforterm.sh master oc
-$BUILDBASE/examples/waitforterm.sh slave oc
+$BUILDBASE/examples/waitforterm.sh replica oc

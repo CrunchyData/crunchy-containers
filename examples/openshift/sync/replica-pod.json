@@ -18,14 +18,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "slave",
+            "name": "replica",
             "labels": {
-                "name": "slave"
+                "name": "replica"
             }
         },
         "spec": {
             "containers": [{
-                "name": "slave",
+                "name": "replica",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,

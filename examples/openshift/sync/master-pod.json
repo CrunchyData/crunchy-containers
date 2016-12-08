@@ -45,7 +45,7 @@
                     "value": "password"
                 }, {
                     "name": "SYNC_SLAVE",
-                    "value": "sync-slave"
+                    "value": "sync-replica"
                 }, {
                     "name": "PG_USER",
                     "value": "testuser"

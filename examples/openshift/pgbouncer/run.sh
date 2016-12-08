@@ -15,14 +15,14 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-echo "this example depends upon the master-slave-dc example being run prior!"
+echo "this example depends upon the master-replica-dc example being run prior!"
 
 CONFIGDIR=/nfsfileshare/bouncerconfig
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-echo "this example depends upon the master-slave-dc example being run prior!"
+echo "this example depends upon the master-replica-dc example being run prior!"
 
 CONFIGDIR=/nfsfileshare/bouncerconfig
 sudo rm -rf $CONFIGDIR

@@ -18,4 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-oc process -f $DIR/master-slave-rc-dc-slaves-only.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/master-replica.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

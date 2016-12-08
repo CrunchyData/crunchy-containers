@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete dc pg-slave-rc-dc
+oc delete dc pg-replica-rc-dc
 oc delete service pg-master-rc-dc
-oc delete service pg-slave-rc-dc
+oc delete service pg-replica-rc-dc
 oc delete pod pg-master-rc-dc
-oc delete pod -l name=pg-slave-rc-dc
+oc delete pod -l name=pg-replica-rc-dc
 oc delete pod -l name=pg-master-rc-dc
 $BUILDBASE/examples/waitforterm.sh pg-master-rc-dc oc

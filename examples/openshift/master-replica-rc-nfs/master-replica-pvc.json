@@ -2,11 +2,11 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-          "name": "master-slave-rc-nfs-pvc"
+          "name": "master-replica-rc-nfs-pvc"
       },
       "spec": {
           "labels": {
-              "name": "master-slave-rc-nfs-pv"
+              "name": "master-replica-rc-nfs-pv"
           },
           "accessModes": [
               "ReadWriteMany"

@@ -28,11 +28,11 @@
     }, {
         "name": "PG_MASTER_SERVICE_NAME",
         "description": "The master configured in pgpool",
-        "value": "single-master"
+        "value": "master"
     }, {
         "name": "PG_SLAVE_SERVICE_NAME",
-        "description": "The slave configured in pgpool",
-        "value": "single-slave"
+        "description": "The replica configured in pgpool",
+        "value": "replica"
     }],
     "objects": [{
         "kind": "Service",

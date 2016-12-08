@@ -2,9 +2,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "slave",
+            "name": "kitchensink-replica",
             "labels": {
-                "name": "slave"
+                "name": "kitchensink-replica"
             }
         },
         "spec": {
@@ -15,7 +15,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "slave"
+                "name": "kitchensink-replica"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"

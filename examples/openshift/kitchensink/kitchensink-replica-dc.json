@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "kitchensink-slave-pod-example",
+        "name": "kitchensink-replica-pod-example",
         "creationTimestamp": null,
         "annotations": {
             "description": "PostgreSQL Replication Example",
@@ -18,7 +18,7 @@
         "kind": "DeploymentConfig",
         "apiVersion": "v1",
         "metadata": {
-            "name": "kitchensink-slave-dc",
+            "name": "kitchensink-replica-dc",
             "creationTimestamp": null
         },
         "spec": {
@@ -31,13 +31,13 @@
             }],
             "replicas": 1,
             "selector": {
-                "name": "kitchensink-slave"
+                "name": "kitchensink-replica"
             },
             "template": {
                 "metadata": {
                     "creationTimestamp": null,
                     "labels": {
-                        "name": "kitchensink-slave"
+                        "name": "kitchensink-replica"
                     }
                 },
                 "spec": {

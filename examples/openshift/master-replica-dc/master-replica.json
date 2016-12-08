@@ -2,17 +2,17 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "replica-on-slaves-example",
+        "name": "replica-on-replica-example",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Replication with dc on slaves only Example",
+            "description": "Replication with dc on replica only Example",
             "iconClass": "icon-database",
             "tags": "database,postgresql,replication"
         }
     },
     "parameters": [{
         "name": "PG_MASTER_USER",
-        "description": "The username used for master-slave replication",
+        "description": "The username used for master-replica replication",
         "value": "master"
     }, {
         "name": "CCP_IMAGE_TAG",
@@ -39,12 +39,10 @@
         "value": "password"
     }, {
         "name": "PG_MASTER_SERVICE_NAME",
-        "description": "The name of the PostgreSQL Service (used to DNS lookup, default: 'postgresql-master')",
         "value": "pg-master-rc-dc"
     }, {
         "name": "PG_SLAVE_SERVICE_NAME",
-        "description": "The name of the PostgreSQL Service (used to DNS lookup, default: 'postgresql-slave')",
-        "value": "pg-slave-rc-dc"
+        "value": "pg-replica-rc-dc"
     }],
     "objects": [{
         "kind": "Service",

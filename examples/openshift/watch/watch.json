@@ -42,7 +42,7 @@
                     "value": "m-s-rc-nfs-master"
                 }, {
                     "name": "PG_SLAVE_SERVICE",
-                    "value": "m-s-rc-nfs-slave"
+                    "value": "m-s-rc-nfs-replica"
                 }, {
                     "name": "PG_MASTER_PORT",
                     "value": "5432"

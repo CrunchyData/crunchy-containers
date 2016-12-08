@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "kitchensink-sync-save-example",
+        "name": "pg-replica-example",
         "creationTimestamp": null,
         "annotations": {
             "description": "PostgreSQL Replication Example",
@@ -18,19 +18,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "kitchensink-sync-slave",
+            "name": "sync-replica",
             "labels": {
-                "name": "kitchensink-sync-slave"
+                "name": "replica"
             }
         },
         "spec": {
-
-            "securityContext": {
-                "fsGroup": 26
-            },
-
             "containers": [{
-                "name": "kitchensink-sync-slave",
+                "name": "sync-replica",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
@@ -38,7 +33,7 @@
                 }],
                 "env": [{
                     "name": "PG_MASTER_HOST",
-                    "value": "kitchensink-master"
+                    "value": "master"
                 }, {
                     "name": "PG_MASTER_USER",
                     "value": "master"
@@ -53,7 +48,7 @@
                     "value": "slave"
                 }, {
                     "name": "SYNC_SLAVE",
-                    "value": "kitchensink-sync-slave"
+                    "value": "sync-replica"
                 }, {
                     "name": "PG_MASTER_PASSWORD",
                     "value": "password"
@@ -82,10 +77,7 @@
             }],
             "volumes": [{
                 "name": "pgdata",
-                "persistentVolumeClaim": {
-                    "claimName": "kitchensink-sync-slave-pvc"
-                }
-
+                "emptyDir": {}
             }, {
                 "name": "backup",
                 "emptyDir": {}

@@ -19,7 +19,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
 oc create -f $DIR/master-service.json
-oc create -f $DIR/slave-service.json
+oc create -f $DIR/replica-service.json
 oc process -f $DIR/master-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-oc process -f $DIR/slave-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-oc process -f $DIR/sync-slave-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/replica-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/sync-replica-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
