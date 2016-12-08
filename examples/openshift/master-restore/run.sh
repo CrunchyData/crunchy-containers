@@ -13,8 +13,7 @@
 # limitations under the License.
 
 source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-LOC=$BUILDBASE/examples/openshift/master-restore
-
-oc create -f $LOC/master-restore-pvc.json
-oc process -f $LOC/master-restore.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/master-restore-pvc.json
+oc process -f $DIR/master-restore.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

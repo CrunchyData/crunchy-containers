@@ -17,9 +17,9 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/master-restore-nfs
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete pv master-restore-nfs-pv
+oc delete pv $DIR/master-restore-nfs-pv
 
-envsubst <  master-restore-nfs-pv.json | oc create -f -
+envsubst <  $DIR/master-restore-nfs-pv.json | oc create -f -
 

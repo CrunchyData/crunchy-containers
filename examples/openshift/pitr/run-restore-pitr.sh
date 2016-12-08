@@ -14,7 +14,7 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/pitr
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # remove any existing components of this example 
 
@@ -25,13 +25,13 @@ oc delete pvc master-pitr-restore-pvc master-pitr-restore-pgdata-pvc master-pitr
 oc delete pv master-pitr-restore-pv master-pitr-restore-pgdata-pv master-pitr-recover-pv
 
 # set up the claim for the backup archive 
-oc create -f $LOC/master-pitr-restore-pvc.json
+oc create -f $DIR/master-pitr-restore-pvc.json
 
 # set up the claim for the pgdata to live
-oc create -f $LOC/master-pitr-restore-pgdata-pvc.json
+oc create -f $DIR/master-pitr-restore-pgdata-pvc.json
 
 # set up the claim for the WAL to recover with
-oc create -f $LOC/master-pitr-recover-pvc.json
+oc create -f $DIR/master-pitr-recover-pvc.json
 
 # start up the database container
-oc process -f $LOC/master-pitr-restore.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/master-pitr-restore.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

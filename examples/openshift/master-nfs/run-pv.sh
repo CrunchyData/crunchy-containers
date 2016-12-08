@@ -19,4 +19,6 @@ source $BUILDBASE/examples/envvars.sh
 
 oc delete pv master-nfs-pv 
 
-envsubst < master-nfs-pv.json |  oc create -f -
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+envsubst < $DIR/master-nfs-pv.json |  oc create -f -

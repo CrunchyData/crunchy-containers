@@ -20,11 +20,11 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/metrics
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc create -f $LOC/grafana-pvc.json
-oc create -f $LOC/prometheus-pvc.json
+oc create -f $DIR/grafana-pvc.json
+oc create -f $DIR/prometheus-pvc.json
 
-oc process -f $LOC/prometheus-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-oc process -f $LOC/promgateway.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-oc process -f $LOC/grafana-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/prometheus-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/promgateway.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/grafana-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

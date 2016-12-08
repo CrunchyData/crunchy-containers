@@ -16,10 +16,10 @@
 # into its own script
 
 source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-LOC=$BUILDBASE/examples/openshift/kitchensink
 
 echo "create PVs for master and sync slave..."
-envsubst < $LOC/kitchensink-sync-slave-pv.json | oc create -f -
-envsubst < $LOC/kitchensink-master-pv.json | oc create -f -
+envsubst < $DIR/kitchensink-sync-slave-pv.json | oc create -f -
+envsubst < $DIR/kitchensink-master-pv.json | oc create -f -
 

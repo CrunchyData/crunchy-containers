@@ -14,9 +14,9 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/pgadmin4
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete pv pgadmin4-nfs-pv
 
-envsubst < pgadmin4-nfs-pv.json |  oc create -f -
+envsubst < $DIR/pgadmin4-nfs-pv.json |  oc create -f -
 

@@ -14,7 +14,7 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/pitr
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc create -f $LOC/backup-master-pitr-pvc.json
-oc process -f $LOC/backup-master-pitr-job.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/backup-master-pitr-pvc.json
+oc process -f $DIR/backup-master-pitr-job.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

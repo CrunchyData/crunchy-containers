@@ -14,13 +14,13 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/pitr
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # set up the NFS claim to store the WAL into
-oc create -f master-pitr-wal-pvc.json
+oc create -f $DIR/master-pitr-wal-pvc.json
 
 # set up the NFS claim to store the pgdata into
-oc create -f master-pitr-pvc.json
+oc create -f $DIR/master-pitr-pvc.json
 
 # start up the database container
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/master-pitr.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/master-pitr.json | oc create -f -

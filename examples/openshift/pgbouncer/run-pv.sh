@@ -22,12 +22,12 @@ sudo rm -rf $CONFIGDIR
 sudo mkdir $CONFIGDIR
 sudo chmod 777 $CONFIGDIR
 
-LOC=$BUILDBASE/examples/openshift/pgbouncer
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-cp $LOC/pgbouncer.ini $CONFIGDIR
-cp $LOC/users.txt $CONFIGDIR
+cp $DIR/pgbouncer.ini $CONFIGDIR
+cp $DIR/users.txt $CONFIGDIR
 
 oc delete pv pgbouncer-pv
 
-envsubst < $LOC/pgbouncer-pv.json  | oc create -f -
+envsubst < $DIR/pgbouncer-pv.json  | oc create -f -
 

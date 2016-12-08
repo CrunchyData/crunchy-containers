@@ -14,23 +14,23 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/pitr
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete pv master-pitr-wal-pv master-pitr-pv master-pitr-restore-pv master-pitr-restore-pgdata-pv master-pitr-recover-pv
 
 # set up the NFS claim to store the WAL into
-envsubst < master-pitr-wal-pv.json |  oc create -f -
+envsubst < $DIR/master-pitr-wal-pv.json |  oc create -f -
 
 # set up the NFS claim to store the pgdata into
-envsubst < master-pitr-pv.json |  oc create -f -
+envsubst < $DIR/master-pitr-pv.json |  oc create -f -
 
 # set up the claim for the backup archive 
-envsubst <  $LOC/master-pitr-restore-pv.json  | oc create -f -
+envsubst <  $DIR/master-pitr-restore-pv.json  | oc create -f -
 
 # set up the claim for the pgdata to live
-envsubst <  $LOC/master-pitr-restore-pgdata-pv.json  | oc create -f -
+envsubst <  $DIR/master-pitr-restore-pgdata-pv.json  | oc create -f -
 
 # set up the claim for the WAL to recover with
-envsubst <  $LOC/master-pitr-recover-pv.json  | oc create -f -
+envsubst <  $DIR/master-pitr-recover-pv.json  | oc create -f -
 
 

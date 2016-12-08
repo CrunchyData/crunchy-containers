@@ -16,12 +16,12 @@ source $BUILDBASE/examples/envvars.sh
 
 echo "WARNING: make sure to edit the gluster-endpoint.json with your gluster IP address"
 
-LOC=$BUILDBASE/examples/openshift/gluster
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc create -f $LOC/gluster-endpoint.json
-oc create -f $LOC/gluster-pv.json
-oc create -f $LOC/gluster-pvc.json
-oc create -f $LOC/gluster-service.json
+oc create -f $DIR/gluster-endpoint.json
+oc create -f $DIR/gluster-pv.json
+oc create -f $DIR/gluster-pvc.json
+oc create -f $DIR/gluster-service.json
 
-oc process -f $LOC/master-gluster.json | oc create -f -
+oc process -f $DIR/master-gluster.json | oc create -f -
 

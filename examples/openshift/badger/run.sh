@@ -13,6 +13,6 @@
 # limitations under the License.
 
 source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-LOC=$BUILDBASE/examples/openshift/badger
-oc process -f $LOC/master-badger.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/master-badger.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

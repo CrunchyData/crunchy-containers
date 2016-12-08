@@ -15,7 +15,6 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/single-master
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/master.json | oc create -f -
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/slave.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/basic.json | oc create -f -

@@ -15,7 +15,8 @@
 
 oc project openshift
 
-oc create -f dba-sa.json
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+oc create -f $DIR/dba-sa.json
 
 oc policy add-role-to-group edit system:serviceaccounts -n openshift
 oc policy add-role-to-user view system:serviceaccount:openshift:dba-sa
@@ -28,4 +29,4 @@ oc policy add-role-to-user view system:serviceaccount:openshift:dba-sa
 #
 oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:openshift:dba-sa
 
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f master-dba-backup.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/master-dba-backup.json | oc create -f -

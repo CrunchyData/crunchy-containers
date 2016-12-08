@@ -13,10 +13,9 @@
 # limitations under the License.
 
 source $BUILDBASE/examples/envvars.sh
-
-LOC=$BUILDBASE/examples/openshift/master-restore
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete pv master-restore-pv
 
-envsubst <  $LOC/master-restore-pv.json  | oc create -f -
+envsubst <  $DIR/master-restore-pv.json  | oc create -f -
 

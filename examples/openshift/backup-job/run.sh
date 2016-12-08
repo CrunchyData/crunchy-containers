@@ -14,6 +14,7 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/backup-job
-oc create -f $LOC/backup-job-pvc.json
-oc process -f $LOC/backup-job-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+oc create -f $DIR/backup-job-pvc.json
+oc process -f $DIR/backup-job-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

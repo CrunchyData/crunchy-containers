@@ -14,9 +14,9 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/secret
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc create -f $LOC/pguser-secret.json
-oc create -f $LOC/pgmaster-secret.json 
-oc create -f $LOC/pgroot-secret.json 
-oc process -f $LOC/secret-pg.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/pguser-secret.json
+oc create -f $DIR/pgmaster-secret.json 
+oc create -f $DIR/pgroot-secret.json 
+oc process -f $DIR/secret-pg.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

@@ -16,5 +16,6 @@ source $BUILDBASE/examples/envvars.sh
 
 echo "this example depends on the single-master example being run prior"
 oc delete pv pgpool-pv
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-envsubst < pgpool-pv.json |  oc create -f -
+envsubst < $DIR/pgpool-pv.json |  oc create -f -

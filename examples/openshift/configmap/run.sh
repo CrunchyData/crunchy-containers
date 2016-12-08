@@ -15,8 +15,8 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/configmap
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc create configmap postgresql-conf --from-file=postgresql.conf --from-file=pghba=pg_hba.conf
 
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/configmap.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/configmap.json | oc create -f -

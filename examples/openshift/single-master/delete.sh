@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete service single-master single-slave
+oc delete service single-master 
 oc delete pod single-master
-oc delete pod single-slave
 $BUILDBASE/examples/waitforterm.sh single-master oc

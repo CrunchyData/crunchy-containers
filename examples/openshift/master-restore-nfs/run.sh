@@ -15,7 +15,7 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/master-restore-nfs
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc create -f $LOC/master-restore-nfs-pvc.json
-oc process -f $LOC/master-restore-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/master-restore-nfs-pvc.json
+oc process -f $DIR/master-restore-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

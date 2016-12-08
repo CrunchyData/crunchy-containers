@@ -15,11 +15,11 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/ceph
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc create -f $LOC/ceph-secret.json
-oc create -f $LOC/ceph-pv.json
-oc create -f $LOC/ceph-pvc.json
+oc create -f $DIR/ceph-secret.json
+oc create -f $DIR/ceph-pv.json
+oc create -f $DIR/ceph-pvc.json
 
-oc process -f $LOC/master-ceph.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/master-ceph.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
 

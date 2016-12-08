@@ -14,9 +14,11 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-oc create -f backrestrepo-nfs-pvc.json
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc create -f pgconf-nfs-pvc.json
+oc create -f $DIR/backrestrepo-nfs-pvc.json
 
-oc process -f master-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/pgconf-nfs-pvc.json
+
+oc process -f $DIR/master-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
 

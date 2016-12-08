@@ -14,26 +14,26 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/kitchensink
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo "create services for master and slaves..."
-oc create -f $LOC/kitchensink-master-service.json
-oc create -f $LOC/kitchensink-slave-service.json
+oc create -f $DIR/kitchensink-master-service.json
+oc create -f $DIR/kitchensink-slave-service.json
 
 echo "create PVCs for master and sync slave..."
-oc create -f $LOC/kitchensink-sync-slave-pvc.json
-oc create -f $LOC/kitchensink-master-pvc.json
+oc create -f $DIR/kitchensink-sync-slave-pvc.json
+oc create -f $DIR/kitchensink-master-pvc.json
 
 echo "create master pod.."
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/kitchensink-master-pod.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/kitchensink-master-pod.json | oc create -f -
 echo "sleeping 20 secs before creating slaves..."
 sleep 20
 echo "create slave pod.."
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/kitchensink-slave-dc.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/kitchensink-slave-dc.json | oc create -f -
 echo "create sync slave pod.."
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/kitchensink-sync-slave-pod.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/kitchensink-sync-slave-pod.json | oc create -f -
 echo "create pgpool rc..."
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/kitchensink-pgpool-rc.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/kitchensink-pgpool-rc.json | oc create -f -
 echo "create watch service account and pod"
-oc create -f $LOC/kitchensink-watch-sa.json
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $LOC/kitchensink-watch-pod.json | oc create -f -
+oc create -f $DIR/kitchensink-watch-sa.json
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/kitchensink-watch-pod.json | oc create -f -

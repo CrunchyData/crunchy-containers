@@ -16,8 +16,8 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/master-nfs-badger
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete pv master-nfs-badger-pv
 
-envsubst <  $LOC/master-nfs-badger-pv.json  | oc create -f -
+envsubst <  $DIR/master-nfs-badger-pv.json  | oc create -f -

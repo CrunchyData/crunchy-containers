@@ -13,6 +13,7 @@
 # limitations under the License.
 
 source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc create -f master-nfs-pvc.json
-oc process -f master-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/master-nfs-pvc.json
+oc process -f $DIR/master-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

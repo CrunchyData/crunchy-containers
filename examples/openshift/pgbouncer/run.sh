@@ -18,7 +18,7 @@ source $BUILDBASE/examples/envvars.sh
 echo "this example depends upon the master-slave-dc example being run prior!"
 
 CONFIGDIR=/nfsfileshare/bouncerconfig
-LOC=$BUILDBASE/examples/openshift/pgbouncer
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc create -f $LOC/pgbouncer-pvc.json
-oc process -f $LOC/pgbouncer.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/pgbouncer-pvc.json
+oc process -f $DIR/pgbouncer.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

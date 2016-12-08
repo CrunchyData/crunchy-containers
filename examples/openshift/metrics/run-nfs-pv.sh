@@ -20,10 +20,10 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/openshift/metrics
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete pv prometheus-pv grafana-pv
 
-envsubst <  $LOC/grafana-pv.json  | oc create -f -
-envsubst <  $LOC/prometheus-pv.json | oc create -f -
+envsubst <  $DIR/grafana-pv.json  | oc create -f -
+envsubst <  $DIR/prometheus-pv.json | oc create -f -
 
