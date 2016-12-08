@@ -15,6 +15,7 @@
 
 echo "cleaning up example..."
 
-CONTAINER_NAME=master-collect
-docker stop $CONTAINER_NAME
-docker rm $CONTAINER_NAME
+CONTAINER=setupsql
+
+docker rm -f --volumes $CONTAINER $CONTAINER-ls $CONTAINER-setup
+

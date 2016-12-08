@@ -14,29 +14,33 @@
 # limitations under the License.
 
 echo "starting setupsql container..."
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+$DIR/cleanup.sh
 
-CONF_DIR=/tmp/setupsql-conf
-DATA_DIR=/tmp/setupsql-data
+CONTAINER=setupsql
+CONF_VOLUME=$CONTAINER-pgconf
+DATA_VOLUME=$CONTAINER-volume
 
-sudo rm -rf $DATA_DIR $CONF_DIR
-sudo mkdir -p $DATA_DIR $CONF_DIR
+docker volume create --driver local --name=$CONF_VOLUME
+docker volume create --driver local --name=$DATA_VOLUME
 
-sudo cp `pwd`/setup.sql $CONF_DIR
+docker run -it --privileged=true \
+	--volume-driver=local \
+	-v $DIR:/fromdir \
+	-v $CONF_VOLUME:/pgconf:z \
+	--name=$CONTAINER-setup \
+	crunchydata/crunchy-postgres:$CCP_IMAGE_TAG cp /fromdir/setup.sql /pgconf
+docker run -it --privileged=true \
+	--volume-driver=local \
+	-v $CONF_VOLUME:/pgconf:z \
+	--name=$CONTAINER-ls \
+	crunchydata/crunchy-postgres:$CCP_IMAGE_TAG ls /pgconf
 
-sudo chown postgres:postgres $DATA_DIR $CONF_DIR
-
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR $CONF_DIR
-
-sudo chmod 0700 $CONF_DIR
-
-sudo docker stop setupsql
-sudo docker rm setupsql
-
-sudo docker run \
-	-p 12000:5432 \
-	-v $CONF_DIR:/pgconf \
-	-v $DATA_DIR:/pgdata \
+docker run \
+	-p 12009:5432 \
+	-v $CONF_VOLUME:/pgconf:z \
+	-v $DATA_VOLUME:/pgdata:z \
 	-e TEMP_BUFFERS=9MB \
 	-e MAX_CONNECTIONS=101 \
 	-e SHARED_BUFFERS=129MB \
@@ -49,7 +53,7 @@ sudo docker run \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=setupsql \
-	--hostname=setupsql \
+	--name=$CONTAINER \
+	--hostname=$CONTAINER \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 

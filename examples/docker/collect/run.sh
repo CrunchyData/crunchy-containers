@@ -30,7 +30,7 @@ export HOSTIP=`hostname --ip-address`
 
 BASIC_VOLUME=basic-example-volume
 
-sudo docker run \
+docker run \
 	--privileged=true \
 	--volume-driver=local \
 	-v $BASIC_VOLUME:/pgdata:ro \
