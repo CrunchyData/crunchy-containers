@@ -118,23 +118,18 @@ the replicas:
 psql -c 'select inet_server_addr()' -h pg-replica-rc -U master postgres
 ....
 
-=== Openshift Example 5 - Performing a Backup
+=== *backup* - Performing a Full Backup
 
-This example assumes you have a master database pod running called pg-master
-as created by Openshift Example 1 and that you have configured NFS as decribed
+This example assumes you have a database pod running called *basic*
+as created by the *basic* example and that you have configured NFS as decribed
 in the Prerequisites section of this document..
 
 You can perform a database backup by executing the following
 step:
 
- * as openshift admin, run:
 ....
-oc create -f pv-backups.json
-....
- * as normal user, run:
-....
-oc create -f pvc-backups.json
-oc create -f backup-job-nfs.json
+cd examples/openshift/backup-job
+./run.sh
 ....
 
 A successful backup will perform pg_basebackup on the pg-master and store
@@ -142,21 +137,8 @@ the backup in the NFS mounted volume under a directory named pg-master, each
 backup will be stored in a subdirectory with a timestamp as the name.  This
 allows any number of backups to be kept.
 
-The pv-backups.json specifies a ReclaimPolicy of Retain to tell Openshift
+The backup-job-pv.json specifies a *persistentVolumeReclaimPolicy* of *Retain* to tell Openshift
 that we want to keep the volume contents after the removal of the PV.
-
-Lastly, in order to rerun this same backup, you will need to 
-remove the Job, PVC, and PV used in this example, this is done as follows:
-
-* as admin user
-....
-oc delete pv backup-pg-master
-....
-* as normal user
-....
-oc delete pvc backup-claim-pg-master
-oc delete job backupjob-pg-master
-....
 
 === Openshift Example 5 - NFS Example
 
@@ -332,11 +314,13 @@ working on the new replica:
 psql -c 'table testtable' -U master -h pg-replica-rc-nfs postgres
 ....
 
-=== Openshift Example 9 - Master with pgbadger add-in
+=== *badger* - pgbadger example
 
-This example uses a version of master.json but also adds the pgbadger
-container to the pg-master pod.  pgbadger is then served up on port
-10000.  Each time you do a GET on http://pg-master:10000/api/badgergenerate
+This example creates a pod that contains a database container and
+a pgbadger container.
+
+*pgbadger* is then served up on port 10000.  Each time you do a 
+GET on http://pg-master:10000/api/badgergenerate
 it will run pgbadger against the database log files running in the
 pg-master container.
 
@@ -350,7 +334,7 @@ cd examples/openshift/badger
 try the following command to see the generated HTML output:
 
 ....
-curl http://pg-master:10000/api/badgergenerate
+curl http://badger-example:10000/api/badgergenerate
 ....
 
 You can view this output in a browser if you allow port forwarding
@@ -372,20 +356,6 @@ on installing the Openshift Router:
 
 ....
 https://docs.openshift.com/enterprise/3.0/install_config/install/deploy_router.html
-....
-
-=== Openshift Example 10 - Master with readiness probe
-
-This example uses a version of master.json but also adds a Kubernetes 
-readiness probe specific for postgresql.  This readiness probe
-uses the postgres pg_isready utility to attempt a connection
-to postgres from within the container using the postgres user and
-postgres database as the parameters.
-
-Run the following:
-
-....
-oc create -f master-ready.json  | oc create -f -
 ....
 
 === Openshift Example 11 - Master with secrets
@@ -774,7 +744,7 @@ system with the following path configurations be present:
 /nfsfileshare/WAL
 ....
 
-=== Openshift Example 21 - pgbackrest
+=== *backrest* - pgbackrest example
 
 This example shows how to enable pgbackrest as the archiver
 within the crunchy-postgres container.  
@@ -782,7 +752,7 @@ See the link:backrest.asciidoc[pgbackrest Documentation] for details and backgro
 
 Start by running the example database container:
 ....
-cd $BUILDBASE/examples/openshift/backrest
+cd examples/openshift/backrest
 ./run.sh
 ....
 
