@@ -18,7 +18,7 @@
       "name": "DATABASE_HOST",
       "displayName": "Database Host",
       "description": "This is the database the backup will be done for.",
-      "value": "single-master"
+      "value": "basic"
     },
     {
       "name": "DATABASE_PORT",

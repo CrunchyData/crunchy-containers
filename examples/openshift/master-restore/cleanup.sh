@@ -14,5 +14,6 @@
 
 oc delete pod master-restore
 oc delete service master-restore
+oc delete pv master-restore-pv
 oc delete pvc master-restore-pvc
 $BUILDBASE/examples/waitforterm.sh master-restore oc

@@ -63,6 +63,8 @@ executed when the database is first created.
  * ARCHIVE_TIMEOUT - if set to a number (in seconds) , will specify
    the postgresql.conf *archive_timeout* setting, if not set, the 
    default value of *60* is used.
+ * PGAUDIT_ANALYZE - if set, will cause the container to also start the
+   pgaudit_analyze program in the background
 
 === Features
 

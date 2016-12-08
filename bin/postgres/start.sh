@@ -387,9 +387,9 @@ fi
 
 date 
 
-if [ -f /usr/bin/pgaudit_analyze ]; then
-	echo "pgaudit_analyze is installed...starting it up..."
-	pgaudit_analyze /pgdata/pg/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
+if [[ -v PGAUDIT_ANALYZE ]]; then
+	echo "pgaudit_analyze will be started up..."
+	pgaudit_analyze /pgdata/$HOSTNAME/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
 fi
 
 wait
