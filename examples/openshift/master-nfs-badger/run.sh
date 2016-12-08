@@ -18,5 +18,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+
+envsubst <  $DIR/master-nfs-badger-pv.json  | oc create -f -
+
 oc create -f $DIR/master-nfs-badger-pvc.json
 oc process -f $DIR/master-nfs-badger.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

@@ -15,6 +15,6 @@
 oc delete service pgadmin4
 oc delete pod pgadmin4
 oc delete pvc pgadmin4-nfs-pvc
-
+oc delete pv pgadmin4-nfs-pv
 
 $BUILDBASE/examples/waitforterm.sh pgadmin4 oc

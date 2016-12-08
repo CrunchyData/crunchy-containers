@@ -18,5 +18,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+NFS=/nfsfileshare/custom-config
+sudo mkdir $NFS
+sudo cp $DIR/setup.sql $NFS
+
+envsubst < $DIR/custom-config-pv.json  | oc create -f -
 oc create -f $DIR/custom-config-pvc.json
 oc process -f $DIR/custom-config.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

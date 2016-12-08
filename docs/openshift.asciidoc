@@ -189,9 +189,9 @@ oc process -f master-nfs.json | oc create -f -
 This will create a single master postgres pod that is using 
 an NFS volume to store the postgres data files.
 
-=== Openshift Example 6 - Restore Example
+=== *master-restore* - example of restoring a database from a backup
 
-I have provided an example of restoring a database pod using
+This is an example of restoring a database pod using
 an existing backup archive located on an NFS volume.
 
 First, locate the database backup you want to restore, for example:

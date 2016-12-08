@@ -18,6 +18,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+echo "create PVs for master and sync slave..."
+envsubst < $DIR/kitchensink-sync-slave-pv.json | oc create -f -
+envsubst < $DIR/kitchensink-master-pv.json | oc create -f -
+
 echo "create services for master and slaves..."
 oc create -f $DIR/kitchensink-master-service.json
 oc create -f $DIR/kitchensink-slave-service.json

@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 oc delete pvc pgpool-pvc
+oc delete pv pgpool-pv
 
 oc delete dc pgpool
 oc delete service pgpool

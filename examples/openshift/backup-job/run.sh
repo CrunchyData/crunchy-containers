@@ -18,5 +18,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+envsubst < $DIR/backup-job-pv.json  | oc create -f -
 oc create -f $DIR/backup-job-pvc.json
 oc process -f $DIR/backup-job-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
