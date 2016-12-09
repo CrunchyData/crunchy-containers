@@ -34,7 +34,7 @@
                         "value": "testtable"
                     }, {
                         "name": "JOB_HOST",
-                        "value": "single-master"
+                        "value": "basic"
                     }, {
                         "name": "PG_USER",
                         "value": "testuser"

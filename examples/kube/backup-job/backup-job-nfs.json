@@ -37,7 +37,7 @@
                     }],
                     "env": [{
                         "name": "BACKUP_HOST",
-                        "value": "single-master"
+                        "value": "basic"
                     }, {
                         "name": "BACKUP_USER",
                         "value": "master"
