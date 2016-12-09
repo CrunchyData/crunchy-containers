@@ -14,30 +14,25 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/kube/pitr
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# remove any existing components of this example 
+$DIR/cleanup.sh
 
-kubectl delete pod master-pitr-restore
-kubectl delete service master-pitr-restore
-sudo rm -rf /nfsfileshare/master-pitr-restore
-kubectl delete pvc master-pitr-restore-pvc master-pitr-restore-pgdata-pvc master-pitr-recover-pvc
-kubectl delete pv master-pitr-restore-pv master-pitr-restore-pgdata-pv master-pitr-recover-pv
 
 # set up the claim for the backup archive 
-envsubst <  $LOC/master-pitr-restore-pv.json  | kubectl create -f -
-kubectl create -f $LOC/master-pitr-restore-pvc.json
+envsubst <  $DIR/master-pitr-restore-pv.json  | kubectl create -f -
+kubectl create -f $DIR/master-pitr-restore-pvc.json
 
 # set up the claim for the pgdata to live
-envsubst <  $LOC/master-pitr-restore-pgdata-pv.json  | kubectl create -f -
-kubectl create -f $LOC/master-pitr-restore-pgdata-pvc.json
+envsubst <  $DIR/master-pitr-restore-pgdata-pv.json  | kubectl create -f -
+kubectl create -f $DIR/master-pitr-restore-pgdata-pvc.json
 
 # set up the claim for the WAL to recover with
-envsubst <  $LOC/master-pitr-recover-pv.json  | kubectl create -f -
-kubectl create -f $LOC/master-pitr-recover-pvc.json
+envsubst <  $DIR/master-pitr-recover-pv.json  | kubectl create -f -
+kubectl create -f $DIR/master-pitr-recover-pvc.json
 
 # start up the database container
 echo "sleeping for a bit to let old container die..."
 sleep 60
-envsubst <  $LOC/master-pitr-restore-service.json  | kubectl create -f -
-envsubst <  $LOC/master-pitr-restore-pod.json  | kubectl create -f -
+envsubst <  $DIR/master-pitr-restore-service.json  | kubectl create -f -
+envsubst <  $DIR/master-pitr-restore-pod.json  | kubectl create -f -

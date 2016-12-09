@@ -14,8 +14,10 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/kube/pitr
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-envsubst < $LOC/backup-master-pitr-pv.json  | kubectl create -f -
-kubectl create -f $LOC/backup-master-pitr-pvc.json
-envsubst < $LOC/backup-master-pitr-job.json  | kubectl create -f -
+$DIR/cleanup.sh
+
+envsubst < $DIR/backup-master-pitr-pv.json  | kubectl create -f -
+kubectl create -f $DIR/backup-master-pitr-pvc.json
+envsubst < $DIR/backup-master-pitr-job.json  | kubectl create -f -

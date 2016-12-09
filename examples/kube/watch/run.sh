@@ -14,9 +14,11 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/kube/watch
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-kubectl create -f $LOC/watch-sa.json
+$DIR/cleanup.sh
+
+kubectl create -f $DIR/watch-sa.json
 #kubectl.sh policy add-role-to-group edit system:serviceaccounts -n openshift
 #kubectl.sh policy add-role-to-group edit system:serviceaccounts -n default
-envsubst < $LOC/watch-pod.json | kubectl create -f -
+envsubst < $DIR/watch-pod.json | kubectl create -f -

@@ -14,7 +14,9 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/kube/pgpool
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-envsubst < $LOC/pgpool-pod.json  | kubectl create -f -
-kubectl create -f $LOC/pgpool-service.json 
+$DIR/cleanup.sh
+
+envsubst < $DIR/pgpool-pod.json  | kubectl create -f -
+kubectl create -f $DIR/pgpool-service.json 

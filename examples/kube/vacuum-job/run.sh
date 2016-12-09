@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-LOC=$BUILDBASE/examples/kube/vacuum-job
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-envsubst < $LOC/vacuum-job.json | kubectl create -f -
+$DIR/cleanup.sh
+
+envsubst < $DIR/vacuum-job.json | kubectl create -f -

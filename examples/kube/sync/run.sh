@@ -14,11 +14,13 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/kube/sync
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-kubectl create -f $LOC/master-sync-service.json
-kubectl create -f $LOC/replica-sync-service.json
+$DIR/cleanup.sh
 
-envsubst < $LOC/master-sync-pod.json | kubectl create -f -
-envsubst < $LOC/replica-async-pod.json | kubectl create -f -
-envsubst < $LOC/replica-sync-pod.json | kubectl create -f -
+kubectl create -f $DIR/master-sync-service.json
+kubectl create -f $DIR/replica-sync-service.json
+
+envsubst < $DIR/master-sync-pod.json | kubectl create -f -
+envsubst < $DIR/replica-async-pod.json | kubectl create -f -
+envsubst < $DIR/replica-sync-pod.json | kubectl create -f -

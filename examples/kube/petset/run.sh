@@ -14,16 +14,18 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/kube/petset
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-envsubst <  ps-nfs-pv.json | kubectl create -f -
-kubectl create -f ps-nfs-pvc.json 
+$DIR/cleanup.sh
+
+envsubst <  $DIR/ps-nfs-pv.json | kubectl create -f -
+kubectl create -f $DIR/ps-nfs-pvc.json 
 
 sleep 5
 
-kubectl create -f $LOC/psmaster-svc.json
-envsubst < $LOC/psmaster-pod.json | kubectl create -f -
+kubectl create -f $DIR/psmaster-svc.json
+envsubst < $DIR/psmaster-pod.json | kubectl create -f -
 
-kubectl create -f $LOC/psslave-svc.json
-envsubst < $LOC/psslave.yaml | kubectl create -f -
+kubectl create -f $DIR/psslave-svc.json
+envsubst < $DIR/psslave.yaml | kubectl create -f -
 

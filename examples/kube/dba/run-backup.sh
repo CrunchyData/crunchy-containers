@@ -12,9 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-LOC=$BUILDBASE/examples/kube/dba
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-kubectl create -f $LOC/dba-sa.json
+$DIR/cleanup.sh
 
-kubectl create -f $LOC/master-dba-service.json
-envsubst < $LOC/master-dba-backup-pod.json | kubectl create -f -
+kubectl create -f $DIR/dba-sa.json
+
+kubectl create -f $DIR/master-dba-service.json
+envsubst < $DIR/master-dba-backup-pod.json | kubectl create -f -

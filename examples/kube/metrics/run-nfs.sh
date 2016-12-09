@@ -18,14 +18,16 @@
 # for storing their data
 #
 source $BUILDBASE/examples/envvars.sh
-LOC=$BUILDBASE/examples/kube/metrics
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-envsubst <  $LOC/grafana-pv.json |  kubectl create -f -
-envsubst <  $LOC/prometheus-pv.json | kubectl create -f -
+$DIR/cleanup.sh
 
-kubectl create -f $LOC/grafana-pvc.json
-kubectl create -f $LOC/prometheus-pvc.json
+envsubst <  $DIR/grafana-pv.json |  kubectl create -f -
+envsubst <  $DIR/prometheus-pv.json | kubectl create -f -
 
-kubectl create -f $LOC/metrics-service.json
+kubectl create -f $DIR/grafana-pvc.json
+kubectl create -f $DIR/prometheus-pvc.json
 
-envsubst < $LOC/metrics-nfs.json | kubectl create -f -
+kubectl create -f $DIR/metrics-service.json
+
+envsubst < $DIR/metrics-nfs.json | kubectl create -f -

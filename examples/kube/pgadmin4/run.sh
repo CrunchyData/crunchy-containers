@@ -14,7 +14,9 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/kube/pgadmin4	
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
 DATADIR=/nfsfileshare/pgadmin4
 
 if [ ! -d "$DATADIR" ]; then
@@ -25,8 +27,8 @@ if [ ! -d "$DATADIR" ]; then
 	sudo chmod -R 777 $DATADIR
 fi
 
-envsubst <  pgadmin4-nfs-pv.json | kubectl create -f -
-kubectl create -f pgadmin4-nfs-pvc.json
+envsubst <  $DIR/pgadmin4-nfs-pv.json | kubectl create -f -
+kubectl create -f $DIR/pgadmin4-nfs-pvc.json
 
-kubectl create -f $LOC/pgadmin4-service.json
-envsubst < $LOC/pgadmin4-pod.json | kubectl create -f -
+kubectl create -f $DIR/pgadmin4-service.json
+envsubst < $DIR/pgadmin4-pod.json | kubectl create -f -

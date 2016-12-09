@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,16 +13,10 @@
 # limitations under the License.
 
 source $BUILDBASE/examples/envvars.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-CONF_DIR=/nfsfileshare/bouncerconfig
-sudo mkdir $CONF_DIR
-sudo cp $DIR/pgbouncer.ini $CONF_DIR
-sudo cp $DIR/users.txt $CONF_DIR
-
-envsubst < $DIR/pgbouncer-pv.json |  kubectl create -f -
-kubectl create -f $DIR/pgbouncer-pvc.json
-kubectl create -f $DIR/pgbouncer-service.json
-envsubst < $DIR/pgbouncer.json | kubectl create -f -
+kubectl create -f $DIR/basic-service.json
+envsubst < $DIR/basic.json | kubectl create -f -

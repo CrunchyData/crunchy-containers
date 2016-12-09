@@ -13,8 +13,11 @@
 # limitations under the License.
 
 source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-envsubst <  master-nfs-pv.json | kubectl create -f -
-kubectl create -f master-nfs-pvc.json
-envsubst < master-nfs-pod.json | kubectl create -f -
-kubectl create -f master-nfs-service.json 
+$DIR/cleanup.sh
+
+envsubst <  $DIR/master-nfs-pv.json | kubectl create -f -
+kubectl create -f $DIR/master-nfs-pvc.json
+envsubst < $DIR/master-nfs-pod.json | kubectl create -f -
+kubectl create -f $DIR/master-nfs-service.json 

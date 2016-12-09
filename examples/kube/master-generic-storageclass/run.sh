@@ -12,5 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete service single-master
-kubectl delete pod single-master
+source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
+
+kubectl create -f $DIR/master-generic-pvc.json
+envsubst < $DIR/master-generic-pod.json | kubectl create -f -
+kubectl create -f $DIR/master-generic-service.json 

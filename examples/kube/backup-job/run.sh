@@ -14,10 +14,11 @@
 
 
 source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-LOC=$BUILDBASE/examples/kube/backup-job
+$DIR/cleanup.sh
 
-envsubst < $LOC/backup-job-pv.json | kubectl create -f -
+envsubst < $DIR/backup-job-pv.json | kubectl create -f -
 
-kubectl create -f $LOC/backup-job-pvc.json
-envsubst < $LOC/backup-job-nfs.json | kubectl create -f -
+kubectl create -f $DIR/backup-job-pvc.json
+envsubst < $DIR/backup-job-nfs.json | kubectl create -f -

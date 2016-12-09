@@ -13,8 +13,9 @@
 # limitations under the License.
 
 source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-LOC=$BUILDBASE/examples/kube/collect
+$DIR/cleanup.sh
 
-envsubst < $LOC/master-collect.json | kubectl create -f -
-kubectl create -f $LOC/master-collect-service.json
+envsubst < $DIR/master-collect.json | kubectl create -f -
+kubectl create -f $DIR/master-collect-service.json

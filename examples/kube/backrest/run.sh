@@ -13,16 +13,20 @@
 # limitations under the License.
 
 source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
+
 
 sudo mkdir /nfsfileshare/pgconf /nfsfileshare/backrestrepo
 sudo chown -R postgres:postgres  /nfsfileshare/pgconf /nfsfileshare/backrestrepo
-sudo cp ./pgbackrest.conf /nfsfileshare/pgconf
+sudo cp $DIR/pgbackrest.conf /nfsfileshare/pgconf
 
-envsubst <  backrestrepo-nfs-pv.json | kubectl create -f -
-kubectl create -f backrestrepo-nfs-pvc.json
+envsubst <  $DIR/backrestrepo-nfs-pv.json | kubectl create -f -
+kubectl create -f $DIR/backrestrepo-nfs-pvc.json
 
-envsubst <  pgconf-nfs-pv.json | kubectl create -f -
-kubectl create -f pgconf-nfs-pvc.json
+envsubst <  $DIR/pgconf-nfs-pv.json | kubectl create -f -
+kubectl create -f $DIR/pgconf-nfs-pvc.json
 
-envsubst < master-pod.json | kubectl create -f -
-kubectl create -f master-service.json 
+envsubst < $DIR/master-pod.json | kubectl create -f -
+kubectl create -f $DIR/master-service.json 

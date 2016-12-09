@@ -14,11 +14,13 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/kube/master-slave-dc
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-kubectl create -f $LOC/master-service.json
-kubectl create -f $LOC/slave-service.json
-envsubst < $LOC/master-pod.json | kubectl create -f -
+$DIR/cleanup.sh
+
+kubectl create -f $DIR/master-service.json
+kubectl create -f $DIR/slave-service.json
+envsubst < $DIR/master-pod.json | kubectl create -f -
 echo "sleeping till master is alive..."
 sleep 30
-envsubst < $LOC/slave-dc.json | kubectl create -f -
+envsubst < $DIR/slave-dc.json | kubectl create -f -

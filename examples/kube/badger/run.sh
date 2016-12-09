@@ -13,8 +13,9 @@
 # limitations under the License.
 
 source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-LOC=$BUILDBASE/examples/kube/badger
+$DIR/cleanup.sh
 
-kubectl create -f $LOC/badger-service.json 
-envsubst < $LOC/badger-pod.json  | kubectl create -f -
+kubectl create -f $DIR/badger-service.json 
+envsubst < $DIR/badger-pod.json  | kubectl create -f -

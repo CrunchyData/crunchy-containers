@@ -14,12 +14,14 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/kube/kitchensink
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
 
 echo "create services for master and slaves..."
-kubectl create -f $LOC/kitchensink-master-service.json
-kubectl create -f $LOC/kitchensink-slave-service.json
-kubectl create -f $LOC/kitchensink-pgpool-service.json
+kubectl create -f $DIR/kitchensink-master-service.json
+kubectl create -f $DIR/kitchensink-slave-service.json
+kubectl create -f $DIR/kitchensink-pgpool-service.json
 
 echo "create PVs for master and sync slave..."
 envsubst < $LOC/kitchensink-sync-slave-pv.json | kubectl create -f -

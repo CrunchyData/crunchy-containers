@@ -18,6 +18,9 @@
 #
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/kube/metrics
-kubectl create -f $LOC/metrics-service.json 
-envsubst <  $LOC/metrics.json  | kubectl create -f -
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
+
+kubectl create -f $DIR/metrics-service.json 
+envsubst <  $DIR/metrics.json  | kubectl create -f -

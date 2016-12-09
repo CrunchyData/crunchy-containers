@@ -11,6 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+# remove any existing components of this example 
+
+kubectl delete pod master-pitr-restore
+kubectl delete service master-pitr-restore
+sudo rm -rf /nfsfileshare/master-pitr-restore
+kubectl delete pvc master-pitr-restore-pvc master-pitr-restore-pgdata-pvc master-pitr-recover-pvc
+kubectl delete pv master-pitr-restore-pv master-pitr-restore-pgdata-pv master-pitr-recover-pv
 
 kubectl delete service master-pitr master-pitr-restore
 kubectl delete pod master-pitr

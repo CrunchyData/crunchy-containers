@@ -14,11 +14,13 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/kube/gluster
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-envsubst < $LOC/gluster-endpoint.json | kubectl create -f -
-kubectl create -f $LOC/gluster-pv.json
-kubectl create -f $LOC/gluster-pvc.json
+$DIR/cleanup.sh
+
+envsubst < $DIR/gluster-endpoint.json | kubectl create -f -
+kubectl create -f $DIR/gluster-pv.json
+kubectl create -f $DIR/gluster-pvc.json
 
 kubectl create -f $LOC/master-gluster-service.json
 

@@ -14,11 +14,13 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-LOC=$BUILDBASE/examples/kube/master-restore
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-envsubst <  $LOC/master-restore-pv.json | kubectl create -f -
+$DIR/cleanup.sh
 
-kubectl create -f $LOC/master-restore-service.json
-kubectl create -f $LOC/master-restore-pvc.json
+envsubst <  $DIR/master-restore-pv.json | kubectl create -f -
 
-envsubst <  $LOC/master-restore.json  | kubectl create -f -
+kubectl create -f $DIR/master-restore-service.json
+kubectl create -f $DIR/master-restore-pvc.json
+
+envsubst <  $DIR/master-restore.json  | kubectl create -f -

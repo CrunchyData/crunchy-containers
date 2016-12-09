@@ -2,9 +2,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "single-master",
+            "name": "master-nfs",
             "labels": {
-                "name": "single-master"
+                "name": "master-nfs"
             }
         },
         "spec": {
@@ -15,7 +15,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "single-master"
+                "name": "master-nfs"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
