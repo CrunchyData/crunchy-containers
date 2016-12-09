@@ -2,47 +2,25 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "slave-1",
+        "name": "kitchensink-sync-replica",
         "labels": {
-            "name": "slave-1"
+            "name": "kitchensink-sync-replica"
         }
     },
     "spec": {
+        "securityContext": {
+            "supplementalGroups": [65534]
+        },
         "containers": [{
-            "name": "slave-1",
+            "name": "kitchensink-sync-replica",
             "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
-            "readinessProbe": {
-                "exec": {
-                    "command": [
-                        "/usr/pgsql-9.5/bin/psql",
-                        "-f",
-                        "/opt/cpm/bin/readiness.sql"
-                    ]
-                },
-                "initialDelaySeconds": 70,
-                "timeoutSeconds": 1
-            },
-            "livenessProbe": {
-                "exec": {
-                    "command": [
-                        "/usr/pgsql-9.5/bin/pg_isready",
-                        "--dbname=postgres"
-                    ]
-                },
-                "initialDelaySeconds": 70,
-                "timeoutSeconds": 1
-            },
-
             "ports": [{
                 "containerPort": 5432,
                 "protocol": "TCP"
             }],
             "env": [{
-                "name": "PGHOST",
-                "value": "/tmp"
-            }, {
                 "name": "PG_MASTER_HOST",
-                "value": "master-1"
+                "value": "kitchensink-master"
             }, {
                 "name": "PG_MASTER_USER",
                 "value": "master"
@@ -50,8 +28,14 @@
                 "name": "PG_MASTER_PORT",
                 "value": "5432"
             }, {
+                "name": "PGHOST",
+                "value": "/tmp"
+            }, {
                 "name": "PG_MODE",
-                "value": "slave"
+                "value": "replica"
+            }, {
+                "name": "SYNC_SLAVE",
+                "value": "kitchensink-sync-replica"
             }, {
                 "name": "PG_MASTER_PASSWORD",
                 "value": "password"
@@ -80,7 +64,10 @@
         }],
         "volumes": [{
             "name": "pgdata",
-            "emptyDir": {}
+            "persistentVolumeClaim": {
+                "claimName": "kitchensink-sync-replica-pvc"
+            }
+
         }, {
             "name": "backup",
             "emptyDir": {}

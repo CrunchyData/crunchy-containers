@@ -2,9 +2,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "slave-dc",
+            "name": "replica-1",
             "labels": {
-                "name": "slave-dc"
+                "name": "replica-1"
             }
         },
         "spec": {
@@ -15,7 +15,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "slave-dc"
+                "name": "replica-1"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"

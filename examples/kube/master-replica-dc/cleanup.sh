@@ -12,15 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $BUILDBASE/examples/envvars.sh
-
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-$DIR/cleanup.sh
-
-kubectl create -f $DIR/master-service.json
-kubectl create -f $DIR/slave-service.json
-envsubst < $DIR/master-pod.json | kubectl create -f -
-echo "sleeping till master is alive..."
-sleep 30
-envsubst < $DIR/slave-dc.json | kubectl create -f -
+kubectl delete service master-dc
+kubectl delete service replica-dc
+kubectl delete pod master-dc
+kubectl delete deployment replica-dc

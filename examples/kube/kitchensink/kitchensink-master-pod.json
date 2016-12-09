@@ -69,7 +69,7 @@
                 "value": "password"
             }, {
                 "name": "SYNC_SLAVE",
-                "value": "kitchensink-sync-slave"
+                "value": "kitchensink-sync-replica"
             }, {
                 "name": "PG_USER",
                 "value": "testuser"

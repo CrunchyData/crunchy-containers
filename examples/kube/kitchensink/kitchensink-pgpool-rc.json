@@ -38,7 +38,7 @@
                         "value": "kitchensink-master"
                     }, {
                         "name": "PG_SLAVE_SERVICE_NAME",
-                        "value": "kitchensink-slave"
+                        "value": "kitchensink-replica"
                     }],
                     "terminationMessagePath": "/dev/termination-log",
                     "volumeMounts": []

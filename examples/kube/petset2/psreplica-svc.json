@@ -2,14 +2,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: psslave
+  name: psreplica
   labels:
-    app: psslave
+    app: psreplica
 spec:
   ports:
   - port: 5432
-    name: slave
-  # *.psslave.default.svc.cluster.local
+    name: replica
+  # *.psreplica.default.svc.cluster.local
   clusterIP: None
   selector:
-    app: psslave
+    app: psreplica

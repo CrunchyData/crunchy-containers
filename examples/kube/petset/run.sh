@@ -26,6 +26,6 @@ sleep 5
 kubectl create -f $DIR/psmaster-svc.json
 envsubst < $DIR/psmaster-pod.json | kubectl create -f -
 
-kubectl create -f $DIR/psslave-svc.json
-envsubst < $DIR/psslave.yaml | kubectl create -f -
+kubectl create -f $DIR/psreplica-svc.json
+envsubst < $DIR/psreplica.yaml | kubectl create -f -
 

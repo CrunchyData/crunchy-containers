@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "kitchensink-slave-pod-example",
+        "name": "kitchensink-replica-pod-example",
         "creationTimestamp": null,
         "annotations": {
             "description": "PostgreSQL Replication Example",
@@ -18,14 +18,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "kitchensink-slave",
+            "name": "kitchensink-replica",
             "labels": {
-                "name": "kitchensink-slave"
+                "name": "kitchensink-replica"
             }
         },
         "spec": {
             "containers": [{
-                "name": "kitchensink-slave",
+                "name": "kitchensink-replica",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,

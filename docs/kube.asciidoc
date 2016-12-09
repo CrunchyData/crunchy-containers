@@ -84,37 +84,37 @@ running the Crunchy containers in a kube environment.
 
 The examples are explained below.
 
-=== Kube Example 1 - single-master
+=== *basic* - basic database container example
 
 This example starts a single postgres container and service, the most simple
 of examples.
 
 Running the example:
 ....
-examples/kube/single-master/run.sh
-kubectl get pod single-master
-kubectl get service single-master
-kubectl logs single-master
+examples/kube/basic/run.sh
+kubectl get pod basic
+kubectl get service basic
+kubectl logs basic
 ....
 
 After the database starts up you can connect to it as follows:
 ....
-psql -h single-master -U postgres postgres
+psql -h basic -U postgres postgres
 ....
 
-=== Kube Example 2 - master-slave
+=== *master-replica* - master and replica databases
 
-This example starts a master pod, master service, slave pod, and slave
-service.  The slave is a replica of the master.  This example uses
+This example starts a master pod, master service, replica pod, and replica
+service.  The replica is a replica of the master.  This example uses
 emptyDir volumes for persistence.  This example does not allow
-you to scale up the slaves.
+you to scale up the replicas.
 
 Running the example:
 ....
-examples/kube/master-slave/run.sh
+examples/kube/master-replica/run.sh
 ....
 
-It takes about a minute for the slave to begin replicating with the
+It takes about a minute for the replica to begin replicating with the
 master.  To test out replication, see if replication is underway
 with this command:
 ....
@@ -122,40 +122,40 @@ psql -h master -U postgres postgres -c 'table pg_stat_replication'
 ....
 
 If you see a line returned from that query it means the master is replicating
-to the slave.  Try creating some data on the master:
+to the replica.  Try creating some data on the master:
 
 ....
 psql -h master -U postgres postgres -c 'create table foo (id int)'
 psql -h master -U postgres postgres -c 'insert into foo values (1)'
 ....
 
-Then verify that the data is replicated to the slave:
+Then verify that the data is replicated to the replica:
 ....
-psql -h slave -U postgres postgres -c 'table foo'
+psql -h replica -U postgres postgres -c 'table foo'
 ....
 
-=== Kube Example 3 - master-slave-dc
+=== *master-replica-dc* - master and scaling replica example
 
-This example starts a master pod, master service, slave pod, and slave
-service.  The slave is a replica of the master.  This example uses
-emptyDir volumes for persistence.  This example runs the slaves in a
-Deployment.  A deployment controller lets you scale up the slaves and
+This example starts a master pod, master service, replica pod, and replica
+service.  The replica is a replica of the master.  This example uses
+emptyDir volumes for persistence.  This example runs the replicas in a
+Deployment.  A deployment controller lets you scale up the replicas and
 create an initial replica set.
 
 Running the example:
 ....
-examples/kube/master-slave-dc/run.sh
+examples/kube/master-replica-dc/run.sh
 ....
 
 You can insert data in the master and make sure it replicates to
-the slaves using the commands from Example 2 above.  Replace
-*master* with the *master-dc* name and *slave* with *slave-dc*.
+the replicas using the commands from Example 2 above.  Replace
+*master* with the *master-dc* name and *replica* with *replica-dc*.
 
 This example creates 2 replicas when it initially starts.  To scale
-up the number of slaves, run this command:
+up the number of replicas, run this command:
 ....
 kubectl get deployment
-kubectl scale --current-replicas=2 --replicas=3 deployment/slave-dc
+kubectl scale --current-replicas=2 --replicas=3 deployment/replica-dc
 kubectl get deployment
 kubectl get pod
 ....
@@ -166,35 +166,35 @@ on the master:
 psql -h master-dc -U postgres postgres -c 'table pg_stat_replication'
 ....
 
-=== Kube Example 4 - master-slave-rc
+=== *master-replica-rc* - master and scaling replica example
 
-This example starts a master pod, master service, slave pod, and slave
-service.  The slave is a replica of the master.  This example uses
-emptyDir volumes for persistence.  This example runs the slaves in a
-Replication Controller.  A replication controller lets you scale up the slaves and create an initial replica set.  Deployments will likely be the
+This example starts a master pod, master service, replica pod, and replica
+service.  The replica is a replica of the master.  This example uses
+emptyDir volumes for persistence.  This example runs the replicas in a
+Replication Controller.  A replication controller lets you scale up the replicas and create an initial replica set.  Deployments will likely be the
 preferred way to create a replica set going forward but I wanted to 
 provide an example for completness sake.
 
 Running the example:
 ....
-examples/kube/master-slave-rc/run.sh
+examples/kube/master-replica-rc/run.sh
 ....
 
 You can also scale up the number of replicas using this replication
 controller mechanism.  The command to scale up is as follows:
 ....
 kubectl get rc
-kubectl scale rc slave-rc --replicas=3
+kubectl scale rc replica-rc --replicas=3
 kubectl get pod
 ....
 
 
-=== Kube Example 5 - backup-job
+=== *backup-job* - backup job example
 
-This example depends on the single-master example be run prior to
+This example depends on the basic example be run prior to
 this example!
 
-This example performs a database backup on the single-master database.
+This example performs a database backup on the basic database.
 The backup is stored in the /nfsfileshare backup path which is also
 a dependency.  See the installation docs on how to set up the NFS
 server on this host.
@@ -227,7 +227,7 @@ kubectl get pod
 
 You should find the backup archive in this location:
 ....
-ls /nfsfileshare/single-master
+ls /nfsfileshare/basic
 ....
 
 ==== Tip
@@ -237,7 +237,7 @@ on the exited container. Use *docker ps -a | grep backup* to
 locate the container.
 
 
-=== Kube Example 6 - badger
+=== *badger* - pgbadger container example
 
 This example runs a pod that includes a database container and 
 a pgbadger container. A service is also created for the pod. 
@@ -259,7 +259,7 @@ You can view the database container logs using this command:
 kubectl logs -c server badger
 ....
 
-=== Kube Example 6 - metrics
+=== *metrics* - postgres metrics backend 
 
 This examples starts up prometheus, grafana, and prometheus gateway.
 
@@ -285,7 +285,7 @@ examples/kube/metrics/run-nfs.sh
 In the docs folder of the github repo, check out the metrics.asciidoc
 for details on the exact metrics being collected.
 
-=== Kube Example 7 - collect
+=== *collect* - metrics collection container example
 
 This example assumes you have run the metrics example which
 starts up prometheus, grafana, and prometheus gateway.
@@ -310,13 +310,13 @@ psql -h master-collect -U postgres postgres
 ....
 
 
-=== Kube Example 8 - vacuum-job
+=== *vacuum-job* - vacuum job example
 
-This example assumes you have run the single-master example prior
+This example assumes you have run the basic example prior
 to this example!
 
 This example runs a Job which performs a SQL VACUUM on a particular
-table (testtable) in the single-master database instance.
+table (testtable) in the basic database instance.
 
 Running the example:
 ....
@@ -334,13 +334,13 @@ docker logs $(docker ps -a | grep crunchy-vacuum | cut -f 1 -d' ')
 ....
 
 
-=== Kube Example 9 - pgpool
+=== *pgpool* - pgpool pod example
 
-This example assumes you have run the master-slave example prior
+This example assumes you have run the master-replica example prior
 to this example!
 
 This example runs a pgpool pod that creates a special purpose
-proxy to a postgres cluster (master and slave).  
+proxy to a postgres cluster (master and replica).  
 
 Running the example:
 ....
@@ -354,17 +354,17 @@ psql -h pgpool -U testuser userdb
 ....
 
 
-=== Kube Example 10 - master-restore
+=== *master-restore* - database restore from backup example
 
 This example assumes you have run the backup-job example prior
 to this example!  You will need to find a backup you want to 
 use for running this example, you will need the timestamped directory
-path under /nfsfileshare/single-master/.  Edit the master-restore.json
+path under /nfsfileshare/basic/.  Edit the master-restore.json
 file and update the BACKUP_PATH setting to specify the 
 NFS backup path you want to restore with, example:
 ....
 "name": "BACKUP_PATH",
-"value": "single-master/2016-05-27-14-35-33"
+"value": "basic/2016-05-27-14-35-33"
 ....
 
 This example runs a postgres container passing in the backup location.
@@ -383,14 +383,14 @@ psql -h restored-master -U postgres postgres
 ....
 
 
-=== Kube Example 11 - watch
+=== *watch* - automated failover watcher example
 
-This example assumes you have run the master-slave example prior
+This example assumes you have run the master-replica example prior
 to this example!  
 
 This example runs a crunchy-watch container to look for the 
 master within a postgres cluster, if it can not find the master it
-will proceed to cause a failover to a slave.
+will proceed to cause a failover to a replica.
 
 Running the example:
 ....
@@ -409,50 +409,50 @@ kubectl delete pod master
 
 Resume watching the watch container's log and verify that it
 detects the master is not reachable and performs a failover
-on the slave.
+on the replica.
 
-A final test is to see if the old slave is now a fully functioning
+A final test is to see if the old replica is now a fully functioning
 master by inserting some test data into it as follows:
 ....
 psql -h master -U postgres postgres -c 'create table failtest (id int)'
 ....
 
 The above command still works because the watch container has
-changed the labels of the slave to make it a master, so the master
+changed the labels of the replica to make it a master, so the master
 service will still work and route now to the new master even though
-the pod is named slave.
+the pod is named replica.
 
 ==== Tip
 
 You can view the lables on a pod with this command:
 ....
-kubectl describe pod slave | grep Label
+kubectl describe pod replica | grep Label
 ....
 
 
 === Kube Example 11 - pgbouncer
 
-This example assumes you have run the master-slave example prior
+This example assumes you have run the master-replica example prior
 to this example!  
 
 This example runs a crunchy-pgbouncer container to look for the 
 master within a postgres cluster, if it can not find the master it
-will proceed to cause a failover to a slave.  It will also configure
+will proceed to cause a failover to a replica.  It will also configure
 a pgbouncer container that sets up a connection pool to the
-configured master and slave.
+configured master and replica.
 
 Running the example:
 ....
 examples/kube/pgbouncer/run.sh
 ....
 
-Connect to the *master* and *slave* databases as follows:
+Connect to the *master* and *replica* databases as follows:
 ....
 psql -h pgbouncer -U postgres master
-psql -h pgbouncer -U postgres slave
+psql -h pgbouncer -U postgres replica
 ....
 
-The names *master* and *slave* are pgbouncer configured names
+The names *master* and *replica* are pgbouncer configured names
 and don't necessarily have to match the database name in the
 actual Postgres instance.
 
@@ -468,38 +468,38 @@ kubectl delete pod master
 ....
 
 Take another look at the pgbouncer log and you will see it trigger
-the failover to the slave pod.  After this failover
+the failover to the replica pod.  After this failover
 you should be able to execute the command:
 ....
 psql -h pgbouncer -U postgres master
 ....
 
 
-=== Kube Example 12 - synchrounous slave
+=== Kube Example 12 - synchrounous replica
 
 This example deploys a PostgreSQL cluster with a master,
-a synchrounous slave, and an asynchronous slave.  The
-two slaves share the same Service.
+a synchrounous replica, and an asynchronous replica.  The
+two replicas share the same Service.
 
 Running the example:
 ....
 examples/kube/sync/run.sh
 ....
 
-Connect to the *master* and *slave* databases as follows:
+Connect to the *master* and *replica* databases as follows:
 ....
 psql -h master -U postgres postgres -c 'create table mister (id int)'
 psql -h master -U postgres postgres -c 'insert into mister values (1)'
 psql -h master -U postgres postgres -c 'table pg_stat_replication'
-psql -h slave -U postgres postgres -c 'select inet_server_addr(), * from mister'
-psql -h slave -U postgres postgres -c 'select inet_server_addr(), * from mister'
-psql -h slave -U postgres postgres -c 'select inet_server_addr(), * from mister'
+psql -h replica -U postgres postgres -c 'select inet_server_addr(), * from mister'
+psql -h replica -U postgres postgres -c 'select inet_server_addr(), * from mister'
+psql -h replica -U postgres postgres -c 'select inet_server_addr(), * from mister'
 ....
 
-This set of queries will show you the IP address of the Postgres slave
+This set of queries will show you the IP address of the Postgres replica
 container, notice it changes because of the round-robin Service proxy
-we are using for both slaves.  The example queries also show that both
-slaves are replicating from the master.
+we are using for both replicas.  The example queries also show that both
+replicas are replicating from the master.
 
 === Kube Example 13 - kitchensink
 
@@ -507,13 +507,13 @@ This example deploys many of the components all in a single example
 to demonstrate a more complex overall deployment examples.  This
 examples includes the following objects:
  * master database service (kitchensink-master)
- * replica database service (kitchensink-slave)
+ * replica database service (kitchensink-replica)
  * pgpool database service (kitchensink-pgpool)
  * master database pod (kitchensink-master)
  * metrics collection container (kitchensink-master)
  * pgbadger container (kitchensink-master)
- * async replica database Deployment (kitchensink-slave-dc-XXXXX)
- * sync rdatabase pod (kitchensink-sync-slave)
+ * async replica database Deployment (kitchensink-replica-dc-XXXXX)
+ * sync rdatabase pod (kitchensink-sync-replica)
  * pgpool Replication Controller (kitchensink-pgpool-XXXXX)
  * watch pod (kitchensink-watch)
 
@@ -528,19 +528,19 @@ inside it:
  * pgbadger (pgbadger container)
  * collect (metrics collection container)
 
-You can scale up the number of async slaves as follows:
+You can scale up the number of async replicas as follows:
 ....
 kubectl get deployment
-kubectl scale --current-replicas=1 --replicas=2 deployment/kitchensink-slave-dc
+kubectl scale --current-replicas=1 --replicas=2 deployment/kitchensink-replica-dc
 kubectl get deployment
 ....
 
-Connect to the *master* and *slave* databases as follows:
+Connect to the *master* and *replica* databases as follows:
 ....
 psql -h kitchensink-master -U postgres postgres -c 'table pg_stat_replication'
 psql -h kitchensink-master -U testuser userdb -c 'create table mister (id int)'
 psql -h kitchensink-master -U testuser userdb -c 'insert into mister values (12)'
-psql -h kitchensink-slave -U testuser userdb -c 'table mister'
+psql -h kitchensink-replica -U testuser userdb -c 'table mister'
 psql -h kitchensink-pgpool -U testuser userdb -c 'table mister' 
 psql -h kitchensink-master -U testuser userdb -c 'insert into mister values (112)'
 ....
@@ -595,8 +595,8 @@ to the gluster fs at yourhost:/gv0
 
 === Kube Example 15 - petsets (only for kube 1.3 and greater)
 
-This example deploys a master database container and 2 slave
-containers.  The slaves are deployed using a PetSet.  The Petset
+This example deploys a master database container and 2 replica
+containers.  The replicas are deployed using a PetSet.  The Petset
 references a pre-provisioned persistent volume claim created using NFS.
 
 Start the example as follows:
@@ -613,15 +613,15 @@ You can access the master database as follows:
 psql -h psmaster.default.svc.cluster.local -U postgres postgres
 ....
 
-You can access the slave databases as follows:
+You can access the replica databases as follows:
 ....
-psql -h slave-0.psslave.default.svc.cluster.local -U postgres postgres
-psql -h slave-1.psslave.default.svc.cluster.local -U postgres postgres
+psql -h replica-0.psreplica.default.svc.cluster.local -U postgres postgres
+psql -h replica-1.psreplica.default.svc.cluster.local -U postgres postgres
 ....
 
 You can scale the petset using this command:
 ....
-kubectl patch petset slave -p '{"spec":{"replicas":3}}'
+kubectl patch petset replica -p '{"spec":{"replicas":3}}'
 ....
 
 

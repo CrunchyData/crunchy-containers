@@ -13,6 +13,6 @@
 # limitations under the License.
 
 kubectl delete service master-rc
-kubectl delete service slave-rc
+kubectl delete service replica-rc
 kubectl delete pod master-rc
-kubectl delete rc slave-rc
+kubectl delete rc replica-rc

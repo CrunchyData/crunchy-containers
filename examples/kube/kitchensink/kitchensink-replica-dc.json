@@ -2,22 +2,22 @@
     "kind": "Deployment",
     "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "kitchensink-slave-dc",
+        "name": "kitchensink-replica-dc",
         "labels": {
-            "name": "slave-dc"
+            "name": "replica-dc"
         }
     },
     "spec": {
         "replicas": 1,
         "selector": {
             "matchLabels": {
-                "name": "kitchensink-slave"
+                "name": "kitchensink-replica"
             }
         },
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "kitchensink-slave"
+                    "name": "kitchensink-replica"
                 }
             },
             "spec": {

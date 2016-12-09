@@ -1,14 +1,14 @@
 apiVersion: apps/v1alpha1
 kind: PetSet
 metadata:
-  name: slave
+  name: replica
 spec:
-  serviceName: "psslave"
+  serviceName: "psreplica"
   replicas: 2
   template:
     metadata:
       labels:
-        app: psslave
+        app: psreplica
       annotations:
         pod.alpha.kubernetes.io/initialized: "true"
     spec:

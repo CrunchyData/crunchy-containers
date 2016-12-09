@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-sudo rm -rf /nfsfileshare/slave-*
+sudo rm -rf /nfsfileshare/replica-*
 kubectl delete pvc petset-nfs-pvc
 kubectl delete pv petset-nfs-pv
 
-kubectl delete petset slave
-kubectl delete service psmaster psslave
-kubectl delete pod psmaster slave-0 slave-1
+kubectl delete petset replica
+kubectl delete service psmaster psreplica
+kubectl delete pod psmaster replica-0 replica-1
 #$BUILDBASE/examples/waitforterm.sh master-1 kubectl
-#$BUILDBASE/examples/waitforterm.sh slave-1 kubectl
+#$BUILDBASE/examples/waitforterm.sh replica-1 kubectl

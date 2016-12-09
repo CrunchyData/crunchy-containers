@@ -2,28 +2,28 @@
     "kind": "ReplicationController",
     "apiVersion": "v1",
     "metadata": {
-        "name": "slave-rc",
+        "name": "replica-rc",
         "namespace": "default",
         "labels": {
-            "name": "slave-rc"
+            "name": "replica-rc"
         }
     },
     "spec": {
         "replicas": 2,
         "selector": {
-            "name": "slave-rc"
+            "name": "replica-rc"
         },
         "template": {
             "metadata": {
-                "name": "slave-rc",
+                "name": "replica-rc",
                 "labels": {
-                    "name": "slave-rc"
+                    "name": "replica-rc"
                 }
             },
             "spec": {
                 "containers": [
                     {
-                        "name": "slave-rc",
+                        "name": "replica-rc",
                         "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
                     "env": [{
                         "name": "PG_MASTER_HOST",
