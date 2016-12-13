@@ -15,6 +15,8 @@
 kubectl delete service master-1
 kubectl delete service replica-1
 kubectl delete pod master-1
-kubectl delete pod replica-1
+kubectl delete pod replica-1a
+kubectl delete pod replica-1b
 $BUILDBASE/examples/waitforterm.sh master-1 kubectl
-$BUILDBASE/examples/waitforterm.sh replica-1 kubectl
+$BUILDBASE/examples/waitforterm.sh replica-1a kubectl
+$BUILDBASE/examples/waitforterm.sh replica-1b kubectl

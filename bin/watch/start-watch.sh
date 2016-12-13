@@ -94,6 +94,11 @@ function kube_failover() {
 		SLAVES=$TRIGGERSLAVES
 	fi
 
+	if [[ -v SLAVE_TO_TRIGGER_LABEL ]]; then
+		echo "trigger to specific replica..using SLAVE_TO_TRIGGER_LABEL env var"
+		SLAVES=$SLAVE_TO_TRIGGER_LABEL
+	fi
+
 	declare -a arr=($SLAVES)
 	firstslave=true
 	for i in  "${arr[@]}"

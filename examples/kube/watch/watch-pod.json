@@ -20,7 +20,7 @@
                 "value": "20"
             }, {
                 "name": "SLAVE_TO_TRIGGER_LABEL",
-                "value": "slave"
+                "value": "replica-1b"
             }, {
                 "name": "PG_MASTER_SERVICE",
                 "value": "master-1"

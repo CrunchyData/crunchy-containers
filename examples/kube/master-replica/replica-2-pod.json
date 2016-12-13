@@ -2,7 +2,7 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "replica-1a",
+        "name": "replica-1b",
         "labels": {
             "name": "replica-1",
             "slavetype": "trigger"
@@ -20,7 +20,7 @@
                         "/opt/cpm/bin/readiness.sql"
                     ]
                 },
-                "initialDelaySeconds": 70,
+                "initialDelaySeconds": 50,
                 "timeoutSeconds": 1
             },
             "livenessProbe": {
@@ -30,7 +30,7 @@
                         "--dbname=postgres"
                     ]
                 },
-                "initialDelaySeconds": 70,
+                "initialDelaySeconds": 50,
                 "timeoutSeconds": 1
             },
 
