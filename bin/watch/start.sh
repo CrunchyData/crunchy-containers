@@ -102,18 +102,17 @@ function kube_failover() {
 		SLAVES=$TRIGGERSLAVES
 	fi
 
+	declare -a arr=($SLAVES)
 	if [[ -v SLAVE_TO_TRIGGER_LABEL ]]; then
 		echo "trigger to specific replica..using SLAVE_TO_TRIGGER_LABEL env var"
-		SLAVES=$SLAVE_TO_TRIGGER_LABEL
+		targetslave=$SLAVE_TO_TRIGGER_LABEL
+	else
+		targetslave=${arr[0]}
 	fi
 
-	declare -a arr=($SLAVES)
-	firstslave=true
 	for i in  "${arr[@]}"
 	do
-		if [ "$firstslave" = true ] ; then
-                	echo 'first slave is:' $i
-			firstslave=false
+		if [ "$targetslave" = $i ] ; then
 			echo "going to trigger failover on slave:" $i
 			kubectl exec $i touch /tmp/pg-failover-trigger
 			echo "sleeping 60 secs to give failover a chance before setting label"
