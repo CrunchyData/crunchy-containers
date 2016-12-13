@@ -27,5 +27,5 @@ ADD conf/watch /opt/cpm/conf
 
 USER 26
 
-CMD ["/opt/cpm/bin/start-watch.sh"]
+CMD ["/opt/cpm/bin/start.sh"]
 

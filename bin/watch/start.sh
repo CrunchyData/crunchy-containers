@@ -15,6 +15,14 @@
 
 #export OSE_HOST=openshift.default.svc.cluster.local
 
+function trap_sigterm() {
+	echo "doing trap logic..."  >> /tmp/trap.out
+	shutdownrequested=true
+}
+
+trap 'trap_sigterm' SIGINT SIGTERM
+shutdownrequested=false
+
 function ose_hack() {
 	export USER_ID=$(id -u)
 	export GROUP_ID=$(id -g)
@@ -165,6 +173,10 @@ function ose_failover() {
 }
 
 while true; do 
+	if [ "$shutdownrequested" = true ] ; then
+		echo "doing shutdown..."
+		exit 0
+	fi
 	sleep $SLEEP_TIME
 	pg_isready  --dbname=$PG_DATABASE --host=$PG_MASTER_SERVICE --port=$PG_MASTER_PORT --username=$PG_MASTER_USER
 	if [ $? -eq 0 ]
