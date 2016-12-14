@@ -397,11 +397,12 @@ psql -h secret-pg -U master postgres
 This example shows how a form of automated failover can be
 configured for a master and replica deployment.
 
-First, create a master and 2 replicas:
+First, create a master and a replica, in this case the replica lives in a
+Deployment which can scale up:
 
 ....
-oc process -f master-replica.json
-oc scale rc pg-replica-rc-dc-1 --replicas=2
+cd examples/openshift/master-replica-dc
+./run.sh
 ....
 
 Next, create an Openshift service account which is used by the crunchy-watch
@@ -418,7 +419,8 @@ oc policy add-role-to-group edit system:serviceaccounts -n default
 Next, create the container that will 'watch' the Postgresql cluster:
 
 ....
-oc process -f watch.json | oc create -f -
+cd examples/openshift/watch
+./run.sh
 ....
 
 At this point, the watcher will sleep every 20 seconds (configurable) to
@@ -440,6 +442,14 @@ be accessing the new master.  Also, Openshift will recreate the number
 of replicas to its original configuration which each replica pointed to the
 new master.  Replication from the master to the new replicas will be
 started as each new replica is started by Openshift.
+
+To test it out, delete the master pod and view the watch pod log:
+....
+oc delete pod pg-master-rc-dc
+oc logs watch
+oc get pod
+....
+
 
 === *metrics* - Metrics Collection
 

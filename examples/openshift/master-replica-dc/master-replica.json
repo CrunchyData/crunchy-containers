@@ -244,7 +244,8 @@
                 "metadata": {
                     "creationTimestamp": null,
                     "labels": {
-                        "name": "${PG_SLAVE_SERVICE_NAME}"
+                        "name": "${PG_SLAVE_SERVICE_NAME}",
+                        "slavetype": "trigger"
                     }
                 },
                 "spec": {
@@ -259,7 +260,7 @@
                                     "/opt/cpm/bin/readiness.sql"
                                 ]
                             },
-                            "initialDelaySeconds": 90,
+                            "initialDelaySeconds": 60,
                             "timeoutSeconds": 1
                         },
                         "livenessProbe": {
@@ -269,7 +270,7 @@
                                     "--dbname=postgres"
                                 ]
                             },
-                            "initialDelaySeconds": 90,
+                            "initialDelaySeconds": 60,
                             "timeoutSeconds": 1
                         },
                         "ports": [{

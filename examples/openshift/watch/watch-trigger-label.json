@@ -36,10 +36,13 @@
                     "value": "20"
                 }, {
                     "name": "PG_MASTER_SERVICE",
-                    "value": "pg-master-rc-dc"
+                    "value": "ms-master"
                 }, {
                     "name": "PG_SLAVE_SERVICE",
-                    "value": "pg-replica-rc-dc"
+                    "value": "ms-replica"
+                }, {
+		    "name": "SLAVE_TO_TRIGGER_LABEL",
+                    "value": "ms-replica"
                 }, {
                     "name": "PG_MASTER_PORT",
                     "value": "5432"

@@ -109,7 +109,7 @@
                             "/opt/cpm/bin/readiness.sql"
                         ]
                     },
-                    "initialDelaySeconds": 10,
+                    "initialDelaySeconds": 30,
                     "timeoutSeconds": 1
                 },
                 "livenessProbe": {
@@ -119,7 +119,7 @@
                             "--dbname=postgres"
                         ]
                     },
-                    "initialDelaySeconds": 120,
+                    "initialDelaySeconds": 30,
                     "timeoutSeconds": 1
                 },
                 "ports": [{
@@ -173,7 +173,8 @@
         "metadata": {
             "name": "ms-replica",
             "labels": {
-                "name": "ms-replica"
+                "name": "ms-replica",
+                "slavetype": "trigger"
             }
         },
         "spec": {
@@ -188,7 +189,7 @@
                             "/opt/cpm/bin/readiness.sql"
                         ]
                     },
-                    "initialDelaySeconds": 90,
+                    "initialDelaySeconds": 60,
                     "timeoutSeconds": 1
                 },
                 "livenessProbe": {
@@ -198,7 +199,7 @@
                             "--dbname=postgres"
                         ]
                     },
-                    "initialDelaySeconds": 90,
+                    "initialDelaySeconds": 60,
                     "timeoutSeconds": 1
                 },
                 "ports": [{

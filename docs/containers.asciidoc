@@ -225,23 +225,21 @@ inside the container to issue commands to openshift.
 
 You set up the SA using this:
 
-oc create -f sa.json
+oc create -f watch-sa.json
 
 You then set up permissions for the SA to edit stuff in the openshift project,
-this example allows all service accounts to edit resources in the 'openshift'
+this example allows all service accounts to edit resources in the *default*
 project:
 
 ....
-oc policy add-role-to-group edit system:serviceaccounts -n openshift
+oc policy add-role-to-group edit system:serviceaccounts -n default
 ....
 
-You then reference the SA within the POD spec:
+You then reference the SA within the POD spec.
 
-watch-logic.sh is an example of what can run inside the watch container
-
-I copy the oc command into the container from the host when the container
-image is built.  I could not find a way to install this using the redhat 
-rpms, so I manually add it to the container.
+The oc/docker/kubectl commands are included into the container from the 
+host when the container image is built.  These commands are used by
+the watch logic to interact with the replica containers.
 
 === Environment Variables
 
@@ -252,6 +250,9 @@ rpms, so I manually add it to the container.
  * PG_MASTER_USER -  database user account to use when checking the database
    using pg_isready utility
  * PG_DATABASE - database to use when checking the database using pg_isready
+ * SLAVE_TO_TRIGGER_LABEL - this is the pod name of a replica that you
+   want to choose as the new master in a failover, this will override
+   the normal replica selection 
 
 === Logic
 
