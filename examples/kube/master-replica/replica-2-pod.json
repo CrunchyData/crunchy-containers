@@ -15,9 +15,7 @@
             "readinessProbe": {
                 "exec": {
                     "command": [
-                        "/usr/pgsql-9.5/bin/psql",
-                        "-f",
-                        "/opt/cpm/bin/readiness.sql"
+                        "/opt/cpm/bin/readiness.sh"
                     ]
                 },
                 "initialDelaySeconds": 50,
@@ -26,8 +24,7 @@
             "livenessProbe": {
                 "exec": {
                     "command": [
-                        "/usr/pgsql-9.5/bin/pg_isready",
-                        "--dbname=postgres"
+                        "/opt/cpm/bin/liveness.sh"
                     ]
                 },
                 "initialDelaySeconds": 50,
