@@ -27,4 +27,4 @@ export PGDATA=/pgdata/$HOSTNAME
 export PATH=/opt/cpm/bin:$PGROOT/bin:$PATH
 export LD_LIBRARY_PATH=$PGROOT/lib
 
-chown postgres $PGDATA
+#chown postgres $PGDATA

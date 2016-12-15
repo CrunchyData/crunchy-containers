@@ -104,9 +104,7 @@
                 "readinessProbe": {
                     "exec": {
                         "command": [
-                            "/usr/pgsql-9.5/bin/psql",
-                            "-f",
-                            "/opt/cpm/bin/readiness.sql"
+                            "/opt/cpm/bin/readiness.sh"
                         ]
                     },
                     "initialDelaySeconds": 30,
@@ -115,8 +113,7 @@
                 "livenessProbe": {
                     "exec": {
                         "command": [
-                            "/usr/pgsql-9.5/bin/pg_isready",
-                            "--dbname=postgres"
+                            "/opt/cpm/bin/liveness.sh"
                         ]
                     },
                     "initialDelaySeconds": 30,
@@ -184,23 +181,20 @@
                 "readinessProbe": {
                     "exec": {
                         "command": [
-                            "/usr/pgsql-9.5/bin/psql",
-                            "-f",
-                            "/opt/cpm/bin/readiness.sql"
+                            "/opt/cpm/bin/readiness.sh"
                         ]
                     },
-                    "initialDelaySeconds": 60,
-                    "timeoutSeconds": 1
+                    "initialDelaySeconds": 120,
+                    "timeoutSeconds": 2
                 },
                 "livenessProbe": {
                     "exec": {
                         "command": [
-                            "/usr/pgsql-9.5/bin/pg_isready",
-                            "--dbname=postgres"
+                            "/opt/cpm/bin/liveness.sh"
                         ]
                     },
-                    "initialDelaySeconds": 60,
-                    "timeoutSeconds": 1
+                    "initialDelaySeconds": 120,
+                    "timeoutSeconds": 2
                 },
                 "ports": [{
                     "containerPort": 5432,
