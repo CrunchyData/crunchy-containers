@@ -1,8 +1,6 @@
 FROM rhel7.2
 
-LABEL Release="1.2.3"
-LABEL Vendor="Crunchy Data Solutions"
-LABEL PostgresVersion="9.3"
+LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.3"
 
 # PGDG Postgres repo
 #RUN rpm -Uvh http://yum.postgresql.org/9.3/redhat/rhel-7-x86_64/pgdg-centos95-9.3-1.noarch.rpm
