@@ -33,8 +33,8 @@ image::docs/containers.png?raw=true[]
 
 === Build Prerequisites
 
-These containers have been tested on Centos 7, RHEL 7, Openshift 3.1,
-Kubernetes 1.2.4, and Docker 1.8/1.9.
+The Crunchy containers have been tested on Centos 7, RHEL 7, Openshift 3.3,
+Kubernetes 1.4.6, and Docker 1.12
 
 1) Installing / configuring Docker
 
@@ -71,7 +71,7 @@ environment variable which indicates which version of the
 container you will pull down and execute, for example:
 ....
 export BUILDBASE=$HOME/crunchy-containers
-export CCP_IMAGE_TAG=centos7-9.5-1.2.5
+export CCP_IMAGE_TAG=centos7-9.5-1.2.6
 ....
 
 The BUILDBASE is the location of where you cloned the containers github

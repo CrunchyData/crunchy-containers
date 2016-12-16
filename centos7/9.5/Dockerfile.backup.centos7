@@ -1,8 +1,6 @@
 FROM centos:7
 
-LABEL Release="1.2.5"
-LABEL Vendor="Crunchy Data Solutions"
-LABEL PostgresVersion="9.5"
+LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
 
 # PGDG Postgres repo
 RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-1.noarch.rpm
