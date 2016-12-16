@@ -9,6 +9,13 @@ running the Crunchy containers in an Openshift environment.
 
 The examples are explained below.
 
+Some of the examples make use of NFS for a persistent volume
+file system type, see the NFS Note at the bottom of this document
+for details on how NFS is configured in these examples.  
+
+Notes on NFS installation and file system permissions are in the install.asciidoc documentation.
+
+
 === *basic* - Running a single database container
 
 This openshift template will create a single master PostgreSQL instance.
@@ -170,6 +177,7 @@ oc process -f master-nfs.json | oc create -f -
 
 This will create a single master postgres pod that is using 
 an NFS volume to store the postgres data files.
+
 
 === *master-restore* - example of restoring a database from a backup
 
@@ -1029,6 +1037,40 @@ This says that any authenticate user can run with the anyuid SCC which lets
 them create PVCs and use the *fsGroup* setting for the Postgres containers to
 work using NFS.  There is probably a smarter and more precise way to grant
 this permission?
+
+
+=== Tip 15: NFS Setup
+
+To control the permissions of the NFS file system
+certain examples make use of the *supplementalGroups* security context
+setting for pods.  In these examples, we specify the GID of the *nfsnobody* 
+group (65534).  If you want to use a different GID for the supplementalGroup
+then you will need to alter the NFS examples accordingly.
+
+When the pod runs, the pod user is UID *26* which is the postgres
+user ID.  By specifying the *supplementalGroup* the pod will also
+be added to the *nfsnobody* group.  So, when you set up your NFS
+mount, you can specify the permissions to be as follows:
+....
+drwxrwx---.   3 nfsnobody nfsnobody   23 Dec 16 11:28 nfsfileshare
+....
+
+This restricts *other* users from writing to the NFS share, but will
+allow the *nfsnobody* group to have write access.  This way, the 
+NFS mount permissions can be managed to only allow certain pods
+write access.
+
+Also, remember that on systems with SELinux set to enforcing mode
+that you will need to allow NFS write permissions by running
+this command:
+....
+sudo setsebool -P virt_use_nfs 1
+....
+
+Note that supplementalGroup settings are required for NFS but you
+would use the fsGroup setting for the AWS file system.  Check out
+this link for details:
+https://docs.openshift.org/latest/install_config/persistent_storage/pod_security_context.html.
 
 == Legal Notices
 

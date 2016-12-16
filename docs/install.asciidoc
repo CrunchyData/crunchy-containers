@@ -228,15 +228,37 @@ oc edit scc restricted
 === Step 6 - Configure NFS for Persistence Examples
 
 NFS is required for some of the Openshift examples, those dealing with
-backups and restores will require a working NFS.
+backups and restores will require a working NFS for example.
 
-NFS is able to run in selinux Enforcing mode if you 
-following the instructions here:
+First, if you are running your NFS system with SELinux
+in enforcing mode, you will need to run the following command
+to allow NFS write permissions:
+....
+sudo setsebool -P virt_use_nfs 1
+....
 
-https://github.com/openshift/origin/tree/master/examples/wordpress
+Next, you will need to set the permissions of your NFS
+path so that your pods can have write access.  For the
+Crunchy examples, the *nfsnobody* GUI was chosen as
+an example.  Pods will reference the *nfsnobody* GID (65534)
+as a security context *supplementalGroup* attribute.  This
+setting will allow the pod to have group permissions of 65534
+and therefore be able to write to the NFS persistent volumes.
 
-Other information on how to install and configure an NFS share is located
-here:
+The permissions on the NFS path are set as follows:
+....
+drwxrwx---.   3 nfsnobody nfsnobody   23 Dec 16 11:28 nfsfileshare
+....
+
+Most of the Crunchy containers run as the postgres UID (26), but you
+will notice that when *supplementalGroups* are specified, the pod
+will include the nfsnobody group in the list of groups for the pod user.
+
+The case of Amazon file systems is different, for that you use the
+*fsGroup* security context setting but the idea for allowing
+write permissions is the same.
+
+Here are the instructions I use when setting up NFS:
 
 http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html
 

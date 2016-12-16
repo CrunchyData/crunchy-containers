@@ -7,6 +7,11 @@ v1.2.6, {docdate}
 
 Here are instructions for running examples on a pure kube cluster.
 
+Note, some of the examples assume an NFS file system for creating
+persistent volumes.  See the install.asciidoc for details on 
+setting NFS permissions and the use of *supplementalGroups* within
+pod specs.
+
 === Installation
 
 Some steps to follow:

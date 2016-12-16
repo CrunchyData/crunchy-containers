@@ -6,7 +6,7 @@
   },
   "spec": {
     "capacity": {
-        "storage": "1Gi"
+        "storage": "300M"
     },
     "accessModes": [ "ReadWriteMany" ],
     "nfs": {
