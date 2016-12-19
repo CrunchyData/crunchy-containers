@@ -45,8 +45,7 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql/ \
 # add volumes to locate WAL files to recover with
 # volume for pgbackrest to write to
 
-VOLUME [ \
-  "/pgconf", "/pgdata", "/pgwal", "$PGROOT" \
+VOLUME ["/pgconf", "/pgdata", "/pgwal", "$PGROOT" \
   "/backup", "/recover", "/backrestrepo"]
 
 # open up the postgres port
