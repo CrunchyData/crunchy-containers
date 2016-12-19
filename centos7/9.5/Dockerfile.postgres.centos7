@@ -20,10 +20,10 @@ RUN yum -y install epel-release \
 	rsync \
  && yum -y clean all
 
-RUN yum -y install postgresql9? postgresql9?-contrib postgresql9?-server \
-	pgaudit_9? \
+RUN yum -y install postgresql95 postgresql95-contrib postgresql95-server \
+	pgaudit_95 \
 	pgbackrest \
-	postgis2_9? postgis2_9?-client pgrouting_9? \
+	postgis2_95 postgis2_95-client pgrouting_95 \
  && yum -y clean all
 
 ENV	PGROOT="/usr/pgsql-${PGVERSION}"
