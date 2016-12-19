@@ -1,6 +1,6 @@
 FROM centos:7
 
-LABEL Release="1.2.5"
+LABEL Release="1.2.6"
 LABEL Vendor="Crunchy Data Solutions"
 
 LABEL PostgresVersion="9.6"
@@ -22,10 +22,10 @@ RUN yum -y install epel-release \
 	rsync \
  && yum -y clean all
 
-RUN yum -y install postgresql9? postgresql9?-contrib postgresql9?-server \
-	pgaudit_9? \
+RUN yum -y install postgresql96 postgresql96-contrib postgresql96-server \
+	pgaudit_96 \
 	pgbackrest \
-	postgis2_9? postgis2_9?-client pgrouting_9? \
+	postgis2_96 postgis2_96-client pgrouting_96 \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
