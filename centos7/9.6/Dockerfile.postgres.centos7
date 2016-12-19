@@ -1,0 +1,62 @@
+FROM centos:7
+
+LABEL Release="1.2.5"
+LABEL Vendor="Crunchy Data Solutions"
+
+LABEL PostgresVersion="9.6"
+
+ENV PGVERSION="9.6" \
+	PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+
+# PGDG Postgres repo
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y install epel-release \
+ && yum -y update glibc-common \
+ && yum -y install bind-utils \
+	gettext \
+	hostname \
+	nss_wrapper \
+	openssh-clients \
+ 	procps-ng  \
+	rsync \
+ && yum -y clean all
+
+RUN yum -y install postgresql9? postgresql9?-contrib postgresql9?-server \
+	pgaudit_9? \
+	pgbackrest \
+	postgis2_9? postgis2_9?-client pgrouting_9? \
+ && yum -y clean all
+
+ENV PGROOT="/usr/pgsql-${PGVERSION}"
+
+# add path settings for postgres user
+ADD conf/.bash_profile /var/lib/pgsql/
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /backup /pgconf /recover /backrestrepo
+
+RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql/ \
+	/pgdata /pgwal /backup /pgconf /recover /backrestrepo
+
+
+# add volumes to allow override of pg_hba.conf and postgresql.conf
+# add volumes to allow backup of postgres files
+# add volumes to offer a restore feature
+# add volumes to allow storage of postgres WAL segment files
+# add volumes to locate WAL files to recover with
+# volume for pgbackrest to write to
+
+VOLUME [ \
+  "/pgconf", "/pgdata", "/pgwal", "$PGROOT", \
+  "/backup", "/recover", "/backrestrepo"]
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin/postgres /opt/cpm/bin
+ADD conf/postgres /opt/cpm/conf
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]
