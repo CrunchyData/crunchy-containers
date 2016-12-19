@@ -1,42 +1,56 @@
 FROM centos:7
 
-LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
+LABEL Release="1.2.5"
+LABEL Vendor="Crunchy Data Solutions"
+
+LABEL PostgresVersion="9.5"
+
+ENV PGVERSION="9.5" \
+	PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
 
 # PGDG Postgres repo
-RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-1.noarch.rpm
+# RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-1.noarch.rpm
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
-RUN yum -y install epel-release && yum -y reinstall glibc-common && \
-	yum install -y rsync procps-ng  \
-	openssh-clients nss_wrapper gettext hostname bind-utils && yum clean all -y && \
-	yum -y install postgresql95 postgresql95-contrib postgresql95-server \
-	pgaudit_95 postgis2_95 postgis2_95-client pgrouting* pgbackrest && yum clean all -y
+RUN yum -y install epel-release \
+ && yum -y update glibc-common \
+ && yum -y install bind-utils \
+	gettext \
+	hostname \
+	nss_wrapper \
+	openssh-clients \
+ 	procps-ng  \
+	rsync \
+ && yum -y clean all
 
-# set up cpm directory
-#
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /backup /pgconf /recover /backrestrepo
+RUN yum -y install postgresql9? postgresql9?-contrib postgresql9?-server \
+	pgaudit_9? \
+	pgbackrest \
+	postgis2_9? postgis2_9?-client pgrouting_9? \
+ && yum -y clean all
 
-RUN chown -R postgres:postgres /opt/cpm /pgdata /pgwal /backup /pgconf /recover /backrestrepo
+ENV	PGROOT="/usr/pgsql-${PGVERSION}"
 
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/
 
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /backup /pgconf /recover /backrestrepo
+
+RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql/ \
+	/pgdata /pgwal /backup /pgconf /recover /backrestrepo
+
+
 # add volumes to allow override of pg_hba.conf and postgresql.conf
-VOLUME ["/pgconf"]
-
 # add volumes to allow backup of postgres files
-VOLUME ["/pgdata"]
-
 # add volumes to offer a restore feature
-VOLUME ["/backup"]
-
 # add volumes to allow storage of postgres WAL segment files
-VOLUME ["/pgwal"]
-
 # add volumes to locate WAL files to recover with
-VOLUME ["/recover"]
-
 # volume for pgbackrest to write to
-VOLUME ["/backrestrepo"]
+
+VOLUME [ \
+  "/pgconf", "/pgdata", "/pgwal", "$PGROOT" \
+  "/backup", "/recover", "/backrestrepo"]
 
 # open up the postgres port
 EXPOSE 5432
@@ -47,4 +61,3 @@ ADD conf/postgres /opt/cpm/conf
 USER 26
 
 CMD ["/opt/cpm/bin/start.sh"]
-
