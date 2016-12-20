@@ -46,7 +46,9 @@ export PG_MASTER_USER=$PG_MASTER_USER
 export PG_USER=$PG_USER
 export PG_DATABASE=$PG_DATABASE
 
-if [ -d /usr/pgsql-9.5 ]; then
+if [ -d /usr/pgsql-9.6 ]; then
+        export PGROOT=/usr/pgsql-9.6
+elif [ -d /usr/pgsql-9.5 ]; then
         export PGROOT=/usr/pgsql-9.5
 elif [ -d /usr/pgsql-9.4 ]; then
         export PGROOT=/usr/pgsql-9.4

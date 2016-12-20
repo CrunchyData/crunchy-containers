@@ -1,0 +1,41 @@
+FROM rhel7.2
+
+LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.6"
+
+ENV PGVERSION="9.6"
+
+# install docker from docker repo
+ADD conf/pgbouncer/docker-rhel.repo /etc/yum.repos.d/
+
+# Crunchy Postgres repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg96.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+ && yum -y install docker-engine \
+	gettext \
+	hostname  \
+	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+ && yum -y install 	postgresql96 pgbouncer \
+ && yum clean all -y
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+# add volumes to allow override of pgbouncer config files
+VOLUME ["/pgconf"]
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin/pgbouncer /opt/cpm/bin
+ADD conf/pgbouncer /opt/cpm/conf
+
+RUN chown -R pgbouncer:pgbouncer /opt/cpm/bin
+
+USER pgbouncer
+
+CMD ["/opt/cpm/bin/startpgbouncer.sh"]
