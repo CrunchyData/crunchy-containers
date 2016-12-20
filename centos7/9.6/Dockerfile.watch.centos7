@@ -1,0 +1,40 @@
+FROM centos:7
+
+LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.6"
+
+ENV PGVERSION="9.6" \
+	PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+
+# PGDG Postgres repo
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+# install docker from docker repo
+ADD conf/watch/docker-rhel.repo /etc/yum.repos.d/
+
+RUN yum -y install epel-release \
+ && yum -y update glibc-common \
+ && yum -y install  bind-utils \
+	curl \
+	docker-engine \
+	gettext \
+	hostname \
+	libxslt \
+	libxml2 \
+	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+	rsync \
+ && yum -y install postgresql96-server atomic-openshift-clients \
+ && yum clean all -y
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+ADD bin/watch /opt/cpm/bin
+ADD conf/watch /opt/cpm/conf
+
+RUN chown -R postgres:postgres /opt/cpm 
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]

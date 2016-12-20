@@ -1,0 +1,40 @@
+FROM centos:7
+
+LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.6"
+
+ENV PGVERSION="9.6" \
+	PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+
+# PGDG Postgres repo
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+# install docker from docker repo
+ADD conf/pgbouncer/docker-rhel.repo /etc/yum.repos.d/
+
+RUN yum -y install epel-release \
+ && yum -y install docker-engine \
+	gettext \
+	hostname  \
+	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+ && yum -y install 	postgresql96 pgbouncer \
+ && yum clean all -y
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+# add volumes to allow override of pgbouncer config files
+VOLUME ["/pgconf"]
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin/pgbouncer /opt/cpm/bin
+ADD conf/pgbouncer /opt/cpm/conf
+
+RUN chown -R daemon:daemon /opt/cpm/bin
+
+USER pgbouncer
+
+CMD ["/opt/cpm/bin/startpgbouncer.sh"]
