@@ -1,0 +1,32 @@
+FROM rhel:7.2
+
+LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.6"
+
+ENV PGVERSION="9.6"
+
+# Crunchy Postgres repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg96.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+ && yum install -y bind-utils \
+	gettext \
+	hostname \
+ 	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+	unzip \
+ && yum -y install postgresql96 postgresql96-server \
+ && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
+ADD bin/backup/ /opt/cpm/bin
+ADD conf/backup/ /opt/cpm/conf
+RUN chown -R postgres:postgres /opt/cpm /pgdata
+
+VOLUME ["/pgdata"]
+
+USER 26
+
+CMD ["/opt/cpm/bin/start-backupjob.sh"]

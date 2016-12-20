@@ -1,0 +1,34 @@
+FROM rhel7.2
+
+LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.6"
+
+ENV PGVERSION="9.6"
+
+# Crunchy Postgres repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg96.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN yum -y install hostname \
+	openssh-clients \
+	procps-ng \
+	pgbadger-9.0* \
+ && yum clean all -y \
+ && groupadd -g 26 postgres && useradd -g 26 -u 26 postgres 
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin
+
+# open up the badger port
+EXPOSE 10000
+
+ADD bin/pgbadger /opt/cpm/bin
+
+RUN chown -R postgres:postgres /opt/cpm/bin
+
+USER postgres
+
+VOLUME ["/pgdata"]
+
+CMD ["/opt/cpm/bin/start-pgbadger.sh"]
+

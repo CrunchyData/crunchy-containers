@@ -1,0 +1,33 @@
+FROM centos:7
+
+LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.6"
+
+ENV PGVERSION="9.6" \
+	PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+
+# PGDG Postgres repo
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y install hostname \
+	openssh-clients \
+	procps-ng \
+	pgbadger-9.0* \
+ && yum clean all -y \
+ && groupadd -g 26 postgres && useradd -g 26 -u 26 postgres 
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin
+
+# open up the badger port
+EXPOSE 10000
+
+ADD bin/pgbadger /opt/cpm/bin
+
+RUN chown -R postgres:postgres /opt/cpm/bin
+
+USER postgres
+
+VOLUME ["/pgdata"]
+
+CMD ["/opt/cpm/bin/start-pgbadger.sh"]
+
