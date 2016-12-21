@@ -13,28 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting pgbouncer container...."
+echo "cleaning up example..."
 
-sudo docker stop pgbouncer
-sudo docker rm pgbouncer
+CONTAINER_NAME=pgbouncer
 
-sudo chcon -Rt svirt_sandbox_file_t `pwd`
-
-sudo docker run \
-	-v `pwd`:/pgconf \
-	-p 12005:5432 \
-	--privileged \
-	-v /run/docker.sock:/run/docker.sock \
-	-e FAILOVER=true \
-	-e SLEEP_TIME=12 \
-	-e PG_MASTER_SERVICE=master \
-	-e PG_SLAVE_SERVICE=replica \
-	-e PG_MASTER_PORT=5432 \
-	-e PG_MASTER_USER=masteruser \
-	-e PG_DATABASE=postgres \
-	--link master:master \
-	--link replica:replica \
-	--name=pgbouncer \
-	--hostname=pgbouncer \
-	-d crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG
+docker stop $CONTAINER_NAME
+docker rm $CONTAINER_NAME
 

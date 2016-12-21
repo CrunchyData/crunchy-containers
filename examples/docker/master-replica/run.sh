@@ -42,7 +42,7 @@ MASTER_CONTAINER_NAME=master
 docker volume create --driver local --name=$VOLUME_NAME 
 
 docker run \
-	-p 12000:5432 \
+	-p 12007:5432 \
 	--privileged=true \
 	-v $VOLUME_NAME:/pgdata \
 	-e TEMP_BUFFERS=9MB \
@@ -70,7 +70,7 @@ CONTAINER_NAME=replica
 docker volume create --driver local --name=$VOLUME_NAME 
 
 docker run \
-	-p 12002:5432 \
+	-p 12008:5432 \
 	--privileged=true \
 	-v $VOLUME_NAME:/pgdata \
 	-e TEMP_BUFFERS=9MB \

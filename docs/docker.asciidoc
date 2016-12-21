@@ -67,8 +67,8 @@ The container creates a default database called *testdb*, a default
 user called *testuser* with a default password of *testpsw*, you can
 use this to connect from your local host as follows:
 ....
-psql -h localhost -p 12000 -U testuser -W userdb
-psql -h localhost -p 12002 -U testuser -W userdb
+psql -h localhost -p 12007 -U testuser -W userdb
+psql -h localhost -p 12008 -U testuser -W userdb
 ....
 
 To shut down the instance, run the following commands:
