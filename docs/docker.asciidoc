@@ -658,6 +658,34 @@ docker exec -it $(docker ps -q) psql -U postgres -c 'table pg_stat_replication' 
 You should see a row for each replica along with its replication status.
 
 
+=== *watch* - automated failover
+
+This example shows how to run the crunchy-watch container
+to perform an automated failover.  For the example to
+work, the host on which you are running needs to allow
+read-write access to /run/docker.sock.  The crunchy-watch
+container runs as the postgres user, so adjust the
+file permissions of /run/docker.sock accordingly.
+
+Run the example as follows, (depends on master-replica example
+being run prior):
+....
+cd examples/docker/watch
+./run.sh
+....
+
+This will start the watch container which tests every few seconds
+whether the master database is running, if not, it will
+trigger a failover (using docker exec) on the replica host.
+
+Test it out by stopping the master:
+....
+docker stop master
+docker logs watch
+....
+
+Look at the watch container logs to see it perform the failover.
+
 === Tips - send a signal to postgres
 
 first, find the PID of the postmaster:

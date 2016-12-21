@@ -15,8 +15,17 @@
 
 echo "cleaning up example..."
 
-CONTAINER_NAME=watch
+CONTAINER_NAME=sync-master
 
 docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME
 
+CONTAINER_NAME=sync-replica
+
+docker stop $CONTAINER_NAME
+docker rm $CONTAINER_NAME
+
+CONTAINER_NAME=async-replica
+
+docker stop $CONTAINER_NAME
+docker rm $CONTAINER_NAME

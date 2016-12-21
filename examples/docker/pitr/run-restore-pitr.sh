@@ -28,7 +28,7 @@ sudo docker rm master-restore-pitr
 
 # the following path is where the base backup files
 # are located for doing the database restore
-BACKUP=/tmp/backups/master-pitr/2016-09-22-22-39-00
+BACKUP=/tmp/backups/master-pitr/2016-12-21-21-08-57
 
 # WAL_DIR contains the WAL files generated from
 # this database after recovery and ongoing afterwards

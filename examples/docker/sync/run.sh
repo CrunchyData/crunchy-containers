@@ -33,7 +33,7 @@ sudo docker stop sync-master
 sudo docker rm sync-master
 
 sudo docker run \
-	-p 12000:5432 \
+	-p 12010:5432 \
 	-v $DATA_DIR:/pgdata \
 	-e PGHOST=/tmp \
 	-e TEMP_BUFFERS=9MB \
@@ -68,7 +68,7 @@ sudo docker stop sync-replica
 sudo docker rm sync-replica
 
 sudo docker run \
-	-p 12002:5432 \
+	-p 12011:5432 \
 	-v $DATA_DIR:/pgdata \
 	-e PGHOST=/tmp \
 	-e TEMP_BUFFERS=9MB \
@@ -104,7 +104,7 @@ sudo docker stop async-replica
 sudo docker rm async-replica
 
 sudo docker run \
-	-p 12003:5432 \
+	-p 12012:5432 \
 	-v $DATA_DIR:/pgdata \
 	-e PGHOST=/tmp \
 	-e TEMP_BUFFERS=9MB \

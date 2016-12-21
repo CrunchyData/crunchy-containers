@@ -76,6 +76,9 @@ Examples for PITR have been created within the standalone, openshift,
 and kubernetes examples directories.
 
 
+There is a blog on how the example works documented here:
+https://blog.openshift.com/crunchy-postgresql-containers-on-openshift-performing-point-in-time-recovery/
+
 == Legal Notices
 
 Copyright © 2016 Crunchy Data Solutions, Inc.
