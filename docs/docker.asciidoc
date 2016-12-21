@@ -360,6 +360,13 @@ the failover.  The pgbouncer container will then reconfigure
 pgbouncer to relabel the slave database into the master database so clients
 to pgbouncer will be able to connect to the master as before the failover.
 
+To just log into the database from the pgbouncer connection pool
+you would enter the following:
+....
+psql -h localhost -p 12005 -U testuser master
+....
+
+
 
 === *sync* - synchronous replication
 
