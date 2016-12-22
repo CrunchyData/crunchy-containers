@@ -14,5 +14,6 @@
 
 oc project jeff-project
 
+oc  delete template crunchy-postgres-database-with-collect-badger
 oc create -f master-collect-badger.json
 

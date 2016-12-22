@@ -20,7 +20,7 @@
         "value": "master"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "rhel7-9.5-1.2.5",
+        "value": "rhel7-9.6-1.2.6",
         "description": "The image tag to pull images with"
     }, {
         "name": "PG_MASTER_PASSWORD",
@@ -108,29 +108,27 @@
             }, {
                 "name": "postgres",
                 "image": "172.30.240.45:5000/jeff-project/crunchy-postgres:${CCP_IMAGE_TAG}",
-                "readinessProbe": {
+
+                "imagePullPolicy": "Always",
+               "readinessProbe": {
                     "exec": {
                         "command": [
-                            "/usr/pgsql-9.5/bin/psql",
-                            "-f",
-                            "/opt/cpm/bin/readiness.sql"
+                            "/opt/cpm/bin/readiness.sh"
                         ]
                     },
-                    "initialDelaySeconds": 45,
-                    "timeoutSeconds": 1
+                    "initialDelaySeconds": 40,
+                    "timeoutSeconds": 2
                 },
                 "livenessProbe": {
                     "exec": {
                         "command": [
-                            "/usr/pgsql-9.5/bin/pg_isready",
-                            "--dbname=postgres"
+                            "/opt/cpm/bin/liveness.sh"
                         ]
                     },
-                    "initialDelaySeconds": 45,
-                    "timeoutSeconds": 1
+                    "initialDelaySeconds": 40,
+                    "timeoutSeconds": 2
                 },
 
-                "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

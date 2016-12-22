@@ -111,6 +111,25 @@
                 "name": "${SERVICE_NAME}",
                 "image": "172.30.240.45:5000/jeff-project/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
+                "readinessProbe": {
+                    "exec": {
+                        "command": [
+                            "/opt/cpm/bin/readiness.sh"
+                        ]
+                    },
+                    "initialDelaySeconds": 40,
+                    "timeoutSeconds": 2
+                },
+                "livenessProbe": {
+                    "exec": {
+                        "command": [
+                            "/opt/cpm/bin/liveness.sh"
+                        ]
+                    },
+                    "initialDelaySeconds": 40,
+                    "timeoutSeconds": 2
+                },
+
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
@@ -130,6 +149,9 @@
                 }, {
                     "name": "PG_PASSWORD",
                     "value": "password"
+                }, {
+                    "name": "PGHOST",
+                    "value": "/tmp"
                 }, {
                     "name": "PG_DATABASE",
                     "value": "${PG_DATABASE}"

@@ -12,6 +12,7 @@
     },
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
+        "value": "rhel7-9.6-1.2.6",
         "description": "the image tag to use"
     }],
     "objects": [{
