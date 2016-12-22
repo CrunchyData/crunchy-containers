@@ -22,8 +22,6 @@ CONTAINER_NAME=badger
 DATABASE_CONTAINER=basic
 VOLUME_NAME=basic-example-volume
 
-docker volume create --driver local --name=$VOLUME_NAME
-
 docker run \
 	-p 14000:10000 \
 	--privileged=true \
