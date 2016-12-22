@@ -20,20 +20,24 @@ yum -y install postgresql95 postgresql95-contrib postgresql95-server \
 pgaudit pgaudit_analyze pgaudit_set_user \
 postgis2_95 postgis2_95-client crunchy-backrest pgrouting_95  && yum clean all -y
 
-# set up cpm directory
-#
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /backup /backrestrepo
-
-RUN chown -R postgres:postgres /opt/cpm /pgdata /backup /backrestrepo
-
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo
+
+RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
+	/pgdata /pgwal /backup /recover /backrestrepo
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
 # add volumes to allow backup of postgres files
 # add volumes to offer a restore feature
+# add volumes to allow storage of postgres WAL segment files
+# add volumes to locate WAL files to recover with
 # volume for pgbackrest to write to
-VOLUME /pgconf /pgdata /backup /backrestrepo
+
+VOLUME /pgconf /pgdata /pgwal \
+  /backup /recover /backrestrepo
 
 # open up the postgres port
 EXPOSE 5432
