@@ -14,7 +14,9 @@
 # limitations under the License.
 
 echo "cleaning up example..."
-
 CONTAINER_NAME=audittest
-docker rm -f --volumes $CONTAINER_NAME
+VOLUME=$CONTAINER_NAME-volume
+
+docker rm -f $CONTAINER_NAME
+docker volume rm $VOLUME
 
