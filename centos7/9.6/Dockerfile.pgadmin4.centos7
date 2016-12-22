@@ -1,0 +1,50 @@
+FROM centos:7
+
+LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.6"
+
+ENV PGVERSION="9.6" \
+	PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+
+# PGDG Postgres repo
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y install epel-release \
+ && yum -y install glibc-common-*2.17* \
+ && yum -y install gcc \
+	gettext \
+	hostname \
+ 	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+	python-devel python-pip \
+ && yum -y install postgresql96-devel postgresql96-server \
+ && yum -y clean all
+
+ENV PGROOT="/usr/pgsql-${PGVERSION}"
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+ADD bin/pgadmin4/ /opt/cpm/bin
+ADD conf/pgadmin4/ /opt/cpm/conf
+ADD pgadmin4*.whl /tmp
+
+RUN export PATH=$PATH:$PGROOT/bin \
+ && pip install --upgrade pip \
+ && pip install --upgrade setuptools \
+ && pip install /tmp/pgadmin4*.whl
+
+# open up the pgadmin4 http port
+EXPOSE 5050
+
+RUN mkdir -p /.pgadmin \
+ && chown -R postgres:postgres /.pgadmin /opt/cpm \
+	/usr/lib/python2.7/site-packages/pgadmin4 \
+ && chmod -R 777 /usr/lib/python2.7/site-packages/pgadmin4
+
+
+VOLUME ["/.pgadmin"]
+
+USER 26
+
+CMD ["/opt/cpm/bin/start-pgadmin4.sh"]
