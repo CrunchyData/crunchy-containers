@@ -1,6 +1,8 @@
 FROM rhel7.2
 
-LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
+LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.6"
+
+ENV PGVERSION="9.6"
 
 # if you ever need to install package docs inside the container, uncomment 
 #RUN sed -i '/nodocs/d' /etc/yum.conf
@@ -43,8 +45,8 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
 # add volumes to locate WAL files to recover with
 # volume for pgbackrest to write to
 
-VOLUME ["/pgconf", "/pgdata", "$PGROOT", \
-  "/backup", "/recover", "/backrestrepo"]
+VOLUME /pgconf /pgdata $PGROOT \
+  /backup /recover /backrestrepo
 
 # open up the postgres port
 EXPOSE 5432

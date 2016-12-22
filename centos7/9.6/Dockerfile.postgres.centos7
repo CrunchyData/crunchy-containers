@@ -19,7 +19,7 @@ RUN yum -y install epel-release \
 	rsync \
  && yum -y clean all
 
-RUN yum -y install postgresql96 postgresql96-contrib postgresql96-server \
+RUN yum -y install postgresql96-server postgresql96-contrib postgresql96 \
 	pgaudit_96 \
 	pgbackrest \
 	postgis2_96 postgis2_96-client pgrouting_96 \
@@ -44,8 +44,8 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql/ \
 # add volumes to locate WAL files to recover with
 # volume for pgbackrest to write to
 
-VOLUME ["/pgconf", "/pgdata", "/pgwal", "$PGROOT", \
-  "/backup", "/recover", "/backrestrepo"]
+VOLUME /pgconf /pgdata /pgwal \
+	/backup /recover /backrestrepo
 
 # open up the postgres port
 EXPOSE 5432
