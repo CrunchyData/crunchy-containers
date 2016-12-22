@@ -31,10 +31,10 @@ ENV PGROOT="/usr/pgsql-${PGVERSION}"
 ADD conf/.bash_profile /var/lib/pgsql/
 
 # set up cpm directory
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /backup /pgconf /recover /backrestrepo
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
-RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql/ \
-	/pgdata /pgwal /backup /pgconf /recover /backrestrepo
+RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
+	/pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
@@ -45,7 +45,7 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql/ \
 # volume for pgbackrest to write to
 
 VOLUME /pgconf /pgdata /pgwal \
-	/backup /recover /backrestrepo
+  /backup /recover /backrestrepo
 
 # open up the postgres port
 EXPOSE 5432

@@ -33,10 +33,10 @@ ENV PGROOT="/usr/pgsql-${PGVERSION}"
 ADD conf/.bash_profile /var/lib/pgsql/
 
 # set up cpm directory
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /backup /recover /backrestrepo
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
-	/pgdata /backup /recover /backrestrepo
+	/pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
 # add volumes to allow backup of postgres files
@@ -45,7 +45,7 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
 # add volumes to locate WAL files to recover with
 # volume for pgbackrest to write to
 
-VOLUME /pgconf /pgdata $PGROOT \
+VOLUME /pgconf /pgdata /pgwal \
   /backup /recover /backrestrepo
 
 # open up the postgres port
@@ -57,4 +57,3 @@ ADD conf/postgres /opt/cpm/conf
 USER 26
 
 CMD ["/opt/cpm/bin/start.sh"]
-
