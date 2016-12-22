@@ -30,11 +30,11 @@ version:
 	docker tag crunchy-version crunchydata/crunchy-version:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 backrest:
 	make versiontest
-	sudo docker build -t crunchy-backrest -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backrest.$(CCP_BASEOS) .
+	docker build -t crunchy-backrest -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backrest.$(CCP_BASEOS) .
 	docker tag crunchy-backrest crunchydata/crunchy-backrest:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 backrestd:
 	make versiontest
-	sudo docker build -t crunchy-backrestd -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backrestd.$(CCP_BASEOS) .
+	docker build -t crunchy-backrestd -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backrestd.$(CCP_BASEOS) .
 	docker tag crunchy-backrestd crunchydata/crunchy-backrestd:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 pgbouncer:
 	make versiontest
@@ -42,11 +42,11 @@ pgbouncer:
 	cp /usr/bin/kubectl bin/pgbouncer
 	cd bounce && godep go install bounce.go
 	cp $(GOBIN)/bounce bin/pgbouncer/
-	sudo docker build -t crunchy-pgbouncer -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbouncer.$(CCP_BASEOS) .
+	docker build -t crunchy-pgbouncer -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbouncer.$(CCP_BASEOS) .
 	docker tag crunchy-pgbouncer crunchydata/crunchy-pgbouncer:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 pgpool:
 	make versiontest
-	sudo docker build -t crunchy-pgpool -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgpool.$(CCP_BASEOS) .
+	docker build -t crunchy-pgpool -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgpool.$(CCP_BASEOS) .
 	docker tag crunchy-pgpool crunchydata/crunchy-pgpool:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 pgbadger:
 	make versiontest
@@ -58,40 +58,40 @@ collectserver:
 	make versiontest
 	cd collect && godep go install collectserver.go
 	cp $(GOBIN)/collectserver bin/collect
-	sudo docker build -t crunchy-collect -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.collect.$(CCP_BASEOS) .
+	docker build -t crunchy-collect -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.collect.$(CCP_BASEOS) .
 	docker tag crunchy-collect crunchydata/crunchy-collect:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 backup:
 	make versiontest
-	sudo docker build -t crunchy-backup -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backup.$(CCP_BASEOS) .
+	docker build -t crunchy-backup -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backup.$(CCP_BASEOS) .
 	docker tag crunchy-backup crunchydata/crunchy-backup:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 pgadmin4: 
 	make versiontest
-	sudo docker build -t crunchy-pgadmin4 -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgadmin4.$(CCP_BASEOS) .
+	docker build -t crunchy-pgadmin4 -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgadmin4.$(CCP_BASEOS) .
 	docker tag crunchy-pgadmin4 crunchydata/crunchy-pgadmin4:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 prometheus: 
 	make versiontest
-	sudo docker build -t crunchy-prometheus -f $(CCP_BASEOS)/Dockerfile.prometheus.$(CCP_BASEOS) .
+	docker build -t crunchy-prometheus -f $(CCP_BASEOS)/Dockerfile.prometheus.$(CCP_BASEOS) .
 	docker tag crunchy-prometheus crunchydata/crunchy-prometheus:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 promgateway: 
 	make versiontest
-	sudo docker build -t crunchy-promgateway -f $(CCP_BASEOS)/Dockerfile.promgateway.$(CCP_BASEOS) .
+	docker build -t crunchy-promgateway -f $(CCP_BASEOS)/Dockerfile.promgateway.$(CCP_BASEOS) .
 	docker tag crunchy-promgateway crunchydata/crunchy-promgateway:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 grafana:
 	make versiontest
-	sudo docker build -t crunchy-grafana -f $(CCP_BASEOS)/Dockerfile.grafana.$(CCP_BASEOS) .
+	docker build -t crunchy-grafana -f $(CCP_BASEOS)/Dockerfile.grafana.$(CCP_BASEOS) .
 	docker tag crunchy-grafana crunchydata/crunchy-grafana:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 vac:
 	make versiontest
 	cd vacuum && godep go install vacuum.go
 	cp $(GOBIN)/vacuum bin/vacuum
-	sudo docker build -t crunchy-vacuum -f $(CCP_BASEOS)/Dockerfile.vacuum.$(CCP_BASEOS) .
+	docker build -t crunchy-vacuum -f $(CCP_BASEOS)/Dockerfile.vacuum.$(CCP_BASEOS) .
 	docker tag crunchy-vacuum crunchydata/crunchy-vacuum:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 dbaserver:
 	cp /usr/bin/oc bin/dba
 	cp /usr/bin/kubectl bin/dba
 	cd dba && godep go install dbaserver.go
 	cp $(GOBIN)/dbaserver bin/dba
-	sudo docker build -t crunchy-dba -f $(CCP_BASEOS)/Dockerfile.dba.$(CCP_BASEOS) .
+	docker build -t crunchy-dba -f $(CCP_BASEOS)/Dockerfile.dba.$(CCP_BASEOS) .
 	docker tag crunchy-dba crunchydata/crunchy-dba:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
 all:
@@ -121,7 +121,7 @@ test:
 	./tests/standalone/test-restore.sh; /usr/bin/test "$$?" -eq 0
 	./tests/standalone/test-watch.sh; /usr/bin/test "$$?" -eq 0
 	./tests/standalone/test-badger.sh; /usr/bin/test "$$?" -eq 0
-	sudo docker stop master
+	docker stop master
 testopenshift:
 	./tests/openshift/test-master.sh; /usr/bin/test "$$?" -eq 0
 	./tests/openshift/test-replica.sh; /usr/bin/test "$$?" -eq 0
