@@ -81,7 +81,7 @@
                 "image": "crunchydata/crunchy-dba:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
-                    "value": "openshift"
+                    "value": "default"
                 }, {
                     "name": "CCP_IMAGE_TAG",
                     "value": "${CCP_IMAGE_TAG}"
@@ -108,7 +108,7 @@
                     "value": "/nfsfileshare"
                 }, {
                     "name": "BACKUP_PV_HOST",
-                    "value": "192.168.0.114"
+                    "value": "192.168.122.238"
                 }, {
                     "name": "BACKUP_PVC_STORAGE",
                     "value": "75M"

@@ -2,9 +2,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "kitchensink-master",
+            "name": "ks-master",
             "labels": {
-                "name": "kitchensink-master"
+                "name": "ks-master"
             }
         },
         "spec": {
@@ -15,7 +15,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "kitchensink-master"
+                "name": "ks-master"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"

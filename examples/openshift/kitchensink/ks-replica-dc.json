@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "kitchensink-replica-pod-example",
+        "name": "ks-replica-pod-example",
         "creationTimestamp": null,
         "annotations": {
             "description": "PostgreSQL Replication Example",
@@ -18,7 +18,7 @@
         "kind": "DeploymentConfig",
         "apiVersion": "v1",
         "metadata": {
-            "name": "kitchensink-replica-dc",
+            "name": "ks-replica-dc",
             "creationTimestamp": null
         },
         "spec": {
@@ -31,13 +31,13 @@
             }],
             "replicas": 1,
             "selector": {
-                "name": "kitchensink-replica"
+                "name": "ks-replica"
             },
             "template": {
                 "metadata": {
                     "creationTimestamp": null,
                     "labels": {
-                        "name": "kitchensink-replica"
+                        "name": "ks-replica"
                     }
                 },
                 "spec": {
@@ -50,10 +50,10 @@
                         }],
                         "env": [{
                             "name": "PG_MASTER_HOST",
-                            "value": "kitchensink-master"
+                            "value": "ks-master"
                         }, {
                             "name": "PG_MASTER_SERVICE_NAME",
-                            "value": "kitchensink-master"
+                            "value": "ks-master"
                         }, {
                             "name": "PG_MASTER_PORT",
                             "value": "5432"

@@ -20,11 +20,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-oc project openshift
-
 oc create -f $DIR/dba-sa.json
 
-oc policy add-role-to-group edit system:serviceaccounts -n openshift
-oc policy add-role-to-user view system:serviceaccount:openshift:dba-sa
+oc policy add-role-to-group edit system:serviceaccounts -n default
+oc policy add-role-to-user view system:serviceaccount:default:dba-sa
 
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/master-dba-vac.json | oc create -f -

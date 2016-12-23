@@ -2,7 +2,7 @@
   "apiVersion": "v1",
   "kind": "PersistentVolume",
   "metadata": {
-    "name": "kitchensink-sync-replica-pv"
+    "name": "ks-sync-replica-pv"
   },
   "spec": {
     "capacity": {

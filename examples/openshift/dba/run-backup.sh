@@ -13,16 +13,14 @@
 # limitations under the License.
 
 
-oc project openshift
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
 oc create -f $DIR/dba-sa.json
 
-oc policy add-role-to-group edit system:serviceaccounts -n openshift
-oc policy add-role-to-user view system:serviceaccount:openshift:dba-sa
+oc policy add-role-to-group edit system:serviceaccounts -n default
+oc policy add-role-to-user view system:serviceaccount:default:dba-sa
 
 #
 # this next commands lets the dba-sa service account have
@@ -30,6 +28,6 @@ oc policy add-role-to-user view system:serviceaccount:openshift:dba-sa
 # to create and delete PV and PVCs required by the backup job
 # capability of the dba container
 #
-oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:openshift:dba-sa
+oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:default:dba-sa
 
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/master-dba-backup.json | oc create -f -

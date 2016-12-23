@@ -2,7 +2,7 @@
   "apiVersion": "v1",
   "kind": "PersistentVolume",
   "metadata": {
-    "name": "kitchensink-master-pv"
+    "name": "ks-master-pv"
   },
   "spec": {
     "capacity": {

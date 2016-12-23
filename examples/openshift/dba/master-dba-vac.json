@@ -84,7 +84,7 @@
                     "value": "${CCP_IMAGE_TAG}"
                 }, {
                     "name": "OSE_PROJECT",
-                    "value": "openshift"
+                    "value": "default"
                 }, {
                     "name": "PG_USER",
                     "value": "${PG_MASTER_USER}"

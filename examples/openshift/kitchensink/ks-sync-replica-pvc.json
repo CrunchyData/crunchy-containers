@@ -2,7 +2,7 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "kitchensink-sync-replica-pvc"
+        "name": "ks-sync-replica-pvc"
       },
       "spec": {
         "accessModes": [

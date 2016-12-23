@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "kitchensink-watch-example",
+        "name": "ks-watch-example",
         "creationTimestamp": null,
         "annotations": {
             "description": "PostgreSQL Replication Example",
@@ -18,9 +18,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "kitchensink-watch",
+            "name": "ks-watch",
             "labels": {
-                "name": "kitchensink-watch"
+                "name": "ks-watch"
             }
         },
         "spec": {
@@ -39,10 +39,10 @@
                     "value": "thisone"
                 }, {
                     "name": "PG_MASTER_SERVICE",
-                    "value": "kitchensink-master"
+                    "value": "ks-master"
                 }, {
                     "name": "PG_SLAVE_SERVICE",
-                    "value": "kitchensink-replica"
+                    "value": "ks-replica"
                 }, {
                     "name": "PG_MASTER_PORT",
                     "value": "5432"

@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "kitchensink-sync-save-example",
+        "name": "ks-replica-pod-example",
         "creationTimestamp": null,
         "annotations": {
             "description": "PostgreSQL Replication Example",
@@ -18,19 +18,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "kitchensink-sync-replica",
+            "name": "ks-replica",
             "labels": {
-                "name": "kitchensink-sync-replica"
+                "name": "ks-replica"
             }
         },
         "spec": {
-
-            "securityContext": {
-                "fsGroup": 26
-            },
-
             "containers": [{
-                "name": "kitchensink-sync-replica",
+                "name": "ks-replica",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
@@ -38,7 +33,7 @@
                 }],
                 "env": [{
                     "name": "PG_MASTER_HOST",
-                    "value": "kitchensink-master"
+                    "value": "ks-master"
                 }, {
                     "name": "PG_MASTER_USER",
                     "value": "master"
@@ -46,14 +41,8 @@
                     "name": "PG_MASTER_PORT",
                     "value": "5432"
                 }, {
-                    "name": "PGHOST",
-                    "value": "/tmp"
-                }, {
                     "name": "PG_MODE",
                     "value": "slave"
-                }, {
-                    "name": "SYNC_SLAVE",
-                    "value": "kitchensink-sync-replica"
                 }, {
                     "name": "PG_MASTER_PASSWORD",
                     "value": "password"
@@ -82,10 +71,7 @@
             }],
             "volumes": [{
                 "name": "pgdata",
-                "persistentVolumeClaim": {
-                    "claimName": "kitchensink-sync-replica-pvc"
-                }
-
+                "emptyDir": {}
             }, {
                 "name": "backup",
                 "emptyDir": {}

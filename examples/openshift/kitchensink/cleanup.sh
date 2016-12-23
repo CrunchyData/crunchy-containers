@@ -12,18 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pv kitchensink-master-pv
-oc delete pv kitchensink-sync-replica-pv
-oc delete pvc kitchensink-master-pvc
-oc delete pvc kitchensink-sync-replica-pvc
-oc delete service kitchensink-master
-oc delete service kitchensink-replica
-oc delete pod kitchensink-watch
-oc delete pod kitchensink-master
-oc delete pod kitchensink-sync-replica
-oc delete dc kitchensink-pgpool-rc
-oc delete dc kitchensink-replica-dc
-oc delete service kitchensink-pgpool-rc
+oc delete pv ks-master-pv
+oc delete pv ks-sync-replica-pv
+oc delete pvc ks-master-pvc
+oc delete pvc ks-sync-replica-pvc
+oc delete service ks-master
+oc delete service ks-replica
+oc delete pod ks-watch
+oc delete pod ks-master
+oc delete pod ks-sync-replica
+oc delete dc ks-pgpool-rc
+oc delete dc ks-replica-dc
+oc delete service ks-pgpool-rc
 
-$BUILDBASE/examples/waitforterm.sh kitchensink-master oc
-$BUILDBASE/examples/waitforterm.sh kitchensink-replica oc
+$BUILDBASE/examples/waitforterm.sh ks-master oc
+$BUILDBASE/examples/waitforterm.sh ks-replica oc

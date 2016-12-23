@@ -2,7 +2,7 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "kitchensink-master-pvc"
+        "name": "ks-master-pvc"
       },
       "spec": {
         "accessModes": [
