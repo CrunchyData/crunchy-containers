@@ -30,6 +30,4 @@ envsubst <  $DIR/prometheus-pv.json | oc create -f -
 oc create -f $DIR/grafana-pvc.json
 oc create -f $DIR/prometheus-pvc.json
 
-oc process -f $DIR/prometheus-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-oc process -f $DIR/promgateway.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-oc process -f $DIR/grafana-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/metrics-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

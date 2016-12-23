@@ -116,7 +116,7 @@
                     "value": "5432"
                 }, {
                     "name": "PROM_GATEWAY",
-                    "value": "http://crunchy-scope:9091"
+                    "value": "http://crunchy-metrics:9091"
                 }, {
                     "name": "PG_ROOT_PASSWORD",
                     "value": "${PG_ROOT_PASSWORD}"

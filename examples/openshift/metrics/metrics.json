@@ -2,10 +2,10 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-prometheus-example",
+        "name": "crunchy-grafana-example",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy PostgreSQL prometheus Example",
+            "description": "Crunchy PostgreSQL Scope Example",
             "iconClass": "icon-database",
             "tags": "database,postgresql,replication"
         }
@@ -18,21 +18,33 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "crunchy-prometheus",
+            "name": "crunchy-metrics",
             "labels": {
-                "name": "crunchy-prometheus"
+                "name": "crunchy-metrics"
             }
         },
         "spec": {
             "ports": [{
+                "name": "grafana",
+                "protocol": "TCP",
+                "port": 3000,
+                "targetPort": 3000,
+                "nodePort": 0
+            }, {
                 "name": "prometheus",
                 "protocol": "TCP",
                 "port": 9090,
                 "targetPort": 9090,
                 "nodePort": 0
+            }, {
+                "name": "promgateway",
+                "protocol": "TCP",
+                "port": 9091,
+                "targetPort": 9091,
+                "nodePort": 0
             }],
             "selector": {
-                "name": "crunchy-prometheus"
+                "name": "crunchy-metrics"
             }
         },
         "status": {
@@ -42,9 +54,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "crunchy-prometheus",
+            "name": "crunchy-metrics",
             "labels": {
-                "name": "crunchy-prometheus"
+                "name": "crunchy-metrics"
             }
         },
         "spec": {
@@ -56,6 +68,31 @@
                     "protocol": "TCP"
                 }],
                 "env": [],
+                "volumeMounts": [{
+                    "mountPath": "/data",
+                    "name": "data",
+                    "readOnly": false
+                }]
+            }, {
+                "name": "crunchy-promgateway",
+                "image": "crunchydata/crunchy-promgateway:${CCP_IMAGE_TAG}",
+                "ports": [{
+                    "containerPort": 9091,
+                    "protocol": "TCP"
+                }],
+                "env": [],
+                "volumeMounts": []
+            }, {
+                "name": "crunchy-grafana",
+                "image": "crunchydata/crunchy-grafana:${CCP_IMAGE_TAG}",
+                "ports": [{
+                    "containerPort": 3000,
+                    "protocol": "TCP"
+                }],
+                "env": [],
+                "securityContext": {
+                    "capabilities": {}
+                },
                 "volumeMounts": [{
                     "mountPath": "/data",
                     "name": "data",
