@@ -18,14 +18,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "sync-replica",
+            "name": "syncreplica",
             "labels": {
                 "name": "replica"
             }
         },
         "spec": {
             "containers": [{
-                "name": "sync-replica",
+                "name": "syncreplica",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
@@ -48,7 +48,7 @@
                     "value": "slave"
                 }, {
                     "name": "SYNC_SLAVE",
-                    "value": "sync-replica"
+                    "value": "syncreplica"
                 }, {
                     "name": "PG_MASTER_PASSWORD",
                     "value": "password"

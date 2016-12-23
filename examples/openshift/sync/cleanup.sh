@@ -16,6 +16,6 @@ oc delete service master
 oc delete service replica
 oc delete pod master
 oc delete pod replica
-oc delete pod sync-replica
+oc delete pod syncreplica
 $BUILDBASE/examples/waitforterm.sh master oc
 $BUILDBASE/examples/waitforterm.sh replica oc
