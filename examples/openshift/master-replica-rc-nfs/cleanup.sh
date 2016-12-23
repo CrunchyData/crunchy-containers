@@ -20,6 +20,6 @@ $BUILDBASE/examples/waitforterm.sh m-s-rc-nfs-master oc
 $BUILDBASE/examples/waitforterm.sh m-s-rc-nfs-replica oc
 oc delete service m-s-rc-nfs-master
 oc delete service m-s-rc-nfs-replica
-oc delete pvc master-replica-pvc
-oc delete pv  master-replica-pv
+oc delete pvc master-replica-rc-nfs-pvc
+oc delete pv  master-replica-rc-nfs-pv
 sudo rm -rf /nfsfileshare/m-s-rc-nfs*

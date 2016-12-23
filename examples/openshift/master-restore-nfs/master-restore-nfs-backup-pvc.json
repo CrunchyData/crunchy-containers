@@ -2,11 +2,11 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-          "name": "master-restore-nfs-pvc"
+          "name": "master-restore-nfs-backup-pvc"
       },
       "spec": {
           "labels": {
-              "name": "master-restore-nfs-pv"
+              "name": "master-restore-nfs-backup-pv"
           },
           "accessModes": [
               "ReadWriteMany"

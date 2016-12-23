@@ -14,6 +14,6 @@
 
 oc delete pod master-restore-nfs
 oc delete service master-restore-nfs
-oc delete pvc master-restore-nfs-pvc
-oc delete pv master-restore-nfs-pv
+oc delete pvc master-restore-nfs-pvc master-restore-nfs-backup-pvc
+oc delete pv master-restore-nfs-pv master-restore-nfs-backup-pv
 
