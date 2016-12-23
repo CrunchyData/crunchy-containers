@@ -39,10 +39,10 @@
         "value": "password"
     }, {
         "name": "PG_MASTER_SERVICE_NAME",
-        "value": "pg-master-rc-dc"
+        "value": "master-dc"
     }, {
         "name": "PG_SLAVE_SERVICE_NAME",
-        "value": "pg-replica-rc-dc"
+        "value": "replica-dc"
     }],
     "objects": [{
         "kind": "Service",

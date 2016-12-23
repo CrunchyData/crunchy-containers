@@ -19,5 +19,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
 oc create -f $DIR/watch-sa.json
-oc policy add-role-to-group edit system:serviceaccounts -n pgproject
+oc policy add-role-to-group edit system:serviceaccounts -n default
 oc process -f $DIR/watch.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
