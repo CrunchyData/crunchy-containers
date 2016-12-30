@@ -20,7 +20,7 @@ VOLUME_NAME=$SERVICE_NAME-volume
 
 docker service rm $SERVICE_NAME
 
-CONTAINER_NAME=replica
+SERVICE_NAME=replica
 VOLUME_NAME=$SERVICE_NAME-volume
 
 docker service rm $SERVICE_NAME
