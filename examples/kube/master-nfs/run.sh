@@ -18,7 +18,7 @@ NFS_SHARE_PATH=${NFS_SHARE_PATH:-/nfsfileshare}
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 "$DIR"/cleanup.sh
-sleep 1
+sleep 3
 
 envsubst <  "$DIR"/master-nfs-pv.json | kubectl create -f -
 kubectl create -f "$DIR"/master-nfs-pvc.json
