@@ -22,6 +22,17 @@ trap 'trap_sigterm' SIGINT SIGTERM
 
 date
 
+mkdir -p /pgdata/$HOSTNAME
+chmod 0700 /pgdata/$HOSTNAME
+
+if [[ -v ARCHIVE_MODE ]]; then
+	if [ $ARCHIVE_MODE == "on" ]; then
+		mkdir -p /pgwal/$HOSTNAME
+		chmod 0700 /pgwal/$HOSTNAME
+		echo "creating wal directory at " /pgwal/$HOSTNAME
+	fi
+fi
+
 source /opt/cpm/bin/setenv.sh
 source check-for-secrets.sh
 
@@ -64,17 +75,6 @@ export PG_PASSWORD=$PG_PASSWORD
 export PG_DATABASE=$PG_DATABASE
 export PG_ROOT_PASSWORD=$PG_ROOT_PASSWORD
 
-
-mkdir -p /pgdata/$HOSTNAME
-chmod 0700 /pgdata/$HOSTNAME
-
-if [[ -v ARCHIVE_MODE ]]; then
-	if [ $ARCHIVE_MODE == "on" ]; then
-		mkdir -p /pgwal/$HOSTNAME
-		chmod 0700 /pgwal/$HOSTNAME
-		echo "creating wal directory at " /pgwal/$HOSTNAME
-	fi
-fi
 
 ## where pg-wrapper is called
 
