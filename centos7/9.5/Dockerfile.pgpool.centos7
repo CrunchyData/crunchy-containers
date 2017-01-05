@@ -2,8 +2,11 @@ FROM centos:7
 
 LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
 
-# PGDG Postgres repo
-RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-1.noarch.rpm
+ENV PGVERSION="9.5" \
+        PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
+
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
 
 # Crunchy Postgres repo
 #ADD conf/CRUNCHY-GPG-KEY.public  /
