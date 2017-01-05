@@ -20,7 +20,7 @@ source "$BUILDBASE"/tests/kubernetes/pgpass-setup
 
 sleep 60
 
-KUBE_HOST=$(kubectl get pod basic --template={{.status.podIP}})
+KUBE_HOST=$(kubectl get pod master-nfs --template={{.status.podIP}})
 PGPORT=${PGPORT:-5432}
 PG_MASTER_USER=${PG_MASTER_USER:-master}
 PG_DATABASE=${PG_DATABASE:-userdb}

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 source "$BUILDBASE"/examples/envvars.sh
-NFS_SHARE_IP=${NFS_SHARE_IP:-LOCAL_IP}
+NFS_SHARE_SERVER=${NFS_SHARE_SERVER:-LOCAL_IP}
 NFS_SHARE_PATH=${NFS_SHARE_PATH:-/nfsfileshare}
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
