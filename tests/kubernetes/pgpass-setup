@@ -1,0 +1,13 @@
+#!/bin/bash
+export PGPASSFILE=/tmp/testing-pgpass
+
+if [ -f $PGPASSFILE ]; then
+	chmod 700 $PGPASSFILE
+	/bin/rm $PGPASSFILE
+fi
+
+echo "Writing PGPASSFILE..."
+echo "*:*:*:*:password" > $PGPASSFILE
+chmod 400 $PGPASSFILE
+
+echo "BUILDBASE is $BUILDBASE"

@@ -12,12 +12,30 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source "$BUILDBASE"/examples/envvars.sh
+set -euo pipefail
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$BUILDBASE"/tests/kubernetes/pgpass-setup
 
-"$DIR"/cleanup.sh
-sleep 1
+"$BUILDBASE"/examples/kube/master-nfs/run.sh
 
-kubectl create -f "$DIR"/basic-service.json
-envsubst < "$DIR"/basic.json | kubectl create -f -
+sleep 60
+
+KUBE_HOST=$(kubectl get pod basic --template={{.status.podIP}})
+PGPORT=${PGPORT:-5432}
+PG_MASTER_USER=${PG_MASTER_USER:-master}
+PG_DATABASE=${PG_DATABASE:-userdb}
+
+psql -p $PGPORT -h $KUBE_HOST -U $PG_MASTER_USER -d $PG_DATABASE -c 'SELECT now();'
+
+rc=$?
+
+echo $rc is the rc
+
+if [ 0 -eq $rc ]; then
+	echo "test Kubernetes master-nfs passed"
+else
+	echo "test Kubernetes master-nfs FAILED"
+	exit $rc
+fi
+
+exit 0

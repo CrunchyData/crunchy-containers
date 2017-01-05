@@ -12,12 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $BUILDBASE/examples/envvars.sh
+source "$BUILDBASE"/examples/envvars.sh
+NFS_SHARE_IP=${NFS_SHARE_IP:-LOCAL_IP}
+NFS_SHARE_PATH=${NFS_SHARE_PATH:-/nfsfileshare}
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+"$DIR"/cleanup.sh
+sleep 1
 
-envsubst <  $DIR/master-nfs-pv.json | kubectl create -f -
-kubectl create -f $DIR/master-nfs-pvc.json
-envsubst < $DIR/master-nfs-pod.json | kubectl create -f -
-kubectl create -f $DIR/master-nfs-service.json 
+envsubst <  "$DIR"/master-nfs-pv.json | kubectl create -f -
+kubectl create -f "$DIR"/master-nfs-pvc.json
+envsubst < "$DIR"/master-nfs-pod.json | kubectl create -f -
+kubectl create -f "$DIR"/master-nfs-service.json 
