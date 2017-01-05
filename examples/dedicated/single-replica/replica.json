@@ -13,7 +13,7 @@
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use",
-        "value": "rhel7-9.6-1.2.6"
+        "value": "rhel7-9.5-1.2.6"
     }, {
         "name": "SERVICE_NAME",
         "description": "the name to use for the replica service and pod",

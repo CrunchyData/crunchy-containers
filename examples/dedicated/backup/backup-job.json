@@ -83,7 +83,6 @@
                         }
                     }],
                     "securityContext": {
-                        "fsGroup": 26
                     },
                     "containers": [{
                         "name": "${JOB_NAME}",
