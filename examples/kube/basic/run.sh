@@ -17,7 +17,6 @@ source "$BUILDBASE"/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 "$DIR"/cleanup.sh
-sleep 1
 
 kubectl create -f "$DIR"/basic-service.json
 envsubst < "$DIR"/basic.json | kubectl create -f -

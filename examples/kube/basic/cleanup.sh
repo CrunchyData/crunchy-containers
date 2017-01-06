@@ -14,3 +14,5 @@
 
 kubectl delete service basic
 kubectl delete pod basic
+
+"$BUILDBASE"/examples/waitforterm.sh basic kubectl

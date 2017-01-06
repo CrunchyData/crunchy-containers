@@ -16,3 +16,5 @@ kubectl delete service master-nfs
 kubectl delete pod master-nfs
 kubectl delete pvc master-nfs-pvc
 kubectl delete pv master-nfs-pv
+
+"$BUILDBASE"/examples/kube/waitforterm.sh master-nfs kubectl
