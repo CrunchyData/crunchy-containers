@@ -18,6 +18,7 @@ source "$BUILDBASE"/tests/kubernetes/pgpass-setup
 
 echo "Pause 60 seconds to allow pods to start."
 sleep 60
+kubectl get pod
 
 KUBE_MASTER_SERVICE=$(kubectl get service master-1 --template={{.spec.clusterIP}})
 PGPORT=${PGPORT:-5432}
@@ -47,7 +48,7 @@ psql -p $PGPORT -h $KUBE_MASTER_SERVICE -U $PG_MASTER_USER \
 KUBE_REPLICA_SERVICE=$(kubectl get service replica-1 --template={{.spec.clusterIP}})
 
 rowcount=$(psql -p $PGPORT -h $KUBE_REPLICA_SERVICE -U $PG_MASTER_USER \
- -d $PG_DATABASE 
+ -d $PG_DATABASE \
  -Xqt -c 'SELECT count(*) from some_table;')
 
 rc=$?
