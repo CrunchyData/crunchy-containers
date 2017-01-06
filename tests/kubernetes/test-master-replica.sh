@@ -12,13 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -euo pipefail
-
 source "$BUILDBASE"/tests/kubernetes/pgpass-setup
 
 "$BUILDBASE"/examples/kube/master-replica/run.sh
 
-sleep 45
+echo "Pause 60 seconds to allow pods to start."
+sleep 60
 
 KUBE_MASTER_SERVICE=$(kubectl get service master-1 --template={{.spec.clusterIP}})
 PGPORT=${PGPORT:-5432}
