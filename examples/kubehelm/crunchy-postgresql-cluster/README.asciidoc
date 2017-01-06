@@ -6,7 +6,7 @@ image::crunchy_logo.png?raw=true[]
 == Helm Example for Crunchy Postgres
 
 This is an example of running the Crunchy Postgres containers
-using the link://https://github.com/kubernetes/helm[Helm project]!  More examples of the Crunchy Containers
+using the link:https://github.com/kubernetes/helm[Helm project]!  More examples of the Crunchy Containers
 for Postgres can be found at the link:https://github.com/crunchydata/crunchy-containers/[github site].   This example will live eventually within the 
 Kubernetes Chart project contributed link:https://github.com/kubernetes/charts/[examples].
 
