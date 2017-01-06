@@ -71,7 +71,12 @@ environment variable which indicates which version of the
 container you will pull down and execute, for example:
 ....
 export BUILDBASE=$HOME/crunchy-containers
-export CCP_IMAGE_TAG=centos7-9.5-1.2.6
+export CCP_IMAGE_TAG=centos7-9.5-1.2.5
+....
+
+Note that on OSX, you also need to install envsubst via the gettext package
+....
+brew install gettext && brew link --force gettext
 ....
 
 The BUILDBASE is the location of where you cloned the containers github
