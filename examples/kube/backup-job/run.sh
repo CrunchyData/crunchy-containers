@@ -19,8 +19,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 "$DIR"/cleanup.sh
 
-NFS_SHARE_PATH=${NFS_SHARE_PATH:-/nfsfileshare}
-NFS_SHARE_SERVER=${NFS_SHARE_SERVER:-$LOCAL_IP}
+export NFS_SHARE_PATH=${NFS_SHARE_PATH:-/nfsfileshare}
+export NFS_SHARE_SERVER=${NFS_SHARE_SERVER:-$LOCAL_IP}
 
 envsubst < "$DIR"/backup-job-pv.json | kubectl create -f -
 
