@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+
 export PGPASSFILE=/tmp/testing-pgpass
 
 if [ -f $PGPASSFILE ]; then
@@ -9,5 +11,3 @@ fi
 echo "Writing PGPASSFILE..."
 echo "*:*:*:*:password" > $PGPASSFILE
 chmod 400 $PGPASSFILE
-
-echo "BUILDBASE is $BUILDBASE"
