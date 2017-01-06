@@ -71,9 +71,19 @@ function install-nfs {
 	sudo chown root:nfsnobody /nfsfileshare
 }
 
+# this needs to run after you have openshift up and running
+# and the crunchy user account created
+# this command allows the crunchy user to create PVs and other
+# cluster admin functions...it is VERY wide...don't do this in production
+function configure-ose {
+	sudo oadm policy add-cluster-role-to-user cluster-admin crunchy
+}
+
+
 echo "starting vm setup...."
 #install-nfs
 #install-reqs
 #install-crunchy
-install-ose
+#install-ose
+#configure-ose
 
