@@ -17,7 +17,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 RUN yum -y install rsync nss_wrapper gettext bind-utils procps-ng \
 openssh-clients  hostname && yum -y reinstall glibc-common && \ 
 yum -y install postgresql95 postgresql95-contrib postgresql95-server \
-pgaudit pgaudit_analyze pgaudit_set_user \
+pgaudit95 pgaudit_analyze pgaudit95_set_user \
 postgis2_95 postgis2_95-client crunchy-backrest pgrouting_95  && yum clean all -y
 
 # add path settings for postgres user

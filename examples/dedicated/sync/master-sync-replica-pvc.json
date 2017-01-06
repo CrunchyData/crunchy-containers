@@ -138,7 +138,6 @@
             },
             "spec": {
                 "securityContext": {
-                    "fsGroup": 26
                 },
 
                 "containers": [{
@@ -233,7 +232,6 @@
             },
             "spec": {
                 "securityContext": {
-                    "fsGroup": 26
                 },
 
                 "containers": [{
