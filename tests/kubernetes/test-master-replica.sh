@@ -31,20 +31,19 @@ psql -p $PGPORT -h $KUBE_MASTER_SERVICE -U $PG_MASTER_USER \
 
 rc=$?
 
-echo $rc is the rc
-
 if [ 0 -eq $rc ]; then
 	echo "test Kubernetes master-replica CREATE TABLE passed"
 else
-	echo "test Kubernetes master-replica CREATE TABLE FAILED"
+	echo "test Kubernetes master-replica CREATE TABLE FAILED with $rc"
 	exit $rc
 fi
 
-echo "INSERTING DATA"
+echo "INSERTING some data"
 psql -p $PGPORT -h $KUBE_MASTER_SERVICE -U $PG_MASTER_USER \
  -d $PG_DATABASE \
  -Xqt -c 'INSERT INTO some_table(some_value) VALUES(15), (23), (35);'
 
+kubectl get service
 KUBE_REPLICA_SERVICE=$(kubectl get service replica-1 --template={{.spec.clusterIP}})
 
 rowcount=$(psql -p $PGPORT -h $KUBE_REPLICA_SERVICE -U $PG_MASTER_USER \
@@ -53,12 +52,10 @@ rowcount=$(psql -p $PGPORT -h $KUBE_REPLICA_SERVICE -U $PG_MASTER_USER \
 
 rc=$?
 
-echo $rc is the rc
-
 if [ 0 -eq $rc ]; then
 	echo "test Kubernetes master-replica connect to replica passed"
 else
-	echo "test Kubernetes master-replica connect to replica FAILED"
+	echo "test Kubernetes master-replica connect to replica FAILED with $rc"
 	exit $rc
 fi
 
@@ -66,6 +63,7 @@ if [ $rowcount -eq 3 ]; then
 	echo "test Kubernetes master-replica data replication passed"
 else
 	echo "test Kubernetes master-replica data replication FAILED"
+	echo "  Query returned: $rowcount"
 	exit $rc
 fi
 

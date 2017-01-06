@@ -12,17 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eu
+set -u
 
-source "$BUILDBASE"/examples/envvars.sh
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "$BUILDBASE"/tests/kubernetes/pgpass-setup
 
-"$DIR"/cleanup.sh
+sudo rm -rf /tmp/backups/master
 
-NFS_SHARE_PATH=${NFS_SHARE_PATH:-/nfsfileshare}
-NFS_SHARE_SERVER=${NFS_SHARE_SERVER:-$LOCAL_IP}
+"$BUILDBASE"/examples/kube/backup-job/run.sh
 
-envsubst <  "$DIR"/master-nfs-pv.json | kubectl create -f -
-kubectl create -f "$DIR"/master-nfs-pvc.json
-envsubst < "$DIR"/master-nfs-pod.json | kubectl create -f -
-kubectl create -f "$DIR"/master-nfs-service.json 
+sleep 20
+
+FILE=/tmp/backups/master/2*/postgresql.conf
+
+if [ -f $FILE ]; then
+        echo "test backup passed"
+	exit 0
+fi
+
+echo "test backup FAILED"
+exit 1

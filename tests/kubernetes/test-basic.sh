@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -euo pipefail
+set -u
 
-source "$BUILDBASE/tests/kubernetes/pgpass-setup"
+source "$BUILDBASE"/tests/kubernetes/pgpass-setup
 
-"$BUILDBASE/examples/kube/basic/run.sh"
+"$BUILDBASE"/examples/kube/basic/run.sh
 
 sleep 60
 

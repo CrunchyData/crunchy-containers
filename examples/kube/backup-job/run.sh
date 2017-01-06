@@ -12,13 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -eu
 
-source $BUILDBASE/examples/envvars.sh
+source "$BUILDBASE"/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+"$DIR"/cleanup.sh
 
-envsubst < $DIR/backup-job-pv.json | kubectl create -f -
+NFS_SHARE_PATH=${NFS_SHARE_PATH:-/nfsfileshare}
+NFS_SHARE_SERVER=${NFS_SHARE_SERVER:-$LOCAL_IP}
 
-kubectl create -f $DIR/backup-job-pvc.json
-envsubst < $DIR/backup-job-nfs.json | kubectl create -f -
+envsubst < "$DIR"/backup-job-pv.json | kubectl create -f -
+
+kubectl create -f "$DIR"/backup-job-pvc.json
+envsubst < "$DIR"/backup-job-nfs.json | kubectl create -f -
