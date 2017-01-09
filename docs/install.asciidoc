@@ -230,6 +230,13 @@ oc edit scc restricted
 NFS is required for some of the Openshift examples, those dealing with
 backups and restores will require a working NFS for example.
 
+If you already have an NFS share available, you may specify this by setting the following environment variables, and configure permissions as described in this guide. Currently, these environment variables are only supported in the Kubernetes examples.
+
+....
+export NFS_SHARE_SERVER=192.168.23.101
+export NFS_SHARE_PATH=/path/to/nfsshare
+....
+
 First, if you are running your NFS system with SELinux
 in enforcing mode, you will need to run the following command
 to allow NFS write permissions:
