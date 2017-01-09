@@ -1,0 +1,69 @@
+= all-in-one explained
+Crunchy Data Solutions, Inc.
+v1.2.6, {docdate}
+:title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
+
+== All-In-One Crunchy OSE Image
+
+To allow users to take a look at crunchy on Openshift, 
+we have created an all-in-one Virtual Machine that you
+can run which will include Openshift and the Crunchy
+containers.
+
+The image can be imported as an appliance in VirtualBox.
+
+=== configuration
+
+
+The image uses a NAT interface for networking.  
+
+The image includes a Gnome UI environment if you want to use that, 
+especially useful for using the Openshift web console.
+
+The VM instance has a *crunchy* user created with a password of *crunchy*.
+This user has sudo privs.
+
+=== Openshift 3.3
+
+Openshift 3.3 is installed and running when you start the VM.
+
+There are 10 small PVs already created and each is hosted on 
+a local NFS /nfsfileshare.
+
+The openshift is configured to allow any user to log in.  The *crunchy*
+user is already created, a password of *crunchy* is also specified.  An
+openshift project named *crunchy* is already created as well.
+
+The *crunchy* openshift user has been granted openshift cluster-admin
+privs which allows it to do pretty much anything including
+creating PVs.
+
+=== Crunchy Images
+
+The crunchy version 1.2.6 container images are preinstalled
+in the VM instance.
+
+=== Crunchy Examples
+
+The crunchy container examples for openshift are installed
+here:
+
+==== $BUILDBASE/examples/openshift
+This directory contains all sorts of examples that create pods
+and services when you run the run.sh script in each subdirectory.
+
+==== $BUILDBASE/examples/dedicated
+This directory contains openshift templates that are pre-installed
+into the Openshift environment, with these you can click on Add To Project
+in the web console to deploy containers.
+
+	
+
+== Legal Notices
+
+Copyright © 2016 Crunchy Data Solutions, Inc.
+
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
+
