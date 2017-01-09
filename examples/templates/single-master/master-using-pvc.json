@@ -60,7 +60,7 @@
         },
         "spec": {
             "accessModes": [
-                "ReadWriteOnce"
+                "$PVC_ACCESS_MODE"
             ],
             "resources": {
                 "requests": {
@@ -108,7 +108,7 @@
             },
             "containers": [{
                 "name": "${SERVICE_NAME}",
-                "image": "172.30.240.45:5000/jeff-project/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "$CRUNCHY_IMAGE_PATH/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "readinessProbe": {
                     "exec": {

@@ -12,6 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pod master-restore
-oc delete service master-restore
-$BUILDBASE/examples/waitforterm.sh master-restore oc
+oc delete template crunchy-postgres-database-with-collect

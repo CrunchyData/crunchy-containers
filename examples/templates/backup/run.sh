@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc project jeff-project
+$DIR/cleanup.sh
 
-oc delete template crunchy-postgres-database-backup
-
-oc create -f ./backup-job.json
+envsubst < $DIR/backup-job.json | oc create -f -
 

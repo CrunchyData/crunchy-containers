@@ -13,7 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc project jeff-project
+source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
 
 CONFIGDIR=/nfsfileshare/bouncerconfig
 
@@ -21,12 +24,9 @@ sudo rm -rf $CONFIGDIR
 sudo mkdir $CONFIGDIR
 sudo chmod 777 $CONFIGDIR
 
-LOC=$HOME/dedicated-examples/pgbouncer
+cp $DIR/pgbouncer.ini $CONFIGDIR
+cp $DIR/users.txt $CONFIGDIR
 
-cp $LOC/pgbouncer.ini $CONFIGDIR
-cp $LOC/users.txt $CONFIGDIR
+envsubst < $DIR/pgbouncer-pv.json | oc create -f -
 
-IPADDRESS=`hostname --ip-address`
-cat $LOC/pgbouncer-pv.json | sed -e "s/IPADDRESS/$IPADDRESS/g" | oc create -f -
-oc create -f $LOC/pgbouncer-pvc.json
-oc process -f $LOC/pgbouncer.json | oc create -f -
+envsubst < $DIR/pgbouncer.json | oc create -f -

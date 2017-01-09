@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc project jeff-project
+source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete template crunchy-postgres-database-with-collect
-oc create -f master-collect.json
+$DIR/cleanup.sh
+envsubst < $DIR/master-collect.json | oc create -f -
 
-#oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f ./master-collect.json | oc create -f -

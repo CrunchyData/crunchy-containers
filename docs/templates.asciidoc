@@ -31,7 +31,7 @@ Template Name is *crunchy-postgres-database-with-pgbadger*
 
 Example is found here:
 ....
-examples/dedicated/badger
+examples/templates/badger
 ....
 
 This template will create the following:
@@ -45,7 +45,7 @@ Template Name is *crunchy-metrics-backend-using-ebs*
 
 Example is found here:
 ....
-examples/dedicated/collect
+examples/templates/collect
 ....
 
 This template will create the following:
@@ -63,7 +63,7 @@ Template Name is *crunchy-postgres-database-with-collect-badger-pvc*
 
 Example is found here:
 ....
-examples/dedicated/master-collect-badger
+examples/templates/master-collect-badger
 ....
 
 This template will create the following:
@@ -82,7 +82,7 @@ Template Name is *crunchy-postgres-database-restore-emptydir*
 
 Example is found here:
 ....
-examples/dedicated/master-restore
+examples/templates/master-restore
 ....
 
 This template will create the following:
@@ -98,7 +98,7 @@ Template Name is *crunchy-postgres-master-replica-emptydir*
 
 Example is found here:
 ....
-examples/dedicated/master-replica
+examples/templates/master-replica
 ....
 
 This template will create the following:
@@ -116,7 +116,7 @@ Template Name is *crunchy-postgres-master-replica-deployment-emptydir*
 
 Example is found here:
 ....
-examples/dedicated/master-slave-dc
+examples/templates/master-slave-dc
 ....
 
 This template will create the following:
@@ -135,7 +135,7 @@ Template Name is *crunchy-metrics-backend-using-ebs*
 
 Example is found here:
 ....
-examples/dedicated/metrics
+examples/templates/metrics
 ....
 
 This template will create the following:
@@ -155,7 +155,7 @@ Template Name is *crunchy-pgadmin4-ebs*
 
 Example is found here:
 ....
-examples/dedicated/pgadmin4
+examples/templates/pgadmin4
 ....
 
 This template will create the following:
@@ -172,7 +172,7 @@ Template Name is *crunchy-postgres-pgpool-template*
 
 Example is found here:
 ....
-examples/dedicated/pgpool
+examples/templates/pgpool
 ....
 
 This template will create the following:
@@ -189,7 +189,7 @@ Template names are *crunchy-postgres-database-emptydir* and
 
 Example is found here:
 ....
-examples/dedicated/single-master
+examples/templates/single-master
 ....
 
 These templates create the following:
@@ -205,7 +205,7 @@ Template names is *crunchy-postgres-replica-deployment-emptydir*
 
 Example is found here:
 ....
-examples/dedicated/replica-dc
+examples/templates/replica-dc
 ....
 
 These templates create the following:
@@ -222,7 +222,7 @@ Template Name is *crunchy-postgres-database-backup*
 
 Example is found here:
 ....
-examples/dedicated/backup
+examples/templates/backup
 ....
 
 This template will create the following:
@@ -240,7 +240,7 @@ Template names are *crunchy-postgres-replica-emptydir* and
 
 Example is found here:
 ....
-examples/dedicated/single-replica
+examples/templates/single-replica
 ....
 
 This template will create the following:
@@ -257,7 +257,7 @@ Template Name is *crunchy-postgres-master-sync-replica-pvc*
 
 Example is found here:
 ....
-examples/dedicated/sync
+examples/templates/sync
 ....
 
 This template will create the following:
@@ -278,7 +278,7 @@ Template Name is *crunchy-cluster-watch-template*
 
 Example is found here:
 ....
-examples/dedicated/watch
+examples/templates/watch
 ....
 
 This template will create the following:

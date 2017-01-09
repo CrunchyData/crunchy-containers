@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc project jeff-project
+source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete template crunchy-postgres-database-emptydir
-oc delete template crunchy-postgres-database-pvc
+$DIR/cleanup.sh
 
-oc create -f ./master.json 
-oc create -f ./master-using-pvc.json 
+oc create -f $DIR/master.json 
+envsubst < $DIR/master-using-pvc.json | oc create -f -

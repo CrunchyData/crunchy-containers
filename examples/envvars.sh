@@ -30,3 +30,10 @@ if [ -v $CCP_IMAGE_TAG ]; then
 	export CCP_IMAGE_TAG=centos7-9.5-1.2.2
 	echo "CCP_IMAGE_TAG was not found...using current tag of " $CCP_IMAGE_TAG
 fi
+
+# for PVC templates - NFS uses ReadWriteMany - EBS uses ReadWriteOnce
+#export PVC_ACCESS_MODE=ReadWriteOnce
+export PVC_ACCESS_MODE=ReadWriteMany
+# for templates - allow for override of Image Path Prefix
+#export CRUNCHY_IMAGE_PATH=172.30.240.45:5000/jeff-project
+export CRUNCHY_IMAGE_PATH=crunchydata

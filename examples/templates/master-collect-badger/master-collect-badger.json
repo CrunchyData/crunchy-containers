@@ -89,7 +89,7 @@
         "spec": {
             "containers": [{
                 "name": "pgbadger",
-                "image": "172.30.240.45:5000/jeff-project/crunchy-pgbadger:${CCP_IMAGE_TAG}",
+                "image": "$CRUNCHY_IMAGE_PATH/crunchy-pgbadger:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 10000,
@@ -106,7 +106,7 @@
                 }]
             }, {
                 "name": "collect",
-                "image": "172.30.240.45:5000/jeff-project/crunchy-collect:${CCP_IMAGE_TAG}",
+                "image": "$CRUNCHY_IMAGE_PATH/crunchy-collect:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "env": [{
                     "name": "PG_MASTER_USER",
@@ -131,7 +131,7 @@
                 }]
             }, {
                 "name": "postgres",
-                "image": "172.30.240.45:5000/jeff-project/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "$CRUNCHY_IMAGE_PATH/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 5432,

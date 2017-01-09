@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc project jeff-project
+source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete template crunchy-cluster-watch-template
+$DIR/cleanup.sh
 
-oc create -f ./watch.json
+envsubst < $DIR/watch.json | oc create -f -
 

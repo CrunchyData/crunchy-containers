@@ -16,9 +16,10 @@
 #
 # this example creates the metrics backends using emptyDir volumes
 #
-oc project jeff-project
+source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete template  crunchy-metrics-backend-using-ebs
+$DIR/cleanup.sh
 
-oc create -f metrics.json
+envsubst < $DIR/metrics.json | oc create -f -
 

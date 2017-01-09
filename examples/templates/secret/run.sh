@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc project jeff-project
+source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-LOC=$BUILDBASE/examples/dedicated/secret
+$DIR/cleanup.sh
 
-oc create -f $LOC/pguser-secret.json
-oc create -f $LOC/pgmaster-secret.json 
-oc create -f $LOC/pgroot-secret.json 
-oc process -f $LOC/secret-pg.json | oc create -f -
+oc create -f $DIR/pguser-secret.json
+oc create -f $DIR/pgmaster-secret.json 
+oc create -f $DIR/pgroot-secret.json 
+envsubst < $DIR/secret-pg.json | oc create -f -

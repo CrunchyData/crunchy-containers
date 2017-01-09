@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pod master-collect
-oc delete service master-collect
-$BUILDBASE/examples/waitforterm.sh master-collect oc
+oc delete secret pguser-secret pgmaster-secret pgroot-secret
+
+oc delete template master-with-secrets-example

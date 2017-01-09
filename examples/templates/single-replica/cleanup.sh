@@ -14,3 +14,5 @@
 
 oc delete template crunchy-postgres-replica-emptydir
 oc delete template crunchy-postgres-replica-pvc
+
+

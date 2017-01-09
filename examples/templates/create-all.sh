@@ -12,4 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete template crunchy-pgadmin4-ebs
+source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/backup/run.sh
+$DIR/badger/run.sh
+$DIR/collect/run.sh
+$DIR/master-collect-badger/run.sh
+$DIR/master-replica-dc/run.sh
+$DIR/master-replica/run.sh
+$DIR/master-restore/run.sh
+$DIR/metrics/run.sh
+$DIR/pgadmin4/run.sh
+$DIR/pgbouncer/run.sh
+$DIR/pgpool/run.sh
+$DIR/replica-dc/run.sh
+$DIR/secret/run.sh
+$DIR/single-master/run.sh
+$DIR/single-replica/run.sh
+$DIR/sync/run.sh
+$DIR/watch/run.sh

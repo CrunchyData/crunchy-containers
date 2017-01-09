@@ -2,19 +2,38 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pg-replica-example",
+        "name": "crunchy-pgbouncer",
         "creationTimestamp": null,
         "annotations": {
-            "description": "PostgreSQL Replication Example",
+            "description": "pgbouncer pod example",
             "iconClass": "icon-database",
-            "tags": "database,postgresql,replication"
+            "tags": "database,postgresql,crunchy"
         }
     },
     "parameters": [{
         "name": "PGBOUNCER_SERVICE_NAME",
         "value": "pgbouncer"
     }],
-    "objects": [{
+    "objects": [
+
+  {
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "pgbouncer-pvc"
+      },
+      "spec": {
+        "accessModes": [
+          "$PVC_ACCESS_MODE"
+        ],
+        "resources": {
+          "requests": {
+            "storage": "10M"
+          }
+        }
+      }
+    },
+{
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
@@ -55,7 +74,7 @@
             }],
             "containers": [{
                 "name": "server",
-                "image": "crunchydata/crunchy-pgbouncer:1.2.1",
+                "image": "$CRUNCHY_IMAGE_PATH/crunchy-pgbouncer:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

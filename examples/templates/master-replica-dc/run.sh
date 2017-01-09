@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc project jeff-project
+source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete template crunchy-postgres-master-replica-deployment-emptydir
+$DIR/cleanup.sh
 
-oc create -f master-slave-dc.json
+envsubst < $DIR/master-slave-dc.json | oc create -f -

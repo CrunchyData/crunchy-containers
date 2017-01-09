@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-metrics-backend-using-ebs",
+        "name": "crunchy-metrics",
         "creationTimestamp": null,
         "annotations": {
             "description": "Crunchy PostgreSQL Metrics Backend",
@@ -27,11 +27,11 @@
             },
             "spec": {
                 "accessModes": [
-                    "ReadWriteOnce"
+                    "$PVC_ACCESS_MODE"
                 ],
                 "resources": {
                     "requests": {
-                        "storage": "1Gi"
+                        "storage": "400M"
                     }
                 }
             }
@@ -88,7 +88,7 @@
 
                 "containers": [{
                     "name": "prometheus",
-                    "image": "172.30.240.45:5000/jeff-project/crunchy-prometheus:${CCP_IMAGE_TAG}",
+                    "image": "$CRUNCHY_IMAGE_PATH/crunchy-prometheus:${CCP_IMAGE_TAG}",
                     "imagePullPolicy": "Always",
                     "ports": [{
                         "containerPort": 9090,
@@ -102,7 +102,7 @@
                     }]
                 }, {
                     "name": "promgateway",
-                    "image": "172.30.240.45:5000/jeff-project/crunchy-promgateway:${CCP_IMAGE_TAG}",
+                    "image": "$CRUNCHY_IMAGE_PATH/crunchy-promgateway:${CCP_IMAGE_TAG}",
                     "imagePullPolicy": "Always",
                     "ports": [{
                         "containerPort": 9091,
@@ -112,7 +112,7 @@
                     "volumeMounts": []
                 }, {
                     "name": "grafana",
-                    "image": "172.30.240.45:5000/jeff-project/crunchy-grafana:${CCP_IMAGE_TAG}",
+                    "image": "$CRUNCHY_IMAGE_PATH/crunchy-grafana:${CCP_IMAGE_TAG}",
                     "imagePullPolicy": "Always",
                     "ports": [{
                         "containerPort": 3000,

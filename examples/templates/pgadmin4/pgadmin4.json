@@ -2,10 +2,10 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-pgadmin4-ebs",
+        "name": "crunchy-pgadmin4-using-pvc",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy pgadmin4 using EBS persistence",
+            "description": "Crunchy pgadmin4 using pvc persistence",
             "iconClass": "icon-database",
             "tags": "database,postgresql,crunchy"
         }
@@ -17,7 +17,7 @@
     }, {
         "name": "PVC_NAME",
         "description": "name to use for the PVC",
-        "value": "pgadmin4-ebs-pvc"
+        "value": "pgadmin4-pvc"
     }, {
         "name": "SERVICE_NAME",
         "description": "The name to use for the service and container",
@@ -32,11 +32,11 @@
         },
         "spec": {
             "accessModes": [
-                "ReadWriteOnce"
+                "$PVC_ACCESS_MODE"
             ],
             "resources": {
                 "requests": {
-                    "storage": "500M"
+                    "storage": "100M"
                 }
             }
         }
@@ -79,7 +79,7 @@
         "spec": {
             "containers": [{
                 "name": "${SERVICE_NAME}",
-                "image": "172.30.240.45:5000/jeff-project/crunchy-pgadmin4:${CCP_IMAGE_TAG}",
+                "image": "$CRUNCHY_IMAGE_PATH/crunchy-pgadmin4:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5050,
                     "protocol": "TCP"

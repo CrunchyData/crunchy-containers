@@ -13,10 +13,9 @@
 # limitations under the License.
 
 
-oc project jeff-project
+source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-LOC=$BUILDBASE/examples/dedicated/master-restore
+$DIR/cleanup.sh
 
-oc delete template crunchy-postgres-database-restore-emptydir
-
-oc create -f ./master-restore.json
+envsubst < $DIR/master-restore.json | oc create -f -

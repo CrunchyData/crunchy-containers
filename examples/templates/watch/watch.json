@@ -60,7 +60,7 @@
             "serviceAccount": "${SERVICE_ACCOUNT_NAME}",
             "containers": [{
                 "name": "watch",
-                "image": "172.30.240.45:5000/jeff-project/crunchy-watch:${CCP_IMAGE_TAG}",
+                "image": "$CRUNCHY_IMAGE_PATH/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
                     "value": "${OSE_PROJECT}"

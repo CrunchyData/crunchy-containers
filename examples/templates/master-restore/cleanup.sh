@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,9 +11,5 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-oc delete pvc pgbouncer-pvc
-oc delete pv pgbouncer-pv
-oc delete pod pgbouncer
-oc delete service pgbouncer
-$BUILDBASE/examples/waitforterm.sh pgbouncer oc
+ 
+oc delete template crunchy-postgres-database-restore-emptydir

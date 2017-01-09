@@ -12,8 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc project jeff-project
+source $BUILDBASE/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc  delete template crunchy-postgres-database-with-collect-badger
-oc create -f master-collect-badger.json
+$DIR/cleanup.sh
+
+envsubst < $DIR/master-collect-badger.json | oc create -f -
 
