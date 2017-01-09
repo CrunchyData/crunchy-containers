@@ -14,20 +14,45 @@
 
 set -u
 
+export NFS_SHARE_PATH=${NFS_SHARE_PATH:-/nfsfileshare}
+export NFS_SHARE_SERVER=${NFS_SHARE_SERVER:-$LOCAL_IP}
+
+# set the root path to the basic pod nfs share
+if [ "$NFS_SHARE_SERVER" -eq $LOCAL_IP ]; then
+	MNT=$(mktemp -d /tmp/XXXX)
+	sudo mount -t nfs "$NFS_SHARE_SERVER:$NFS_SHARE_PATH" $MNT
+	BASIC_SHARE_ROOT=$MNT/basic
+else
+	BASIC_SHARE_ROOT="$NFS_SHARE_PATH"/basic
+fi
+
+# remove old backup directories from basic pod nfs share
+sudo find "$BASIC_SHARE_ROOT"-type d -regextype sed \
+ -regex "^$BASIC_SHARE_ROOT\/20[1-3][0-9]-[0-1][0-9]-[0-3][0-9]-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}$" \
+ -exec rm -rf +
+
+# start basic container and backup job
 source "$BUILDBASE"/tests/kubernetes/pgpass-setup
 
-sudo rm -rf /tmp/backups/master
+"$BUILDBASE"/examples/kube/basic/run.sh
 
 "$BUILDBASE"/examples/kube/backup-job/run.sh
 
 sleep 20
 
-FILE=/tmp/backups/master/2*/postgresql.conf
+find "$BASIC_SHARE_ROOT" -type f -regextype sed \
+ -regex "^$BASIC_SHARE_ROOT\/20[1-3][0-9]-[0-1][0-9]-[0-3][0-9]-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}/postgresql.conf$"
+rc=$?
 
-if [ -f $FILE ]; then
-        echo "test backup passed"
-	exit 0
+if [ "$NFS_SHARE_SERVER" -ne $LOCAL_IP ]; then
+	sudo umount $MNT
 fi
 
-echo "test backup FAILED"
-exit 1
+if [ 0 -eq $rc ]; then
+	echo "kubernetes backup-job test passed"
+else
+	echo "Kubernetes backub-job test FAILED with $rc"
+	exit $rc
+fi
+
+exit 0
