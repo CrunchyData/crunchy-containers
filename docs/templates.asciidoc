@@ -22,9 +22,6 @@ within each example directory:
 ./run.sh
 ....
 
-Each example references an OSE project called *jeff-project*, modify
-this value to meet your needs.
-
 === Badger
 
 Template Name is *crunchy-postgres-database-with-pgbadger*
