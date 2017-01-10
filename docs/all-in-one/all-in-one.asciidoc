@@ -38,6 +38,13 @@ The *crunchy* openshift user has been granted openshift cluster-admin
 privs which allows it to do pretty much anything including
 creating PVs.
 
+You can start Gnome by logging in and typing:
+....
+startx
+....
+
+Firefox is installed and the openshift console is available at https://10.0.2.15:8443/console
+
 === Crunchy Images
 
 The crunchy version 1.2.6 container images are preinstalled
