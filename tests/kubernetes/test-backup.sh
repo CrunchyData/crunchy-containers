@@ -20,7 +20,7 @@ export NFS_SHARE_PATH=${NFS_SHARE_PATH:-/nfsfileshare}
 export NFS_SHARE_SERVER=${NFS_SHARE_SERVER:-$LOCAL_IP}
 
 # set the root path to the basic pod nfs share
-if [ "$NFS_SHARE_SERVER" -eq $LOCAL_IP ]; then
+if [ "$NFS_SHARE_SERVER" = "$LOCAL_IP" ]; then
 	MNT=$(mktemp -d /tmp/XXXX)
 	sudo mount -t nfs "$NFS_SHARE_SERVER:$NFS_SHARE_PATH" $MNT
 	BASIC_SHARE_ROOT=$MNT/basic
@@ -46,7 +46,7 @@ find "$BASIC_SHARE_ROOT" -type f -regextype sed \
  -regex "^$BASIC_SHARE_ROOT\/20[1-3][0-9]-[0-1][0-9]-[0-3][0-9]-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}/postgresql.conf$"
 rc=$?
 
-if [ "$NFS_SHARE_SERVER" -ne $LOCAL_IP ]; then
+if [ "$NFS_SHARE_SERVER" != "$LOCAL_IP" ]; then
 	sudo umount $MNT
 fi
 
