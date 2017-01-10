@@ -8,10 +8,10 @@
     "capacity": {
         "storage": "10M"
     },
-    "accessModes": [ "$PVC_ACCESS_MODE" ],
+    "accessModes": [ "REPLACE_PVC_ACCESS_MODE" ],
     "nfs": {
         "path": "/nfsfileshare/bouncerconfig",
-        "server": "$LOCAL_IP"
+        "server": "REPLACE_LOCAL_IP"
     },
     "persistentVolumeReclaimPolicy": "Retain"
   }

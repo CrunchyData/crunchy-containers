@@ -12,7 +12,7 @@
     },
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
-        "value": "rhel7-9.5-1.2.6",
+        "value": "REPLACE_CCP_IMAGE_TAG",
         "description": "the image tag to use"
     }, {
         "name": "SERVICE_NAME",
@@ -60,7 +60,7 @@
             "serviceAccount": "${SERVICE_ACCOUNT_NAME}",
             "containers": [{
                 "name": "watch",
-                "image": "$CRUNCHY_IMAGE_PATH/crunchy-watch:${CCP_IMAGE_TAG}",
+                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
                     "value": "${OSE_PROJECT}"

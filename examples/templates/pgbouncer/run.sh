@@ -27,6 +27,16 @@ sudo chmod 777 $CONFIGDIR
 cp $DIR/pgbouncer.ini $CONFIGDIR
 cp $DIR/users.txt $CONFIGDIR
 
-envsubst < $DIR/pgbouncer-pv.json | oc create -f -
+TMPFILE=/tmp/pgbouncer-pv.json
+cp $DIR/pgbouncer-pv.json $TMPFILE
+sed -i "s/REPLACE_LOCAL_IP/$LOCAL_IP/g" $TMPFILE
+sed -i "s/REPLACE_PVC_ACCESS_MODE/$PVC_ACCESS_MODE/g" $TMPFILE
+oc create -f $TMPFILE
 
-envsubst < $DIR/pgbouncer.json | oc create -f -
+TMPFILE=/tmp/pgbouncer.json
+cp $DIR/pgbouncer.json $TMPFILE
+sed -i "s/REPLACE_CCP_IMAGE_TAG/$CCP_IMAGE_TAG/g" $TMPFILE
+sed -i "s/REPLACE_CCP_IMAGE_PREFIX/$CCP_IMAGE_PREFIX/g" $TMPFILE
+sed -i "s/REPLACE_PVC_ACCESS_MODE/$PVC_ACCESS_MODE/g" $TMPFILE
+oc create -f $TMPFILE
+

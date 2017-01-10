@@ -12,7 +12,7 @@
     },
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
-        "value": "rhel7-9.5-1.2.6",
+        "value": "REPLACE_CCP_IMAGE_TAG",
         "description": "The image tag to use"
     }, {
         "name": "PVC_NAME",
@@ -27,16 +27,15 @@
             },
             "spec": {
                 "accessModes": [
-                    "$PVC_ACCESS_MODE"
+                    "REPLACE_PVC_ACCESS_MODE"
                 ],
                 "resources": {
                     "requests": {
-                        "storage": "400M"
+                        "storage": "300M"
                     }
                 }
             }
         },
-
         {
             "kind": "Service",
             "apiVersion": "v1",
@@ -88,7 +87,7 @@
 
                 "containers": [{
                     "name": "prometheus",
-                    "image": "$CRUNCHY_IMAGE_PATH/crunchy-prometheus:${CCP_IMAGE_TAG}",
+                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-prometheus:${CCP_IMAGE_TAG}",
                     "imagePullPolicy": "Always",
                     "ports": [{
                         "containerPort": 9090,
@@ -102,7 +101,7 @@
                     }]
                 }, {
                     "name": "promgateway",
-                    "image": "$CRUNCHY_IMAGE_PATH/crunchy-promgateway:${CCP_IMAGE_TAG}",
+                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-promgateway:${CCP_IMAGE_TAG}",
                     "imagePullPolicy": "Always",
                     "ports": [{
                         "containerPort": 9091,
@@ -112,7 +111,7 @@
                     "volumeMounts": []
                 }, {
                     "name": "grafana",
-                    "image": "$CRUNCHY_IMAGE_PATH/crunchy-grafana:${CCP_IMAGE_TAG}",
+                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-grafana:${CCP_IMAGE_TAG}",
                     "imagePullPolicy": "Always",
                     "ports": [{
                         "containerPort": 3000,

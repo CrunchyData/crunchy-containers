@@ -20,7 +20,7 @@
         "value": "pgslave"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "rhel7-9.6-1.2.6",
+        "value": "REPLACE_CCP_IMAGE_TAG",
         "description": "The image tag to pull with"
     }, {
         "name": "PG_MASTER_USER",
@@ -112,7 +112,7 @@
         "spec": {
             "containers": [{
                 "name": "${MASTER_SERVICE_NAME}",
-                "image": "$CRUNCHY_IMAGE_PATH/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
                         "command": [
@@ -195,7 +195,7 @@
         "spec": {
             "containers": [{
                 "name": "${SLAVE_SERVICE_NAME}",
-                "image": "$CRUNCHY_IMAGE_PATH/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
                         "command": [

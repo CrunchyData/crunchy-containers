@@ -17,5 +17,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-envsubst < $DIR/watch.json | oc create -f -
+TMPFILE=/tmp/watch.json
+cp $DIR/watch.json $TMPFILE
+sed -i "s/REPLACE_CCP_IMAGE_TAG/$CCP_IMAGE_TAG/g" $TMPFILE
+sed -i "s/REPLACE_CCP_IMAGE_PREFIX/$CCP_IMAGE_PREFIX/g" $TMPFILE
+sed -i "s/REPLACE_PVC_ACCESS_MODE/$PVC_ACCESS_MODE/g" $TMPFILE
+oc create -f $TMPFILE
 

@@ -20,7 +20,7 @@
         "value": "master"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "rhel7-9.5-1.2.5",
+        "value": "REPLACE_CCP_IMAGE_TAG",
         "description": "The image tag to pull with"
     }, {
         "name": "PG_MASTER_PASSWORD",
@@ -45,7 +45,7 @@
     }, {
         "name": "PVC_SIZE",
         "description": "The size for the PVC",
-        "value": "500M"
+        "value": "300M"
     }, {
         "name": "PG_ROOT_PASSWORD",
         "description": "The password for the PG adminitrator",
@@ -60,7 +60,7 @@
         },
         "spec": {
             "accessModes": [
-                "$PVC_ACCESS_MODE"
+                "REPLACE_PVC_ACCESS_MODE"
             ],
             "resources": {
                 "requests": {
@@ -108,7 +108,7 @@
             },
             "containers": [{
                 "name": "${SERVICE_NAME}",
-                "image": "$CRUNCHY_IMAGE_PATH/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "readinessProbe": {
                     "exec": {

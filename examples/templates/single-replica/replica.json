@@ -13,7 +13,7 @@
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use",
-        "value": "rhel7-9.5-1.2.6"
+        "value": "REPLACE_CCP_IMAGE_TAG"
     }, {
         "name": "SERVICE_NAME",
         "description": "the name to use for the replica service and pod",
@@ -68,7 +68,7 @@
             "spec": {
                 "containers": [{
                     "name": "postgres",
-                    "image": "$CRUNCHY_IMAGE_PATH/crunchy-postgres:${CCP_IMAGE_TAG}",
+                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
                         "command": [

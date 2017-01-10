@@ -10,13 +10,15 @@
             "tags": "database,postgresql,crunchy"
         }
     },
-    "parameters": [{
+    "parameters": [ {
         "name": "PGBOUNCER_SERVICE_NAME",
         "value": "pgbouncer"
-    }],
-    "objects": [
-
-  {
+    }, {
+        "name": "CCP_IMAGE_TAG",
+        "value": "REPLACE_CCP_IMAGE_TAG",
+        "description": "The image tag to pull images with"
+    } ],
+    "objects": [ {
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
@@ -24,7 +26,7 @@
       },
       "spec": {
         "accessModes": [
-          "$PVC_ACCESS_MODE"
+          "REPLACE_PVC_ACCESS_MODE"
         ],
         "resources": {
           "requests": {
@@ -74,7 +76,7 @@
             }],
             "containers": [{
                 "name": "server",
-                "image": "$CRUNCHY_IMAGE_PATH/crunchy-pgbouncer:${CCP_IMAGE_TAG}",
+                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-pgbouncer:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

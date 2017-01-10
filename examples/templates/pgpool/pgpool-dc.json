@@ -12,7 +12,7 @@
     },
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
-        "value": "rhel7-9.5-1.2.6",
+        "value": "REPLACE_CCP_IMAGE_TAG",
         "description": "The image tag to pull with"
     }, {
         "name": "PG_USERNAME",
@@ -87,7 +87,7 @@
                 "spec": {
                     "containers": [{
                         "name": "server",
-                        "image": "$CRUNCHY_IMAGE_PATH/crunchy-pgpool:${CCP_IMAGE_TAG}",
+                        "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-pgpool:${CCP_IMAGE_TAG}",
                         "imagePullPolicy": "Always",
                         "ports": [{
                             "containerPort": 5432,

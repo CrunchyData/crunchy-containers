@@ -13,7 +13,7 @@
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use",
-        "value": "rhel7-9.6-1.2.6"
+        "value": "REPLACE_CCP_IMAGE_TAG"
     }, {
         "name": "REPLICA_SERVICE_NAME",
         "description": "the name of the replica",
@@ -25,7 +25,7 @@
     }, {
         "name": "REPLICA_PVC_SIZE",
         "description": "the size of the replica pvc",
-        "value": "500M"
+        "value": "300M"
     }, {
         "name": "MASTER_SERVICE_NAME",
         "description": "the name of the master",
@@ -55,7 +55,7 @@
             },
             "spec": {
                 "accessModes": [
-                    "$PVC_ACCESS_MODE"
+                    "REPLACE_PVC_ACCESS_MODE"
                 ],
                 "resources": {
                     "requests": {
@@ -71,7 +71,7 @@
             },
             "spec": {
                 "accessModes": [
-                    "$PVC_ACCESS_MODE"
+                    "REPLACE_PVC_ACCESS_MODE"
                 ],
                 "resources": {
                     "requests": {
@@ -142,7 +142,7 @@
 
                 "containers": [{
                     "name": "postgres",
-                    "image": "$CRUNCHY_IMAGE_PATH/crunchy-postgres:${CCP_IMAGE_TAG}",
+                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
                     "imagePullPolicy": "Always",
                 "readinessProbe": {
                     "exec": {
@@ -236,7 +236,7 @@
 
                 "containers": [{
                     "name": "postgres",
-                    "image": "$CRUNCHY_IMAGE_PATH/crunchy-postgres:${CCP_IMAGE_TAG}",
+                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
                         "command": [

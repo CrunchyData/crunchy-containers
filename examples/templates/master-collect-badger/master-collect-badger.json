@@ -20,7 +20,7 @@
         "value": "master"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "rhel7-9.5-1.2.6",
+        "value": "REPLACE_CCP_IMAGE_TAG",
         "description": "The image tag to pull images with"
     }, {
         "name": "PG_MASTER_PASSWORD",
@@ -89,7 +89,7 @@
         "spec": {
             "containers": [{
                 "name": "pgbadger",
-                "image": "$CRUNCHY_IMAGE_PATH/crunchy-pgbadger:${CCP_IMAGE_TAG}",
+                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-pgbadger:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 10000,
@@ -106,7 +106,7 @@
                 }]
             }, {
                 "name": "collect",
-                "image": "$CRUNCHY_IMAGE_PATH/crunchy-collect:${CCP_IMAGE_TAG}",
+                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-collect:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "env": [{
                     "name": "PG_MASTER_USER",
@@ -131,7 +131,7 @@
                 }]
             }, {
                 "name": "postgres",
-                "image": "$CRUNCHY_IMAGE_PATH/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "ports": [{
                     "containerPort": 5432,

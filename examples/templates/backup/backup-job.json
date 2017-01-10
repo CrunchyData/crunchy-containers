@@ -37,7 +37,7 @@
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use",
-        "value": "rhel7-9.6-1.2.6"
+        "value": "REPLACE_CCP_IMAGE_TAG"
     }],
 
     "objects": [{
@@ -48,7 +48,7 @@
         },
         "spec": {
             "accessModes": [
-                "$PVC_ACCESS_MODE"
+                "REPLACE_PVC_ACCESS_MODE"
             ],
             "resources": {
                 "requests": {
@@ -86,7 +86,7 @@
                     },
                     "containers": [{
                         "name": "${JOB_NAME}",
-                        "image": "$CRUNCHY_IMAGE_PATH/crunchy-backup:${CCP_IMAGE_TAG}",
+                        "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-backup:${CCP_IMAGE_TAG}",
                         "imagePullPolicy": "Always",
                         "volumeMounts": [{
                             "mountPath": "/pgdata",

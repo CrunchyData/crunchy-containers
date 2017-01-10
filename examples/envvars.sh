@@ -35,5 +35,5 @@ fi
 #export PVC_ACCESS_MODE=ReadWriteOnce
 export PVC_ACCESS_MODE=ReadWriteMany
 # for templates - allow for override of Image Path Prefix
-#export CRUNCHY_IMAGE_PATH=172.30.240.45:5000/jeff-project
-export CRUNCHY_IMAGE_PATH=crunchydata
+#export CCP_IMAGE_PREFIX=172.30.240.45:5000/jeff-project
+export CCP_IMAGE_PREFIX=crunchydata
