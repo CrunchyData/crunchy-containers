@@ -15,7 +15,7 @@
 set -u
 
 if [ -z ${BACKUP_PATH+1} ]; then
-	echo "Must set \$BACKUP_PATH in order to restore. E.g. \`export \$BACKUP_PATH=basic/2017-01-01-11-28-11\`"
+	echo "Must set \$BACKUP_PATH in order to restore. E.g. \`export BACKUP_PATH=basic/2017-01-01-11-28-11\`"
 	exit 1
 fi
 
@@ -26,7 +26,7 @@ source "$BUILDBASE"/tests/kubernetes/pgpass-setup
 echo "Starting restore"
 "$BUILDBASE"/examples/kube/master-restore/run.sh
 
-sleep 30
+sleep 60
 KUBE_SERVICE=$(kubectl get service restored-master --template={{.spec.clusterIP}})
 PG_MASTER_USER=${PG_MASTER_USER:-master}
 
