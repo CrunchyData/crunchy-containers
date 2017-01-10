@@ -21,11 +21,9 @@ source "$BUILDBASE"/tests/kubernetes/pgpass-setup
 sleep 60
 
 KUBE_HOST=$(kubectl get pod master-nfs --template={{.status.podIP}})
-PGPORT=${PGPORT:-5432}
 PG_MASTER_USER=${PG_MASTER_USER:-master}
-PG_DATABASE=${PG_DATABASE:-userdb}
 
-psql -p $PGPORT -h $KUBE_HOST -U $PG_MASTER_USER -d $PG_DATABASE -c 'SELECT now();'
+psql -h $KUBE_HOST -U $PG_MASTER_USER -Xqt -l
 
 rc=$?
 
