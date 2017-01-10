@@ -20,7 +20,7 @@ export NFS_SHARE_PATH=${NFS_SHARE_PATH:-/nfsfileshare}
 export NFS_SHARE_SERVER=${NFS_SHARE_SERVER:-$LOCAL_IP}
 
 # set the root path to the basic pod nfs share
-if [ "$NFS_SHARE_SERVER" = "$LOCAL_IP" ]; then
+if [ "$NFS_SHARE_SERVER" != "$LOCAL_IP" ]; then
 	MNT=$(mktemp -d /tmp/XXXX)
 	sudo mount -t nfs "$NFS_SHARE_SERVER:$NFS_SHARE_PATH" $MNT
 	BASIC_SHARE_ROOT=$MNT/basic
@@ -29,25 +29,28 @@ else
 fi
 
 # remove old backup directories from basic pod nfs share
-sudo find "$BASIC_SHARE_ROOT"-type d -regextype sed \
+sudo find "$BASIC_SHARE_ROOT" -type d -regextype sed \
  -regex "^$BASIC_SHARE_ROOT\/20[1-3][0-9]-[0-1][0-9]-[0-3][0-9]-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}$" \
- -exec rm -rf +
+ -exec rm -rf {} \;
 
 # start basic container and backup job
 source "$BUILDBASE"/tests/kubernetes/pgpass-setup
 
+echo "starting Crunchy Postgres"
 "$BUILDBASE"/examples/kube/basic/run.sh
+sleep 30
 
+echo "starting Crunchy backup job"
 "$BUILDBASE"/examples/kube/backup-job/run.sh
-
 sleep 20
 
 find "$BASIC_SHARE_ROOT" -type f -regextype sed \
- -regex "^$BASIC_SHARE_ROOT\/20[1-3][0-9]-[0-1][0-9]-[0-3][0-9]-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}/postgresql.conf$"
+ -regex "^$BASIC_SHARE_ROOT\/20[1-3][0-9]-[0-1][0-9]-[0-3][0-9]-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}/postgresql.conf$" > /dev/null
 rc=$?
 
 if [ "$NFS_SHARE_SERVER" != "$LOCAL_IP" ]; then
 	sudo umount $MNT
+	rm -rf $MNT
 fi
 
 if [ 0 -eq $rc ]; then

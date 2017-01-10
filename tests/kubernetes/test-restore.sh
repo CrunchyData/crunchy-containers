@@ -12,9 +12,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete pod restored-master
-kubectl delete service restored-master
-kubectl delete pvc master-restore-pvc
-kubectl delete pv master-restore-pv
+set -u
 
-"$BUILDBASE"/examples/waitforterm.sh restored-master kubectl
+if [ -z $BACKUP_PATH ]; then
+	echo "Must provide \$BACKUP_PATH in order to restore."
+	exit 1
+fi
+
+source "$BUILDBASE"/examples/envvars.sh
+
+source "$BUILDBASE"/tests/kubernetes/pgpass-setup
+
+"$BUILDBASE"/examples/kube/master-restore/run.sh
+
+sleep 30
+KUBE_SERVICE=$(kubectl get service restored-master --template={{.spec.clusterIP}})
+
+psql -h $KUBE_SERVICE -U masteruser userdb -Xqt -l
+
+rc=$?
+
+if [ 0 -eq $rc ]; then
+	echo "test kubernetes restore passed"
+else
+	echo "test kubernetes restore FAILED with $rc"
+	exit $rc
+fi
+
+exit 0
