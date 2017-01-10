@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -euo pipefail
+set -u
 
 source "$BUILDBASE"/tests/kubernetes/pgpass-setup
 
 "$BUILDBASE"/examples/kube/master-nfs/run.sh
 
+echo "Starting Crunchy Postgres"
 sleep 60
 
 KUBE_HOST=$(kubectl get pod master-nfs --template={{.status.podIP}})
@@ -27,12 +28,10 @@ psql -h $KUBE_HOST -U $PG_MASTER_USER -Xqt -l
 
 rc=$?
 
-echo $rc is the rc
-
 if [ 0 -eq $rc ]; then
 	echo "test Kubernetes master-nfs passed"
 else
-	echo "test Kubernetes master-nfs FAILED"
+	echo "test Kubernetes master-nfs FAILED with $rc"
 	exit $rc
 fi
 

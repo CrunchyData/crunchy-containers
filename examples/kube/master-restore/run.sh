@@ -12,15 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $BUILDBASE/examples/envvars.sh
+set -eu
+
+source "$BUILDBASE"/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+"$DIR"/cleanup.sh
 
-envsubst <  $DIR/master-restore-pv.json | kubectl create -f -
+export NFS_SHARE_PATH=${NFS_SHARE_PATH:-/nfsfileshare}
+export NFS_SHARE_SERVER=${NFS_SHARE_SERVER:-$LOCAL_IP}
 
-kubectl create -f $DIR/master-restore-service.json
-kubectl create -f $DIR/master-restore-pvc.json
+envsubst <  "$DIR"/master-restore-pv.json | kubectl create -f -
 
-envsubst <  $DIR/master-restore.json  | kubectl create -f -
+kubectl create -f "$DIR"/master-restore-service.json
+kubectl create -f "$DIR"/master-restore-pvc.json
+
+envsubst <  "$DIR"/master-restore.json  | kubectl create -f -

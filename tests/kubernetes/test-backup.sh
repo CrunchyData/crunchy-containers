@@ -54,7 +54,7 @@ if [ "$NFS_SHARE_SERVER" != "$LOCAL_IP" ]; then
 fi
 
 if [ 0 -eq $rc ]; then
-	echo "kubernetes backup-job test passed"
+	echo "Kubernetes backup-job test passed"
 else
 	echo "Kubernetes backub-job test FAILED with $rc"
 	exit $rc

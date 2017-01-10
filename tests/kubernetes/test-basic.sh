@@ -18,23 +18,20 @@ source "$BUILDBASE"/tests/kubernetes/pgpass-setup
 
 "$BUILDBASE"/examples/kube/basic/run.sh
 
+echo "Starting Crunchy Postgres"
 sleep 60
 
 KUBE_HOST=$(kubectl get pod basic --template={{.status.podIP}})
-PGPORT=${PGPORT:-5432}
 PG_MASTER_USER=${PG_MASTER_USER:-master}
-PG_DATABASE=${PG_DATABASE:-userdb}
 
-psql -p $PGPORT -h $KUBE_HOST -U $PG_MASTER_USER -d $PG_DATABASE -c 'SELECT now();'
+psql -h $KUBE_HOST -U $PG_MASTER_USER -Xqt -l
 
 rc=$?
 
-echo $rc is the rc
-
 if [ 0 -eq $rc ]; then
-	echo "test master passed"
+	echo "test Kubernetes basic passed"
 else
-	echo "test master FAILED"
+	echo "test Kubernetes master FAILED with $rc"
 	exit $rc
 fi
 
