@@ -14,6 +14,8 @@
 
 set -u
 
+source "$BUILDBASE"/examples/envvars.sh
+
 export NFS_SHARE_PATH=${NFS_SHARE_PATH:-/nfsfileshare}
 export NFS_SHARE_SERVER=${NFS_SHARE_SERVER:-$LOCAL_IP}
 
