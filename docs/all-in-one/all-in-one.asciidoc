@@ -15,7 +15,18 @@ The image can be imported as an appliance in VirtualBox.
 === configuration
 
 
-The image uses a NAT interface for networking.  
+The image uses a NAT interface and Host Only Interface for networking.  
+The Host Only interface lets us set a static IP of 192.168.56.6, this
+address is related to the host's vboxnet0 ip address which by default
+is 192.168.56.1 on VirtualBox.  
+
+The NAT interface allows the VM access to the internet and allows
+for ssh access from the host.
+
+The VM has an entry in /etc/dhcp/dhclient.conf that prepends
+the 192.168.56.6 address as a nameserver.  This allows us to 
+do DNS discovery using the Openshift DNS container which 
+binds to 192.168.56.6:53.
 
 The image includes a Gnome UI environment if you want to use that, 
 especially useful for using the Openshift web console.
