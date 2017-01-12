@@ -43,7 +43,7 @@ function ose_hack() {
 
 ose_hack
 
-BACKUPBASE=/pgdata/$BACKUP_HOST
+BACKUPBASE=/pgdata/$BACKUP_HOST-backups
 if [ ! -d "$BACKUPBASE" ]; then
 	echo "creating BACKUPBASE directory..."
 	mkdir -p $BACKUPBASE

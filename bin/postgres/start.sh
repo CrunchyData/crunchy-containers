@@ -255,8 +255,7 @@ echo "initialize_replica"
 rm -rf $PGDATA/*
 chmod 0700 $PGDATA
 
-echo "waiting 30sec to give the master time to start up and register its hostname with docker before performing the initial backup...."
-sleep 30
+echo "waiting to give the master time to start up and register its hostname with docker before performing the initial backup...."
 
 waitforpg
 
