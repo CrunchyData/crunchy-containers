@@ -107,7 +107,7 @@ utility included with postgres, pg_basebackup.
 === Backup Location
 
 Backups are stored in a mounted backup volume location, using the
-database host name as a sub-directory, then followed by a unique
+database host name plus *-backups*  as a sub-directory, then followed by a unique
 backup directory based upon a date/timestamp.  It is left to the
 user to perform database backup archives in this current version
 of the container.  This backup location is referenced when performing
