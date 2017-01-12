@@ -36,7 +36,7 @@ docker run \
 	--privileged=true \
 	-v $CONTAINER_VOLUME:/pgdata:z \
 	-v $BACKUP_VOLUME:/backup:ro \
-	-e BACKUP_PATH="basic/2016-12-21-23-52-59" \
+	-e BACKUP_PATH="basic-backups/2017-01-12-17-43-08" \
 	-e TEMP_BUFFERS=9MB \
 	-e MAX_CONNECTIONS=101 \
 	-e SHARED_BUFFERS=129MB \
