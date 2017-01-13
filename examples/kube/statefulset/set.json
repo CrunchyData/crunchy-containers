@@ -2,33 +2,58 @@
   "apiVersion": "apps/v1beta1",
   "kind": "StatefulSet",
   "metadata": {
-    "name": "web"
+    "name": "pgset"
   },
   "spec": {
-    "serviceName": "nginx",
-    "replicas": 3,
+    "serviceName": "pgset",
+    "replicas": 2,
     "template": {
       "metadata": {
         "labels": {
-          "app": "nginx"
+          "app": "pgset"
         }
       },
       "spec": {
-        "terminationGracePeriodSeconds": 10,
         "containers": [
           {
-            "name": "nginx",
-            "image": "gcr.io/google_containers/nginx-slim:0.8",
+            "name": "pgset",
+            "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
             "ports": [
               {
-                "containerPort": 80,
-                "name": "web"
+                "containerPort": 5432,
+                "name": "postgres"
               }
             ],
+            "env": [{
+                "name": "PG_MASTER_USER",
+                "value": "master"
+            }, {
+                "name": "PGHOST",
+                "value": "/tmp"
+            }, {
+                "name": "PG_MODE",
+                "value": "master"
+            }, {
+                "name": "PG_MASTER_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_USER",
+                "value": "testuser"
+            }, {
+                "name": "PG_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_DATABASE",
+                "value": "userdb"
+            }, {
+                "name": "PG_ROOT_PASSWORD",
+                "value": "password"
+            }],
             "volumeMounts": [
               {
-                "name": "www",
-                "mountPath": "/usr/share/nginx/html"
+                "name": "pgdata",
+                "mountPath": "/pgdata",
+		"readOnly": false
               }
             ]
           }
@@ -38,15 +63,18 @@
     "volumeClaimTemplates": [
       {
         "metadata": {
-          "name": "www"
+          "name": "pgdata",
+          "annotations": {
+          	"volume.alpha.kubernetes.io/storage-class": "default"
+          }
         },
         "spec": {
           "accessModes": [
-            "ReadWriteOnce"
+            "ReadWriteMany"
           ],
           "resources": {
             "requests": {
-              "storage": "1Gi"
+              "storage": "100M"
             }
           }
         }
