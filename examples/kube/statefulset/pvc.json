@@ -2,7 +2,7 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "petset-nfs-pvc"
+        "name": "pgset-pvc"
       },
       "spec": {
         "accessModes": [

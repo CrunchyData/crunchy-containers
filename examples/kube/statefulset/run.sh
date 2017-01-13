@@ -22,4 +22,5 @@ kubectl create -f $DIR/set-service.json
 envsubst < $DIR/pv1.json | kubectl create -f -
 envsubst < $DIR/pv2.json | kubectl create -f -
 envsubst < $DIR/pv3.json | kubectl create -f -
+kubectl create -f $DIR/pvc.json
 envsubst < $DIR/set.json | kubectl create -f -
