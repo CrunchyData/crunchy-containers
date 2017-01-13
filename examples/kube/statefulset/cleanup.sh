@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+kubectl delete sa pgset-sa
 kubectl delete pvc pgset-pvc
 kubectl delete pv pv1 pv2 pv3
-kubectl delete service pgset
+kubectl delete service pgset pgset-master pgset-replica
 kubectl delete statefulset pgset

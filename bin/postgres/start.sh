@@ -78,6 +78,20 @@ fi
 
 ## where pg-wrapper is called
 
+function role_discovery() {
+	PATH=$PATH:/opt/cpm/bin
+	ordinal=`echo $HOSTNAME | cut -f2 -d'-'`
+	echo $ordinal is ordinal
+	if [ $ordinal -eq 0 ]; then
+		kubectl label --overwrite=true pod $HOSTNAME  name=$PG_MASTER_HOST
+		echo "setting PG_MODE to master"
+		export PG_MODE=master
+	else
+		echo "setting PG_MODE to slave"
+		export PG_MODE=slave
+	fi
+}
+
 # this lets us run initdb and postgres on Openshift
 # when it is configured to use random UIDs
 function ose_hack() {
@@ -354,6 +368,13 @@ rm $PGDATA/postmaster.pid
 #export LD_PRELOAD=libnss_wrapper.so NSS_WRAPPER_PASSWD=/tmp/passwd  NSS_WRAPPER_GROUP=/etc/group
 echo "user id is..."
 id
+
+# for stateful set support
+case "$PG_MODE" in 
+	"set")
+	role_discovery
+	;;
+esac
 
 ose_hack
 

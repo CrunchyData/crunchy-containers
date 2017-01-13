@@ -10,10 +10,12 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "app": "pgset"
+                    "app": "pgset",
+                    "name": "pgset-replica"
                 }
             },
             "spec": {
+        	"serviceAccount": "pgset-sa",
                 "containers": [{
                     "name": "pgset",
                     "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
@@ -29,7 +31,13 @@
                         "value": "/tmp"
                     }, {
                         "name": "PG_MODE",
-                        "value": "master"
+                        "value": "set"
+                    }, {
+                        "name": "PG_MASTER_HOST",
+                        "value": "pgset-master"
+                    }, {
+                        "name": "PG_MASTER_PORT",
+                        "value": "5432"
                     }, {
                         "name": "PG_MASTER_PASSWORD",
                         "value": "password"
