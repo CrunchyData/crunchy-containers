@@ -1,4 +1,4 @@
-#!/bin/bash  
+#!/bin/bash
 
 # Copyright 2015 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -95,13 +95,13 @@ function kube_failover() {
                 	echo 'first slave is:' $i
 			firstslave=false
 			echo "going to trigger failover on slave:" $i
-			oc exec $i touch /tmp/pg-failover-trigger
+			kubectl exec $i touch /tmp/pg-failover-trigger
 			echo "sleeping 60 secs to give failover a chance before setting label"
 			sleep 60
 			echo "changing label of slave to " $PG_MASTER_SERVICE
 			kubectl label --overwrite=true pod $i name=$PG_MASTER_SERVICE
 		else
-			echo "deleting old slave " $i 
+			echo "deleting old slave " $i
 			kubectl delete pod $i
 		fi
 	done
@@ -146,7 +146,7 @@ function ose_failover() {
 			echo "recreating master service..."
 			oc create -f /tmp/master-service.json
 		else
-			echo "deleting old slave " $i 
+			echo "deleting old slave " $i
 			oc delete pod $i
 		fi
 	done
@@ -154,7 +154,7 @@ function ose_failover() {
 	echo "failover completed @ " `date`
 }
 
-while true; do 
+while true; do
 	sleep $SLEEP_TIME
 	pg_isready  --dbname=$PG_DATABASE --host=$PG_MASTER_SERVICE --port=$PG_MASTER_PORT --username=$PG_MASTER_USER
 	if [ $? -eq 0 ]
