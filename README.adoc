@@ -4,18 +4,21 @@ v1.2.6, {docdate}
 image::docs/crunchy_logo.png?raw=true[]
 
 
-This project includes a set of Dockerfiles that lets you build
-the Crunchy Certified PostgreSQL Docker containers. 
+Crunchy Container Suite provides Docker containers that enable
+rapid deployment of PostgreSQL, including administration and
+monitoring tools. Multiple styles of deploying PostgreSQL clusters
+are supported.
 
 The containers will execute in the following environments:
 
- * Standalone - a pure Docker environment
- * Openshift 3.x
- * Kubernetes 1.2.X
+ * Docker 1.12
+ * Openshift 3.3
+ * Kubernetes 1.5
 
 The project includes the following containers:
 
  * link:docs/containers.asciidoc#crunchy-postgres[crunchy-postgres] - executes Postgres
+ * link:docs/containers.asciidoc#crunchy-postgres-gis[crunchy-postgres-gis] - executes Postgres plus the PostGIS extensions
  * link:docs/containers.asciidoc#crunchy-backup[crunchy-backup] - performs a full database backup
  * link:docs/containers.asciidoc#crunchy-pgpool[crunchy-pgpool] - executes pgpool
  * link:docs/containers.asciidoc#crunchy-pgbadger[crunchy-pgbadger] - executes pgbadger
@@ -34,7 +37,7 @@ image::docs/containers.png?raw=true[]
 === Build Prerequisites
 
 The Crunchy containers have been tested on Centos 7, RHEL 7, Openshift 3.3,
-Kubernetes 1.4.6, and Docker 1.12
+Kubernetes 1.5.1, and Docker 1.12
 
 1) Installing / configuring Docker
 
@@ -61,7 +64,7 @@ for more details at link:http://www.crunchydata.com.
 === Examples
 
 Various examples are provided in the /examples directory and described
-in the documentation for running Standalone and Openshift examples..
+in the documentation for running Docker, Kubernetes, and Openshift examples..
 
 See the following link for documentation on the docker
 examples: link:docs/docker.asciidoc[docker-examples] 
