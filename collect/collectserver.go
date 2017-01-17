@@ -21,7 +21,9 @@ import (
 	"github.com/crunchydata/crunchy-containers/collectapi"
 	"log"
 	"os"
+	"os/signal"
 	"strconv"
+	"syscall"
 	"time"
 )
 
@@ -35,6 +37,18 @@ var logger *log.Logger
 
 func main() {
 	logger = log.New(os.Stdout, "logger: ", log.Lshortfile|log.Ldate|log.Ltime)
+	//set up signal catcher logic
+	sigs := make(chan os.Signal, 1)
+	done := make(chan bool, 1)
+	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
+	go func() {
+		sig := <-sigs
+		logger.Println(sig)
+		done <- true
+		logger.Println("collectserver caught signal, exiting...")
+		os.Exit(0)
+	}()
+
 	var VERSION = os.Getenv("CCP_VERSION")
 
 	logger.Println("collectserver " + VERSION + ": starting")

@@ -29,5 +29,5 @@ RUN chown -R postgres:postgres /opt/cpm/bin
 
 USER postgres
 
-CMD ["/opt/cpm/bin/start-collectserver.sh"]
+ENTRYPOINT ["/opt/cpm/bin/collectserver"]
 
