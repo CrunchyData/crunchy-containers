@@ -81,7 +81,10 @@
                 "image": "crunchydata/crunchy-dba:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
-                    "value": "default"
+                    "value": "crunchy"
+                }, {
+                    "name": "HOME",
+                    "value": "/tmp"
                 }, {
                     "name": "CCP_IMAGE_TAG",
                     "value": "${CCP_IMAGE_TAG}"
@@ -104,12 +107,6 @@
                     "name": "BACKUP_PV_CAPACITY",
                     "value": "150M"
                 }, {
-                    "name": "BACKUP_PV_PATH",
-                    "value": "/nfsfileshare"
-                }, {
-                    "name": "BACKUP_PV_HOST",
-                    "value": "192.168.122.238"
-                }, {
                     "name": "BACKUP_PVC_STORAGE",
                     "value": "75M"
                 }]
@@ -126,6 +123,9 @@
                 }, {
                     "name": "PG_MODE",
                     "value": "master"
+                }, {
+                    "name": "PGHOST",
+                    "value": "/tmp"
                 }, {
                     "name": "PG_MASTER_PASSWORD",
                     "value": "${PG_MASTER_PASSWORD}"

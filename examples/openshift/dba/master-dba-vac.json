@@ -83,8 +83,11 @@
                     "name": "CCP_IMAGE_TAG",
                     "value": "${CCP_IMAGE_TAG}"
                 }, {
+                    "name": "HOME",
+                    "value": "/tmp"
+                }, {
                     "name": "OSE_PROJECT",
-                    "value": "default"
+                    "value": "crunchy"
                 }, {
                     "name": "PG_USER",
                     "value": "${PG_MASTER_USER}"
