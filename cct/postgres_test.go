@@ -137,6 +137,10 @@ func TestDockerBasic(t *testing.T) {
     	t.Fatal(err)
     }
 
+    // validate labels
+    // count number of volumes
+    // count number of mounts
+
     fmt.Printf("Waiting for %d seconds.\n", testInitTimeoutSeconds)
 
     /////////// allow container to start and db to initialize
