@@ -116,6 +116,8 @@ func TestDockerBasic(t *testing.T) {
     pathToCleanup := path.Join(
     	buildBase, "examples", "docker", testName, "cleanup.sh")
 
+    // TestMinSupportedDockerVersion
+    
     t.Log("Initializing docker client")
     docker, err := client.NewEnvClient()
     if err != nil {
