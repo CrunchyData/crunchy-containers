@@ -76,6 +76,7 @@ func envValueFromContainer(
     return
 }
 
+// returns the HostIP and Port reported by the service on 5432/tcp, which should always be postgresql
 func pgHostFromContainer(docker *client.Client, 
     containerId string) (host string, port string, err error) {
 
@@ -88,14 +89,6 @@ func pgHostFromContainer(docker *client.Client,
 
     host, port = binding.HostIP, binding.HostPort
     return
-    // "PortBindings": {
-    //     "5432/tcp": [
-    //         {
-    //             "HostIp": "",
-    //             "HostPort": "12000"
-    //         }
-    //     ]
-    // },
 }
 
 // wraps pg_isready via docker exec

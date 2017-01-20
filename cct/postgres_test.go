@@ -43,9 +43,33 @@ func buildConnectionString(
 	return
 }
 
+// assert a configurable parameter is set to value 
+func assertPostgresConf(
+	conStr string, 
+	setting string, 
+	value string) (ok bool, shownval string, err error) {
+
+	pg, err := sql.Open("postgres", conStr)
+	if err != nil {
+		return
+	}
+	defer pg.Close()
+
+	// show command does not support $1 syntax
+	show := fmt.Sprintf("SHOW %s;", setting)
+
+	err = pg.QueryRow(show).Scan(&shownval)
+	if err != nil {
+		return
+	}
+
+	ok = (shownval == value)
+	return
+}
+
 // does role exist on specified host?
-func roleExists(conStr *string, roleName string) (ok bool, err error) {
-    pg, err := sql.Open("postgres", *conStr)
+func roleExists(conStr string, roleName string) (ok bool, err error) {
+    pg, err := sql.Open("postgres", conStr)
     if err != nil {
     	return
     }
@@ -61,8 +85,8 @@ func roleExists(conStr *string, roleName string) (ok bool, err error) {
 }
 
 // does database exist on specified host?
-func dbExists(conStr *string, dbName string) (ok bool, err error) {
-    pg, err := sql.Open("postgres", *conStr)
+func dbExists(conStr string, dbName string) (ok bool, err error) {
+    pg, err := sql.Open("postgres", conStr)
     if err != nil {
     	return
     }
@@ -73,11 +97,11 @@ func dbExists(conStr *string, dbName string) (ok bool, err error) {
 	if err != nil {
 		return
 	}
+
 	return
 }
 
-// docker basic example expects one container named basic running 
-// crunchy-postgres (latest should equal $CCP_IMAGE_TAG)
+// docker basic example expects one container named "basic", running crunchy-postgres\
 func TestDockerBasic(t *testing.T) {
     const testName = "basic"
     const testInitTimeoutSeconds = 20
@@ -156,15 +180,23 @@ func TestDockerBasic(t *testing.T) {
 	    }
 	    pg.Close()
 	})
+	t.Run("CheckSharedBuffers", func (t *testing.T) {
+		if ok, val, err := assertPostgresConf(
+			pgUserConStr, "shared_buffers", "129MB"); err != nil {
+			t.Error(err)
+		} else if ! ok {
+			t.Errorf("shared_buffers is currently set to %s\n", val)
+		}
+	})
     t.Run("RoleExists", func (t *testing.T) {
-    	if ok, err := roleExists(&pgUserConStr, userName); err != nil {
+    	if ok, err := roleExists(pgUserConStr, userName); err != nil {
     		t.Error(err)
     	} else if ! ok {
     		t.Errorf("The %s ROLE was not created.\n", userName)
     	}
     })
     t.Run("DatabaseExists", func (t *testing.T) {
-    	if ok, err := dbExists(&pgUserConStr, dbName); err != nil {
+    	if ok, err := dbExists(pgUserConStr, dbName); err != nil {
     		t.Error(err)
     	} else if ! ok {
     		t.Error("The %s DATABASE was not created.\n", dbName)
@@ -181,7 +213,8 @@ func TestDockerBasic(t *testing.T) {
 	// 	pg_stat_statements
 	//	pgaudit
 
-	// TestLocale en_US.utf-8
+	// TestLocale en_US.UTF-8
+	// assert lc_collate, lc_ctype
 
     /////////// test user
     // userConStr := buildConnectionString(docker, c.ID, dbName, userName)
@@ -200,11 +233,11 @@ func TestDockerBasic(t *testing.T) {
 
     /////////// completed tests, cleanup
     t.Log("Calling cleanup" + pathToCleanup)
-    // cmdout, err = exec.Command(pathToCleanup).CombinedOutput()
-    // t.Logf("%s", cmdout)
-    // if err != nil {
-    // 	t.Fatal(err)
-    // }
+    cmdout, err = exec.Command(pathToCleanup).CombinedOutput()
+    t.Logf("%s", cmdout)
+    if err != nil {
+    	t.Fatal(err)
+    }
 
     // test container is destroyed
     // test volume is destroyed
