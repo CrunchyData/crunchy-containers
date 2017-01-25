@@ -17,7 +17,7 @@ RUN yum -y install hostname \
 	gettext \
 	openssh-clients \
 	procps-ng \
- && yum -y install postgresql96 pgpool-II-96*3.5.4* \
+ && yum -y install postgresql96 pgpool-II-96 pgpool-II-96-extensions \
  && yum -y clean all
 
 # set up cpm directory

@@ -20,6 +20,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+sudo mkdir /nfsfileshare/pgpoolconfigdir
+sudo chown 7778 /nfsfileshare/pgpoolconfigdir
+
 envsubst < $DIR/pgpool-pv.json |  oc create -f -
 oc create -f $DIR/pgpool-pvc.json
 

@@ -9,12 +9,9 @@ ADD conf/CRUNCHY-GPG-KEY.public  /
 ADD conf/crunchypg96.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
-RUN yum -y install hostname \
-	gettext \
-	openssh-clients \
-	procps-ng \
- && yum -y install postgresql96 pgpool-II-96*3.5.4* \
- && yum -y clean all
+RUN yum -y install hostname gettext  openssh-clients  procps-ng && \
+yum -y install postgresql96 pgpool-II-96 pgpool-II-96-extensions && \
+yum -y clean all
 
 # set up cpm directory
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf

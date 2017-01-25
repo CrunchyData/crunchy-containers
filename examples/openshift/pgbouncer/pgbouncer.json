@@ -98,11 +98,11 @@
                 }, {
                     "name": "PG_MASTER_SERVICE",
                     "description": "The master configured in pgbouncer",
-                    "value": "pg-master-rc-dc"
+                    "value": "ms-master"
                 }, {
                     "name": "PG_SLAVE_SERVICE",
                     "description": "The replica configured in pgbouncer",
-                    "value": "pg-replica-rc-dc"
+                    "value": "ms-replica"
                 }],
                 "volumeMounts": [{
                     "mountPath": "/pgconf",
