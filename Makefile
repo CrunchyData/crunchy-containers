@@ -21,6 +21,11 @@ postgres:
 	cp /usr/bin/kubectl bin/postgres
 	docker build -t crunchy-postgres -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres.$(CCP_BASEOS) .
 	docker tag crunchy-postgres crunchydata/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
+postgres-gis:
+	make versiontest
+	cp /usr/bin/kubectl bin/postgres
+	docker build -t crunchy-postgres-gis -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS) .
+	docker tag crunchy-postgres-gis crunchydata/crunchy-postgres-gis:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 watch:
 	cp /usr/bin/oc bin/watch
 	cp /usr/bin/kubectl bin/watch
@@ -98,6 +103,7 @@ dbaserver:
 all:
 	make versiontest
 	make postgres
+	make postgres-gis
 	make backup
 	make watch
 	make pgpool
