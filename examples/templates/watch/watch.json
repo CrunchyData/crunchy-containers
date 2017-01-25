@@ -83,6 +83,9 @@
                     "name": "PG_MASTER_USER",
                     "value": "${MASTER_USER}"
                 }, {
+                    "name": "HOME",
+                    "value": "/tmp"
+                }, {
                     "name": "PG_DATABASE",
                     "value": "postgres"
                 }]
