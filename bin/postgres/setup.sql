@@ -1,3 +1,4 @@
+SET application_name="container_setup";
 
 create extension postgis;
 create extension postgis_topology;
