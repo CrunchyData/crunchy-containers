@@ -18,6 +18,14 @@
         "name": "PVC_NAME",
         "description": "The name of the PVC used for storage",
         "value": "crunchy-metrics-pvc"
+    }, {
+        "name": "PVC_SIZE",
+        "description": "The size of the PVC used for storage",
+        "value": "200M"
+    }, {
+        "name": "PVC_ACCESS_MODE",
+        "description": "The accessmode of the PVC used for storage",
+        "value": "ReadWriteMany"
     }],
     "objects": [{
             "kind": "PersistentVolumeClaim",
@@ -27,11 +35,11 @@
             },
             "spec": {
                 "accessModes": [
-                    "REPLACE_PVC_ACCESS_MODE"
+                    "${PVC_ACCESS_MODE}"
                 ],
                 "resources": {
                     "requests": {
-                        "storage": "300M"
+                        "storage": "${PVC_SIZE}"
                     }
                 }
             }

@@ -27,6 +27,10 @@
         "description": "the size of the replica pvc",
         "value": "300M"
     }, {
+        "name": "PVC_ACCESS_MODE",
+        "description": "the accessmode of the PVCs",
+        "value": "ReadWriteMany"
+    }, {
         "name": "MASTER_SERVICE_NAME",
         "description": "the name of the master",
         "value": "syncmaster"
@@ -55,7 +59,7 @@
             },
             "spec": {
                 "accessModes": [
-                    "REPLACE_PVC_ACCESS_MODE"
+                    "${PVC_ACCESS_MODE}"
                 ],
                 "resources": {
                     "requests": {
@@ -71,7 +75,7 @@
             },
             "spec": {
                 "accessModes": [
-                    "REPLACE_PVC_ACCESS_MODE"
+                    "${PVC_ACCESS_MODE}"
                 ],
                 "resources": {
                     "requests": {
