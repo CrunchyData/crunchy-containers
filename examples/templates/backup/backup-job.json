@@ -24,7 +24,7 @@
         "value": "somepvc"
     }, {
         "name": "PVC_SIZE",
-        "value": "5M",
+        "value": "500M",
         "description": "the size to give the backup PVC "
     }, {
         "name": "PVC_ACCESS_MODE",
