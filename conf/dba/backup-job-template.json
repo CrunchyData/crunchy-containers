@@ -18,6 +18,9 @@
                 }
             },
             "spec": {
+	       "securityContext": {
+	       		"supplementalGroups": [65534]
+		},
                 "volumes": [{
                     "name": "pgdata",
                     "persistentVolumeClaim": {

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $BUILDBASE/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -29,5 +30,7 @@ oc policy add-role-to-user view system:serviceaccount:crunchy:dba-sa
 # capability of the dba container
 #
 oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:crunchy:dba-sa
+
+envsubst < $DIR/backup-pv.json  | oc create -f -
 
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/master-dba-backup.json | oc create -f -
