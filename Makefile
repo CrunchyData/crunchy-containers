@@ -18,7 +18,7 @@ docbuild:
 	cd docs && ./build-docs.sh
 postgres:
 	make versiontest
-	cp /usr/bin/kubectl bin/postgres
+	cp `which kubectl` bin/postgres
 	docker build -t crunchy-postgres -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres.$(CCP_BASEOS) .
 	docker tag crunchy-postgres crunchydata/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 postgres-gis:

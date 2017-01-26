@@ -22,7 +22,6 @@ RUN yum -y install epel-release \
 RUN yum -y install postgresql96-server postgresql96-contrib postgresql96 \
 	pgaudit_96 \
 	pgbackrest \
-	postgis2_96 postgis2_96-client pgrouting_96 \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
