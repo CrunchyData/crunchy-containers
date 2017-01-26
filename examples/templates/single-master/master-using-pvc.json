@@ -47,6 +47,10 @@
         "description": "The size for the PVC",
         "value": "300M"
     }, {
+        "name": "PVC_ACCESS_MODE",
+        "description": "The access mode for the PVC",
+        "value": "ReadWriteMany"
+    }, {
         "name": "PG_ROOT_PASSWORD",
         "description": "The password for the PG adminitrator",
         "value": "password"
@@ -60,7 +64,7 @@
         },
         "spec": {
             "accessModes": [
-                "REPLACE_PVC_ACCESS_MODE"
+                "${PVC_ACCESS_MODE}"
             ],
             "resources": {
                 "requests": {

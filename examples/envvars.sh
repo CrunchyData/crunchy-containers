@@ -32,8 +32,6 @@ if [ -v $CCP_IMAGE_TAG ]; then
 fi
 
 # for PVC templates - NFS uses ReadWriteMany - EBS uses ReadWriteOnce
-#export PVC_ACCESS_MODE=ReadWriteOnce
-export PVC_ACCESS_MODE=ReadWriteMany
 # for templates - allow for override of Image Path Prefix
 #export CCP_IMAGE_PREFIX=172.30.240.45:5000/jeff-project
 export CCP_IMAGE_PREFIX=crunchydata

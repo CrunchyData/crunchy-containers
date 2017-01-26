@@ -14,6 +14,10 @@
         "name": "PGBOUNCER_SERVICE_NAME",
         "value": "pgbouncer"
     }, {
+        "name": "PVC_ACCESS_MODE",
+        "value": "ReadWriteMany",
+        "description": "The accessmode of the pvc"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "value": "REPLACE_CCP_IMAGE_TAG",
         "description": "The image tag to pull images with"
@@ -26,7 +30,7 @@
       },
       "spec": {
         "accessModes": [
-          "REPLACE_PVC_ACCESS_MODE"
+          "${PVC_ACCESS_MODE}"
         ],
         "resources": {
           "requests": {

@@ -19,6 +19,10 @@
         "description": "name to use for the PVC",
         "value": "pgadmin4-pvc"
     }, {
+        "name": "PVC_ACCESS_MODE",
+        "description": "accessmode to use for the PVC",
+        "value": "ReadWriteMany"
+    }, {
         "name": "SERVICE_NAME",
         "description": "The name to use for the service and container",
         "value": "pgadmin4"
@@ -32,7 +36,7 @@
         },
         "spec": {
             "accessModes": [
-                "REPLACE_PVC_ACCESS_MODE"
+                "${PVC_ACCESS_MODE}"
             ],
             "resources": {
                 "requests": {

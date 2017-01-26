@@ -21,7 +21,6 @@ TMPFILE=/tmp/watch.json
 cp $DIR/watch.json $TMPFILE
 sed -i "s/REPLACE_CCP_IMAGE_TAG/$CCP_IMAGE_TAG/g" $TMPFILE
 sed -i "s/REPLACE_CCP_IMAGE_PREFIX/$CCP_IMAGE_PREFIX/g" $TMPFILE
-sed -i "s/REPLACE_PVC_ACCESS_MODE/$PVC_ACCESS_MODE/g" $TMPFILE
 oc create -f $TMPFILE
 
 oc create -f $DIR/watch-sa.json
