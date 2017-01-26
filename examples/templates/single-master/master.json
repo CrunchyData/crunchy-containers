@@ -20,11 +20,11 @@
         "value": "master"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "REPLACE_CCP_IMAGE_TAG",
+        "value": "centos7-9.5-1.2.6",
         "description": "The image tag to pull with"
     }, {
         "name": "CCP_IMAGE_PREFIX",
-        "value": "REPLACE_CCP_IMAGE_PREFIX",
+        "value": "crunchydata",
         "description": "The image prefix to pull with"
     }, {
         "name": "PG_MASTER_PASSWORD",
@@ -87,7 +87,7 @@
             "containers": [{
                 "name": "${SERVICE_NAME}",
                 "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
-                "imagePullPolicy": "Always",
+		"imagePullPolicy": "IfNotPresent",
                 "readinessProbe": {
                     "exec": {
                         "command": [

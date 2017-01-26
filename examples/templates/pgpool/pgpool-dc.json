@@ -12,8 +12,12 @@
     },
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
-        "value": "REPLACE_CCP_IMAGE_TAG",
+        "value": "centos7-9.5-1.2.6",
         "description": "The image tag to pull with"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "value": "crunchydata",
+        "description": "The image prefix to pull with"
     }, {
         "name": "PG_USERNAME",
         "description": "The username configured in pgpool for client access",
@@ -87,7 +91,7 @@
                 "spec": {
                     "containers": [{
                         "name": "server",
-                        "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-pgpool:${CCP_IMAGE_TAG}",
+                        "image": "${CCP_IMAGE_PREFIX}/crunchy-pgpool:${CCP_IMAGE_TAG}",
                         "imagePullPolicy": "Always",
                         "ports": [{
                             "containerPort": 5432,

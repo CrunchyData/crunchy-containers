@@ -20,8 +20,12 @@
         "value": "pgslave"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "REPLACE_CCP_IMAGE_TAG",
+        "value": "centos7-9.5-1.2.6",
         "description": "The image tag to pull with"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "value": "crunchydata",
+        "description": "The image prefix to pull with"
     }, {
         "name": "PG_MASTER_USER",
         "description": "The username used for master-slave replication",
@@ -112,7 +116,7 @@
         "spec": {
             "containers": [{
                 "name": "${MASTER_SERVICE_NAME}",
-                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
                         "command": [
@@ -195,7 +199,7 @@
         "spec": {
             "containers": [{
                 "name": "${SLAVE_SERVICE_NAME}",
-                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
                         "command": [

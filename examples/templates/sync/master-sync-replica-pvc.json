@@ -13,7 +13,11 @@
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use",
-        "value": "REPLACE_CCP_IMAGE_TAG"
+        "value": "centos7-9.5-1.2.6"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "the image prefix to use",
+        "value": "crunchydata"
     }, {
         "name": "REPLICA_SERVICE_NAME",
         "description": "the name of the replica",
@@ -146,7 +150,7 @@
 
                 "containers": [{
                     "name": "postgres",
-                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
+                    "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                     "imagePullPolicy": "Always",
                 "readinessProbe": {
                     "exec": {
@@ -240,7 +244,7 @@
 
                 "containers": [{
                     "name": "postgres",
-                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
+                    "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
                         "command": [

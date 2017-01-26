@@ -21,20 +21,13 @@ $DIR/cleanup.sh
 CONFIGDIR=/nfsfileshare/bouncerconfig
 
 sudo rm -rf $CONFIGDIR
-sudo mkdir $CONFIGDIR
+sudo mkdir -p $CONFIGDIR
 sudo chmod 777 $CONFIGDIR
 
 cp $DIR/pgbouncer.ini $CONFIGDIR
 cp $DIR/users.txt $CONFIGDIR
 
-TMPFILE=/tmp/pgbouncer-pv.json
-cp $DIR/pgbouncer-pv.json $TMPFILE
-sed -i "s/REPLACE_LOCAL_IP/$LOCAL_IP/g" $TMPFILE
-oc create -f $TMPFILE
+oc create -f $DIR/pgbouncer-pv.json 
 
-TMPFILE=/tmp/pgbouncer.json
-cp $DIR/pgbouncer.json $TMPFILE
-sed -i "s/REPLACE_CCP_IMAGE_TAG/$CCP_IMAGE_TAG/g" $TMPFILE
-sed -i "s/REPLACE_CCP_IMAGE_PREFIX/$CCP_IMAGE_PREFIX/g" $TMPFILE
-oc create -f $TMPFILE
+oc create -f $DIR/pgbouncer.json 
 

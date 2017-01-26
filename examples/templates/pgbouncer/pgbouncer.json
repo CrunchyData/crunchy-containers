@@ -19,8 +19,12 @@
         "description": "The accessmode of the pvc"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "REPLACE_CCP_IMAGE_TAG",
+        "value": "centos7-9.5-1.2.6",
         "description": "The image tag to pull images with"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "value": "crunchydata",
+        "description": "The image prefix to pull images with"
     } ],
     "objects": [ {
       "kind": "PersistentVolumeClaim",
@@ -80,7 +84,7 @@
             }],
             "containers": [{
                 "name": "server",
-                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-pgbouncer:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-pgbouncer:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

@@ -17,15 +17,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-TMPFILE=/tmp/master.json
-cp $DIR/master.json $TMPFILE
-sed -i "s/REPLACE_CCP_IMAGE_TAG/$CCP_IMAGE_TAG/g" $TMPFILE
-sed -i "s/REPLACE_CCP_IMAGE_PREFIX/$CCP_IMAGE_PREFIX/g" $TMPFILE
-oc create -f $TMPFILE
+oc create -f $DIR/master.json
 
-TMPFILE=/tmp/master-using-pvc.json
-cp $DIR/master-using-pvc.json $TMPFILE
-sed -i "s/REPLACE_CCP_IMAGE_TAG/$CCP_IMAGE_TAG/g" $TMPFILE
-sed -i "s/REPLACE_CCP_IMAGE_PREFIX/$CCP_IMAGE_PREFIX/g" $TMPFILE
-
-oc create -f $TMPFILE
+oc create -f $DIR/master-using-pvc.json 

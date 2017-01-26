@@ -12,8 +12,12 @@
     },
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
-        "value": "REPLACE_CCP_IMAGE_TAG",
+        "value": "centos7-9.5-1.2.6",
         "description": "image tag to use"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "value": "crunchydata",
+        "description": "image prefix to use"
     }, {
         "name": "PVC_NAME",
         "description": "name to use for the PVC",
@@ -83,7 +87,7 @@
         "spec": {
             "containers": [{
                 "name": "${SERVICE_NAME}",
-                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-pgadmin4:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-pgadmin4:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5050,
                     "protocol": "TCP"

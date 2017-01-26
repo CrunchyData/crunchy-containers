@@ -39,9 +39,13 @@
         "value": "password",
         "description": "the password of the database user to perform the backup"
     }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "value": "crunchydata",
+        "description": "the image prefix to use"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use",
-        "value": "REPLACE_CCP_IMAGE_TAG"
+        "value": "centos7-9.5-1.2.6"
     }],
 
     "objects": [{
@@ -90,7 +94,7 @@
                     },
                     "containers": [{
                         "name": "${JOB_NAME}",
-                        "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-backup:${CCP_IMAGE_TAG}",
+                        "image": "${CCP_IMAGE_PREFIX}/crunchy-backup:${CCP_IMAGE_TAG}",
                         "imagePullPolicy": "Always",
                         "volumeMounts": [{
                             "mountPath": "/pgdata",

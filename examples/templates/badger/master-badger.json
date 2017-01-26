@@ -20,8 +20,12 @@
         "value": "master"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "REPLACE_CCP_IMAGE_TAG",
+        "value": "centos7-9.5-1.2.6",
         "description": "The image tag to use"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "value": "crunchydata",
+        "description": "The image prefix to use"
     }, {
         "name": "PG_MASTER_PASSWORD",
         "description": "The password for the PG master user",
@@ -89,7 +93,7 @@
         "spec": {
             "containers": [{
                 "name": "postgres",
-                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
   "readinessProbe": {
                     "exec": {
                         "command": [
@@ -150,7 +154,7 @@
                 }]
             }, {
                 "name": "pgbadger",
-                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-pgbadger:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-pgbadger:${CCP_IMAGE_TAG}",
 
                 "imagePullPolicy": "Always",
                 "ports": [{
