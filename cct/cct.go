@@ -18,9 +18,7 @@ package cct
 
 import (
 	"context"
-	// "fmt"
-    "path"
-    // "reflect"
+	"fmt"
     "strings"
     // "time"
  	
@@ -30,6 +28,8 @@ import (
     "github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/client"
 )
+
+// import "reflect"
 
 // func main() {
 //     docker, err := client.NewEnvClient()
@@ -44,12 +44,13 @@ import (
 //     }
 //     // fmt.Println(c)
 
-//     i, err := isPostgresReady(docker, c.ID)
+//     inspect, err := docker.ContainerInspect(context.Background(), c.ID)
 //     if err != nil {
-//         panic(err)
+//         return
 //     }
+//     l := inspect.Config.Labels
 
-//     fmt.Printf("Postgres is ready: %t\n", i)
+//     fmt.Println(reflect.TypeOf(l), l)
 
 //     fmt.Println("Kthnxbai")
 // }
@@ -76,59 +77,6 @@ func envValueFromContainer(
     return
 }
 
-// returns the HostIP and Port reported by the service on 5432/tcp, which should always be postgresql
-func pgHostFromContainer(docker *client.Client, 
-    containerId string) (host string, port string, err error) {
-
-    inspect, err := docker.ContainerInspect(
-        context.Background(), containerId)
-    if err != nil {
-        return
-    }
-    binding := inspect.HostConfig.PortBindings["5432/tcp"][0]
-
-    host, port = binding.HostIP, binding.HostPort
-    return
-}
-
-// wraps pg_isready via docker exec
-func isPostgresReady(
-    docker *client.Client,
-    containerId string) (isready bool, err error) {
-
-    pgroot, err := envValueFromContainer(docker, containerId, "PGROOT")
-    if err != nil {
-        return
-    }    
-    cmd := []string{path.Join(pgroot, "bin/pg_isready")}
-
-    execConf := types.ExecConfig{
-        User: "postgres",
-        Detach: true,
-        Cmd: cmd,
-    }
-    execId, err := docker.ContainerExecCreate(
-        context.Background(), containerId, execConf)
-    if err != nil {
-        return
-    }
-
-    err = docker.ContainerExecStart(
-        context.Background(), execId.ID, types.ExecStartCheck{})
-    if err != nil {
-        return
-    }
-
-    inspect, err := docker.ContainerExecInspect(
-        context.Background(), execId.ID) 
-    if err != nil {
-        return
-    }
-
-    isready = (inspect.ExitCode == 0)
-    return
-}
-
 // container state is running?
 func isContainerRunning(
     docker *client.Client, 
@@ -139,10 +87,77 @@ func isContainerRunning(
         return
     }
 
-    state := inspect.State
-    isrunning = state.Running
+    isrunning = inspect.State.Running
     return 
 }
+
+func isContainerDead(
+    docker *client.Client,
+    containerId string) (isdead bool, err error) {
+
+    inspect, err := docker.ContainerInspect(context.Background(), containerId)
+    if err != nil {
+        return
+    }
+
+    isdead = inspect.State.Dead
+    return
+}
+
+// returns the map of labels assigned to this container
+func getLabels(
+    docker *client.Client,
+    containerId string) (labels map[string]string, err error) {
+
+    inspect, err := docker.ContainerInspect(context.Background(), containerId)
+    if err != nil {
+        return
+    }
+
+    labels = inspect.Config.Labels
+    return
+}
+
+// assert a specified label is set to a value found in a Labels string map
+func assertLabelFromLabels(
+    labels map[string]string,
+    label string,
+    value string) (ok bool, foundvalue string, err error) {
+
+    if v, ok := labels[label]; ! ok {
+        err = fmt.Errorf("Label Not Found: %s", label)
+    } else {
+        foundvalue = v
+    }
+
+    ok = (foundvalue == value)
+    return
+}
+
+// assert a specifed label is set to value in a container.
+// can return Label Not Found error
+func assertLabel(
+    docker *client.Client,
+    containerId string,
+    label string,
+    value string) (ok bool, foundvalue string, err error) {
+
+    inspect, err := docker.ContainerInspect(context.Background(), containerId)
+    if err != nil {
+        return
+    }
+
+    l := inspect.Config.Labels
+    if v, ok := l[label]; ! ok {
+        err = fmt.Errorf("Label Not Found: %s", label)
+    } else {
+        foundvalue = v
+    }
+
+    ok = (foundvalue == value)
+    return
+}
+
 
 // returns Container object associated with container name
 func ContainerFromName(
@@ -158,6 +173,10 @@ func ContainerFromName(
     containers, err := docker.ContainerList(
         context.Background(), listOpts)
     if err != nil {
+        return
+    }
+    if len(containers) == 0 {
+        err = fmt.Errorf("Container Not Found: %s", containerName)
         return
     }
     c = containers[0]
