@@ -17,13 +17,6 @@
 # set up some env vars that all examples can relate to
 #
 
-HOSTNAME=`hostname`
-grep $HOSTNAME /etc/hosts
-if [ $? -ne 0 ]; then
-	echo "hostname is not in /etc/hosts which is required for the examples"
-	exit 1
-fi
-
 export LOCAL_IP=`hostname --ip-address`
 
 if [ -v $CCP_IMAGE_TAG ]; then
