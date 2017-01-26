@@ -10,6 +10,21 @@ environment.  For Dedicated, we have built a set of templates
 that can be installed into a Dedicated instance to help automate
 the creation of Crunchy Container Suite containers.
 
+=== Installation
+
+Users can install the templates into their Openshift environment 
+using the following commands:
+....
+oc login
+oc project <your project name>
+cd $HOME
+git clone https://github.com/CrunchyData/crunchy-containers.git
+export BUILDBASE=$HOME/crunchy-containers
+export CCP_IMAGE_TAG=centos7-9.5-1.2.6
+cd crunchy-containers/examples/templates
+./create-all.sh
+....
+
 === Example Details
 
 Each example will build a template to be later used by
