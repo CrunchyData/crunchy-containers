@@ -14,3 +14,4 @@
 
 kubectl delete service pgadmin4
 kubectl delete pod pgadmin4
+kubectl delete pvc pgadmin4-nfs-pvc

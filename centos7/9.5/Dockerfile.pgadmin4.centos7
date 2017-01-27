@@ -22,9 +22,9 @@ RUN pip install --upgrade setuptools
 EXPOSE 5050
 
 #
-RUN mkdir -p /.pgadmin
-RUN chown -R postgres:postgres /.pgadmin
-VOLUME ["/.pgadmin"]
+RUN mkdir -p /root/.pgadmin
+RUN chown -R postgres:postgres /root/.pgadmin
+VOLUME ["/root/.pgadmin"]
 
 ADD bin/pgadmin4/ /opt/cpm/bin
 ADD conf/pgadmin4/ /opt/cpm/conf

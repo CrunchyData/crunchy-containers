@@ -39,7 +39,7 @@ ose_hack
 id
 
 echo $PATH is the path
-export THISDIR=~/.pgadmin
+export THISDIR=/root/.pgadmin
 if [ ! -f "$THISDIR/config_local.py" ]; then
 	echo "WARNING: could not find mounted config files...using defaults as starting point"
 	mkdir $THISDIR
@@ -55,8 +55,8 @@ echo "waiting till docker stop or signal is sent to kill pgadmin4..."
 
 wait
 
-#while true; do
-#	echo "debug sleeping..."
-#	sleep 1000
-#done
+while true; do
+	echo "debug sleeping..."
+	sleep 1000
+done
 
