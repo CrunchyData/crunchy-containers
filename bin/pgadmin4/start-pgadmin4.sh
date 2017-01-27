@@ -47,9 +47,9 @@ if [ ! -f "$THISDIR/config_local.py" ]; then
 	cp /opt/cpm/conf/pgadmin4.db $THISDIR/
 fi
 
-cp $THISDIR/config_local.py /usr/lib/python2.7/site-packages/pgadmin4
+cp $THISDIR/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/
 
-python /usr/lib/python2.7/site-packages/pgadmin4/pgAdmin4.py &
+python2 /usr/lib/python2.7/site-packages/pgadmin4-web/pgAdmin4.py &
 export PGADMIN_PID=$!
 echo "waiting till docker stop or signal is sent to kill pgadmin4..."
 

@@ -16,7 +16,7 @@ RUN yum -y install epel-release \
  	nss_wrapper \
 	openssh-clients \
 	procps-ng \
-	python-devel python-pip \
+	pgadmin4-v1-web \
  && yum -y install postgresql96-devel postgresql96-server \
  && yum -y clean all
 
@@ -27,24 +27,16 @@ RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
 ADD bin/pgadmin4/ /opt/cpm/bin
 ADD conf/pgadmin4/ /opt/cpm/conf
-ADD pgadmin4*.whl /tmp
-
-RUN export PATH=$PATH:$PGROOT/bin \
- && pip install --upgrade pip \
- && pip install --upgrade setuptools \
- && pip install /tmp/pgadmin4*.whl
 
 # open up the pgadmin4 http port
 EXPOSE 5050
 
 RUN mkdir -p /.pgadmin \
- && chown -R postgres:postgres /.pgadmin /opt/cpm \
-	/usr/lib/python2.7/site-packages/pgadmin4 \
- && chmod -R 777 /usr/lib/python2.7/site-packages/pgadmin4
+ && chown -R postgres:postgres /.pgadmin /opt/cpm 
 
 
 VOLUME ["/.pgadmin"]
 
-USER 26
+USER root
 
 CMD ["/opt/cpm/bin/start-pgadmin4.sh"]
