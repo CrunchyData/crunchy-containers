@@ -1,6 +1,6 @@
 = Docker Examples - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.2.6, {docdate}
+v1.2.7, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Docker Examples
@@ -546,7 +546,7 @@ full details.
 === *pgaudit* - pgaudit
 
 This example, examples/docker/pgaudit, provides an
-example of enabling pgaudit output.  As of release 1.2.6,
+example of enabling pgaudit output.  As of release 1.2.7,
 pgaudit is included in the crunchy-postgres container and is
 added to the postgres shared library list in the postgresql.conf.
 
