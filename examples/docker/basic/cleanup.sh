@@ -19,6 +19,6 @@ CONTAINER_NAME=basic
 VOLUME_NAME=basic-example-volume
 
 docker stop $CONTAINER_NAME
-docker rm $CONTAINER_NAME
+docker rm -v $CONTAINER_NAME
 docker volume rm $VOLUME_NAME
 
