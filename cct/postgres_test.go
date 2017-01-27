@@ -1,6 +1,7 @@
 package cct
 
 import (
+    "bytes"
     "database/sql"
     "fmt"
     "os"
@@ -166,20 +167,83 @@ func timeoutOrReady(
     }
 }
 
+func waitForPostgresContainer(
+    docker *client.Client,
+    name string,
+    timeoutSeconds int64) (containerId string, err error) {
+
+    c, err := ContainerFromName(docker, name)
+    if err != nil {
+        return
+    }
+    containerId = c.ID
+
+    conStr, err := buildConnectionString(docker, containerId, "postgres", "postgres")
+    if err != nil {
+        return
+    }
+
+    var ok bool
+    escape := func () (bool, error) {
+        return isContainerDead(docker, containerId)
+    }
+    condition1 := func () (bool, error) {
+        if ok, err := isPostgresReady(docker, containerId); ! ok || err != nil {
+            return false, err
+        }
+        return isAcceptingConnectionString(conStr)
+    }
+    condition2 := func () (bool, error) {
+        return isFinishedSetup(conStr)
+    }
+    if ok, err = timeoutOrReady(
+        timeoutSeconds,
+        escape,
+        []func() (bool, error){condition1, condition2},
+        500); err != nil {
+        return
+    } else if ! ok {
+        return containerId, fmt.Errorf("Container stopped; or timeout expired, and container is not ready.")
+    }
+
+    return
+}
+
+func startDockerExample(
+    basePath string,
+    exampleName string) (pathToCleanup string, cmdout string, err error) {
+
+    pathToExample := path.Join(
+        basePath, "examples", "docker", exampleName, "run.sh")
+    pathToCleanup = path.Join(
+        basePath, "examples", "docker", exampleName, "cleanup.sh")
+
+    out, err := exec.Command(pathToExample).CombinedOutput()
+    if err != nil {
+        return
+    }
+    cmdout = bytes.NewBuffer(out).String()
+    return
+}
+
+func cleanupExample(pathToCleanup string) (cmdout string, err error) {
+    out, err := exec.Command(pathToCleanup).CombinedOutput()
+    if err != nil {
+        return
+    }
+    cmdout = bytes.NewBuffer(out).String()
+    return
+}
+
 // docker basic example expects one container named "basic", running crunchy-postgres\
 func TestDockerBasic(t *testing.T) {
-    const testName = "basic"
-    const testInitTimeoutSeconds = 40
+    const exampleName = "basic"
+    const exampleTimeoutSeconds = 60
 
     buildBase := os.Getenv("BUILDBASE")
     if buildBase == "" {
         t.Fatal("Please set BUILDBASE environment variable to run tests.")
     }
-
-    pathToTest := path.Join(
-        buildBase, "examples", "docker", testName, "run.sh")
-    pathToCleanup := path.Join(
-        buildBase, "examples", "docker", testName, "cleanup.sh")
 
     // TestMinSupportedDockerVersion 1.18 seems to work fine?
     
@@ -192,61 +256,36 @@ func TestDockerBasic(t *testing.T) {
     defer docker.Close()
 
     /////////// docker is available, run the example
-    t.Log("Starting Example: docker/" + testName)
-    cmdout, err := exec.Command(pathToTest).CombinedOutput()
-    t.Logf("%s\n", cmdout)
+    t.Log("Starting Example: docker/" + exampleName)
+    pathToCleanup, cmdout, err := startDockerExample(buildBase, exampleName)
+    if err != nil {
+        t.Fatal(err, cmdout)
+    }
+    t.Log(cmdout)
+
+    /////////// allow container to start and db to initialize
+    fmt.Printf("Waiting for maximum %d seconds.\n", exampleTimeoutSeconds)
+    t.Logf("Waiting maximum %d seconds for container and postgres startup\n", exampleTimeoutSeconds)
+
+    containerId, err := waitForPostgresContainer(docker, "basic", exampleTimeoutSeconds)
     if err != nil {
         t.Fatal(err)
     }
 
-    c, err := ContainerFromName(docker, "basic")
-    if err != nil {
-        t.Fatal(err)
-    }
-
-    testCCPLabels(docker, c.ID, t)
+    // verify labels match build
+    testCCPLabels(docker, containerId, t)
     // count number of volumes
     // count number of mounts
 
-    pgUserConStr, err := buildConnectionString(docker, c.ID, "postgres", "postgres")
+    pgUserConStr, err := buildConnectionString(docker, containerId, "postgres", "postgres")
     if err != nil {
         t.Fatal(err)
     }
     t.Log("Postgres User Connection String: " + pgUserConStr)
 
-    fmt.Printf("Waiting for maximum %d seconds.\n", testInitTimeoutSeconds)
-
-    /////////// allow container to start and db to initialize
-    t.Logf("Waiting maximum %d seconds for container and postgres startup\n", testInitTimeoutSeconds)
-
     /////////// begin database tests
     var userName string = "testuser"
     var dbName string = "userdb"
-
-    escape := func () (bool, error) {
-        return isContainerDead(docker, c.ID)
-    }
-    condition1 := func () (bool, error) {
-        if ok, err := isPostgresReady(docker, c.ID); ! ok || err != nil {
-            return false, err
-        }
-        return isAcceptingConnectionString(pgUserConStr)
-    }
-    condition2 := func () (bool, error) {
-        return roleExists(pgUserConStr, userName)
-    }
-    condition3 := func () (bool, error) {
-        return dbExists(pgUserConStr, dbName)
-    }
-    if ok, err := timeoutOrReady(
-        testInitTimeoutSeconds,
-        escape,
-        []func() (bool, error){condition1, condition2, condition3},
-        500); err != nil {
-        t.Error(err)
-    } else if ! ok {
-        t.Errorf("Container stopped; or timeout expired, and container is not ready.")
-    }
 
     t.Run("Connect", func (t *testing.T) {
         if ok, err := isAcceptingConnectionString(pgUserConStr); err != nil {
@@ -295,7 +334,7 @@ func TestDockerBasic(t *testing.T) {
     // assert lc_collate, lc_ctype
 
     ///////// test user
-    userConStr, err := buildConnectionString(docker, c.ID, dbName, userName)
+    userConStr, err := buildConnectionString(docker, containerId, dbName, userName)
     if err != nil {
         t.Error(err)
     }
@@ -325,15 +364,17 @@ func TestDockerBasic(t *testing.T) {
  //    }
 
     ///////// completed tests, cleanup
-    t.Log("Calling cleanup" + pathToCleanup)
-    cmdout, err = exec.Command(pathToCleanup).CombinedOutput()
-    t.Logf("%s", cmdout)
+    t.Log("Calling cleanup: " + pathToCleanup)
+    cmdout, err = cleanupExample(pathToCleanup)
     if err != nil {
-        t.Fatal(err)
+        t.Fatal(err, cmdout)
     }
+    t.Log(cmdout)
 
     // test container is destroyed
     // test volume is destroyed
+
+    t.Log("All tests complete")
 }
 
 

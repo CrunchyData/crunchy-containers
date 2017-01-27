@@ -8,26 +8,16 @@ import (
     "github.com/docker/docker/client"
 )
 
+
 // docker basic example expects one container named "basic", running crunchy-postgres\
 func TestDockerBackup(t *testing.T) {
-    const testName = "backup"
-    const testInitTimeoutSeconds = 40
-    const dependsOnTestName = "basic"
+    const exampleName = "backup"
+    const exampleTimeoutSeconds = 90
 
     buildBase := os.Getenv("BUILDBASE")
     if buildBase == "" {
     	t.Fatal("Please set BUILDBASE environment variable to run tests.")
     }
-
-    // pathToTest := path.Join(
-    // 	buildBase, "examples", "docker", testName, "run.sh")
-    // pathToCleanup := path.Join(
-    // 	buildBase, "examples", "docker", testName, "cleanup.sh")
-
-    // dependsOnTest := path.Join(
-    // 	buildBase, "examples", "docker", dependsOnTestName, "run.sh")
-    // dependsOnCleanup := path.Join(
-    // 	buildBase, "examples", "docker", dependsOnTestName, "cleanup.sh")
 
     // TestMinSupportedDockerVersion 1.18 seems to work fine?
     
@@ -39,19 +29,43 @@ func TestDockerBackup(t *testing.T) {
 
     defer docker.Close()
 
-    // /////////// docker is available, run the example
-    // t.Log("Starting Example: docker/" + dependsOnTestName)
-    // t.Log("Starting Example: docker/" + testName)
-    // cmdout, err := exec.Command(pathToTest).CombinedOutput()
-    // t.Logf("%s\n", cmdout)
-    // if err != nil {
-    // 	t.Fatal(err)
-    // }
+    /////////// docker is available; run basic, then backup
+    t.Log("Starting Example: docker/basic")
+    basicCleanup, basicOut, err := startDockerExample(buildBase, "basic")
+    if err != nil {
+        t.Fatal(err, basicOut)
+    }
+    basicId, err := waitForPostgresContainer(docker, "basic", 60)
+    t.Log("Started container ", basicId)
 
-    // c, err := ContainerFromName(docker, "basic")
-    // if err != nil {
-    // 	t.Fatal(err)
-    // }
 
-    // testCCPLabels(docker, c.ID, t)
+    /////////// basic has started, run backup
+    t.Log("Starting Example: docker/" + exampleName)
+    pathToCleanup, cmdOut, err := startDockerExample(buildBase, exampleName)
+    if err != nil {
+    	t.Fatal(err, cmdOut)
+    }
+
+    c, err := ContainerFromName(docker, "backup")
+    if err != nil {
+        return
+    }
+    containerId := c.ID
+    t.Log("Started container ", containerId)
+
+    // verify labels match build
+    testCCPLabels(docker, containerId, t)
+
+    t.Log(pathToCleanup, cmdOut, basicCleanup, basicId)
+
+    ///////// completed tests, cleanup
+    t.Log("Calling cleanup: " + pathToCleanup)
+    cmdout, err = cleanupExample(pathToCleanup)
+    if err != nil {
+        t.Fatal(err, cmdout)
+    }
+    t.Log(cmdout)
+    cmdout, err = cleanupExample(basicCleanup)
+
+    t.Log("All tests complete")
 }

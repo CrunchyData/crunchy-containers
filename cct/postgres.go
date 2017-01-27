@@ -116,6 +116,26 @@ func isAcceptingConnectionString(conStr string) (ok bool, err error) {
     return
 }
 
+func isFinishedSetup(conStr string) (ok bool, err error) {
+    ok = false
+    pg, err := sql.Open("postgres", conStr)
+    if err != nil {
+        return
+    }
+    defer pg.Close()
+
+    query := `SELECT NOT EXISTS (
+        SELECT 1 from pg_stat_activity
+        WHERE state <> 'idle' and application_name = 'container_setup');`
+
+    err = pg.QueryRow(query).Scan(&ok)
+    if err != nil {
+        return
+    }
+
+    return
+}
+
 // func pgInsert(conStr string, query string) (rowCount integer, err error) {
 //  pg, err := sql.Open("postgres", conStr)
 //  if err != nil {
