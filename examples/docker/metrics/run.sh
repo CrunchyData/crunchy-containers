@@ -18,14 +18,15 @@ echo "starting metrics example.."
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
-export HOSTIP=`hostname --ip-address`
+#export HOSTIP=`hostname --ip-address`
+export HOSTIP=127.0.0.1
 echo $HOSTIP
 
 VOLUME_NAME=metrics-volume
 docker volume create --driver local --name=$VOLUME_NAME
 
 docker run \
-	-p $HOSTIP:9091:9091/tcp \
+	-p $HOSTIP:19091:9091/tcp \
 	--name=crunchy-promgateway \
 	--hostname=crunchy-promgateway \
 	-d crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG
@@ -34,7 +35,7 @@ echo "sleep a bit since we are linking to crunchy-promgateway..."
 sleep 10
 
 docker run \
-	-p $HOSTIP:9090:9090/tcp \
+	-p $HOSTIP:19090:9090/tcp \
 	--privileged=true \
 	--volume-driver=local \
 	-v $VOLUME_NAME:/data:z \
@@ -47,7 +48,7 @@ echo "sleep a bit since we are linking to crunchy-prometheus..."
 sleep 10
 
 docker run \
-	-p $HOSTIP:3000:3000/tcp \
+	-p $HOSTIP:13000:3000/tcp \
 	--privileged=true \
 	--volume-driver=local \
 	-v $VOLUME_NAME:/data:z \
