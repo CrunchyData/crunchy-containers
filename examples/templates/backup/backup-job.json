@@ -24,8 +24,12 @@
         "value": "somepvc"
     }, {
         "name": "PVC_SIZE",
-        "value": "1Gi",
+        "value": "500M",
         "description": "the size to give the backup PVC "
+    }, {
+        "name": "PVC_ACCESS_MODE",
+        "value": "ReadWriteMany",
+        "description": "the accessmode to give the backup PVC "
     }, {
         "name": "BACKUP_USER",
         "value": "master",
@@ -35,9 +39,13 @@
         "value": "password",
         "description": "the password of the database user to perform the backup"
     }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "value": "crunchydata",
+        "description": "the image prefix to use"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use",
-        "value": "REPLACE_CCP_IMAGE_TAG"
+        "value": "centos7-9.5-1.2.6"
     }],
 
     "objects": [{
@@ -48,7 +56,7 @@
         },
         "spec": {
             "accessModes": [
-                "REPLACE_PVC_ACCESS_MODE"
+                "${PVC_ACCESS_MODE}"
             ],
             "resources": {
                 "requests": {
@@ -86,7 +94,7 @@
                     },
                     "containers": [{
                         "name": "${JOB_NAME}",
-                        "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-backup:${CCP_IMAGE_TAG}",
+                        "image": "${CCP_IMAGE_PREFIX}/crunchy-backup:${CCP_IMAGE_TAG}",
                         "imagePullPolicy": "Always",
                         "volumeMounts": [{
                             "mountPath": "/pgdata",

@@ -22,7 +22,7 @@ $DIR/cleanup.sh
 
 oc create -f $DIR/dba-sa.json
 
-oc policy add-role-to-group edit system:serviceaccounts -n default
-oc policy add-role-to-user view system:serviceaccount:default:dba-sa
+oc policy add-role-to-group edit system:serviceaccounts -n crunchy
+oc policy add-role-to-user view system:serviceaccount:crunchy:dba-sa
 
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/master-dba-vac.json | oc create -f -

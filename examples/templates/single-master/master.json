@@ -20,8 +20,12 @@
         "value": "master"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "rhel7-9.6-1.2.6",
+        "value": "centos7-9.5-1.2.6",
         "description": "The image tag to pull with"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "value": "crunchydata",
+        "description": "The image prefix to pull with"
     }, {
         "name": "PG_MASTER_PASSWORD",
         "description": "The password for the PG master user",
@@ -82,8 +86,8 @@
         "spec": {
             "containers": [{
                 "name": "${SERVICE_NAME}",
-                "image": "$CRUNCHY_IMAGE_PATH/crunchy-postgres:${CCP_IMAGE_TAG}",
-                "imagePullPolicy": "Always",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
+		"imagePullPolicy": "IfNotPresent",
                 "readinessProbe": {
                     "exec": {
                         "command": [

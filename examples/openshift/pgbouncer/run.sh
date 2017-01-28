@@ -15,22 +15,22 @@
 
 source $BUILDBASE/examples/envvars.sh
 
-echo "this example depends upon the master-replica-dc example being run prior!"
+echo "this example depends upon the master-replica example being run prior!"
 
 CONFIGDIR=/nfsfileshare/bouncerconfig
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-echo "this example depends upon the master-replica-dc example being run prior!"
+echo "this example depends upon the master-replica example being run prior!"
 
 CONFIGDIR=/nfsfileshare/bouncerconfig
 sudo rm -rf $CONFIGDIR
 sudo mkdir $CONFIGDIR
 sudo chmod 777 $CONFIGDIR
 
-cp $DIR/pgbouncer.ini $CONFIGDIR
-cp $DIR/users.txt $CONFIGDIR
+sudo cp $DIR/pgbouncer.ini $CONFIGDIR
+sudo cp $DIR/users.txt $CONFIGDIR
 
 envsubst < $DIR/pgbouncer-pv.json  | oc create -f -
 

@@ -1,6 +1,6 @@
 = Openshift Dedicated Examples - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.2.6, {docdate}
+v1.2.7, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Openshift Dedicated Environment
@@ -9,6 +9,21 @@ Here are instructions for running examples on an Openshift Dedicated
 environment.  For Dedicated, we have built a set of templates
 that can be installed into a Dedicated instance to help automate
 the creation of Crunchy Container Suite containers.
+
+=== Installation
+
+Users can install the templates into their Openshift environment 
+using the following commands:
+....
+oc login
+oc project <your project name>
+cd $HOME
+git clone https://github.com/CrunchyData/crunchy-containers.git
+export BUILDBASE=$HOME/crunchy-containers
+export CCP_IMAGE_TAG=centos7-9.5-1.2.7
+cd crunchy-containers/examples/templates
+./create-all.sh
+....
 
 === Example Details
 

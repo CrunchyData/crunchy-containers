@@ -55,14 +55,9 @@ func (t BackupJob) Run() {
 	parms.CCP_IMAGE_TAG = t.CCP_IMAGE_TAG
 
 	var s = getBackupJobTemplate(t.Logger)
-	var pv = getBackupJobPVTemplate(t.Logger)
 	var pvc = getBackupJobPVCTemplate(t.Logger)
 
 	tmpl, err := template.New("jobtemplate").Parse(s)
-	if err != nil {
-		panic(err)
-	}
-	tmplpv, err := template.New("pvtemplate").Parse(pv)
 	if err != nil {
 		panic(err)
 	}
@@ -71,13 +66,8 @@ func (t BackupJob) Run() {
 		panic(err)
 	}
 
-	var tmpfile, tmpfilePV, tmpfilePVC *os.File
+	var tmpfile, tmpfilePVC *os.File
 	tmpfile, err = ioutil.TempFile("/tmp", "backupjob")
-	if err != nil {
-		t.Logger.Println(err.Error())
-		panic(err)
-	}
-	tmpfilePV, err = ioutil.TempFile("/tmp", "backupjobpv")
 	if err != nil {
 		t.Logger.Println(err.Error())
 		panic(err)
@@ -96,13 +86,6 @@ func (t BackupJob) Run() {
 	}
 	t.Logger.Println("tmpfile is " + tmpfile.Name())
 
-	err = tmplpv.Execute(tmpfilePV, parms)
-	if err := tmpfilePV.Close(); err != nil {
-		t.Logger.Println(err.Error())
-		panic(err)
-	}
-	t.Logger.Println("tmpfilePV is " + tmpfilePV.Name())
-
 	err = tmplpvc.Execute(tmpfilePVC, parms)
 	if err := tmpfilePVC.Close(); err != nil {
 		t.Logger.Println(err.Error())
@@ -111,16 +94,13 @@ func (t BackupJob) Run() {
 	t.Logger.Println("tmpfilePVC is " + tmpfilePVC.Name())
 
 	var stdout, stderr string
-	stdout, stderr, err = createBackupJob(parms, tmpfile.Name(), tmpfilePV.Name(), tmpfilePVC.Name(), t.Cmd)
+	stdout, stderr, err = createBackupJob(parms, tmpfile.Name(), tmpfilePVC.Name(), t.Cmd)
 	if err != nil {
 		t.Logger.Println(err.Error())
 	}
 	t.Logger.Println(stdout)
 	t.Logger.Println(stderr)
 
-	//defer os.Remove(tmpfile.Name())    //clean up
-	//defer os.Remove(tmpfilePV.Name())  //clean up
-	//defer os.Remove(tmpfilePVC.Name()) //clean up
 }
 
 func getBackupJobTemplate(logger *log.Logger) string {
@@ -129,17 +109,6 @@ func getBackupJobTemplate(logger *log.Logger) string {
 	if err != nil {
 		logger.Println(err.Error())
 		logger.Println("error reading template file, can not continue")
-		os.Exit(2)
-	}
-	s := string(buff)
-	return s
-}
-func getBackupJobPVTemplate(logger *log.Logger) string {
-	var filename = "/opt/cpm/conf/backup-job-pv-template.json"
-	buff, err := ioutil.ReadFile(filename)
-	if err != nil {
-		logger.Println(err.Error())
-		logger.Println("error reading pv template file, can't continue")
 		os.Exit(2)
 	}
 	s := string(buff)
@@ -159,11 +128,11 @@ func getBackupJobPVCTemplate(logger *log.Logger) string {
 }
 
 func createBackupJob(parms *BackupJobParms, templateFile string,
-	templatePVFile string, templatePVCFile string, environ string) (string, string, error) {
+	templatePVCFile string, environ string) (string, string, error) {
 
 	var cmd *exec.Cmd
 	cmd = exec.Command("create-backup-job.sh", templateFile,
-		templatePVFile, templatePVCFile, parms.JOB_HOST, environ, parms.CCP_IMAGE_TAG)
+		templatePVCFile, parms.JOB_HOST, environ, parms.CCP_IMAGE_TAG)
 
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -200,18 +169,6 @@ func GetBackupJobParms(logger *log.Logger) (*BackupJobParms, error) {
 	parms.PG_PORT = os.Getenv("PG_PORT")
 	if parms.PG_PORT == "" {
 		return parms, errors.New("PG_PORT env var not found")
-	}
-	parms.BACKUP_PV_CAPACITY = os.Getenv("BACKUP_PV_CAPACITY")
-	if parms.BACKUP_PV_CAPACITY == "" {
-		return parms, errors.New("BACKUP_PV_CAPACITY env var not found")
-	}
-	parms.BACKUP_PV_PATH = os.Getenv("BACKUP_PV_PATH")
-	if parms.BACKUP_PV_PATH == "" {
-		return parms, errors.New("BACKUP_PV_PATH env var not found")
-	}
-	parms.BACKUP_PV_HOST = os.Getenv("BACKUP_PV_HOST")
-	if parms.BACKUP_PV_HOST == "" {
-		return parms, errors.New("BACKUP_PV_HOST env var not found")
 	}
 	parms.BACKUP_PVC_STORAGE = os.Getenv("BACKUP_PVC_STORAGE")
 	if parms.BACKUP_PVC_STORAGE == "" {

@@ -13,16 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+export PATH=$PATH:/opt/cpm/bin
+
+function trap_sigterm() {
+	echo "doing trap logic..." 
+	killall dbaserver
+}
+
+trap 'trap_sigterm' SIGINT SIGTERM
+
 export TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
 
 handle_ose() {
 export CMD=oc
 
-/opt/cpm/bin/oc login https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true --token="$TOKEN"
-/opt/cpm/bin/oc projects $OSE_PROJECT
+oc login https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true --token="$TOKEN"
+oc project $OSE_PROJECT
 
-/opt/cpm/bin/oc policy add-role-to-group edit system:serviceaccounts -n $OSE_PROJECT
-/opt/cpm/bin/oc policy add-role-to-group edit system:serviceaccounts -n default
+oc policy add-role-to-group edit system:serviceaccounts -n $OSE_PROJECT
+#oc policy add-role-to-group edit system:serviceaccounts -n default
 }
 
 handle_kube() {
@@ -41,9 +50,10 @@ else
 	exit 2
 fi
 
-export PATH=$PATH:/opt/cpm/bin
 
 echo $VAC_SCHEDULE is VAC_SCHEDULE
+
+echo $OSE_PROJECT is OSE_PROJECT
 
 echo $JOB_HOST is JOB_HOST
 if [ ! -v JOB_HOST ]; then
@@ -51,4 +61,10 @@ if [ ! -v JOB_HOST ]; then
 	exit 2
 fi
 
-/opt/cpm/bin/dbaserver
+dbaserver &
+
+echo "waiting till signal is sent to quit..."
+
+wait
+
+echo "exiting...at end"

@@ -20,8 +20,12 @@
         "value": "master"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "REPLACE_CCP_IMAGE_TAG",
+        "value": "centos7-9.5-1.2.6",
         "description": "The image tag to pull with"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "value": "crunchydata",
+        "description": "The image prefix to pull with"
     }, {
         "name": "PG_MASTER_PASSWORD",
         "description": "The password for the PG master user",
@@ -47,6 +51,10 @@
         "description": "The size for the PVC",
         "value": "300M"
     }, {
+        "name": "PVC_ACCESS_MODE",
+        "description": "The access mode for the PVC",
+        "value": "ReadWriteMany"
+    }, {
         "name": "PG_ROOT_PASSWORD",
         "description": "The password for the PG adminitrator",
         "value": "password"
@@ -60,7 +68,7 @@
         },
         "spec": {
             "accessModes": [
-                "REPLACE_PVC_ACCESS_MODE"
+                "${PVC_ACCESS_MODE}"
             ],
             "resources": {
                 "requests": {
@@ -108,7 +116,7 @@
             },
             "containers": [{
                 "name": "${SERVICE_NAME}",
-                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "readinessProbe": {
                     "exec": {

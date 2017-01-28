@@ -12,8 +12,12 @@
     },
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
-        "value": "REPLACE_CCP_IMAGE_TAG",
+        "value": "centos7-9.5-1.2.6",
         "description": "the image tag to use"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "value": "crunchydata",
+        "description": "the image prefix to use"
     }, {
         "name": "SERVICE_NAME",
         "description": "the name to use for the watch service",
@@ -60,7 +64,7 @@
             "serviceAccount": "${SERVICE_ACCOUNT_NAME}",
             "containers": [{
                 "name": "watch",
-                "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-watch:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
                     "value": "${OSE_PROJECT}"
@@ -82,6 +86,9 @@
                 }, {
                     "name": "PG_MASTER_USER",
                     "value": "${MASTER_USER}"
+                }, {
+                    "name": "HOME",
+                    "value": "/tmp"
                 }, {
                     "name": "PG_DATABASE",
                     "value": "postgres"

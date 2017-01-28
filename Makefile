@@ -18,12 +18,17 @@ docbuild:
 	cd docs && ./build-docs.sh
 postgres:
 	make versiontest
-	cp /usr/bin/kubectl bin/postgres
+	cp `which kubectl` bin/postgres
 	docker build -t crunchy-postgres -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres.$(CCP_BASEOS) .
 	docker tag crunchy-postgres crunchydata/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
+postgres-gis:
+	make versiontest
+	cp `which kubectl` bin/postgres
+	docker build -t crunchy-postgres-gis -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS) .
+	docker tag crunchy-postgres-gis crunchydata/crunchy-postgres-gis:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 watch:
-	cp /usr/bin/oc bin/watch
-	cp /usr/bin/kubectl bin/watch
+	cp `which oc` bin/watch
+	cp `which kubectl` bin/watch
 	docker build -t crunchy-watch -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.watch.$(CCP_BASEOS) .
 	docker tag crunchy-watch crunchydata/crunchy-watch:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 version:
@@ -39,8 +44,8 @@ backrestd:
 	docker tag crunchy-backrestd crunchydata/crunchy-backrestd:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 pgbouncer:
 	make versiontest
-	cp /usr/bin/oc bin/pgbouncer
-	cp /usr/bin/kubectl bin/pgbouncer
+	cp `which oc` bin/pgbouncer
+	cp `which kubectl` bin/pgbouncer
 	cd bounce && godep go install bounce.go
 	cp $(GOBIN)/bounce bin/pgbouncer/
 	docker build -t crunchy-pgbouncer -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbouncer.$(CCP_BASEOS) .
@@ -88,8 +93,8 @@ vac:
 	docker build -t crunchy-vacuum -f $(CCP_BASEOS)/Dockerfile.vacuum.$(CCP_BASEOS) .
 	docker tag crunchy-vacuum crunchydata/crunchy-vacuum:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 dbaserver:
-	cp /usr/bin/oc bin/dba
-	cp /usr/bin/kubectl bin/dba
+	cp `which oc` bin/dba
+	cp `which kubectl` bin/dba
 	cd dba && godep go install dbaserver.go
 	cp $(GOBIN)/dbaserver bin/dba
 	docker build -t crunchy-dba -f $(CCP_BASEOS)/Dockerfile.dba.$(CCP_BASEOS) .
@@ -98,6 +103,7 @@ dbaserver:
 all:
 	make versiontest
 	make postgres
+	make postgres-gis
 	make backup
 	make watch
 	make pgpool

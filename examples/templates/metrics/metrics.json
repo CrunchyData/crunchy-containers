@@ -12,12 +12,24 @@
     },
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
-        "value": "REPLACE_CCP_IMAGE_TAG",
+        "value": "centos7-9.5-1.2.6",
         "description": "The image tag to use"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "value": "crunchydata",
+        "description": "The image prefix to use"
     }, {
         "name": "PVC_NAME",
         "description": "The name of the PVC used for storage",
         "value": "crunchy-metrics-pvc"
+    }, {
+        "name": "PVC_SIZE",
+        "description": "The size of the PVC used for storage",
+        "value": "200M"
+    }, {
+        "name": "PVC_ACCESS_MODE",
+        "description": "The accessmode of the PVC used for storage",
+        "value": "ReadWriteMany"
     }],
     "objects": [{
             "kind": "PersistentVolumeClaim",
@@ -27,11 +39,11 @@
             },
             "spec": {
                 "accessModes": [
-                    "REPLACE_PVC_ACCESS_MODE"
+                    "${PVC_ACCESS_MODE}"
                 ],
                 "resources": {
                     "requests": {
-                        "storage": "300M"
+                        "storage": "${PVC_SIZE}"
                     }
                 }
             }
@@ -87,7 +99,7 @@
 
                 "containers": [{
                     "name": "prometheus",
-                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-prometheus:${CCP_IMAGE_TAG}",
+                    "image": "${CCP_IMAGE_PREFIX}/crunchy-prometheus:${CCP_IMAGE_TAG}",
                     "imagePullPolicy": "Always",
                     "ports": [{
                         "containerPort": 9090,
@@ -101,7 +113,7 @@
                     }]
                 }, {
                     "name": "promgateway",
-                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-promgateway:${CCP_IMAGE_TAG}",
+                    "image": "${CCP_IMAGE_PREFIX}/crunchy-promgateway:${CCP_IMAGE_TAG}",
                     "imagePullPolicy": "Always",
                     "ports": [{
                         "containerPort": 9091,
@@ -111,7 +123,7 @@
                     "volumeMounts": []
                 }, {
                     "name": "grafana",
-                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-grafana:${CCP_IMAGE_TAG}",
+                    "image": "${CCP_IMAGE_PREFIX}/crunchy-grafana:${CCP_IMAGE_TAG}",
                     "imagePullPolicy": "Always",
                     "ports": [{
                         "containerPort": 3000,

@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $BUILDBASE/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -19,15 +20,17 @@ $DIR/cleanup.sh
 
 oc create -f $DIR/dba-sa.json
 
-oc policy add-role-to-group edit system:serviceaccounts -n default
-oc policy add-role-to-user view system:serviceaccount:default:dba-sa
+oc policy add-role-to-group edit system:serviceaccounts -n crunchy
+oc policy add-role-to-user view system:serviceaccount:crunchy:dba-sa
 
 #
 # this next commands lets the dba-sa service account have
 # the permissions of 'cluster-admin' which allows it
-# to create and delete PV and PVCs required by the backup job
+# to create PVCs required by the backup job
 # capability of the dba container
 #
-oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:default:dba-sa
+oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:crunchy:dba-sa
+
+envsubst < $DIR/backup-pv.json  | oc create -f -
 
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/master-dba-backup.json | oc create -f -

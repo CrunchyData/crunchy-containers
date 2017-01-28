@@ -18,7 +18,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  	nss_wrapper \
 	openssh-clients \
 	procps-ng \
-	python-devel python-pip \
+#	python-devel python-pip \
  && yum -y install postgresql96-devel postgresql96-server \
  && yum -y clean all
 

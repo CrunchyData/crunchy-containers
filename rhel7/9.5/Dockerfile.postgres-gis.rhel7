@@ -1,31 +1,24 @@
-FROM centos:7
+FROM rhel7.2
 
 LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
 
-ENV PGVERSION="9.5" \
-	PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
-
 # PGDG Postgres repo
-# RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-1.noarch.rpm
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+#RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
 
-RUN yum -y install epel-release \
- && yum -y update glibc-common \
- && yum -y install bind-utils \
-	gettext \
-	hostname \
-	nss_wrapper \
-	openssh-clients \
- 	procps-ng  \
-	rsync \
- && yum -y clean all
+# if you ever need to install package docs inside the container, uncomment 
+#RUN sed -i '/nodocs/d' /etc/yum.conf
 
-RUN yum -y install postgresql95-server postgresql95-contrib postgresql95 \
-	pgaudit_95 \
-	pgbackrest \
- && yum -y clean all
+# Crunchy Postgres repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg95.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
 
-ENV	PGROOT="/usr/pgsql-${PGVERSION}"
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+RUN yum -y install rsync nss_wrapper gettext bind-utils procps-ng \
+openssh-clients  hostname && yum -y reinstall glibc-common && \ 
+yum -y install postgresql95 postgresql95-contrib postgresql95-server \
+pgaudit95 pgaudit_analyze pgaudit95_set_user \
+postgis2_95 postgis2_95-client crunchy-backrest pgrouting_95  && yum clean all -y
 
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/
@@ -35,7 +28,6 @@ RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover 
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
 	/pgdata /pgwal /pgconf /backup /recover /backrestrepo
-
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
 # add volumes to allow backup of postgres files
@@ -56,3 +48,4 @@ ADD conf/postgres /opt/cpm/conf
 USER 26
 
 CMD ["/opt/cpm/bin/start.sh"]
+

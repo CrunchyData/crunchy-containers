@@ -17,13 +17,6 @@
 # set up some env vars that all examples can relate to
 #
 
-HOSTNAME=`hostname`
-grep $HOSTNAME /etc/hosts
-if [ $? -ne 0 ]; then
-	echo "hostname is not in /etc/hosts which is required for the examples"
-	exit 1
-fi
-
 export LOCAL_IP=`hostname --ip-address`
 
 if [ -v $CCP_IMAGE_TAG ]; then
@@ -32,8 +25,8 @@ if [ -v $CCP_IMAGE_TAG ]; then
 fi
 
 # for PVC templates - NFS uses ReadWriteMany - EBS uses ReadWriteOnce
-#export PVC_ACCESS_MODE=ReadWriteOnce
-export PVC_ACCESS_MODE=ReadWriteMany
+
 # for templates - allow for override of Image Path Prefix
 #export CCP_IMAGE_PREFIX=172.30.240.45:5000/jeff-project
+export REPLACE_CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_PREFIX=crunchydata

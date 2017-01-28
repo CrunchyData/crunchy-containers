@@ -18,7 +18,7 @@ RUN yum -y install rsync nss_wrapper gettext bind-utils procps-ng \
 openssh-clients  hostname && yum -y reinstall glibc-common && \ 
 yum -y install postgresql95 postgresql95-contrib postgresql95-server \
 pgaudit95 pgaudit_analyze pgaudit95_set_user \
-postgis2_95 postgis2_95-client crunchy-backrest pgrouting_95  && yum clean all -y
+crunchy-backrest  && yum clean all -y
 
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/

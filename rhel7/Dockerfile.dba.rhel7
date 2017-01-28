@@ -2,7 +2,7 @@ FROM rhel7.2
 
 LABEL Release="1.2.6" Vendor="Crunchy Data Solutions"
 
-RUN yum -y install procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
+RUN yum -y install psmisc procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
 
 # set up cpm directory
 #

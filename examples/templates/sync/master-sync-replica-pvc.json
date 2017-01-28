@@ -13,7 +13,11 @@
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use",
-        "value": "REPLACE_CCP_IMAGE_TAG"
+        "value": "centos7-9.5-1.2.6"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "the image prefix to use",
+        "value": "crunchydata"
     }, {
         "name": "REPLICA_SERVICE_NAME",
         "description": "the name of the replica",
@@ -26,6 +30,10 @@
         "name": "REPLICA_PVC_SIZE",
         "description": "the size of the replica pvc",
         "value": "300M"
+    }, {
+        "name": "PVC_ACCESS_MODE",
+        "description": "the accessmode of the PVCs",
+        "value": "ReadWriteMany"
     }, {
         "name": "MASTER_SERVICE_NAME",
         "description": "the name of the master",
@@ -55,7 +63,7 @@
             },
             "spec": {
                 "accessModes": [
-                    "REPLACE_PVC_ACCESS_MODE"
+                    "${PVC_ACCESS_MODE}"
                 ],
                 "resources": {
                     "requests": {
@@ -71,7 +79,7 @@
             },
             "spec": {
                 "accessModes": [
-                    "REPLACE_PVC_ACCESS_MODE"
+                    "${PVC_ACCESS_MODE}"
                 ],
                 "resources": {
                     "requests": {
@@ -142,7 +150,7 @@
 
                 "containers": [{
                     "name": "postgres",
-                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
+                    "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                     "imagePullPolicy": "Always",
                 "readinessProbe": {
                     "exec": {
@@ -236,7 +244,7 @@
 
                 "containers": [{
                     "name": "postgres",
-                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
+                    "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
                         "command": [

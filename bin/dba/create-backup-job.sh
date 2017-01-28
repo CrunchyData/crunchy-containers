@@ -19,25 +19,23 @@
 
 echo "create-backup-job.sh......"
 echo $1 is template for backup
-echo $2 is template for backup pv
-echo $3 is template for backup pvc
-echo $4 is JOB_HOST
-echo $5 is CMD
+echo $2 is template for backup pvc
+echo $3 is JOB_HOST
+echo $4 is CMD
 
-/opt/cpm/bin/$5 delete job $4-backup
-/opt/cpm/bin/$5 delete pvc $4-backup-pvc
-/opt/cpm/bin/$5 delete pv $4-backup-pv
+/opt/cpm/bin/$4 delete job $3-backup
+#/opt/cpm/bin/$5 delete pvc $4-backup-pvc
 sleep 15
 
 # create the PV
-cat $2
-/opt/cpm/bin/$5 create -f $2
-sleep 4
+#cat $2
+#/opt/cpm/bin/$5 create -f $2
+#sleep 4
 # create the PVC
-cat $3
-/opt/cpm/bin/$5 create -f $3
+cat $2
+/opt/cpm/bin/$4 create -f $2
 sleep 4
 # create the backup job
 cat $1
-/opt/cpm/bin/$5 create -f $1
+/opt/cpm/bin/$4 create -f $1
 

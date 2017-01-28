@@ -69,9 +69,6 @@ func (t VacJob) Run() {
 	}
 	t.Logger.Println(stdout)
 	t.Logger.Println(stderr)
-	//defer os.Remove(tmpfile.Name()) //clean up
-	//err = tmpl.Execute(os.Stdout, parms)
-	//t.Logger.Println(s)
 }
 
 func getTemplate(logger *log.Logger) string {

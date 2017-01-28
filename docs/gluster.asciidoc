@@ -1,0 +1,27 @@
+=== Kube Example 15 - master using gluster fs
+
+This example deploys a master database container that uses
+a gluster file system as the persistent volume.
+
+Setup gluster according to
+link:https://wiki.centos.org/SpecialInterestGroup/Storage/gluster-Quickstart
+
+
+Start the example as follows:
+....
+cd $BUILDBASE/examples/kube/gluster
+./run.sh
+....
+
+This will start a container and service for the master database.
+
+You can access the master database as follows:
+....
+psql -h master-gluster -U postgres postgres
+....
+
+This example has a mount point of /mnt/gluster which is mapped
+to the gluster fs at yourhost:/gv0
+
+
+
