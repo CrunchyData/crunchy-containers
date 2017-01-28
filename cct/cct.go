@@ -91,6 +91,7 @@ func isContainerRunning(
     return 
 }
 
+// container is dead?
 func isContainerDead(
     docker *client.Client,
     containerId string) (isdead bool, err error) {
@@ -157,7 +158,6 @@ func assertLabel(
     ok = (foundvalue == value)
     return
 }
-
 
 // returns Container object associated with container name
 func ContainerFromName(

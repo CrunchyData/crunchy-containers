@@ -95,6 +95,7 @@ func isPostgresReady(
     }
 }
 
+// returns false on password error (err for all others)
 func isAcceptingConnectionString(conStr string) (ok bool, err error) {
     ok = false
     pg, err := sql.Open("postgres", conStr)
@@ -116,6 +117,7 @@ func isAcceptingConnectionString(conStr string) (ok bool, err error) {
     return
 }
 
+// returns ok when container_setup script is not running
 func isFinishedSetup(conStr string) (ok bool, err error) {
     ok = false
     pg, err := sql.Open("postgres", conStr)
@@ -136,27 +138,22 @@ func isFinishedSetup(conStr string) (ok bool, err error) {
     return
 }
 
-// func pgInsert(conStr string, query string) (rowCount integer, err error) {
-//  pg, err := sql.Open("postgres", conStr)
-//  if err != nil {
-//      return
-//  }
-//  defer pg.Close()
-    
-// }
+// returns pg_is_in_backup()
+func isInBackup(conStr string) (ok bool, err error) {
+    ok = false
+    pg, err := sql.Open("postgres", conStr)
+    if err != nil {
+        return
+    }
+    defer pg.Close()
 
-// func pgPerform(conStr string, query string) (err error) {
-//  pg, err := sql.Open("postgres", conStr)
-//  if err != nil {
-//      return
-//  }
-//  defer pg.Close()
+    err = pg.QueryRow("SELECT pg_is_in_backup();").Scan(&ok)
+    if err != nil {
+        return
+    }
 
-//  _, err := pg.Exec(query)
-//  if err != nul {
-//      return
-//  }
-// }
+    return
+}
 
 // can create and write to temp table?
 func tempTableCreateAndWrite(conStr string) (ok bool, err error) {
@@ -175,6 +172,7 @@ func tempTableCreateAndWrite(conStr string) (ok bool, err error) {
     return true, nil
 }
 
+// CREATE, INSERT INTO, DROP TABLE
 func relCreateInsertDrop(conStr string) (ok bool, err error) {
     ok = false
 

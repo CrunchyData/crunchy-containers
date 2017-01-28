@@ -211,14 +211,15 @@ func waitForPostgresContainer(
 
 func startDockerExample(
     basePath string,
-    exampleName string) (pathToCleanup string, cmdout string, err error) {
+    exampleName string,
+    arg ...string) (pathToCleanup string, cmdout string, err error) {
 
     pathToExample := path.Join(
         basePath, "examples", "docker", exampleName, "run.sh")
     pathToCleanup = path.Join(
         basePath, "examples", "docker", exampleName, "cleanup.sh")
 
-    out, err := exec.Command(pathToExample).CombinedOutput()
+    out, err := exec.Command(pathToExample, arg).CombinedOutput()
     if err != nil {
         return
     }
