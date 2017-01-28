@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting masterrestore container..."
+echo "starting master-restore container..."
+
+export BACKUP_PATH="basic-backups/${1:-2017-01-12-17-43-08}"
 
 export CONTAINER_NAME=master-restore
 export CONTAINER_VOLUME=$CONTAINER_NAME-volume
@@ -36,7 +38,7 @@ docker run \
 	--privileged=true \
 	-v $CONTAINER_VOLUME:/pgdata:z \
 	-v $BACKUP_VOLUME:/backup:ro \
-	-e BACKUP_PATH="basic-backups/2017-01-12-17-43-08" \
+	-e BACKUP_PATH=$BACKUP_PATH \
 	-e TEMP_BUFFERS=9MB \
 	-e MAX_CONNECTIONS=101 \
 	-e SHARED_BUFFERS=129MB \
