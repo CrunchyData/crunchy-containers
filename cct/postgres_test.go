@@ -219,11 +219,13 @@ func startDockerExample(
     pathToCleanup = path.Join(
         basePath, "examples", "docker", exampleName, "cleanup.sh")
 
-    out, err := exec.Command(pathToExample, arg).CombinedOutput()
+
+    out, err := exec.Command(pathToExample, arg...).CombinedOutput()
+
+    cmdout = bytes.NewBuffer(out).String()
     if err != nil {
         return
     }
-    cmdout = bytes.NewBuffer(out).String()
     return
 }
 

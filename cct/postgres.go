@@ -181,6 +181,8 @@ func relCreateInsertDrop(conStr string) (ok bool, err error) {
         return
     }
 
+    defer pg.Close()
+
     _, err = pg.Exec("CREATE TABLE some_table(some_id integer NOT NULL PRIMARY KEY);")
     if err != nil {
         return
