@@ -39,7 +39,7 @@ ose_hack
 id
 
 echo $PATH is the path
-export THISDIR=/root/.pgadmin
+export THISDIR=/pgdata
 if [ ! -f "$THISDIR/config_local.py" ]; then
 	echo "WARNING: could not find mounted config files...using defaults as starting point"
 	mkdir $THISDIR
@@ -47,9 +47,15 @@ if [ ! -f "$THISDIR/config_local.py" ]; then
 	cp /opt/cpm/conf/pgadmin4.db $THISDIR/
 fi
 
-cp $THISDIR/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/
+if [ -d "/usr/lib/python2.7/site-packages/pgadmin4-web" ]; then
+	cp $THISDIR/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/
+	python2 /usr/lib/python2.7/site-packages/pgadmin4-web/pgAdmin4.py &
+fi
+if [ -d "/usr/lib/python2.7/site-packages/pgadmin4" ]; then
+	cp $THISDIR/config_local.py /usr/lib/python2.7/site-packages/pgadmin4/
+	python2 /usr/lib/python2.7/site-packages/pgadmin4/pgAdmin4.py &
+fi
 
-python2 /usr/lib/python2.7/site-packages/pgadmin4-web/pgAdmin4.py &
 export PGADMIN_PID=$!
 echo "waiting till docker stop or signal is sent to kill pgadmin4..."
 

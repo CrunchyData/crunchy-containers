@@ -26,7 +26,7 @@ docker run \
 	-p 5050:5050 \
 	--privileged=true \
 	--volume-driver=local \
-	-v $VOLUME_NAME:/root/.pgadmin:z \
+	-v $VOLUME_NAME:/pgdata:z \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
 	-d crunchydata/crunchy-pgadmin4:$CCP_IMAGE_TAG

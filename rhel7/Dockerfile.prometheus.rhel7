@@ -1,6 +1,6 @@
 FROM rhel7.2
 
-LABEL Release="1.2.6" Vendor="Crunchy Data Solutions"
+LABEL Release="1.2.7" Vendor="Crunchy Data Solutions"
 
 RUN yum -y install procps-ng openssh-clients hostname  && yum clean all -y
 

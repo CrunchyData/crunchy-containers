@@ -23,7 +23,7 @@
             }],
             "env": [],
             "volumeMounts": [{
-                "mountPath": "/.pgadmin",
+                "mountPath": "/pgdata",
                 "name": "rootdata",
                 "readOnly": false
             }]

@@ -60,7 +60,7 @@ NODE_BLACKLIST = []
 if os.name == 'nt':
     DATA_DIR = os.path.realpath(os.getenv('APPDATA') + "/pgAdmin")
 else:
-    DATA_DIR = os.path.realpath(os.path.expanduser('~/.pgadmin/'))
+    DATA_DIR = os.path.realpath("/pgdata")
 
 ##########################################################################
 # Log settings

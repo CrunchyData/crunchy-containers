@@ -1,6 +1,6 @@
 FROM centos:7
 
-LABEL Release="1.2.6" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
+LABEL Release="1.2.7" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
 
 ENV PGVERSION="9.5" \
         PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
@@ -22,20 +22,20 @@ RUN pip install --upgrade setuptools
 EXPOSE 5050
 
 #
-RUN mkdir -p /root/.pgadmin
-RUN chown -R postgres:postgres /root/.pgadmin
-VOLUME ["/root/.pgadmin"]
+RUN mkdir -p /pgdata
+RUN chown -R root:root /pgdata
+VOLUME ["/pgdata"]
 
 ADD bin/pgadmin4/ /opt/cpm/bin
 ADD conf/pgadmin4/ /opt/cpm/conf
 ADD pgadmin4*.whl /tmp
 RUN export PATH=$PATH:/usr/pgsql-9.5/bin && pip install /tmp/pgadmin4*.whl
 
-RUN chown -R postgres:postgres /opt/cpm /usr/lib/python2.7/site-packages/pgadmin4
+RUN chown -R root:root /opt/cpm /usr/lib/python2.7/site-packages/pgadmin4
 RUN chmod -R 777 /usr/lib/python2.7/site-packages/pgadmin4
 
 
-USER 26
+USER root
 
 CMD ["/opt/cpm/bin/start-pgadmin4.sh"]
 

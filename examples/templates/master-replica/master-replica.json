@@ -20,7 +20,7 @@
         "value": "pgslave"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "centos7-9.5-1.2.6",
+        "value": "centos7-9.5-1.2.7",
         "description": "The image tag to pull with"
     }, {
         "name": "CCP_IMAGE_PREFIX",
