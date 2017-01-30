@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+sudo rm -rf /nfsfileshare/pgadmin4
+
 kubectl delete service pgadmin4
 kubectl delete pod pgadmin4
 kubectl delete pvc pgadmin4-nfs-pvc
+kubectl delete pv pgadmin4-nfs-pv

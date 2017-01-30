@@ -31,11 +31,11 @@ ADD conf/pgadmin4/ /opt/cpm/conf
 # open up the pgadmin4 http port
 EXPOSE 5050
 
-RUN mkdir -p /root/.pgadmin \
- && chown -R postgres:postgres /root/.pgadmin /opt/cpm 
+RUN mkdir -p /pgdata \
+ && chown -R root:root /pgdata /opt/cpm 
 
 
-VOLUME ["/root/.pgadmin"]
+VOLUME ["/pgdata"]
 
 USER root
 

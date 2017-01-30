@@ -28,6 +28,7 @@ if [ ! -d "$DATADIR" ]; then
 fi
 
 envsubst <  $DIR/pgadmin4-nfs-pv.json | kubectl create -f -
+
 kubectl create -f $DIR/pgadmin4-nfs-pvc.json
 
 kubectl create -f $DIR/pgadmin4-service.json
