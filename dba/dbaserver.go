@@ -29,7 +29,7 @@ var logger *log.Logger
 
 func main() {
 	logger = log.New(os.Stdout, "logger: ", log.Lshortfile|log.Ldate|log.Ltime)
-	var VERSION = os.Getenv("VERSION")
+	var VERSION = os.Getenv("CCP_VERSION")
 
 	logger.Println("dbaserver " + VERSION + ": starting")
 

@@ -246,6 +246,7 @@ the watch logic to interact with the replica containers.
 === Environment Variables
 
  * SLEEP_TIME - the time to sleep in seconds between checking on the master
+ * WAIT_TIME - the time to sleep in seconds between triggering the failover and updating its label (default is 40 secs)
  * PG_MASTER_SERVICE -  the master service name
  * PG_SLAVE_SERVICE - the slave service name
  * PG_MASTER_PORT - database port to use when checking the database

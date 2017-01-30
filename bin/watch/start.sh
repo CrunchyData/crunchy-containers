@@ -37,7 +37,11 @@ function ose_hack() {
 if [ ! -v SLEEP_TIME ]; then
 	SLEEP_TIME=10
 fi
+if [ ! -v WAIT_TIME ]; then
+	WAIT_TIME=40
+fi
 echo "SLEEP_TIME is set to " $SLEEP_TIME
+echo "WAIT_TIME is set to " $WAIT_TIME
 
 export PG_MASTER_SERVICE=$PG_MASTER_SERVICE
 export PG_SLAVE_SERVICE=$PG_SLAVE_SERVICE
@@ -117,8 +121,8 @@ function kube_failover() {
 		if [ "$targetslave" = $i ] ; then
 			echo "going to trigger failover on slave:" $i
 			kubectl exec $i touch /tmp/pg-failover-trigger
-			echo "sleeping 60 secs to give failover a chance before setting label"
-			sleep 60
+			echo "sleeping WAIT_TIME to give failover a chance before setting label"
+			sleep $WAIT_TIME
 			echo "changing label of slave to " $PG_MASTER_SERVICE
 			kubectl label --overwrite=true pod $i name=$PG_MASTER_SERVICE
 		else
@@ -163,8 +167,8 @@ function ose_failover() {
 		if [ "$targetslave" = $i ] ; then
 			echo "going to trigger failover on slave:" $i
 			oc exec $i touch /tmp/pg-failover-trigger
-			echo "sleeping 60 secs to give failover a chance before setting label"
-			sleep 60
+			echo "sleeping WAIT_TIME to give failover a chance before setting label"
+			sleep $WAIT_TIME
 			echo "changing label of slave to " $PG_MASTER_SERVICE
 			oc label --overwrite=true pod $i name=$PG_MASTER_SERVICE
 #			echo "recreating master service..."

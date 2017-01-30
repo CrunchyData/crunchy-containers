@@ -47,11 +47,11 @@ if [ ! -f "$THISDIR/config_local.py" ]; then
 	cp /opt/cpm/conf/pgadmin4.db $THISDIR/
 fi
 
-if [ ! -f "/usr/lib/python2.7/site-packages/pgadmin4-web" ]; then
-	cp $THISDIR/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web-web/
+if [ -d "/usr/lib/python2.7/site-packages/pgadmin4-web" ]; then
+	cp $THISDIR/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/
 	python2 /usr/lib/python2.7/site-packages/pgadmin4-web/pgAdmin4.py &
 fi
-if [ ! -f "/usr/lib/python2.7/site-packages/pgadmin4" ]; then
+if [ -d "/usr/lib/python2.7/site-packages/pgadmin4" ]; then
 	cp $THISDIR/config_local.py /usr/lib/python2.7/site-packages/pgadmin4/
 	python2 /usr/lib/python2.7/site-packages/pgadmin4/pgAdmin4.py &
 fi

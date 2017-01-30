@@ -20,7 +20,7 @@
         "value": "master"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "centos7-9.5-1.2.6",
+        "value": "centos7-9.5-1.2.7",
         "description": "The image tag to pull images with"
     }, {
         "name": "CCP_IMAGE_PREFIX",

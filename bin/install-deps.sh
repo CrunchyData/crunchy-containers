@@ -43,18 +43,18 @@ if [ $? -ne 0 ]; then
 #
 # install oc binary into /usr/bin
 #
-wget -O /tmp/openshift-origin-client-tools-v1.1.3-cffae05-linux-64bit.tar.gz \
-https://github.com/openshift/origin/releases/download/v1.1.3/openshift-origin-client-tools-v1.1.3-cffae05-linux-64bit.tar.gz
-tar xvzf /tmp/openshift-origin-client-tools-v1.1.3-cffae05-linux-64bit.tar.gz  -C /tmp
-sudo cp /tmp/openshift-origin-client-tools-v1.1.3-cffae05-linux-64bit/oc /usr/bin/oc
 
+FILE=openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit.tar.gz
+wget -O /tmp/$FILE \
+https://github.com/openshift/origin/releases/download/v1.4.1/$FILE
+
+tar xvzf /tmp/$FILE  -C /tmp
+sudo cp /tmp/openshift-origin-client-tools-v1.4.1+3f9807a-linux-64bit/oc /usr/bin/oc
 
 sudo yum -y install postgresql-server
 
 #
 # install kubectl binary into /usr/bin
 #
-wget -O /tmp/kubernetes.tar.gz https://github.com/kubernetes/kubernetes/releases/download/v1.2.4/kubernetes.tar.gz
-tar xvzf /tmp/kubernetes.tar.gz -C /tmp
-sudo cp /tmp/kubernetes/platforms/linux/amd64/kubectl /usr/bin
+sudo yum -y install kubernetes-client
 fi
