@@ -116,57 +116,6 @@ func testCCPLabels(
         t)
 }
 
-// Waits maximum of timeout seconds to see if all conditions are true.
-// Will escape if escape is true. Returns false if timeout expired without meeting conditions
-func timeoutOrReady(
-    timeoutSeconds int64,
-    escape func() (bool, error),
-    conditions []func() (bool, error),
-    conditionCheckMilliseconds int64) (ready bool, err error) {
-
-    ready = false
-
-    doneC := make(chan bool)
-
-    timer := time.AfterFunc(time.Second * time.Duration(timeoutSeconds), func() {
-        close(doneC)
-    })
-
-    ticker := time.NewTicker(time.Millisecond * time.Duration(conditionCheckMilliseconds))
-    defer ticker.Stop()
-
-    tick := func() error {
-        fmt.Printf(".")
-        if esc, err := escape(); esc || err != nil {
-            fmt.Println("Escape!")
-            close(doneC)
-            return err
-        }
-
-        for _, f := range conditions {
-            if ok, err := f(); ! ok || err != nil {
-                return err
-            }
-        }
-        ready = true
-        close(doneC)
-        return nil
-    }
-
-    for {
-        select {
-        case <- ticker.C:
-            err = tick()
-            if err != nil {
-                close(doneC)
-            }
-        case <- doneC:
-            _ = timer.Stop()
-            return
-        }
-    }
-}
-
 func waitForPostgresContainer(
     docker *client.Client,
     name string,
@@ -185,7 +134,11 @@ func waitForPostgresContainer(
 
     var ok bool
     escape := func () (bool, error) {
-        return isContainerDead(docker, containerId)
+        if isdead, err := isContainerDead(docker, containerId); isdead || err != nil {
+            return isdead, err
+        }
+        isrun, err := isContainerRunning(docker, containerId)
+        return ! isrun, err
     }
     condition1 := func () (bool, error) {
         if ok, err := isPostgresReady(docker, containerId); ! ok || err != nil {
@@ -196,14 +149,62 @@ func waitForPostgresContainer(
     condition2 := func () (bool, error) {
         return isFinishedSetup(conStr)
     }
+    condition3 := func () (bool, error) {
+        isd, err := isShuttingDown(conStr)
+        return ! isd, err
+    }
     if ok, err = timeoutOrReady(
         timeoutSeconds,
         escape,
-        []func() (bool, error){condition1, condition2},
+        []func() (bool, error){condition1, condition2, condition3},
         500); err != nil {
         return
     } else if ! ok {
         return containerId, fmt.Errorf("Container stopped; or timeout expired, and container is not ready.")
+    }
+
+    // the container receives a stop at the end of setup. Make sure we haven't missed this, and let the db start again if we have.
+    time.Sleep(10 * time.Second)
+
+    if ok, err = timeoutOrReady(
+        timeoutSeconds,
+        escape,
+        []func() (bool, error) {condition1, condition2, condition3},
+        500); err != nil {
+        return
+    } else if ! ok {
+        return containerId, fmt.Errorf("Container stopped; or timeout expired, and container is not ready.")
+    }
+
+    return
+}
+
+func startBasic(
+    docker *client.Client,
+    buildBase string,
+    timeout int64,
+    t *testing.T) (cleanup func(ok bool), id string, err error) {
+
+    fmt.Printf("Waiting maximum %d seconds to start basic example", timeout)
+    t.Log("Starting Example: docker/basic")
+    pathToCleanup, cmdout, err := startDockerExample(buildBase, "basic")
+    if err != nil {
+        t.Fatal(err, cmdout)
+    }
+    id, err = waitForPostgresContainer(docker, "basic", timeout)
+    t.Log("Started basic container: " + id)
+
+    cleanup = func (ok bool) {
+        if ! ok {
+            t.Log("Skipping cleanup: " + pathToCleanup)
+        } else {
+            t.Log("Cleaning up basic: " + pathToCleanup)
+            cmdout, err = cleanupExample(pathToCleanup)
+            if err != nil {
+                t.Error(err, cmdout)
+            }
+            t.Log(cmdout)
+        }
     }
 
     return
@@ -238,24 +239,37 @@ func cleanupExample(pathToCleanup string) (cmdout string, err error) {
     return
 }
 
-// docker basic example expects one container named "basic", running crunchy-postgres\
-func TestDockerBasic(t *testing.T) {
-    const exampleName = "basic"
-    const exampleTimeoutSeconds = 60
+func getBuildBase(t *testing.T) (buildBase string) {
 
-    buildBase := os.Getenv("BUILDBASE")
+    buildBase = os.Getenv("BUILDBASE")
     if buildBase == "" {
         t.Fatal("Please set BUILDBASE environment variable to run tests.")
     }
 
-    // TestMinSupportedDockerVersion 1.18 seems to work fine?
-    
+    return
+}
+
+// responsibility of caller to docker.Close()
+func getDockerTestClient(t *testing.T) (docker *client.Client) {
     t.Log("Initializing docker client")
     docker, err := client.NewEnvClient()
     if err != nil {
         t.Fatal(err)
     }
 
+    return
+}
+
+// docker basic example expects one container named "basic", running crunchy-postgres\
+func TestDockerBasic(t *testing.T) {
+    const exampleName = "basic"
+    const exampleTimeoutSeconds = 60
+
+    buildBase := getBuildBase(t)
+
+    // TestMinSupportedDockerVersion 1.18 seems to work fine?
+    
+    docker := getDockerTestClient(t)
     defer docker.Close()
 
     /////////// docker is available, run the example

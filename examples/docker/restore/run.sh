@@ -15,7 +15,8 @@
 
 echo "starting master-restore container..."
 
-export BACKUP_PATH="basic-backups/${1:-2017-01-12-17-43-08}"
+# $1=date-named directory, e.g. 2017-01-12-17-43-08
+export BACKUP_PATH=basic-backups/$1
 
 export CONTAINER_NAME=master-restore
 export CONTAINER_VOLUME=$CONTAINER_NAME-volume

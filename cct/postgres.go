@@ -98,10 +98,7 @@ func isPostgresReady(
 // returns false on password error (err for all others)
 func isAcceptingConnectionString(conStr string) (ok bool, err error) {
     ok = false
-    pg, err := sql.Open("postgres", conStr)
-    if err != nil {
-        return
-    }
+    pg, _ := sql.Open("postgres", conStr)
     defer pg.Close()
 
     err = pg.Ping()
@@ -117,6 +114,24 @@ func isAcceptingConnectionString(conStr string) (ok bool, err error) {
     return
 }
 
+func isShuttingDown(conStr string) (ok bool, err error) {
+    ok = false
+    pg, _ := sql.Open("postgres", conStr)
+    defer pg.Close()
+
+    err = pg.Ping()
+    if err != nil {
+        if strings.HasPrefix(string(err.Error()),
+            "pq: the database system is shutting down") {
+            ok = true
+            return ok, nil
+        }
+        return
+    }
+
+    return
+}
+
 // returns ok when container_setup script is not running
 func isFinishedSetup(conStr string) (ok bool, err error) {
     ok = false
@@ -128,7 +143,7 @@ func isFinishedSetup(conStr string) (ok bool, err error) {
 
     query := `SELECT NOT EXISTS (
         SELECT 1 from pg_stat_activity
-        WHERE state <> 'idle' and application_name = 'container_setup');`
+        WHERE application_name = 'container_setup');`
 
     err = pg.QueryRow(query).Scan(&ok)
     if err != nil {
@@ -241,3 +256,53 @@ func dbExists(conStr string, dbName string) (ok bool, err error) {
     return
 }
 
+// Waits maximum of timeout seconds to see if all conditions are true.
+// Will escape if escape is true. Returns false if timeout expired without meeting conditions
+func timeoutOrReady(
+    timeoutSeconds int64,
+    escape func() (bool, error),
+    conditions []func() (bool, error),
+    conditionCheckMilliseconds int64) (ready bool, err error) {
+
+    ready = false
+
+    doneC := make(chan bool)
+
+    timer := time.AfterFunc(time.Second * time.Duration(timeoutSeconds), func() {
+        close(doneC)
+    })
+
+    ticker := time.NewTicker(time.Millisecond * time.Duration(conditionCheckMilliseconds))
+    defer ticker.Stop()
+
+    tick := func() error {
+        fmt.Printf(".")
+        if esc, err := escape(); esc || err != nil {
+            fmt.Println("Escape!")
+            close(doneC)
+            return err
+        }
+
+        for _, f := range conditions {
+            if ok, err := f(); ! ok || err != nil {
+                return err
+            }
+        }
+        ready = true
+        close(doneC)
+        return nil
+    }
+
+    for {
+        select {
+        case <- ticker.C:
+            err = tick()
+            if err != nil {
+                close(doneC)
+            }
+        case <- doneC:
+            _ = timer.Stop()
+            return
+        }
+    }
+}
