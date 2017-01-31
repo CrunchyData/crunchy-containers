@@ -95,7 +95,7 @@ func TestDockerReplica(t *testing.T) {
     defer docker.Close()
 
     fmt.Println("Starting master-replica example, and pausing while example sleeps for 20 seconds")
-    cleanup := startDockerExampleForTest(exampleName, buildBase, t)
+    cleanup := startDockerExampleForTest(t, buildBase, exampleName)
     defer cleanup(skipCleanup)
 
     fmt.Printf("\nWaiting maximum of %d seconds for master container", timeoutSeconds)
@@ -119,7 +119,7 @@ func TestDockerReplica(t *testing.T) {
     		t.Error("Replication has not started")
     	}
     }); t.Failed() {
-    	t.Fatal("Cannot procede")
+    	t.Fatal("Cannot proceed")
     }
 
     t.Log("Write some data to master")
@@ -144,5 +144,5 @@ func TestDockerReplica(t *testing.T) {
         }
     })
 
-    // Done!
+    t.Log("All tests complete")
 }

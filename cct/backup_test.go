@@ -254,7 +254,8 @@ func getBackupName(
 // docker basic example expects one container named "basic", running crunchy-postgres\
 func TestDockerBackupRestore(t *testing.T) {
     const exampleName = "backup"
-    const exampleTimeoutSeconds = 90
+    const timeoutSeconds = 90
+    const skipCleanup = true
 
     buildBase := getBuildBase(t)
 
@@ -262,20 +263,10 @@ func TestDockerBackupRestore(t *testing.T) {
     defer docker.Close()
 
     var basicTimeout int64 = 60
-    basicCleanup, basicId, err := startBasic(
-        docker, buildBase, basicTimeout, t)
+    basicCleanup, basicId := startBasic(
+        t, docker, buildBase, basicTimeout)
 
-    defer basicCleanup(false)
-    // fmt.Printf("Waiting maximum %d seconds to start basic example", basicTimeout)
-    // /////////// docker is available; run basic, then backup
-    // t.Log("Starting Example: docker/basic")
-    // basicCleanup, cmdout, err := startDockerExample(buildBase, "basic")
-    // if err != nil {
-    //     t.Fatal(err, cmdout)
-    // }
-    // basicId, err := waitForPostgresContainer(docker, "basic", basicTimeout)
-    // t.Log("Started basic container: ", basicId)
-
+    defer basicCleanup(skipCleanup)
 
     t.Log("Write some data to basic container to test backup / restore")
     facts, err := writeSomeData(docker, basicId)
@@ -285,60 +276,62 @@ func TestDockerBackupRestore(t *testing.T) {
     t.Log(facts)
 
     /////////// basic has started, run backup
-    t.Log("Starting Example: docker/" + exampleName)
-    pathToCleanup, cmdout, err := startDockerExample(buildBase, exampleName)
-    if err != nil {
-    	t.Fatal(err, cmdout)
-    }
+    backupCleanup := startDockerExampleForTest(t, buildBase, exampleName)
+    defer backupCleanup(skipCleanup)
 
-    c, err := ContainerFromName(docker, "basicbackup")
-    if err != nil {
-        return
+    var containerId string
+    if t.Run("StartBackupContainer", func (t *testing.T) {
+        c, err := ContainerFromName(docker, "basicbackup")
+        if err != nil {
+            t.Fatal(err)
+        }
+        containerId := c.ID
+        t.Log("Started basicbackup container: ", containerId)
+    }); t.Failed() {
+        t.Fatal("Cannot proceed")
     }
-    containerId := c.ID
-    t.Log("Started basicbackup container: ", containerId)
 
     // verify labels match build
-    t.Run("BackupContainer", func (t *testing.T) {
+    t.Run("Container", func (t *testing.T) {
         testCCPLabels(docker, containerId, t)
     })
 
     // wait for backup to finish on basic container
-    ok, err := waitForBackup(docker, basicId, exampleTimeoutSeconds)
+    ok, err := waitForBackup(docker, basicId, timeoutSeconds)
     if err != nil {
         t.Fatal(err)
     } else if ! ok {
-        t.Fatalf("Backup did not complete after %n seconds.\n", exampleTimeoutSeconds)
+        t.Fatalf("Backup did not complete after %n seconds.\n", timeoutSeconds)
     }
 
     var backupName string
-    t.Run("CheckBackup", func (t *testing.T) {
-        ok, name, err := getBackupName(docker, "basicbackup", "/pgdata/basic-backups")
-        if name == "" {
+    if t.Run("CheckBackup", func (t *testing.T) {
+
+        if ok, name, err := getBackupName(
+            docker, "basicbackup", "/pgdata/basic-backups");
+        name == "" {
             t.Fatal("No backup found in basicbackup container.")
-        }
-        if err != nil {
+        } else if err != nil {
             t.Log("Got backup name: " + name)
             t.Fatal(err)
-        }
-        t.Log("Created backup: " + name)
-        backupName = name
-        if ! ok {
+        } else if ! ok {
+            t.Log("Got backup name: " + name)
             t.Fatal("File not found in backup path.")
+        } else {
+            backupName = name
         }
-    })
-    if t.Failed() {
-        t.Fatal("Cannot procede")
+
+        t.Log("Created backup: " + backupName)
+
+    }); t.Failed() {
+        t.Fatal("Cannot proceed")
     }
 
     t.Log("Starting restore")
-    var restoreId, restoreCleanup string
+    var restoreId string
+    var restoreCleanup func (skip bool)
     t.Run("Restore", func(t *testing.T) {
-        cleanup, cmdout, err := startDockerExample(buildBase, "restore", backupName)
-        if err != nil {
-            t.Error(err, cmdout)
-        }
-        restoreCleanup = cleanup
+        restoreCleanup = startDockerExampleForTest(t, buildBase, "restore", backupName)
 
         fmt.Println("Waiting for master-restore container to start")
         restoreId, err = waitForPostgresContainer(docker, "master-restore", 60)
@@ -346,6 +339,7 @@ func TestDockerBackupRestore(t *testing.T) {
             t.Error(err)
         }
     })
+    defer restoreCleanup(skipCleanup)
 
     t.Run("CheckRestoreData", func(t *testing.T) {
         if ok, rc, err := assertSomeData(
@@ -355,33 +349,6 @@ func TestDockerBackupRestore(t *testing.T) {
             t.Errorf("Restore failed, expected %n, counted %n\n", facts.rowcount, rc)
         }
     })
-
-    t.Log("NOT Cleaning up backup: ", pathToCleanup)
-    // ///////// completed tests, cleanup
-    // t.Log("Cleaning up backup: ", pathToCleanup)
-    // cmdout, err = cleanupExample(pathToCleanup)
-    // if err != nil {
-    //     t.Error(err, cmdout)
-    // }
-    // t.Log(cmdout)
-
-    t.Log("NOT Cleaning up basic: ", basicCleanup)
-    // // cleanup basic container
-    // t.Log("Cleaning up basic: ", basicCleanup)
-    // cmdout, err = cleanupExample(basicCleanup)
-    // if err != nil {
-    //     t.Error(err, cmdout)
-    // }
-    // t.Log(cmdout)
-
-    t.Log("NOT cleaning up restore: ", restoreCleanup)
-    // // cleanup master-restore container
-    // t.Log("Cleaning up restore: ", restoreCleanup)
-    // cmdout, err = cleanupExample(restoreCleanup)
-    // if err != nil {
-    //     t.Error(err, cmdout)
-    // }
-    // t.Log(cmdout)
 
     t.Log("All tests complete")
 }

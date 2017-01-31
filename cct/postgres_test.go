@@ -121,18 +121,17 @@ func waitForPostgresContainer(
     name string,
     timeoutSeconds int64) (containerId string, err error) {
 
-    c, err := ContainerFromName(docker, name)
-    if err != nil {
-        return
+    if c, err := ContainerFromName(docker, name); err != nil {
+        return "", err
+    } else {
+        containerId = c.ID
     }
-    containerId = c.ID
 
     conStr, err := buildConnectionString(docker, containerId, "postgres", "postgres")
     if err != nil {
         return
     }
 
-    var ok bool
     escape := func () (bool, error) {
         if isdead, err := isContainerDead(docker, containerId); isdead || err != nil {
             return isdead, err
@@ -153,24 +152,27 @@ func waitForPostgresContainer(
         isd, err := isShuttingDown(conStr)
         return ! isd, err
     }
+
+    var ok bool
+    var pollingMilliseconds int64 = 500
     if ok, err = timeoutOrReady(
         timeoutSeconds,
         escape,
         []func() (bool, error){condition1, condition2, condition3},
-        500); err != nil {
+        pollingMilliseconds); err != nil {
         return
     } else if ! ok {
         return containerId, fmt.Errorf("Container stopped; or timeout expired, and container is not ready.")
     }
 
     // the container receives a stop at the end of setup. Make sure we haven't missed this, and let the db start again if we have.
-    time.Sleep(10 * time.Second)
+    time.Sleep(8 * time.Second)
 
     if ok, err = timeoutOrReady(
         timeoutSeconds,
         escape,
         []func() (bool, error) {condition1, condition2, condition3},
-        500); err != nil {
+        pollingMilliseconds); err != nil {
         return
     } else if ! ok {
         return containerId, fmt.Errorf("Container stopped; or timeout expired, and container is not ready.")
@@ -179,33 +181,22 @@ func waitForPostgresContainer(
     return
 }
 
+// responsibility of caller to cleanup
 func startBasic(
+    t *testing.T,
     docker *client.Client,
     buildBase string,
-    timeout int64,
-    t *testing.T) (cleanup func(ok bool), id string, err error) {
+    timeout int64) (cleanup func(skip bool), id string) {
 
-    fmt.Printf("Waiting maximum %d seconds to start basic example", timeout)
-    t.Log("Starting Example: docker/basic")
-    pathToCleanup, cmdout, err := startDockerExample(buildBase, "basic")
-    if err != nil {
-        t.Fatal(err, cmdout)
-    }
+    fmt.Printf("\nWaiting maximum %d seconds to start basic example", timeout)
+    cleanup = startDockerExampleForTest(t, buildBase, "basic")
+
+    var err error
     id, err = waitForPostgresContainer(docker, "basic", timeout)
-    t.Log("Started basic container: " + id)
-
-    cleanup = func (ok bool) {
-        if ! ok {
-            t.Log("Skipping cleanup: " + pathToCleanup)
-        } else {
-            t.Log("Cleaning up basic: " + pathToCleanup)
-            cmdout, err = cleanupExample(pathToCleanup)
-            if err != nil {
-                t.Error(err, cmdout)
-            }
-            t.Log(cmdout)
-        }
+    if err != nil {
+        t.Fatal(err)
     }
+    t.Log("Started basic container: " + id)
 
     return
 }
@@ -254,12 +245,13 @@ func cleanupTest(skip bool, name string, pathToCleanup string, t *testing.T) {
 }
 
 func startDockerExampleForTest(
+    t *testing.T,
+    basePath string,
     exampleName string,
-    buildBase string,
-    t *testing.T) (cleanup func(skip bool)) {
+    arg ...string) (cleanup func(skip bool)) {
 
     t.Log("Starting Example: docker/" + exampleName)
-    pathToCleanup, cmdout, err := startDockerExample(buildBase, exampleName)
+    pathToCleanup, cmdout, err := startDockerExample(basePath, exampleName, arg...)
     if err != nil {
         t.Fatal(err, cmdout)
     }
@@ -293,10 +285,11 @@ func getDockerTestClient(t *testing.T) (docker *client.Client) {
     return
 }
 
-// docker basic example expects one container named "basic", running crunchy-postgres\
+// docker basic example expects one container named "basic", running crunchy-postgres
 func TestDockerBasic(t *testing.T) {
     const exampleName = "basic"
-    const exampleTimeoutSeconds = 60
+    const timeoutSeconds = 60
+    const skipCleanup = false
 
     buildBase := getBuildBase(t)
 
@@ -306,23 +299,8 @@ func TestDockerBasic(t *testing.T) {
     defer docker.Close()
 
     /////////// docker is available, run the example
-    t.Log("Starting Example: docker/" + exampleName)
-    pathToCleanup, cmdout, err := startDockerExample(buildBase, exampleName)
-    if err != nil {
-        t.Fatal(err, cmdout)
-    }
-    t.Log(cmdout)
-
-    defer cleanupTest(true, exampleName, pathToCleanup, t)
-
-    /////////// allow container to start and db to initialize
-    fmt.Printf("Waiting for maximum %d seconds.\n", exampleTimeoutSeconds)
-    t.Logf("Waiting maximum %d seconds for container and postgres startup\n", exampleTimeoutSeconds)
-
-    containerId, err := waitForPostgresContainer(docker, "basic", exampleTimeoutSeconds)
-    if err != nil {
-        t.Fatal(err)
-    }
+    cleanup, containerId := startBasic(t, docker, buildBase, timeoutSeconds)
+    defer cleanup(skipCleanup)
 
     // verify labels match build
     t.Run("Labels", func (t *testing.T) {
@@ -330,34 +308,35 @@ func TestDockerBasic(t *testing.T) {
     })
 
     // Test assert number of volumes
+
     // Test assert number of mounts
 
-    pgUserConStr, err := buildConnectionString(docker, containerId, "postgres", "postgres")
+    pgConStr, err := buildConnectionString(docker, containerId, "postgres", "postgres")
     if err != nil {
         t.Fatal(err)
     }
-    t.Log("Postgres User Connection String: " + pgUserConStr)
+    t.Log("Postgres User Connection String: " + pgConStr)
 
     /////////// begin database tests
     var userName string = "testuser"
     var dbName string = "userdb"
 
     t.Run("Connect", func (t *testing.T) {
-        if ok, err := isAcceptingConnectionString(pgUserConStr); err != nil {
+        if ok, err := isAcceptingConnectionString(pgConStr); err != nil {
             t.Fatal(err)
         } else if ! ok {
             t.Fail()
         }
     })
     t.Run("RoleExists", func (t *testing.T) {
-        if ok, err := roleExists(pgUserConStr, userName); err != nil {
+        if ok, err := roleExists(pgConStr, userName); err != nil {
             t.Error(err)
         } else if ! ok {
             t.Errorf("The %s ROLE was not created.\n", userName)
         }
     })
     t.Run("DatabaseExists", func (t *testing.T) {
-        if ok, err := dbExists(pgUserConStr, dbName); err != nil {
+        if ok, err := dbExists(pgConStr, dbName); err != nil {
             t.Error(err)
         } else if ! ok {
             t.Error("The %s DATABASE was not created.\n", dbName)
@@ -366,7 +345,7 @@ func TestDockerBasic(t *testing.T) {
 
     t.Run("CheckSharedBuffers", func (t *testing.T) {
         if ok, val, err := assertPostgresConf(
-            pgUserConStr, "shared_buffers", "129MB"); err != nil {
+            pgConStr, "shared_buffers", "129MB"); err != nil {
             t.Error(err)
         } else if ! ok {
             t.Errorf("shared_buffers is currently set to %s\n", val)
@@ -374,7 +353,7 @@ func TestDockerBasic(t *testing.T) {
     })
 
     t.Run("CanWriteToPostgresDb", func (t *testing.T) {
-        if ok, err := relCreateInsertDrop(pgUserConStr); err != nil {
+        if ok, err := relCreateInsertDrop(pgConStr); err != nil {
             t.Error(err)
         } else if ! ok {
             t.Fail()
@@ -403,7 +382,7 @@ func TestDockerBasic(t *testing.T) {
         }
     })
     // // TestTempTable
- //    pg, err := sql.Open("postgres", pgUserConStr)
+ //    pg, err := sql.Open("postgres", pgConStr)
  //    if err != nil {
  //     t.Error(err)
  //    }
@@ -417,14 +396,6 @@ func TestDockerBasic(t *testing.T) {
  //    if _, err := tempTableCreateAndWrite(userConStr); err != nil {
  //     t.Error(err)
  //    }
-
-    ///////// completed tests, cleanup
-    // t.Log("Calling cleanup: " + pathToCleanup)
-    // cmdout, err = cleanupExample(pathToCleanup)
-    // if err != nil {
-    //     t.Fatal(err, cmdout)
-    // }
-    // t.Log(cmdout)
 
     // Test container is destroyed
 
