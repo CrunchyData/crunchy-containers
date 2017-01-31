@@ -239,6 +239,39 @@ func cleanupExample(pathToCleanup string) (cmdout string, err error) {
     return
 }
 
+func cleanupTest(skip bool, name string, pathToCleanup string, t *testing.T) {
+
+    if skip {
+        t.Logf("SKIPPING %s cleanup: %s\n", name, pathToCleanup)
+    } else {
+        t.Logf("Cleaning %s: %s\n", name, pathToCleanup)
+        cmdout, err := cleanupExample(pathToCleanup)
+        if err != nil {
+            t.Fatal(err, cmdout)
+        }
+        t.Log(cmdout)
+    }
+}
+
+func startDockerExampleForTest(
+    exampleName string,
+    buildBase string,
+    t *testing.T) (cleanup func(skip bool)) {
+
+    t.Log("Starting Example: docker/" + exampleName)
+    pathToCleanup, cmdout, err := startDockerExample(buildBase, exampleName)
+    if err != nil {
+        t.Fatal(err, cmdout)
+    }
+    t.Log(cmdout)
+
+    cleanup = func (skip bool) {
+        cleanupTest(skip, exampleName, pathToCleanup, t)
+    }
+
+    return
+}
+
 func getBuildBase(t *testing.T) (buildBase string) {
 
     buildBase = os.Getenv("BUILDBASE")
@@ -280,6 +313,8 @@ func TestDockerBasic(t *testing.T) {
     }
     t.Log(cmdout)
 
+    defer cleanupTest(true, exampleName, pathToCleanup, t)
+
     /////////// allow container to start and db to initialize
     fmt.Printf("Waiting for maximum %d seconds.\n", exampleTimeoutSeconds)
     t.Logf("Waiting maximum %d seconds for container and postgres startup\n", exampleTimeoutSeconds)
@@ -290,9 +325,12 @@ func TestDockerBasic(t *testing.T) {
     }
 
     // verify labels match build
-    testCCPLabels(docker, containerId, t)
-    // count number of volumes
-    // count number of mounts
+    t.Run("Labels", func (t *testing.T) {
+        testCCPLabels(docker, containerId, t)
+    })
+
+    // Test assert number of volumes
+    // Test assert number of mounts
 
     pgUserConStr, err := buildConnectionString(docker, containerId, "postgres", "postgres")
     if err != nil {
@@ -381,15 +419,16 @@ func TestDockerBasic(t *testing.T) {
  //    }
 
     ///////// completed tests, cleanup
-    t.Log("Calling cleanup: " + pathToCleanup)
-    cmdout, err = cleanupExample(pathToCleanup)
-    if err != nil {
-        t.Fatal(err, cmdout)
-    }
-    t.Log(cmdout)
+    // t.Log("Calling cleanup: " + pathToCleanup)
+    // cmdout, err = cleanupExample(pathToCleanup)
+    // if err != nil {
+    //     t.Fatal(err, cmdout)
+    // }
+    // t.Log(cmdout)
 
-    // test container is destroyed
-    // test volume is destroyed
+    // Test container is destroyed
+
+    // Test volume is destroyed
 
     t.Log("All tests complete")
 }

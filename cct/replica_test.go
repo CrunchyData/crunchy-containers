@@ -86,7 +86,8 @@ func waitForReplay(
 func TestDockerReplica(t *testing.T) {
 
     const exampleName = "master-replica"
-    const exampleTimeoutSeconds = 60
+    const timeoutSeconds = 60
+    const skipCleanup = false
 
     buildBase := getBuildBase(t)
 
@@ -94,34 +95,30 @@ func TestDockerReplica(t *testing.T) {
     defer docker.Close()
 
     fmt.Println("Starting master-replica example, and pausing while example sleeps for 20 seconds")
-    t.Log("Starting Example: docker/" + exampleName)
-    pathToCleanup, cmdout, err := startDockerExample(buildBase, exampleName)
-    if err != nil {
-    	t.Fatal(err, cmdout)
-    }
+    cleanup := startDockerExampleForTest(exampleName, buildBase, t)
+    defer cleanup(skipCleanup)
 
-    fmt.Printf("Waiting maximum of %d seconds for master container", exampleTimeoutSeconds)
-    masterId, err := waitForPostgresContainer(docker, "master", exampleTimeoutSeconds)
+    fmt.Printf("\nWaiting maximum of %d seconds for master container", timeoutSeconds)
+    masterId, err := waitForPostgresContainer(docker, "master", timeoutSeconds)
     if err != nil {
         t.Fatal("master container did not start")
     }
     t.Log("Started master container: " + masterId)
 
-    fmt.Printf("Waiting maximum of %d seconds for replica container", exampleTimeoutSeconds)
-    replicaId, err := waitForPostgresContainer(docker, "replica", exampleTimeoutSeconds)
+    fmt.Printf("\nWaiting maximum of %d seconds for replica container", timeoutSeconds)
+    replicaId, err := waitForPostgresContainer(docker, "replica", timeoutSeconds)
     if err != nil {
         t.Fatal("master container did not start")
     }
     t.Log("Started replica container: " + replicaId)
 
-    t.Run("ReplicationStarted", func (t *testing.T) {
+    if t.Run("ReplicationStarted", func (t *testing.T) {
     	if ok, err := isReplicationStarted(docker, masterId); err != nil {
     		t.Error(err)
     	} else if ! ok {
     		t.Error("Replication has not started")
     	}
-    })
-    if t.Failed() {
+    }); t.Failed() {
     	t.Fatal("Cannot procede")
     }
 
@@ -133,25 +130,19 @@ func TestDockerReplica(t *testing.T) {
     t.Log(facts)
 
     t.Log("Waiting for replay")
-    if err := waitForReplay(docker, "master", exampleTimeoutSeconds); err != nil {
+    if err := waitForReplay(docker, "master", timeoutSeconds); err != nil {
     	t.Fatal(err)
     }
 
-    t.Log("Check replica")
-    ok, foundrc, err := assertSomeData(docker, replicaId, facts.rowcount)
-    if err != nil {
-    	t.Error(err)
-    }
-    if ! ok {
-    	t.Errorf("Expected %d rows; found %d\n", facts.rowcount, foundrc)
-    }
+    t.Run("CheckReplica", func (t *testing.T) {
+        ok, foundrc, err := assertSomeData(docker, replicaId, facts.rowcount)
+        if err != nil {
+        	t.Error(err)
+        }
+        if ! ok {
+        	t.Errorf("Expected %d rows; found %d\n", facts.rowcount, foundrc)
+        }
+    })
 
-    t.Log("NOT Cleaning up master & replica: " + pathToCleanup)
-    /////// completed tests, cleanup
-    t.Log("Cleaning up master & replica: " + pathToCleanup)
-    cmdout, err = cleanupExample(pathToCleanup)
-    if err != nil {
-        t.Error(err, cmdout)
-    }
-    t.Log(cmdout)
+    // Done!
 }
