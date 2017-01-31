@@ -285,7 +285,7 @@ func TestDockerBackupRestore(t *testing.T) {
         if err != nil {
             t.Fatal(err)
         }
-        containerId := c.ID
+        containerId = c.ID
         t.Log("Started basicbackup container: ", containerId)
     }); t.Failed() {
         t.Fatal("Cannot proceed")
@@ -326,6 +326,9 @@ func TestDockerBackupRestore(t *testing.T) {
     }); t.Failed() {
         t.Fatal("Cannot proceed")
     }
+
+    fmt.Println("HEY! Pause 60 seconds before restore!?")
+    time.Sleep(60 * time.Second)
 
     t.Log("Starting restore")
     var restoreId string
