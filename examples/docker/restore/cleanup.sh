@@ -19,7 +19,5 @@ CONTAINER_NAME=master-restore
 CONTAINER_VOLUME=$CONTAINER_NAME-volume
 
 docker stop $CONTAINER_NAME
-docker rm $CONTAINER_NAME
+docker rm -v $CONTAINER_NAME
 docker volume rm $CONTAINER_VOLUME
-
-
