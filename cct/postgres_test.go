@@ -185,11 +185,11 @@ func waitForPostgresContainer(
 func startBasic(
     t *testing.T,
     docker *client.Client,
-    buildBase string,
+    basePath string,
     timeout int64) (cleanup func(skip bool), id string) {
 
     fmt.Printf("\nWaiting maximum %d seconds to start basic example", timeout)
-    cleanup = startDockerExampleForTest(t, buildBase, "basic")
+    cleanup = startDockerExampleForTest(t, basePath, "basic")
 
     var err error
     id, err = waitForPostgresContainer(docker, "basic", timeout)

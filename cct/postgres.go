@@ -121,6 +121,7 @@ func isShuttingDown(conStr string) (ok bool, err error) {
 
     err = pg.Ping()
     if err != nil {
+        // fmt.Println(string(err.Error()))
         if strings.HasPrefix(string(err.Error()),
             "pq: the database system is shutting down") {
             ok = true

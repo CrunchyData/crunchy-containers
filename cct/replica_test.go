@@ -83,6 +83,34 @@ func waitForReplay(
     return
 }
 
+func startMasterReplica(
+    t *testing.T,
+    docker *client.Client,
+    basePath string,
+    timeoutSeconds int64) (masterId, replicaId string, cleanup func(skip bool)) {
+
+    fmt.Println("Starting master-replica example, and pausing while example sleeps for 20 seconds")
+    cleanup = startDockerExampleForTest(t, basePath, "master-replica")
+
+    var err error
+
+    fmt.Printf("\nWaiting maximum of %d seconds for master container", timeoutSeconds)
+    masterId, err = waitForPostgresContainer(docker, "master", timeoutSeconds)
+    if err != nil {
+        t.Fatal("master container did not start")
+    }
+    t.Log("Started master container: " + masterId)
+
+    fmt.Printf("\nWaiting maximum of %d seconds for replica container", timeoutSeconds)
+    replicaId, err = waitForPostgresContainer(docker, "replica", timeoutSeconds)
+    if err != nil {
+        t.Fatal("replica container did not start")
+    }
+    t.Log("Started replica container: " + replicaId)
+
+    return
+}
+
 func TestDockerReplica(t *testing.T) {
 
     const exampleName = "master-replica"
@@ -94,23 +122,8 @@ func TestDockerReplica(t *testing.T) {
     docker := getDockerTestClient(t)
     defer docker.Close()
 
-    fmt.Println("Starting master-replica example, and pausing while example sleeps for 20 seconds")
-    cleanup := startDockerExampleForTest(t, buildBase, exampleName)
+    masterId, replicaId, cleanup := startMasterReplica(t, docker, buildBase, timeoutSeconds)
     defer cleanup(skipCleanup)
-
-    fmt.Printf("\nWaiting maximum of %d seconds for master container", timeoutSeconds)
-    masterId, err := waitForPostgresContainer(docker, "master", timeoutSeconds)
-    if err != nil {
-        t.Fatal("master container did not start")
-    }
-    t.Log("Started master container: " + masterId)
-
-    fmt.Printf("\nWaiting maximum of %d seconds for replica container", timeoutSeconds)
-    replicaId, err := waitForPostgresContainer(docker, "replica", timeoutSeconds)
-    if err != nil {
-        t.Fatal("master container did not start")
-    }
-    t.Log("Started replica container: " + replicaId)
 
     if t.Run("ReplicationStarted", func (t *testing.T) {
     	if ok, err := isReplicationStarted(docker, masterId); err != nil {

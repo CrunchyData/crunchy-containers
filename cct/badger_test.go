@@ -8,6 +8,7 @@ import (
 )
 
 func TestDockerBadger(t *testing.T) {
+
 	const exampleName = "badger"
     const timeoutSeconds = 90
     const skipCleanup = true
