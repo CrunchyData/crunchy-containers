@@ -114,7 +114,6 @@ all:
 	make promgateway
 	make prometheus
 	make vac
-	make pgadmin4
 	make dbaserver
 push:
 	./bin/push-to-dockerhub.sh
