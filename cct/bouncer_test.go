@@ -22,7 +22,7 @@ import (
     "time"
 )
 
-func TestDockerPgPool(t *testing.T) {
+func TestDockerPgBouncer(t *testing.T) {
 
     // const exampleName = "pgpool"
     const timeoutSeconds = 60
@@ -49,25 +49,25 @@ func TestDockerPgPool(t *testing.T) {
         t.Fatal("Cannot proceed")
     }
 
-    fmt.Println("Starting pgpool example")
-    poolCleanup := startDockerExampleForTest(t, buildBase, "pgpool")
+    fmt.Println("Starting pgbouncer example")
+    poolCleanup := startDockerExampleForTest(t, buildBase, "pgbouncer")
     defer poolCleanup(skipCleanup)
 
-    containerId := testContainer(t, "PgPoolContainer", docker, "pgpool")
+    containerId := testContainer(t, "PgBouncerContainer", docker, "pgbouncer")
     if t.Failed() {
         t.Fatal("Cannot proceed")
     }
 
     conStr := conStrTestUser(t, docker, containerId)
 
-    fmt.Println("Sleep 3 to allow pgpool to startup")
+    fmt.Println("Sleep 3 to allow pgbouncer to startup")
     time.Sleep(3 * time.Second)
 
     if t.Run("TestConnect", func (t *testing.T) {
         if ok, err := isAcceptingConnectionString(conStr); err != nil {
             t.Fatal(err)
         } else if ! ok {
-            t.Fatal("Could not connect to pgpool")
+            t.Fatal("Could not connect to pgbouncer")
         }
     }); t.Failed() {
         t.Fatal("Cannot proceed")

@@ -1,8 +1,25 @@
+/*
+ Copyright 2017 Crunchy Data Solutions, Inc.
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+*/
+
+// Crunchy Container Test
 package cct
 
 import (
     "context"
     "database/sql"
+    "fmt"
     "path"
     "strings"
     "time"
@@ -11,11 +28,6 @@ import (
     "github.com/docker/docker/client"
 
     _ "github.com/lib/pq"
-)
-
-import (
-    "fmt"
-    "reflect"
 )
 
 // returns the HostIP and Port reported by the service on 5432/tcp, which should always be postgresql
@@ -28,9 +40,176 @@ func pgHostFromContainer(
     if err != nil {
         return
     }
+    pb := inspect.HostConfig.PortBindings
+    if pb == nil || len(pb) == 0 {
+        err = fmt.Errorf(
+            "Container network in an incomplete state; no PortBindings\n%#v\n",
+            inspect.HostConfig)
+        return
+    }
     binding := inspect.HostConfig.PortBindings["5432/tcp"][0]
 
     host, port = binding.HostIP, binding.HostPort
+    return
+}
+
+func isShutdownErr(err error) bool {
+    return strings.HasPrefix(string(err.Error()),
+        "pq: the database system is shutting down")
+}
+
+func isPasswordErr(err error) bool {
+    return strings.HasPrefix(string(err.Error()),
+        "pq: password authentication failed")
+}
+
+func isAcceptingConnectionString(conStr string) (ok bool, err error) {
+    ok = false
+    pg, _ := sql.Open("postgres", conStr)
+    defer pg.Close()
+
+    err = pg.Ping()
+    if err != nil {
+        switch {
+        case isShutdownErr(err):
+            return false, nil
+        case isPasswordErr(err):
+            return false, nil
+        default:
+            err := fmt.Errorf("Connection String error\n%s\n", err.Error())
+            return false, err
+        }
+    }
+
+    ok = true
+    return
+}
+
+// returns ok when container_setup script is not running
+func isFinishedSetup(conStr string) (ok bool, err error) {
+    ok = false
+    pg, _ := sql.Open("postgres", conStr)
+    defer pg.Close()
+
+    query := `SELECT NOT EXISTS (
+        SELECT 1 from pg_stat_activity
+        WHERE application_name = 'container_setup');`
+
+    err = pg.QueryRow(query).Scan(&ok)
+    if err != nil {
+        return
+    }
+
+    return
+}
+
+// returns pg_is_in_backup()
+func isInBackup(conStr string) (ok bool, err error) {
+    ok = false
+    pg, _ := sql.Open("postgres", conStr)
+    defer pg.Close()
+
+    err = pg.QueryRow("SELECT pg_is_in_backup();").Scan(&ok)
+    if err != nil {
+        return
+    }
+
+    return
+}
+
+// assert a configurable parameter is set to value 
+func assertPostgresConf(
+    conStr string, 
+    setting string, 
+    value string) (ok bool, foundval string, err error) {
+
+    pg, _ := sql.Open("postgres", conStr)
+    defer pg.Close()
+
+    // SHOW command does not support $1 style variable replacement
+    show := fmt.Sprintf("SHOW %s;", setting)
+
+    err = pg.QueryRow(show).Scan(&foundval)
+    if err != nil {
+        return
+    }
+
+    ok = (foundval == value)
+    return
+}
+
+// CREATE, INSERT INTO, DROP TABLE
+func relCreateInsertDrop(conStr string, temporary bool) (ok bool, err error) {
+    ok = false
+
+    pg, _ := sql.Open("postgres", conStr)
+    
+    defer pg.Close()
+
+    var create string
+    if temporary {
+        create = "CREATE TEMPORARY TABLE"
+    } else {
+        create = "CREATE TABLE"
+    }
+    create += ` some_table(some_id integer NOT NULL PRIMARY KEY);`
+    insert := `INSERT INTO some_table(some_id) VALUES(1), (2), (3);`
+    drop := `DROP TABLE some_table;`
+
+    _, err = pg.Exec(create)
+    if err != nil {
+        err = fmt.Errorf("ON CREATE TABLE\n%s", err.Error())
+        return
+    }
+
+    if result, e := pg.Exec(insert); e != nil {
+        err = fmt.Errorf("ON INSERT\n%s", e.Error())
+        return
+    } else {
+        rc, e := result.RowsAffected();
+        if e != nil || rc != 3 {
+            err = fmt.Errorf(
+                "Error or rowcount mismatch. Expected rc 3, got %d\n%s", rc, e.Error())
+            return
+        }
+    }
+    _, err = pg.Exec(drop)
+    if err != nil {
+        err = fmt.Errorf("ON DROP TABLE\n%s", err.Error())
+        return
+    }
+
+    ok = true
+    return
+}
+
+// does role exist on specified host?
+func roleExists(conStr string, roleName string) (ok bool, err error) {
+    pg, _ := sql.Open("postgres", conStr)
+    defer pg.Close()
+
+    query := `SELECT EXISTS (SELECT 1 from pg_roles WHERE rolname = $1);`
+
+    err = pg.QueryRow(query, roleName).Scan(&ok)
+    if err != nil {
+        return
+    }
+
+    return
+}
+
+// does database exist on specified host?
+func dbExists(conStr string, dbName string) (ok bool, err error) {
+    pg, _ := sql.Open("postgres", conStr)
+    defer pg.Close()
+
+    query := `SELECT EXISTS (SELECT 1 from pg_database WHERE datname = $1);`
+
+    err = pg.QueryRow(query, dbName).Scan(&ok)
+    if err != nil {
+        return
+    }
+
     return
 }
 
@@ -64,9 +243,9 @@ func isPostgresReady(
         return
     }
 
-    // allow pg_isready 1 second to complete; or return false
+    // allow pg_isready to complete
     doneC := make(chan bool)
-    timer := time.AfterFunc(time.Second, func() {
+    timer := time.AfterFunc(time.Second * 2, func() {
         close(doneC)
     })
 
@@ -84,10 +263,14 @@ func isPostgresReady(
         close(doneC)
         return (inspect.ExitCode == 0), nil
     }
+
     for {
         select {
         case <- ticker.C:
             ok, err = tick()
+            if err != nil {
+                close(doneC)
+            }
         case <- doneC:
             _ = timer.Stop()
             return
@@ -95,163 +278,61 @@ func isPostgresReady(
     }
 }
 
-// returns false on password error (err for all others)
-func isAcceptingConnectionString(conStr string) (ok bool, err error) {
-    ok = false
-    pg, _ := sql.Open("postgres", conStr)
-    defer pg.Close()
+func waitForPostgresContainer(
+    docker *client.Client,
+    name string,
+    timeoutSeconds int64) (containerId string, err error) {
 
-    err = pg.Ping()
+    if c, err := ContainerFromName(docker, name); err != nil {
+        return "", err
+    } else {
+        containerId = c.ID
+    }
+
+    conStr, err := buildConnectionString(docker, containerId, "postgres", "postgres")
     if err != nil {
-        if strings.HasPrefix(string(err.Error()),
-            "pq: password authentication failed") {
-            return false, nil
+        return "", fmt.Errorf("Connection String error\n%s\n", err.Error())
+    }
+
+    escape := func () (bool, error) {
+        return isContainerDead(docker, containerId)
+    }
+    condition1 := func () (bool, error) {
+        return isContainerRunning(docker, containerId)
+    }
+    condition2 := func () (bool, error) {
+        if ok, err := isPostgresReady(docker, containerId); ! ok || err != nil {
+            return false, err
         }
-        return
+        return isAcceptingConnectionString(conStr)
+    }
+    condition3 := func () (bool, error) {
+        return isFinishedSetup(conStr)
     }
 
-    ok = true
-    return
-}
-
-func isShuttingDown(conStr string) (ok bool, err error) {
-    ok = false
-    pg, _ := sql.Open("postgres", conStr)
-    defer pg.Close()
-
-    err = pg.Ping()
-    if err != nil {
-        // fmt.Println(string(err.Error()))
-        if strings.HasPrefix(string(err.Error()),
-            "pq: the database system is shutting down") {
-            ok = true
-            return ok, nil
-        }
+    var ok bool
+    var pollingMilliseconds int64 = 750
+    if ok, err = timeoutOrReady(
+        timeoutSeconds,
+        escape,
+        []func() (bool, error){condition1, condition2, condition3},
+        pollingMilliseconds); err != nil {
         return
+    } else if ! ok {
+        return containerId, fmt.Errorf("Container stopped; or timeout expired, and container is not ready.")
     }
 
-    return
-}
+    // the container receives a stop at the end of setup. Make sure we haven't missed this, and let the db start again if we have.
+    time.Sleep(1 * time.Second)
 
-// returns ok when container_setup script is not running
-func isFinishedSetup(conStr string) (ok bool, err error) {
-    ok = false
-    pg, err := sql.Open("postgres", conStr)
-    if err != nil {
+    if ok, err = timeoutOrReady(
+        timeoutSeconds,
+        escape,
+        []func() (bool, error) {condition1, condition2, condition3},
+        pollingMilliseconds); err != nil {
         return
-    }
-    defer pg.Close()
-
-    query := `SELECT NOT EXISTS (
-        SELECT 1 from pg_stat_activity
-        WHERE application_name = 'container_setup');`
-
-    err = pg.QueryRow(query).Scan(&ok)
-    if err != nil {
-        return
-    }
-
-    return
-}
-
-// returns pg_is_in_backup()
-func isInBackup(conStr string) (ok bool, err error) {
-    ok = false
-    pg, err := sql.Open("postgres", conStr)
-    if err != nil {
-        return
-    }
-    defer pg.Close()
-
-    err = pg.QueryRow("SELECT pg_is_in_backup();").Scan(&ok)
-    if err != nil {
-        return
-    }
-
-    return
-}
-
-// can create and write to temp table?
-func tempTableCreateAndWrite(conStr string) (ok bool, err error) {
-    pg, err := sql.Open("postgres", conStr)
-    if err != nil {
-        return
-    }
-    defer pg.Close()
-
-    result, err := pg.Exec("CREATE TEMPORARY TABLE some_table(some_id integer);")
-    if err != nil {
-        return
-    }
-    fmt.Println("here it is ", reflect.TypeOf(result), reflect.ValueOf(result))
-
-    return true, nil
-}
-
-// CREATE, INSERT INTO, DROP TABLE
-func relCreateInsertDrop(conStr string) (ok bool, err error) {
-    ok = false
-
-    pg, err := sql.Open("postgres", conStr)
-    if err != nil {
-        return
-    }
-
-    defer pg.Close()
-
-    _, err = pg.Exec("CREATE TABLE some_table(some_id integer NOT NULL PRIMARY KEY);")
-    if err != nil {
-        return
-    }
-
-    result, err := pg.Exec("INSERT INTO some_table(some_id) VALUES(1), (2), (3);")
-    if err != nil {
-        return
-    }
-
-    rc, err := result.RowsAffected()
-    if err != nil || rc != 3 {
-        return
-    }
-
-    _, err = pg.Exec("DROP TABLE some_table;")
-    if err != nil {
-        return
-    }
-
-    ok = true
-    return
-}
-
-// does role exist on specified host?
-func roleExists(conStr string, roleName string) (ok bool, err error) {
-    pg, err := sql.Open("postgres", conStr)
-    if err != nil {
-        return
-    }
-    defer pg.Close()
-
-    err = pg.QueryRow("SELECT EXISTS (SELECT 1 from pg_roles WHERE rolname = $1);", 
-        roleName).Scan(&ok)
-    if err != nil {
-        return
-    }
-
-    return
-}
-
-// does database exist on specified host?
-func dbExists(conStr string, dbName string) (ok bool, err error) {
-    pg, err := sql.Open("postgres", conStr)
-    if err != nil {
-        return
-    }
-    defer pg.Close()
-
-    err = pg.QueryRow("SELECT EXISTS (SELECT 1 from pg_database WHERE datname = $1);", 
-        dbName).Scan(&ok)
-    if err != nil {
-        return
+    } else if ! ok {
+        return containerId, fmt.Errorf("Container stopped; or timeout expired, and container is not ready.")
     }
 
     return
@@ -263,7 +344,7 @@ func timeoutOrReady(
     timeoutSeconds int64,
     escape func() (bool, error),
     conditions []func() (bool, error),
-    conditionCheckMilliseconds int64) (ready bool, err error) {
+    pollingIntervalMilliseconds int64) (ready bool, err error) {
 
     ready = false
 
@@ -273,7 +354,7 @@ func timeoutOrReady(
         close(doneC)
     })
 
-    ticker := time.NewTicker(time.Millisecond * time.Duration(conditionCheckMilliseconds))
+    ticker := time.NewTicker(time.Millisecond * time.Duration(pollingIntervalMilliseconds))
     defer ticker.Stop()
 
     tick := func() error {
@@ -285,10 +366,11 @@ func timeoutOrReady(
         }
 
         for _, f := range conditions {
-            if ok, err := f(); ! ok || err != nil {
+            if ok, err := f(); err != nil || ! ok {
                 return err
             }
         }
+
         ready = true
         close(doneC)
         return nil

@@ -1,5 +1,5 @@
 /*
- Copyright 2016 Crunchy Data Solutions, Inc.
+ Copyright 2017 Crunchy Data Solutions, Inc.
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -19,41 +19,61 @@ package cct
 import (
 	"context"
 	"fmt"
+    "os"
     "strings"
-    // "time"
+    "testing"
  	
     "github.com/docker/docker/api/types"
-    // "github.com/docker/docker/api/types/container"
-    // "github.com/docker/docker/api/types/network"
     "github.com/docker/docker/api/types/filters"
 	"github.com/docker/docker/client"
 )
 
-// import "reflect"
+// returns Container id associated with container name
+func ContainerFromName(
+    docker *client.Client,
+    containerName string) (c types.Container, err error) {
 
-// func main() {
-//     docker, err := client.NewEnvClient()
-//     if err != nil {
-//         panic(err)
-//     }
-//     defer docker.Close()
+    args := filters.NewArgs()
+    args.Add("name", containerName)
 
-//     c, err := ContainerFromName(docker, "basic")
-//     if err != nil {
-//         panic(err)
-//     }
-//     // fmt.Println(c)
+    listOpts := types.ContainerListOptions{
+        Filters: args,
+    }
+    containers, err := docker.ContainerList(
+        context.Background(), listOpts)
+    if err != nil {
+        return
+    }
+    if len(containers) == 0 {
+        err = fmt.Errorf("Container Not Found: %s", containerName)
+        return
+    }
+    c = containers[0]
+    return
+}
 
-//     inspect, err := docker.ContainerInspect(context.Background(), c.ID)
-//     if err != nil {
-//         return
-//     }
-//     l := inspect.Config.Labels
+// return OS BUILDBASE variable, or fail test
+func getBuildBase(t *testing.T) (buildBase string) {
 
-//     fmt.Println(reflect.TypeOf(l), l)
+    buildBase = os.Getenv("BUILDBASE")
+    if buildBase == "" {
+        t.Fatal("Please set BUILDBASE environment variable to run tests.")
+    }
 
-//     fmt.Println("Kthnxbai")
-// }
+    return
+}
+
+// responsibility of caller to call docker.Close()
+func getDockerTestClient(t *testing.T) (docker *client.Client) {
+
+    t.Log("Initializing docker client")
+    docker, err := client.NewEnvClient()
+    if err != nil {
+        t.Fatal(err)
+    }
+
+    return
+}
 
 // returns the value of environment variable defined in current context of container
 func envValueFromContainer(
@@ -119,8 +139,8 @@ func getLabels(
     return
 }
 
-// assert a specified label is set to a value found in a Labels string map
-func assertLabelFromLabels(
+// assert a specified label is set to a value found in a Labels string map (use getLabels(docker, containerId))
+func assertLabel(
     labels map[string]string,
     label string,
     value string) (ok bool, foundvalue string, err error) {
@@ -132,53 +152,5 @@ func assertLabelFromLabels(
     }
 
     ok = (foundvalue == value)
-    return
-}
-
-// assert a specifed label is set to value in a container.
-// can return Label Not Found error
-func assertLabel(
-    docker *client.Client,
-    containerId string,
-    label string,
-    value string) (ok bool, foundvalue string, err error) {
-
-    inspect, err := docker.ContainerInspect(context.Background(), containerId)
-    if err != nil {
-        return
-    }
-
-    l := inspect.Config.Labels
-    if v, ok := l[label]; ! ok {
-        err = fmt.Errorf("Label Not Found: %s", label)
-    } else {
-        foundvalue = v
-    }
-
-    ok = (foundvalue == value)
-    return
-}
-
-// returns Container object associated with container name
-func ContainerFromName(
-    docker *client.Client,
-    containerName string) (c types.Container, err error) {
-
-    args := filters.NewArgs()
-    args.Add("name", containerName)
-
-    listOpts := types.ContainerListOptions{
-        Filters: args,
-    }
-    containers, err := docker.ContainerList(
-        context.Background(), listOpts)
-    if err != nil {
-        return
-    }
-    if len(containers) == 0 {
-        err = fmt.Errorf("Container Not Found: %s", containerName)
-        return
-    }
-    c = containers[0]
     return
 }
