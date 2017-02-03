@@ -20,11 +20,11 @@ $DIR/cleanup.sh
 
 CONTAINER_NAME=vacuum
 
+	# -e VAC_ALL="true" \
 docker run \
 	-e VAC_FULL="true" \
 	-e JOB_HOST="basic" \
 	-e VAC_ANALYZE="true" \
-	-e VAC_ALL="true" \
 	-e VAC_VERBOSE="true" \
 	-e VAC_FREEZE="true" \
 	-e VAC_TABLE="testtable" \
@@ -36,4 +36,3 @@ docker run \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
 	-d crunchydata/crunchy-vacuum:$CCP_IMAGE_TAG
-
