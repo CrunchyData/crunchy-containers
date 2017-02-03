@@ -18,7 +18,6 @@ package cct
 
 import (
 	"testing"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -34,7 +33,6 @@ func TestDockerBadger(t *testing.T) {
     docker := getDockerTestClient(t)
     defer docker.Close()
 
-    fmt.Printf("Waiting maximum of %d seconds for basic container to start", timeoutSeconds)
     _, basicCleanup := startBasic(t, docker, buildBase, timeoutSeconds)
     defer basicCleanup(skipCleanup)
 
