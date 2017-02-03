@@ -18,5 +18,5 @@ echo "cleaning up example..."
 CONTAINER_NAME=pgbouncer
 
 docker stop $CONTAINER_NAME
-docker rm $CONTAINER_NAME
+docker rm -v $CONTAINER_NAME
 
