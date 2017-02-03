@@ -65,7 +65,7 @@ func waitForReplay(
     fmt.Printf("Waiting maximum of %d seconds for replay", timeoutSeconds)
 
     escape := func() (bool, error) {
-    	// done when irs is false
+    	// unknown failure if irs is false
     	irs, err := isReplicationStarted(conStr)
     	return ! irs, err
     }

@@ -76,7 +76,7 @@ func isAcceptingConnectionString(conStr string) (ok bool, err error) {
         case isPasswordErr(err):
             return false, nil
         default:
-            err := fmt.Errorf("Connection String error\n%s\n", err.Error())
+            err := fmt.Errorf("Database Ping error\n%s\n", err.Error())
             return false, err
         }
     }
@@ -136,6 +136,128 @@ func assertPostgresConf(
 
     ok = (foundval == value)
     return
+}
+
+// streams some vital columns from pg_stat_activity in tab form as they are retrieved
+func pgStatActivity(conStr string) error {
+
+    type activityrow struct {
+        Pid int64 `json:"pid"`
+        Database string `json:"database"`
+        User string `json:"user"`
+        ApplicationName string `json:"application_name"`
+        State string `json:"state"`
+        WaitEventType string `json:"wait_event_type"`
+        WaitEvent string `json:"wait_event"`
+        Query string `json:"query"`
+        StartTime time.Time `json:"backend_start"`
+    }
+
+    pg, _ := sql.Open("postgres", conStr)
+    defer pg.Close()
+
+    query := `SELECT pid, datname, usename, application_name
+        , state, coalesce(wait_event_type, ''), coalesce(wait_event, ''), query, backend_start
+        from pg_stat_activity WHERE pid != pg_backend_pid();`
+
+    rows, err := pg.Query(query)
+    if err != nil {
+        return err
+    }
+
+    for rows.Next() {
+        var r activityrow
+        err = rows.Scan(&r.Pid, &r.Database, &r.User, &r.ApplicationName, 
+            &r.State, &r.WaitEventType, &r.WaitEvent, &r.Query, &r.StartTime)
+        if err != nil {
+            return err
+        }
+        fmt.Printf("%+v\n", r)
+    }
+
+    return nil
+}
+
+// returns pg_is_in_backup()
+func isVacuuming(conStr string) (ok bool, err error) {
+    ok = false
+    pg, _ := sql.Open("postgres", conStr)
+    defer pg.Close()
+
+    query := `SELECT EXISTS (SELECT * from pg_stat_activity WHERE query like 'VACUUM%');`
+    err = pg.QueryRow(query).Scan(&ok)
+    if err != nil {
+        return
+    }
+
+    return
+}
+
+func waitForVacuum(
+    conStr string,
+    timeoutSeconds int64) (err error) {
+
+    fmt.Printf("Waiting maximum %d seconds for VACUUM", timeoutSeconds)
+
+    escape := func() (bool, error) {
+        return false, nil
+    }
+    condition1 := func() (bool, error) {
+        v, err := isVacuuming(conStr)
+        return ! v, err
+    }
+    var pollingMilliseconds int64 = 500
+    if ok, err := timeoutOrReady(
+        timeoutSeconds,
+        escape,
+        []func() (bool, error){condition1},
+        pollingMilliseconds); err != nil {
+        return err
+    } else if ! ok {
+        return fmt.Errorf("Timeout expired and VACUUM has not finished")
+    }
+
+    return
+}
+
+// print some basics on table vacuum & analyze
+func pgTableStat(conStr string, tableName string) error {
+
+    type tablestatrow struct {
+        Relid int64 `json:"relid"`
+        SchemaName string `json:"schemaname"`
+        RelName string `json:"relname"`
+        RowEstimate int64 `json:"row_estimate"`
+        LastVacuum time.Time `json:"last_vacuum"`
+        LastAnalyze time.Time `json:"last_analyze"`
+        VacuumCount int64 `json:"vacuum_count"`
+        AnalyzeCount int64 `json:"analyze_count"`
+    }
+
+    pg, _ := sql.Open("postgres", conStr)
+    defer pg.Close()
+
+    query := `SELECT relid, schemaname, relname, n_live_tup
+        , coalesce(last_vacuum, '2000-01-01'), coalesce(last_analyze, '2000-01-01')
+        , vacuum_count, analyze_count
+        FROM pg_stat_all_tables WHERE relname = $1;`
+
+    rows, err := pg.Query(query, tableName)
+    if err != nil {
+        return err
+    }
+
+    for rows.Next() {
+        var r tablestatrow
+        err = rows.Scan(&r.Relid, &r.SchemaName, &r.RelName, &r.RowEstimate, 
+            &r.LastVacuum, &r.LastAnalyze, &r.VacuumCount, &r.AnalyzeCount)
+        if err != nil {
+            return err
+        }
+        fmt.Printf("%+v\n", r)
+    }
+
+    return nil
 }
 
 // CREATE, INSERT INTO, DROP TABLE
@@ -371,6 +493,7 @@ func timeoutOrReady(
             }
         }
 
+        fmt.Printf("\n")
         ready = true
         close(doneC)
         return nil
