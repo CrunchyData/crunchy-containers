@@ -12,28 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -eu
 
-source $BUILDBASE/tests/standalone/pgpass-setup
+pushd "$BUILDBASE"/cct
 
-#
-# test replica
-#
+go test -run DockerReplica
 
-$BUILDBASE/examples/standalone/run-pg-replica.sh
-
-sleep 90
-
-psql -p 12002 -h 127.0.0.1 -U masteruser userdb -c 'select now()'
-
-rc=$?
-
-echo $rc is the rc
-
-if [ 0 -eq $rc ]; then
-	echo "test replica passed"
-else
-	echo "test replica FAILED"
-	exit $rc
-fi
-
-exit 0
+popd

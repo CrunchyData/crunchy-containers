@@ -12,25 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -eu
 
-source $BUILDBASE/tests/standalone/pgpass-setup
+pushd "$BUILDBASE"/cct
 
-#
-# test backup
-#
+go test -run DockerBackupRestore
 
-sudo rm -rf /tmp/backups/master
-
-$BUILDBASE/examples/standalone/run-backup.sh
-
-sleep 20
-
-FILE=/tmp/backups/master/2*/postgresql.conf
-
-if [ -f $FILE ]; then
-        echo "test backup passed"
-	exit 0
-fi
-
-echo "test backup FAILED"
-exit 1
+popd
