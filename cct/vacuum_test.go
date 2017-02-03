@@ -58,6 +58,10 @@ func TestDockerVacuum(t *testing.T) {
             t.Fatal(err)
         }
 
+        if err = waitForVacuum(conStr, timeoutSeconds); err != nil {
+            t.Fatal(err)
+        }
+
         pg, _ := sql.Open("postgres", conStr)
         defer pg.Close()
 
