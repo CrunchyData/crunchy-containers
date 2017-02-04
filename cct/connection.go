@@ -79,7 +79,7 @@ func buildConnectionString(
             host = dockerHost
         }
     }
-    conStr = fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=disable",
+    conStr = fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=disable fallback_application_name=crunchy-container-test",
         host, port, database, user, pgpassword)
     return
 }

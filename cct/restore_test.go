@@ -9,7 +9,7 @@ import (
 func TestDockerRestore(t *testing.T) {
 
     const timeoutSeconds = 45
-    const skipCleanup = false
+    const skipCleanup = true
 
     buildBase := getBuildBase(t)
 
@@ -17,8 +17,8 @@ func TestDockerRestore(t *testing.T) {
     defer docker.Close()
 
     // cleanup basic & backup examples from TestDockerBackup
-    clnPath := func (path, name string) string {
-        return path.Join(path, "examples", "docker", name, "cleanup.sh")
+    clnPath := func (basePath, name string) string {
+        return path.Join(basePath, "examples", "docker", name, "cleanup.sh")
     }
 
     defer cleanupTest(t, skipCleanup, "basic", clnPath(buildBase, "basic"))

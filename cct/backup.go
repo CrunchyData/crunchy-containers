@@ -134,14 +134,14 @@ func statBackupPath(
     return
 }
 
-func lsBackups(
+func lsPath(
     docker *client.Client,
     fromContainerName string,
-    localBackupPath string) (ok bool, name string, err error) {
+    localPath string) (err error) {
 
     conf := container.Config{
         User: "postgres",
-        Cmd: strslice.StrSlice{"-l", localBackupPath},
+        Cmd: strslice.StrSlice{"-l", localPath},
         Entrypoint: strslice.StrSlice{"ls"},
         Image: "crunchy-backup",
     }
@@ -155,7 +155,7 @@ func lsBackups(
         &conf,
         &hostConf,
         &network.NetworkingConfig{}, 
-        "ls-backup-ls")
+        "ls-l")
     if err != nil {
         return
     }
@@ -196,7 +196,7 @@ func lsBackups(
     	return
     }
 
-    fmt.Printf("RESULT OF ls -l %s\n%s", localBackupPath, b)
+    fmt.Printf("RESULT OF ls -l %s\n%s", localPath, b)
 
     // name = strings.TrimLeft(name,
     //     string([]byte{1, 0, 0, 0, 0, 0, 0, 21, 32}))
@@ -232,6 +232,7 @@ func getBackupName(
         return
     }
 
+    // force remove container at return
     defer func () {
         if e := docker.ContainerRemove(
             context.Background(),
@@ -276,10 +277,9 @@ func getBackupName(
     name = strings.TrimLeft(name,
         string([]byte{1, 0, 0, 0, 0, 0, 0, 21, 32}))
 
-    _, _, err = lsBackups(docker, c.ID, path.Join("/pgdata/basic-backups", name))
+    _ = lsPath(docker, c.ID, path.Join("/pgdata/basic-backups", name))
 
     ok, err = statBackupPath(docker, c.ID, name)
-    // ok = true
 
     return
 }
