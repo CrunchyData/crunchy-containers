@@ -17,15 +17,15 @@
 package cct
 
 import (
-    "fmt"
+    // "fmt"
     "testing"
 )
 
 // start basic example, run backup example (pg_basebackup), feed to restore example
-func TestDockerBackupRestore(t *testing.T) {
+func TestDockerBackup(t *testing.T) {
     // const exampleName = "backup"
     const timeoutSeconds = 60
-    const skipCleanup = true
+    const skipCleanup = true    // Always skip, we will cleanup in test_restore
 
     buildBase := getBuildBase(t)
 
@@ -36,7 +36,7 @@ func TestDockerBackupRestore(t *testing.T) {
     defer basicCleanup(skipCleanup)
 
     t.Log("Write some data to basic container to test backup / restore")
-    facts, err := writeSomeData(docker, basicId, userdb)
+    _, err := writeSomeData(docker, basicId, userdb)
     if err != nil {
         t.Error(err)
     }
@@ -59,48 +59,48 @@ func TestDockerBackupRestore(t *testing.T) {
         t.Fatalf("Backup did not complete after %n seconds.\n", timeoutSeconds)
     }
 
-    var backupName string
-    if t.Run("CheckBackup", func (t *testing.T) {
+    // var backupName string
+    // if t.Run("CheckBackup", func (t *testing.T) {
 
-        if ok, name, err := getBackupName(
-            docker, "basicbackup", "/pgdata/basic-backups");
-        name == "" {
-            t.Error("No backup found in basicbackup container.")
-        } else if err != nil {
-            t.Log("Got backup name: " + name)
-            t.Error(err)
-        } else if ! ok {
-            t.Log("Got backup name: " + name)
-            t.Error("File not found in backup path.")
-        } else {
-            backupName = name
-        }
+    //     if ok, name, err := getBackupName(
+    //         docker, "basicbackup", "/pgdata/basic-backups");
+    //     name == "" {
+    //         t.Error("No backup found in basicbackup container.")
+    //     } else if err != nil {
+    //         t.Log("Got backup name: " + name)
+    //         t.Error(err)
+    //     } else if ! ok {
+    //         t.Log("Got backup name: " + name)
+    //         t.Error("File not found in backup path.")
+    //     } else {
+    //         backupName = name
+    //     }
 
-        t.Log("Created backup: " + backupName)
+    //     t.Log("Created backup: " + backupName)
 
-    }); t.Failed() {
-        t.Fatal("Cannot proceed")
-    }
+    // }); t.Failed() {
+    //     t.Fatal("Cannot proceed")
+    // }
 
-    t.Log("Starting restore")
-    restoreCleanup := startDockerExampleForTest(t, buildBase, "restore", backupName)
+    // t.Log("Starting restore")
+    // restoreCleanup := startDockerExampleForTest(t, buildBase, "restore", backupName)
 
-    fmt.Printf("Waiting for master-restore container to start")
-    restoreId, err := waitForPostgresContainer(docker, "master-restore", 60)
-    if err != nil {
-        t.Error(err)
-    }
-    defer restoreCleanup(skipCleanup)
+    // fmt.Printf("Waiting for master-restore container to start")
+    // restoreId, err := waitForPostgresContainer(docker, "master-restore", 60)
+    // if err != nil {
+    //     t.Error(err)
+    // }
+    // defer restoreCleanup(skipCleanup)
 
-    t.Run("CheckRestoreData", func(t *testing.T) {
-        if ok, found, err := assertSomeData(
-            docker, restoreId, userdb, facts); err != nil {
-            t.Error(err)
-        } else if ! ok {
-            t.Errorf("Restore failed. Expected %n rows, %n bytes\nfound %n rows, %n bytes\n",
-                facts.rowcount, facts.relsize, found.rowcount, found.relsize)
-        }
-    })
+    // t.Run("CheckRestoreData", func(t *testing.T) {
+    //     if ok, found, err := assertSomeData(
+    //         docker, restoreId, userdb, facts); err != nil {
+    //         t.Error(err)
+    //     } else if ! ok {
+    //         t.Errorf("Restore failed. Expected %n rows, %n bytes\nfound %n rows, %n bytes\n",
+    //             facts.rowcount, facts.relsize, found.rowcount, found.relsize)
+    //     }
+    // })
 
     t.Log("All tests complete")
 }

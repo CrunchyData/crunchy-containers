@@ -16,6 +16,6 @@ set -eu
 
 pushd "$BUILDBASE"/cct
 
-go test -run DockerBackupRestore
+go test -run DockerBackup
 
 popd

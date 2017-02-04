@@ -108,6 +108,32 @@ func statBackupLabel(
     return
 }
 
+func statBackupPath(
+    docker *client.Client,
+    containerId string,
+    backup string) (ok bool, err error) {
+
+	pathToBackup := path.Join("/pgdata/basic-backups", backup)
+
+	fmt.Println("STAT " + pathToBackup)
+    stat, err := docker.ContainerStatPath(
+        context.Background(),
+        containerId,
+        pathToBackup)
+    if err != nil {
+        if strings.HasPrefix(string(err.Error()),
+            "Error: request returned Not Found") {
+            ok, err = false, nil
+            return
+        }
+        return
+    }
+    fmt.Println(stat)
+
+    ok = (stat.Size > 0)
+    return
+}
+
 func lsBackups(
     docker *client.Client,
     fromContainerName string,
@@ -171,21 +197,9 @@ func lsBackups(
     }
 
     fmt.Printf("RESULT OF ls -l %s\n%s", localBackupPath, b)
-    // // read the first line from the docker log (result of ls -t /pgdata/basic-backups)
-    // scanner := bufio.NewScanner(logReader)
-
-    // ok = scanner.Scan()
-    // if ! ok {
-    //     err = scanner.Err()
-    //     return
-    // }
-    // name = scanner.Text()
 
     // name = strings.TrimLeft(name,
     //     string([]byte{1, 0, 0, 0, 0, 0, 0, 21, 32}))
-
-    // ok, err = statBackupLabel(docker, c.ID, name)
-    // // ok = true
 
     return
 }
@@ -262,9 +276,9 @@ func getBackupName(
     name = strings.TrimLeft(name,
         string([]byte{1, 0, 0, 0, 0, 0, 0, 21, 32}))
 
-    ok, _, err = lsBackups(docker, c.ID, path.Join("/pgdata/basic-backups", name))
+    _, _, err = lsBackups(docker, c.ID, path.Join("/pgdata/basic-backups", name))
 
-    ok, err = statBackupLabel(docker, c.ID, name)
+    ok, err = statBackupPath(docker, c.ID, name)
     // ok = true
 
     return

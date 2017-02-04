@@ -60,6 +60,34 @@ type someTableFacts struct{
     relsize int64
 }
 
+func getFacts(
+    docker *client.Client,
+    containerId string,
+    dbName string,
+    tableName string) (facts someTableFacts, err error) {
+
+    conStr, err := buildConnectionString(
+        docker, containerId, dbName, "postgres")
+    if err != nil {
+        return
+    }
+
+    pg, _ := sql.Open("postgres", conStr)
+    defer pg.Close()
+
+    query := fmt.Sprintf(
+    "SELECT count(*), '%[1]s'::regclass::oid, pg_relation_size('%[1]s'::regclass) from %[1]s;",
+        tableName)
+
+    err = pg.QueryRow(query).Scan(&facts.rowcount, &facts.relid, &facts.relsize)
+    if err != nil {
+        err = fmt.Errorf("Error on SELECT\n%s", err.Error())
+        return
+    }
+
+    return
+}
+
 func writeSomeData(
     docker *client.Client,
     containerId string,
