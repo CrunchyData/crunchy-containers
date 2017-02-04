@@ -160,17 +160,17 @@ func lsBackups(
         return
     }
 
-    // defer func () {
-    //     if e := docker.ContainerRemove(
-    //         context.Background(),
-    //         c.ID,
-    //         types.ContainerRemoveOptions{
-    //             RemoveVolumes: true,
-    //             Force: true,
-    //         }); e != nil {
-    //         err = e
-    //     }
-    // } ()
+    defer func () {
+        if e := docker.ContainerRemove(
+            context.Background(),
+            c.ID,
+            types.ContainerRemoveOptions{
+                RemoveVolumes: true,
+                Force: true,
+            }); e != nil {
+            err = e
+        }
+    } ()
 
     err = docker.ContainerStart(context.Background(), c.ID, types.ContainerStartOptions{})
     if err != nil {
