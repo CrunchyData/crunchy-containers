@@ -1,4 +1,4 @@
-#!/bin/bash  -x
+#!/bin/bash
 
 # Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -xeuo pipefail
+
 function trap_sigterm() {
 	echo "doing trap logic..." >> $PGDATA/trap.output
 	kill -SIGINT `head -1 $PGDATA/postmaster.pid` >> $PGDATA/trap.output
@@ -21,6 +23,19 @@ function trap_sigterm() {
 trap 'trap_sigterm' SIGINT SIGTERM
 
 date
+
+mkdir -p /pgdata/$HOSTNAME
+chmod 0700 /pgdata/$HOSTNAME
+chown postgres:postgres /pgdata/$HOSTNAME
+
+if [[ -v ARCHIVE_MODE ]]; then
+	if [ $ARCHIVE_MODE == "on" ]; then
+		echo "creating wal directory /pgwal/$HOSTNAME"
+		mkdir -p /pgwal/$HOSTNAME
+		chmod 0700 /pgwal/$HOSTNAME
+		chown postgres:postgres /pgwal/$HOSTNAME
+	fi
+fi
 
 source /opt/cpm/bin/setenv.sh
 source check-for-secrets.sh
@@ -55,26 +70,20 @@ if [ ! -v PG_ROOT_PASSWORD ]; then
 fi
 
 export PG_MODE=$PG_MODE
-export PG_MASTER_HOST=$PG_MASTER_HOST
-export PG_MASTER_PORT=$PG_MASTER_PORT
 export PG_MASTER_USER=$PG_MASTER_USER
 export PG_MASTER_PASSWORD=$PG_MASTER_PASSWORD
 export PG_USER=$PG_USER
 export PG_PASSWORD=$PG_PASSWORD
 export PG_DATABASE=$PG_DATABASE
 export PG_ROOT_PASSWORD=$PG_ROOT_PASSWORD
-
-
-mkdir -p /pgdata/$HOSTNAME
-chmod 0700 /pgdata/$HOSTNAME
-
-if [[ -v ARCHIVE_MODE ]]; then
-	if [ $ARCHIVE_MODE == "on" ]; then
-		mkdir -p /pgwal/$HOSTNAME
-		chmod 0700 /pgwal/$HOSTNAME
-		echo "creating wal directory at " /pgwal/$HOSTNAME
-	fi
-fi
+# for replication
+export PG_MASTER_HOST=${PG_MASTER_HOST:-""}
+export PG_MASTER_PORT=${PG_MASTER_PORT:-""}
+# for pitr
+ARCHIVE_COMMAND=${ARCHIVE_COMMAND:-""}
+ARCHIVE_TIMEOUT=${ARCHIVE_TIMEOUT:-0}
+# for restore
+BACKUP_PATH=${BACKUP_PATH:-""}
 
 ## where pg-wrapper is called
 
@@ -358,7 +367,7 @@ fi
 # clean up any old pid file that might have remained
 # during a bad shutdown of the container/postgres
 #
-rm $PGDATA/postmaster.pid
+rm -f $PGDATA/postmaster.pid
 #
 # the normal startup of pg
 #
