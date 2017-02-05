@@ -433,7 +433,7 @@ func waitForPostgresContainer(
     }
 
     var ok bool
-    var pollingMilliseconds int64 = 750
+    var pollingMilliseconds int64 = 500
     if ok, err = timeoutOrReady(
         timeoutSeconds,
         escape,
@@ -460,8 +460,7 @@ func waitForPostgresContainer(
     return
 }
 
-// Waits maximum of timeout seconds to see if all conditions are true.
-// Will escape if escape is true. Returns false if timeout expired without meeting conditions
+// Waits maximum of timeout seconds, or passes when all conditions are true, or will escape if escape function returns true. Returns false if timeout expired without meeting conditions.
 func timeoutOrReady(
     timeoutSeconds int64,
     escape func() (bool, error),
