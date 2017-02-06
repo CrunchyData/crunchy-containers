@@ -31,8 +31,6 @@ import (
     "github.com/docker/docker/api/types/strslice"
 )
 
-import "io/ioutil"
-
 func waitForBackup(
     docker *client.Client,
     containerId string,
@@ -191,15 +189,22 @@ func lsPath(
         return
     }
 
-    b, err := ioutil.ReadAll(logReader)
-    if err != nil {
-    	return
+    fmt.Printf("RESULT OF ls -l %s\n", localPath)
+
+    scanner := bufio.NewScanner(logReader)
+
+    for scanner.Scan() {
+	    line := scanner.Text()
+
+	    line = strings.TrimLeft(line,
+	        string([]byte{1, 0, 0, 0, 0, 0, 0, 21, 32}))
+	    fmt.Println(line)
     }
 
-    fmt.Printf("RESULT OF ls -l %s\n%s", localPath, b)
-
-    // name = strings.TrimLeft(name,
-    //     string([]byte{1, 0, 0, 0, 0, 0, 0, 21, 32}))
+    err = scanner.Err()
+    if err != nil {
+        return
+    }
 
     return
 }
