@@ -17,6 +17,7 @@
 package cct
 
 import (
+    "fmt"
     "testing"
 )
 
@@ -42,6 +43,17 @@ func TestDockerBasic(t *testing.T) {
         testLabels(t, docker, containerId)
     })
 
+    t.Run("CheckPgRoot", func (t *testing.T) {
+        pgVersion := getPgVersion(t)
+        var pgroot string = fmt.Sprintf("/usr/pgsql-%s", pgVersion)
+
+        if ok, val, err := assertEnvValue(docker, containerId, "PGROOT", pgroot);
+        err != nil {
+            t.Fatal("Assert $PGROOT=", pgroot, err)
+        } else if ! ok {
+            t.Errorf("Expected $PGROOT=%s Found: %s", pgroot, val)
+        }
+    })
     // New Test: assert names and number of volumes
 
     // New Test: assert number of mounts
