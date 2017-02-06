@@ -19,6 +19,8 @@ package cct
 import (
 	"bytes"
 	"fmt"
+    "io/ioutil"
+    "os"
 	"os/exec"
 	"path"
 	"testing"
@@ -57,6 +59,23 @@ func cleanupExample(pathToCleanup string) (cmdout string, err error) {
     return
 }
 
+func writeCmdout(cmdout, path string, append bool) error {
+    if _, err := os.Stat(path); err == nil && append {
+        f, err := os.OpenFile(path, os.O_APPEND | os.O_WRONLY, 0644)
+        if err != nil {
+            return err
+        }
+        defer f.Close()
+        if _, err = f.WriteString(cmdout); err != nil {
+            return err
+        }
+    }
+
+    out := []byte(cmdout)
+
+    return ioutil.WriteFile(path, out, 0644)
+}
+
 // Starts a named example for a golang test, logs output or fails test. The returned cleanup function, which wraps the example cleanup function, will have no effect if skip=true
 func startDockerExampleForTest(
     t *testing.T,
@@ -64,12 +83,18 @@ func startDockerExampleForTest(
     exampleName string,
     arg ...string) (cleanup func(skip bool)) {
 
+    var logname string = path.Join("/tmp", "cmdout." + exampleName + ".log")
     t.Log("Starting Example: docker/" + exampleName)
     pathToCleanup, cmdout, err := startDockerExample(basePath, exampleName, arg...)
     if err != nil {
-        t.Fatal(err, cmdout)
+        if e := writeCmdout(cmdout, logname, false); e != nil {
+            t.Errorf("Error logging cmdout to %s:\n%s\ncmdout:\n%s\n", logname, e, cmdout)
+        }
+        t.Fatal(err)
     }
-    t.Log(cmdout)
+    if e := writeCmdout(cmdout, logname, false); e != nil {
+        t.Errorf("Error logging cmdout to %s:\n%s\ncmdout:\n%s\n", logname, e, cmdout)
+    }
 
     cleanup = func (skip bool) {
         cleanupTest(t, skip, exampleName, pathToCleanup)
@@ -85,11 +110,19 @@ func cleanupTest(t *testing.T, skip bool, name string, pathToCleanup string) {
         t.Logf("SKIPPING %s cleanup: %s\n", name, pathToCleanup)
     } else {
         t.Logf("Cleaning %s: %s\n", name, pathToCleanup)
+
+        var logname string = path.Join("/tmp", "cmdout." + name + ".log")
+
         cmdout, err := cleanupExample(pathToCleanup)
         if err != nil {
-            t.Error(err, cmdout)
+            if e := writeCmdout(cmdout, logname, true); e != nil {
+                t.Errorf("Error logging cmdout to %s:\n%s\ncmdout:\n%s\n", logname, e, cmdout)
+            }
+            t.Error(err)
         }
-        t.Log(cmdout)
+        if e := writeCmdout(cmdout, logname, true); e != nil {
+            t.Errorf("Error logging cmdout to %s:\n%s\ncmdout:\n%s\n", logname, e, cmdout)
+        }
     }
 }
 
