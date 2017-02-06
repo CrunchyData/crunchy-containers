@@ -1,4 +1,5 @@
 #!/bin/bash 
+set -u
 
 # Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");

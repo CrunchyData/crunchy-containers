@@ -19,13 +19,13 @@ CONTAINER_NAME=master
 VOLUME_NAME=master-volume
 
 docker stop $CONTAINER_NAME
-docker rm $CONTAINER_NAME
+docker rm -v $CONTAINER_NAME
 docker volume rm $VOLUME_NAME
 
 CONTAINER_NAME=replica
 VOLUME_NAME=replica-volume
 
 docker stop $CONTAINER_NAME
-docker rm $CONTAINER_NAME
+docker rm -v $CONTAINER_NAME
 docker volume rm $VOLUME_NAME
 

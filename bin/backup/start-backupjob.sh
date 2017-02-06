@@ -26,10 +26,10 @@
 # $BACKUP_PORT pg port we are connecting to
 #
 
-ls -l /
-ls -l /pgdata
+# ls -l /
+# ls -l /pgdata
 
-env
+# env
 
 function ose_hack() {
         export USER_ID=$(id -u)
@@ -58,6 +58,7 @@ TS=`date +%Y-%m-%d-%H-%M-%S`
 BACKUP_PATH=$BACKUPBASE/$TS
 mkdir $BACKUP_PATH
 
+echo $BACKUP_PATH
 
 export PGPASSFILE=/tmp/pgpass
 
@@ -67,7 +68,7 @@ chmod 600 $PGPASSFILE
 
 chown $UID:$UID $PGPASSFILE
 
-cat $PGPASSFILE
+# cat $PGPASSFILE
 
 pg_basebackup --label=$BACKUP_LABEL --xlog --pgdata $BACKUP_PATH --host=$BACKUP_HOST --port=$BACKUP_PORT -U $BACKUP_USER
 

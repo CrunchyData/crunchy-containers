@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,25 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -eu
 
-source $BUILDBASE/tests/standalone/pgpass-setup
+pushd "$BUILDBASE"/cct
 
-#
-# test backup
-#
+go test -run DockerVacuum
 
-sudo rm -rf /tmp/backups/master
-
-$BUILDBASE/examples/standalone/run-backup.sh
-
-sleep 20
-
-FILE=/tmp/backups/master/2*/postgresql.conf
-
-if [ -f $FILE ]; then
-        echo "test backup passed"
-	exit 0
-fi
-
-echo "test backup FAILED"
-exit 1
+popd

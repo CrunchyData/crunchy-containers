@@ -12,29 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -eu
 
+pushd "$BUILDBASE"/cct
 
-source $BUILDBASE/tests/standalone/pgpass-setup
+go test -run DockerBadger
 
-#
-# test pgpool
-#
-
-$BUILDBASE/examples/standalone/run-pgpool.sh
-
-sleep 30
-
-psql -p 12003 -h 127.0.0.1 -U testuser userdb -c "insert into testtable values  ('pgpool', 'was here', now())"
-
-rc=$?
-
-echo $rc is the rc
-
-if [ 0 -eq $rc ]; then
-	echo "test pgpool passed"
-else
-	echo "test pgpool FAILED"
-	exit $rc
-fi
-
-exit 0
+popd

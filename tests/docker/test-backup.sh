@@ -12,28 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -eu
 
-source $BUILDBASE/tests/standalone/pgpass-setup
+pushd "$BUILDBASE"/cct
 
-#
-# test master
-#
+go test -run DockerBackup
 
-$BUILDBASE/examples/standalone/run-pg-master.sh
-
-sleep 30
-
-psql -p 12000 -h 127.0.0.1 -U masteruser userdb -c 'select now()'
-
-rc=$?
-
-echo $rc is the rc
-
-if [ 0 -eq $rc ]; then
-	echo "test master passed"
-else
-	echo "test master FAILED"
-	exit $rc
-fi
-
-exit 0
+popd

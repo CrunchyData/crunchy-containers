@@ -15,13 +15,15 @@
 
 echo "starting pgbouncer container...."
 
-sudo docker stop pgbouncer
-sudo docker rm pgbouncer
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+"$DIR"/cleanup.sh
 
-sudo chcon -Rt svirt_sandbox_file_t `pwd`
+CONTAINER_NAME=pgbouncer
+
+sudo chcon -Rt svirt_sandbox_file_t "$DIR"
 
 sudo docker run \
-	-v `pwd`:/pgconf \
+	-v "$DIR":/pgconf \
 	-p 12005:5432 \
 	--privileged \
 	-v /run/docker.sock:/run/docker.sock \
@@ -34,7 +36,6 @@ sudo docker run \
 	-e PG_DATABASE=postgres \
 	--link master:master \
 	--link replica:replica \
-	--name=pgbouncer \
-	--hostname=pgbouncer \
+	--name=$CONTAINER_NAME \
+	--hostname=$CONTAINER_NAME \
 	-d crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG
-
