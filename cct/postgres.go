@@ -346,7 +346,7 @@ func isPostgresReady(
     if err != nil {
         return
     }    
-    cmd := []string{path.Join(pgroot, "bin/pg_isready")}
+    cmd := []string{path.Join(pgroot, "bin/pg_isready"), "-h", "/tmp"}
 
     execConf := types.ExecConfig{
         User: "postgres",
@@ -441,7 +441,10 @@ func waitForPostgresContainer(
         pollingMilliseconds); err != nil {
         return
     } else if ! ok {
-        return containerId, fmt.Errorf("Container stopped; or timeout expired, and container is not ready.")
+        now := time.Now()
+        return containerId, 
+            fmt.Errorf("%s: Container stopped; or timeout expired, and container is not ready.",
+                now.Format("2006-01-02 15:04:05.000"))
     }
 
     // the container receives a stop at the end of setup. Make sure we haven't missed this, and let the db start again if we have.
