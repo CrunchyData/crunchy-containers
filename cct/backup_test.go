@@ -65,7 +65,7 @@ func TestDockerBackup(t *testing.T) {
         t.Fatal("Cannot proceed")
     }
 
-    if t.Run("BackupFolderExists", func (t *testing.T) {
+    if t.Run("BackupDirExists", func (t *testing.T) {
 
         if ok, name, err := getBackupName(
             docker, "basicbackup", "/pgdata/basic-backups");
