@@ -52,55 +52,38 @@ func TestDockerBackup(t *testing.T) {
     }
 
     // wait for backup to finish on basic container
-    ok, err := waitForBackup(docker, basicId, timeoutSeconds)
-    if err != nil {
-        t.Fatal(err)
-    } else if ! ok {
-        t.Fatalf("Backup did not complete after %n seconds.\n", timeoutSeconds)
+    if t.Run("BackupCompletes", func (t *testing.T) {
+
+        ok, err := waitForBackup(docker, basicId, timeoutSeconds)
+        if err != nil {
+            t.Fatal(err)
+        } else if ! ok {
+            t.Fatalf("Backup did not complete after %n seconds.\n", timeoutSeconds)
+        }
+
+    }); t.Failed() {
+        t.Fatal("Cannot proceed")
     }
 
-    // var backupName string
-    // if t.Run("CheckBackup", func (t *testing.T) {
+    if t.Run("BackupFolderExists", func (t *testing.T) {
 
-    //     if ok, name, err := getBackupName(
-    //         docker, "basicbackup", "/pgdata/basic-backups");
-    //     name == "" {
-    //         t.Error("No backup found in basicbackup container.")
-    //     } else if err != nil {
-    //         t.Log("Got backup name: " + name)
-    //         t.Error(err)
-    //     } else if ! ok {
-    //         t.Log("Got backup name: " + name)
-    //         t.Error("File not found in backup path.")
-    //     } else {
-    //         backupName = name
-    //     }
+        if ok, name, err := getBackupName(
+            docker, "basicbackup", "/pgdata/basic-backups");
+        name == "" {
+            t.Error("No backup found in basicbackup container.")
+        } else if err != nil {
+            t.Log("Got backup name: " + name)
+            t.Error(err)
+        } else if ! ok {
+            t.Log("Got backup name: " + name)
+            t.Error("File not found in backup path.")
+        } else {
+            t.Log("Created backup: " + name)
+        }
 
-    //     t.Log("Created backup: " + backupName)
-
-    // }); t.Failed() {
-    //     t.Fatal("Cannot proceed")
-    // }
-
-    // t.Log("Starting restore")
-    // restoreCleanup := startDockerExampleForTest(t, buildBase, "restore", backupName)
-
-    // fmt.Printf("Waiting for master-restore container to start")
-    // restoreId, err := waitForPostgresContainer(docker, "master-restore", 60)
-    // if err != nil {
-    //     t.Error(err)
-    // }
-    // defer restoreCleanup(skipCleanup)
-
-    // t.Run("CheckRestoreData", func(t *testing.T) {
-    //     if ok, found, err := assertSomeData(
-    //         docker, restoreId, userdb, facts); err != nil {
-    //         t.Error(err)
-    //     } else if ! ok {
-    //         t.Errorf("Restore failed. Expected %n rows, %n bytes\nfound %n rows, %n bytes\n",
-    //             facts.rowcount, facts.relsize, found.rowcount, found.relsize)
-    //     }
-    // })
+    }); t.Failed() {
+        t.Fatal("Cannot proceed")
+    }
 
     t.Log("All tests complete")
 }
