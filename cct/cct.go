@@ -63,6 +63,17 @@ func getBuildBase(t *testing.T) (buildBase string) {
     return
 }
 
+// return OS BUILDBASE variable, or fail test
+func getPgVersion(t *testing.T) (pgVersion string) {
+
+    pgVersion = os.Getenv("CCP_PGVERSION")
+    if pgVersion == "" {
+        t.Fatal("Please define CCP_PGVERSION environment variable to run tests.")
+    }
+
+    return
+}
+
 // responsibility of caller to call docker.Close()
 func getDockerTestClient(t *testing.T) (docker *client.Client) {
 
@@ -72,6 +83,22 @@ func getDockerTestClient(t *testing.T) (docker *client.Client) {
         t.Fatal(err)
     }
 
+    return
+}
+
+// assert the named environment value in the container context (envVar) is value
+func assertEnvValue(
+    docker *client.Client,
+    containerId string,
+    envVar string,
+    value string) (ok bool, foundval string, err error) {
+
+    foundval, err = envValueFromContainer(docker, containerId, envVar)
+    if err != nil {
+        return
+    }
+
+    ok = (foundval==value)
     return
 }
 
