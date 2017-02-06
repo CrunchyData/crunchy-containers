@@ -17,6 +17,10 @@ function install-reqs {
 
 function config-docker {
 	sudo sed -i '/OPTIONS=.*/c\OPTIONS="--selinux-enabled --insecure-registry 172.30.0.0/16"' \
+	cat <<EOF > /etc/sysconfig/docker-storage-setup
+DEVS=/dev/vdc
+VG=docker-vg
+EOF
 	/etc/sysconfig/docker
 	sudo yum -y install docker-1.10.3
 	sudo docker-storage-setup
