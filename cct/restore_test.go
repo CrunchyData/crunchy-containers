@@ -8,7 +8,7 @@ import (
 
 func TestDockerRestore(t *testing.T) {
 
-    const timeoutSeconds = 45
+    const timeoutSeconds = 60
     const skipCleanup = true
 
     buildBase := getBuildBase(t)
@@ -57,7 +57,6 @@ func TestDockerRestore(t *testing.T) {
         t.Error(err)
     }
 
-    t.Log("Get Facts")
     facts, err := getFacts(docker, restoreId, userdb, "some_table")
     if err != nil {
     	t.Fatal(err)
