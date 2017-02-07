@@ -187,3 +187,58 @@ func assertLabel(
     ok = (foundvalue == value)
     return
 }
+
+// type dirStat struct {
+//     Path string
+//     Owner string
+//     Group string
+//     Mode os.FileMode
+// }
+
+// func assertDirectory(
+//     docker *client.Client,
+//     containerId string,
+//     s dirStat) (ok bool, found dirStat, err error) {
+
+//     stat, err := docker.ContainerPathStat(context.Background(), containerId, s.Path)
+//     if err != nil {
+//         err = fmt.Errorf("Error trying to stat path %s\n%s", s.Path, err.Error())
+//         return
+//     }
+
+//     cmd := []string{"stat", "-c", "\"%U %G\"", s.Path}
+
+//     execConf := types.ExecConfig{
+//         User: "postgres",
+//         AttachStdout: true,
+//         AttachStderr: true,
+//         Cmd: cmd,
+//     }
+//     execId, err := docker.ContainerExecCreate(
+//         context.Background(), containerId, execConf)
+//     if err != nil {
+//         return
+//     }
+
+//     err = docker.ContainerExecStart(
+//         context.Background(), execId.ID, types.ExecStartCheck{})
+//     if err != nil {
+//         return
+//     }
+
+//     response, err := client.ContainerExecAttach(
+//         context.Background(), execId.ID, execConf)
+//     if err != nil {
+//         return
+//     }
+//     defer response.Close()
+
+//     out, err := ioutil.ReadAll(response.Reader)
+//     if err != nil {
+//         return
+//     }
+
+//     fmt.Println(string(out[:]))
+
+//     return ok, s, nil
+// }
