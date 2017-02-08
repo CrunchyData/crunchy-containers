@@ -96,6 +96,9 @@
                     "name": "PG_DATABASE",
                     "value": "userdb"
                 }, {
+                    "name": "PGHOST",
+                    "value": "/tmp"
+                }, {
                     "name": "PG_ROOT_PASSWORD",
                     "value": "password"
                 }],
@@ -112,7 +115,7 @@
             "volumes": [{
                 "name": "pgdata",
                 "persistentVolumeClaim": {
-                    "claimName": "ks-master-pvc"
+                    "claimName": "crunchy-pvc"
                 }
             }, {
                 "name": "backup",

@@ -12,12 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $BUILDBASE/examples/envvars.sh
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 oc delete service master-pitr master-pitr-restore
 oc delete pod master-pitr master-pitr-restore
 oc delete job backup-master-pitr-nfs
-oc delete pvc master-pitr-pvc backup-master-pitr-pvc master-pitr-recover-pvc master-pitr-restore-pvc master-pitr-wal-pvc
-oc delete pv master-pitr-wal-pv master-pitr-pv master-pitr-restore-pv master-pitr-restore-pgdata-pv master-pitr-recover-pv
 
-
-sudo rm -rf /nfsfileshare/WAL/master-pitr
-sudo rm -rf /nfsfileshare/master-pitr
+sudo rm -rf $NFS_PATH/WAL/master-pitr
+sudo rm -rf $NFS_PATH/master-pitr

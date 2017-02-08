@@ -35,9 +35,9 @@ trap 'trap_sigterm' SIGINT SIGTERM
 # case when /pgconf is not specified
 cp $CONFDIR/* /tmp
 
-if [ -f /pgconf/pgpool.conf ]; then
+if [ -f /pgconf/pgpoolconfigdir/pgpool.conf ]; then
 	echo "pgconf pgpool.conf is being used"
-	CONFIGS=/pgconf
+	CONFIGS=/pgconf/pgpoolconfigdir
 fi
 
 # populate template with env vars

@@ -81,12 +81,12 @@
             "volumes": [{
                 "name": "pgdata",
                 "persistentVolumeClaim": {
-                    "claimName": "master-restore-nfs-pvc"
+                    "claimName": "crunchy-pvc2"
                 }
             }, {
                 "name": "backup",
                 "persistentVolumeClaim": {
-                    "claimName": "master-restore-nfs-backup-pvc"
+                    "claimName": "crunchy-pvc"
                 }
             }],
             "containers": [{
@@ -116,7 +116,7 @@
                     "value": "${PG_PASSWORD}"
                 }, {
                     "name": "BACKUP_PATH",
-                    "value": "basic-backups/2017-01-25-15-06-56"
+                    "value": "basic-backups/2017-02-08-15-28-32"
                 }, {
                     "name": "PG_DATABASE",
                     "value": "${PG_DATABASE}"

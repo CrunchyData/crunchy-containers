@@ -84,12 +84,12 @@
             }, {
                 "name": "pgconf",
                 "persistentVolumeClaim": {
-                    "claimName": "pgconf-nfs-pvc"
+                    "claimName": "crunchy-pvc"
                 }
             }, {
                 "name": "backrestrepo",
                 "persistentVolumeClaim": {
-                    "claimName": "backrestrepo-nfs-pvc"
+                    "claimName": "crunchy-pvc2"
                 }
             }],
             "containers": [{

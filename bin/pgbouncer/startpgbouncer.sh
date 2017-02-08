@@ -36,22 +36,20 @@ ose_hack
 rm -rf /tmp/pgbouncer.pid
 
 BINDIR=/opt/cpm/bin
-CONFDIR=/pgconf
+CONFDIR=/pgconf/bouncerconfig
 
 if [ -f $CONFDIR/users.txt ]; then
 	echo "users.txt found in " $CONFDIR
-	CONFDIR=/pgconf
 else
 	echo "users.txt NOT found in " $CONFDIR
 fi
 
 if [ -f $CONFDIR/pgbouncer.ini ]; then
 	echo "pgbouncer.ini found in " $CONFDIR
-	CONFDIR=/pgconf
 else
 	echo "pgbouncer.ini NOT found in " $CONFDIR
-	echo "will use default config files out of /tmp"
-	CONFDIR=/tmp
+	echo "will use default config files"
+	cp /opt/cpm/conf/pgbouncer.ini $CONFDIR
 fi
 
 if [ -v FAILOVER ]; then

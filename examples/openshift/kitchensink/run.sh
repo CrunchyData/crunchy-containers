@@ -18,17 +18,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-echo "create PVs for master and sync replica..."
-envsubst < $DIR/ks-sync-replica-pv.json | oc create -f -
-envsubst < $DIR/ks-master-pv.json | oc create -f -
-
 echo "create services for master and replicas..."
 oc create -f $DIR/ks-master-service.json
 oc create -f $DIR/ks-replica-service.json
-
-echo "create PVCs for master and sync replica..."
-oc create -f $DIR/ks-sync-replica-pvc.json
-oc create -f $DIR/ks-master-pvc.json
 
 echo "create master pod.."
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/ks-master-pod.json | oc create -f -

@@ -12,17 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pv ks-master-pv
-oc delete pv ks-sync-replica-pv
-oc delete pvc ks-master-pvc
-oc delete pvc ks-sync-replica-pvc
-oc delete service ks-master
-oc delete service ks-replica
-oc delete pod ks-watch
-oc delete pod ks-master
-oc delete pod ks-sync-replica
-oc delete dc ks-pgpool-rc
-oc delete dc ks-replica-dc
+oc delete service ks-master ks-replica
+oc delete pod ks-watch ks-master kssyncreplica
+oc delete dc ks-pgpool-rc ks-replica-dc
 oc delete service ks-pgpool-rc
 
 $BUILDBASE/examples/waitforterm.sh ks-master oc

@@ -2,15 +2,15 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "prometheus-pvc"
+        "name": "crunchy-pvc3"
       },
       "spec": {
         "accessModes": [
-          "ReadWriteOnce"
+          "ReadWriteMany"
         ],
         "resources": {
           "requests": {
-            "storage": "1Gi"
+            "storage": "400M"
           }
         }
       }

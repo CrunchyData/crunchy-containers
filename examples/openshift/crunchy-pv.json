@@ -2,15 +2,15 @@
   "apiVersion": "v1",
   "kind": "PersistentVolume",
   "metadata": {
-    "name": "backup-job-pv"
+    "name": "crunchy-nfs-pv"
   },
   "spec": {
     "capacity": {
-        "storage": "300M"
+        "storage": "4Gi"
     },
     "accessModes": [ "ReadWriteMany" ],
     "nfs": {
-        "path": "/nfsfileshare",
+        "path": "$NFS_PATH",
         "server": "$LOCAL_IP"
     },
     "persistentVolumeReclaimPolicy": "Retain"

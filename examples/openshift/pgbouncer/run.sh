@@ -17,14 +17,14 @@ source $BUILDBASE/examples/envvars.sh
 
 echo "this example depends upon the master-replica example being run prior!"
 
-CONFIGDIR=/nfsfileshare/bouncerconfig
+CONFIGDIR=$NFS_PATH/bouncerconfig
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
 echo "this example depends upon the master-replica example being run prior!"
 
-CONFIGDIR=/nfsfileshare/bouncerconfig
+CONFIGDIR=$NFS_PATH/bouncerconfig
 sudo rm -rf $CONFIGDIR
 sudo mkdir $CONFIGDIR
 sudo chmod 777 $CONFIGDIR
@@ -32,7 +32,4 @@ sudo chmod 777 $CONFIGDIR
 sudo cp $DIR/pgbouncer.ini $CONFIGDIR
 sudo cp $DIR/users.txt $CONFIGDIR
 
-envsubst < $DIR/pgbouncer-pv.json  | oc create -f -
-
-oc create -f $DIR/pgbouncer-pvc.json
 oc process -f $DIR/pgbouncer.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

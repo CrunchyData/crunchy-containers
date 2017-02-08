@@ -2,7 +2,7 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "backrestrepo-nfs-pvc"
+        "name": "crunchy-pvc"
       },
       "spec": {
         "accessModes": [
@@ -10,7 +10,7 @@
         ],
         "resources": {
           "requests": {
-            "storage": "200M"
+            "storage": "400M"
           }
         }
       }

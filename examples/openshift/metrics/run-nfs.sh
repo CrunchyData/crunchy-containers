@@ -24,10 +24,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-envsubst <  $DIR/grafana-pv.json  | oc create -f -
-envsubst <  $DIR/prometheus-pv.json | oc create -f -
-
-oc create -f $DIR/grafana-pvc.json
-oc create -f $DIR/prometheus-pvc.json
-
 oc process -f $DIR/metrics-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

@@ -20,10 +20,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-sudo mkdir /nfsfileshare/pgpoolconfigdir
-sudo chown 7778 /nfsfileshare/pgpoolconfigdir
-
-envsubst < $DIR/pgpool-pv.json |  oc create -f -
-oc create -f $DIR/pgpool-pvc.json
+sudo mkdir $NFS_PATH/pgpoolconfigdir
+sudo chown 7778 $NFS_PATH/pgpoolconfigdir
 
 oc process -f $DIR/pgpool-rc.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

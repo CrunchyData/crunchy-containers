@@ -12,7 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $BUILDBASE/examples/envvars.sh
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 oc delete service master-backrest
 oc delete pod master-backrest
-oc delete pvc backrestrepo-nfs-pvc pgconf-nfs-pvc
-oc delete pv backrestrepo-nfs-pv pgconf-nfs-pv
+
+sudo rm  -rf $NFSPATH/archive
+sudo rm $NFSPATH/pgbackrest.conf

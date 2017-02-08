@@ -84,7 +84,7 @@
             }, {
                 "name": "backup",
                 "persistentVolumeClaim": {
-                    "claimName": "master-restore-pvc"
+                    "claimName": "crunchy-pvc"
                 }
             }],
             "containers": [{
@@ -111,7 +111,7 @@
                     "value": "password"
                 }, {
                     "name": "BACKUP_PATH",
-                    "value": "/basic-backups/2017-01-25-15-06-56"
+                    "value": "/basic-backups/2017-02-08-15-28-32"
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"

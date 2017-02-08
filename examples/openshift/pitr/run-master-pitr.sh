@@ -18,26 +18,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-# set up the NFS claim to store the WAL into
-envsubst < $DIR/master-pitr-wal-pv.json |  oc create -f -
-
-# set up the NFS claim to store the pgdata into
-envsubst < $DIR/master-pitr-pv.json |  oc create -f -
-
-# set up the claim for the backup archive 
-envsubst <  $DIR/master-pitr-restore-pv.json  | oc create -f -
-
-# set up the claim for the pgdata to live
-envsubst <  $DIR/master-pitr-restore-pgdata-pv.json  | oc create -f -
-
-# set up the claim for the WAL to recover with
-envsubst <  $DIR/master-pitr-recover-pv.json  | oc create -f -
-
-# set up the NFS claim to store the WAL into
-oc create -f $DIR/master-pitr-wal-pvc.json
-
-# set up the NFS claim to store the pgdata into
-oc create -f $DIR/master-pitr-pvc.json
-
 # start up the database container
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/master-pitr.json | oc create -f -

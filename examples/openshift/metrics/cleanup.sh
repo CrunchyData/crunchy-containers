@@ -13,9 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pvc  prometheus-pvc grafana-pvc
-oc delete pv prometheus-pv grafana-pv
-
 oc delete pod crunchy-metrics
 oc delete service crunchy-metrics
 

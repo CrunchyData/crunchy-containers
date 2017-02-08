@@ -17,9 +17,5 @@ source $BUILDBASE/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete job backup-master-pitr-nfs
-oc delete pvc backup-master-pitr-pvc
-oc delete pv backup-master-pitr-pv
 
-oc create -f $DIR/backup-master-pitr-pv.json
-oc create -f $DIR/backup-master-pitr-pvc.json
 oc process -f $DIR/backup-master-pitr-job.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

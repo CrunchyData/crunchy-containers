@@ -13,9 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pvc pgbouncer-pvc
-oc delete pv pgbouncer-pv
-
 oc delete pod pgbouncer
 oc delete service pgbouncer
 

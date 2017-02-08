@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,16 +13,17 @@
 # limitations under the License.
 
 source $BUILDBASE/examples/envvars.sh
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete dc m-s-rc-nfs-replica
-oc delete pod m-s-rc-nfs-master 
-oc delete pod m-s-rc-nfs-replica
-oc delete pod -l name=m-s-rc-nfs-master
-$BUILDBASE/examples/waitforterm.sh m-s-rc-nfs-master oc
-$BUILDBASE/examples/waitforterm.sh m-s-rc-nfs-replica oc
-oc delete service m-s-rc-nfs-master
-oc delete service m-s-rc-nfs-replica
+oc delete pvc crunchy-pvc crunchy-pvc2 crunchy-pvc3
+oc delete pv crunchy-nfs-pv crunchy-nfs-pv2 crunchy-nfs-pv3 master-dba-backup-pv
 
-sudo rm -rf $NFS_PATH/m-s-rc-nfs*
+envsubst < $DIR/crunchy-pv.json |  oc create -f -
+envsubst < $DIR/crunchy-pv2.json |  oc create -f -
+envsubst < $DIR/crunchy-pv3.json |  oc create -f -
+envsubst < $DIR/crunchy-pv-backup.json |  oc create -f -
+
+oc create -f $DIR/crunchy-pvc.json
+oc create -f $DIR/crunchy-pvc2.json
+oc create -f $DIR/crunchy-pvc3.json
+

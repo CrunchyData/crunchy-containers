@@ -20,18 +20,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete pod master-pitr-restore
 oc delete service master-pitr-restore
-sudo rm -rf /nfsfileshare/master-pitr-restore
-oc delete pvc master-pitr-restore-pvc master-pitr-restore-pgdata-pvc master-pitr-recover-pvc
-oc delete pv master-pitr-restore-pv master-pitr-restore-pgdata-pv master-pitr-recover-pv
 
-# set up the claim for the backup archive 
-oc create -f $DIR/master-pitr-restore-pvc.json
-
-# set up the claim for the pgdata to live
-oc create -f $DIR/master-pitr-restore-pgdata-pvc.json
-
-# set up the claim for the WAL to recover with
-oc create -f $DIR/master-pitr-recover-pvc.json
+sudo rm -rf $NFS_PATH/master-pitr-restore
 
 # start up the database container
 oc process -f $DIR/master-pitr-restore.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

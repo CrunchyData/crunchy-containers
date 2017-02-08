@@ -18,8 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-envsubst < $DIR/pgadmin4-nfs-pv.json |  oc create -f -
-
-oc create -f $DIR/pgadmin4-nfs-pvc.json
-
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/pgadmin4.json | oc create -f -

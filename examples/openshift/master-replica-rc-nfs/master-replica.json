@@ -169,7 +169,7 @@
             "volumes": [{
                 "name": "pgdata",
                 "persistentVolumeClaim": {
-                    "claimName": "master-replica-rc-nfs-pvc"
+                    "claimName": "crunchy-pvc"
                 }
             }]
 
@@ -276,7 +276,7 @@
                     "volumes": [{
                         "name": "pgdata",
                         "persistentVolumeClaim": {
-                            "claimName": "master-replica-rc-nfs-pvc"
+                            "claimName": "crunchy-pvc2"
                         }
 
                     }],

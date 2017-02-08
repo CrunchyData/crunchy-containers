@@ -17,7 +17,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-envsubst <  $DIR/master-restore-pv.json  | oc create -f -
-
-oc create -f $DIR/master-restore-pvc.json
 oc process -f $DIR/master-restore.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

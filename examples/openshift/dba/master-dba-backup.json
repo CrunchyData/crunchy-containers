@@ -81,7 +81,7 @@
                 "image": "crunchydata/crunchy-dba:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
-                    "value": "crunchy"
+                    "value": "default"
                 }, {
                     "name": "HOME",
                     "value": "/tmp"

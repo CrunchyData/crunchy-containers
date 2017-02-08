@@ -17,6 +17,8 @@
 # set up some env vars that all examples can relate to
 #
 
+export OSE_PROJECT=default
+export NFS_PATH=/nfsfileshare
 export LOCAL_IP=`hostname --ip-address`
 
 if [ -v $CCP_IMAGE_TAG ]; then
