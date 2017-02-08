@@ -19,7 +19,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
 sudo mkdir /nfsfileshare/pgconf /nfsfileshare/backrestrepo
-sudo chown -R postgres:postgres  /nfsfileshare/pgconf /nfsfileshare/backrestrepo
+sudo chown -R nfsnobody:nfsnobody  /nfsfileshare/pgconf /nfsfileshare/backrestrepo
 sudo cp $DIR/pgbackrest.conf /nfsfileshare/pgconf
 
 envsubst <  $DIR/backrestrepo-nfs-pv.json | oc create -f -
