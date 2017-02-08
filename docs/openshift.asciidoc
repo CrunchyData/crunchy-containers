@@ -15,6 +15,13 @@ for details on how NFS is configured in these examples.
 
 Notes on NFS installation and file system permissions are in the install.asciidoc documentation.
 
+For running the examples that require persistent volumes, you
+will need to run the following script:
+....
+cd $BUILDBASE/examples/openshift
+./create-pv.sh
+....
+
 
 === *basic* - Running a single database container
 
@@ -144,38 +151,12 @@ the backup in the NFS mounted volume under a directory named pg-master, each
 backup will be stored in a subdirectory with a timestamp as the name.  This
 allows any number of backups to be kept.
 
-The backup-job-pv.json specifies a *persistentVolumeReclaimPolicy* of *Retain* to tell Openshift
+The *examples/openshift/crunchy-pv-backup.json* specifies a *persistentVolumeReclaimPolicy* of *Retain* to tell Openshift
 that we want to keep the volume contents after the removal of the PV.
 
 === *master-nfs* - NFS Example
 
-I have provided an example of using NFS for the postgres data volume.
-On my test nfs server, I had to set the exports file entry as follows:
-....
-/nfsfileshare * (rw,insecure,sync)
-....
-
-First, you can only create persistent volumes as a cluster admin, you can
-login in as the admin user as follows:
-
-....
-oc login -u system:admin
-....
-
-To run it, you would execute the following as the openshift administrator:
-
-....
-oc create -f master-nfs-pv.json
-....
-
-Then as the normal openshift user account, create the Persistence Volume
-Claim and database pod as follows:
-....
-oc create -f master-nfs-pvc.json
-oc process -f master-nfs.json | oc create -f -
-....
-
-This will create a single master postgres pod that is using 
+This example will create a single master postgres pod that is using 
 an NFS volume to store the postgres data files.
 
 
@@ -189,30 +170,9 @@ First, locate the database backup you want to restore, for example:
 /nfsfileshare/pg-master/2016-01-29:22:34:20
 ....
 
-Next, 
- * edit the master-restore-pv.json file to use that path in building
-the PV, 
- * edit the master-restore-pv.json file to use a unique label
- * and then execute as the openshift superuser:
-
+Then create the pod:
 ....
-oc login -u system:admin
-oc create -f master-restore-pv.json
-....
-
-Next, 
- * edit the master-restore-pvc.json file, specify the same unique
-label used in the master-restore-pv.json file.  
- * Then execute as the normal test user:
-
-....
-oc create -f master-restore-pvc.json
-....
-
-Next, create a database pod as the normal user:
-
-....
-oc process -f master-restore.json | oc create -f -
+./run.sh
 ....
 
 When the database pod starts, it will copy the backup files
@@ -284,21 +244,9 @@ to scale up the replicas.
 
 To run the example, follow these steps:
 
- * as the openshift admin, create the required PV(s) using this command:
+As the project user, create the master replica deployment:
 ....
-oc create -f master-replica-rc-nfs-pv.json
-oc create -f master-replica-rc-nfs-pv2.json
-....
-This will create a PV for the master and another PV for the replicas.
- * as the project user, create the required PVC(s) using this command:
-....
-oc create -f master-replica-rc-nfs-pvc2.json
-oc create -f master-replica-rc-nfs-pvc.json
-....
-This will create a PVC for the master and another PVC for the replicas.
- * as the project user, create the master replica deployment:
-....
-oc process -f master-replica-rc-nfs.json | oc create -f -
+./run.sh
 ....
 
 If you examing your NFS directory, you will see postgres data directories
@@ -464,24 +412,22 @@ oc get pod
 This example shows how postgres metrics can be collected
 and stored in prometheus and graphed with grafana.
 
-First, create the crunchy-scope pod which contains
+First, create the crunchy-metrics pod which contains
 the prometheus data store and the grafana graphing web application:
 
 ....
-edit scope-pv.json to update the NFS share info
-oc create -f scope-pv.json
-oc create -f scope-pvc.json
-oc process -f scope-nfs.json | oc create -f -
+./run.sh
 ....
 
 At this point, you can view the prometheus web console at
-crunchy-scope:9090, the prometheus push gateway at crunchy-scope:9091,
-and the grafana web app at crunchy-scope:3000.
+crunchy-metrics:9090, the prometheus push gateway at crunchy-metrics:9091,
+and the grafana web app at crunchy-metrics:3000.
 
 Next, start a postgres pod that has the crunchy-collect container
 as follows:
 ....
-oc process -f master-collect.json | oc create -f -
+cd $BUILDBASE/examples/openshift/collect
+./run.sh
 ....
 
 At this point, metrics will be collected every 3 minutes and pushed
@@ -679,9 +625,7 @@ cd $BUILDBASE/examples/openshift/pitr
 
 This step will create a database container, *master-pitr*.  This
 container is configured to continuously write WAL segment files
-to a mounted volume (/pgwal).  The mounted volume persists to 
-an NFS persistent volume, *master-pitr-wal-pvc*.  This container
-writes its data files to another NFS volume, *master-pitr-pvc*.
+to a mounted volume (/pgwal).  
 
 After you start the database, you will create a base backup
 using this command:
@@ -690,8 +634,7 @@ using this command:
 ....
 
 This will create a backup and write the backup files to a persistent
-volume (/pgbackup) using the *backup-master-pitr-pvc* volume claim.  This
-volume is also mounted on NFS.
+volume (/pgbackup).
 
 Next, lets create some recovery targets within the database, run
 the SQL commands against the *master-pitr* database as follows:
@@ -814,7 +757,7 @@ how the /pgconf mount is related to the configmap.
 
 == Openshift Tips
 
-=== Tip 1: Finding the Postgresql Passwords
+=== Tip : Finding the Postgresql Passwords
 
 The passwords used for the PostgreSQL user accounts are generated
 by the Openshift 'process' command.  To inspect what value was
@@ -830,7 +773,7 @@ Look for the values of the environment variables:
 - PG_DATABASE
 
 
-=== Tip 2: Examining a backup job log
+=== Tip : Examining a backup job log
 
 Database backups are implemented as a Kubernetes Job.  A Job is meant to run one time only
 and not be restarted by Kubernetes.  To view jobs in Openshift you enter:
@@ -847,67 +790,7 @@ output as follows:
 oc logs backupjob-pxh2o
 ....
 
-=== Tip 3: Backup Lifecycle
-
-Backups require the use of network storage like NFS in Openshift.
-There is a required order of using NFS volumes in the manner
-we do database backups.
-
-So, first off, there is a one-to-one relationship between
-a PV (persistent volume) and a PVC (persistence volume claim).  You
-can NOT have a one-to-many relationship between PV and PVC(s).
-
-So, to do a database backup repeatably, you will need to following
-this general pattern:
- * as openshift admin user, create a unique PV (e.g. backup-pv-mydatabase)
- * as a project user, create a unique PVC (e.g. backup-pvc-mydatabase)
- * reference the unique PVC within the backup-job template
- * execute the backup job template
- * as a project user, delete the job
- * as a project user, delete the pvc
- * as openshift admin user, delete the unique PV
-
-This procedure will need to be scripted and executed by the devops team when
-performing a database backup.
-
-=== Tip 4: Persistent Volume Matching
-
-Restoring a database from an NFS backup requires the building
-of a PV which maps to the NFS backup archive path.  For example,
-if you have a backup at /backups/pg-foo/2016-01-29:22:34:20
-then we create a PV that maps to that NFS path.  We also use
-a "label" on the PV so that the specific backup PV can be identified.
-
-We use the pod name in the label value to make the PV unique.  This
-way, the related PVC can find the right PV to map to and not some other
-PV.  In the PVC, we specify the same "label" which lets Kubernetes
-match to the correct PV.
-
-=== Tip 5: Restore Lifecycle
-
-
-To perform a database restore, we do the following:
- * locate the NFS path to the database backup we want to restore with
- * edit a PV to use that NFS path
- * edit a PV to specify a unique label
- * create the PV
- * edit a PVC to use the previously created PV, specifying the same label
-   used in the PV 
- * edit a database template, specifying the PVC to be used for mounting
-   to the /backup directory in the database pod
- * create the database pod
-
-If the /pgdata directory is blank AND the /backup directory contains 
-a valid postgres backup, it is assumed the user wants to perform a
-database restore.
-
-The restore logic will copy /backup files to /pgdata before starting
-the database.  It will take time for the copying of the files to
-occur since this might be a large amount of data and the volumes
-might be on slow networks. You can view the logs of the database pod
-to measure the copy progress.
-
-=== Tip 6: Password Mgmt
+=== Tip : Password Mgmt
 
 Remember that if you do a database restore, you will get
 whatever user IDs and passwords that were saved in the
@@ -929,7 +812,7 @@ to better support password management:
 oc env dc/pg-master-rc PG_MASTER_PASSWORD=foo PG_MASTER=user1
 ....
 
-=== Tip 7: Log Aggregation
+=== Tip : Log Aggregation
 
 Openshift can be configured to include the EFK stack for log aggregation.
 Openshift Administrators can configure the EFK stack as documented
@@ -937,7 +820,7 @@ here:
 
 https://docs.openshift.com/enterprise/3.1/install_config/aggregate_logging.html
 
-=== Tip 8: nss_wrapper
+=== Tip : nss_wrapper
 
 If an Openshift deployment requires that random generated UIDs be
 supported by containers, the Crunchy containers can be modifed
@@ -948,19 +831,7 @@ the postgres user:
 https://github.com/openshift/postgresql/blob/master/9.4/root/usr/share/container-scripts/postgresql/common.sh
 
 
-=== Tip 9: build box setup
-
-golang is required to build the pgbadger container, on RH 7.2, golang
-is found in the 'server optional' repository and needs to be enabled
-to install.
-
-
-golang is required to build the pgbadger container, on RH 7.2, golang
-is found in the 'server optional' repository and needs to be enabled
-to install.
-
-
-=== Tip 10: encoding secrets
+=== Tip : encoding secrets
 
 You can use kubernetes secrets to set and maintain your database
 credentials.  Secrets requires you base64 encode your user and password
@@ -981,7 +852,7 @@ in your /etc/yum.conf file:
 exclude=docker-1.9* docker-selinux-1.9*
 ....
 
-=== Tip 12: DNS configuration for Openshift development
+=== Tip : DNS configuration for Openshift development
 
 As of OSE 3.3, the following DNS modifications are not typically necessary
 any longer....but I'm leaving them here as a reference....
@@ -1009,7 +880,7 @@ prepend domain-name-servers 192.168.0.109;
 If you dont have your DNS configured correctly, replication controllers
 and deployment configs basically will not work.
 
-=== Tip 13: system policys for pv creation and listing	
+=== Tip : system policys for pv creation and listing	
 
 For my testing, I wanted to allow the *system* user to be able
 to create and list persistent volumes, as of OSE 3.3, I had to
@@ -1024,7 +895,7 @@ oc describe clusterPolicyBindings :default
 oadm policy add-cluster-role-to-user cluster-admin system
 ....
 
-=== Tip 14: anyuid permissions
+=== Tip : anyuid permissions
 
 For my testing, I create a user named *test* on OSE, then
 I run the following command to grant it permission to use the *anyuid* SCC:
@@ -1074,7 +945,7 @@ https://docs.openshift.org/latest/install_config/persistent_storage/pod_security
 
 == Legal Notices
 
-Copyright © 2016 Crunchy Data Solutions, Inc.
+Copyright © 2017 Crunchy Data Solutions, Inc.
 
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
