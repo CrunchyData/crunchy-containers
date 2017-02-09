@@ -24,19 +24,6 @@ trap 'trap_sigterm' SIGINT SIGTERM
 
 date
 
-mkdir -p /pgdata/$HOSTNAME
-chmod 0700 /pgdata/$HOSTNAME
-chown postgres:postgres /pgdata/$HOSTNAME
-
-if [[ -v ARCHIVE_MODE ]]; then
-	if [ $ARCHIVE_MODE == "on" ]; then
-		echo "creating wal directory /pgwal/$HOSTNAME"
-		mkdir -p /pgwal/$HOSTNAME
-		chmod 0700 /pgwal/$HOSTNAME
-		chown postgres:postgres /pgwal/$HOSTNAME
-	fi
-fi
-
 source /opt/cpm/bin/setenv.sh
 source check-for-secrets.sh
 
@@ -76,26 +63,6 @@ export PG_USER=$PG_USER
 export PG_PASSWORD=$PG_PASSWORD
 export PG_DATABASE=$PG_DATABASE
 export PG_ROOT_PASSWORD=$PG_ROOT_PASSWORD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-
-mkdir -p /pgdata/$HOSTNAME
-chmod 0700 /pgdata/$HOSTNAME
-
-if [[ -v ARCHIVE_MODE ]]; then
-	if [ $ARCHIVE_MODE == "on" ]; then
-		mkdir -p /pgwal/$HOSTNAME-wal
-		chmod 0700 /pgwal/$HOSTNAME-wal
-		echo "creating wal directory at " /pgwal/$HOSTNAME-wal
-	fi
-fi
-=======
-=======
->>>>>>> a69dde8a2061f97d107745e6371d56ade2787ce2
->>>>>>> rebase master
 # for replication
 export PG_MASTER_HOST=${PG_MASTER_HOST:-""}
 export PG_MASTER_PORT=${PG_MASTER_PORT:-""}
@@ -104,13 +71,19 @@ ARCHIVE_COMMAND=${ARCHIVE_COMMAND:-""}
 ARCHIVE_TIMEOUT=${ARCHIVE_TIMEOUT:-0}
 # for restore
 BACKUP_PATH=${BACKUP_PATH:-""}
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> stricter start.sh to ensure all vars are set
-=======
->>>>>>> a69dde8a2061f97d107745e6371d56ade2787ce2
->>>>>>> rebase master
+
+mkdir -p /pgdata/$HOSTNAME
+chmod 0700 /pgdata/$HOSTNAME
+chown postgres:postgres /pgdata/$HOSTNAME
+
+if [[ -v ARCHIVE_MODE ]]; then
+	if [ $ARCHIVE_MODE == "on" ]; then
+		echo "creating wal directory /pgwal/$HOSTNAME"
+		mkdir -p /pgwal/$HOSTNAME
+		chmod 0700 /pgwal/$HOSTNAME
+		chown postgres:postgres /pgwal/$HOSTNAME
+	fi
+fi
 
 ## where pg-wrapper is called
 
