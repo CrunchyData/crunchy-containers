@@ -14,5 +14,3 @@
 
 kubectl delete service master-backrest
 kubectl delete pod master-backrest
-kubectl delete pvc backrestrepo-nfs-pvc pgconf-nfs-pvc
-kubectl delete pv backrestrepo-nfs-pv pgconf-nfs-pv

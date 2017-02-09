@@ -19,17 +19,5 @@ $DIR/cleanup.sh
 
 sudo cp $DIR/pgbackrest.conf $NFS_PATH
 
-
-
-sudo mkdir /nfsfileshare/pgconf /nfsfileshare/backrestrepo
-sudo chown -R postgres:postgres  /nfsfileshare/pgconf /nfsfileshare/backrestrepo
-sudo cp $DIR/pgbackrest.conf /nfsfileshare/pgconf
-
-envsubst <  $DIR/backrestrepo-nfs-pv.json | kubectl create -f -
-kubectl create -f $DIR/backrestrepo-nfs-pvc.json
-
-envsubst <  $DIR/pgconf-nfs-pv.json | kubectl create -f -
-kubectl create -f $DIR/pgconf-nfs-pvc.json
-
 envsubst < $DIR/master-pod.json | kubectl create -f -
 kubectl create -f $DIR/master-service.json 

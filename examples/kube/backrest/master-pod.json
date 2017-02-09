@@ -31,6 +31,9 @@
                 "name": "PG_MASTER_PASSWORD",
                 "value": "password"
             }, {
+                "name": "PGHOST",
+                "value": "/tmp"
+            }, {
                 "name": "PG_USER",
                 "value": "testuser"
             }, {
@@ -67,12 +70,12 @@
         "volumes": [{
             "name": "pgconf",
             "persistentVolumeClaim": {
-                "claimName": "pgconf-nfs-pvc"
+                "claimName": "crunchy-pvc"
             }
         }, {
             "name": "backrestrepo",
             "persistentVolumeClaim": {
-                "claimName": "backrestrepo-nfs-pvc"
+                "claimName": "crunchy-pvc2"
             }
         }, {
             "name": "pgdata",
