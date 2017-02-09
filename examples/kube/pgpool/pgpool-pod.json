@@ -23,10 +23,10 @@
                 "value": "password"
             }, {
                 "name": "PG_MASTER_SERVICE_NAME",
-                "value": "master-1"
+                "value": "ms-master"
             }, {
                 "name": "PG_SLAVE_SERVICE_NAME",
-                "value": "replica-1"
+                "value": "ms-replica"
             }],
             "volumeMounts": []
         }],

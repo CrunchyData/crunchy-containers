@@ -2,9 +2,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "kitchensink-master",
+        "name": "ksmaster",
         "labels": {
-            "name": "kitchensink-master"
+            "name": "ksmaster"
         }
     },
     "spec": {
@@ -41,7 +41,7 @@
                 "value": "5432"
             }, {
                 "name": "PROM_GATEWAY",
-                "value": "http://crunchy-promgateway:9091"
+                "value": "http://crunchy-metrics:9091"
             }, {
                 "name": "PG_ROOT_PASSWORD",
                 "value": "password"
@@ -65,11 +65,14 @@
                 "name": "PG_MODE",
                 "value": "master"
             }, {
+                "name": "PGHOST",
+                "value": "/tmp"
+            }, {
                 "name": "PG_MASTER_PASSWORD",
                 "value": "password"
             }, {
                 "name": "SYNC_SLAVE",
-                "value": "kitchensink-sync-replica"
+                "value": "kssyncreplica"
             }, {
                 "name": "PG_USER",
                 "value": "testuser"
@@ -96,7 +99,7 @@
         "volumes": [{
             "name": "pgdata",
             "persistentVolumeClaim": {
-                "claimName": "kitchensink-master-pvc"
+                "claimName": "crunchy-pvc"
             }
         }, {
             "name": "backup",

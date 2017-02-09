@@ -2,9 +2,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "replica-1a",
+        "name": "ms-replica",
         "labels": {
-            "name": "replica-1",
+            "name": "ms-replica",
             "slavetype": "trigger"
         }
     },
@@ -40,7 +40,7 @@
                 "value": "/tmp"
             }, {
                 "name": "PG_MASTER_HOST",
-                "value": "master-1"
+                "value": "ms-master"
             }, {
                 "name": "PG_MASTER_USER",
                 "value": "master"

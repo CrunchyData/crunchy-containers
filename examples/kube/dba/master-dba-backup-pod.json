@@ -34,15 +34,6 @@
                 "name": "BACKUP_SCHEDULE",
                 "value": "0 5,10,15,20,25,30,35,40,45,50,55 * * * *"
             }, {
-                "name": "BACKUP_PV_CAPACITY",
-                "value": "200M"
-            }, {
-                "name": "BACKUP_PV_PATH",
-                "value": "/nfsfileshare"
-            }, {
-                "name": "BACKUP_PV_HOST",
-                "value": "192.168.0.108"
-            }, {
                 "name": "BACKUP_PVC_STORAGE",
                 "value": "75M"
             }]

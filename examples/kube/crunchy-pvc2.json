@@ -2,7 +2,7 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "kitchensink-sync-replica-pvc"
+        "name": "crunchy-pvc2"
       },
       "spec": {
         "accessModes": [
@@ -10,7 +10,7 @@
         ],
         "resources": {
           "requests": {
-            "storage": "500M"
+            "storage": "400M"
           }
         }
       }

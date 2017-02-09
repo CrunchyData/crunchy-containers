@@ -18,7 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-envsubst < $DIR/backup-job-pv.json | kubectl create -f -
-
-kubectl create -f $DIR/backup-job-pvc.json
 envsubst < $DIR/backup-job-nfs.json | kubectl create -f -

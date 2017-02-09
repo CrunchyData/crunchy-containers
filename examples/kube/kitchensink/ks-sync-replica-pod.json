@@ -2,9 +2,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "kitchensink-sync-replica",
+        "name": "kssyncreplica",
         "labels": {
-            "name": "kitchensink-sync-replica"
+            "name": "kssyncreplica"
         }
     },
     "spec": {
@@ -12,7 +12,7 @@
             "supplementalGroups": [65534]
         },
         "containers": [{
-            "name": "kitchensink-sync-replica",
+            "name": "kssyncreplica",
             "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5432,
@@ -20,7 +20,7 @@
             }],
             "env": [{
                 "name": "PG_MASTER_HOST",
-                "value": "kitchensink-master"
+                "value": "ksmaster"
             }, {
                 "name": "PG_MASTER_USER",
                 "value": "master"
@@ -32,10 +32,10 @@
                 "value": "/tmp"
             }, {
                 "name": "PG_MODE",
-                "value": "replica"
+                "value": "slave"
             }, {
                 "name": "SYNC_SLAVE",
-                "value": "kitchensink-sync-replica"
+                "value": "kssyncreplica"
             }, {
                 "name": "PG_MASTER_PASSWORD",
                 "value": "password"
@@ -65,7 +65,7 @@
         "volumes": [{
             "name": "pgdata",
             "persistentVolumeClaim": {
-                "claimName": "kitchensink-sync-replica-pvc"
+                "claimName": "crunchy-pvc"
             }
 
         }, {

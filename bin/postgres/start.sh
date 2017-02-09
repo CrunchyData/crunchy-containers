@@ -70,9 +70,9 @@ chmod 0700 /pgdata/$HOSTNAME
 
 if [[ -v ARCHIVE_MODE ]]; then
 	if [ $ARCHIVE_MODE == "on" ]; then
-		mkdir -p /pgwal/$HOSTNAME
-		chmod 0700 /pgwal/$HOSTNAME
-		echo "creating wal directory at " /pgwal/$HOSTNAME
+		mkdir -p /pgwal/$HOSTNAME-wal
+		chmod 0700 /pgwal/$HOSTNAME-wal
+		echo "creating wal directory at " /pgwal/$HOSTNAME-wal
 	fi
 fi
 
@@ -144,9 +144,9 @@ function check_for_restore() {
 }
 function check_for_pitr() {
 	echo "checking for PITR WAL files to recover with.."
-	if [ "$(ls -A /recover)" ]; then
+	if [ "$(ls -A /recover/$WAL_DIR)" ]; then
 		echo "found non-empty //recover ...assuming a PITR is requested"
-		ls -l /recover
+		ls -l /recover/$WAL_DIR
 		rm $PGDATA/pg_xlog/*0* $PGDATA/pg_xlog/archive_status/*0*
 		cp /opt/cpm/conf/pitr-recovery.conf /tmp
 		export ENABLE_RECOVERY_TARGET_NAME=#
@@ -159,6 +159,7 @@ function check_for_pitr() {
 		elif [[ -v RECOVERY_TARGET_XID ]]; then
 			export ENABLE_RECOVERY_TARGET_XID=" "
 		fi
+		sed -i "s/WAL_DIR/$WAL_DIR/g" /tmp/pitr-recovery.conf
 		sed -i "s/ENABLE_RECOVERY_TARGET_NAME/$ENABLE_RECOVERY_TARGET_NAME/g" /tmp/pitr-recovery.conf
 		sed -i "s/ENABLE_RECOVERY_TARGET_TIME/$ENABLE_RECOVERY_TARGET_TIME/g" /tmp/pitr-recovery.conf
 		sed -i "s/ENABLE_RECOVERY_TARGET_XID/$ENABLE_RECOVERY_TARGET_XID/g" /tmp/pitr-recovery.conf
@@ -199,9 +200,12 @@ function fill_conf_file() {
 	else
 		MAX_WAL_SENDERS=6
 	fi
+
+	cp /opt/cpm/conf/postgresql.conf.template /tmp/postgresql.conf
+
 	if [[ -v ARCHIVE_MODE ]]; then
 		echo "overriding ARCHIVE_MODE setting to " + $ARCHIVE_MODE
-		ARCHIVE_COMMAND="test ! -f $PGWAL/%f && cp %p $PGWAL/%f"
+		cat /opt/cpm/conf/archive-command >> /tmp/postgresql.conf
 	else
 		ARCHIVE_MODE=off
 	fi
@@ -214,17 +218,15 @@ function fill_conf_file() {
 	if [ -f /pgconf/pgbackrest.conf ]; then
 		echo "using pgbackrest archive command"
 		ARCHIVE_MODE=on
-		ARCHIVE_COMMAND="pgbackrest --config=\/pgconf\/pgbackrest.conf --stanza=db archive-push %p"
+		cat /opt/cpm/conf/backrest-archive-command >> /tmp/postgresql.conf
 	fi
 
-	cp /opt/cpm/conf/postgresql.conf.template /tmp/postgresql.conf
 	sed -i "s/TEMP_BUFFERS/$TEMP_BUFFERS/g" /tmp/postgresql.conf
 	sed -i "s/MAX_CONNECTIONS/$MAX_CONNECTIONS/g" /tmp/postgresql.conf
 	sed -i "s/SHARED_BUFFERS/$SHARED_BUFFERS/g" /tmp/postgresql.conf
 	sed -i "s/MAX_WAL_SENDERS/$MAX_WAL_SENDERS/g" /tmp/postgresql.conf
 	sed -i "s/WORK_MEM/$WORK_MEM/g" /tmp/postgresql.conf
 	sed -i "s/ARCHIVE_MODE/$ARCHIVE_MODE/g" /tmp/postgresql.conf
-	sed -i "s/ARCHIVE_COMMAND/$ARCHIVE_COMMAND/g" /tmp/postgresql.conf
 	sed -i "s/ARCHIVE_TIMEOUT/$ARCHIVE_TIMEOUT/g" /tmp/postgresql.conf
 }
 
@@ -304,7 +306,7 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	mkdir -p $PGDATA
 
 	check_for_restore
-	if [ "$(ls -A /recover)" ]; then
+	if [ "$(ls -A /recover/$WAL_DIR)" ]; then
 		echo "found non-empty /recover ...assuming a PITR is requested...removing any pg_xlog files from the restored backup"
 		rm $PGDATA/pg_xlog/*0* $PGDATA/pg_xlog/archive_status/*0*
 	fi
@@ -348,7 +350,7 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	pg_ctl -D $PGDATA --mode=fast stop
 
 	if [[ -v SYNC_SLAVE ]]; then
-		echo "synchronous_standby_names = '" $SYNC_SLAVE "'" >> $PGDATA/postgresql.conf
+		echo "synchronous_standby_names = '"$SYNC_SLAVE"'" >> $PGDATA/postgresql.conf
 	fi
 	check_for_pitr
 fi

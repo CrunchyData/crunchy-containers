@@ -1,8 +1,9 @@
 {
 	"ImportPath": "github.com/crunchydata/crunchy-containers",
-	"GoVersion": "go1.4",
-	"GodepVersion": "v78",
+	"GoVersion": "go1.7",
+	"GodepVersion": "v77",
 	"Packages": [
+		"github.com/crunchydata/crunchy-containers/dba",
 		"github.com/crunchydata/crunchy-containers/collectapi",
 		"github.com/crunchydata/crunchy-containers/badger",
 		"github.com/crunchydata/crunchy-containers/cct"
@@ -79,11 +80,6 @@
 		},
 		{
 			"ImportPath": "github.com/docker/docker/api/types/network",
-			"Comment": "docs-v1.12.0-rc4-2016-07-15-4968-g00d2057",
-			"Rev": "00d2057698e078ff55ea05044af41a94d704538f"
-		},
-		{
-			"ImportPath": "github.com/docker/docker/api/types/reference",
 			"Comment": "docs-v1.12.0-rc4-2016-07-15-4968-g00d2057",
 			"Rev": "00d2057698e078ff55ea05044af41a94d704538f"
 		},
@@ -205,6 +201,11 @@
 		{
 			"ImportPath": "github.com/prometheus/procfs",
 			"Rev": "406e5b7bfd8201a36e2bb5f7bdae0b03380c2ce8"
+		},
+		{
+			"ImportPath": "github.com/robfig/cron",
+			"Comment": "v1-16-g0f39cf7",
+			"Rev": "0f39cf7ebc65a602f45692f9894bd6a193faf8fa"
 		},
 		{
 			"ImportPath": "golang.org/x/net/context",

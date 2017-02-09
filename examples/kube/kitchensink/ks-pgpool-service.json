@@ -2,9 +2,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "kitchensink-pgpool",
+        "name": "kspgpool",
         "labels": {
-            "name": "kitchensink-pgpool"
+            "name": "kspgpool"
         }
     },
     "spec": {
@@ -15,7 +15,7 @@
             "nodePort": 0
         }],
         "selector": {
-            "name": "kitchensink-pgpool"
+            "name": "kspgpool"
         }
     },
     "status": {

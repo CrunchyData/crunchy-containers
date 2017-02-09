@@ -18,12 +18,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-CONF_DIR=/nfsfileshare/bouncerconfig
-sudo mkdir $CONF_DIR
-sudo cp $DIR/pgbouncer.ini $CONF_DIR
-sudo cp $DIR/users.txt $CONF_DIR
+CONFIGDIR=$NFS_PATH/bouncerconfig
+sudo rm -rf $CONFIGDIR
+sudo mkdir $CONFIGDIR
+sudo chmod 777 $CONFIGDIR
 
-envsubst < $DIR/pgbouncer-pv.json |  kubectl create -f -
-kubectl create -f $DIR/pgbouncer-pvc.json
+sudo cp $DIR/pgbouncer.ini $CONFIGDIR
+sudo cp $DIR/users.txt $CONFIGDIR
+
 kubectl create -f $DIR/pgbouncer-service.json
 envsubst < $DIR/pgbouncer.json | kubectl create -f -

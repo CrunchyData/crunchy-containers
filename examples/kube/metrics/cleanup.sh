@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete pvc  prometheus-pvc grafana-pvc
-kubectl delete pv prometheus-pv grafana-pv
 kubectl delete pod crunchy-metrics
 kubectl delete service crunchy-metrics
+
+$BUILDBASE/examples/waitforterm.sh crunchy-metrics kubectl
+

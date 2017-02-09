@@ -14,7 +14,7 @@
         "volumes": [{
             "name": "pgdata",
             "persistentVolumeClaim": {
-                "claimName": "master-pitr-restore-pgdata-pvc"
+                "claimName": "crunchy-pvc"
             }
         }, {
             "name": "pgwal",
@@ -22,12 +22,12 @@
         }, {
             "name": "recover",
             "persistentVolumeClaim": {
-                "claimName": "master-pitr-recover-pvc"
+                "claimName": "crunchy-pvc2"
             }
         }, {
             "name": "backup",
             "persistentVolumeClaim": {
-                "claimName": "master-pitr-restore-pvc"
+                "claimName": "crunchy-pvc3"
             }
         }],
         "containers": [{
@@ -44,6 +44,15 @@
                 "name": "PG_MODE",
                 "value": "master"
             }, {
+                "name": "PG_MODE",
+                "value": "master"
+            }, {
+                "name": "WAL_DIR",
+                "value": "master-pitr-wal"
+            }, {
+                "name": "ARCHIVE_MODE",
+                "value": "on"
+            }, {
                 "name": "PG_MASTER_PASSWORD",
                 "value": "password"
             }, {
@@ -54,7 +63,7 @@
                 "value": "password"
             }, {
                 "name": "BACKUP_PATH",
-                "value": "master-pitr/2016-10-12-22-14-18"
+                "value": "master-pitr-backups/2017-02-09-18-21-02"
             }, {
                 "name": "RECOVERY_TARGET_NAME",
                 "value": "afterchanges"

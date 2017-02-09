@@ -16,8 +16,6 @@ source $BUILDBASE/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+kubectl delete job backup-master-pitr-nfs
 
-envsubst < $DIR/backup-master-pitr-pv.json  | kubectl create -f -
-kubectl create -f $DIR/backup-master-pitr-pvc.json
 envsubst < $DIR/backup-master-pitr-job.json  | kubectl create -f -

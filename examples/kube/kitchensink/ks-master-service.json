@@ -2,20 +2,30 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "kitchensink-replica",
+            "name": "ksmaster",
             "labels": {
-                "name": "kitchensink-replica"
+                "name": "ksmaster"
             }
         },
         "spec": {
-            "ports": [{
+            "ports": [
+		    {
+                "name": "database",
                 "protocol": "TCP",
                 "port": 5432,
                 "targetPort": 5432,
                 "nodePort": 0
-            }],
+            	},
+		    {
+                "name": "badger",
+                "protocol": "TCP",
+                "port": 10000,
+                "targetPort": 10000,
+                "nodePort": 0
+            	}
+	    ],
             "selector": {
-                "name": "kitchensink-replica"
+                "name": "ksmaster"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"

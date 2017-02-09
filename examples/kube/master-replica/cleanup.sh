@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete service master-1
-kubectl delete service replica-1
-kubectl delete pod master-1
-kubectl delete pod replica-1a
-kubectl delete pod replica-1b
-$BUILDBASE/examples/waitforterm.sh master-1 kubectl
-$BUILDBASE/examples/waitforterm.sh replica-1a kubectl
-$BUILDBASE/examples/waitforterm.sh replica-1b kubectl
+kubectl delete service ms-master
+kubectl delete service ms-replica
+kubectl delete pod ms-master
+kubectl delete pod ms-replica
+kubectl delete pod ms-replica-2
+$BUILDBASE/examples/waitforterm.sh ms-master kubectl
+$BUILDBASE/examples/waitforterm.sh ms-replica kubectl
+$BUILDBASE/examples/waitforterm.sh ms-replica-2 kubectl

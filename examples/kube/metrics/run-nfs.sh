@@ -22,12 +22,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-envsubst <  $DIR/grafana-pv.json |  kubectl create -f -
-envsubst <  $DIR/prometheus-pv.json | kubectl create -f -
-
-kubectl create -f $DIR/grafana-pvc.json
-kubectl create -f $DIR/prometheus-pvc.json
-
 kubectl create -f $DIR/metrics-service.json
 
 envsubst < $DIR/metrics-nfs.json | kubectl create -f -

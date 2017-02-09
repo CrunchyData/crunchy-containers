@@ -21,7 +21,7 @@
                 "volumes": [{
                     "name": "pgdata",
                     "persistentVolumeClaim": {
-                        "claimName": "backup-job-pvc"
+                        "claimName": "crunchy-pvc"
                     }
                 }],
                 "securityContext": {

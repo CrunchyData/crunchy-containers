@@ -12,18 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pv kitchensink-master-pv
-oc delete pv kitchensink-sync-replica-pv
-oc delete pvc kitchensink-master-pvc
-oc delete pvc kitchensink-sync-replica-pvc
-oc delete service kitchensink-master
-oc delete service kitchensink-replica
-oc delete pod kitchensink-watch
-oc delete pod kitchensink-master
-oc delete pod kitchensink-sync-replica
-oc delete dc kitchensink-pgpool-rc
-oc delete dc kitchensink-replica-dc
-oc delete service kitchensink-pgpool-rc
+kubectl delete service ksmaster
+kubectl delete service ksreplica kspgpool
+kubectl delete pod kswatch
+kubectl delete pod ksmaster
+kubectl delete pod kssyncreplica
+kubectl delete deploy kspgpoolrc
+kubectl delete deploy ksreplicadc
+kubectl delete service kspgpoolrc
+kubectl delete rc kspgpool
+kubectl delete pod --selector='name=kspgpool'
 
-$BUILDBASE/examples/waitforterm.sh kitchensink-master oc
-$BUILDBASE/examples/waitforterm.sh kitchensink-replica oc
+$BUILDBASE/examples/waitforterm.sh ksmaster oc
+$BUILDBASE/examples/waitforterm.sh ksreplica oc
+
+sudo rm -rf $NFS_PATH/ks*

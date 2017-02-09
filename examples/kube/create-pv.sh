@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,14 +13,17 @@
 # limitations under the License.
 
 source $BUILDBASE/examples/envvars.sh
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-kubectl delete pod master-pitr-restore
-kubectl delete pod master-pitr
-$BUILDBASE/examples/waitforterm.sh master-pitr kubectl
-$BUILDBASE/examples/waitforterm.sh master-pitr-restore kubectl
+kubectl delete pvc crunchy-pvc crunchy-pvc2 crunchy-pvc3
+kubectl delete pv crunchy-nfs-pv crunchy-nfs-pv2 crunchy-nfs-pv3 master-dba-backup-pv
 
-# start up the database container
-envsubst <  $DIR/master-pitr-restore-service.json  | kubectl create -f -
-envsubst <  $DIR/master-pitr-restore-pod.json  | kubectl create -f -
+envsubst < $DIR/crunchy-pv.json |  kubectl create -f -
+envsubst < $DIR/crunchy-pv2.json |  kubectl create -f -
+envsubst < $DIR/crunchy-pv3.json |  kubectl create -f -
+envsubst < $DIR/crunchy-pv-backup.json |  kubectl create -f -
+
+kubectl create -f $DIR/crunchy-pvc.json
+kubectl create -f $DIR/crunchy-pvc2.json
+kubectl create -f $DIR/crunchy-pvc3.json
+

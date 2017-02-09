@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,15 +15,11 @@
 
 kubectl delete pod master-pitr-restore
 kubectl delete service master-pitr-restore
-sudo rm -rf /nfsfileshare/master-pitr-restore
-kubectl delete pvc master-pitr-restore-pvc master-pitr-restore-pgdata-pvc master-pitr-recover-pvc
-kubectl delete pv master-pitr-restore-pv master-pitr-restore-pgdata-pv master-pitr-recover-pv
+sudo rm -rf $NFS_PATH/master-pitr-restore
 
 kubectl delete service master-pitr master-pitr-restore
 kubectl delete pod master-pitr
 kubectl delete job master-pitr-backup-job
-kubectl delete pvc master-pitr-pvc backup-master-pitr-pvc master-pitr-recover-pvc master-pitr-restore-pvc master-pitr-wal-pvc
-kubectl delete pv master-pitr-pv backup-master-pitr-pv master-pitr-recover-pv master-pitr-restore-pv master-pitr-wal-pv
 
-sudo rm -rf /nfsfileshare/WAL/master-pitr
-sudo rm -rf /nfsfileshare/master-pitr
+sudo rm -rf $NFS_PATH/WAL/master-pitr
+sudo rm -rf $NFS_PATH/master-pitr

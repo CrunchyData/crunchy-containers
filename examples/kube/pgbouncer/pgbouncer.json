@@ -14,7 +14,7 @@
         "volumes": [{
             "name": "pgconf",
             "persistentVolumeClaim": {
-                "claimName": "pgbouncer-pvc"
+                "claimName": "crunchy-pvc"
             }
         }],
         "containers": [{
@@ -44,10 +44,10 @@
                 "value": "5432"
             }, {
                 "name": "PG_MASTER_SERVICE",
-                "value": "master-1"
+                "value": "ms-master"
             }, {
                 "name": "PG_SLAVE_SERVICE",
-                "value": "replica-1"
+                "value": "ms-replica"
             }],
             "volumeMounts": [{
                 "mountPath": "/pgconf",

@@ -2,21 +2,21 @@
     "kind": "ReplicationController",
     "apiVersion": "v1",
     "metadata": {
-        "name": "kitchensink-pgpool",
+        "name": "kspgpool",
         "labels": {
-            "name": "kitchensink-pgpool"
+            "name": "kspgpool"
         }
     },
     "spec": {
         "replicas": 1,
         "selector": {
-            "name": "kitchensink-pgpool"
+            "name": "kspgpool"
         },
         "template": {
             "metadata": {
-                "name": "kitchensink-pgpool",
+                "name": "kspgpool",
                 "labels": {
-                    "name": "kitchensink-pgpool"
+                    "name": "kspgpool"
                 }
             },
             "spec": {
@@ -35,10 +35,10 @@
                         "value": "password"
                     }, {
                         "name": "PG_MASTER_SERVICE_NAME",
-                        "value": "kitchensink-master"
+                        "value": "ksmaster"
                     }, {
                         "name": "PG_SLAVE_SERVICE_NAME",
-                        "value": "kitchensink-replica"
+                        "value": "ksreplica"
                     }],
                     "terminationMessagePath": "/dev/termination-log",
                     "volumeMounts": []

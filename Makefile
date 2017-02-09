@@ -11,6 +11,7 @@ setup:
 	$(BUILDBASE)/bin/install-deps.sh
 gendeps:
 	godep save \
+	github.com/crunchydata/crunchy-containers/dba \
 	github.com/crunchydata/crunchy-containers/collectapi \
 	github.com/crunchydata/crunchy-containers/badger  \
 	github.com/crunchydata/crunchy-containers/cct 

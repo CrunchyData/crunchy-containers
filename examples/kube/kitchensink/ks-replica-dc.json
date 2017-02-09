@@ -2,22 +2,22 @@
     "kind": "Deployment",
     "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "kitchensink-replica-dc",
+        "name": "ksreplicadc",
         "labels": {
-            "name": "replica-dc"
+            "name": "ksreplicadc"
         }
     },
     "spec": {
         "replicas": 1,
         "selector": {
             "matchLabels": {
-                "name": "kitchensink-replica"
+                "name": "ksreplica"
             }
         },
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "kitchensink-replica"
+                    "name": "ksreplica"
                 }
             },
             "spec": {
@@ -30,10 +30,10 @@
                     }],
                     "env": [{
                         "name": "PG_MASTER_HOST",
-                        "value": "kitchensink-master"
+                        "value": "ksmaster"
                     }, {
                         "name": "PG_MASTER_SERVICE_NAME",
-                        "value": "kitchensink-master"
+                        "value": "ksmaster"
                     }, {
                         "name": "PG_MASTER_PORT",
                         "value": "5432"

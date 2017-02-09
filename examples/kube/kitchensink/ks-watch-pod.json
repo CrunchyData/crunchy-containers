@@ -2,9 +2,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "kitchensink-watch",
+        "name": "kswatch",
         "labels": {
-            "name": "kitchensink-watch"
+            "name": "kswatch"
         }
     },
     "spec": {
@@ -23,10 +23,10 @@
                 "value": "thisone"
             }, {
                 "name": "PG_MASTER_SERVICE",
-                "value": "kitchensink-master"
+                "value": "ksmaster"
             }, {
                 "name": "PG_SLAVE_SERVICE",
-                "value": "kitchensink-replica"
+                "value": "ksreplica"
             }, {
                 "name": "PG_MASTER_PORT",
                 "value": "5432"

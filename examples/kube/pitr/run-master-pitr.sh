@@ -18,14 +18,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-# set up the NFS claim to store the WAL into
-envsubst < $DIR/master-pitr-wal-pv.json |  kubectl create -f -
-kubectl create -f $DIR/master-pitr-wal-pvc.json
-
-# set up the NFS claim to store the pgdata into
-envsubst < $DIR/master-pitr-pv.json |  kubectl create -f -
-kubectl create -f $DIR/master-pitr-pvc.json
-
 # start up the database container
 envsubst < $DIR/master-pitr-service.json |  kubectl create -f -
 envsubst < $DIR/master-pitr-pod.json |  kubectl create -f -

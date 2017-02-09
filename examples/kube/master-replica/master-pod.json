@@ -2,9 +2,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master-1",
+        "name": "ms-master",
         "labels": {
-            "name": "master-1"
+            "name": "ms-master"
         }
     },
     "spec": {

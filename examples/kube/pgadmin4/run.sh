@@ -17,7 +17,7 @@ source $BUILDBASE/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
-DATADIR=/nfsfileshare/pgadmin4
+DATADIR=$NFS_PATH/pgadmin4
 
 if [ ! -d "$DATADIR" ]; then
 	echo "setting up pg4admin data directory...."
@@ -26,10 +26,6 @@ if [ ! -d "$DATADIR" ]; then
 	sudo cp $BUILDBASE/conf/pgadmin4/pgadmin4.db $DATADIR
 	sudo chmod -R 777 $DATADIR
 fi
-
-envsubst <  $DIR/pgadmin4-nfs-pv.json | kubectl create -f -
-
-kubectl create -f $DIR/pgadmin4-nfs-pvc.json
 
 kubectl create -f $DIR/pgadmin4-service.json
 envsubst < $DIR/pgadmin4-pod.json | kubectl create -f -

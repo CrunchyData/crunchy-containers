@@ -13,5 +13,3 @@
 # limitations under the License.
 
 kubectl delete job backup-job-nfs
-kubectl delete pvc backup-job-pvc
-kubectl delete pv backup-job-pv

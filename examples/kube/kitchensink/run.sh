@@ -19,29 +19,19 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
 echo "create services for master and replicas..."
-kubectl create -f $DIR/kitchensink-master-service.json
-kubectl create -f $DIR/kitchensink-replica-service.json
-kubectl create -f $DIR/kitchensink-pgpool-service.json
-
-echo "create PVs for master and sync replica..."
-envsubst < $LOC/kitchensink-sync-replica-pv.json | kubectl create -f -
-envsubst < $LOC/kitchensink-master-pv.json | kubectl create -f -
-
-echo "create PVCs for master and sync replica..."
-kubectl create -f $LOC/kitchensink-sync-replica-pvc.json
-kubectl create -f $LOC/kitchensink-master-pvc.json
+kubectl create -f $DIR/ks-master-service.json
+kubectl create -f $DIR/ks-replica-service.json
+kubectl create -f $DIR/ks-pgpool-service.json
 
 echo "create master pod.."
-envsubst < $LOC/kitchensink-master-pod.json | kubectl create -f -
-echo "sleeping 20 secs before creating replicas..."
-sleep 20
+envsubst < $DIR/ks-master-pod.json | kubectl create -f -
 echo "create replica pod.."
-envsubst < $LOC/kitchensink-replica-dc.json | kubectl create -f -
+envsubst < $DIR/ks-replica-dc.json | kubectl create -f -
 echo "create sync replica pod.."
-envsubst < $LOC/kitchensink-sync-replica-pod.json | kubectl create -f -
+envsubst < $DIR/ks-sync-replica-pod.json | kubectl create -f -
+sleep 20
 echo "create pgpool rc..."
-envsubst < $LOC/kitchensink-pgpool-rc.json | kubectl create -f -
-
+envsubst < $DIR/ks-pgpool-rc.json | kubectl create -f -
 echo "create watch service account and pod"
-kubectl create -f $LOC/kitchensink-watch-sa.json
-envsubst <  $LOC/kitchensink-watch-pod.json | kubectl create -f -
+kubectl create -f $DIR/ks-watch-sa.json
+envsubst <  $DIR/ks-watch-pod.json | kubectl create -f -

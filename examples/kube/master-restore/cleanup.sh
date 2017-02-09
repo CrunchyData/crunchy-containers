@@ -12,7 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete pod restored-master
-kubectl delete service restored-master
-kubectl delete pvc master-restore-pvc
-kubectl delete pv master-restore-pv
+kubectl delete pod master-restore
+kubectl delete service master-restore
