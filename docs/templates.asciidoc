@@ -1,6 +1,6 @@
 = Openshift Dedicated Examples - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.2.7, {docdate}
+v1.2.8, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Openshift Dedicated Environment
@@ -20,7 +20,7 @@ oc project <your project name>
 cd $HOME
 git clone https://github.com/CrunchyData/crunchy-containers.git
 export BUILDBASE=$HOME/crunchy-containers
-export CCP_IMAGE_TAG=centos7-9.5-1.2.7
+export CCP_IMAGE_TAG=centos7-9.5-1.2.8
 cd crunchy-containers/examples/templates
 ./create-all.sh
 ....
