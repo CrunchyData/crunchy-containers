@@ -1,6 +1,6 @@
 = Origin Installation Notes - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.2.7, {docdate}
+v1.2.8, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Installation Instructions
@@ -196,7 +196,7 @@ name of 'pgproject':
 
 ....
 search pgproject.svc.cluster.local crunchy.lab
-nameserver 192.168.122.71
+nameserver 192.168.1.2.81
 nameserver 192.168.122.1
 ....
 
