@@ -78,10 +78,10 @@ chown postgres:postgres /pgdata/$HOSTNAME
 
 if [[ -v ARCHIVE_MODE ]]; then
 	if [ $ARCHIVE_MODE == "on" ]; then
-		echo "creating wal directory /pgwal/$HOSTNAME"
-		mkdir -p /pgwal/$HOSTNAME
-		chmod 0700 /pgwal/$HOSTNAME
-		chown postgres:postgres /pgwal/$HOSTNAME
+		echo "creating wal archive directory /pgwal/$HOSTNAME-wal"
+		mkdir -p /pgwal/$HOSTNAME-wal
+		chmod 0700 /pgwal/$HOSTNAME-wal
+		chown postgres:postgres /pgwal/$HOSTNAME-wal
 	fi
 fi
 
