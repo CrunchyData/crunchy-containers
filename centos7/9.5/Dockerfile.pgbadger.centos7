@@ -1,6 +1,6 @@
 FROM centos:7
 
-LABEL Release="1.2.7" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
+LABEL Release="1.2.8" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
 
 ENV PGVERSION="9.5" \
         PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
@@ -12,7 +12,7 @@ RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/r
 #ADD conf/crunchypg95.repo /etc/yum.repos.d/
 #RUN rpm --import CRUNCHY-GPG-KEY.public
 
-RUN yum -y install procps-ng pgbadger-9.0* openssh-clients hostname && yum clean all -y
+RUN yum -y install procps-ng pgbadger-9.1* openssh-clients hostname && yum clean all -y
 
 # set up cpm directory
 #

@@ -1,6 +1,6 @@
 FROM rhel7.2
 
-LABEL Release="1.2.7" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
+LABEL Release="1.2.8" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
 
 # Crunchy Postgres repo
 ADD conf/CRUNCHY-GPG-KEY.public  /
