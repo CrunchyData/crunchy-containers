@@ -13,7 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $BUILDBASE/examples/envvars.sh
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 oc delete service custom-config
 oc delete pod custom-config
+
+sudo rm $NFS_PATH/setup.sql
+sudo rm $NFS_PATH/pg_hba.conf
+sudo rm $NFS_PATH/postgresql.conf
 
 $BUILDBASE/examples/waitforterm.sh custom-config oc

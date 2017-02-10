@@ -1,0 +1,23 @@
+{
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "csmaster",
+            "labels": {
+                "name": "csmaster"
+            }
+        },
+        "spec": {
+            "ports": [{
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }],
+            "selector": {
+                "name": "csmaster"
+            },
+            "type": "ClusterIP",
+            "sessionAffinity": "None"
+        }
+}

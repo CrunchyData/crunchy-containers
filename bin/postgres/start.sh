@@ -312,13 +312,9 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	fi
 
         echo "starting db" >> /tmp/start-db.log
-	if [ -f /pgconf/postgresql.conf ]; then
-        	echo "pgconf postgresql.conf is being used with PGDATA=" $PGDATA
-		postgres -c config_file=/pgconf/postgresql.conf -c hba_file=/pgconf/pg_hba.conf -D $PGDATA &
-	else
-        	echo "normal postgresql.conf is being used"
-		pg_ctl -D $PGDATA start
-	fi
+       
+	echo "temporarily starting db to run setup.sql" 
+	pg_ctl -D $PGDATA start
 
         sleep 3
 
@@ -346,6 +342,8 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 		echo "using pgaudit_analyze audit.sql from /pgconf"
 		psql -U postgres < /pgconf/audit.sql
 	fi
+
+	echo "stopping database after master initialization..."
 
 	pg_ctl -D $PGDATA --mode=fast stop
 
