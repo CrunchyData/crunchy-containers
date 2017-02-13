@@ -23,7 +23,9 @@ oc create -f $DIR/ks-master-service.json
 oc create -f $DIR/ks-replica-service.json
 
 echo "create master pod.."
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/ks-master-pod.json | oc create -f -
+oc process \
+	-v CCP_IMAGE_TAG=$CCP_IMAGE_TAG \
+	-f $DIR/ks-master-pod.json | oc create -f -
 echo "sleeping 20 secs before creating replicas..."
 sleep 20
 echo "create replica pod.."
@@ -34,4 +36,6 @@ echo "create pgpool rc..."
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/ks-pgpool-rc.json | oc create -f -
 echo "create watch service account and pod"
 oc create -f $DIR/ks-watch-sa.json
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/ks-watch-pod.json | oc create -f -
+oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG \
+	-v NAMESPACE=$NAMESPACE \
+	-f $DIR/ks-watch-pod.json | oc create -f -

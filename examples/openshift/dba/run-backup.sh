@@ -20,8 +20,8 @@ $DIR/cleanup.sh
 
 oc create -f $DIR/dba-sa.json
 
-oc policy add-role-to-group edit system:serviceaccounts -n $OSE_PROJECT
-oc policy add-role-to-user view system:serviceaccount:$OSE_PROJECT:dba-sa
+oc policy add-role-to-group edit system:serviceaccounts -n $NAMESPACE
+oc policy add-role-to-user view system:serviceaccount:$NAMESPACE:dba-sa
 
 #
 # this next commands lets the dba-sa service account have
@@ -29,6 +29,9 @@ oc policy add-role-to-user view system:serviceaccount:$OSE_PROJECT:dba-sa
 # to create PVCs required by the backup job
 # capability of the dba container
 #
-oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:$OSE_PROJECT:dba-sa
+oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:$NAMESPACE:dba-sa
 
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/master-dba-backup.json | oc create -f -
+oc process \
+	-v CCP_IMAGE_TAG=$CCP_IMAGE_TAG \
+	-v NAMESPACE=$NAMESPACE \
+	-f $DIR/master-dba-backup.json | oc create -f -

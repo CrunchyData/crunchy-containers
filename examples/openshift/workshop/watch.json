@@ -13,6 +13,9 @@
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
+    }, {
+        "name": "NAMESPACE",
+        "description": "the project namespace to use"
     }],
     "objects": [{
         "kind": "Pod",
@@ -30,7 +33,7 @@
                 "image": "crunchydata/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
-                    "value": "spatialapp"
+                    "value": "${NAMESPACE}"
                 }, {
                     "name": "SLEEP_TIME",
                     "value": "20"

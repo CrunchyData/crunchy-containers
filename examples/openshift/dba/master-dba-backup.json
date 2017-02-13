@@ -14,6 +14,9 @@
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to pull with"
     }, {
+        "name": "NAMESPACE",
+        "description": "The project namespace to use"
+    }, {
         "name": "PG_MASTER_USER",
         "description": "The username used for master-slave replication",
         "value": "master"
@@ -81,7 +84,7 @@
                 "image": "crunchydata/crunchy-dba:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
-                    "value": "default"
+                    "value": "${NAMESPACE}"
                 }, {
                     "name": "HOME",
                     "value": "/tmp"

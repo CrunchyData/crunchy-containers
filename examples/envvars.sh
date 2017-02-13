@@ -17,7 +17,7 @@
 # set up some env vars that all examples can relate to
 #
 
-export OSE_PROJECT=default
+export NAMESPACE=default
 export NFS_PATH=/nfsfileshare
 export LOCAL_IP=`hostname --ip-address`
 
