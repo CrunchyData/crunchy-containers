@@ -16,13 +16,12 @@ function install-reqs {
 }
 
 function config-docker {
-	sudo sed -i '/OPTIONS=.*/c\OPTIONS="--selinux-enabled --insecure-registry 172.30.0.0/16"' \
-	cat <<EOF > /etc/sysconfig/docker-storage-setup
-DEVS=/dev/vdc
-VG=docker-vg
-EOF
-	/etc/sysconfig/docker
 	sudo yum -y install docker-1.10.3
+	sudo sed -i '/OPTIONS=.*/c\OPTIONS="--selinux-enabled --insecure-registry 172.30.0.0/16"' /etc/sysconfig/docker
+	su - root -c ' cat <<EOF > /etc/sysconfig/docker-storage-setup
+DEVS=/dev/vdb
+VG=docker-vg
+EOF'
 	sudo docker-storage-setup
 	sudo groupadd docker
 	sudo usermod -a -G docker crunchy
@@ -83,10 +82,29 @@ function configure-ose {
 	sudo oadm policy add-cluster-role-to-user cluster-admin crunchy
 }
 
+function clone {
+	mkdir -p $HOME/cdev/bin $HOME/cdev/src $HOME/cdev/pkg
+	export GOPATH=$HOME/cdev
+	export BUILDBASE=$GOPATH/src/github.com/crunchydata/crunchy-containers
+	export CCP_IMAGE_TAG=centos7-9.6-1.2.7
+	export GOBIN=$GOPATH/bin
+	cd $HOME/cdev/src
+	mkdir -p github.com/crunchydata
+	cd github.com/crunchydata
+	git clone https://github.com/CrunchyData/crunchy-containers.git
+	cd crunchy-containers
+	make setup
+	go get github.com/tools/godep
+	godep restore
+}
+
 
 echo "starting vm setup...."
+#clone
 #install-nfs
 #install-reqs
+#config-docker
+#misc
 #install-crunchy
 #install-ose
 #configure-ose

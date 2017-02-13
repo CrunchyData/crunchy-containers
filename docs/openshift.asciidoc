@@ -20,7 +20,34 @@ will need to run the following script:
 ....
 cd $BUILDBASE/examples/openshift
 ./create-pv.sh
+./create-pvc.sh
 ....
+
+If you are wanting to run the examples on a minishift instance
+you will need to create the PVs using hostPath as follows:
+....
+oc login -u system:admin
+./create-pv.sh hostpath
+oc login -u developer
+./create-pvc.sh
+....
+
+Additional steps are required to allow persistence to work
+on minishift including:
+....
+oc login -u system:admin
+oc edit scc restricted
+....
+
+Above, you will change runAsUser.Type strategy to RunAsAny.
+
+On the boot2docker instance running minishift, you will need
+to set the host path permissions as follows:
+....
+chmod 777 /mnt/sda1/data
+....
+
+
 
 
 === *basic* - Running a single database container
