@@ -14,7 +14,7 @@
             "image": "crunchydata/crunchy-dba:$CCP_IMAGE_TAG",
             "env": [{
                 "name": "KUBE_PROJECT",
-                "value": "default"
+                "value": "$NAMESPACE"
             }, {
                 "name": "PG_USER",
                 "value": "testuser"

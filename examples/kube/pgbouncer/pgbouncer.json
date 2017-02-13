@@ -32,7 +32,7 @@
                 "value": "yes"
             }, {
                 "name": "KUBE_PROJECT",
-                "value": "default"
+                "value": "$NAMESPACE"
             }, {
                 "name": "SLEEP_TIME",
                 "value": "12"

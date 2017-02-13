@@ -14,7 +14,7 @@
             "image": "crunchydata/crunchy-watch:$CCP_IMAGE_TAG",
             "env": [{
                 "name": "KUBE_PROJECT",
-                "value": "default"
+                "value": "$NAMESPACE"
             }, {
                 "name": "SLEEP_TIME",
                 "value": "20"
