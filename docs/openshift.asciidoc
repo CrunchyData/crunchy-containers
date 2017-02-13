@@ -48,7 +48,10 @@ chmod 777 /mnt/sda1/data
 ....
 
 
-
+The NAMESPACE environment variable is set to indicate which Openshift
+project you want various example objects to use.  This variable
+is set to *default* within the *examples/envvars.sh* script.  Set this
+to match your project configuration.
 
 === *basic* - Running a single database container
 
