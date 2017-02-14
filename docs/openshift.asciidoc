@@ -808,6 +808,32 @@ is created, and notice within the configmap.json file
 how the /pgconf mount is related to the configmap.
 
 
+=== *statefulset*- a StatefulSet example
+
+This example shows how to use a StatefulSet (available
+in Openshift Origin 1.5) to create a PostgreSQL cluster.
+
+Build the example by:
+....
+cd $BUILDBASE/examples/openshift/statefulset
+./run.sh
+....
+
+This will create a statefulset named pgset, which will create
+2 pods, pgset-0 and pgset-1:
+....
+oc get statefulset
+oc get pod
+....
+
+A service is created for the master and another service for the replica:
+....
+oc get service
+....
+
+The statefulset ordinal value of 0 is used to determine which pod
+will act as the PostgreSQL master, all other ordinal values will
+assume the replica role.
 
 === *crunchy-proxy*- a Postgres-aware proxy 
 
