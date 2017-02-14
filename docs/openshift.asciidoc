@@ -808,6 +808,49 @@ is created, and notice within the configmap.json file
 how the /pgconf mount is related to the configmap.
 
 
+
+=== *crunchy-proxy*- a Postgres-aware proxy 
+
+This example shows how to use the *crunchy-proxy* to 
+act as a smart proxy to a PostgreSQL cluster.  The example
+depends upon the *master-replica* example being run prior.
+
+*crunchy-proxy* offers a high performance alternative to
+pgbouncer and pgpool.
+
+The proxy example copies a configuration file to the NFS_PATH
+and starts up the *crunchy-proxy* within a Deployment.
+
+The proxy reads the configuration file from a */config* volume
+mount and begins execution.
+
+Start by running the proxy container:
+....
+cd $BUILDBASE/examples/openshift/crunchy-proxy
+./run.sh
+....
+
+The proxy will listen on port 5432 as specified in the 
+configuration file.  The example creates a Service named
+*crunchy-proxy* that you can use to access the configured
+PostgreSQL backend containers from the *master-replica* example.
+
+See the following link for more information on the *crunchy-proxy*:
+
+https://github.com/CrunchyData/crunchy-proxy
+
+Test the proxy by running psql commands via the proxy connection:
+....
+psql -h crunchy-proxy -U postgres postgres
+....
+
+SQL "reads" will be sent to the PostgreSQL replica database if your
+SQL includes the *crunchy-proxy* read annotation.  SQL statements
+that do not include the read annotation will be sent to the master 
+database container within the PostgreSQL cluster.
+
+
+
 == Openshift Tips
 
 === Tip : Finding the Postgresql Passwords
