@@ -195,6 +195,31 @@ that do not include the read annotation will be sent to the master
 database container within the PostgreSQL cluster.
 
 
+=== *crunchy-proxy* - a smart proxy for Postgres 
+
+A *crunchy-proxy* example is provided that will run a  container that
+is configured to be used with the master and replica example provided
+in the *master-replica* example.  
+
+You can create the proxy by running:
+....
+cd $BUILDBASE/examples/docker/crunchy-proxy
+./run.sh
+....
+
+This proxy will listen on localhost:12432.  You can access the
+*master-replica* cluster by:
+....
+psql -h localhost -p 12432 -U postgres postgres
+....
+
+See this link for details on the *crunchy-proxy*:
+https://github.com/CrunchyData/crunchy-proxy
+
+You might consider *crunchy-proxy* over pgpool and pgbouncer if
+you need load-balancing and smart SQL routing.
+
+
 === *pgpool* - pgpool 
 
 A pgpool example is provided that will run a pgpool container that
