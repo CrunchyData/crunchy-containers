@@ -1,4 +1,4 @@
-#!/bin/bash  -x
+#!/bin/bash
 
 # Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,6 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+set -xeuo pipefail
 
 function trap_sigterm() {
 	echo "doing trap logic..." >> $PGDATA/trap.output
@@ -55,24 +57,31 @@ if [ ! -v PG_ROOT_PASSWORD ]; then
 fi
 
 export PG_MODE=$PG_MODE
-export PG_MASTER_HOST=$PG_MASTER_HOST
-export PG_MASTER_PORT=$PG_MASTER_PORT
 export PG_MASTER_USER=$PG_MASTER_USER
 export PG_MASTER_PASSWORD=$PG_MASTER_PASSWORD
 export PG_USER=$PG_USER
 export PG_PASSWORD=$PG_PASSWORD
 export PG_DATABASE=$PG_DATABASE
 export PG_ROOT_PASSWORD=$PG_ROOT_PASSWORD
-
+# for replication
+export PG_MASTER_HOST=${PG_MASTER_HOST:-""}
+export PG_MASTER_PORT=${PG_MASTER_PORT:-""}
+# for pitr
+ARCHIVE_COMMAND=${ARCHIVE_COMMAND:-""}
+ARCHIVE_TIMEOUT=${ARCHIVE_TIMEOUT:-0}
+# for restore
+BACKUP_PATH=${BACKUP_PATH:-""}
 
 mkdir -p /pgdata/$HOSTNAME
 chmod 0700 /pgdata/$HOSTNAME
+chown postgres:postgres /pgdata/$HOSTNAME
 
 if [[ -v ARCHIVE_MODE ]]; then
 	if [ $ARCHIVE_MODE == "on" ]; then
-		mkdir -p /pgwal/$HOSTNAME-wal
-		chmod 0700 /pgwal/$HOSTNAME-wal
-		echo "creating wal directory at " /pgwal/$HOSTNAME-wal
+		echo "creating wal directory /pgwal/$HOSTNAME"
+		mkdir -p /pgwal/$HOSTNAME
+		chmod 0700 /pgwal/$HOSTNAME
+		chown postgres:postgres /pgwal/$HOSTNAME
 	fi
 fi
 
@@ -358,7 +367,7 @@ fi
 # clean up any old pid file that might have remained
 # during a bad shutdown of the container/postgres
 #
-rm $PGDATA/postmaster.pid
+rm -f $PGDATA/postmaster.pid
 #
 # the normal startup of pg
 #
