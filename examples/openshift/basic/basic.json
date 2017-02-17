@@ -107,6 +107,9 @@
                     "name": "PG_MASTER_USER",
                     "value": "${PG_MASTER_USER}"
                 }, {
+                    "name": "PG_MASTER_PORT",
+                    "value": "5432"
+                }, {
                     "name": "PG_MODE",
                     "value": "master"
                 }, {

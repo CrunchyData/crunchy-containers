@@ -318,7 +318,7 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 
 	echo "waiting for pg to start up..."
 	while true; do
-                pg_isready --host=$PG_MASTER_HOST \
+                pg_isready \
                 --port=$PG_MASTER_PORT \
                 --timeout=2
                 if [ $? -eq 0 ]; then
