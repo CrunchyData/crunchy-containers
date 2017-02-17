@@ -316,8 +316,18 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	echo "temporarily starting db to run setup.sql" 
 	pg_ctl -D $PGDATA start
 
-        sleep 3
-
+	echo "waiting for pg to start up..."
+	while true; do
+                pg_isready --host=$PG_MASTER_HOST \
+                --port=$PG_MASTER_PORT \
+                --timeout=2
+                if [ $? -eq 0 ]; then
+                        echo "database is ready for setup.sql"
+                        break
+                fi
+                sleep 2
+        done
+	
         echo "loading setup.sql" >> /tmp/start-db.log
 	cp /opt/cpm/bin/setup.sql /tmp
 	if [ -f /pgconf/setup.sql ]; then
@@ -330,9 +340,6 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	sed -i "s/PG_PASSWORD/$PG_PASSWORD/g" /tmp/setup.sql
 	sed -i "s/PG_DATABASE/$PG_DATABASE/g" /tmp/setup.sql
 	sed -i "s/PG_ROOT_PASSWORD/$PG_ROOT_PASSWORD/g" /tmp/setup.sql
-
-	echo "sleep 7 till postgres is ready"
-	sleep 7
 
 	#set PGHOST to use socket in /tmp, we change unix_socket_directory
 	#to use /tmp instead of /var/run
