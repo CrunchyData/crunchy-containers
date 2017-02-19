@@ -14,5 +14,4 @@
 
 kubectl delete service master-dc
 kubectl delete service replica-dc
-kubectl delete pod master-dc
-kubectl delete deployment replica-dc
+kubectl delete deploy master-dc replica-dc

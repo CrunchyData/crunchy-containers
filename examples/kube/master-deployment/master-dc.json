@@ -31,6 +31,9 @@
                         "name": "PG_MODE",
                         "value": "master"
                     }, {
+                        "name": "PGDATA_PATH_OVERRIDE",
+                        "value": "master-dc"
+                    }, {
                         "name": "PG_MASTER_USER",
                         "value": "master"
                     }, {
@@ -67,7 +70,9 @@
                 }],
                 "volumes": [{
                     "name": "pgdata",
-                    "emptyDir": {}
+            		"persistentVolumeClaim": {
+                		"claimName": "crunchy-pvc"
+            		}
                 }],
 
                 "restartPolicy": "Always",
