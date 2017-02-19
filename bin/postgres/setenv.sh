@@ -27,6 +27,12 @@ echo "setting PGROOT to " $PGROOT
 
 export PGDATA=/pgdata/$HOSTNAME
 export PGWAL=/pgwal/$HOSTNAME-wal
+
+if [[ -v PGDATA_PATH_OVERRIDE ]]; then
+	export PGDATA=/pgdata/$PGDATA_PATH_OVERRIDE
+	export PGWAL=/pgwal/$PGDATA_PATH_OVERRIDE-wal
+fi
+
 export PATH=/opt/cpm/bin:$PGROOT/bin:$PATH
 export LD_LIBRARY_PATH=$PGROOT/lib
 

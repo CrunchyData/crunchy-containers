@@ -12,11 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $BUILDBASE/examples/envvars.sh
-
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-$DIR/cleanup.sh
-
-kubectl create -n crunchy -f $DIR/basic-service.json
-envsubst < $DIR/basic.json | kubectl create -n crunchy -f -
+kubectl delete service master-dc
+kubectl delete service replica-dc
+kubectl delete pod master-dc
+kubectl delete deployment replica-dc

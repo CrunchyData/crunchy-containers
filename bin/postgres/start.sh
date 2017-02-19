@@ -65,14 +65,14 @@ export PG_DATABASE=$PG_DATABASE
 export PG_ROOT_PASSWORD=$PG_ROOT_PASSWORD
 
 
-mkdir -p /pgdata/$HOSTNAME
-chmod 0700 /pgdata/$HOSTNAME
+mkdir -p $PGDATA
+chmod 0700 $PGDATA
 
 if [[ -v ARCHIVE_MODE ]]; then
 	if [ $ARCHIVE_MODE == "on" ]; then
-		mkdir -p /pgwal/$HOSTNAME-wal
-		chmod 0700 /pgwal/$HOSTNAME-wal
-		echo "creating wal directory at " /pgwal/$HOSTNAME-wal
+		mkdir -p $PGWAL
+		chmod 0700 $PGWAL
+		echo "creating wal directory at " $PGWAL
 	fi
 fi
 
@@ -416,7 +416,7 @@ date
 
 if [[ -v PGAUDIT_ANALYZE ]]; then
 	echo "pgaudit_analyze will be started up..."
-	pgaudit_analyze /pgdata/$HOSTNAME/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
+	pgaudit_analyze $PGDATA/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
 fi
 
 wait

@@ -18,5 +18,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create -n crunchy -f $DIR/basic-service.json
-envsubst < $DIR/basic.json | kubectl create -n crunchy -f -
+kubectl create -f $DIR/master-service.json
+kubectl create -f $DIR/replica-service.json
+envsubst < $DIR/master-dc.json | kubectl create -f -
+envsubst < $DIR/replica-dc.json | kubectl create -f -
