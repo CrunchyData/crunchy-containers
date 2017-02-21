@@ -16,15 +16,8 @@ source $BUILDBASE/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
-
 # create the service account used in the containers
-#oc create -f $DIR/set-sa.json
+oc create -f $DIR/set-sa.json
 
-# create the services for the example
-oc create -f $DIR/set-service.json
-oc create -f $DIR/set-master-service.json
-oc create -f $DIR/set-replica-service.json
-
-# create the stateful set
-envsubst < $DIR/set.json | oc create -f -
+# grant the SA permission to update a pod label
+oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:myproject:pgset-sa

@@ -84,6 +84,7 @@ function role_discovery() {
 	echo $ordinal is ordinal
 	if [ $ordinal -eq 0 ]; then
 		kubectl label --overwrite=true pod $HOSTNAME  name=$PG_MASTER_HOST
+		oc label --overwrite=true pod $HOSTNAME  name=$PG_MASTER_HOST
 		echo "setting PG_MODE to master"
 		export PG_MODE=master
 	else
