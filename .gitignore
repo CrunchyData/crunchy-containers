@@ -1,1 +1,6 @@
 *.whl
+.asciidoc/
+bootstrap-*.zip*
+grafana.tar.gz*
+prometheus-pushgateway.tar.gz*
+prometheus.tar.gz*

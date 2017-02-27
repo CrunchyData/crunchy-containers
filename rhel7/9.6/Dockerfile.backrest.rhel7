@@ -16,7 +16,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 	openssh-clients \
  	procps-ng \
  	rsync \
- && yum -y install postgresql96-server crunchy-backrest-1.08* \
+ && yum -y install postgresql96-server crunchy-backrest \
  && yum -y clean all
 
 # add path settings for postgres user
