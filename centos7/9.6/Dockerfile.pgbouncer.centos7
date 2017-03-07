@@ -22,7 +22,7 @@ RUN yum -y install epel-release \
  && yum clean all -y
 
 # set up cpm directory
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgconf
 
 # add volumes to allow override of pgbouncer config files
 VOLUME ["/pgconf"]
