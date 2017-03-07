@@ -63,12 +63,16 @@ func isPasswordErr(err error) bool {
         "pq: password authentication failed")
 }
 
-func isAcceptingConnectionString(conStr string) (ok bool, err error) {
-    ok = false
+func isReadOnlyErr(err error) bool {
+    return strings.HasSuffix(string(err.Error()),
+        "pq: cannot execute CREATE TABLE in a read-only transaction")
+}
+
+func isAcceptingConnectionString(conStr string) (bool, error) {
     pg, _ := sql.Open("postgres", conStr)
     defer pg.Close()
 
-    err = pg.Ping()
+    err := pg.Ping()
     if err != nil {
         switch {
         case isShutdownErr(err):
@@ -76,13 +80,13 @@ func isAcceptingConnectionString(conStr string) (ok bool, err error) {
         case isPasswordErr(err):
             return false, nil
         default:
-            err := fmt.Errorf("Database Ping error\n%s\n", err.Error())
-            return false, err
+            return false, fmt.Errorf(
+                "Ping error; the connection string is not ok\n%s\n\n%s\n",
+                    conStr, err.Error())
         }
     }
 
-    ok = true
-    return
+    return true, nil
 }
 
 // returns ok when container_setup script is not running
@@ -335,14 +339,11 @@ func dbExists(conStr string, dbName string) (ok bool, err error) {
 // wraps pg_isready via docker exec
 func isPostgresReady(
     docker *client.Client,
-    containerId string) (ok bool, err error) {
-
-    ok = false
+    containerId string) (bool, error) {
 
     pgroot, err := envValueFromContainer(docker, containerId, "PGROOT")
     if err != nil {
-        err = fmt.Errorf("Could not get PGROOT\n%s", err.Error())
-        return
+        return false, fmt.Errorf("Could not get PGROOT\n%s", err.Error())
     }    
     cmd := []string{path.Join(pgroot, "bin/pg_isready"), "-h", "/tmp"}
 
@@ -354,50 +355,59 @@ func isPostgresReady(
     execId, err := docker.ContainerExecCreate(
         context.Background(), containerId, execConf)
     if err != nil {
-        return
+        return false, err
     }
 
     err = docker.ContainerExecStart(
         context.Background(), execId.ID, types.ExecStartCheck{})
     if err != nil {
-        return
+        return false, err
     }
 
     // allow pg_isready to complete
-    doneC := make(chan bool)
-    timer := time.AfterFunc(time.Second * 2, func() {
-        close(doneC)
-    })
 
-    ticker := time.NewTicker(time.Millisecond * 100)
+    var ok = false
+    doneC := make(chan bool, 1)
+
+    ticker := time.NewTicker(time.Millisecond * 10)
     defer ticker.Stop()
 
-    tick := func() (bool, error) {
+    tick := func(ok *bool) error {
         inspect, err := docker.ContainerExecInspect(
             context.Background(), execId.ID)
-
-        if inspect.Running || err != nil {
-            return false, err
+        if inspect.Running {
+            fmt.Printf(">")
+            return nil
+        } else if err != nil {
+            return err
         }
 
+        *ok = (inspect.ExitCode == 0)
         close(doneC)
-        return (inspect.ExitCode == 0), nil
+        return nil
     }
 
     for {
         select {
         case <- ticker.C:
-            ok, err = tick()
+            err = tick(&ok)
             if err != nil {
                 close(doneC)
             }
+        case <- time.After(3 * time.Second):
+            err = fmt.Errorf("%s timed out after 3 seconds\n", cmd[0])
+            close(doneC)
         case <- doneC:
-            _ = timer.Stop()
-            return
+            return ok, err
         }
     }
 }
 
+// Performs checks to see if Postgres container is ready to start:
+// - Container is running
+// - pg_isready responds
+// - 
+// - setup SQL script has completed
 func waitForPostgresContainer(
     docker *client.Client,
     name string,
@@ -418,15 +428,19 @@ func waitForPostgresContainer(
         return isContainerDead(docker, containerId)
     }
     condition1 := func () (bool, error) {
+        // fmt.Printf("A")
         return isContainerRunning(docker, containerId)
     }
     condition2 := func () (bool, error) {
-        if ok, err := isPostgresReady(docker, containerId); ! ok || err != nil {
-            return false, err
-        }
-        return isAcceptingConnectionString(conStr)
+        // fmt.Printf("B")
+        return isPostgresReady(docker, containerId)
     }
     condition3 := func () (bool, error) {
+        // fmt.Printf("C")
+        return isAcceptingConnectionString(conStr)
+    }
+    condition4 := func () (bool, error) {
+        // fmt.Printf("D")
         return isFinishedSetup(conStr)
     }
 
@@ -435,8 +449,9 @@ func waitForPostgresContainer(
     if ok, err = timeoutOrReady(
         timeoutSeconds,
         escape,
-        []func() (bool, error){condition1, condition2, condition3},
-        pollingMilliseconds); err != nil {
+        []func() (bool, error){condition1, condition2, condition3, condition4},
+        pollingMilliseconds); 
+    err != nil {
         return
     } else if ! ok {
         now := time.Now()
@@ -449,10 +464,10 @@ func waitForPostgresContainer(
     time.Sleep(1 * time.Second)
 
     if ok, err = timeoutOrReady(
-        timeoutSeconds,
-        escape,
+        10, escape,
         []func() (bool, error) {condition1, condition2, condition3},
-        pollingMilliseconds); err != nil {
+        pollingMilliseconds); 
+    err != nil {
         return
     } else if ! ok {
         return containerId, fmt.Errorf("Container stopped; or timeout expired, and container is not ready.")
@@ -471,51 +486,54 @@ func timeoutOrReady(
     timeoutSeconds int64,
     escape func() (bool, error),
     conditions []func() (bool, error),
-    pollingIntervalMilliseconds int64) (ready bool, err error) {
+    pollingIntervalMilliseconds int64) (bool, error) {
 
-    ready = false
+    timeoutDuration := time.Second * time.Duration(timeoutSeconds)
+    pollDuration := time.Millisecond * time.Duration(pollingIntervalMilliseconds)
 
-    doneC := make(chan bool)
+    doneC := make(chan bool, 1)
 
-    timer := time.AfterFunc(time.Second * time.Duration(timeoutSeconds), func() {
-        close(doneC)
-    })
-
-    ticker := time.NewTicker(time.Millisecond * time.Duration(pollingIntervalMilliseconds))
+    ticker := time.NewTicker(pollDuration)
     defer ticker.Stop()
 
-    tick := func() error {
+    tick := func(ready *bool) error {
         fmt.Printf(".")
-        if esc, err := escape(); esc || err != nil {
-            fmt.Println("Escape!")
-            close(doneC)
+        if esc, err := escape(); err != nil {
             return err
+        } else if esc {
+            return fmt.Errorf("Escape condition met!\n")
         }
 
         for _, f := range conditions {
-            if ok, err := f(); err != nil || ! ok {
+            if ok, err := f(); err != nil {
                 err = fmt.Errorf("\nError from function %s\n%s", f, err.Error())
-                // err will be nil when f() ok is false
-                return err
+            } else if !ok {
+                return nil
             }
         }
 
         fmt.Printf("\n")
-        ready = true
+        *ready = true
         close(doneC)
         return nil
     }
 
+    var ready = false
+    var err error
+
     for {
         select {
         case <- ticker.C:
-            err = tick()
+            err = tick(&ready)
             if err != nil {
                 close(doneC)
             }
+        case <- time.After(timeoutDuration):
+            ready = false
+            err = fmt.Errorf("Timeout expired after %v\n", timeoutDuration)
+            close(doneC)
         case <- doneC:
-            _ = timer.Stop()
-            return
+            return ready, err
         }
     }
 }
