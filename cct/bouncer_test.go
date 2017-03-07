@@ -24,7 +24,6 @@ import (
 
 func TestDockerPgBouncer(t *testing.T) {
 
-    // const exampleName = "pgpool"
     const timeoutSeconds = 60
     const skipCleanup = false
 
@@ -50,8 +49,8 @@ func TestDockerPgBouncer(t *testing.T) {
     }
 
     fmt.Println("Starting pgbouncer example")
-    poolCleanup := startDockerExampleForTest(t, buildBase, "pgbouncer")
-    defer poolCleanup(skipCleanup)
+    bouncerCleanup := startDockerExampleForTest(t, buildBase, "pgbouncer")
+    defer bouncerCleanup(skipCleanup)
 
     containerId := testContainer(t, "PgBouncerContainer", docker, "pgbouncer")
     if t.Failed() {
