@@ -107,18 +107,21 @@ func assertEnvValue(
 func envValueFromContainer(
     docker *client.Client,
     containerId string,
-    envVar string) (value string, err error) {
+    envVar string) (string, error) {
 
     inspect, err := docker.ContainerInspect(
         context.Background(), containerId)
     if err != nil {
-        return
+        return "", err
     }
 
     env := inspect.Config.Env
+    var v, value string
+
     for _, e := range env {
-        variable, value = strings.Split(e, "=")
-        if variable == envVar {
+        ev := strings.Split(e, "=")
+        v, value = ev[0], ev[1]
+        if v == envVar {
             break
         }
         // if strings.HasPrefix(e, envVar) {
@@ -127,7 +130,7 @@ func envValueFromContainer(
         // }
         value = ""
     }
-    return
+    return value, nil
 }
 
 // container state is running?

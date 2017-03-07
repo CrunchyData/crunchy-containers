@@ -147,7 +147,7 @@ func assertSomeData(
     conStr, err := buildConnectionString(
         docker, containerId, dbName, "postgres")
     if err != nil {
-        err = ftm.Errorf("Error building Connection String\n%s", err.Error())
+        err = fmt.Errorf("Error building Connection String\n%s", err.Error())
         return
     }
 
