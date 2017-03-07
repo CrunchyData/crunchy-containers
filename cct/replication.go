@@ -34,6 +34,7 @@ func isReplicationStarted(conStr string) (ok bool, err error) {
 
     err = pg.QueryRow(query).Scan(&ok)
     if err != nil {
+        err = fmt.Errorf("Error on SELECT\n%s", err.Error())
     	return
     }
 
@@ -51,6 +52,7 @@ func replSentEqReplay(conStr string) (ok bool, err error) {
 
     err = pg.QueryRow(query).Scan(&ok)
     if err != nil {
+        err = fmt.Errorf("Error on SELECT\n%s", err.Error())
     	return
     }
 
