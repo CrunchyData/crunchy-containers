@@ -42,6 +42,7 @@ func ContainerFromName(
     containers, err := docker.ContainerList(
         context.Background(), listOpts)
     if err != nil {
+        err = fmt.Errorf("Error on ContainerList\n%s", err.Error())
         return
     }
     if len(containers) == 0 {
@@ -89,10 +90,15 @@ func envValueFromContainer(
 
     env := inspect.Config.Env
     for _, e := range env {
-        if strings.HasPrefix(e, envVar) {
-            value = strings.Split(e, "=")[1]
+        variable, value = strings.Split(e, "=")
+        if variable == envVar {
             break
         }
+        // if strings.HasPrefix(e, envVar) {
+        //     value = strings.Split(e, "=")[1]
+        //     break
+        // }
+        value = ""
     }
     return
 }
