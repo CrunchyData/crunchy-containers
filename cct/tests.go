@@ -54,14 +54,16 @@ func testContainerNoVersion(
     docker *client.Client,
     containerName string) (containerId string) {
 
-    t.Run(testName, func (t *testing.T) {
+    if t.Run(testName, func (t *testing.T) {
         if c, err := ContainerFromName(docker, containerName); err != nil {
-            t.Fatal(err)
+            t.Error(err)
         } else {
             containerId = c.ID
+            t.Logf("Found %s container: %s\n", containerName, containerId)
         }
-        t.Logf("Found %s container: %s\n", containerName, containerId)
-    })
+    }); t.Failed() {
+        t.Fatal("No container")
+    }
 
     // verify labels match build
     t.Run("Labels", func (t *testing.T) {
