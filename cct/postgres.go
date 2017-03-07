@@ -178,7 +178,7 @@ func pgStatActivity(conStr string) error {
     return nil
 }
 
-// returns pg_is_in_backup()
+// returns ok if a manual VACUUM (not AUTOVACUUM) is in progress
 func isVacuuming(conStr string) (ok bool, err error) {
     ok = false
     pg, _ := sql.Open("postgres", conStr)
@@ -199,9 +199,6 @@ func waitForVacuum(
 
     fmt.Printf("Waiting maximum %d seconds for VACUUM", timeoutSeconds)
 
-    escape := func() (bool, error) {
-        return false, nil
-    }
     condition1 := func() (bool, error) {
         v, err := isVacuuming(conStr)
         return ! v, err
@@ -209,7 +206,7 @@ func waitForVacuum(
     var pollingMilliseconds int64 = 500
     if ok, err := timeoutOrReady(
         timeoutSeconds,
-        escape,
+        no_escape,
         []func() (bool, error){condition1},
         pollingMilliseconds); err != nil {
         return err
@@ -344,6 +341,7 @@ func isPostgresReady(
 
     pgroot, err := envValueFromContainer(docker, containerId, "PGROOT")
     if err != nil {
+        err = fmt.Errorf("Could not get PGROOT\n%s", err.Error())
         return
     }    
     cmd := []string{path.Join(pgroot, "bin/pg_isready"), "-h", "/tmp"}
@@ -463,6 +461,11 @@ func waitForPostgresContainer(
     return
 }
 
+// Helper for timeoutOrReady calls where no escape condition is required
+func no_escape() (bool, error) {
+    return false, nil
+}
+
 // Waits maximum of timeout seconds, or passes when all conditions are true, or will escape if escape function returns true. Returns false if timeout expired without meeting conditions.
 func timeoutOrReady(
     timeoutSeconds int64,
@@ -491,6 +494,8 @@ func timeoutOrReady(
 
         for _, f := range conditions {
             if ok, err := f(); err != nil || ! ok {
+                err = fmt.Errorf("\nError from function %s\n%s", f, err.Error())
+                // err will be nil when f() ok is false
                 return err
             }
         }

@@ -42,11 +42,13 @@ func insertTestTable(
     
     result, err := pg.Exec(insert)
     if err != nil {
+        err = fmt.Errorf("Error on INSERT\n%s", err.Error())
         t.Error(err)
     }
 
     rowcount, err = result.RowsAffected()
     if err != nil {
+        err = fmt.Errorf("Error retrieving RowsAffected\n%s", err.Error())
         t.Error(err)
     }
     t.Logf("Inserted %d rows\n", rowcount)
@@ -96,6 +98,7 @@ func writeSomeData(
     conStr, err := buildConnectionString(
         docker, containerId, dbName, "postgres")
     if err != nil {
+        err = fmt.Errorf("Error building Connection String\n%s", err.Error())
         return
     }
 
@@ -144,6 +147,7 @@ func assertSomeData(
     conStr, err := buildConnectionString(
         docker, containerId, dbName, "postgres")
     if err != nil {
+        err = ftm.Errorf("Error building Connection String\n%s", err.Error())
         return
     }
 
@@ -154,6 +158,7 @@ func assertSomeData(
 
     err = pg.QueryRow(query, facts.relid).Scan(&found.rowcount, &found.relsize)
     if err != nil {
+        err = fmt.Errorf("Error on SELECT\n%s", err.Error())
         return
     }
 
