@@ -20,14 +20,17 @@ $DIR/cleanup.sh
 
 CONTAINER_NAME=vacuum
 
-	# -e VAC_ALL="true" \
+# allow user to specify table to vacuum as $1
+VAC_TABLE=${1:-"testtable"}
+echo "Ready to VACUUM ANALYZE FULL $VAC_TABLE"
+
 docker run \
 	-e VAC_FULL="true" \
 	-e JOB_HOST="basic" \
 	-e VAC_ANALYZE="true" \
 	-e VAC_VERBOSE="true" \
 	-e VAC_FREEZE="true" \
-	-e VAC_TABLE="testtable" \
+	-e VAC_TABLE="$VAC_TABLE" \
 	-e PG_USER="testuser" \
 	-e PG_PORT="5432" \
 	-e PG_PASSWORD="password" \
