@@ -19,7 +19,6 @@ package cct
 import (
     "database/sql"
     "fmt"
-    "testing"
 
     "github.com/docker/docker/client"
 
@@ -27,11 +26,12 @@ import (
 )
 
 func insertTestTable(
-    t *testing.T,
-    docker *client.Client,
-    containerId string) (rowcount int64) {
+    conStr string) (rowcount int64, err error) {
+    // t *testing.T,
+    // docker *client.Client,
+    // containerId string) (rowcount int64) {
 
-    conStr := conStrTestUser(t, docker, containerId)
+    // conStr := conStrTestUser(t, docker, containerId)
 
     pg, _ := sql.Open("postgres", conStr)
 
@@ -43,15 +43,17 @@ func insertTestTable(
     result, err := pg.Exec(insert)
     if err != nil {
         err = fmt.Errorf("Error on INSERT\n%s", err.Error())
-        t.Error(err)
+        // t.Error(err)
+        return
     }
 
     rowcount, err = result.RowsAffected()
     if err != nil {
         err = fmt.Errorf("Error retrieving RowsAffected\n%s", err.Error())
-        t.Error(err)
+        // t.Error(err)
+        return
     }
-    t.Logf("Inserted %d rows\n", rowcount)
+    // t.Logf("Inserted %d rows\n", rowcount)
 
     return
 }
@@ -88,6 +90,40 @@ func getFacts(
     }
 
     return
+}
+
+// writes data to a table and deletes data. This is useful to generate load for testing VACUUM
+func writeAndDelete(conStr string) error {
+    pg, _ := sql.Open("postgres", conStr)
+    defer pg.Close()
+
+    createTable := `CREATE TABLE write_delete_table(
+        some_id serial NOT NULL PRIMARY KEY, some_value text);`
+
+    insert := `INSERT INTO write_delete_table(some_value)
+        SELECT x.relname FROM pg_class as x CROSS JOIN pg_class as y;`
+
+    del := `DELETE FROM write_delete_table WHERE some_id % 2 = 1;`
+
+    _, err := pg.Exec(createTable)
+    if err != nil {
+        return fmt.Errorf("Error on EXEC CREATE TABLE\n%s", err.Error())
+    }
+
+    fmt.Println("INSERT some data")
+    _, err = pg.Exec(insert)
+    if err != nil {
+        return fmt.Errorf("Error on INSERT\n%s", err.Error())
+    }
+
+    fmt.Println("DELETE some data")
+    _, err = pg.Exec(del)
+    if err != nil {
+        return fmt.Errorf("Error on DELETE\n%s", err.Error())
+    }
+
+    fmt.Println("done")
+    return nil
 }
 
 func writeSomeData(
