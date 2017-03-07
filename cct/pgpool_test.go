@@ -74,7 +74,10 @@ func TestDockerPgPool(t *testing.T) {
     }
 
     t.Run("TestInsert", func (t *testing.T) {
-        _ = insertTestTable(t, docker, containerId)
+        if _, err := insertTestTable(conStr);
+        err != nil {
+            t.Fatal(err)
+        }
     })
     t.Log("All tests complete.")
 }
