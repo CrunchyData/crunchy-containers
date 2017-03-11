@@ -321,6 +321,8 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	while true; do
                 pg_isready \
                 --port=$PG_MASTER_PORT \
+		--host=$HOSTNAME \
+		--username=$PG_MASTER_USER \
                 --timeout=2
                 if [ $? -eq 0 ]; then
                         echo "database is ready for setup.sql"
