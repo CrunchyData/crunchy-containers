@@ -463,11 +463,11 @@ func waitForPostgresContainer(
     // the container receives a stop at the end of setup. Make sure we haven't missed this, and let the db start again if we have.
     time.Sleep(1 * time.Second)
 
-    if ok, err = timeoutOrReady(
+    ok, err = timeoutOrReady(
         10, escape,
         []func() (bool, error) {condition1, condition2, condition3},
-        pollingMilliseconds); 
-    err != nil {
+        pollingMilliseconds)
+    if err != nil {
         return
     } else if ! ok {
         return containerId, fmt.Errorf("Container stopped; or timeout expired, and container is not ready.")
@@ -504,9 +504,9 @@ func timeoutOrReady(
             return fmt.Errorf("Escape condition met!\n")
         }
 
-        for _, f := range conditions {
+        for i, f := range conditions {
             if ok, err := f(); err != nil {
-                err = fmt.Errorf("\nError from function %s\n%s", f, err.Error())
+                err = fmt.Errorf("\nError from function %d\n%s", i, err.Error())
             } else if !ok {
                 return nil
             }
