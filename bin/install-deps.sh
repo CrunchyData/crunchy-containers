@@ -30,7 +30,12 @@ mv /tmp/consul $GOBIN
 # this set is required to build the docs
 #
 sudo yum -y install asciidoc ruby
-gem install --pre asciidoctor-pdf
+
+# Install a slightly older version of prawn.  Prawn dependency ttfunk 1.5.0 requires Ruby >= 2.1.
+# Prawn 2.1.0 is the latest version which is still compatible with Ruby 2.0.0 supported by RHEL 7
+gem install prawn -v 2.1.0
+gem install --minimal-deps --pre asciidoctor-pdf
+
 wget -O $HOME/bootstrap-4.5.0.zip http://laurent-laville.org/asciidoc/bootstrap/bootstrap-4.5.0.zip
 asciidoc --backend install $HOME/bootstrap-4.5.0.zip
 mkdir -p $HOME/.asciidoc/backends/bootstrap/js
