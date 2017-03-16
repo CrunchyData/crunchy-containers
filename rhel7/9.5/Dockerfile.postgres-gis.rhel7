@@ -43,6 +43,7 @@ VOLUME /pgconf /pgdata /pgwal \
 EXPOSE 5432
 
 ADD bin/postgres /opt/cpm/bin
+ADD bin/postgres-gis /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
 
 USER 26
