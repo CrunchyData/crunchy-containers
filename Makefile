@@ -21,15 +21,6 @@ docbuild:
 #=============================================
 # Targets that generate images (alphabetized)
 #=============================================
-backrest:	versiontest
-	docker build -t crunchy-backrest -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backrest.$(CCP_BASEOS) .
-	docker tag crunchy-backrest crunchydata/crunchy-backrest:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
-
-# Should this be added to the all target?
-backrestd:	versiontest
-	docker build -t crunchy-backrestd -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backrestd.$(CCP_BASEOS) .
-	docker tag crunchy-backrestd crunchydata/crunchy-backrestd:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
-
 backup:	versiontest
 	docker build -t crunchy-backup -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backup.$(CCP_BASEOS) .
 	docker tag crunchy-backup crunchydata/crunchy-backup:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
