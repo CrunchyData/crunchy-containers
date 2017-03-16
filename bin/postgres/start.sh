@@ -29,6 +29,14 @@ if [ ! -v PG_MODE ]; then
 	echo "PG_MODE env var is not set, aborting"
 	exit 1
 fi
+
+if [ "$PG_MODE" = "slave" ]; then
+	if [ ! -v PG_MASTER_HOST ]; then
+		echo "PG_MASTER_HOST env var is not set and required when PG_MODE is slave, aborting"
+		exit 1
+	fi
+fi
+
 if [ ! -v PG_MASTER_USER ]; then
 	echo "PG_MASTER_USER env var is not set, aborting"
 	exit 1

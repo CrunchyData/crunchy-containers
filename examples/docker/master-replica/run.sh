@@ -74,6 +74,7 @@ docker run \
 	--privileged=true \
 	-v $VOLUME_NAME:/pgdata \
 	-e TEMP_BUFFERS=9MB \
+	-e PG_MASTER_HOST=master \
 	-e PGHOST=/tmp \
 	-e MAX_CONNECTIONS=101 \
 	-e SHARED_BUFFERS=129MB \
@@ -82,7 +83,6 @@ docker run \
 	-e PG_MODE=slave \
 	-e PG_MASTER_USER=masteruser \
 	-e PG_MASTER_PASSWORD=password \
-	-e PG_MASTER_HOST=master \
 	--link $MASTER_CONTAINER_NAME:$MASTER_CONTAINER_NAME \
 	-e PG_MASTER_PORT=5432 \
 	-e PG_USER=testuser \
