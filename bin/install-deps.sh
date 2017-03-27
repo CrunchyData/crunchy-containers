@@ -31,10 +31,30 @@ mv /tmp/consul $GOBIN
 #
 sudo yum -y install asciidoc ruby
 
-# Install a slightly older version of prawn.  Prawn dependency ttfunk 1.5.0 requires Ruby >= 2.1.
+# Install a specific set of gems in order to get asciidoctor-pdf.
+# Note that "gem install --pre asciidoctor-pdf" may not work because prawn dependency ttfunk 1.5.0 requires Ruby >= 2.1.
 # Prawn 2.1.0 is the latest version which is still compatible with Ruby 2.0.0 supported by RHEL 7
-gem install prawn -v 2.1.0
-gem install --minimal-deps --pre asciidoctor-pdf
+gem install --minimal-deps ttfunk -v 1.4.0
+gem install --minimal-deps pdf-core -v 0.6.1
+gem install --minimal-deps prawn -v 2.1.0
+gem install --minimal-deps asciidoctor -v 1.5.5
+gem install --minimal-deps prawn-table -v 0.2.2
+gem install --minimal-deps Ascii85 -v 1.0.2
+gem install --minimal-deps ruby-rc4 -v 0.1.5
+gem install --minimal-deps hashery -v 2.1.2
+gem install --minimal-deps afm -v 0.2.2
+gem install --minimal-deps pdf-reader -v 1.4.1
+gem install --minimal-deps prawn-templates -v 0.0.3
+gem install --minimal-deps public_suffix -v 2.0.5
+gem install --minimal-deps addressable -v 2.5.0
+gem install --minimal-deps css_parser -v 1.4.10
+gem install --minimal-deps prawn-svg -v 0.26.0
+gem install --minimal-deps prawn-icon -v 1.3.0
+gem install --minimal-deps safe_yaml -v 1.0.4
+gem install --minimal-deps thread_safe -v 0.3.6
+gem install --minimal-deps polyglot -v 0.3.5
+gem install --minimal-deps treetop -v 1.5.3
+gem install --minimal-deps --no-ri asciidoctor-pdf -v 1.5.0.alpha.14
 
 wget -O $HOME/bootstrap-4.5.0.zip http://laurent-laville.org/asciidoc/bootstrap/bootstrap-4.5.0.zip
 asciidoc --backend install $HOME/bootstrap-4.5.0.zip
