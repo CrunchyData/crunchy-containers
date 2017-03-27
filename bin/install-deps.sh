@@ -32,10 +32,8 @@ mv /tmp/consul $GOBIN
 sudo yum -y install asciidoc ruby
 
 # Install a specific set of gems in order to get asciidoctor-pdf.
-# Note that "gem install --minimal-deps --pre asciidoctor-pdf" may not work because prawn dependency ttfunk 1.5.0 requires Ruby >= 2.1.
+# Note that "gem install --pre asciidoctor-pdf" may not work because prawn dependency ttfunk 1.5.0 requires Ruby >= 2.1.
 # Prawn 2.1.0 is the latest version which is still compatible with Ruby 2.0.0 supported by RHEL 7
-# If you're using RVM or RBENV and are on Ruby 2.1 or greater, feel free to just use the below command:
-# gem install --minimal-deps --minimal-deps --pre asciidoctor-pdf
 gem install --minimal-deps ttfunk -v 1.4.0
 gem install --minimal-deps pdf-core -v 0.6.1
 gem install --minimal-deps prawn -v 2.1.0
