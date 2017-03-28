@@ -1,6 +1,6 @@
 FROM centos:7
 
-LABEL Release="1.2.8" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
+LABEL Release="1.3" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
 
 ENV PGVERSION="9.5" \
 	PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
