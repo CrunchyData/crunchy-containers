@@ -12,7 +12,7 @@ are supported.
 The containers will execute in the following environments:
 
  * Docker 1.12
- * Openshift 3.3
+ * Openshift 3.4
  * Kubernetes 1.5
 
 The project includes the following containers:
@@ -36,8 +36,8 @@ image::docs/containers.png?raw=true[]
 
 === Build Prerequisites
 
-The Crunchy containers have been tested on Centos 7, RHEL 7, Openshift 3.3,
-Kubernetes 1.5.1, and Docker 1.12
+The Crunchy containers have been tested on Centos 7, RHEL 7, Openshift 3.4,
+Kubernetes 1.5.3, and Docker 1.12
 
 1) Installing / configuring Docker
 
