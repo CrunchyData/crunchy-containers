@@ -54,6 +54,7 @@ docker run \
 	-e WORK_MEM=5MB \
 	-e PG_MASTER_USER=master \
 	-e PG_MASTER_HOST=$CONTAINER_NAME \
+	-e XLOGDIR=/pgwal \
 	-e PG_MASTER_PORT=5432 \
 	-e PG_MASTER_PASSWORD=password \
 	-e PG_MODE=master \
