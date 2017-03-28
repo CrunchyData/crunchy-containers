@@ -4673,7 +4673,7 @@ jQuery.event = {
 			for ( ; cur != this; cur = cur.parentNode || this ) {
 				/* jshint eqeqeq: true */
 
-				// Don't check non-elements (#13208)
+				// Don't check non-elements (#1.3)
 				// Don't process clicks on disabled elements (#6911, #8165, #11382, #11764)
 				if ( cur.nodeType === 1 && (cur.disabled !== true || event.type !== "click") ) {
 					matches = [];

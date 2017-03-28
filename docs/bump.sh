@@ -1,6 +1,6 @@
 #!/bin/bash
 OLD="1.2.7"
-NEW="1.2.8"
+NEW="1.3"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DPATH=$DIR/*.asciidoc
 BPATH=/tmp/backups
