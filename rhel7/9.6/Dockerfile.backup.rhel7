@@ -1,6 +1,6 @@
 FROM rhel:7.2
 
-LABEL Release="1.2.8" Vendor="Crunchy Data Solutions" PostgresVersion="9.6"
+LABEL Release="1.3" Vendor="Crunchy Data Solutions" PostgresVersion="9.6"
 
 ENV PGVERSION="9.6"
 

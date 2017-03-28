@@ -1,6 +1,6 @@
 FROM rhel7.2
 
-LABEL Release="1.2.8" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
+LABEL Release="1.3" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
 
 # PGDG Postgres repo
 #RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
