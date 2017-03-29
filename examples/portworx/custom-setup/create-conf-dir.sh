@@ -21,7 +21,7 @@ docker rm custom-setup custom-ls
 CONF_DIR=/tmp/setupsql-conf
 sudo rm -rf $CONF_DIR
 sudo mkdir -p $CONF_DIR
-sudo cp $BUILDBASE/examples/portworx/custom-setup/setup.sql $CONF_DIR
+sudo cp $CCPROOT/examples/portworx/custom-setup/setup.sql $CONF_DIR
 sudo chown postgres:postgres $CONF_DIR
 sudo chcon -Rt svirt_sandbox_file_t $CONF_DIR
 sudo chmod 0700 $CONF_DIR

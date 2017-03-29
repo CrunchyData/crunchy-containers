@@ -171,7 +171,7 @@ mount and begins execution.
 
 Start by running the proxy container:
 ....
-cd $BUILDBASE/examples/docker/crunchy-proxy
+cd $CCPROOT/examples/docker/crunchy-proxy
 ./run.sh
 ....
 
@@ -203,7 +203,7 @@ in the *master-replica* example.
 
 You can create the proxy by running:
 ....
-cd $BUILDBASE/examples/docker/crunchy-proxy
+cd $CCPROOT/examples/docker/crunchy-proxy
 ./run.sh
 ....
 

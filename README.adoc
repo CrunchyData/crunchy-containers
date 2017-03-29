@@ -73,11 +73,11 @@ To run the examples, you will need to set the CCP_IMAGE_TAG
 environment variable which indicates which version of the 
 container you will pull down and execute, for example:
 ....
-export BUILDBASE=$HOME/crunchy-containers
+export CCPROOT=$HOME/crunchy-containers
 export CCP_IMAGE_TAG=centos7-9.5-1.3
 ....
 
-The BUILDBASE is the location of where you cloned the containers github
+The CCPROOT is the location of where you cloned the containers github
 repository.
 
 The CCP_IMAGE_TAG is the version of the container you want to test

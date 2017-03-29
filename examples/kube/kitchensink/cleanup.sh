@@ -23,7 +23,7 @@ kubectl delete service kspgpoolrc
 kubectl delete rc kspgpool
 kubectl delete pod --selector='name=kspgpool'
 
-$BUILDBASE/examples/waitforterm.sh ksmaster oc
-$BUILDBASE/examples/waitforterm.sh ksreplica oc
+$CCPROOT/examples/waitforterm.sh ksmaster oc
+$CCPROOT/examples/waitforterm.sh ksreplica oc
 
 sudo rm -rf $NFS_PATH/ks*

@@ -15,5 +15,5 @@
 
 kubectl delete pod pgbouncer
 kubectl delete service pgbouncer
-$BUILDBASE/examples/waitforterm.sh pgbouncer kubectl
+$CCPROOT/examples/waitforterm.sh pgbouncer kubectl
 

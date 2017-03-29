@@ -14,7 +14,7 @@
 # limitations under the License.
 
 echo "starting backup container..."
-$BUILDBASE/examples/envvars.sh
+$CCPROOT/examples/envvars.sh
 
 docker run \
 	--security-opt=label:disable \

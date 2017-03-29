@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $BUILDBASE/examples/envvars.sh
+source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -22,8 +22,8 @@ DATADIR=$NFS_PATH/pgadmin4
 if [ ! -d "$DATADIR" ]; then
 	echo "setting up pg4admin data directory...."
 	sudo mkdir $DATADIR
-	sudo cp $BUILDBASE/conf/pgadmin4/config_local.py $DATADIR
-	sudo cp $BUILDBASE/conf/pgadmin4/pgadmin4.db $DATADIR
+	sudo cp $CCPROOT/conf/pgadmin4/config_local.py $DATADIR
+	sudo cp $CCPROOT/conf/pgadmin4/pgadmin4.db $DATADIR
 	sudo chmod -R 777 $DATADIR
 fi
 

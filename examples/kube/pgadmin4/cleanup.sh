@@ -17,4 +17,4 @@ sudo rm -rf $NFS_PATH/pgadmin4
 kubectl delete service pgadmin4
 kubectl delete pod pgadmin4
 
-$BUILDBASE/examples/waitforterm.sh pgadmin4 kubectl
+$CCPROOT/examples/waitforterm.sh pgadmin4 kubectl

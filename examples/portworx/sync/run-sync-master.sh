@@ -15,7 +15,7 @@
 
 echo "starting master container..."
 
-$BUILDBASE/examples/envvars.sh
+$CCPROOT/examples/envvars.sh
 
 sudo docker stop sync-master
 sudo docker rm sync-master

@@ -13,10 +13,10 @@
 # limitations under the License.
 
 
-echo BUILDBASE is $BUILDBASE
+echo CCPROOT is $CCPROOT
 cleanup() {
-$BUILDBASE/examples/openshift/master-slave/delete.sh
-$BUILDBASE/examples/openshift/pgpooltest/delete.sh
+$CCPROOT/examples/openshift/master-slave/delete.sh
+$CCPROOT/examples/openshift/pgpooltest/delete.sh
 echo "sleeping while cleaning up any leftovers..."
 sleep 30
 }
@@ -28,10 +28,10 @@ cleanup
 
 
 ## create container
-$BUILDBASE/examples/openshift/master-slave/run.sh
+$CCPROOT/examples/openshift/master-slave/run.sh
 echo "give master slave time to start up....60 secs"
 sleep 60
-$BUILDBASE/examples/openshift/pgpooltest/run.sh
+$CCPROOT/examples/openshift/pgpooltest/run.sh
 
 echo "sleep for 30 while the container starts up..."
 sleep 30

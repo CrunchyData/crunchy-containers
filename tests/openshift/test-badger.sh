@@ -14,7 +14,7 @@
 # limitations under the License.
 
 
-echo BUILDBASE is $BUILDBASE
+echo CCPROOT is $CCPROOT
 
 #
 # test badger
@@ -23,12 +23,12 @@ echo BUILDBASE is $BUILDBASE
 oc login -u system:admin
 oc projects openshift
 
-$BUILDBASE/examples/openshift/badger/delete.sh
+$CCPROOT/examples/openshift/badger/delete.sh
 
 echo "sleeping for 10 seconds to allow any existing pods/services to terminate"
 sleep 10
 
-$BUILDBASE/examples/openshift/badger/run.sh
+$CCPROOT/examples/openshift/badger/run.sh
 
 
 echo "sleeping for 10 seconds to allow pods/services to startup"
@@ -47,5 +47,5 @@ else
 	exit $rc
 fi
 
-$BUILDBASE/examples/openshift/badger/delete.sh
+$CCPROOT/examples/openshift/badger/delete.sh
 exit 0

@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo BUILDBASE is $BUILDBASE
+echo CCPROOT is $CCPROOT
 #
 # test setup
 #
@@ -22,8 +22,8 @@ echo BUILDBASE is $BUILDBASE
 # test master
 #
 
-$BUILDBASE/examples/openshift/single-master/delete.sh
-$BUILDBASE/examples/openshift/single-master/run.sh
+$CCPROOT/examples/openshift/single-master/delete.sh
+$CCPROOT/examples/openshift/single-master/run.sh
 
 echo "sleeping for 40 seconds to allow pods/services to startup"
 sleep 40
@@ -56,7 +56,7 @@ chmod 777 $PGPASSFILE
 /usr/bin/rm $PGPASSFILE
 # always delete the pod and service even on a failure
 
-$BUILDBASE/examples/openshift/single-master/delete.sh
+$CCPROOT/examples/openshift/single-master/delete.sh
 
 
 exit 0

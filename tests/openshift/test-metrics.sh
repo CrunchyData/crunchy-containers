@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo BUILDBASE is $BUILDBASE
+echo CCPROOT is $CCPROOT
 #
 # test backup
 #
@@ -21,11 +21,11 @@ echo BUILDBASE is $BUILDBASE
 oc login -u system:admin
 oc projects openshift
 
-$BUILDBASE/examples/openshift/metrics/delete.sh
+$CCPROOT/examples/openshift/metrics/delete.sh
 
 sleep 30
 
-$BUILDBASE/examples/openshift/metrics/run.sh
+$CCPROOT/examples/openshift/metrics/run.sh
 
 echo "sleeping for 20 seconds to allow pods/services to startup"
 sleep 20
@@ -70,6 +70,6 @@ else
 	exit $rc
 fi
 
-$BUILDBASE/examples/openshift/metrics/delete.sh
+$CCPROOT/examples/openshift/metrics/delete.sh
 
 exit 0

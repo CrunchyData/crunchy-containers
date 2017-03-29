@@ -14,7 +14,7 @@
 
 set -eu
 
-pushd "$BUILDBASE"/cct
+pushd "$CCPROOT"/cct
 
 go test -run DockerVacuum
 

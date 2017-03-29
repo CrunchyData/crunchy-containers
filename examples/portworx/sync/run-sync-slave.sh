@@ -14,7 +14,7 @@
 # limitations under the License.
 
 echo "starting sync-slave container..."
-$BUILDBASE/examples/envvars.sh
+$CCPROOT/examples/envvars.sh
 
 sudo docker stop sync-slave
 sudo docker rm sync-slave

@@ -14,7 +14,7 @@
 
 
 
-echo BUILDBASE is $BUILDBASE
+echo CCPROOT is $CCPROOT
 
 #
 # test scope
@@ -24,7 +24,7 @@ echo BUILDBASE is $BUILDBASE
 docker stop crunchy-grafana
 docker stop crunchy-scope
 
-$BUILDBASE/examples/standalone/run-scope.sh
+$CCPROOT/examples/standalone/run-scope.sh
 
 sleep 60
 

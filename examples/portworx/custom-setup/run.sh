@@ -15,7 +15,7 @@
 
 echo "starting custom container..."
 
-$BUILDBASE/examples/envvars.sh
+$CCPROOT/examples/envvars.sh
 
 sudo docker stop custom
 sudo docker rm custom

@@ -329,7 +329,7 @@ mount and begins execution.
 
 Start by running the proxy container:
 ....
-cd $BUILDBASE/examples/kube/crunchy-proxy
+cd $CCPROOT/examples/kube/crunchy-proxy
 ./run.sh
 ....
 
@@ -571,7 +571,7 @@ for Postgresql.
 
 Start the container as follows:
 ....
-cd $BUILDBASE/examples/kube/pgadmin4
+cd $CCPROOT/examples/kube/pgadmin4
 ./run.sh
 ....
 
@@ -624,7 +624,7 @@ pgset-replica   10.97.218.221   <none>        5432/TCP   1h
 
 Start the example as follows:
 ....
-cd $BUILDBASE/examples/kube/statefulset
+cd $CCPROOT/examples/kube/statefulset
 ./run.sh
 ....
 
@@ -672,7 +672,7 @@ on how this feature works within the container suite.
 
 Start the example as follows:
 ....
-cd $BUILDBASE/examples/kube/backrest
+cd $CCPROOT/examples/kube/backrest
 ./run.sh
 ....
 
@@ -707,7 +707,7 @@ is the purpose of the PGDATA_PATH_OVERRIDE env var.
 
 Start the example as follows:
 ....
-cd $BUILDBASE/examples/kube/master-deployment
+cd $CCPROOT/examples/kube/master-deployment
 ./run.sh
 ....
 

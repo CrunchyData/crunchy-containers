@@ -36,7 +36,7 @@ export CCP_BASEOS=centos7
 export CCP_PGVERSION=9.5
 export CCP_VERSION=1.2.5
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PGVERSION-$CCP_VERSION
-export BUILDBASE=$GOPATH/src/github.com/crunchydata/crunchy-containers
+export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 ....
 
 Next, set up a project directory structure and pull down the project:
@@ -55,7 +55,7 @@ godep restore
 ....
 
 *If you are a Crunchy enterprise customer, you will place the CRUNCHY repo
-key and yum repo file into the $BUILDBASE/conf directory at this point.*
+key and yum repo file into the $CCPROOT/conf directory at this point.*
 
 === Step 2 - Install the Host Dependencies
 
@@ -90,7 +90,7 @@ To download the prebuilt containers, make sure you can login to
 dockerhub.com, and then run the following:
 ....
 docker login
-cd $BUILDBASE
+cd $CCPROOT
 ./bin/pull-from-dockerhub.sh
 ....
 
@@ -208,7 +208,7 @@ oc project openshift
 ....
 
 The most recent DNS related configuration files that I test with 
-are included in the $BUILDBASE/docs/openshift-install directory
+are included in the $CCPROOT/docs/openshift-install directory
 as a reference.
 
 === Step 5 - Configure Container UID Control

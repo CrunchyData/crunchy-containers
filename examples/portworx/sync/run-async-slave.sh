@@ -15,7 +15,7 @@
 
 echo "starting async-slave container..."
 
-$BUILDBASE/examples/envvars.sh
+$CCPROOT/examples/envvars.sh
 
 sudo docker stop async-slave
 sudo docker rm async-slave

@@ -13,13 +13,13 @@
 # limitations under the License.
 
 
-source $BUILDBASE/tests/standalone/pgpass-setup
+source $CCPROOT/tests/standalone/pgpass-setup
 
 #
 # test watch
 #
 
-$BUILDBASE/examples/standalone/run-watch.sh
+$CCPROOT/examples/standalone/run-watch.sh
 
 sleep 20
 

@@ -9,7 +9,7 @@ link:https://wiki.centos.org/SpecialInterestGroup/Storage/gluster-Quickstart
 
 Start the example as follows:
 ....
-cd $BUILDBASE/examples/kube/gluster
+cd $CCPROOT/examples/kube/gluster
 ./run.sh
 ....
 

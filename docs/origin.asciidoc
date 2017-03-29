@@ -33,14 +33,14 @@ git clone https://github.com/crunchydata/crunchy-containers
 ....
 
 *If you are a Crunchy enterprise customer, you will place the CRUNCHY repo
-key and yum repo file into the $BUILDBASE/conf directory at this point.*
+key and yum repo file into the $CCPROOT/conf directory at this point.*
 
 === Step 2 - Install the Host Dependencies
 
 Next, install system dependencies:
 ....
-export BUILDBASE=$GOPATH/github.com/crunchydata/crunchy-containers
-cd $BUILDBASE
+export CCPROOT=$GOPATH/github.com/crunchydata/crunchy-containers
+cd $CCPROOT
 make setup
 ....
 
@@ -48,7 +48,7 @@ make setup
 
 Next, compile the code, and build the Docker images as follows:
 ....
-cd $BUILDBASE
+cd $CCPROOT
 make all
 ....
 

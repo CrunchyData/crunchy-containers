@@ -16,5 +16,5 @@
 kubectl delete pod crunchy-metrics
 kubectl delete service crunchy-metrics
 
-$BUILDBASE/examples/waitforterm.sh crunchy-metrics kubectl
+$CCPROOT/examples/waitforterm.sh crunchy-metrics kubectl
 

@@ -14,7 +14,7 @@
 # limitations under the License.
 
 
-echo BUILDBASE is $BUILDBASE
+echo CCPROOT is $CCPROOT
 
 #
 # test master slave replication
@@ -24,9 +24,9 @@ oc login -u system:admin
 oc projects openshift
 
 
-$BUILDBASE/examples/openshift/master-slave/delete.sh
+$CCPROOT/examples/openshift/master-slave/delete.sh
 
-$BUILDBASE/examples/openshift/master-slave/run.sh
+$CCPROOT/examples/openshift/master-slave/run.sh
 
 SLEEP=50
 echo "sleeping for " $SLEEP " seconds to allow pods/services to startup"
@@ -78,7 +78,7 @@ else
 	resultrc=2
 fi
 
-$BUILDBASE/examples/openshift/master-slave/delete.sh
+$CCPROOT/examples/openshift/master-slave/delete.sh
 
 exit $resultrc
 

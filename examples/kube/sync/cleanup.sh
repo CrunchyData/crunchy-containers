@@ -16,5 +16,5 @@ kubectl delete service master-sync
 kubectl delete service replica-sync replica-async
 kubectl delete pod master-sync
 kubectl delete pod replica-sync replica-async
-$BUILDBASE/examples/waitforterm.sh master-sync kubectl
-$BUILDBASE/examples/waitforterm.sh replica-sync kubectl
+$CCPROOT/examples/waitforterm.sh master-sync kubectl
+$CCPROOT/examples/waitforterm.sh replica-sync kubectl

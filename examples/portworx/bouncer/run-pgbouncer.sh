@@ -14,7 +14,7 @@
 # limitations under the License.
 
 echo "starting pgbouncer container...."
-$BUILDBASE/examples/envvars.sh
+$CCPROOT/examples/envvars.sh
 
 sudo docker stop pgbouncer
 sudo docker rm pgbouncer

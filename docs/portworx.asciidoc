@@ -83,7 +83,7 @@ to be set as owned by the postgres UID:
 
 Create the container with this command:
 ....
-cd $BUILDBASE/examples/portworx/single-master
+cd $CCPROOT/examples/portworx/single-master
 ./delete.sh
 ./create-master-volume.sh
 ./run-pg-master.sh
@@ -115,7 +115,7 @@ This example shows how you can create a PostgreSQL replica based
 on the *master* database created in Example 1, run the example
 as follows:
 ....
-cd $BUILDBASE/examples/portworx/single-replica
+cd $CCPROOT/examples/portworx/single-replica
 ./delete.sh
 ./create-replica-volume.sh
 ./run-replica.sh
@@ -175,7 +175,7 @@ the Example 3 is used in this example.
 
 Run the restore with this command:
 ....
-cd $BUILDBASE/examples/portworx/restore
+cd $CCPROOT/examples/portworx/restore
 ./create-restoredmaster-volume.sh
 ./run-restore.sh
 ....
@@ -203,7 +203,7 @@ that shows various Postgres statistics and graphs.
 The example depends on Example 1 being run and the *master-volume* data volume
 to be present.  To run the example, run the following:
 ....
-cd $BUILDBASE/examples/portworx/badger
+cd $CCPROOT/examples/portworx/badger
 ./run-badger.sh
 ....
 
@@ -230,7 +230,7 @@ database are created.
 An example can be run as follows:
 
 ....
-cd $BUILDBASE/examples/portworx/custom-setup
+cd $CCPROOT/examples/portworx/custom-setup
 ./create-volumes.sh
 ./create-conf-dir.sh
 ./run.sh
@@ -260,7 +260,7 @@ created from Example 2.
 
 You then can start up the pgbouncer example as follows:
 ....
-cd $BUILDBASE/examples/portworx/bouncer/
+cd $CCPROOT/examples/portworx/bouncer/
 ./create-volumes.sh
 ./create-conf-dir.sh
 ./run-pgbouncer.sh
@@ -304,7 +304,7 @@ synchronous and asynchronous slaves.
 To run this example, run the following:
 
 ....
-cd $BUILDBASE/examples/portworx/sync
+cd $CCPROOT/examples/portworx/sync
 ./create-volumes.sh
 ./run-sync-master.sh
 sleep 20

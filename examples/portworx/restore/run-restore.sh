@@ -15,7 +15,7 @@
 
 echo "starting restoredmaster container..."
 
-$BUILDBASE/examples/envvars.sh
+$CCPROOT/examples/envvars.sh
 
 BACKUP_PATH=master/2016-07-12-19-36-30
 

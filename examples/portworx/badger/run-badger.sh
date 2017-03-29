@@ -15,7 +15,7 @@
 
 echo "starting badger..."
 
-$BUILDBASE/examples/envvars.sh
+$CCPROOT/examples/envvars.sh
 
 docker stop badger
 docker rm badger

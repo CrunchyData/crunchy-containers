@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $BUILDBASE/examples/envvars.sh
+source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 kubectl delete pv crunchy-nfs-pv crunchy-nfs-pv2 crunchy-nfs-pv3 master-dba-backup-pv

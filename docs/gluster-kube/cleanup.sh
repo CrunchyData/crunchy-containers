@@ -20,4 +20,4 @@ kubectl delete service glusterfs-cluster
 kubectl delete service master-gluster
 kubectl delete pod master-gluster
 
-$BUILDBASE/examples/waitforterm.sh master-gluster kubectl
+$CCPROOT/examples/waitforterm.sh master-gluster kubectl

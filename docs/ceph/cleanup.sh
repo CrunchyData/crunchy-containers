@@ -19,4 +19,4 @@ oc delete pv ceph-pv
 oc delete service master-ceph
 oc delete pod master-ceph
 
-$BUILDBASE/examples/waitforterm.sh master-ceph oc
+$CCPROOT/examples/waitforterm.sh master-ceph oc

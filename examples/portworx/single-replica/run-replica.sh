@@ -14,7 +14,7 @@
 # limitations under the License.
 
 echo "starting replica container "
-$BUILDBASE/examples/envvars.sh
+$CCPROOT/examples/envvars.sh
 
 sudo docker run \
 	--security-opt=label:disable \
