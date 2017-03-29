@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete service crunchy-proxy
-oc delete pod -l name=crunchy-proxy
+kubectl delete service crunchy-proxy
+kubectl delete pod -l name=crunchy-proxy

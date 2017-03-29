@@ -18,7 +18,7 @@ echo "this example depends on the master-replica example being run prior"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-#$DIR/cleanup.sh
+$DIR/cleanup.sh
 
 sudo cp $DIR/crunchy-proxy-config.json $NFS_PATH/config.json
 
