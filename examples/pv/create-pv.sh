@@ -15,19 +15,19 @@
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$CCP_CLI delete pv crunchy-nfs-pv crunchy-nfs-pv2 crunchy-nfs-pv3 master-dba-backup-pv
+$CCP_CLI delete pv crunchy-pv crunchy-pv2 crunchy-pv3 master-dba-backup-pv
 
 if [ "$1" == "hostpath" ]; then
 	echo "creating hostPath PVs"
-	envsubst < $DIR/crunchy-pv-hostpath.json |  $CCP_CLI create -f -
-	envsubst < $DIR/crunchy-pv2-hostpath.json |  $CCP_CLI create -f -
-	envsubst < $DIR/crunchy-pv3-hostpath.json |  $CCP_CLI create -f -
-	envsubst < $DIR/crunchy-pv-backup-hostpath.json |  $CCP_CLI create -f -
+	envsubst < $DIR/hostpath/crunchy-pv.json |  $CCP_CLI create -f -
+	envsubst < $DIR/hostpath/crunchy-pv2.json |  $CCP_CLI create -f -
+	envsubst < $DIR/hostpath/crunchy-pv3.json |  $CCP_CLI create -f -
+	envsubst < $DIR/hostpath/crunchy-pv-backup.json |  $CCP_CLI create -f -
 else
 	echo "creating NFS PVs"
-	envsubst < $DIR/crunchy-pv.json |  $CCP_CLI create -f -
-	envsubst < $DIR/crunchy-pv2.json |  $CCP_CLI create -f -
-	envsubst < $DIR/crunchy-pv3.json |  $CCP_CLI create -f -
-	envsubst < $DIR/crunchy-pv-backup.json |  $CCP_CLI create -f -
+	envsubst < $DIR/nfs/crunchy-pv.json |  $CCP_CLI create -f -
+	envsubst < $DIR/nfs/crunchy-pv2.json |  $CCP_CLI create -f -
+	envsubst < $DIR/nfs/crunchy-pv3.json |  $CCP_CLI create -f -
+	envsubst < $DIR/nfs/crunchy-pv-backup.json |  $CCP_CLI create -f -
 fi
 
