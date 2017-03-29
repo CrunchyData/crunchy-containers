@@ -15,4 +15,4 @@
 oc delete secret pguser-secret pgmaster-secret pgroot-secret
 oc delete pod secret-pg
 oc delete service secret-pg
-$BUILDBASE/examples/waitforterm.sh secret-pg oc
+$CCPROOT/examples/waitforterm.sh secret-pg oc

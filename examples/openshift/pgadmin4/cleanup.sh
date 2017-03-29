@@ -15,4 +15,4 @@
 oc delete service pgadmin4
 oc delete pod pgadmin4
 
-$BUILDBASE/examples/waitforterm.sh pgadmin4 oc
+$CCPROOT/examples/waitforterm.sh pgadmin4 oc

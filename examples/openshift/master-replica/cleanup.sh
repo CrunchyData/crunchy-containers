@@ -14,4 +14,4 @@
 
 oc delete service ms-master ms-replica
 oc delete pod ms-master ms-replica
-$BUILDBASE/examples/waitforterm.sh ms-master oc
+$CCPROOT/examples/waitforterm.sh ms-master oc

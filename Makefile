@@ -1,5 +1,5 @@
-ifndef BUILDBASE
-	export BUILDBASE=$(GOPATH)/src/github.com/crunchydata/crunchy-containers
+ifndef CCPROOT
+	export CCPROOT=$(GOPATH)/src/github.com/crunchydata/crunchy-containers
 endif
 
 versiontest:
@@ -7,7 +7,7 @@ versiontest:
 	if test -z "$$CCP_BASEOS"; then echo "CCP_BASEOS undefined"; exit 1;fi;
 	if test -z "$$CCP_VERSION"; then echo "CCP_VERSION undefined"; exit 1;fi;
 setup:
-	$(BUILDBASE)/bin/install-deps.sh
+	$(CCPROOT)/bin/install-deps.sh
 gendeps:
 	godep save \
 	github.com/crunchydata/crunchy-containers/dba \

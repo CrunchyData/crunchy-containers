@@ -14,4 +14,4 @@
 
 oc delete pod master-collect
 oc delete service master-collect
-$BUILDBASE/examples/waitforterm.sh master-collect oc
+$CCPROOT/examples/waitforterm.sh master-collect oc

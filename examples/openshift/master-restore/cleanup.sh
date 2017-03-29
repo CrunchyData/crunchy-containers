@@ -14,4 +14,4 @@
 
 oc delete pod master-restore
 oc delete service master-restore
-$BUILDBASE/examples/waitforterm.sh master-restore oc
+$CCPROOT/examples/waitforterm.sh master-restore oc

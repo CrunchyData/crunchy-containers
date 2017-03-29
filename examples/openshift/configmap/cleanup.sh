@@ -14,4 +14,4 @@
 
 oc delete service configmap
 oc delete pod configmap
-$BUILDBASE/examples/waitforterm.sh configmap oc
+$CCPROOT/examples/waitforterm.sh configmap oc

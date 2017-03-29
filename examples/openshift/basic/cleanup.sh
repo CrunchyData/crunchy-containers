@@ -14,4 +14,4 @@
 
 oc delete service basic 
 oc delete pod basic
-$BUILDBASE/examples/waitforterm.sh basic oc
+$CCPROOT/examples/waitforterm.sh basic oc

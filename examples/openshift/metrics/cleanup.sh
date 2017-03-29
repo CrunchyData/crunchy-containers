@@ -16,6 +16,6 @@
 oc delete pod crunchy-metrics
 oc delete service crunchy-metrics
 
-$BUILDBASE/examples/waitforterm.sh crunchy-metrics oc
+$CCPROOT/examples/waitforterm.sh crunchy-metrics oc
 
 

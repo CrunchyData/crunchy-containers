@@ -14,4 +14,4 @@
 
 oc delete pod watch
 oc delete sa pg-watcher
-$BUILDBASE/examples/waitforterm.sh watch oc
+$CCPROOT/examples/waitforterm.sh watch oc

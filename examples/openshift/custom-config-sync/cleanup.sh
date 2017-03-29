@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $BUILDBASE/examples/envvars.sh
+source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -22,5 +22,5 @@ oc delete pod csmaster
 oc delete pod cssyncreplica
 sudo rm $NFS_PATH/postgresql.conf $NFS_PATH/setup.sql $NFS_PATH/pg_hba.conf
 
-$BUILDBASE/examples/waitforterm.sh csmaster oc
-$BUILDBASE/examples/waitforterm.sh cssyncreplica oc
+$CCPROOT/examples/waitforterm.sh csmaster oc
+$CCPROOT/examples/waitforterm.sh cssyncreplica oc

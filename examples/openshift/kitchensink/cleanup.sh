@@ -17,5 +17,5 @@ oc delete pod ks-watch ks-master kssyncreplica
 oc delete dc ks-pgpool-rc ks-replica-dc
 oc delete service ks-pgpool-rc
 
-$BUILDBASE/examples/waitforterm.sh ks-master oc
-$BUILDBASE/examples/waitforterm.sh ks-replica oc
+$CCPROOT/examples/waitforterm.sh ks-master oc
+$CCPROOT/examples/waitforterm.sh ks-replica oc

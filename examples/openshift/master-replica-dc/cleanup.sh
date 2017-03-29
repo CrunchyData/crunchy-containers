@@ -18,4 +18,4 @@ oc delete service replica-dc
 oc delete pod master-dc
 oc delete pod -l name=replica-dc
 oc delete pod -l name=master-dc
-$BUILDBASE/examples/waitforterm.sh master-dc oc
+$CCPROOT/examples/waitforterm.sh master-dc oc

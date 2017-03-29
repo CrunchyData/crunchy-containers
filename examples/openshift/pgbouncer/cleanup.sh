@@ -16,4 +16,4 @@
 oc delete pod pgbouncer
 oc delete service pgbouncer
 
-$BUILDBASE/examples/waitforterm.sh pgbouncer oc
+$CCPROOT/examples/waitforterm.sh pgbouncer oc
