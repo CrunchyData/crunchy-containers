@@ -160,7 +160,7 @@ examples/openshift/metrics/run.sh
 
 The crunchy-prometheus data in this example is stored in emptyDir volume types.
 To persist the data and grafana templates long term, you will want to
-use NFS volume types as specified in *examples/openshift/metrics/run-nfs.json*.
+use a pvc based  volume types as specified in *examples/openshift/metrics/run-pvc.json*.
 
 When running the metrics containers, the following ports are available:
 

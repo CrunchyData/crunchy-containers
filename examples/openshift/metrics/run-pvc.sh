@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# 
+# this example creates the metrics backends with NFS volumes
+# for storing their data
+#
+
 source $CCPROOT/examples/envvars.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-echo NFS_PATH is $NFS_PATH
-sudo rm -rf $NFS_PATH/master-restore-nfs
+$DIR/cleanup.sh
 
-oc delete pod master-restore-nfs
-oc delete service master-restore-nfs
-
+oc process -f $DIR/metrics-pvc -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

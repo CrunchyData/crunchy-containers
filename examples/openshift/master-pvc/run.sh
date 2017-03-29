@@ -12,5 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete service master-nfs
-kubectl delete pod master-nfs
+source $CCPROOT/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
+
+oc process -f $DIR/master-pvc.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

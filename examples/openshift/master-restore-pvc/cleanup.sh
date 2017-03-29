@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,15 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# 
-# this example creates the metrics backends with NFS volumes
-# for storing their data
-#
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+echo NFS_PATH is $NFS_PATH
+sudo rm -rf $NFS_PATH/master-restore-pvc
 
-kubectl create -f $DIR/metrics-service.json
+oc delete pod master-restore-pvc
+oc delete service master-restore-pvc
 
-envsubst < $DIR/metrics-nfs.json | kubectl create -f -

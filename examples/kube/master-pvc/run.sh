@@ -17,4 +17,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-oc process -f $DIR/master-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+envsubst < $DIR/master-pvc-pod.json | kubectl create -f -
+kubectl create -f $DIR/master-pvc-service.json 

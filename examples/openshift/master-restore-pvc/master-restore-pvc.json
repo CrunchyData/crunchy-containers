@@ -2,10 +2,10 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master-nfs-example",
+        "name": "crunchy-pg-replication-example",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy PostgreSQL on NFS Example",
+            "description": "Crunchy PostgreSQL Replication Example",
             "iconClass": "icon-database",
             "tags": "database,postgresql,replication"
         }
@@ -43,9 +43,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-nfs",
+            "name": "master-restore-pvc",
             "labels": {
-                "name": "master-nfs"
+                "name": "master-restore-pvc"
             }
         },
         "spec": {
@@ -56,7 +56,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-nfs"
+                "name": "master-restore-pvc"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
@@ -68,9 +68,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-nfs",
+            "name": "master-restore-pvc",
             "labels": {
-                "name": "master-nfs"
+                "name": "master-restore-pvc"
             }
         },
         "spec": {
@@ -80,11 +80,16 @@
             "volumes": [{
                 "name": "pgdata",
                 "persistentVolumeClaim": {
+                    "claimName": "crunchy-pvc2"
+                }
+            }, {
+                "name": "backup",
+                "persistentVolumeClaim": {
                     "claimName": "crunchy-pvc"
                 }
             }],
             "containers": [{
-                "name": "master-nfs",
+                "name": "master-restore",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
@@ -97,6 +102,9 @@
                     "name": "PG_MODE",
                     "value": "master"
                 }, {
+                    "name": "PGHOST",
+                    "value": "/tmp"
+                }, {
                     "name": "PG_MASTER_PASSWORD",
                     "value": "${PG_MASTER_PASSWORD}"
                 }, {
@@ -106,11 +114,11 @@
                     "name": "PG_PASSWORD",
                     "value": "${PG_PASSWORD}"
                 }, {
+                    "name": "BACKUP_PATH",
+                    "value": "basic-backups/2017-03-29-09-41-53"
+                }, {
                     "name": "PG_DATABASE",
                     "value": "${PG_DATABASE}"
-                }, {
-                    "name": "PGHOST",
-                    "value": "/tmp"
                 }, {
                     "name": "PG_ROOT_PASSWORD",
                     "value": "${PG_ROOT_PASSWORD}"
@@ -118,12 +126,14 @@
                 "securityContext": {
                     "capabilities": {}
                 },
-
-
                 "volumeMounts": [{
                     "mountPath": "/pgdata",
                     "name": "pgdata",
                     "readOnly": false
+                }, {
+                    "mountPath": "/backup",
+                    "name": "backup",
+                    "readOnly": true
                 }]
             }]
         }

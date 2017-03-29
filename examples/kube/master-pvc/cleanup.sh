@@ -12,12 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-oc delete service master-nfs
-oc delete pod master-nfs
-
-$CCPROOT/examples/waitforterm.sh master-nfs oc
-
-sudo rm -rf $NFS_PATH/master-nfs
+kubectl delete service master-pvc
+kubectl delete pod master-pvc

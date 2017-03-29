@@ -184,10 +184,10 @@ allows any number of backups to be kept.
 The *examples/openshift/crunchy-pv-backup.json* specifies a *persistentVolumeReclaimPolicy* of *Retain* to tell Openshift
 that we want to keep the volume contents after the removal of the PV.
 
-=== *master-nfs* - NFS Example
+=== *master-pvc* - master using a PVC Example
 
 This example will create a single master postgres pod that is using 
-an NFS volume to store the postgres data files.
+an PVC based volume to store the postgres data files.
 
 
 === *master-restore* - example of restoring a database from a backup
@@ -259,15 +259,15 @@ psql -c 'table foo' -U master -h pg-replica-rc postgres
 After a failover, you would most likely want to create a database
 backup and be prepared to recreate your cluster from that backup.
 
-=== *master-replica-rc-nfs*  - Master Slave Deployment using NFS
+=== *master-replica-rc-pvc*  - Master Slave Deployment using pvc
 
-This example uses NFS volumes for the master and the replicas.  In
+This example uses a pvc based volumes for the master and the replicas.  In
 some scenarios, customers might want to have all the Postgres
 instances using NFS volumes for persistence.  
 
 Relevant files for this example:
 
- * master-replica-rc-nfs.json
+ * master-replica-rc-pvc.json
 This file creates the master and replica deployment, creating pods and services
 where the replica is controlled by a Replication Controller, allowing you 
 to scale up the replicas.
@@ -284,20 +284,20 @@ created and used by your master and replica pods.
 
 Next, add some test data to the master:
 ....
-psql -c 'create table testtable (id int)' -U master -h pg-master-rc-nfs postgres
-psql -c 'insert into testtable values (123)' -U master -h pg-master-rc-nfs postgres
+psql -c 'create table testtable (id int)' -U master -h pg-master-rc-pvc postgres
+psql -c 'insert into testtable values (123)' -U master -h pg-master-rc-pvc postgres
 ....
 
 Next, add a new replica:
 ....
-oc scale rc pg-replica-rc-nfs-1 --replicas=2
+oc scale rc pg-replica-rc-pvc-1 --replicas=2
 ....
 
 At this point, you should see the new NFS directory created by the new
 replica pod, and you should also be able to test that replication is
 working on the new replica:
 ....
-psql -c 'table testtable' -U master -h pg-replica-rc-nfs postgres
+psql -c 'table testtable' -U master -h pg-replica-rc-pvc postgres
 ....
 
 === *badger* - pgbadger example

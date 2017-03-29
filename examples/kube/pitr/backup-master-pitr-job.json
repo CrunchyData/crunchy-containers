@@ -2,19 +2,19 @@
     "kind": "Job",
     "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "backup-master-pitr-nfs"
+        "name": "backup-master-pitr-pvc"
     },
     "spec": {
         "selector": {
             "matchLabels": {
-                "app": "backup-master-pitr-nfs"
+                "app": "backup-master-pitr-pvc"
             }
         },
         "template": {
             "metadata": {
-                "name": "backup-master-pitr-nfs",
+                "name": "backup-master-pitr-pvc",
                 "labels": {
-                    "app": "backup-master-pitr-nfs"
+                    "app": "backup-master-pitr-pvc"
                 }
             },
             "spec": {
@@ -25,7 +25,7 @@
                     }
                 }],
                 "containers": [{
-                    "name": "backup-master-pitr-nfs",
+                    "name": "backup-master-pitr-pvc",
                     "image": "crunchydata/crunchy-backup:$CCP_IMAGE_TAG",
                     "volumeMounts": [{
                         "mountPath": "/pgdata",

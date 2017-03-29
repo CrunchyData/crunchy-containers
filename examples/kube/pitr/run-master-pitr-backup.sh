@@ -16,6 +16,6 @@ source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-kubectl delete job backup-master-pitr-nfs
+kubectl delete job backup-master-pitr-pvc
 
 envsubst < $DIR/backup-master-pitr-job.json  | kubectl create -f -

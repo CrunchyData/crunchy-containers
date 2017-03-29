@@ -13,9 +13,16 @@
 # limitations under the License.
 
 source $CCPROOT/examples/envvars.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+oc delete dc m-s-rc-pvc-replica
+oc delete pod m-s-rc-pvc-master 
+oc delete pod m-s-rc-pvc-replica
+oc delete pod -l name=m-s-rc-pvc-master
+$CCPROOT/examples/waitforterm.sh m-s-rc-pvc-master oc
+$CCPROOT/examples/waitforterm.sh m-s-rc-pvc-replica oc
+oc delete service m-s-rc-pvc-master
+oc delete service m-s-rc-pvc-replica
 
-envsubst < $DIR/master-nfs-pod.json | kubectl create -f -
-kubectl create -f $DIR/master-nfs-service.json 
+sudo rm -rf $NFS_PATH/m-s-rc-pvc*

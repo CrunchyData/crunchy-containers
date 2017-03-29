@@ -2,9 +2,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-nfs",
+            "name": "master-pvc",
             "labels": {
-                "name": "master-nfs"
+                "name": "master-pvc"
             }
         },
         "spec": {
@@ -15,7 +15,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-nfs"
+                "name": "master-pvc"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"

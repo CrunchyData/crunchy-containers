@@ -251,7 +251,7 @@ This will start up 3 containers and services:
 If you want your metrics and dashboards to persist to NFS, run
 this script:
 ....
-examples/kube/metrics/run-nfs.sh
+examples/kube/metrics/run-pvc.sh
 ....
 
 In the docs folder of the github repo, check out the metrics.asciidoc

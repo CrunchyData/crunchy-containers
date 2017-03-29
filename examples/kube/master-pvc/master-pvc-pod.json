@@ -2,9 +2,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master-nfs",
+        "name": "master-pvc",
         "labels": {
-            "name": "master-nfs"
+            "name": "master-pvc"
         }
     },
     "spec": {
@@ -13,7 +13,7 @@
         },
 
         "containers": [{
-            "name": "master-nfs",
+            "name": "master-pvc",
             "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5432,

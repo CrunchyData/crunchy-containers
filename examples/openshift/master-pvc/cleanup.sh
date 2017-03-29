@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 source $CCPROOT/examples/envvars.sh
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+oc delete service master-pvc
+oc delete pod master-pvc
 
-oc process -f $DIR/master-restore-nfs.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+$CCPROOT/examples/waitforterm.sh master-pvc oc
+
+sudo rm -rf $NFS_PATH/master-pvc

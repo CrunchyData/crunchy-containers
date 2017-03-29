@@ -16,6 +16,6 @@ source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete job backup-master-pitr-nfs
+oc delete job backup-master-pitr-pvc
 
 oc process -f $DIR/backup-master-pitr-job.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
