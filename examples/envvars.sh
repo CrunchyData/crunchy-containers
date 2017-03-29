@@ -17,6 +17,7 @@
 # set up some env vars that all examples can relate to
 #
 
+export CCP_CLI=oc
 export NAMESPACE=default
 export NFS_PATH=/nfsfileshare
 export LOCAL_IP=`hostname --ip-address`

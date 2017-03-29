@@ -20,3 +20,4 @@ sudo rm -rf $NFS_PATH/master-dc
 
 oc delete service master-dc replica-dc
 oc delete deployments master-dc replica-dc
+oc delete pod master-dc

@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source $CCPROOT/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+echo NFS_PATH is $NFS_PATH
+sudo rm -rf $NFS_PATH/master-restore-nfs
+
 oc delete pod master-restore-nfs
 oc delete service master-restore-nfs
 

@@ -15,19 +15,6 @@
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-kubectl delete pv crunchy-nfs-pv crunchy-nfs-pv2 crunchy-nfs-pv3 master-dba-backup-pv
+$CCP_CLI delete pv $(oc get pv | cut -f1 -d' ')
 
-if [ "$1" == "hostpath" ]; then
-	echo "creating hostPath PVs"
-	envsubst < $DIR/crunchy-pv-hostpath.json |  kubectl create -f -
-	envsubst < $DIR/crunchy-pv2-hostpath.json |  kubectl create -f -
-	envsubst < $DIR/crunchy-pv3-hostpath.json |  kubectl create -f -
-	envsubst < $DIR/crunchy-pv-backup-hostpath.json |  kubectl create -f -
-else
-	echo "creating NFS PVs"
-	envsubst < $DIR/crunchy-pv.json |  kubectl create -f -
-	envsubst < $DIR/crunchy-pv2.json |  kubectl create -f -
-	envsubst < $DIR/crunchy-pv3.json |  kubectl create -f -
-	envsubst < $DIR/crunchy-pv-backup.json |  kubectl create -f -
-fi
 

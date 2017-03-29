@@ -12,6 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+source $CCPROOT/examples/envvars.sh
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 oc delete service configmap
 oc delete pod configmap
 $CCPROOT/examples/waitforterm.sh configmap oc

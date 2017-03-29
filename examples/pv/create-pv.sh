@@ -15,9 +15,19 @@
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete pvc crunchy-pvc crunchy-pvc2 crunchy-pvc3
+$CCP_CLI delete pv crunchy-nfs-pv crunchy-nfs-pv2 crunchy-nfs-pv3 master-dba-backup-pv
 
-oc create -f $DIR/crunchy-pvc.json
-oc create -f $DIR/crunchy-pvc2.json
-oc create -f $DIR/crunchy-pvc3.json
+if [ "$1" == "hostpath" ]; then
+	echo "creating hostPath PVs"
+	envsubst < $DIR/crunchy-pv-hostpath.json |  $CCP_CLI create -f -
+	envsubst < $DIR/crunchy-pv2-hostpath.json |  $CCP_CLI create -f -
+	envsubst < $DIR/crunchy-pv3-hostpath.json |  $CCP_CLI create -f -
+	envsubst < $DIR/crunchy-pv-backup-hostpath.json |  $CCP_CLI create -f -
+else
+	echo "creating NFS PVs"
+	envsubst < $DIR/crunchy-pv.json |  $CCP_CLI create -f -
+	envsubst < $DIR/crunchy-pv2.json |  $CCP_CLI create -f -
+	envsubst < $DIR/crunchy-pv3.json |  $CCP_CLI create -f -
+	envsubst < $DIR/crunchy-pv-backup.json |  $CCP_CLI create -f -
+fi
 
