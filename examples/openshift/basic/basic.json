@@ -58,7 +58,6 @@
             "selector": {
                 "name": "basic"
             },
-            "portalIP": "None",
             "type": "ClusterIP",
             "sessionAffinity": "None"
         },

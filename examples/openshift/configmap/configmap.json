@@ -58,7 +58,6 @@
             "selector": {
                 "name": "configmap"
             },
-            "portalIP": "None",
             "type": "ClusterIP",
             "sessionAffinity": "None"
         },

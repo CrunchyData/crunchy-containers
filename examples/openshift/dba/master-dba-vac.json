@@ -61,7 +61,6 @@
             "selector": {
                 "name": "master-dba"
             },
-            "portalIP": "None",
             "type": "ClusterIP",
             "sessionAffinity": "None"
         },

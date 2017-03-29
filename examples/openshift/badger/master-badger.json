@@ -69,7 +69,6 @@
             "selector": {
                 "name": "badger-example"
             },
-            "portalIP": "None",
             "type": "ClusterIP",
             "sessionAffinity": "None"
         },

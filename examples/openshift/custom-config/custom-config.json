@@ -58,7 +58,6 @@
             "selector": {
                 "name": "custom-config"
             },
-            "portalIP": "None",
             "type": "ClusterIP",
             "sessionAffinity": "None"
         },

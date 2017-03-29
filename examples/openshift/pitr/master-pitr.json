@@ -58,7 +58,6 @@
             "selector": {
                 "name": "master-pitr"
             },
-            "portalIP": "None",
             "type": "ClusterIP",
             "sessionAffinity": "None"
         },

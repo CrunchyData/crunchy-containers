@@ -58,7 +58,6 @@
             "selector": {
                 "name": "master-restore-nfs"
             },
-            "portalIP": "None",
             "type": "ClusterIP",
             "sessionAffinity": "None"
         },
