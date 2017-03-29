@@ -34,6 +34,11 @@ The project includes the following containers:
 
 image::docs/containers.png?raw=true[]
 
+For Kubernetes users of these containers, there is an assocated
+project worth taking a look at that uses the containers found
+in this repo and provides a higher level automation.
+That project is link:https://github.com/crunchydata/postgres-operator[PostgresOperator]
+
 === Build Prerequisites
 
 The Crunchy containers have been tested on Centos 7, RHEL 7, Openshift 3.4,

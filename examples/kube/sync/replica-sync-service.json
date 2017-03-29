@@ -2,9 +2,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "replica-sync",
+            "name": "replicasync",
             "labels": {
-                "name": "replica-sync"
+                "name": "replicasync"
             }
         },
         "spec": {
@@ -15,7 +15,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "replica-sync"
+                "name": "replicasync"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"

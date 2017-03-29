@@ -15,7 +15,7 @@
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete service master-dc
-oc delete service replica-dc
-oc delete pod master-dc
-oc delete deployment replica-dc
+kubectl delete service master-dc
+kubectl delete service replica-dc
+kubectl delete pod master-dc
+kubectl delete deployment replica-dc

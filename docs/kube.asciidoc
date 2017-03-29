@@ -448,7 +448,7 @@ kubectl describe pod replica | grep Label
 ....
 
 
-=== Kube Example 11 - pgbouncer
+=== pgbouncer
 
 This example assumes you have run the master-replica example prior
 to this example!  
@@ -493,7 +493,7 @@ psql -h pgbouncer -U postgres master
 ....
 
 
-=== Kube Example 12 - synchrounous replica
+=== synchrounous replica
 
 This example deploys a PostgreSQL cluster with a master,
 a synchrounous replica, and an asynchronous replica.  The
@@ -504,14 +504,14 @@ Running the example:
 examples/kube/sync/run.sh
 ....
 
-Connect to the *master* and *replica* databases as follows:
+Connect to the *mastersync* and *replicasync* databases as follows:
 ....
-psql -h master -U postgres postgres -c 'create table mister (id int)'
-psql -h master -U postgres postgres -c 'insert into mister values (1)'
-psql -h master -U postgres postgres -c 'table pg_stat_replication'
-psql -h replica -U postgres postgres -c 'select inet_server_addr(), * from mister'
-psql -h replica -U postgres postgres -c 'select inet_server_addr(), * from mister'
-psql -h replica -U postgres postgres -c 'select inet_server_addr(), * from mister'
+psql -h mastersync -U postgres postgres -c 'create table mister (id int)'
+psql -h mastersync -U postgres postgres -c 'insert into mister values (1)'
+psql -h mastersync -U postgres postgres -c 'table pg_stat_replication'
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from mister'
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from mister'
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from mister'
 ....
 
 This set of queries will show you the IP address of the Postgres replica
@@ -519,52 +519,7 @@ container, notice it changes because of the round-robin Service proxy
 we are using for both replicas.  The example queries also show that both
 replicas are replicating from the master.
 
-=== Kube Example 13 - kitchensink
-
-This example deploys many of the components all in a single example
-to demonstrate a more complex overall deployment examples.  This
-examples includes the following objects:
- * master database service (kitchensink-master)
- * replica database service (kitchensink-replica)
- * pgpool database service (kitchensink-pgpool)
- * master database pod (kitchensink-master)
- * metrics collection container (kitchensink-master)
- * pgbadger container (kitchensink-master)
- * async replica database Deployment (kitchensink-replica-dc-XXXXX)
- * sync rdatabase pod (kitchensink-sync-replica)
- * pgpool Replication Controller (kitchensink-pgpool-XXXXX)
- * watch pod (kitchensink-watch)
-
-Running the example:
-....
-examples/kube/kitchensink/run.sh
-....
-
-The master database pod has the following containers running 
-inside it:
- * server (postgres container)
- * pgbadger (pgbadger container)
- * collect (metrics collection container)
-
-You can scale up the number of async replicas as follows:
-....
-kubectl get deployment
-kubectl scale --current-replicas=1 --replicas=2 deployment/kitchensink-replica-dc
-kubectl get deployment
-....
-
-Connect to the *master* and *replica* databases as follows:
-....
-psql -h kitchensink-master -U postgres postgres -c 'table pg_stat_replication'
-psql -h kitchensink-master -U testuser userdb -c 'create table mister (id int)'
-psql -h kitchensink-master -U testuser userdb -c 'insert into mister values (12)'
-psql -h kitchensink-replica -U testuser userdb -c 'table mister'
-psql -h kitchensink-pgpool -U testuser userdb -c 'table mister' 
-psql -h kitchensink-master -U testuser userdb -c 'insert into mister values (112)'
-....
-
-
-=== Kube Example 14 - pgadmin4
+=== pgadmin4
 
 This example deploys the pgadmin4 (beta4) web user interface
 for Postgresql. 
@@ -586,7 +541,7 @@ the container and used by the pgadmin4 application to persist
 metadata.
 
 
-=== Kube Example 15 - statefulsets (only for kube 1.5 and greater)
+=== statefulsets (only for kube 1.5 and greater)
 
 This example deploys a statefulset named *pgset*.  The statefulset
 is a new feature in Kubernetes as of version 1.5.  Statefulsets have
@@ -646,7 +601,7 @@ kubectl scale pgset --replica=3
 ....
 
 
-=== Kube Example 16 - PITR (point in time recovery)
+=== PITR (point in time recovery)
 
 This example is identical to the openshift PITR example, see
 the link:openshift.asciidoc[Openshift Documentation] Example 20 for 
@@ -663,7 +618,7 @@ The only differences are the following:
 See link:pitr.asciidoc[PITR Documentation] for details on PITR concepts and how PITR is implemented
 within the Suite.
 
-=== Kube Example 17 - pgbackrest
+=== pgbackrest
 
 Starting in release 1.2.5, the pgbackrest utility has been
 added to the crunchy-postgres container.  See the 
@@ -690,9 +645,9 @@ This will create the following in your Kube environment:
 After some execution time, examing the contents of /nfsfileshare/backrestrepo
 to view the pgbackrest archive files.
 
-=== Kube Example 19 - master-deployment
+=== master-deployment
 
-Starting in release 1.2.9, the postgres container can accept
+Starting in release 1.2.8, the postgres container can accept
 an environment variable named PGDATA_PATH_OVERRIDE.  If set,
 the /pgdata/subdir path will use a path subdir name of your
 choosing instead of the default which is the hostname of the container.

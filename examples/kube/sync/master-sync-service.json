@@ -2,9 +2,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-sync",
+            "name": "mastersync",
             "labels": {
-                "name": "master-sync"
+                "name": "mastersync"
             }
         },
         "spec": {
@@ -15,7 +15,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-sync"
+                "name": "mastersync"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
