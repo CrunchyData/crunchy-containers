@@ -43,19 +43,19 @@
         "kind": "Job",
         "apiVersion": "extensions/v1beta1",
         "metadata": {
-            "name": "backup-job-nfs"
+            "name": "backup-job"
         },
         "spec": {
             "selector": {
                 "matchLabels": {
-                    "app": "backup-job-nfs"
+                    "app": "backup-job"
                 }
             },
             "template": {
                 "metadata": {
-                    "name": "backup-job-nfs",
+                    "name": "backup-job",
                     "labels": {
-                        "app": "backup-job-nfs"
+                        "app": "backup-job"
                     }
                 },
                 "spec": {
@@ -69,7 +69,7 @@
                         }
                     }],
                     "containers": [{
-                        "name": "backup-job-nfs",
+                        "name": "backup-job",
                         "image": "crunchydata/crunchy-backup:${CCP_IMAGE_TAG}",
                         "volumeMounts": [{
                             "mountPath": "/pgdata",

@@ -173,7 +173,7 @@ server on this host.
 
 Running the example:
 ....
-examples/kube/backup-job-nfs/run.sh
+examples/kube/backup-job/run.sh
 ....
 
 Things to point out with this example include its use of persistent
