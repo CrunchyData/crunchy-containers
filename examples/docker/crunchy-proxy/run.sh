@@ -47,7 +47,7 @@ docker rm -f crunchyproxyls
 
 docker run \
 	-p 12432:5432 \
-	-p 13000:10000 \
+	-p 13001:10000 \
 	-v $CONF_VOLUME:/config \
 	--link master:master \
 	--link replica:replica \

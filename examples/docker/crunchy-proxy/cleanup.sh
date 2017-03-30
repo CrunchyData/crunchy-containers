@@ -15,7 +15,7 @@
 
 echo "cleaning up example..."
 
-CONTAINER_NAME=crunchy-proxy
+CONTAINER_NAME=crunchyproxy
 
 docker stop $CONTAINER_NAME
 docker rm -v $CONTAINER_NAME crunchyproxysetup
