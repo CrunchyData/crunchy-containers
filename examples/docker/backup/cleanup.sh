@@ -20,4 +20,4 @@ VOLUME_NAME=$CONTAINER_NAME-volume
 
 docker stop $CONTAINER_NAME
 docker rm -v $CONTAINER_NAME
-docker volume rm -f $VOLUME_NAME
+docker volume rm $VOLUME_NAME
