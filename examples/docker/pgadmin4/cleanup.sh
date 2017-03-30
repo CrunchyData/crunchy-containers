@@ -17,4 +17,4 @@ echo "cleaning up example..."
 
 CONTAINER_NAME=pgadmin4
 docker rm -f --volumes $CONTAINER_NAME
-docker volume rm pg4admin-volume
+docker volume rm $CONTAINER_NAME-volume
