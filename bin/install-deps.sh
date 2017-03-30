@@ -72,8 +72,6 @@ https://github.com/openshift/origin/releases/download/v1.4.1/$FILE
 tar xvzf /tmp/$FILE  -C /tmp
 sudo cp /tmp/openshift-origin-client-tools-v1.4.1+3f9807a-linux-64bit/oc /usr/bin/oc
 
-sudo yum -y install postgresql-server
-
 #
 # install kubectl binary into /usr/bin
 #
