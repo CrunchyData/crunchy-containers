@@ -13,17 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-#
-# next set is only for setting up enterprise crunchy postgres repo
-# not required if you build on centos
-#
-sudo mkdir /opt/crunchy
-sudo cp $CCPROOT/conf/crunchypg95.repo /etc/yum.repos.d
-sudo cp $CCPROOT/conf/CRUNCHY* /opt/crunchy
-sudo yum -y install postgresql95-server
-
-sudo yum -y install net-tools bind-utils wget unzip git golang
+sudo yum -y install net-tools bind-utils wget unzip git golang postgresql
 
 #
 # download the metrics products, only required to build the containers
