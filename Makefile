@@ -43,7 +43,6 @@ grafana:	versiontest
 	docker build -t crunchy-grafana -f $(CCP_BASEOS)/Dockerfile.grafana.$(CCP_BASEOS) .
 	docker tag crunchy-grafana crunchydata/crunchy-grafana:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
-# Add pgadmin4 to the "all" target when RHEL image ready
 pgadmin4:	versiontest
 	docker build -t crunchy-pgadmin4 -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgadmin4.$(CCP_BASEOS) .
 	docker tag crunchy-pgadmin4 crunchydata/crunchy-pgadmin4:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
