@@ -19,7 +19,7 @@ when starting the examples.
 Create the container with this command:
 ....
 cd examples/docker/basic
-./run-pg.sh
+./run.sh
 ....
 
 This script will do the following:
@@ -400,7 +400,7 @@ cd examples/docker/master-replica
 ./run.sh
 ....
 
-An example is shown in the examples/docker/pgbouncer/run-pgbouncer.sh script
+An example is shown in the examples/docker/pgbouncer/run.sh script
 and can be run as follows:
 
 ....
@@ -443,10 +443,7 @@ To run this example, run the following:
 
 ....
 cd examples/docker/sync
-./run-sync-master.sh
-sleep 20
-./run-sync-slave.sh
-./run-async-slave.sh
+./run.sh
 ....
 
 You can test the replication status on the master by using the following command:
