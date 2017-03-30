@@ -18,4 +18,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+DATADIR=$NFS_PATH/pgadmin4
+
+if [ ! -d "$DATADIR" ]; then
+	echo "setting up pg4admin data directory...."
+	sudo mkdir $DATADIR
+	sudo cp $CCPROOT/conf/pgadmin4/config_local.py $DATADIR
+	sudo cp $CCPROOT/conf/pgadmin4/pgadmin4.db $DATADIR
+	sudo chmod -R 777 $DATADIR
+fi
+
 oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/pgadmin4.json | oc create -f -
