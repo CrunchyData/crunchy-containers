@@ -11,7 +11,7 @@ within the Crunchy Containers for PostgreSQL.
 The containers and their relationships to the overall architecture
 are depicted below:
 
-image:containers.png
+image::containers.png[containers]
 
 
 == crunchy-postgres 
