@@ -59,6 +59,7 @@ executed when the database is first created.
  * CHECKSUMS - if set, this value is used to enable the *--data-checksums*
    option when initdb is executed at initialization, if not set, the
    default is to *not* enable data checksums
+ * XLOGDIR - if set, initdb will use the specified directory for WAL
  * ARCHIVE_MODE - if set to *on*, will enable continious WAL archiving
    by setting the value within the postgresql.conf file *archive_mode*
    setting, if not set, the default is *off*
