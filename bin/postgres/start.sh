@@ -120,6 +120,13 @@ function initdb_logic() {
 	if [[ -v PG_LOCALE ]]; then
 		cmd+=" --locale="$PG_LOCALE
 	fi
+        if [[ -v XLOGDIR ]]; then
+		if [ -d "$XLOGDIR" ]; then
+                	cmd+=" --xlogdir="$XLOGDIR
+		else
+			echo "XLOGDIR not found! Using default pg_xlog"
+		fi 
+        fi
 	if [[ -v CHECKSUMS ]]; then
 		cmd+=" --data-checksums"
 	fi
