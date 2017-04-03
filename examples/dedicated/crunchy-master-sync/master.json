@@ -2,9 +2,9 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-master-restore",
+        "name": "crunchy-master-sync",
         "annotations": {
-            "description": "Crunchy master postgres database restore from backup",
+            "description": "Crunchy master postgres database that allows a sync slave",
             "iconClass": "icon-database",
             "tags": "crunchy,database,postgresql"
         }
@@ -25,6 +25,9 @@
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use"
     }, {
+        "name": "SYNC_SLAVE",
+        "description": "The sync slave to allow"
+    }, {
         "name": "PG_MASTER_PASSWORD",
         "description": "The password for the PG master user",
         "value": "password"
@@ -40,10 +43,6 @@
         "name": "PG_DATABASE",
         "description": "The name of the database that will be created",
         "value": "userdb"
-    }, {
-        "name": "BACKUP_PATH",
-        "description": "The backup archive path to restore from",
-        "value": "master-backups/01-01-01"
     }, {
         "name": "PVC_NAME",
         "description": "The name for the pvc",
@@ -145,9 +144,6 @@
                             "name": "PG_USER",
                             "value": "${PG_USER}"
                         }, {
-                            "name": "BACKUP_PATH",
-                            "value": "${BACKUP_PATH}"
-                        }, {
                             "name": "PG_PASSWORD",
                             "value": "${PG_PASSWORD}"
                         }, {
@@ -156,6 +152,9 @@
                         }, {
                             "name": "PG_ROOT_PASSWORD",
                             "value": "${PG_ROOT_PASSWORD}"
+                        }, {
+                            "name": "SYNC_SLAVE",
+                            "value": "${SYNC_SLAVE}"
                         }, {
                             "name": "PGHOST",
                             "value": "/tmp"

@@ -17,9 +17,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/crunchy-backup/run.sh
 $DIR/crunchy-master/run.sh
-$DIR/crunchy-pgpool/run.sh
-$DIR/crunchy-proxy/run.sh
 $DIR/crunchy-replica/run.sh
 $DIR/crunchy-restore/run.sh
 $DIR/crunchy-sync-replica/run.sh
+$DIR/crunchy-master-sync/run.sh
 

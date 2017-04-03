@@ -2,10 +2,10 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-postgres-database-backup",
+        "name": "crunchy-backup",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy PostgreSQL backup of a single database",
+            "description": "Crunchy PostgreSQL full backup of a single database",
             "iconClass": "icon-database",
             "tags": "database,postgresql,crunchy"
         }
@@ -13,15 +13,15 @@
     "parameters": [{
         "name": "JOB_NAME",
         "description": "the name to give the backup job",
-        "value": "somebackupjob"
+        "value": "backupjob"
     }, {
         "name": "DB_NAME",
         "description": "the service name of the database to backup",
-        "value": "somedatabase"
+        "value": "master"
     }, {
         "name": "PVC_NAME",
         "description": "the name to give the backup PVC ",
-        "value": "somepvc"
+        "value": "backuppvc"
     }, {
         "name": "PVC_SIZE",
         "value": "500M",
@@ -45,7 +45,7 @@
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use",
-        "value": "centos7-9.5-1.2.7"
+        "value": "centos7-9.5-1.3.0"
     }],
 
     "objects": [{
