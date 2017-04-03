@@ -10,6 +10,10 @@
         }
     },
     "parameters": [{
+        "name": "NAME",
+        "description": "The name of the database and service",
+        "value": "master"
+    }, {
         "name": "PG_MASTER_PORT",
         "description": "The postgresql port",
         "value": "5432"
@@ -23,7 +27,16 @@
         "value": "master"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "description": "The image tag to use"
+        "description": "The image tag to use",
+        "value": "rhel7-9.5-1.3.0"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "The image prefix to use",
+        "value": "crunchydata"
+    }, {
+        "name": "CCP_IMAGE_NAME",
+        "description": "The image name to use",
+        "value": "crunchy-postgres"
     }, {
         "name": "PG_MASTER_PASSWORD",
         "description": "The password for the PG master user",
@@ -78,9 +91,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master",
+            "name": "${NAME}",
             "labels": {
-                "name": "master"
+                "name": "${NAME}"
             }
         },
         "spec": {
@@ -91,7 +104,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master"
+                "name": "${NAME}"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
@@ -100,28 +113,28 @@
         "kind": "Deployment",
         "apiVersion": "extensions/v1beta1",
         "metadata": {
-            "name": "master",
+            "name": "${NAME}",
             "labels": {
-                "name": "master"
+                "name": "${NAME}"
             }
         },
         "spec": {
             "replicas": 1,
             "selector": {
                 "matchLabels": {
-                    "name": "master"
+                    "name": "${NAME}"
                 }
             },
             "template": {
                 "metadata": {
                     "labels": {
-                        "name": "master"
+                        "name": "${NAME}"
                     }
                 },
                 "spec": {
                     "containers": [{
-                        "name": "master",
-                        "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                        "name": "server",
+                        "image": "${CCP_IMAGE_PREFIX}/${CCP_IMAGE_NAME}:${CCP_IMAGE_TAG}",
                         "env": [{
                             "name": "PG_MASTER_PORT",
                             "value": "${PG_MASTER_PORT}"

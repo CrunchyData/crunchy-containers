@@ -2,7 +2,7 @@
   "apiVersion": "v1",
   "kind": "PersistentVolume",
   "metadata": {
-    "name": "crunchy-pv2"
+    "name": "crunchy-pv$COUNTER"
   },
   "spec": {
     "capacity": {

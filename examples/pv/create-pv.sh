@@ -15,19 +15,28 @@
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$CCP_CLI delete pv crunchy-pv crunchy-pv2 crunchy-pv3 master-dba-backup-pv
+for i in {1..15}
+do
+	echo "deleting PV crunchy-pv-$i"
+	$CCP_CLI delete pv crunchy-pv-$i
+done
 
 if [ "$1" == "hostpath" ]; then
 	echo "creating hostPath PVs"
-	envsubst < $DIR/hostpath/crunchy-pv.json |  $CCP_CLI create -f -
-	envsubst < $DIR/hostpath/crunchy-pv2.json |  $CCP_CLI create -f -
-	envsubst < $DIR/hostpath/crunchy-pv3.json |  $CCP_CLI create -f -
-	envsubst < $DIR/hostpath/crunchy-pv-backup.json |  $CCP_CLI create -f -
+	for i in {1..15}
+	do
+		echo "creating PV crunchy-pv-$i"
+		export COUNTER=$i
+		envsubst < $DIR/hostpath/crunchy-pv2.json | $CCP_CLI create -f -
+	done
 else
 	echo "creating NFS PVs"
-	envsubst < $DIR/nfs/crunchy-pv.json |  $CCP_CLI create -f -
-	envsubst < $DIR/nfs/crunchy-pv2.json |  $CCP_CLI create -f -
-	envsubst < $DIR/nfs/crunchy-pv3.json |  $CCP_CLI create -f -
-	envsubst < $DIR/nfs/crunchy-pv-backup.json |  $CCP_CLI create -f -
+	for i in {1..15}
+	do
+		echo "creating PV crunchy-pv-$i"
+		export COUNTER=$i
+		envsubst < $DIR/nfs/crunchy-pv2.json | $CCP_CLI create -f -
+	done
+
 fi
 

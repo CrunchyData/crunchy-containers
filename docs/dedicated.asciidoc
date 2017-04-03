@@ -66,6 +66,26 @@ place to set the image path and image tags within the Openshift
 templates.  This substitution allows for better support of different
 deployments and deployment environments.
 
+=== Deploying Images to Openshift Registry
+
+You can deploy the Crunchy built container images to the Openshift
+registry by running the following script:
+....
+examples/dedicated/push-images.sh
+....
+
+You will first need to login to the Openshift registry to perform
+this script.
+
+The script will create the appropate image tag and push the image to the
+remote registry.
+
+As you use the templates, you can specify the images in your templates using the Openshift
+registry URL as follows for the *default* Openshift project:
+....
+172.30.149.135:5000/default
+....
+
 === Master Database 
 
 Template Name is *crunchy-master*
