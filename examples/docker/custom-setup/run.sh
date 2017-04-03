@@ -21,9 +21,11 @@ $DIR/cleanup.sh
 CONTAINER=setupsql
 CONF_VOLUME=$CONTAINER-pgconf
 DATA_VOLUME=$CONTAINER-volume
+WAL_VOLUME=$CONTAINER-wal
 
 docker volume create --driver local --name=$CONF_VOLUME
 docker volume create --driver local --name=$DATA_VOLUME
+docker volume create --driver local --name=$WAL_VOLUME
 
 docker run -it --privileged=true \
 	--volume-driver=local \
@@ -41,10 +43,12 @@ docker run \
 	-p 12009:5432 \
 	-v $CONF_VOLUME:/pgconf:z \
 	-v $DATA_VOLUME:/pgdata:z \
+	-v $WAL_VOLUME:/pgwal:rw \
 	-e TEMP_BUFFERS=9MB \
 	-e MAX_CONNECTIONS=101 \
 	-e SHARED_BUFFERS=129MB \
 	-e MAX_WAL_SENDERS=7 \
+	-e XLOGDIR=/pgwal \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=master \
 	-e PG_MASTER_USER=masteruser \

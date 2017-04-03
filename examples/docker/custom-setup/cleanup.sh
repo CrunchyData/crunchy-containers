@@ -17,5 +17,5 @@ echo "cleaning up example..."
 
 CONTAINER=setupsql
 
-docker rm -f --volumes $CONTAINER $CONTAINER-ls $CONTAINER-setup
-
+docker rm -f --volumes $CONTAINER $CONTAINER-ls $CONTAINER-setup 
+docker volume rm $CONTAINER-wal 
