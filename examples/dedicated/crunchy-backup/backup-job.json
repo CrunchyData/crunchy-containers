@@ -45,7 +45,7 @@
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use",
-        "value": "centos7-9.5-1.3.0"
+        "value": "rhel7-9.5-1.3.0"
     }],
 
     "objects": [{

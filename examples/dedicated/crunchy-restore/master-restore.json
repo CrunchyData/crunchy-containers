@@ -10,6 +10,10 @@
         }
     },
     "parameters": [{
+        "name": "NAME",
+        "description": "The database name",
+        "value": "restoredb"
+    }, {
         "name": "PG_MASTER_PORT",
         "description": "The postgresql port",
         "value": "5432"
@@ -20,10 +24,19 @@
     }, {
         "name": "PGDATA_PATH_OVERRIDE",
         "description": "override for the pgdata path",
-        "value": "master"
+        "value": "restoredb"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "The image prefix to use",
+        "value": "crunchydata"
+    }, {
+        "name": "CCP_IMAGE_NAME",
+        "description": "The image name to use",
+        "value": "crunchy-postgres"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "description": "The image tag to use"
+        "description": "The image tag to use",
+        "value": "rhel7-9.5-1.3.0"
     }, {
         "name": "PG_MASTER_PASSWORD",
         "description": "The password for the PG master user",
@@ -43,11 +56,15 @@
     }, {
         "name": "BACKUP_PATH",
         "description": "The backup archive path to restore from",
-        "value": "master-backups/01-01-01"
+        "value": "master7-backups/2017-04-04-09-42-53"
+    }, {
+        "name": "BACKUP_PVC",
+        "description": "The backup archive PVC to restore from",
+        "value": "backuppvc"
     }, {
         "name": "PVC_NAME",
-        "description": "The name for the pvc",
-        "value": "master-pvc"
+        "description": "The name for the pvc to store the database",
+        "value": "restoredb-pvc"
     }, {
         "name": "PVC_SIZE",
         "description": "The size for the PVC",
@@ -82,9 +99,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master",
+            "name": "${NAME}",
             "labels": {
-                "name": "master"
+                "name": "${NAME}"
             }
         },
         "spec": {
@@ -95,7 +112,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master"
+                "name": "${NAME}"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
@@ -104,28 +121,28 @@
         "kind": "Deployment",
         "apiVersion": "extensions/v1beta1",
         "metadata": {
-            "name": "master",
+            "name": "${NAME}",
             "labels": {
-                "name": "master"
+                "name": "${NAME}"
             }
         },
         "spec": {
             "replicas": 1,
             "selector": {
                 "matchLabels": {
-                    "name": "master"
+                    "name": "${NAME}"
                 }
             },
             "template": {
                 "metadata": {
                     "labels": {
-                        "name": "master"
+                        "name": "${NAME}"
                     }
                 },
                 "spec": {
                     "containers": [{
-                        "name": "master",
-                        "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                        "name": "server",
+                        "image": "${CCP_IMAGE_PREFIX}/${CCP_IMAGE_NAME}:${CCP_IMAGE_TAG}",
                         "env": [{
                             "name": "PG_MASTER_PORT",
                             "value": "${PG_MASTER_PORT}"
@@ -148,6 +165,9 @@
                             "name": "BACKUP_PATH",
                             "value": "${BACKUP_PATH}"
                         }, {
+                            "name": "BACKUP_PVC",
+                            "value": "${BACKUP_PVC}"
+                        }, {
                             "name": "PG_PASSWORD",
                             "value": "${PG_PASSWORD}"
                         }, {
@@ -164,6 +184,10 @@
                             "mountPath": "/pgdata",
                             "name": "pgdata",
                             "readOnly": false
+                        }, {
+                            "mountPath": "/backup",
+                            "name": "backup",
+                            "readOnly": true
                         }],
 
                         "ports": [{
@@ -177,6 +201,11 @@
                         "name": "pgdata",
                         "persistentVolumeClaim": {
                             "claimName": "${PVC_NAME}"
+                        }
+                    }, {
+                        "name": "backup",
+                        "persistentVolumeClaim": {
+                            "claimName": "${BACKUP_PVC}"
                         }
                     }],
 
