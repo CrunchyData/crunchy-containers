@@ -26,7 +26,7 @@ docker login -p $TOKEN -u unused $REG
 
 
 # tag the local image using openshift naming
-for CCP_IMAGE_TAG in "rhel7-9.5-1.3.0"  "rhel7-9.6-1.3.0"
+for CCP_IMAGE_TAG in "rhel7-9.6-1.3.0"
 do
 	docker tag crunchydata/crunchy-postgres:$CCP_IMAGE_TAG $REG/$NS/crunchy-postgres:$CCP_IMAGE_TAG
 	docker tag crunchydata/crunchy-postgres-gis:$CCP_IMAGE_TAG $REG/$NS/crunchy-postgres-gis:$CCP_IMAGE_TAG
