@@ -17,7 +17,11 @@
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use",
-        "value": "centos7-9.5-1.3.0"
+        "value": "rhel7-9.5-1.3.0"
+    }, {
+        "name": "CCP_IMAGE_NAME",
+        "description": "The image name to use",
+        "value": "crunchy-postgres"
     }, {
         "name": "SERVICE_NAME",
         "description": "the name to use for the replica service and pod",
@@ -101,7 +105,7 @@
                 "securityContext": {},
                 "containers": [{
                     "name": "postgres",
-                    "image": "${{CCP_IMAGE_PREFIX}}/crunchy-postgres:${CCP_IMAGE_TAG}",
+                    "image": "${CCP_IMAGE_PREFIX}/${CCP_IMAGE_NAME}:${CCP_IMAGE_TAG}",
                     "readinessProbe": {
                         "exec": {
                             "command": [
