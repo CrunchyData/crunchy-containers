@@ -19,6 +19,4 @@ $DIR/crunchy-backup/run.sh
 $DIR/crunchy-master/run.sh
 $DIR/crunchy-replica/run.sh
 $DIR/crunchy-restore/run.sh
-$DIR/crunchy-sync-replica/run.sh
-$DIR/crunchy-master-sync/run.sh
 
