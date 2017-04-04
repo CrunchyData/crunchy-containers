@@ -15,18 +15,25 @@
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+TOKEN=fillinvaluehere
+REG=docker-registry-default.router.default.svc.cluster.local
+REG=172.30.240.45:5000
+REG=registry.crunchydata.openshift.com
+NS=default
+NS=jeff-project
 # login into openshift registry
-docker login -p DZNm1LQ-s6tpbIpLhK9S2VOett04LXaDl3wYrtcNvq4 -u unused docker-registry-default.router.default.svc.cluster.local
+docker login -p $TOKEN -u unused $REG
+
 
 # tag the local image using openshift naming
-
-docker tag crunchy-postgres docker-registry-default.router.default.svc.cluster.local/default/crunchy-postgres:rhel7-9.5-1.3.0
-docker tag crunchy-postgres-gis docker-registry-default.router.default.svc.cluster.local/default/crunchy-postgres-gis:rhel7-9.5-1.3.0
-docker tag crunchy-backup docker-registry-default.router.default.svc.cluster.local/default/crunchy-backup:rhel7-9.5-1.3.0
-
-# push the image to openshift
-docker push docker-registry-default.router.default.svc.cluster.local/default/crunchy-postgres:rhel7-9.5-1.3.0
-docker push docker-registry-default.router.default.svc.cluster.local/default/crunchy-postgres-gis:rhel7-9.5-1.3.0
-docker push docker-registry-default.router.default.svc.cluster.local/default/crunchy-backup:rhel7-9.5-1.3.0
-
+for CCP_IMAGE_TAG in "rhel7-9.5-1.3.0"  "rhel7-9.6-1.3.0"
+do
+	docker tag crunchydata/crunchy-postgres:$CCP_IMAGE_TAG $REG/$NS/crunchy-postgres:$CCP_IMAGE_TAG
+	docker tag crunchydata/crunchy-postgres-gis:$CCP_IMAGE_TAG $REG/$NS/crunchy-postgres-gis:$CCP_IMAGE_TAG
+	docker tag crunchydata/crunchy-backup:$CCP_IMAGE_TAG $REG/$NS/crunchy-backup:$CCP_IMAGE_TAG
+	# push the image to openshift
+	docker push $REG/$NS/crunchy-postgres:$CCP_IMAGE_TAG
+	docker push $REG/$NS/crunchy-postgres-gis:$CCP_IMAGE_TAG
+	docker push $REG/$NS/crunchy-backup:$CCP_IMAGE_TAG
+done
 
