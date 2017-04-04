@@ -16,8 +16,7 @@ A defined set of templates are supported including:
  * replica database
  * full database backup
  * database restore
- * crunchy-proxy
- * pgpool proxy
+ * pgadmin4 
 
 Each template is described below.
 
@@ -205,6 +204,24 @@ This template will create the following:
 
 
 This example creates a synchronous replica.
+
+=== pgadmin4 Web User Interface
+
+Template Name is *crunchy-pgadmin4*
+
+Example is found here:
+....
+examples/dedicated/crunchy-pgadmin4
+....
+
+This template will create the following:
+
+ * PVC for the pgadmin4 configuration files and database
+ * pod containing the crunchy-pgadmin4 container
+ * service for the pgadmin4 container
+
+
+This example creates a pgadmin4 pod and service.  
 
 
 == Legal Notices

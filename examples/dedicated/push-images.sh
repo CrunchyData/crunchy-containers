@@ -25,15 +25,15 @@ NS=jeff-project
 docker login -p $TOKEN -u unused $REG
 
 
+#	for CONTAINER in "crunchy-postgres" "crunchy-postgres-gis" "crunchy-backup" "crunchy-pgadmin4"
 # tag the local image using openshift naming
 for CCP_IMAGE_TAG in "rhel7-9.6-1.3.0"
 do
-	docker tag crunchydata/crunchy-postgres:$CCP_IMAGE_TAG $REG/$NS/crunchy-postgres:$CCP_IMAGE_TAG
-	docker tag crunchydata/crunchy-postgres-gis:$CCP_IMAGE_TAG $REG/$NS/crunchy-postgres-gis:$CCP_IMAGE_TAG
-	docker tag crunchydata/crunchy-backup:$CCP_IMAGE_TAG $REG/$NS/crunchy-backup:$CCP_IMAGE_TAG
-	# push the image to openshift
-	docker push $REG/$NS/crunchy-postgres:$CCP_IMAGE_TAG
-	docker push $REG/$NS/crunchy-postgres-gis:$CCP_IMAGE_TAG
-	docker push $REG/$NS/crunchy-backup:$CCP_IMAGE_TAG
+	for CONTAINER in "crunchy-pgadmin4"
+	do
+		docker tag crunchydata/$CONTAINER:$CCP_IMAGE_TAG $REG/$NS/$CONTAINER:$CCP_IMAGE_TAG
+		# push the image to openshift
+		docker push $REG/$NS/$CONTAINER:$CCP_IMAGE_TAG
+	done
 done
 
