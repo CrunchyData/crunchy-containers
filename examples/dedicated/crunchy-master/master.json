@@ -70,6 +70,10 @@
         "description": "The password for the PG adminitrator",
         "value": "password"
     }, {
+        "name": "SYNC_SLAVE",
+        "description": "the sync replicas that will be allowed to connect if any",
+        "value": ""
+    }, {
         "name": "TEMP_BUFFERS",
         "value": "9MB",
         "description": "The postgres temp_buffers setting"
@@ -183,6 +187,9 @@
                         }, {
                             "name": "PG_ROOT_PASSWORD",
                             "value": "${PG_ROOT_PASSWORD}"
+                        }, {
+                            "name": "SYNC_SLAVE",
+                            "value": "${SYNC_SLAVE}"
                         }, {
                             "name": "TEMP_BUFFERS",
                             "value": "${TEMP_BUFFERS}"

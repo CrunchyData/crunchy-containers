@@ -102,6 +102,96 @@ This template will create the following:
 This example deploys a master database configuration
 which uses a Persistent Volume Claim for persistence.
 
+.Table Template Parameters
+|===
+|Parameter|Description|Default
+
+|NAME
+| the database service name
+| example 
+
+|PGDATA_PATH_OVERRIDE
+| should match the name of the NAME parameter in most cases
+| example 
+
+|PG_MASTER_PORT
+| the postgres port to use
+| 5432 
+
+|PG_MASTER_USER
+| the user name to create and use for a master user
+| master 
+
+|PG_MASTER_PASSWORD
+| the password to use for the master user
+| password 
+
+|PG_USER
+| the user name to create as a normal user
+| testuser
+ 
+|PG_PASSWORD
+| the password to use for the normal user
+| password 
+
+|PG_DATABASE
+| the name of the the normal user database which will be created
+| userdb
+ 
+|PG_ROOT_PASSWORD
+| the password of the postgres user
+| password 
+ 
+|SYNC_SLAVE
+| the name of a sync replica that will be allowed to connect if any
+| 
+
+|CCP_IMAGE_TAG
+| the image version to use for the container 
+| rhel7-9.6-1.3.0 
+
+|CCP_IMAGE_PREFIX
+| the image prefix to use, typically the image stream prefix of your registry
+| 172.30.149.135:5000/default
+ 
+|CCP_IMAGE_NAME
+| the image name to use, either crunchy-postgres or crunchy-postgres-gis
+| crunchy-postgres
+ 
+|PVC_NAME
+| the name to assign to the PVC created for this database typically NAME-pvc
+| example-pvc
+ 
+|PVC_SIZE
+| the size of the PVC to create
+| 300M
+ 
+|PVC_ACCESS_MODE
+| the PVC access mode to use for the created PVC
+| ReadWriteMany
+ 
+|TEMP_BUFFERS
+| the postgres temp_buffers configuration setting
+| 9MB 
+
+|MAX_CONNECTIONS
+| the postgres max_connections setting
+| 101
+ 
+|SHARED_BUFFERS
+| the postgres shared_buffers configuration setting
+| 129MB
+ 
+|MAX_WAL_SENDERS
+| the postgres max_wal_senders configuration setting
+| 7 
+
+|WORK_MEM
+| the postgres work-mem configuration setting
+| 5MB 
+|===
+
+
 === Database Backup
 
 Template Name is *crunchy-backup*
@@ -120,57 +210,136 @@ created which will run the crunchy-backup container.  It
 will create a backup of a database and store the backup
 files in a PVC.
 
+.Table Template Parameters
+|===
+|Parameter|Description|Default
+
+|JOB_NAME
+| the job name
+| backupjob 
+
+|DB_NAME
+| the service name of the database to backup
+| master
+
+|PVC_NAME
+| the PVC name to use to store the backup files
+| backup-pvc
+
+|PVC_SIZE
+| the PVC size to allocate
+| 500M
+
+|PVC_ACCESS_MODE
+| the PVC access mode to use in the creation of the PVC
+| ReadWriteMany
+
+|BACKUP_USER
+| the postgres user to use when performing the backup
+| master
+
+|BACKUP_PASS
+| the postgres user password to use when performing the backup
+| master
+
+|CCP_IMAGE_PREFIX
+| the container image prefix to use, typically the registy IP address and namespace
+| 172.30.149.135:5000/default
+
+|CCP_IMAGE_TAG
+| the container image version to use
+| rhel7-9.6-1.3.0
+|===
 
 === Restore Database
 
-Template Name is *crunchy-postgres-database-restore-emptydir*
+Template Name is *crunchy-master-restore*
 
 Example is found here:
 ....
-examples/templates/master-restore
+examples/dedicated/master-restore
 ....
 
 This template will create the following:
 
- * database container (emptyDir)
+ * database container 
  * database service
 
 This example performs a database restore using a backup archive
 found in a PVC.
 
-=== crunchy-proxy 
+.Table Template Parameters
+|===
+|Parameter|Description|Default
 
-Template Name is *crunchy-proxy*
+|NAME
+| the job name
+| restoredb 
 
-Example is found here:
-....
-examples/dedicated/crunchy-proxy
-....
+|PG_MASTER_PORT
+| the postgres port to use
+| 5432
 
-This template will create the following:
+|PG_MASTER_USER
+| the user name to create and use for a master user
+| master 
 
- * crunchy-proxy container within a Deployment
- * service for crunchy-proxy
+|PG_MASTER_PASSWORD
+| the password to use for the master user
+| password 
 
-This example deploys the pgpool container and service.  The DeploymentConfig
-allows you to scale up the pgpool container.  
+|PG_USER
+| the user name to create as a normal user
+| testuser
+ 
+|PG_PASSWORD
+| the password to use for the normal user
+| password 
 
-=== pgpool 
+|PG_DATABASE
+| the name of the the normal user database which will be created
+| userdb
+ 
+|PG_ROOT_PASSWORD
+| the password of the postgres user
+| password 
 
-Template Name is *crunchy-pgpool*
+|PGDATA_PATH_OVERRIDE
+| the name to overide the pgdata path with typically the NAME value
+| restoredb
 
-Example is found here:
-....
-examples/dedicated/pgpool
-....
+|PVC_NAME
+| the PVC name to use when creating the new PVC typically NAME-pvc
+| restoredb-pvc
 
-This template will create the following:
+|PVC_SIZE
+| the PVC size to allocate
+| 500M
 
- * pgpool container within a DeploymentConfig
- * service for pgpool
+|PVC_ACCESS_MODE
+| the PVC access mode to use in the creation of the PVC
+| ReadWriteMany
 
-This example deploys the pgpool container and service.  The DeploymentConfig
-allows you to scale up the pgpool container.  
+|BACKUP_PATH
+| the backup archive path to restore from
+| master7-backups/2017-04-04-09-42-53
+
+|BACKUP_PVC
+| the backup archive PVC to restore from
+| backup-pvc
+
+|CCP_IMAGE_PREFIX
+| the container image prefix to use, typically the registy IP address and namespace
+| 172.30.149.135:5000/default
+
+|CCP_IMAGE_NAME
+| the container image name to use, must match the image name used in the original db
+| crunchy-postgres
+
+|CCP_IMAGE_TAG
+| the container image version to use
+| rhel7-9.6-1.3.0
+|===
 
 === Replica Database
 
@@ -186,24 +355,54 @@ These templates create the following:
  * replica database container using Persistent Volume CLaim
  * service for replica 
 
+.Table Template Parameters
+|===
+|Parameter|Description|Default
 
-=== Synchronous Replica Database
+|SERVICE_NAME
+| the name to use for the database service
+| replica
 
-Template Name is *crunchy-sync-replica*
+|PG_MASTER_HOST
+| the postgres master service name the replica will connect to
+| master
 
-Example is found here:
-....
-examples/dedicated/sync
-....
+|PG_MASTER_PORT
+| the postgres port to use
+| 5432
 
-This template will create the following:
+|PG_MASTER_USER
+| the user name to create and use for a master user
+| master 
 
- * PVC for the replica database
- * replica database container using PVC as the data volume
- * service to the replica database
+|PG_MASTER_PASSWORD
+| the password to use for the master user
+| password 
 
+|PVC_NAME
+| the PVC name to use when creating the new PVC typically NAME-pvc
+| restoredb-pvc
 
-This example creates a synchronous replica.
+|PVC_SIZE
+| the PVC size to allocate
+| 500M
+
+|PVC_ACCESS_MODE
+| the PVC access mode to use in the creation of the PVC
+| ReadWriteMany
+
+|CCP_IMAGE_PREFIX
+| the container image prefix to use, typically the registy IP address and namespace
+| 172.30.149.135:5000/default
+
+|CCP_IMAGE_NAME
+| the container image name to use, must match the image name used in the original db
+| crunchy-postgres
+
+|CCP_IMAGE_TAG
+| the container image version to use
+| rhel7-9.6-1.3.0
+|===
 
 === pgadmin4 Web User Interface
 
@@ -222,6 +421,36 @@ This template will create the following:
 
 
 This example creates a pgadmin4 pod and service.  
+
+.Table Template Parameters
+|===
+|Parameter|Description|Default
+
+|NAME
+| the name to use for the pgadmin4 service
+| pgadmin4
+
+|PVC_NAME
+| the name to assign to the PVC created for this pgadmin4 typically NAME-pvc
+| pgadmin4-pvc
+ 
+|PVC_SIZE
+| the size of the PVC to create
+| 300M
+ 
+|PVC_ACCESS_MODE
+| the PVC access mode to use for the created PVC
+| ReadWriteMany
+
+|CCP_IMAGE_PREFIX
+| the container image prefix to use, typically the registy IP address and namespace
+| 172.30.149.135:5000/default
+
+|CCP_IMAGE_TAG
+| the container image version to use
+| rhel7-9.6-1.3.0
+|===
+
 
 
 == Legal Notices
