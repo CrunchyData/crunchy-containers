@@ -69,6 +69,27 @@
         "name": "PG_ROOT_PASSWORD",
         "description": "The password for the PG adminitrator",
         "value": "password"
+    }, {
+        "name": "TEMP_BUFFERS",
+        "value": "9MB",
+        "description": "The postgres temp_buffers setting"
+    }, {
+        "name": "MAX_CONNECTIONS",
+        "description": "The postgres max_connections setting",
+        "value": "101"
+    }, {
+        "name": "SHARED_BUFFERS",
+        "description": "The postgres shared_buffers setting",
+        "value": "129MB"
+    }, {
+        "name": "MAX_WAL_SENDERS",
+        "description": "The postgres max_wal_senders setting",
+        "value": "7"
+    }, {
+        "name": "WORK_MEM",
+        "description": "The postgres work_mem setting",
+        "value": "5MB"
+
     }],
 
     "objects": [{
@@ -162,6 +183,21 @@
                         }, {
                             "name": "PG_ROOT_PASSWORD",
                             "value": "${PG_ROOT_PASSWORD}"
+                        }, {
+                            "name": "TEMP_BUFFERS",
+                            "value": "${TEMP_BUFFERS}"
+                        }, {
+                            "name": "MAX_CONNECTIONS",
+                            "value": "${MAX_CONNECTIONS}"
+                        }, {
+                            "name": "SHARED_BUFFERS",
+                            "value": "${SHARED_BUFFERS}"
+                        }, {
+                            "name": "MAX_WAL_SENDERS",
+                            "value": "${MAX_WAL_SENDERS}"
+                        }, {
+                            "name": "WORK_MEM",
+                            "value": "${WORK_MEM}"
                         }, {
                             "name": "PGHOST",
                             "value": "/tmp"
