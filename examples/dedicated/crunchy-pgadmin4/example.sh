@@ -12,5 +12,22 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
- 
-oc delete template crunchy-restore
+
+# this is an example of creating a postgres database using
+# the crunchy-master template from the CLI
+
+source $CCPROOT/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+PROJECT=jeff-project
+
+#oc process --parameters -n $PROJECT crunchy-pgadmin4
+
+oc process -n $PROJECT crunchy-pgadmin4 \
+	-p NAME=pgadmin4 \
+	-p CCP_IMAGE_TAG=rhel7-9.6-1.3.0 \
+	-p CCP_IMAGE_PREFIX=172.30.149.135:5000/default \
+	-p PVC_NAME=pgadmin4-pvc \
+	-p PVC_SIZE=300M \
+	-p PVC_ACCESS_MODE=ReadWriteMany 
+	| oc create -f -

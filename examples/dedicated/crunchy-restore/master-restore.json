@@ -2,9 +2,9 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-master-restore",
+        "name": "crunchy-restore",
         "annotations": {
-            "description": "Crunchy master postgres database restore from backup",
+            "description": "Crunchy postgres database restore from backup",
             "iconClass": "icon-database",
             "tags": "crunchy,database,postgresql"
         }

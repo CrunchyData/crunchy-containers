@@ -253,7 +253,7 @@ files in a PVC.
 
 === Restore Database
 
-Template Name is *crunchy-master-restore*
+Template Name is *crunchy-restore*
 
 Example is found here:
 ....
