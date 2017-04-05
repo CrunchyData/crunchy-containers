@@ -1,0 +1,40 @@
+% postgres-gis (1) Container Image Pages
+% Jeff McCormick
+% April 13, 2017
+
+# NAME
+postgres-gis \- postgres-gis container image
+
+# DESCRIPTION
+The postgres-gis image provides the open source Postgres database plus
+postgis extensions.
+
+The container itself consists of:
+    - RHEL7 base image
+    - bash script that performs the container startup
+    - postgres-gis binary packages
+
+Files added to the container during docker build include: /help.1.
+
+# USAGE
+See the crunchy docs.
+
+
+# LABELS
+The starter container includes the following LABEL settings:
+
+That atomic command runs the docker command set in this label:
+
+`Name=`
+
+The registry location and name of the image. For example, Name="crunchydata/postgres-gis".
+
+`Version=`
+
+The Red Hat Enterprise Linux version from which the container was built. For example, Version="7.2".
+
+`Release=`
+
+The specific release number of the container. For example, Release="1.3.1"
+
+

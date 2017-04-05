@@ -1,6 +1,22 @@
 FROM rhel7.2
 
-LABEL Release="1.3" Vendor="Crunchy Data Solutions" PostgresRelease="9.5"
+MAINTAINER Crunchy Data <support@crunchydata.com>
+
+LABEL name="crunchydata/backup" \
+        vendor="crunchy data" \
+	PostgresRelease="9.5" \
+        version="7.2" \
+        release="1.3" \
+        build-date="2017-04-01" \
+        url="https://crunchydata.com" \
+        summary="crunchy data backup container" \
+        description="backup container" \
+        io.k8s.description="backup container" \
+        io.k8s.display-name="Crunchy backup container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY docs/backup/help.md /tmp/
 
 # PGDG Postgres repo
 #RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm

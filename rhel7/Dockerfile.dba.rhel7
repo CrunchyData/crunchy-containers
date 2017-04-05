@@ -1,11 +1,23 @@
 FROM rhel7.2
+MAINTAINER Crunchy Data <support@crunchydata.com>
 
-LABEL Release="1.3" Vendor="Crunchy Data Solutions"
+LABEL name="crunchydata/dba" \
+	vendor="crunchy data" \
+	version="7.2" \
+	release="1.3" \
+	build-date="2017-04-01" \
+	url="https://crunchydata.com" \
+	summary="crunchy data dba container" \
+	description="DBA container" \
+	io.k8s.description="DBA container" \
+	io.k8s.display-name="Crunchy DBA container" \
+	io.openshift.expose-services="" \
+	io.openshift.tags="crunchy,database"
+
+COPY docs/dba/help.md /tmp/
 
 RUN yum -y install psmisc procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
 
-# set up cpm directory
-#
 RUN mkdir -p /opt/cpm/bin
 RUN mkdir -p /opt/cpm/conf
 

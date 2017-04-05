@@ -1,6 +1,22 @@
 FROM rhel7.2
 
-LABEL Release="1.3" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
+MAINTAINER Crunchy Data <support@crunchydata.com>
+
+LABEL name="crunchydata/watch" \
+	PostgresVersion="9.5" \
+        vendor="crunchy data" \
+        version="7.2" \
+        release="1.3" \
+        build-date="2017-04-01" \
+        url="https://crunchydata.com" \
+        summary="crunchy data watch container" \
+        description="watch container" \
+        io.k8s.description="watch container" \
+        io.k8s.display-name="Crunchy watch container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY docs/watch/help.md /tmp/
 
 # Install crunchy postgresql repo info
 ADD conf/CRUNCHY-GPG-KEY.public  /
