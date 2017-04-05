@@ -91,7 +91,7 @@ Template Name is *crunchy-master*
 
 Example is found here:
 ....
-examples/dedicated/master
+examples/dedicated/crunchy-master
 ....
 
 This template will create the following:
@@ -198,7 +198,7 @@ Template Name is *crunchy-backup*
 
 Example is found here:
 ....
-examples/dedicated/backup
+examples/dedicated/crunchy-backup
 ....
 
 This template will create the following:
@@ -257,7 +257,7 @@ Template Name is *crunchy-master-restore*
 
 Example is found here:
 ....
-examples/dedicated/master-restore
+examples/dedicated/crunchy-restore
 ....
 
 This template will create the following:
@@ -347,7 +347,7 @@ Template names is *crunchy-replica*
 
 Example is found here:
 ....
-examples/dedicated/replica
+examples/dedicated/crunchy-replica
 ....
 
 These templates create the following:
