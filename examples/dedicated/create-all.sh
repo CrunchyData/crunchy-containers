@@ -19,4 +19,5 @@ $DIR/crunchy-backup/run.sh
 $DIR/crunchy-master/run.sh
 $DIR/crunchy-replica/run.sh
 $DIR/crunchy-restore/run.sh
+$DIR/crunchy-pgadmin4/run.sh
 

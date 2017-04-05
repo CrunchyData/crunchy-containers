@@ -24,15 +24,15 @@ PROJECT=jeff-project
 #oc process --parameters -n $PROJECT crunchy-replica
 
 oc process -n $PROJECT crunchy-replica \
-	-p CCP_IMAGE_TAG=rhel7-9.6-1.3.0 \
-	-p CCP_IMAGE_PREFIX=172.30.149.135:5000/default \
-	-p CCP_IMAGE_NAME=crunchy-postgres \
-	-p SERVICE_NAME=replica \
-	-p PG_MASTER_HOST=master \
-	-p PG_MASTER_PORT=5432 \
-	-p PG_MASTER_USER=master \
-	-p PG_MASTER_PASSWORD=password \
-	-p PVC_NAME=replica-pvc \
-	-p PVC_SIZE=300M \
-	-p PVC_ACCESS_MODE=ReadWriteMany 
+	CCP_IMAGE_TAG=rhel7-9.6-1.3.0 \
+	CCP_IMAGE_PREFIX=172.30.240.45:5000/$PROJECT \
+	CCP_IMAGE_NAME=crunchy-postgres \
+	SERVICE_NAME=replica \
+	PG_MASTER_HOST=example \
+	PG_MASTER_PORT=5432 \
+	PG_MASTER_USER=master \
+	PG_MASTER_PASSWORD=password \
+	PVC_NAME=replica-pvc \
+	PVC_SIZE=300M \
+	PVC_ACCESS_MODE=ReadWriteMany \
 	| oc create -f -

@@ -24,10 +24,10 @@ PROJECT=jeff-project
 #oc process --parameters -n $PROJECT crunchy-pgadmin4
 
 oc process -n $PROJECT crunchy-pgadmin4 \
-	-p NAME=pgadmin4 \
-	-p CCP_IMAGE_TAG=rhel7-9.6-1.3.0 \
-	-p CCP_IMAGE_PREFIX=172.30.149.135:5000/default \
-	-p PVC_NAME=pgadmin4-pvc \
-	-p PVC_SIZE=300M \
-	-p PVC_ACCESS_MODE=ReadWriteMany 
+	NAME=pgadmin4 \
+	CCP_IMAGE_TAG=rhel7-9.6-1.3.0 \
+	CCP_IMAGE_PREFIX=172.30.240.45:5000/$PROJECT \
+	PVC_NAME=pgadmin4-pvc \
+	PVC_SIZE=300M \
+	PVC_ACCESS_MODE=ReadWriteMany \
 	| oc create -f -

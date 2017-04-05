@@ -24,24 +24,21 @@ PROJECT=jeff-project
 #oc process --parameters -n $PROJECT crunchy-restore
 
 oc process -n $PROJECT crunchy-restore \
-	-p NAME=restoredb \
-	-p PG_MASTER_PORT=5432 \
-	-p PG_MASTER_USER=master \
-	-p PGDATA_PATH_OVERRIDE=example \
-	-p PG_MASTER_PASSWORD=password \
-	-p PG_USER=testuser \
-	-p PG_PASSWORD=password \
-	-p PG_DATABASE=userdb \
-	-p PG_ROOT_PASSWORD=password \
-	-p CCP_IMAGE_TAG=rhel7-9.6-1.3.0 \
-	-p CCP_IMAGE_PREFIX=172.30.149.135:5000/default \
-	-p CCP_IMAGE_NAME=crunchy-postgres \
-	-p PVC_NAME=restoredb-pvc \
-	-p PVC_SIZE=300M \
-	-p PVC_ACCESS_MODE=ReadWriteMany \
-	-p TEMP_BUFFERS=9MB \
-	-p MAX_CONNECTIONS=101 \
-	-p SHARED_BUFFERS=129MB \
-	-p MAX_WAL_SENDERS=7 \
-	-p WORK_MEM=5MB \
+	NAME=restoredb \
+	PG_MASTER_PORT=5432 \
+	PG_MASTER_USER=master \
+	PGDATA_PATH_OVERRIDE=example \
+	PG_MASTER_PASSWORD=password \
+	PG_USER=testuser \
+	PG_PASSWORD=password \
+	PG_DATABASE=userdb \
+	PG_ROOT_PASSWORD=password \
+	CCP_IMAGE_TAG=rhel7-9.6-1.3.0 \
+	CCP_IMAGE_PREFIX=172.30.240.45:5000/$PROJECT \
+	CCP_IMAGE_NAME=crunchy-postgres \
+	BACKUP_PATH=example-backups/2017-04-05-13-25-51 \
+	BACKUP_PVC=backup-pvc \
+	PVC_NAME=restoredb-pvc \
+	PVC_SIZE=300M \
+	PVC_ACCESS_MODE=ReadWriteMany \
 	| oc create -f -
