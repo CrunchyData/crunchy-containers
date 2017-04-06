@@ -1,0 +1,72 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Job",
+    "metadata": {
+        "name": "upgrade-job"
+    },
+    "spec": {
+        "selector": {
+            "matchLabels": {
+                "app": "upgrade-job"
+            }
+        },
+        "template": {
+            "metadata": {
+                "name": "upgrade-job",
+                "labels": {
+                    "app": "upgrade-job"
+                }
+            },
+            "spec": {
+                "volumes": [
+{
+                    "name": "pgolddata",
+                    "persistentVolumeClaim": {
+                        "claimName": "crunchy-pvc"
+                    }
+                },
+{
+                    "name": "pgnewdata",
+                    "persistentVolumeClaim": {
+                        "claimName": "crunchy-pvc2"
+                    }
+                }
+],
+                "securityContext": {
+                    "supplementalGroups": [65534]
+                },
+                "containers": [{
+                    "name": "upgrade-job",
+                    "image": "crunchydata/crunchy-upgrade:$CCP_IMAGE_TAG",
+                    "volumeMounts": [
+{
+                        "mountPath": "/pgolddata",
+                        "name": "pgolddata",
+                        "readOnly": true
+                    },
+{
+                        "mountPath": "/pgnewdata",
+                        "name": "pgnewdata",
+                        "readOnly": false
+                    }
+],
+                    "env": [{
+                        "name": "OLD_DATABASE_NAME",
+                        "value": "basic"
+                    }, {
+                        "name": "NEW_DATABASE_NAME",
+                        "value": "master"
+                    }, {
+                        "name": "OLD_VERSION",
+                        "value": "9.5"
+                    }, {
+                        "name": "NEW_VERSION",
+                        "value": "9.6"
+                    }
+                    ]
+                }],
+                "restartPolicy": "Never"
+            }
+        }
+    }
+}

@@ -106,7 +106,7 @@ watch:
 #============
 # All target
 #============
-all:	pgadmin4 backup collectserver dbaserver grafana pgbadger pgbouncer pgpool postgres postgres-gis prometheus promgateway watch vac upgrade
+all:	pgadmin4 backup collectserver dbaserver grafana pgbadger pgbouncer pgpool postgres postgres-gis prometheus promgateway watch vac
 
 push:
 	./bin/push-to-dockerhub.sh

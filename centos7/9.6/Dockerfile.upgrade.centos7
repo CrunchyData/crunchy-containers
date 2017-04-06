@@ -1,0 +1,32 @@
+FROM centos:7
+
+LABEL Release="1.3" Vendor="Crunchy Data Solutions" PostgresVersion="9.6"
+
+ENV PGVERSION="9.6" \
+	PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+
+# PGDG Postgres repo
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum install -y epel-release \
+ && yum -y update glibc-common \
+ && yum install -y bind-utils \
+	gettext \
+	hostname \
+ 	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+	unzip \
+ && yum -y install postgresql96 postgresql96-server \
+ && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin /pgdata /opt/cpm/conf
+ADD bin/upgrade/ /opt/cpm/bin
+ADD conf/upgrade/ /opt/cpm/conf
+RUN chown -R postgres:postgres /opt/cpm /pgdata
+
+VOLUME ["/pgolddata", "/pgnewdata"]
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]
