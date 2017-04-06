@@ -17,7 +17,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-sudo cp $DIR/pgbackrest.conf $NFS_PATH
+#sudo cp $DIR/pgbackrest.conf $NFS_PATH
+kubectl create configmap backrestconf --from-file=pgbackrest.conf
 
 envsubst < $DIR/master-pod.json | kubectl create -f -
 kubectl create -f $DIR/master-service.json 

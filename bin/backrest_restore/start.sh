@@ -26,3 +26,4 @@ fi
 echo "Starting restore. Examine restore log in /backrestrepo for results"
 
 pgbackrest --config=/pgconf/pgbackrest.conf --stanza=$STANZA --log-path=/backrestrepo restore
+exit 0
