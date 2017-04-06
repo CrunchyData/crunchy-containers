@@ -19,6 +19,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 kubectl delete service master-backrest
 kubectl delete pod master-backrest
 
-sudo rm $NFS_PATH/pgbackrest.conf
-sudo rm -rf $NFS_PATH/archive $NFS_PATH/backup
+sudo NFS_PATH=$NFS_PATH rm $NFS_PATH/pgbackrest.conf
+sudo NFS_PATH=$NFS_PATH rm -rf $NFS_PATH/archive $NFS_PATH/backup
 

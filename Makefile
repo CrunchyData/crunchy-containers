@@ -21,6 +21,10 @@ docbuild:
 #=============================================
 # Targets that generate images (alphabetized)
 #=============================================
+upgrade: versiontest
+	docker build -t crunchy-upgrade -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.upgrade.$(CCP_BASEOS) .
+	docker tag crunchy-upgrade crunchydata/crunchy-upgrade:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
+
 backup:	versiontest
 	docker build -t crunchy-backup -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backup.$(CCP_BASEOS) .
 	docker tag crunchy-backup crunchydata/crunchy-backup:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
@@ -102,7 +106,7 @@ watch:
 #============
 # All target
 #============
-all:	pgadmin4 backup collectserver dbaserver grafana pgbadger pgbouncer pgpool postgres postgres-gis prometheus promgateway watch vac
+all:	pgadmin4 backup collectserver dbaserver grafana pgbadger pgbouncer pgpool postgres postgres-gis prometheus promgateway watch vac upgrade
 
 push:
 	./bin/push-to-dockerhub.sh
