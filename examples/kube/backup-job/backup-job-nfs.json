@@ -1,15 +1,10 @@
 {
-    "apiVersion": "extensions/v1beta1",
+    "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {
         "name": "backup-job-nfs"
     },
     "spec": {
-        "selector": {
-            "matchLabels": {
-                "app": "backup-job-nfs"
-            }
-        },
         "template": {
             "metadata": {
                 "name": "backup-job-nfs",

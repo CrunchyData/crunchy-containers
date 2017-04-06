@@ -13,18 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-function trap_sigterm() {
-	echo "doing trap logic..."  >> /tmp/trap.out
-	shutdownrequested=true
-}
-
-trap 'trap_sigterm' SIGINT SIGTERM
-shutdownrequested=false
-
-date
-
-source /opt/cpm/bin/setenv.sh
-
 echo STANZA $STANZA set
 if [ ! -v STANZA ]; then
 	echo "STANZA env var is not set, required value"
@@ -32,14 +20,10 @@ if [ ! -v STANZA ]; then
 fi
 
 echo "Starting restore. Examine restore log in /backrestrepo for results"
+date
 
 pgbackrest --config=/pgconf/pgbackrest.conf --stanza=$STANZA --log-path=/backrestrepo restore
 
-while true; do 
-	if [ "$shutdownrequested" = true ] ; then
-		echo "doing shutdown..."
-		exit 0
-	fi
-	echo "Restore completed, sleeping..."
-	sleep 600
-done
+echo "Completed restore at " `date`
+echo "See /backrestrepo restore log for details"
+exit 0
