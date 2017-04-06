@@ -27,7 +27,7 @@ if [ "$1" == "hostpath" ]; then
 	do
 		echo "creating PV crunchy-pv-$i"
 		export COUNTER=$i
-		envsubst < $DIR/hostpath/crunchy-pv2.json | $CCP_CLI create -f -
+		envsubst < $DIR/hostpath/crunchy-pv.json | $CCP_CLI create -f -
 	done
 else
 	echo "creating NFS PVs"
@@ -35,7 +35,7 @@ else
 	do
 		echo "creating PV crunchy-pv-$i"
 		export COUNTER=$i
-		envsubst < $DIR/nfs/crunchy-pv2.json | $CCP_CLI create -f -
+		envsubst < $DIR/nfs/crunchy-pv.json | $CCP_CLI create -f -
 	done
 
 fi

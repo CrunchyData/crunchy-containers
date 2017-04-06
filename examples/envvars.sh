@@ -19,7 +19,7 @@
 
 export CCP_CLI=oc
 export NAMESPACE=default
-export NFS_PATH=/nfsfileshare
+export NFS_PATH=/data
 export LOCAL_IP=`hostname --ip-address`
 
 if [ -v $CCP_IMAGE_TAG ]; then
