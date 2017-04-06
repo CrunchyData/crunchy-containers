@@ -1,1 +1,1 @@
-archive_command = 'pgbackrest --config=/pgconf/pgbackrest.conf --stanza=db archive-push %p'
+archive_command = 'pgbackrest --log-path=/backrestrepo/ --config=/pgconf/pgbackrest.conf --stanza=db archive-push %p'

@@ -140,6 +140,7 @@ function initdb_logic() {
 	cp /opt/cpm/conf/pg_hba.conf /tmp
 	sed -i "s/PG_MASTER_USER/$PG_MASTER_USER/g" /tmp/pg_hba.conf
 	cp /tmp/pg_hba.conf $PGDATA
+
 }
 
 function check_for_restore() {
@@ -345,6 +346,11 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
                 fi
                 sleep 2
         done
+
+	if [ -f /pgconf/pgbackrest.conf ]; then
+		echo "creating stanza..."
+		pgbackrest --log-path=/backrestrepo --config=/pgconf/pgbackrest.conf --stanza=db stanza-create
+	fi
 	
         echo "loading setup.sql" >> /tmp/start-db.log
 	cp /opt/cpm/bin/setup.sql /tmp

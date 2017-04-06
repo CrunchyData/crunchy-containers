@@ -12,5 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+source $CCPROOT/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 kubectl delete service master-backrest
 kubectl delete pod master-backrest
+
+sudo rm $NFS_PATH/pgbackrest.conf
+sudo rm -rf $NFS_PATH/archive $NFS_PATH/backup
+

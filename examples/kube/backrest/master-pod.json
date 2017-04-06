@@ -9,7 +9,6 @@
     },
     "spec": {
         "securityContext": {
-            "supplementalGroups": [65534]
         },
         "containers": [{
             "name": "master-backrest",
