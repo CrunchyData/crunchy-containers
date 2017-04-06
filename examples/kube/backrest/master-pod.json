@@ -70,7 +70,7 @@
         "volumes": [{
             "name": "pgconf",
             "configMap": {
-                "name": "bconf"
+                "name": "backrestconf"
             }
         }, {
             "name": "backrestrepo",
