@@ -15,6 +15,16 @@
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$CCP_CLI delete pv $(oc get pv | cut -f1 -d' ')
+$CCP_CLI delete pv $($CCP_CLI get pv | cut -f1 -d' ')
 
-
+if hash gcloud 2>/dev/null; then
+	end_disk=""
+	for i in {1..3}
+	do
+		export COUNTER=$i
+		disk="$GCE_DISK_NAME-$COUNTER"
+		end_disk="$disk $end_disk"
+	done
+	gcloud compute disks delete $end_disk << EOF 
+EOF
+fi

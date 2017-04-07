@@ -15,28 +15,57 @@
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-for i in {1..15}
-do
-	echo "deleting PV crunchy-pv-$i"
-	$CCP_CLI delete pv crunchy-pv-$i
-done
+function cleanup {
+	for i in {1..15}
+	do
+		echo "deleting PV crunchy-pv$i"
+		$CCP_CLI delete pv crunchy-pv$i
+	done
+}
 
 if [ "$1" == "hostpath" ]; then
+	cleanup
 	echo "creating hostPath PVs"
 	for i in {1..15}
 	do
-		echo "creating PV crunchy-pv-$i"
+		echo "creating PV crunchy-pv$i"
 		export COUNTER=$i
 		envsubst < $DIR/hostpath/crunchy-pv.json | $CCP_CLI create -f -
 	done
-else
+elif [ "$1" == "nfs" ]; then
+	cleanup
 	echo "creating NFS PVs"
 	for i in {1..15}
 	do
-		echo "creating PV crunchy-pv-$i"
+		echo "creating PV crunchy-pv$i"
 		export COUNTER=$i
 		envsubst < $DIR/nfs/crunchy-pv.json | $CCP_CLI create -f -
 	done
-
+elif [ "$1" == "gce" ]; then
+	cleanup
+	echo "cleanup disks gce"
+	for i in {1..3}
+	do
+		export COUNTER=$i
+		disk="$GCE_DISK_NAME-$COUNTER"
+		end_disk="$disk $end_disk"
+	done
+	gcloud compute disks delete $end_disk << EOF 
+EOF
+	echo "creating gcePersistentDisk PVs"
+	for i in {1..3}
+	do
+		FS_FORMAT="ext4"
+		echo "creating PV crunchy-pv$i"
+		export COUNTER=$i
+		gcloud compute disks create "$GCE_DISK_NAME-$COUNTER" --size=$GCE_DISK_SIZE"GB" --zone=$GCE_DISK_ZONE
+		envsubst < $DIR/gce/crunchy-pv.json | $CCP_CLI create -f -
+	done
+else
+	echo "Command Line Arguments:"
+	for i in "- hostPath" "- nfs" "- gce"
+	do
+		echo $i
+	done
 fi
 
