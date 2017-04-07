@@ -16,6 +16,9 @@
             },
             "spec": {
         	"serviceAccount": "pgset-sa",
+            "securityContext": {
+                "fsGroup": 26
+            },
                 "containers": [{
                     "name": "pgset",
                     "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",

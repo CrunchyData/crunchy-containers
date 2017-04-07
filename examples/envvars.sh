@@ -17,9 +17,13 @@
 # set up some env vars that all examples can relate to
 #
 
-export CCP_CLI=oc
+export CCP_CLI=kubectl
 export NAMESPACE=default
 export NFS_PATH=/nfsfileshare
+export GCE_DISK_ZONE=us-central1-a
+export GCE_DISK_NAME=gce-disk-crunchy
+export GCE_DISK_SIZE=4
+export GCE_FS_FORMAT=ext4
 export LOCAL_IP=`hostname --ip-address`
 
 if [ -v $CCP_IMAGE_TAG ]; then
