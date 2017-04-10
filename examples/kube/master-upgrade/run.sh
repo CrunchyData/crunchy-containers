@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 Crunchy Data Solutions, Inc.
+# Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,9 +15,7 @@
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$CCP_CLI delete pvc crunchy-pvc crunchy-pvc2 crunchy-pvc3 
+$DIR/cleanup.sh
 
-$CCP_CLI create -f $DIR/crunchy-pvc.json
-$CCP_CLI create -f $DIR/crunchy-pvc2.json
-$CCP_CLI create -f $DIR/crunchy-pvc3.json
-
+envsubst < $DIR/master-upgrade-pod.json | kubectl create -f -
+kubectl create -f $DIR/master-upgrade-service.json 

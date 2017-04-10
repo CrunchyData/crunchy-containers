@@ -19,7 +19,8 @@
 
 export CCP_CLI=kubectl
 export NAMESPACE=default
-export NFS_PATH=/nfsfileshare
+#export NFS_PATH=/nfsfileshare
+export NFS_PATH=/data
 export GCE_DISK_ZONE=us-central1-a
 export GCE_DISK_NAME=gce-disk-crunchy
 export GCE_DISK_SIZE=4
@@ -27,7 +28,7 @@ export GCE_FS_FORMAT=ext4
 export LOCAL_IP=`hostname --ip-address`
 
 if [ -v $CCP_IMAGE_TAG ]; then
-	export CCP_IMAGE_TAG=centos7-9.5-1.2.2
+	export CCP_IMAGE_TAG=centos7-9.5-1.3.0
 	echo "CCP_IMAGE_TAG was not found...using current tag of " $CCP_IMAGE_TAG
 fi
 

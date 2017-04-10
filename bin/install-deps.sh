@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-sudo yum -y install net-tools bind-utils wget unzip git golang postgresql
+sudo yum -y install net-tools bind-utils wget unzip git postgresql
+
+#sudo yum -y install golang
 
 #
 # download the metrics products, only required to build the containers
@@ -73,7 +75,11 @@ tar xvzf /tmp/$FILE  -C /tmp
 sudo cp /tmp/openshift-origin-client-tools-v1.4.1+3f9807a-linux-64bit/oc /usr/bin/oc
 
 #
-# install kubectl binary into /usr/bin
+# install kubectl binary into /usr/bin...be careful wit this if
+# you are are developing on a kube box, this command can mess up
+# your kube environment...if you are building images, you should
+# use the kubectl command that your kube installer has provided instead
+# of installing this one from kubernetes-client
 #
-sudo yum -y install kubernetes-client
+#sudo yum -y install kubernetes-client
 fi

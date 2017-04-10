@@ -25,6 +25,13 @@
 # $NEW_VERSION (e.g. 9.6)
 #
 
+function trap_sigterm() {
+        echo "doing trap logic..." >> $PGDATA/trap.output
+	kill -SIGINT `head -1 $PGDATA/postmaster.pid` >> $PGDATA/trap.output
+}
+
+trap 'trap_sigterm' SIGINT SIGTERM
+
 if [[ ! -v "OLD_VERSION" ]]; then
 	echo "OLD_VERSION env var is not set, it is required"
 	exit 2
@@ -33,23 +40,24 @@ if [[ ! -v "NEW_VERSION" ]]; then
 	echo "NEW_VERSION env var is not set, it is required"
 	exit 2
 fi
-if [[ ! -v "NEW_DATABASE_NAME" ]]; then
-	echo "NEW_DATABASE_NAME env var is not set, it is required"
-	exit 2
-fi
 if [[ ! -v "OLD_DATABASE_NAME" ]]; then
 	echo "OLD_DATABASE_NAME env var is not set, it is required"
 	exit 2
 fi
-export OLD_DATA=/pgolddata/$OLD_DATABASE_NAME
-if [[ ! -d "OLD_DATA" ]]; then
-	echo $OLD_DATA " does not exist and is required"
+if [[ ! -v "NEW_DATABASE_NAME" ]]; then
+	echo "NEW_DATABASE_NAME env var is not set, it is required"
 	exit 2
 fi
-export NEW_DATA=/pgnewdata/$NEW_DATABASE_NAME
-if [[ ! -d "NEW_DATA" ]]; then
-	echo $NEW_DATA " does not exist and is required"
-	exit 2
+
+export PGDATAOLD=/pgolddata/$OLD_DATABASE_NAME
+if [[ ! -d "$PGDATAOLD" ]]; then
+	echo $PGDATAOLD " does not exist and is required"
+#	exit 2
+fi
+export PGDATANEW=/pgnewdata/$NEW_DATABASE_NAME
+if [[ ! -d "$PGDATANEW" ]]; then
+	echo $PGDATANEW " does not exist and is required"
+#	exit 2
 fi
 
 function ose_hack() {
@@ -68,28 +76,59 @@ ose_hack
 
 case $NEW_VERSION in
 "9.6")
-	echo "setting POSTGRES to " $NEW_VERSION
-        export PGROOT=/usr/pgsql-9.6
+	echo "setting PGBINNEW to " $NEW_VERSION
+	export PGBINNEW=/usr/pgsql-9.6/bin
+	export LD_LIBRARY_PATH=/usr/pgsql-9.6/lib
 	;;
 "9.5")
-	echo "setting POSTGRES to " $NEW_VERSION
-        export PGROOT=/usr/pgsql-9.5
+	echo "setting PGBINNEW to " $NEW_VERSION
+	export PGBINNEW=/usr/pgsql-9.5/bin
+	export LD_LIBRARY_PATH=/usr/pgsql-9.5/lib
 	;;
 *)
 	echo "unsupported NEW_VERSION of " $NEW_VERSION
         exit 2
 	;;
 esac
+case $OLD_VERSION in
+"9.6")
+	echo "setting PGBINOLD to " $OLD_VERSION
+	export PGBINOLD=/usr/pgsql-9.6/bin
+	;;
+"9.5")
+	echo "setting PGBINOLD to " $OLD_VERSION
+	export PGBINOLD=/usr/pgsql-9.5/bin
+	;;
+*)
+	echo "unsupported OLD_VERSION of " $OLD_VERSION
+        exit 2
+	;;
+esac
 
-echo "setting PGROOT to " $PGROOT
 
-export PATH=/opt/cpm/bin:$PGROOT/bin:$PATH
-export LD_LIBRARY_PATH=$PGROOT/lib
+export PATH=/opt/cpm/bin:$PGBINNEW:$PATH
 
 env
+
+# create a clean new data directory
+$PGBINNEW/initdb -D $PGDATANEW
+
+# get the old config files and use those in the new database
+cp $PGDATAOLD/postgresql.conf  $PGDATANEW
+cp $PGDATAOLD/pg_hba.conf  $PGDATANEW
+
+# remove the old postmaster.pid 
+rm $PGDATAOLD/postmaster.pid
+
+# changing to /tmp is necessary since pg_upgrade has to have write access
+cd /tmp
+
+$PGBINNEW/pg_upgrade
 
 while true; do
 	sleep 1000
 done
+
+wait
 
 echo "upgrade has ended!"
