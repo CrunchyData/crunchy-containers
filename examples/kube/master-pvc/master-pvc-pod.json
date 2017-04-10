@@ -9,9 +9,7 @@
     },
     "spec": {
         "securityContext": {
-            "supplementalGroups": [65534]
         },
-
         "containers": [{
             "name": "master-pvc",
             "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
