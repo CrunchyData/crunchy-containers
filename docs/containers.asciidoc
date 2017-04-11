@@ -539,6 +539,36 @@ The following features are supported by the crunchy-pgadmin4 container:
 
  * na
 
+== crunchy-upgrade
+
+The crunchy-upgrade container contains both the 9.5 and 9.6
+Postgres packages in order to perform a pg_upgrade from 
+a 9.5 to a 9.6 version.
+
+=== Environment Variables
+ 
+ * OLD_DATABASE_NAME - required, refers to the database (pod) name 
+   that we want to convert
+ * NEW_DATABASE_NAME - required, refers to the database (pod) name
+   that we give to the upgraded database
+ * OLD_VERSION - required, the Postgres version of the old database
+ * NEW_VERSION - required, the Postgres version of the new database
+
+=== Features
+
+The following features are supported by the crunchy-upgrade container:
+
+ * supports only a pg_upgrade of the Postgres database
+ * doesn't alter the old database files
+ * creates the new database directory
+
+=== Restrictions
+
+ * does NOT support a postgis upgrade currently
+ * all environment variables are required
+ * only supports a 9.5 to 9.6 upgrade
+
+
 == Legal Notices 
 
 Copyright © 2017 Crunchy Data Solutions, Inc.

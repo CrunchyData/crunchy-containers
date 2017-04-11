@@ -678,6 +678,45 @@ If you delete the master pod, the Deployment will create another
 pod for the master, and will be able to start up immediatedly since
 we are using the same /pgdata/master-dc data directory.
 
+=== upgrade
+
+Starting in release 1.3.1, the upgrade container will let
+you perform a pg_upgrade on a 9.5 database converting its data
+to a 9.6 version.
+
+This example assumes you have run *master-pvc* using a 9.5 image
+such as *centos7-9.5-1.2.8* prior to running this upgrade.
+
+Prior to starting this example, shut down the *master-pvc* database
+using the *examples/kube/master-pvc/cleanup.sh* script.
+
+Prior to running this example, make sure your CCP_IMAGE_TAG 
+environment variable is using a 9.6 image such as *centos7-9.6-1.3.0*.
+
+Start the upgrade as follows:
+....
+cd $CCPROOT/examples/kube/upgrade
+./run.sh
+....
+
+This will create the following in your Kube environment:
+ * a Kube Job running the *crunchy-upgrade* container
+ * a new data directory name *master-upgrade* found in the *pgnewdata*
+ PVC
+
+If successful, the Job will end with a Successful status, verify
+the results of the Job by examining the Job's pod log:
+....
+kubectl get pod -a -l job-name=upgrade-job
+kubectl logs -l job-name=upgrade-job
+....
+
+You can verify the upgraded database by running the 
+*examples/kube/master-upgrade*
+example, this example will mount the newly created and upgraded
+database files.  Database tables and data that were in the *master-pvc*
+test database should be found in the *master-upgrade* database.
+
 === Tip 1
 
 create a static route from your host to 10.0.0.0/16 if you

@@ -23,7 +23,7 @@ RUN yum -y install epel-release \
 RUN yum -y install postgresql95-server postgresql95-contrib postgresql95 \
 	pgaudit_95 \
 	pgbackrest \
-	postgis2_95 postgis2_95-client pgrouting_95 \
+	postgis2_95 postgis2_95-client  \
  && yum -y clean all
 
 ENV	PGROOT="/usr/pgsql-${PGVERSION}"

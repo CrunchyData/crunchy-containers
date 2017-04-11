@@ -125,9 +125,9 @@ cd /tmp
 
 $PGBINNEW/pg_upgrade
 
-while true; do
-	sleep 1000
-done
+#while true; do
+#	sleep 1000
+#done
 
 wait
 
