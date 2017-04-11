@@ -38,7 +38,9 @@ export CCP_VERSION=1.2.8
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PGVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 ....
-
+You will then need to restart your computer for the changes to your .bashrc
+file to take effect.
+....
 Next, set up a project directory structure and pull down the project:
 ....
 mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
@@ -120,7 +122,7 @@ To install an Openshift environment, continue on to Step 4.
 
 === Step 4 - Openshift Enterprise Installation
 
-See the OSE installation guide for details on how to install 
+See the OSE installation guide for details on how to install
 OSE on your host.  The main instructions are here:
 
 https://docs.openshift.com/enterprise/3.2/install_config/install/index.html
@@ -173,7 +175,7 @@ server=/local/127.0.0.1#53
 server=/17.30.172.in-addr.arpa/127.0.0.1#53
 ....
 
-Within the /etc/origin/master/master-config.yaml I use the 
+Within the /etc/origin/master/master-config.yaml I use the
 following:
 ....
   bindAddress: 127.0.0.1:53
@@ -207,7 +209,7 @@ oc login -u system:admin
 oc project openshift
 ....
 
-The most recent DNS related configuration files that I test with 
+The most recent DNS related configuration files that I test with
 are included in the $CCPROOT/docs/openshift-install directory
 as a reference.
 
@@ -222,7 +224,7 @@ You can make Openshift run as the Postgres UID if you set the *runAsUser* securi
 as follows:
 ....
 oc login -u system:admin
-oc edit scc restricted 
+oc edit scc restricted
 ....
 
 === Step 6 - Configure NFS for Persistence Examples
@@ -369,12 +371,12 @@ To perform a database restore, we do the following:
  * edit a PV to specify a unique label
  * create the PV
  * edit a PVC to use the previously created PV, specifying the same label
-   used in the PV 
+   used in the PV
  * edit a database template, specifying the PVC to be used for mounting
    to the /backup directory in the database pod
  * create the database pod
 
-If the /pgdata directory is blank AND the /backup directory contains 
+If the /pgdata directory is blank AND the /backup directory contains
 a valid postgres backup, it is assumed the user wants to perform a
 database restore.
 
@@ -468,4 +470,3 @@ Copyright © 2017 Crunchy Data Solutions, Inc.
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
-
