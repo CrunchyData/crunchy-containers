@@ -553,6 +553,12 @@ a 9.5 to a 9.6 version.
    that we give to the upgraded database
  * OLD_VERSION - required, the Postgres version of the old database
  * NEW_VERSION - required, the Postgres version of the new database
+ * PG_LOCALE - if set, the locale you want to create the database with, if
+   not set, the default locale is used
+ * CHECKSUMS - if set, this value is used to enable the *--data-checksums*
+   option when initdb is executed at initialization, if not set, the
+   default is to *not* enable data checksums
+ * XLOGDIR - if set, initdb will use the specified directory for WAL
 
 === Features
 

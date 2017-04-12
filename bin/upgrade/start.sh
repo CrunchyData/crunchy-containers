@@ -111,7 +111,23 @@ export PATH=/opt/cpm/bin:$PGBINNEW:$PATH
 env
 
 # create a clean new data directory
-$PGBINNEW/initdb -D $PGDATANEW
+options=" "
+if [[ -v PG_LOCALE ]]; then
+	options+=" --locale="$PG_LOCALE
+fi
+if [[ -v XLOGDIR ]]; then
+	if [ -d "$XLOGDIR" ]; then
+		options+=" --xlogdir="$XLOGDIR
+	else
+		echo "XLOGDIR not found! Using default pg_xlog"
+	fi
+fi
+if [[ -v CHECKSUMS ]]; then
+	options+=" --data-checksums"
+fi
+
+echo "using " $options " for initdb options"
+$PGBINNEW/initdb -D $PGDATANEW $options
 
 # get the old config files and use those in the new database
 cp $PGDATAOLD/postgresql.conf  $PGDATANEW
@@ -124,11 +140,19 @@ rm $PGDATAOLD/postmaster.pid
 cd /tmp
 
 $PGBINNEW/pg_upgrade
+rc=$?
+if (( $rc ==  0 )); then
+	echo "Successfully performed upgrade"
+else
+	echo "error in upgrade rc=" $rc
+fi
 
-while true; do
-	sleep 1000
-done
+exit $rc
 
-wait
+#while true; do
+#	sleep 1000
+#done
 
-echo "upgrade has ended!"
+#wait
+
+
