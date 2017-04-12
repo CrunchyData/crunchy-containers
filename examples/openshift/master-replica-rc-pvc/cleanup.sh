@@ -25,4 +25,4 @@ $CCPROOT/examples/waitforterm.sh m-s-rc-pvc-replica oc
 oc delete service m-s-rc-pvc-master
 oc delete service m-s-rc-pvc-replica
 
-sudo rm -rf $NFS_PATH/m-s-rc-pvc*
+sudo rm -rf $PV_PATH/m-s-rc-pvc*

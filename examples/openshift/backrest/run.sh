@@ -18,7 +18,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-sudo DIR=$DIR NFS_PATH=$NFS_PATH cp $DIR/pgbackrest.conf $NFS_PATH
+sudo DIR=$DIR PV_PATH=$PV_PATH cp $DIR/pgbackrest.conf $PV_PATH
 
 oc process -f $DIR/master-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
 

@@ -19,5 +19,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 oc delete service master-backrest
 oc delete pod master-backrest
 
-sudo NFS_PATH=$NFS_PATH  rm  -rf $NFS_PATH/archive $NFS_PATH/backup
-sudo rm $NFS_PATH/pgbackrest.conf
+sudo PV_PATH=$PV_PATH  rm  -rf $PV_PATH/archive $PV_PATH/backup
+sudo rm $PV_PATH/pgbackrest.conf

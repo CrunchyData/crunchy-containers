@@ -317,7 +317,7 @@ proxy to a postgres cluster (master and replica).
 *crunchy-proxy* offers a high performance alternative to
 pgbouncer and pgpool.
 
-The proxy example copies a configuration file to the NFS_PATH
+The proxy example copies a configuration file to the PV_PATH
 and starts up the *crunchy-proxy* within a Deployment.
 
 If you run the example in minikube, you will need to manually

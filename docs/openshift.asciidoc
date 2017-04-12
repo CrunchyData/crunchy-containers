@@ -844,7 +844,7 @@ depends upon the *master-replica* example being run prior.
 *crunchy-proxy* offers a high performance alternative to
 pgbouncer and pgpool.
 
-The proxy example copies a configuration file to the NFS_PATH
+The proxy example copies a configuration file to the PV_PATH
 and starts up the *crunchy-proxy* within a Deployment.
 
 The proxy reads the configuration file from a */config* volume

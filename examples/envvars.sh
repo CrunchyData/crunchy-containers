@@ -19,8 +19,8 @@
 
 export CCP_CLI=kubectl
 export NAMESPACE=default
-#export NFS_PATH=/nfsfileshare
-export NFS_PATH=/data
+#export PV_PATH=/nfsfileshare
+export PV_PATH=/data
 export GCE_DISK_ZONE=us-central1-a
 export GCE_DISK_NAME=gce-disk-crunchy
 export GCE_DISK_SIZE=4

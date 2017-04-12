@@ -20,7 +20,7 @@ oc delete service csmaster
 oc delete service csreplica
 oc delete pod csmaster
 oc delete pod cssyncreplica
-sudo rm $NFS_PATH/postgresql.conf $NFS_PATH/setup.sql $NFS_PATH/pg_hba.conf
+sudo rm $PV_PATH/postgresql.conf $PV_PATH/setup.sql $PV_PATH/pg_hba.conf
 
 $CCPROOT/examples/waitforterm.sh csmaster oc
 $CCPROOT/examples/waitforterm.sh cssyncreplica oc

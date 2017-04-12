@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-sudo rm -rf $NFS_PATH/pgadmin4
+sudo rm -rf $PV_PATH/pgadmin4
 
 kubectl delete service pgadmin4
 kubectl delete pod pgadmin4

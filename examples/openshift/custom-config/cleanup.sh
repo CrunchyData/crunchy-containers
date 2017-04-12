@@ -21,9 +21,9 @@ CONTAINER=custom-config
 oc delete service $CONTAINER
 oc delete pod $CONTAINER
 
-sudo rm $NFS_PATH/setup.sql
-sudo rm $NFS_PATH/pg_hba.conf
-sudo rm $NFS_PATH/postgresql.conf
-sudo rm -rf $NFS_PATH/$CONTAINER
+sudo rm $PV_PATH/setup.sql
+sudo rm $PV_PATH/pg_hba.conf
+sudo rm $PV_PATH/postgresql.conf
+sudo rm -rf $PV_PATH/$CONTAINER
 
 $CCPROOT/examples/waitforterm.sh custom-config oc

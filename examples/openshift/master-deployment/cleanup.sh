@@ -16,7 +16,7 @@ source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-sudo rm -rf $NFS_PATH/master-dc
+sudo rm -rf $PV_PATH/master-dc
 
 oc delete service master-dc replica-dc
 oc delete deployments master-dc replica-dc

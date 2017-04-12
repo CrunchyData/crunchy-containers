@@ -17,14 +17,14 @@ source $CCPROOT/examples/envvars.sh
 
 echo "this example depends upon the master-replica example being run prior!"
 
-CONFIGDIR=$NFS_PATH/bouncerconfig
+CONFIGDIR=$PV_PATH/bouncerconfig
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
 echo "this example depends upon the master-replica example being run prior!"
 
-CONFIGDIR=$NFS_PATH/bouncerconfig
+CONFIGDIR=$PV_PATH/bouncerconfig
 sudo rm -rf $CONFIGDIR
 sudo mkdir $CONFIGDIR
 sudo chmod 777 $CONFIGDIR

@@ -20,4 +20,4 @@ oc delete pod master-pvc
 
 $CCPROOT/examples/waitforterm.sh master-pvc oc
 
-sudo rm -rf $NFS_PATH/master-pvc
+sudo rm -rf $PV_PATH/master-pvc

@@ -15,8 +15,8 @@
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-echo NFS_PATH is $NFS_PATH
-sudo rm -rf $NFS_PATH/master-restore-pvc
+echo PV_PATH is $PV_PATH
+sudo rm -rf $PV_PATH/master-restore-pvc
 
 oc delete pod master-restore-pvc
 oc delete service master-restore-pvc

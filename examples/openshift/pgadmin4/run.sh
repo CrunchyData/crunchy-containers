@@ -18,7 +18,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-DATADIR=$NFS_PATH/pgadmin4
+DATADIR=$PV_PATH/pgadmin4
 
 if [ ! -d "$DATADIR" ]; then
 	echo "setting up pg4admin data directory...."

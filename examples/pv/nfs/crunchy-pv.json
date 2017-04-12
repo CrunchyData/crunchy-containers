@@ -10,7 +10,7 @@
     },
     "accessModes": [ "ReadWriteMany" ],
     "nfs": {
-        "path": "$NFS_PATH",
+        "path": "$PV_PATH",
         "server": "$LOCAL_IP"
     },
     "persistentVolumeReclaimPolicy": "Retain"

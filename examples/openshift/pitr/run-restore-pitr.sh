@@ -21,7 +21,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 oc delete pod master-pitr-restore
 oc delete service master-pitr-restore
 
-sudo rm -rf $NFS_PATH/master-pitr-restore
+sudo rm -rf $PV_PATH/master-pitr-restore
 
 # start up the database container
 oc process -f $DIR/master-pitr-restore.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
