@@ -102,16 +102,7 @@ To build the containers from source, run Step 3 below.
 
 === Step 3 - Build the Containers
 
-Important variables within the Makefile determine what
-the containers will be built with including:
-
- * OSFLAVOR - set to either *rhel7* or *centos7*; determines
- what base image will be used for the containers
- * PGVERSION - set to either *9.5*, or *9.3*; determines
- what version of Postgres will be used within the containers
-
-Set these variables according to your deployment requirements
-then perform a container build as follows:
+Perform a container build as follows:
 
 ....
 make setup
