@@ -6,6 +6,7 @@ v1.3, {docdate}
 == Installation Instructions
 
 The crunchy-containers can run on different environments including:
+
  * standalone docker
  * openshift enterprise
  * kubernetes 1.2.X
