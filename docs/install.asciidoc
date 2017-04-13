@@ -73,6 +73,16 @@ sudo usermod -a -G docker someuser
 Remember to log out of the *someuser* account for the docker group
 to be added to your current session.  Adding *docker* group to your
 user account allows you to run docker commands from your user account.
+....
+su - someuser
+....
+
+You can ensure your *someuser* account is added to the *docker* group
+by running the following command and ensuring *docker* appears as one
+of the results:
+....
+groups
+....
 
 Before you start docker, you might consider configuring docker storage:
 This is described if you run:
@@ -80,7 +90,7 @@ This is described if you run:
 man docker-storage-setup
 ....
 
-Next, we enable , start up docker:
+Next, we enable and start up docker:
 ....
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
@@ -105,6 +115,7 @@ To build the containers from source, run Step 3 below.
 Perform a container build as follows:
 
 ....
+cd $CCPROOT
 make setup
 make all
 ....
