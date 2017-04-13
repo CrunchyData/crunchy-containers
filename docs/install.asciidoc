@@ -54,7 +54,7 @@ mkdir crunchydata
 cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 1.2.5
+git checkout 1.3.0
 godep restore
 ....
 
