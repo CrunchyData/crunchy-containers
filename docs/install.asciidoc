@@ -21,6 +21,7 @@ This instruction assumes you are installing on Centos 7 or RHEL 7.
 === Assumptions
 
 The install assumes the following about your host configuration:
+
  * centos7 (or RHEL7) VM
  * user called someuser has been created
  * someuser has sudo privileges with no password
@@ -103,6 +104,7 @@ To build the containers from source, run Step 3 below.
 
 Important variables within the Makefile determine what
 the containers will be built with including:
+
  * OSFLAVOR - set to either *rhel7* or *centos7*; determines
  what base image will be used for the containers
  * PGVERSION - set to either *9.5*, or *9.3*; determines
@@ -339,6 +341,7 @@ can NOT have a one-to-many relationship between PV and PVC(s).
 
 So, to do a database backup repeatably, you will need to following
 this general pattern:
+
  * as openshift admin user, create a unique PV (e.g. backup-pv-mydatabase)
  * as a project user, create a unique PVC (e.g. backup-pvc-mydatabase)
  * reference the unique PVC within the backup-job template
@@ -367,6 +370,7 @@ match to the correct PV.
 
 
 To perform a database restore, we do the following:
+
  * locate the NFS path to the database backup we want to restore with
  * edit a PV to use that NFS path
  * edit a PV to specify a unique label
@@ -457,6 +461,7 @@ server.
 === Tip 11: Setting up Docker storage
 
 I typically set up Docker storage this way:
+
  * add an extra IDE drive to my VM
  * fdisk /dev/sd? to format the drive
  * vgcreate /dev/sd?1 to create a volume group on the new drive partition
