@@ -7,7 +7,7 @@ v1.3, {docdate}
 
 We provide some examples of running the Crunchy containers
 using the Portworx Docker volume technology
-in the examples/portworx directory.  Those examples are 
+in the examples/portworx directory.  Those examples are
 explained below.
 
 === Setup
@@ -46,7 +46,7 @@ look like this:
 ....
 {
   "clusterid": "5ac2ed6f-7e4e-4e1d-8e8c-3a6df1fb61a5",
-  "kvdb": [ 
+  "kvdb": [
       "etcd:http://yourhostname:2379",
       "etcd:http://yourotherhostname:2379"
     ],
@@ -71,7 +71,7 @@ commands:
 --security-opt=label:disable
 ....
 
-Also, you will notice in the Docker volume create scripts, there is 
+Also, you will notice in the Docker volume create scripts, there is
 the following line that allows the permissions of the Docker volumes
 to be set as owned by the postgres UID:
 ....
@@ -98,7 +98,7 @@ These steps perform the following:
  * create the Crunchy PostgreSQL container, named *master*, it will mount
    the Docker volume *master-volume* as the means to persist the database
    data files
- * the container maps the PostgreSQL port of 5432 in the container to your 
+ * the container maps the PostgreSQL port of 5432 in the container to your
    local host port of 12000.
 
 The container creates a default database called 'userdb', a default
@@ -109,7 +109,7 @@ psql -h localhost -p 12000 -U testuser  userdb
 psql -h localhost -p 12000 -U postgres  postgres
 ....
 
-=== Example 2 - Creating a replica database 
+=== Example 2 - Creating a replica database
 
 This example shows how you can create a PostgreSQL replica based
 on the *master* database created in Example 1, run the example
@@ -165,7 +165,7 @@ This script will do the following:
  * run pg_basebackup on the container named master
  * store the backup in /tmp/backups/master directory
  * exit after the backup
-	
+
 === Example 4 - Performing a restore
 
 This example shows how to restore a database from an
@@ -192,9 +192,9 @@ This script will do the following:
    of the database files from /backup/$BACKUP_PATH to /pgdata
  * maps the PostgreSQL port of 5432 in the container to your local host port of 12002 as to not conflict with the master running in the previous example.
 
-=== Example 5 - pgbadger 
+=== Example 5 - pgbadger
 
-A pgbadger example is provided that will run a HTTP server that 
+A pgbadger example is provided that will run a HTTP server that
 when invoked, will generate a pgbadger report on a given database.
 
 pgbadger reads the log files from a database to product an HTML report
@@ -237,7 +237,7 @@ cd $CCPROOT/examples/portworx/custom-setup
 ....
 
 This works by placing a custom version of the setup.sql file into
-the docker volume that will be mounted into /pgconf within the 
+the docker volume that will be mounted into /pgconf within the
 postgres container.
 
 The postgres container checks for the /pgconf/setup.sql file during
@@ -254,9 +254,9 @@ to postgres databases.  The crunchy-pgbouncer container also
 contains logic that lets it perform a failover from a master
 to a slave database.
 
-To test this failover, you first need to have run the Example 1 
+To test this failover, you first need to have run the Example 1
 which creates the *master* container, and also the *replica* container
-created from Example 2.  
+created from Example 2.
 
 You then can start up the pgbouncer example as follows:
 ....
@@ -291,7 +291,7 @@ docker stop master
 
 At this point, the pgbouncer will notice that the master is not reachable
 and touch the trigger file on the configured slave database to start
-the failover.  The pgbouncer container will then reconfigure 
+the failover.  The pgbouncer container will then reconfigure
 pgbouncer to relabel the slave database into the master database so clients
 to pgbouncer will be able to connect to the master as before the failover.
 
@@ -337,4 +337,3 @@ Copyright © 2017 Crunchy Data Solutions, Inc.
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
-
