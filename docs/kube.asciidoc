@@ -495,10 +495,10 @@ psql -h pgbouncer -U postgres master
 ....
 
 
-=== synchrounous replica
+=== synchronous replica
 
 This example deploys a PostgreSQL cluster with a master,
-a synchrounous replica, and an asynchronous replica.  The
+a synchronous replica, and an asynchronous replica.  The
 two replicas share the same Service.
 
 Running the example:
@@ -669,6 +669,7 @@ cd $CCPROOT/examples/kube/master-deployment
 ....
 
 This will create the following in your Kube environment:
+
  * create a master-dc service, uses a PVC to persist postgres data
  * create a replica-dc service, uses emptyDir persistence
  * create a master-dc Deployment of replica count 1 for the master
@@ -677,7 +678,7 @@ This will create the following in your Kube environment:
 
 The persisted master postgres data is found under /pgdata/master-dc.
 If you delete the master pod, the Deployment will create another
-pod for the master, and will be able to start up immediatedly since
+pod for the master, and will be able to start up immediately since
 we are using the same /pgdata/master-dc data directory.
 
 === upgrade
@@ -702,6 +703,7 @@ cd $CCPROOT/examples/kube/upgrade
 ....
 
 This will create the following in your Kube environment:
+
  * a Kube Job running the *crunchy-upgrade* container
  * a new data directory name *master-upgrade* found in the *pgnewdata*
  PVC
@@ -721,8 +723,8 @@ test database should be found in the *master-upgrade* database.
 
 === Tip 1
 
-create a static route from your host to 10.0.0.0/16 if you
-want to test the user interfaces of the metrics tools
+Create a static route from your host to 10.0.0.0/16 if you
+want to test the user interfaces of the metrics tools.
 
 On my host, 114, and my bridge, br1, this worked for me:
 ....
