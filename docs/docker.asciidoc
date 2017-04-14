@@ -286,7 +286,7 @@ cd examples/docker/dns
 ./run.sh
 ....
 
-This is a privledged container and will bind to your local IP address
+This is a privileged container and will bind to your local IP address
 at port 53.  At this point, you can now start a new Postgres container
 and you should be able to do a DNS lookup as follows:
 
