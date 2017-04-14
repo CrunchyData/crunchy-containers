@@ -9,7 +9,9 @@ pgbackrest is a utility that performs a backup, restore, archive
 function for a PostgreSQL database.  pgbackrest is written and 
 maintained by David Steele, a fellow Crunchy Data collegue!
 
-pgbackrest is described here link:http://www.pgbackrest.org/
+pgbackrest is described here:
+
+http://www.pgbackrest.org/
 
 Limited support for pgbackrest was added into the Crunchy Container Suite as of version 1.2.5.  The pgbackrest utility is now included in the build
 of the crunchy-postgres container.
