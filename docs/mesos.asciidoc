@@ -40,7 +40,7 @@ the following:
   "domain": "mesos",
   "port": 53,
   "resolvers": ["192.168.0.1"],
-  "timeout": 5, 
+  "timeout": 5,
   "httpon": true,
   "dnson": true,
   "httpport": 8123,
@@ -58,8 +58,8 @@ the following:
 ....
 
 
-edit /etc/resolv.conf or configure your network settings to add
-the DNS server
+Edit /etc/resolv.conf or configure your network settings to add
+the DNS server.
 ....
 search mesos.marathon
 nameserver 10.0.2.15
@@ -72,7 +72,7 @@ added to your system as part of the installation.
 
 == Examples for the Mesos Environment
 
-The examples/mesos directory containers examples for 
+The examples/mesos directory contains examples for 
 running the Crunchy containers in a mesos environment.
 
 The examples are explained below.
@@ -95,7 +95,7 @@ psql -h pgslave.marathon.mesos -U postgres postgres
 ....
 
 This example currently uses a NFS mounted volume path to persist
-both the master and slave data files.  
+both the master and slave data files.
 
 == Legal Notices
 
@@ -104,4 +104,3 @@ Copyright © 2017 Crunchy Data Solutions, Inc.
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
-

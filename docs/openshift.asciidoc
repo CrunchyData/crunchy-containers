@@ -1081,7 +1081,7 @@ sudo setsebool -P virt_use_nfs 1
 Note that supplementalGroup settings are required for NFS but you
 would use the fsGroup setting for the AWS file system.  Check out
 this link for details:
-https://docs.openshift.org/latest/install_config/persistent_storage/pod_security_context.html.
+https://docs.openshift.org/latest/install_config/persistent_storage/pod_security_context.html
 
 == Legal Notices
 

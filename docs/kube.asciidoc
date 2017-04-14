@@ -163,7 +163,7 @@ kubectl get pod
 
 === *backup-job* - backup job example
 
-This example depends on the basic example be run prior to
+This example depends on the basic example being run prior to
 this example!
 
 This example performs a database backup on the basic database.
@@ -233,7 +233,7 @@ kubectl logs -c server badger
 
 === *metrics* - postgres metrics backend
 
-This examples starts up prometheus, grafana, and prometheus gateway.
+This example starts up prometheus, grafana, and prometheus gateway.
 
 It is required to view or capture metrics collected by crunchy-collect.
 
@@ -375,7 +375,9 @@ psql -h pgpool -U testuser userdb
 === *master-restore* - database restore from backup example
 
 This example assumes you have run the backup-job example prior
-to this example!  You will need to find a backup you want to
+to this example!
+
+You will need to find a backup you want to
 use for running this example, you will need the timestamped directory
 path under /nfsfileshare/basic/.  Edit the master-restore.json
 file and update the BACKUP_PATH setting to specify the
@@ -442,7 +444,7 @@ the pod is named replica.
 
 ==== Tip
 
-You can view the lables on a pod with this command:
+You can view the labels on a pod with this command:
 ....
 kubectl describe pod replica | grep Label
 ....
