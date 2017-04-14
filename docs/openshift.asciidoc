@@ -4,14 +4,14 @@ v1.3, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Examples for the Openshift Environment
-The examples/openshift directory containers examples for 
+The examples/openshift directory containers examples for
 running the Crunchy containers in an Openshift environment.
 
 The examples are explained below.
 
 Some of the examples make use of NFS for a persistent volume
 file system type, see the NFS Note at the bottom of this document
-for details on how NFS is configured in these examples.  
+for details on how NFS is configured in these examples.
 
 Notes on NFS installation and file system permissions are in the install.asciidoc documentation.
 
@@ -81,9 +81,9 @@ psql -h basic.openshift.svc.cluster.local -U testuser userdb
 === *pgpool*  - pgpool for master replica examples
 
 You can create a pgpool service that will work with the
-master and replica created in the previous Example 1 and Example 2.  
+master and replica created in the previous Example 1 and Example 2.
 
-You will need to edit the pgpool-for-master-replica-rc-dc-replicas-only.json and supply the 
+You will need to edit the pgpool-for-master-replica-rc-dc-replicas-only.json and supply the
 testuser password that was generated when you created
 the master replica pods, then run the following command
 to deploy the pgpool service:
@@ -115,7 +115,7 @@ running:
 ....
 psql -h pgpool-rc -U testuser userdb -c 'show pool_nodes'
 ....
- 
+
 === *master-replica-rc-dc* - master replica with scalable replicas
 
 This example is similar to the previous examples but
@@ -135,10 +135,6 @@ Connect to the PostgreSQL instances with the following:
 psql -h pg-master-rc-dc.pgproject.svc.cluster.local -U testuser userdb
 psql -h pg-replica-rc-dc.pgproject.svc.cluster.local -U testuser userdb
 ....
-
-Here is an example of increasing or scaling up the Postgres 'replica' pods to 2:
-
-Here is an example of increasing or scaling up the Postgres 'replica' pods to 2:
 
 Here is an example of increasing or scaling up the Postgres 'replica' pods to 2:
 
@@ -186,7 +182,7 @@ that we want to keep the volume contents after the removal of the PV.
 
 === *master-pvc* - master using a PVC Example
 
-This example will create a single master postgres pod that is using 
+This example will create a single master postgres pod that is using
 an PVC based volume to store the postgres data files.
 
 
@@ -207,7 +203,7 @@ Then create the pod:
 
 When the database pod starts, it will copy the backup files
 to the database directory inside the pod and start up postgres as
-usual.  
+usual.
 
 The restore only takes place if:
 
@@ -218,7 +214,7 @@ The restore only takes place if:
 
 An example of performing a database failover is described
 in the following steps:
- 
+
  * create a master and replica replication using master-replica-rc-dc-replicas-only.json
 ....
 oc process -f master-replica-rc-dc-replicas-only.json | oc create -f -
@@ -247,7 +243,7 @@ updated line: labels/name: pg-master-rc
 ....
 oc label --overwrite=true pod pg-replica-rc-1-lt5a5 name=pg-master-rc
 ....
-  
+
 You can test the failover by creating some data on the master
 and then test to see if the replicas have the replicated data.
 
@@ -263,13 +259,13 @@ backup and be prepared to recreate your cluster from that backup.
 
 This example uses a pvc based volumes for the master and the replicas.  In
 some scenarios, customers might want to have all the Postgres
-instances using NFS volumes for persistence.  
+instances using NFS volumes for persistence.
 
 Relevant files for this example:
 
  * master-replica-rc-pvc.json
 This file creates the master and replica deployment, creating pods and services
-where the replica is controlled by a Replication Controller, allowing you 
+where the replica is controlled by a Replication Controller, allowing you
 to scale up the replicas.
 
 To run the example, follow these steps:
@@ -305,7 +301,7 @@ psql -c 'table testtable' -U master -h pg-replica-rc-pvc postgres
 This example creates a pod that contains a database container and
 a pgbadger container.
 
-*pgbadger* is then served up on port 10000.  Each time you do a 
+*pgbadger* is then served up on port 10000.  Each time you do a
 GET on http://pg-master:10000/api/badgergenerate
 it will run pgbadger against the database log files running in the
 pg-master container.
@@ -332,11 +328,11 @@ socat tcp-listen:10001,reuseaddr,fork tcp:pg-master:10000
 ....
 
 This command maps port 10000 of the service/container to port
-10001 of the local server.  You can now use your browser to 
+10001 of the local server.  You can now use your browser to
 see the badger report.
 
-This is a short-cut way to expose a service to the external world, 
-Openshift would normally configure a Router whereby you could 
+This is a short-cut way to expose a service to the external world,
+Openshift would normally configure a Router whereby you could
 'expose' the service in an Openshift way.  Here is the docs
 on installing the Openshift Router:
 
@@ -393,7 +389,7 @@ cd examples/openshift/master-replica-dc
 
 Next, create an Openshift service account which is used by the crunchy-watch
 container to perform the failover, also set policies that allow the
-service account the ability to edit resources within the openshift and 
+service account the ability to edit resources within the openshift and
 default projects :
 
 ....
@@ -484,8 +480,8 @@ cd ../vacuum-job
 
 This will start a vacuum container that runs as a Kube Job type.  It
 will run once.  The crunchy-vacuum image is executed, passed in
-the Postgres connection parameters to the single-master postgres 
-container.  The type of vacuum performed is dictated by the 
+the Postgres connection parameters to the single-master postgres
+container.  The type of vacuum performed is dictated by the
 environment variables passed into the job. The complete set
 of environment variables read by the vacuum job include:
 
@@ -503,7 +499,7 @@ of environment variables read by the vacuum job include:
 
 === *custom-config* - Custom Configuration Files
 
-This example shows how you can use your own customized version of setup.sql 
+This example shows how you can use your own customized version of setup.sql
 when creating a postgres database container.
 
 If you mount a /pgconf volume, crunchy-postgres will look at that directory
@@ -539,14 +535,14 @@ Run it as follows from the examples/openshift/custom-config-sync directory:
 ./run.sh
 ....
 
-This will start a *csmaster* container that will use the custom 
+This will start a *csmaster* container that will use the custom
 config files when the database is running.  It will also create
 a sync replica named *cssyncreplica*, this replica is
 connected to the master via streaming replication.
 
 === *pgbouncer* - pgbouncer
 
-This example shows how you can use the crunchy-pgbouncer container 
+This example shows how you can use the crunchy-pgbouncer container
 when running under Openshift.
 
 The example assumes you have run the master/replica example
@@ -653,9 +649,9 @@ You use the *oc new-app* command to create objects from the
 JSON templates.  This is an alternative way to create Openshift objects
 instead of using *oc create*.
 
-This example is used within a joint Redhat-Crunchy workshop that is 
+This example is used within a joint Redhat-Crunchy workshop that is
 given at various conferences to demonstrate Openshift and Crunchy Containers
-working together.  Thanks to Steven Pousty from Redhat for this 
+working together.  Thanks to Steven Pousty from Redhat for this
 example!
 
 See the README file within the workshop directory for instructions
@@ -678,7 +674,7 @@ cd $CCPROOT/examples/openshift/pitr
 
 This step will create a database container, *master-pitr*.  This
 container is configured to continuously write WAL segment files
-to a mounted volume (/pgwal).  
+to a mounted volume (/pgwal).
 
 After you start the database, you will create a base backup
 using this command:
@@ -743,11 +739,11 @@ because the database is paused in recovery mode.  Lastly, if you
 execute a *resume* command, it will show that you can now create
 a table as the database has fully recovered.
 
-You can also test that if *afterchanges* is specified, that the 
+You can also test that if *afterchanges* is specified, that the
 *pitrtest* table is present but that the database is still in recovery
 mode.
 
-Lastly, you can test a full recovery using *all* of the WAL files, if 
+Lastly, you can test a full recovery using *all* of the WAL files, if
 you remove the *RECOVERY_TARGET_NAME* environment variable completely.
 
 The NFS portions of this example depend upon an NFS file
@@ -761,7 +757,7 @@ system with the following path configurations be present:
 === *backrest* - pgbackrest example
 
 This example shows how to enable pgbackrest as the archiver
-within the crunchy-postgres container.  
+within the crunchy-postgres container.
 See the link:backrest.asciidoc[pgbackrest Documentation] for details and background.
 
 Start by running the example database container:
@@ -772,7 +768,7 @@ cd examples/openshift/backrest
 
 This will create the following:
  * PV/PVC for /pgconf and /backrestrepo volumes
- * master database pod 
+ * master database pod
  * master service
 
 The run.sh script copies the pgbackrest.conf configuration file
@@ -785,7 +781,7 @@ determine whether pgbackrest will be used as the archive command or not.
 You will need to specify the ARCHIVE_TIMEOUT environment variable
 as well to use this.
 
-After you run the example, you should see archive files 
+After you run the example, you should see archive files
 being written to the /backrestrepo volume (/nfsfileshare/backrestrepo).
 
 
@@ -835,9 +831,9 @@ The statefulset ordinal value of 0 is used to determine which pod
 will act as the PostgreSQL master, all other ordinal values will
 assume the replica role.
 
-=== *crunchy-proxy*- a Postgres-aware proxy 
+=== *crunchy-proxy*- a Postgres-aware proxy
 
-This example shows how to use the *crunchy-proxy* to 
+This example shows how to use the *crunchy-proxy* to
 act as a smart proxy to a PostgreSQL cluster.  The example
 depends upon the *master-replica* example being run prior.
 
@@ -856,7 +852,7 @@ cd $CCPROOT/examples/openshift/crunchy-proxy
 ./run.sh
 ....
 
-The proxy will listen on port 5432 as specified in the 
+The proxy will listen on port 5432 as specified in the
 configuration file.  The example creates a Service named
 *crunchy-proxy* that you can use to access the configured
 PostgreSQL backend containers from the *master-replica* example.
@@ -872,7 +868,7 @@ psql -h crunchy-proxy -U postgres postgres
 
 SQL "reads" will be sent to the PostgreSQL replica database if your
 SQL includes the *crunchy-proxy* read annotation.  SQL statements
-that do not include the read annotation will be sent to the master 
+that do not include the read annotation will be sent to the master
 database container within the PostgreSQL cluster.
 
 
@@ -967,7 +963,7 @@ https://docs.openshift.com/enterprise/3.1/install_config/aggregate_logging.html
 If an Openshift deployment requires that random generated UIDs be
 supported by containers, the Crunchy containers can be modifed
 similar to those located here to support the use of nss_wrapper
-to equate the random generated UIDs/GIDs by openshift with 
+to equate the random generated UIDs/GIDs by openshift with
 the postgres user:
 
 https://github.com/openshift/postgresql/blob/master/9.4/root/usr/share/container-scripts/postgresql/common.sh
@@ -1007,7 +1003,7 @@ http://developers.redhat.com/blog/2015/11/19/dns-your-openshift-v3-cluster/
 Key things included in this blog are:
 
  * configuring dhcp to include the local IP address in /etc/resolv.conf upon boot
- * configuring dnsmasq 
+ * configuring dnsmasq
  * configuring openshift dns to listen on another port
 
 In my dev setup, I have openshifts DNS listening on 127.0.0.1:8053.
@@ -1022,7 +1018,7 @@ prepend domain-name-servers 192.168.0.109;
 If you dont have your DNS configured correctly, replication controllers
 and deployment configs basically will not work.
 
-=== Tip : system policys for pv creation and listing	
+=== Tip : system policys for pv creation and listing
 
 For my testing, I wanted to allow the *system* user to be able
 to create and list persistent volumes, as of OSE 3.3, I had to
@@ -1056,7 +1052,7 @@ this permission?
 
 To control the permissions of the NFS file system
 certain examples make use of the *supplementalGroups* security context
-setting for pods.  In these examples, we specify the GID of the *nfsnobody* 
+setting for pods.  In these examples, we specify the GID of the *nfsnobody*
 group (65534).  If you want to use a different GID for the supplementalGroup
 then you will need to alter the NFS examples accordingly.
 
@@ -1069,7 +1065,7 @@ drwxrwx---.   3 nfsnobody nfsnobody   23 Dec 16 11:28 nfsfileshare
 ....
 
 This restricts *other* users from writing to the NFS share, but will
-allow the *nfsnobody* group to have write access.  This way, the 
+allow the *nfsnobody* group to have write access.  This way, the
 NFS mount permissions can be managed to only allow certain pods
 write access.
 
@@ -1092,4 +1088,3 @@ Copyright © 2017 Crunchy Data Solutions, Inc.
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
-
