@@ -361,6 +361,7 @@ for the master user and postgres superuser using the mounted secret volumes.
 
 When using secrets, you do NOT have to specify the following
 env vars if you specify all three secrets volumes:
+
  * PG_USER
  * PG_PASSWORD
  * PG_ROOT_PASSWORD
@@ -767,6 +768,7 @@ cd examples/openshift/backrest
 ....
 
 This will create the following:
+
  * PV/PVC for /pgconf and /backrestrepo volumes
  * master database pod
  * master service
@@ -961,7 +963,7 @@ https://docs.openshift.com/enterprise/3.1/install_config/aggregate_logging.html
 === Tip : nss_wrapper
 
 If an Openshift deployment requires that random generated UIDs be
-supported by containers, the Crunchy containers can be modifed
+supported by containers, the Crunchy containers can be modified
 similar to those located here to support the use of nss_wrapper
 to equate the random generated UIDs/GIDs by openshift with
 the postgres user:
@@ -1015,10 +1017,10 @@ Therefore in my /etc/dhcp/dhclient.conf I have this config:
 prepend domain-name-servers 192.168.0.109;
 ....
 
-If you dont have your DNS configured correctly, replication controllers
+If you don't have your DNS configured correctly, replication controllers
 and deployment configs basically will not work.
 
-=== Tip : system policys for pv creation and listing
+=== Tip : system policies for pv creation and listing
 
 For my testing, I wanted to allow the *system* user to be able
 to create and list persistent volumes, as of OSE 3.3, I had to
