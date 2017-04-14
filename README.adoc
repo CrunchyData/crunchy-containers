@@ -33,7 +33,7 @@ The project includes the following containers:
 
 image::docs/containers.png?raw=true[]
 
-For Kubernetes users of these containers, there is an assocated
+For Kubernetes users of these containers, there is an associated
 project worth taking a look at that uses the containers found
 in this repo and provides a higher level automation.
 That project is link:https://github.com/crunchydata/postgres-operator[PostgresOperator]
@@ -45,11 +45,11 @@ Kubernetes 1.5.3, and Docker 1.12
 
 1) Installing / configuring Docker
 
-On an EL7 system, docker can be installed with the following commands:
+On an EL7 system, Docker can be installed with the following commands:
 
  * sudo yum -y install docker
  * sudo groupadd docker
- * sudo usermod -a -G docker ${USER} 
+ * sudo usermod -a -G docker ${USER}
  * sudo systemctl enable docker;systemctl start docker
  * TIP:  remember to log out $USER for the docker group to take effect!
 
@@ -59,22 +59,22 @@ If you don't want to pull the containers from link:https://hub.docker.com/u/crun
 all the containers locally on your development host.
 
 Complete build and install documentation is found here: link:docs/install.asciidoc[Install Docs].  The provided Dockerfiles build the containers
-on a Centos 7 base image and use the community PostgreSQL RPMs.  
+on a Centos 7 base image and use the community PostgreSQL RPMs.
 
 Crunchy provides a commercially supported version of these containers
 built upon RHEL 7 and the Crunchy supported PostgreSQL.  Contact Crunchy
-for more details at link:http://www.crunchydata.com.
+for more details at http://www.crunchydata.com.
 
 === Examples
 
 Various examples are provided in the /examples directory and described
 in the documentation for running Docker, Kubernetes, and Openshift examples..
 
-See the following link for documentation on the docker
-examples: link:docs/docker.asciidoc[docker-examples] 
+See the following link for documentation on the Docker
+examples: link:docs/docker.asciidoc[docker-examples]
 
 To run the examples, you will need to set the CCP_IMAGE_TAG
-environment variable which indicates which version of the 
+environment variable which indicates which version of the
 container you will pull down and execute, for example:
 ....
 export CCPROOT=$HOME/crunchy-containers
@@ -86,7 +86,3 @@ repository.
 
 The CCP_IMAGE_TAG is the version of the container you want to test
 with.  That version is out on Dockerhub.
-
-
-
-

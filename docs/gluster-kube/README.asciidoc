@@ -8,8 +8,8 @@ host, I then connect to it from the RHEL ose host.
 Here is the how-to that I followed when
 installing gluster on the centos host:
 
-link:https://wiki.centos.org/HowTos/GlusterFSonCentOS
-link:https://wiki.centos.org/SpecialInterestGroup/Storage/gluster-Quickstart
+https://wiki.centos.org/HowTos/GlusterFSonCentOS
+https://wiki.centos.org/SpecialInterestGroup/Storage/gluster-Quickstart
 
 here is the list of commands on the centos box:
 
@@ -53,4 +53,3 @@ yum -y install glusterfs glusterfs-fuse
 mkdir /mnt/gluster
 mount -f glusterfs 192.168.0.108:/glustervol1 /mnt/gluster/
 ....
-
