@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -21,8 +21,8 @@ docker rm bouncer-setup bouncer-ls
 CONF_DIR=/tmp/bouncer-conf
 sudo rm -rf $CONF_DIR
 sudo mkdir -p $CONF_DIR
-sudo cp $BUILDBASE/examples/portworx/bouncer/pgbouncer.ini $CONF_DIR
-sudo cp $BUILDBASE/examples/portworx/bouncer/users.txt $CONF_DIR
+sudo cp $CCPROOT/examples/portworx/bouncer/pgbouncer.ini $CONF_DIR
+sudo cp $CCPROOT/examples/portworx/bouncer/users.txt $CONF_DIR
 #sudo chown postgres:postgres $CONF_DIR
 sudo chcon -Rt svirt_sandbox_file_t $CONF_DIR
 #sudo chmod 0700 $CONF_DIR

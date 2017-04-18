@@ -2,14 +2,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "replica-async",
+            "name": "replicaasync",
             "labels": {
-                "name": "replica-sync"
+                "name": "replicasync"
             }
         },
         "spec": {
             "containers": [{
-                "name": "replica-async",
+                "name": "replicaasync",
                 "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
                 "ports": [{
                     "containerPort": 5432,
@@ -20,7 +20,7 @@
                     "value": "/tmp"
                 }, {
                     "name": "PG_MASTER_HOST",
-                    "value": "master-sync"
+                    "value": "mastersync"
                 }, {
                     "name": "PG_MASTER_USER",
                     "value": "master"

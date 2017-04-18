@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $BUILDBASE/examples/envvars.sh
+source $CCPROOT/examples/envvars.sh
 
 echo "this example depends on the master-replica example being run prior"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-#$DIR/cleanup.sh
+$DIR/cleanup.sh
 
-sudo cp $DIR/crunchy-proxy-config.json $NFS_PATH/config.json
+sudo cp $DIR/crunchy-proxy-config.json $PV_PATH/config.json
 
 export PROXY_IMAGE_TAG=centos7-0.0.1-alpha
 envsubst < $DIR/crunchy-proxy.json | kubectl create -f -

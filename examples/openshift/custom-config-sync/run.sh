@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,20 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $BUILDBASE/examples/envvars.sh
+source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-sudo rm -rf $NFS_PATH/csmaster
+sudo rm -rf $PV_PATH/csmaster
 
 # copy the custom config file to the PVC path
-sudo cp $DIR/postgresql.conf $NFS_PATH
-sudo cp $DIR/pg_hba.conf $NFS_PATH
-sudo cp $DIR/setup.sql $NFS_PATH
-sudo chown nfsnobody:nfsnobody $NFS_PATH/postgresql.conf $NFS_PATH/pg_hba.conf $NFS_PATH/setup.sql
-sudo chmod g+r $NFS_PATH/postgresql.conf $NFS_PATH/pg_hba.conf $NFS_PATH/setup.sql
+sudo cp $DIR/postgresql.conf $PV_PATH
+sudo cp $DIR/pg_hba.conf $PV_PATH
+sudo cp $DIR/setup.sql $PV_PATH
+sudo chown nfsnobody:nfsnobody $PV_PATH/postgresql.conf $PV_PATH/pg_hba.conf $PV_PATH/setup.sql
+sudo chmod g+r $PV_PATH/postgresql.conf $PV_PATH/pg_hba.conf $PV_PATH/setup.sql
 
 oc create -f $DIR/master-service.json
 oc create -f $DIR/replica-service.json

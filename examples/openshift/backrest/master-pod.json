@@ -58,7 +58,6 @@
             "selector": {
                 "name": "master-backrest"
             },
-            "portalIP": "None",
             "type": "ClusterIP",
             "sessionAffinity": "None"
         },

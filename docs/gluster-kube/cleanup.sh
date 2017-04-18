@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -20,4 +20,4 @@ kubectl delete service glusterfs-cluster
 kubectl delete service master-gluster
 kubectl delete pod master-gluster
 
-$BUILDBASE/examples/waitforterm.sh master-gluster kubectl
+$CCPROOT/examples/waitforterm.sh master-gluster kubectl

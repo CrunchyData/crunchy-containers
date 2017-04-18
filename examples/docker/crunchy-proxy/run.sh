@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -47,7 +47,7 @@ docker rm -f crunchyproxyls
 
 docker run \
 	-p 12432:5432 \
-	-p 13000:10000 \
+	-p 13001:10000 \
 	-v $CONF_VOLUME:/config \
 	--link master:master \
 	--link replica:replica \

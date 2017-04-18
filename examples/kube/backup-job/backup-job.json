@@ -1,0 +1,56 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Job",
+    "metadata": {
+        "name": "backup-job"
+    },
+    "spec": {
+        "selector": {
+            "matchLabels": {
+                "app": "backup-job"
+            }
+        },
+        "template": {
+            "metadata": {
+                "name": "backup-job",
+                "labels": {
+                    "app": "backup-job"
+                }
+            },
+            "spec": {
+                "volumes": [{
+                    "name": "pgdata",
+                    "persistentVolumeClaim": {
+                        "claimName": "crunchy-pvc"
+                    }
+                }],
+                "securityContext": {
+                    "supplementalGroups": [65534]
+                },
+                "containers": [{
+                    "name": "backup-job",
+                    "image": "crunchydata/crunchy-backup:$CCP_IMAGE_TAG",
+                    "volumeMounts": [{
+                        "mountPath": "/pgdata",
+                        "name": "pgdata",
+                        "readOnly": false
+                    }],
+                    "env": [{
+                        "name": "BACKUP_HOST",
+                        "value": "basic"
+                    }, {
+                        "name": "BACKUP_USER",
+                        "value": "master"
+                    }, {
+                        "name": "BACKUP_PASS",
+                        "value": "password"
+                    }, {
+                        "name": "BACKUP_PORT",
+                        "value": "5432"
+                    }]
+                }],
+                "restartPolicy": "Never"
+            }
+        }
+    }
+}

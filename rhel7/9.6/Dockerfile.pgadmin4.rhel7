@@ -1,6 +1,22 @@
 FROM rhel7.2
 
-LABEL Release="1.2.8" Vendor="Crunchy Data Solutions" PostgresVersion="9.6"
+MAINTAINER Crunchy Data <support@crunchydata.com>
+
+LABEL name="crunchydata/pgadmin4" \
+        vendor="crunchy data" \
+	PostgresVersion="9.6" \
+        version="7.2" \
+        release="1.3" \
+        build-date="2017-04-01" \
+        url="https://crunchydata.com" \
+        summary="crunchy data pgadmin4 container" \
+        description="pgadmin4 container" \
+        io.k8s.description="pgadmin4 container" \
+        io.k8s.display-name="Crunchy pgadmin4 container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY docs/pgadmin4/help.md /tmp/
 
 ENV PGVERSION="9.6"
 
@@ -18,7 +34,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  	nss_wrapper \
 	openssh-clients \
 	procps-ng \
-#	python-devel python-pip \
+	pgadmin4-v1-web \
  && yum -y install postgresql96-devel postgresql96-server \
  && yum -y clean all
 
@@ -29,24 +45,16 @@ RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
 ADD bin/pgadmin4/ /opt/cpm/bin
 ADD conf/pgadmin4/ /opt/cpm/conf
-ADD pgadmin4*.whl /tmp
-
-RUN export PATH=$PATH:$PGROOT/bin \
- && pip install --upgrade pip \
- && pip install --upgrade setuptools \
- && pip install /tmp/pgadmin4*.whl
 
 # open up the pgadmin4 http port
 EXPOSE 5050
 
-RUN mkdir -p /.pgadmin \
- && chown -R postgres:postgres /.pgadmin /opt/cpm \
-	/usr/lib/python2.7/site-packages/pgadmin4 \
- && chmod -R 777 /usr/lib/python2.7/site-packages/pgadmin4
+RUN mkdir -p /pgdata \
+ && chown -R root:root /pgdata /opt/cpm \
+ && chmod 777  /usr/lib/python2.7/site-packages/pgadmin4-web/ 
 
+VOLUME ["/pgdata"]
 
-VOLUME ["/.pgadmin"]
-
-USER 26
+USER root
 
 CMD ["/opt/cpm/bin/start-pgadmin4.sh"]

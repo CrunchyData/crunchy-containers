@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete service master-sync
-kubectl delete service replica-sync replica-async
-kubectl delete pod master-sync
-kubectl delete pod replica-sync replica-async
-$BUILDBASE/examples/waitforterm.sh master-sync kubectl
-$BUILDBASE/examples/waitforterm.sh replica-sync kubectl
+kubectl delete service mastersync
+kubectl delete service replicasync replicaasync
+kubectl delete pod mastersync
+kubectl delete pod replicasync replicaasync
+$CCPROOT/examples/waitforterm.sh mastersync kubectl
+$CCPROOT/examples/waitforterm.sh replicasync kubectl

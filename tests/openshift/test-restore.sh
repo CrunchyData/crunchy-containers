@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,12 +13,12 @@
 # limitations under the License.
 
 
-echo BUILDBASE is $BUILDBASE
+echo CCPROOT is $CCPROOT
 cleanup() {
 sudo rm -rf /nfsfileshare/single-master
-$BUILDBASE/examples/openshift/single-master/delete.sh
-$BUILDBASE/examples/openshift/master-restore/delete.sh
-$BUILDBASE/examples/openshift/backup-job/delete.sh
+$CCPROOT/examples/openshift/single-master/delete.sh
+$CCPROOT/examples/openshift/master-restore/delete.sh
+$CCPROOT/examples/openshift/backup-job/delete.sh
 echo "sleeping while cleaning up any leftovers..."
 sleep 30
 }
@@ -31,19 +31,19 @@ cleanup
 
 
 ## create container
-$BUILDBASE/examples/openshift/single-master/run.sh
+$CCPROOT/examples/openshift/single-master/run.sh
 
 echo "sleep for 30 while the container starts up..."
 sleep 30
 
 ## create backup
-$BUILDBASE/examples/openshift/backup-job/run.sh
+$CCPROOT/examples/openshift/backup-job/run.sh
 sleep 30
 
 # set the backup to a known and stable name
 sudo mv /nfsfilesystem/single-master/2* /nfsfilesystem/single-master/2016-03-28-12-09-28
 ## create restored container
-$BUILDBASE/examples/openshift/master-restore/run.sh
+$CCPROOT/examples/openshift/master-restore/run.sh
 sleep 30
 
 export IP=`oc describe pod master-restore | grep IP | cut -f2 -d':' `

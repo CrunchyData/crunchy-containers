@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-sudo rm -rf $NFS_PATH/pgadmin4
+sudo rm -rf $PV_PATH/pgadmin4
 
 kubectl delete service pgadmin4
 kubectl delete pod pgadmin4
 
-$BUILDBASE/examples/waitforterm.sh pgadmin4 kubectl
+$CCPROOT/examples/waitforterm.sh pgadmin4 kubectl

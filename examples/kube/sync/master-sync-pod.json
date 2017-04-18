@@ -2,14 +2,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-sync",
+            "name": "mastersync",
             "labels": {
-                "name": "master-sync"
+                "name": "mastersync"
             }
         },
         "spec": {
             "containers": [{
-                "name": "master-sync",
+                "name": "mastersync",
                 "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
                 "ports": [{
                     "containerPort": 5432,
@@ -29,7 +29,7 @@
                     "value": "password"
                 }, {
                     "name": "SYNC_SLAVE",
-                    "value": "replica-sync"
+                    "value": "replicasync"
                 }, {
                     "name": "PG_USER",
                     "value": "testuser"

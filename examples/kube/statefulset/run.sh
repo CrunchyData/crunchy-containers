@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $BUILDBASE/examples/envvars.sh
+source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -27,12 +27,12 @@ kubectl create -f $DIR/set-master-service.json
 kubectl create -f $DIR/set-replica-service.json
 
 # create some sample pv to use
-#envsubst < $DIR/pv1.json | kubectl create -f -
-#envsubst < $DIR/pv2.json | kubectl create -f -
-#envsubst < $DIR/pv3.json | kubectl create -f -
+envsubst < $DIR/pv1.json | kubectl create -f -
+envsubst < $DIR/pv2.json | kubectl create -f -
+envsubst < $DIR/pv3.json | kubectl create -f -
 
 # create the pvc we will use for all pods in the set
-#kubectl create -f $DIR/pvc.json
+kubectl create -f $DIR/pvc.json
 
 # create the stateful set
 envsubst < $DIR/set.json | kubectl create -f -

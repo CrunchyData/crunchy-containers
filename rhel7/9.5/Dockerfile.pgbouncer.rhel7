@@ -1,6 +1,22 @@
 FROM rhel7.2
 
-LABEL Release="1.2.8" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
+MAINTAINER Crunchy Data <support@crunchydata.com>
+
+LABEL name="crunchydata/pgbouncer" \
+	PostgresVersion="9.5" \
+        vendor="crunchy data" \
+        version="7.2" \
+        release="1.3" \
+        build-date="2017-04-01" \
+        url="https://crunchydata.com" \
+        summary="crunchy data pgbouncer container" \
+        description="pgbouncer container" \
+        io.k8s.description="pgbouncer container" \
+        io.k8s.display-name="Crunchy pgbouncer container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY docs/pgbouncer/help.md /tmp/
 
 # PGDG Postgres repo
 #RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm

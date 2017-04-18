@@ -7,5 +7,5 @@ echo "creating PGPASSFILE..."
 echo "*:*:*:*:password" > $PGPASSFILE
 chmod 400 $PGPASSFILE
 
-echo BUILDBASE is $BUILDBASE
+echo CCPROOT is $CCPROOT
 

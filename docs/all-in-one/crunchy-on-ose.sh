@@ -85,7 +85,7 @@ function configure-ose {
 function clone {
 	mkdir -p $HOME/cdev/bin $HOME/cdev/src $HOME/cdev/pkg
 	export GOPATH=$HOME/cdev
-	export BUILDBASE=$GOPATH/src/github.com/crunchydata/crunchy-containers
+	export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 	export CCP_IMAGE_TAG=centos7-9.6-1.2.7
 	export GOBIN=$GOPATH/bin
 	cd $HOME/cdev/src

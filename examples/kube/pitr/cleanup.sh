@@ -15,11 +15,11 @@
 
 kubectl delete pod master-pitr-restore
 kubectl delete service master-pitr-restore
-sudo rm -rf $NFS_PATH/master-pitr-restore
+sudo rm -rf $PV_PATH/master-pitr-restore
 
 kubectl delete service master-pitr master-pitr-restore
 kubectl delete pod master-pitr
 kubectl delete job master-pitr-backup-job
 
-sudo rm -rf $NFS_PATH/WAL/master-pitr
-sudo rm -rf $NFS_PATH/master-pitr
+sudo rm -rf $PV_PATH/WAL/master-pitr
+sudo rm -rf $PV_PATH/master-pitr

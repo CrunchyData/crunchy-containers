@@ -1,6 +1,6 @@
 = Origin Installation Notes - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.2.8, {docdate}
+v1.3, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Installation Instructions
@@ -33,14 +33,14 @@ git clone https://github.com/crunchydata/crunchy-containers
 ....
 
 *If you are a Crunchy enterprise customer, you will place the CRUNCHY repo
-key and yum repo file into the $BUILDBASE/conf directory at this point.*
+key and yum repo file into the $CCPROOT/conf directory at this point.*
 
 === Step 2 - Install the Host Dependencies
 
 Next, install system dependencies:
 ....
-export BUILDBASE=$GOPATH/github.com/crunchydata/crunchy-containers
-cd $BUILDBASE
+export CCPROOT=$GOPATH/github.com/crunchydata/crunchy-containers
+cd $CCPROOT
 make setup
 ....
 
@@ -48,7 +48,7 @@ make setup
 
 Next, compile the code, and build the Docker images as follows:
 ....
-cd $BUILDBASE
+cd $CCPROOT
 make all
 ....
 
@@ -196,7 +196,7 @@ name of 'pgproject':
 
 ....
 search pgproject.svc.cluster.local crunchy.lab
-nameserver 192.168.1.2.81
+nameserver 192.168.1.31
 nameserver 192.168.122.1
 ....
 

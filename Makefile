@@ -1,5 +1,5 @@
-ifndef BUILDBASE
-	export BUILDBASE=$(GOPATH)/src/github.com/crunchydata/crunchy-containers
+ifndef CCPROOT
+	export CCPROOT=$(GOPATH)/src/github.com/crunchydata/crunchy-containers
 endif
 
 versiontest:
@@ -7,7 +7,7 @@ versiontest:
 	if test -z "$$CCP_BASEOS"; then echo "CCP_BASEOS undefined"; exit 1;fi;
 	if test -z "$$CCP_VERSION"; then echo "CCP_VERSION undefined"; exit 1;fi;
 setup:
-	$(BUILDBASE)/bin/install-deps.sh
+	$(CCPROOT)/bin/install-deps.sh
 gendeps:
 	godep save \
 	github.com/crunchydata/crunchy-containers/dba \
@@ -21,6 +21,10 @@ docbuild:
 #=============================================
 # Targets that generate images (alphabetized)
 #=============================================
+upgrade: versiontest
+	docker build -t crunchy-upgrade -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.upgrade.$(CCP_BASEOS) .
+	docker tag crunchy-upgrade crunchydata/crunchy-upgrade:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
+
 backup:	versiontest
 	docker build -t crunchy-backup -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backup.$(CCP_BASEOS) .
 	docker tag crunchy-backup crunchydata/crunchy-backup:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
@@ -47,7 +51,6 @@ grafana:	versiontest
 	docker build -t crunchy-grafana -f $(CCP_BASEOS)/Dockerfile.grafana.$(CCP_BASEOS) .
 	docker tag crunchy-grafana crunchydata/crunchy-grafana:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
-# Add pgadmin4 to the "all" target when RHEL image ready
 pgadmin4:	versiontest
 	docker build -t crunchy-pgadmin4 -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgadmin4.$(CCP_BASEOS) .
 	docker tag crunchy-pgadmin4 crunchydata/crunchy-pgadmin4:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
@@ -107,7 +110,7 @@ watch:
 #============
 # All target
 #============
-all:	backup collectserver dbaserver grafana pgbadger pgbouncer pgpool postgres postgres-gis prometheus promgateway watch vac
+all:	pgadmin4 backup collectserver dbaserver grafana pgbadger pgbouncer pgpool postgres postgres-gis prometheus promgateway watch vac
 
 push:
 	./bin/push-to-dockerhub.sh

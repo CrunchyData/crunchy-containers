@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $BUILDBASE/examples/envvars.sh
+source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete service master-pitr master-pitr-restore
 oc delete pod master-pitr master-pitr-restore
-oc delete job backup-master-pitr-nfs
+oc delete job backup-master-pitr-pvc
 
-sudo rm -rf $NFS_PATH/WAL/master-pitr
-sudo rm -rf $NFS_PATH/master-pitr
+sudo rm -rf $PV_PATH/WAL/master-pitr
+sudo rm -rf $PV_PATH/master-pitr

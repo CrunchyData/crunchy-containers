@@ -1,41 +1,42 @@
 FROM centos:7
 
-LABEL Release="1.2.8" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
+LABEL Release="1.3" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
 
 ENV PGVERSION="9.5" \
-        PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
+	PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
 
+# PGDG Postgres repo
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
+RUN yum -y install epel-release \
+ && yum -y install glibc-common-*2.17* \
+ && yum -y install gcc \
+	gettext \
+	hostname \
+ 	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+	pgadmin4-v1-web \
+ && yum -y install postgresql95-devel postgresql95-server \
+ && yum -y clean all
 
-RUN yum -y install epel-release && yum -y install gcc python-devel python-pip  procps-ng openssh-clients hostname  && yum -y install postgresql9?-devel postgresql9?-server nss_wrapper gettext && yum clean all -y
+ENV PGROOT="/usr/pgsql-${PGVERSION}"
 
 # set up cpm directory
-#
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
-RUN export PATH=$PATH:/usr/pgsql-9.5/bin
-RUN chown -R postgres:postgres /opt/cpm
-RUN pip install --upgrade pip
-RUN pip install --upgrade setuptools
+
+ADD bin/pgadmin4/ /opt/cpm/bin
+ADD conf/pgadmin4/ /opt/cpm/conf
 
 # open up the pgadmin4 http port
 EXPOSE 5050
 
-#
-RUN mkdir -p /pgdata
-RUN chown -R root:root /pgdata
+RUN mkdir -p /pgdata \
+ && chown -R root:root /pgdata /opt/cpm 
+
+
 VOLUME ["/pgdata"]
-
-ADD bin/pgadmin4/ /opt/cpm/bin
-ADD conf/pgadmin4/ /opt/cpm/conf
-ADD pgadmin4*.whl /tmp
-RUN export PATH=$PATH:/usr/pgsql-9.5/bin && pip install /tmp/pgadmin4*.whl
-
-RUN chown -R root:root /opt/cpm /usr/lib/python2.7/site-packages/pgadmin4
-RUN chmod -R 777 /usr/lib/python2.7/site-packages/pgadmin4
-
 
 USER root
 
 CMD ["/opt/cpm/bin/start-pgadmin4.sh"]
-

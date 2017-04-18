@@ -1,11 +1,12 @@
 = Installation Guide - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.2.8, {docdate}
+v1.3, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Installation Instructions
 
 The crunchy-containers can run on different environments including:
+
  * standalone docker
  * openshift enterprise
  * kubernetes 1.2.X
@@ -20,6 +21,7 @@ This instruction assumes you are installing on Centos 7 or RHEL 7.
 === Assumptions
 
 The install assumes the following about your host configuration:
+
  * centos7 (or RHEL7) VM
  * user called someuser has been created
  * someuser has sudo privileges with no password
@@ -34,10 +36,12 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
 export CCP_PGVERSION=9.5
-export CCP_VERSION=1.2.5
+export CCP_VERSION=1.2.8
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PGVERSION-$CCP_VERSION
-export BUILDBASE=$GOPATH/src/github.com/crunchydata/crunchy-containers
+export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 ....
+You will then need to restart your computer for the changes to your .bashrc
+file to take effect.
 
 Next, set up a project directory structure and pull down the project:
 ....
@@ -50,12 +54,12 @@ mkdir crunchydata
 cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 1.2.5
+git checkout 1.3.0
 godep restore
 ....
 
 *If you are a Crunchy enterprise customer, you will place the CRUNCHY repo
-key and yum repo file into the $BUILDBASE/conf directory at this point.*
+key and yum repo file into the $CCPROOT/conf directory at this point.*
 
 === Step 2 - Install the Host Dependencies
 
@@ -69,6 +73,16 @@ sudo usermod -a -G docker someuser
 Remember to log out of the *someuser* account for the docker group
 to be added to your current session.  Adding *docker* group to your
 user account allows you to run docker commands from your user account.
+....
+su - someuser
+....
+
+You can ensure your *someuser* account is added to the *docker* group
+by running the following command and ensuring *docker* appears as one
+of the results:
+....
+groups
+....
 
 Before you start docker, you might consider configuring docker storage:
 This is described if you run:
@@ -76,7 +90,7 @@ This is described if you run:
 man docker-storage-setup
 ....
 
-Next, we enable , start up docker:
+Next, we enable and start up docker:
 ....
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
@@ -90,7 +104,7 @@ To download the prebuilt containers, make sure you can login to
 dockerhub.com, and then run the following:
 ....
 docker login
-cd $BUILDBASE
+cd $CCPROOT
 ./bin/pull-from-dockerhub.sh
 ....
 
@@ -98,17 +112,10 @@ To build the containers from source, run Step 3 below.
 
 === Step 3 - Build the Containers
 
-Important variables within the Makefile determine what
-the containers will be built with including:
- * OSFLAVOR - set to either *rhel7* or *centos7*; determines
- what base image will be used for the containers
- * PGVERSION - set to either *9.5*, or *9.3*; determines
- what version of Postgres will be used within the containers
-
-Set these variables according to your deployment requirements
-then perform a container build as follows:
+Perform a container build as follows:
 
 ....
+cd $CCPROOT
 make setup
 make all
 ....
@@ -120,7 +127,7 @@ To install an Openshift environment, continue on to Step 4.
 
 === Step 4 - Openshift Enterprise Installation
 
-See the OSE installation guide for details on how to install 
+See the OSE installation guide for details on how to install
 OSE on your host.  The main instructions are here:
 
 https://docs.openshift.com/enterprise/3.2/install_config/install/index.html
@@ -173,7 +180,7 @@ server=/local/127.0.0.1#53
 server=/17.30.172.in-addr.arpa/127.0.0.1#53
 ....
 
-Within the /etc/origin/master/master-config.yaml I use the 
+Within the /etc/origin/master/master-config.yaml I use the
 following:
 ....
   bindAddress: 127.0.0.1:53
@@ -207,8 +214,8 @@ oc login -u system:admin
 oc project openshift
 ....
 
-The most recent DNS related configuration files that I test with 
-are included in the $BUILDBASE/docs/openshift-install directory
+The most recent DNS related configuration files that I test with
+are included in the $CCPROOT/docs/openshift-install directory
 as a reference.
 
 === Step 5 - Configure Container UID Control
@@ -222,7 +229,7 @@ You can make Openshift run as the Postgres UID if you set the *runAsUser* securi
 as follows:
 ....
 oc login -u system:admin
-oc edit scc restricted 
+oc edit scc restricted
 ....
 
 === Step 6 - Configure NFS for Persistence Examples
@@ -336,6 +343,7 @@ can NOT have a one-to-many relationship between PV and PVC(s).
 
 So, to do a database backup repeatably, you will need to following
 this general pattern:
+
  * as openshift admin user, create a unique PV (e.g. backup-pv-mydatabase)
  * as a project user, create a unique PVC (e.g. backup-pvc-mydatabase)
  * reference the unique PVC within the backup-job template
@@ -364,17 +372,18 @@ match to the correct PV.
 
 
 To perform a database restore, we do the following:
+
  * locate the NFS path to the database backup we want to restore with
  * edit a PV to use that NFS path
  * edit a PV to specify a unique label
  * create the PV
  * edit a PVC to use the previously created PV, specifying the same label
-   used in the PV 
+   used in the PV
  * edit a database template, specifying the PVC to be used for mounting
    to the /backup directory in the database pod
  * create the database pod
 
-If the /pgdata directory is blank AND the /backup directory contains 
+If the /pgdata directory is blank AND the /backup directory contains
 a valid postgres backup, it is assumed the user wants to perform a
 database restore.
 
@@ -454,6 +463,7 @@ server.
 === Tip 11: Setting up Docker storage
 
 I typically set up Docker storage this way:
+
  * add an extra IDE drive to my VM
  * fdisk /dev/sd? to format the drive
  * vgcreate /dev/sd?1 to create a volume group on the new drive partition
@@ -468,4 +478,3 @@ Copyright © 2017 Crunchy Data Solutions, Inc.
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
-

@@ -1,5 +1,5 @@
 == Crunchy PostgreSQL Containers
-v1.2.8, {docdate}
+v1.3, {docdate}
 
 image::docs/crunchy_logo.png?raw=true[]
 
@@ -12,7 +12,7 @@ are supported.
 The containers will execute in the following environments:
 
  * Docker 1.12
- * Openshift 3.3
+ * Openshift 3.4
  * Kubernetes 1.5
 
 The project includes the following containers:
@@ -26,7 +26,6 @@ The project includes the following containers:
  * link:docs/metrics.asciidoc#crunchy-collect[crunchy-collect] - collects Postgres metrics
  * link:docs/metrics.asciidoc#crunchy-prometheus[crunchy-prometheus] -stores Postgres metrics
  * link:docs/metrics.asciidoc#crunchy-grafana[crunchy-grafana] - graphs Postgres metrics
- * link:docs/containers.asciidoc#crunchy-dns[crunchy-dns] - standalone DNS server useful for standalone execution
  * link:docs/containers.asciidoc#crunchy-pgbouncer[crunchy-pgbouncer] - pgbouncer connection pooler and simple form of failover
  * link:docs/containers.asciidoc#crunchy-pgadmin4[crunchy-pgadmin4] - pgadmin4 web application
  * link:docs/containers.asciidoc#crunchy-dba[crunchy-dba] - implements a cron scheduler to perform simple DBA tasks
@@ -34,18 +33,23 @@ The project includes the following containers:
 
 image::docs/containers.png?raw=true[]
 
+For Kubernetes users of these containers, there is an associated
+project worth taking a look at that uses the containers found
+in this repo and provides a higher level automation.
+That project is link:https://github.com/crunchydata/postgres-operator[PostgresOperator]
+
 === Build Prerequisites
 
-The Crunchy containers have been tested on Centos 7, RHEL 7, Openshift 3.3,
-Kubernetes 1.5.1, and Docker 1.12
+The Crunchy containers have been tested on Centos 7, RHEL 7, Openshift 3.4,
+Kubernetes 1.5.3, and Docker 1.12
 
 1) Installing / configuring Docker
 
-On an EL7 system, docker can be installed with the following commands:
+On an EL7 system, Docker can be installed with the following commands:
 
  * sudo yum -y install docker
  * sudo groupadd docker
- * sudo usermod -a -G docker ${USER} 
+ * sudo usermod -a -G docker ${USER}
  * sudo systemctl enable docker;systemctl start docker
  * TIP:  remember to log out $USER for the docker group to take effect!
 
@@ -55,34 +59,30 @@ If you don't want to pull the containers from link:https://hub.docker.com/u/crun
 all the containers locally on your development host.
 
 Complete build and install documentation is found here: link:docs/install.asciidoc[Install Docs].  The provided Dockerfiles build the containers
-on a Centos 7 base image and use the community PostgreSQL RPMs.  
+on a Centos 7 base image and use the community PostgreSQL RPMs.
 
 Crunchy provides a commercially supported version of these containers
 built upon RHEL 7 and the Crunchy supported PostgreSQL.  Contact Crunchy
-for more details at link:http://www.crunchydata.com.
+for more details at http://www.crunchydata.com.
 
 === Examples
 
 Various examples are provided in the /examples directory and described
 in the documentation for running Docker, Kubernetes, and Openshift examples..
 
-See the following link for documentation on the docker
-examples: link:docs/docker.asciidoc[docker-examples] 
+See the following link for documentation on the Docker
+examples: link:docs/docker.asciidoc[docker-examples]
 
 To run the examples, you will need to set the CCP_IMAGE_TAG
-environment variable which indicates which version of the 
+environment variable which indicates which version of the
 container you will pull down and execute, for example:
 ....
-export BUILDBASE=$HOME/crunchy-containers
-export CCP_IMAGE_TAG=centos7-9.5-1.2.8
+export CCPROOT=$HOME/crunchy-containers
+export CCP_IMAGE_TAG=centos7-9.5-1.3.0
 ....
 
-The BUILDBASE is the location of where you cloned the containers github
+The CCPROOT is the location of where you cloned the containers github
 repository.
 
 The CCP_IMAGE_TAG is the version of the container you want to test
 with.  That version is out on Dockerhub.
-
-
-
-

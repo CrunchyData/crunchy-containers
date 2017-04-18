@@ -58,7 +58,6 @@
             "selector": {
                 "name": "ms-master"
             },
-            "portalIP": "None",
             "type": "ClusterIP",
             "sessionAffinity": "None"
         },
@@ -84,7 +83,6 @@
             "selector": {
                 "name": "ms-replica"
             },
-            "portalIP": "None",
             "type": "ClusterIP",
             "sessionAffinity": "None"
         }

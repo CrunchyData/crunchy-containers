@@ -66,11 +66,11 @@ in the VM instance.
 The crunchy container examples for openshift are installed
 here:
 
-==== $BUILDBASE/examples/openshift
+==== $CCPROOT/examples/openshift
 This directory contains all sorts of examples that create pods
 and services when you run the run.sh script in each subdirectory.
 
-==== $BUILDBASE/examples/dedicated
+==== $CCPROOT/examples/dedicated
 This directory contains openshift templates that are pre-installed
 into the Openshift environment, with these you can click on Add To Project
 in the web console to deploy containers.

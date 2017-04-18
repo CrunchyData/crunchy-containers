@@ -52,12 +52,12 @@ func ContainerFromName(
     return
 }
 
-// return OS BUILDBASE variable, or fail test
+// return OS CCPROOT variable, or fail test
 func getBuildBase(t *testing.T) (buildBase string) {
 
-    buildBase = os.Getenv("BUILDBASE")
+    buildBase = os.Getenv("CCPROOT")
     if buildBase == "" {
-        t.Fatal("Please set BUILDBASE environment variable to run tests.")
+        t.Fatal("Please set CCPROOT environment variable to run tests.")
     }
 
     return

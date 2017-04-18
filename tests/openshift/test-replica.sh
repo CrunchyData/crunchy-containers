@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,7 +14,7 @@
 # limitations under the License.
 
 
-echo BUILDBASE is $BUILDBASE
+echo CCPROOT is $CCPROOT
 
 #
 # test master slave replication
@@ -24,9 +24,9 @@ oc login -u system:admin
 oc projects openshift
 
 
-$BUILDBASE/examples/openshift/master-slave/delete.sh
+$CCPROOT/examples/openshift/master-slave/delete.sh
 
-$BUILDBASE/examples/openshift/master-slave/run.sh
+$CCPROOT/examples/openshift/master-slave/run.sh
 
 SLEEP=50
 echo "sleeping for " $SLEEP " seconds to allow pods/services to startup"
@@ -78,7 +78,7 @@ else
 	resultrc=2
 fi
 
-$BUILDBASE/examples/openshift/master-slave/delete.sh
+$CCPROOT/examples/openshift/master-slave/delete.sh
 
 exit $resultrc
 

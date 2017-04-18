@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,15 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $BUILDBASE/examples/envvars.sh
+source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete service custom-config
-oc delete pod custom-config
+CONTAINER=custom-config
+oc delete service $CONTAINER
+oc delete pod $CONTAINER
 
-sudo rm $NFS_PATH/setup.sql
-sudo rm $NFS_PATH/pg_hba.conf
-sudo rm $NFS_PATH/postgresql.conf
+sudo rm $PV_PATH/setup.sql
+sudo rm $PV_PATH/pg_hba.conf
+sudo rm $PV_PATH/postgresql.conf
+sudo rm -rf $PV_PATH/$CONTAINER
 
-$BUILDBASE/examples/waitforterm.sh custom-config oc
+$CCPROOT/examples/waitforterm.sh custom-config oc

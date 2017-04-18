@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo BUILDBASE is $BUILDBASE
+echo CCPROOT is $CCPROOT
 #
 # test backup
 #
@@ -25,8 +25,8 @@ echo "cleaning up any leftovers...."
 export PGPASSFILE=/tmp/single-master-pgpass
 
 cleanup() {
-$BUILDBASE/examples/openshift/single-master/delete.sh
-$BUILDBASE/examples/openshift/backup-job/delete.sh
+$CCPROOT/examples/openshift/single-master/delete.sh
+$CCPROOT/examples/openshift/backup-job/delete.sh
 # clear out any previous backups
 sudo rm -rf /nfsfileshare/single-master
 oc delete pod single-master
@@ -41,7 +41,7 @@ echo "sleeping for 40 seconds to allow any existing pods/services to terminate"
 sleep 40
 
 echo "creating single-master pod..."
-$BUILDBASE/examples/openshift/single-master/run.sh
+$CCPROOT/examples/openshift/single-master/run.sh
 
 echo "sleeping for 40 seconds to allow pods/services to startup"
 sleep 40
@@ -72,7 +72,7 @@ export IPADDRESS=`hostname --ip-address`
 
 echo "local ip address is " $IPADDRESS
 
-$BUILDBASE/examples/openshift/backup-job/run.sh
+$CCPROOT/examples/openshift/backup-job/run.sh
 
 echo "sleep while backup executes"
 sleep 30

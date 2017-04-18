@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 Crunchy Data Solutions, Inc.
+# Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,4 +15,4 @@
 oc delete secret pguser-secret pgmaster-secret pgroot-secret
 oc delete pod secret-pg
 oc delete service secret-pg
-$BUILDBASE/examples/waitforterm.sh secret-pg oc
+$CCPROOT/examples/waitforterm.sh secret-pg oc

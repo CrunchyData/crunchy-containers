@@ -1,0 +1,190 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "crunchy-replica",
+        "creationTimestamp": null,
+        "annotations": {
+            "description": "Crunchy PostgreSQL Replica",
+            "iconClass": "icon-database",
+            "tags": "database,postgresql,crunchy"
+        }
+    },
+    "parameters": [{
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "the image prefix to use",
+        "value": "crunchydata"
+    }, {
+        "name": "CCP_IMAGE_TAG",
+        "description": "the image tag to use",
+        "value": "rhel7-9.6-1.3.0"
+    }, {
+        "name": "CCP_IMAGE_NAME",
+        "description": "The image name to use",
+        "value": "crunchy-postgres"
+    }, {
+        "name": "SERVICE_NAME",
+        "description": "the name to use for the replica service and pod",
+        "value": "replica"
+    }, {
+        "name": "PG_MASTER_HOST",
+        "description": "the master service name the replica will connect to",
+        "value": "master"
+    }, {
+        "name": "PG_MASTER_PORT",
+        "description": "the master database port the replica will connect to",
+        "value": "5432"
+    }, {
+        "name": "PG_MASTER_USER",
+        "description": "the master user name the replica will connect with",
+        "value": "master"
+    }, {
+        "name": "PG_MASTER_PASSWORD",
+        "description": "the master user password the replica will connect with",
+        "value": "password"
+    }, {
+        "name": "PVC_NAME",
+        "description": "the name of the PVC to use",
+        "value": "replica-pvc"
+    }, {
+        "name": "PVC_ACCESS_MODE",
+        "description": "the accessmode of the PVC to use",
+        "value": "ReadWriteMany"
+    }, {
+        "name": "PVC_SIZE",
+        "description": "the size of the PVC to use",
+        "value": "300M"
+    }],
+    "objects": [{
+            "kind": "PersistentVolumeClaim",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${PVC_NAME}"
+            },
+            "spec": {
+                "accessModes": [
+                    "${PVC_ACCESS_MODE}"
+                ],
+                "resources": {
+                    "requests": {
+                        "storage": "${PVC_SIZE}"
+                    }
+                }
+            }
+        }, {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${SERVICE_NAME}",
+                "labels": {
+                    "name": "${SERVICE_NAME}"
+                }
+            },
+            "spec": {
+                "ports": [{
+                    "name": "postgres",
+                    "protocol": "TCP",
+                    "port": 5432,
+                    "targetPort": 5432,
+                    "nodePort": 0
+                }],
+                "selector": {
+                    "name": "${SERVICE_NAME}"
+                },
+                "type": "ClusterIP",
+                "sessionAffinity": "None"
+            }
+        },
+
+        {
+            "kind": "Pod",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "${SERVICE_NAME}",
+                "labels": {
+                    "name": "${SERVICE_NAME}"
+                }
+            },
+            "spec": {
+                "securityContext": {},
+                "containers": [{
+                    "name": "postgres",
+                    "image": "${CCP_IMAGE_PREFIX}/${CCP_IMAGE_NAME}:${CCP_IMAGE_TAG}",
+                    "readinessProbe": {
+                        "exec": {
+                            "command": [
+                                "/opt/cpm/bin/readiness.sh"
+                            ]
+                        },
+                        "initialDelaySeconds": 40,
+                        "timeoutSeconds": 2
+                    },
+                    "livenessProbe": {
+                        "exec": {
+                            "command": [
+                                "/opt/cpm/bin/liveness.sh"
+                            ]
+                        },
+                        "initialDelaySeconds": 40,
+                        "timeoutSeconds": 2
+                    },
+
+                    "imagePullPolicy": "Always",
+                    "ports": [{
+                        "containerPort": 5432,
+                        "protocol": "TCP"
+                    }],
+                    "env": [{
+                        "name": "PG_MASTER_HOST",
+                        "value": "${PG_MASTER_HOST}"
+                    }, {
+                        "name": "PG_MASTER_USER",
+                        "value": "${PG_MASTER_USER}"
+                    }, {
+                        "name": "PG_MASTER_PORT",
+                        "value": "${PG_MASTER_PORT}"
+                    }, {
+                        "name": "PG_MODE",
+                        "value": "slave"
+                    }, {
+                        "name": "PG_USER",
+                        "value": "testuser"
+                    }, {
+                        "name": "PG_PASSWORD",
+                        "value": "password"
+                    }, {
+                        "name": "PG_DATABASE",
+                        "value": "userdb"
+                    }, {
+                        "name": "PG_ROOT_PASSWORD",
+                        "value": "password"
+                    }, {
+                        "name": "PGHOST",
+                        "value": "/tmp"
+                    }, {
+                        "name": "PG_MASTER_PASSWORD",
+                        "value": "${PG_MASTER_PASSWORD}"
+                    }],
+                    "volumeMounts": [{
+                        "mountPath": "/pgdata",
+                        "name": "pgdata",
+                        "readOnly": false
+                    }, {
+                        "mountPath": "/backup",
+                        "name": "backup",
+                        "readOnly": true
+                    }]
+                }],
+                "volumes": [{
+                    "name": "pgdata",
+                    "persistentVolumeClaim": {
+                        "claimName": "${PVC_NAME}"
+                    }
+                }, {
+                    "name": "backup",
+                    "emptyDir": {}
+                }]
+            }
+        }
+    ]
+}

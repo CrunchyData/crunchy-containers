@@ -58,7 +58,6 @@
             "selector": {
                 "name": "master-pitr-restore"
             },
-            "portalIP": "None",
             "type": "ClusterIP",
             "sessionAffinity": "None"
         },
