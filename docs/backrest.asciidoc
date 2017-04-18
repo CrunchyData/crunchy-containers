@@ -68,17 +68,17 @@ Steps for FULL restore
 
  * Delete the master-backrest pod, if still running
  * Empty the PGDATA directory (remove all files)
- * Create the restore job
- * Check the restore logs (db-restore.log) for success
- * Re-create the master-backrest pod
+ * Create the restore job using the restore-job.json template. Do NOT include the DELTA var.
+ * Check the restore logs (db-restore.log) for success. You can also view the completed job pod with kubectl get pod -a
+ * Re-create the master-backrest pod. The database will recover.
 
 Steps for DELTA restore
 
  * Delete the master-backrest pod, if still running
  * rm postmaster.pid from PGDATA.
- * Create the restore job
- * Check the restore logs (db-restore.log) for success
- * Re-create the master-backrest pod
+ * Create the restore job using the restore-job.json template. Be sure to include the DELTA var.
+ * Check the restore logs (db-restore.log) for success. You can also view the completed job pod with kubectl get pod -a
+ * Re-create the master-backrest pod. The database will recover only files that have changed from the last backup.
 
 == Legal Notices
 
