@@ -1,5 +1,6 @@
-#!/bin/bash
-# Copyright 2017 Crunchy Data Solutions, Inc.
+#!/bin/bash  -x
+
+# Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,14 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+echo STANZA $STANZA set
+if [ ! -v STANZA ]; then
+	echo "STANZA env var is not set, required value"
+	exit 2
+fi
 
-source $CCPROOT/examples/envvars.sh
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "Starting restore. Examine restore log in /backrestrepo for results" `date`
 
-kubectl delete service master-backrest
-kubectl delete pod master-backrest
-kubectl delete configmap backrestconf
-kubectl delete job backrest-job-nfs
+if [ -v DELTA ]; then
+    pgbackrest --config=/pgconf/pgbackrest.conf --stanza=$STANZA --log-path=/backrestrepo --delta restore
+else
+    pgbackrest --config=/pgconf/pgbackrest.conf --stanza=$STANZA --log-path=/backrestrepo restore
+fi
 
-sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/archive $PV_PATH/backup
-
+echo "Completed restore at " `date`
+exit 0

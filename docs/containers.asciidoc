@@ -506,6 +506,26 @@ The following features are supported by the crunchy-postgres container:
    to be *master*
  * for configuration, has to have users.txt and pgbouncer.ini files mounted in /pgconf
 
+== crunchy-backrest-restore
+
+The crunchy-backrest-restore container executes the pgbackrest utility, allowing FULL and DELTA restore capability. See the pgbackrest guide for more details. https://github.com/pgbackrest/pgbackrest
+
+=== Environment Variables
+
+ * STANZA - required - must be set to the desired stanza for restore
+ * DELTA - when set, will add the --delta option to the restore. The delta option allows pgBackRest to automatically determine which files in the database cluster directory can be preserved and which ones need to be restored from the backup — it also removes files not present in the backup manifest so it will dispose of divergent changes.
+
+=== Features
+
+The following features are supported by the crunchy-backrest-restore container:
+
+ * mount pgbackrest.conf config file via /pgconf volume
+ * mount the /backrestrepo for access to pgbackrest archives
+
+=== Restrictions
+
+ * for configuration, has to have pgbackrest.conf files mounted in /pgconf
+ * must have valid pgbackrest archive directory mounted in /backrestrepo
 
 == crunchy-pgadmin4
 
