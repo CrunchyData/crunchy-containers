@@ -19,11 +19,13 @@ if [ ! -v STANZA ]; then
 	exit 2
 fi
 
-echo "Starting restore. Examine restore log in /backrestrepo for results"
-date
+echo "Starting restore. Examine restore log in /backrestrepo for results" `date`
 
-pgbackrest --config=/pgconf/pgbackrest.conf --stanza=$STANZA --log-path=/backrestrepo restore
+if [ -v DELTA ]; then
+    pgbackrest --config=/pgconf/pgbackrest.conf --stanza=$STANZA --log-path=/backrestrepo --delta restore
+else
+    pgbackrest --config=/pgconf/pgbackrest.conf --stanza=$STANZA --log-path=/backrestrepo restore
+fi
 
 echo "Completed restore at " `date`
-echo "See /backrestrepo restore log for details"
 exit 0

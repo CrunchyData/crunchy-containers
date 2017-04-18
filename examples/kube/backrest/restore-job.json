@@ -19,6 +19,8 @@
                 "env": [{
                     "name": "STANZA",
                     "value": "db"
+		}, {
+                    "name": "DELTA"
                 }],
                 "volumeMounts": [{
                     "mountPath": "/pgdata",
@@ -42,7 +44,7 @@
             }, {
                 "name": "backrestrepo",
                 "persistentVolumeClaim": {
-                    "claimName": "crunchy-backrest-pvc"
+                    "claimName": "crunchy-pvc2"
                 }
             }, {
                 "name": "pgdata",
