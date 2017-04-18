@@ -634,18 +634,11 @@ cd $CCPROOT/examples/kube/backrest
 ....
 
 This will create the following in your Kube environment:
- * PVC for /pgconf which holds the pgbackrest configuration file, this
-  example uses NFS for the Persistent volumes, so the run.sh script
-  can copy the pgbackrest.conf file to the PV location
- * PV for /pgconf, NFS location is /nfsfileshare/pgconf for this example
- * PVC for /backrestrepo, this holds the archive files that pgbackrest
-   will write out
- * PV for /backrestrepo, maps to the NFS location of /nfsfileshare/backrestrepo
- * master-backrest pod with pgbackrest archive enabled
+ * A configMap named backrestconf which contains the pgbackrest.conf file
+ * master-backrest pod with pgbackrest archive enabled. An initial stanza db will be created on initialization
  * master-backrest service
 
-After some execution time, examing the contents of /nfsfileshare/backrestrepo
-to view the pgbackrest archive files.
+The crunchy-pvc will be used for /pgdata, and crunchy-pvc2 for the /backrestrepo. Examine the /backrestrepo location to view the archive directory and ensure WAL archiving is working. See backrest.asciidoc for steps to backup and restore using pgbackrest.
 
 === master-deployment
 
