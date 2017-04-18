@@ -65,19 +65,20 @@ see the archive files and also the backup files.
 There are two options to choose from when performing a restore, DELTA and FULL. A FULL is the default; a DELTA will only occur if the environment variable DELTA is specified in the restore-job spec. Consult the pgbackrest user guide to determine which is best suited to run.
 
 Steps for FULL restore
-1. Delete the master-backrest pod, if still running
-2. Empty the PGDATA directory (remove all files)
-3. Create the restore job
-4. Check the restore logs (db-restore.log) for success
-5. Re-create the master-backrest pod
 
-Steps for FULL restore
-1. Delete the master-backrest pod, if still running
-2. Empty the PGDATA directory (remove all files)
-3. Create the restore job
-4. Check the restore logs (db-restore.log) for success
-5. Re-create the master-backrest pod
+ * Delete the master-backrest pod, if still running
+ * Empty the PGDATA directory (remove all files)
+ * Create the restore job
+ * Check the restore logs (db-restore.log) for success
+ * Re-create the master-backrest pod
 
+Steps for DELTA restore
+
+ * Delete the master-backrest pod, if still running
+ * rm postmaster.pid from PGDATA.
+ * Create the restore job
+ * Check the restore logs (db-restore.log) for success
+ * Re-create the master-backrest pod
 
 == Legal Notices
 
