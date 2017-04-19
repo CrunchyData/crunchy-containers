@@ -38,8 +38,10 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  	rsync \
  && yum -y reinstall glibc-common \
  && yum -y install postgresql96 postgresql96-contrib postgresql96-server \
-	pgaudit96 pgaudit_analyze pgaudit96_set_user \
-	crunchy-backrest && yum -y clean all
+	pgaudit96 pgaudit96_set_user \
+	crunchy-backrest \
+ && yum -y --setopt=tsflags='' install pgaudit_analyze \
+ && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
 

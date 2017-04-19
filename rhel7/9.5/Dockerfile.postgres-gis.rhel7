@@ -29,12 +29,21 @@ ADD conf/CRUNCHY-GPG-KEY.public  /
 ADD conf/crunchypg95.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
-RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-RUN yum -y install rsync nss_wrapper gettext bind-utils procps-ng \
-openssh-clients  hostname && yum -y reinstall glibc-common && \ 
-yum -y install postgresql95 postgresql95-contrib postgresql95-server \
-pgaudit95 pgaudit_analyze pgaudit95_set_user \
-postgis2_95 postgis2_95-client crunchy-backrest pgrouting_95  && yum clean all -y
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+ && yum -y install bind-utils \
+        gettext \
+        hostname \
+        nss_wrapper \
+        openssh-clients \
+        procps-ng \
+        rsync \
+ && yum -y reinstall glibc-common \
+ && yum -y install postgresql95 postgresql95-contrib postgresql95-server \
+        pgaudit95 pgaudit95_set_user \
+        crunchy-backrest \
+        postgis2_95 postgis2_95-client pgrouting_95 \
+ && yum -y --setopt=tsflags='' install pgaudit_analyze \
+ && yum -y clean all
 
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/
