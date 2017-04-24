@@ -1,0 +1,49 @@
+FROM centos:7
+
+LABEL Release="1.4" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
+
+ENV PGVERSION="9.5" \
+	PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
+
+# PGDG Postgres repo
+# RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-1.noarch.rpm
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y install epel-release \
+ && yum -y update glibc-common \
+ && yum -y install bind-utils \
+	gettext \
+	hostname \
+	nss_wrapper \
+	openssh-clients \
+	kubernetes-client \
+ 	procps-ng  \
+	rsync \
+ && yum -y clean all
+
+RUN yum -y install postgresql95-server postgresql95-contrib postgresql95 \
+        pgaudit_95 \
+        pgbackrest \
+ && yum -y clean all
+
+ENV	PGROOT="/usr/pgsql-${PGVERSION}"
+
+# add path settings for postgres user
+ADD conf/.bash_profile /var/lib/pgsql/
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgconf /backrestrepo
+
+RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
+	/pgdata /pgconf /backrestrepo /var/log/pgbackrest
+
+# volume pgconf to store pgbackrest.conf
+# volume backrestrepo for pgbackrest to restore from and log
+
+VOLUME /pgconf /pgdata /backrestrepo
+
+ADD bin/backrest_restore /opt/cpm/bin
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]
