@@ -15,7 +15,15 @@
 
 function trap_sigterm() {
 	echo "doing trap logic..." >> $PGDATA/trap.output
-	kill -SIGINT `head -1 $PGDATA/postmaster.pid` >> $PGDATA/trap.output
+
+	# Clean shutdowns begin here
+	echo "Clean shut-down of postgres..."
+	pg_ctl -w -D $PGDATA stop
+
+	# Unclean shutdowns begin here (if all else fails)
+	if [ -f $PGDATA/postmaster.pid ]; then
+		kill -SIGINT $(head -1 $PGDATA/postmaster.pid) >> $PGDATA/trap.output
+	fi
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
@@ -88,7 +96,7 @@ fi
 
 function role_discovery() {
 	PATH=$PATH:/opt/cpm/bin
-	ordinal=`echo $HOSTNAME | cut -f2 -d'-'`
+	ordinal=$(echo $HOSTNAME | cut -f2 -d'-')
 	echo $ordinal is ordinal
 	if [ $ordinal -eq 0 ]; then
 		kubectl label --overwrite=true pod $HOSTNAME  name=$PG_MASTER_HOST
@@ -443,11 +451,9 @@ if [[ -v PGAUDIT_ANALYZE ]]; then
 	pgaudit_analyze $PGDATA/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
 fi
 
+# We will wait indefinitely until "docker stop [container_id]"
+# When that happens, we route to the "trap_sigterm" function above
 wait
 
 echo "exiting...at end"
 
-#while true; do
-#	echo "sleeping "
-#	sleep 1000
-#done
