@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete service ms-master
-kubectl delete service ms-replica
-kubectl delete pod ms-master
 kubectl delete pod ms-replica
 kubectl delete pod ms-replica-2
+sleep  2
+kubectl delete service ms-replica
+kubectl delete service ms-master
+kubectl delete pod ms-master
 $CCPROOT/examples/waitforterm.sh ms-master kubectl
 $CCPROOT/examples/waitforterm.sh ms-replica kubectl
 $CCPROOT/examples/waitforterm.sh ms-replica-2 kubectl
