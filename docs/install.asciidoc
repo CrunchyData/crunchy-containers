@@ -96,9 +96,10 @@ sudo systemctl enable docker.service
 sudo systemctl start docker.service
 ....
 
-At this point, you have a decision to make, either build the
-containers on your local host, or download prebuilt containers
-from dockerhub.
+=== Step 3 - Build the Containers
+
+At this point, you have a decision to make - either download prebuilt 
+containers from dockerhub, *or* build the containers on your local host.
 
 To download the prebuilt containers, make sure you can login to
 dockerhub.com, and then run the following:
@@ -108,11 +109,8 @@ cd $CCPROOT
 ./bin/pull-from-dockerhub.sh
 ....
 
-To build the containers from source, run Step 3 below.
-
-=== Step 3 - Build the Containers
-
-Perform a container build as follows:
+Or if you'd rather build the containers from source, perform a container 
+build as follows:
 
 ....
 cd $CCPROOT
