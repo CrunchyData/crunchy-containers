@@ -1,0 +1,40 @@
+= Smoke Test Guide - Crunchy Containers for PostgreSQL
+Crunchy Data Solutions, Inc.
+v1.4, {docdate}
+
+== Smoke Test Guide Prerequsites
+
+Here is a series of setup steps required to test a new release:
+
+ * Update version numbers in documentation and examples
+ * Build a clean Docker centos host (vm)
+ * Build the 9.5 and 9.6 images on the new Docker host
+ * Build a clean RHEL Openshift host (vm)
+ * Build the 9.5 and 9.6 images on the new openshift host
+ * Build a clean centos kube host (vm)
+ * Build the 9.5 and 9.6 images on the new kube host
+ * Verify PDF and HTML docs were generated with the new version
+
+=== Smoke Test Steps
+
+The following examples are used to test each environment:
+
+ * basic
+ * backup
+ * restore
+ * grafana/prometheus/promgateway
+ * collect example
+ * master-replica 
+ * pgpool 
+ * pgbouncer 
+ * crunchy-proxy
+ * sync example
+
+
+== Legal Notices
+
+Copyright © 2017 Crunchy Data Solutions, Inc.
+
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.

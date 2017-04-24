@@ -5,8 +5,8 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/prometheus" \
         vendor="crunchy data" \
         version="7.2" \
-        release="1.3" \
-        build-date="2017-04-01" \
+        release="1.4" \
+        build-date="2017-04-21" \
         url="https://crunchydata.com" \
         summary="crunchy data prometheus container" \
         description="prometheus container" \

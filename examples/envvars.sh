@@ -28,7 +28,7 @@ export GCE_FS_FORMAT=ext4
 export LOCAL_IP=`hostname --ip-address`
 
 if [ -v $CCP_IMAGE_TAG ]; then
-	export CCP_IMAGE_TAG=centos7-9.5-1.3.0
+	export CCP_IMAGE_TAG=centos7-9.5-1.4.0
 	echo "CCP_IMAGE_TAG was not found...using current tag of " $CCP_IMAGE_TAG
 fi
 

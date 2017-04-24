@@ -29,6 +29,8 @@ The project includes the following containers:
  * link:docs/containers.asciidoc#crunchy-pgbouncer[crunchy-pgbouncer] - pgbouncer connection pooler and simple form of failover
  * link:docs/containers.asciidoc#crunchy-pgadmin4[crunchy-pgadmin4] - pgadmin4 web application
  * link:docs/containers.asciidoc#crunchy-dba[crunchy-dba] - implements a cron scheduler to perform simple DBA tasks
+ * link:docs/containers.asciidoc#crunchy-upgrade[crunchy-upgrade] - allows you to perform a major postgres upgrade using pg_upgrade
+ * link:docs/containers.asciidoc#crunchy-backrest-restore[crunchy-backrest-restore] - allows you to perform a pgbackrest restore
 
 
 image::docs/containers.png?raw=true[]
@@ -78,7 +80,7 @@ environment variable which indicates which version of the
 container you will pull down and execute, for example:
 ....
 export CCPROOT=$HOME/crunchy-containers
-export CCP_IMAGE_TAG=centos7-9.5-1.3.0
+export CCP_IMAGE_TAG=centos7-9.5-1.4.0
 ....
 
 The CCPROOT is the location of where you cloned the containers github
