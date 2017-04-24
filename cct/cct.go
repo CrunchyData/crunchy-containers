@@ -42,6 +42,7 @@ func ContainerFromName(
     containers, err := docker.ContainerList(
         context.Background(), listOpts)
     if err != nil {
+        err = fmt.Errorf("Error on ContainerList\n%s", err.Error())
         return
     }
     if len(containers) == 0 {
@@ -63,6 +64,17 @@ func getBuildBase(t *testing.T) (buildBase string) {
     return
 }
 
+// return OS BUILDBASE variable, or fail test
+func getPgVersion(t *testing.T) (pgVersion string) {
+
+    pgVersion = os.Getenv("CCP_PGVERSION")
+    if pgVersion == "" {
+        t.Fatal("Please define CCP_PGVERSION environment variable to run tests.")
+    }
+
+    return
+}
+
 // responsibility of caller to call docker.Close()
 func getDockerTestClient(t *testing.T) (docker *client.Client) {
 
@@ -75,26 +87,50 @@ func getDockerTestClient(t *testing.T) (docker *client.Client) {
     return
 }
 
-// returns the value of environment variable defined in current context of container
-func envValueFromContainer(
+// assert the named environment value in the container context (envVar) is value
+func assertEnvValue(
     docker *client.Client,
     containerId string,
-    envVar string) (value string, err error) {
+    envVar string,
+    value string) (ok bool, foundval string, err error) {
 
-    inspect, err := docker.ContainerInspect(
-        context.Background(), containerId)
+    foundval, err = envValueFromContainer(docker, containerId, envVar)
     if err != nil {
         return
     }
 
+    ok = (foundval==value)
+    return
+}
+
+// returns the value of environment variable defined in current context of container
+func envValueFromContainer(
+    docker *client.Client,
+    containerId string,
+    envVar string) (string, error) {
+
+    inspect, err := docker.ContainerInspect(
+        context.Background(), containerId)
+    if err != nil {
+        return "", err
+    }
+
     env := inspect.Config.Env
+    var v, value string
+
     for _, e := range env {
-        if strings.HasPrefix(e, envVar) {
-            value = strings.Split(e, "=")[1]
+        ev := strings.Split(e, "=")
+        v, value = ev[0], ev[1]
+        if v == envVar {
             break
         }
+        // if strings.HasPrefix(e, envVar) {
+        //     value = strings.Split(e, "=")[1]
+        //     break
+        // }
+        value = ""
     }
-    return
+    return value, nil
 }
 
 // container state is running?
@@ -154,3 +190,58 @@ func assertLabel(
     ok = (foundvalue == value)
     return
 }
+
+// type dirStat struct {
+//     Path string
+//     Owner string
+//     Group string
+//     Mode os.FileMode
+// }
+
+// func assertDirectory(
+//     docker *client.Client,
+//     containerId string,
+//     s dirStat) (ok bool, found dirStat, err error) {
+
+//     stat, err := docker.ContainerPathStat(context.Background(), containerId, s.Path)
+//     if err != nil {
+//         err = fmt.Errorf("Error trying to stat path %s\n%s", s.Path, err.Error())
+//         return
+//     }
+
+//     cmd := []string{"stat", "-c", "\"%U %G\"", s.Path}
+
+//     execConf := types.ExecConfig{
+//         User: "postgres",
+//         AttachStdout: true,
+//         AttachStderr: true,
+//         Cmd: cmd,
+//     }
+//     execId, err := docker.ContainerExecCreate(
+//         context.Background(), containerId, execConf)
+//     if err != nil {
+//         return
+//     }
+
+//     err = docker.ContainerExecStart(
+//         context.Background(), execId.ID, types.ExecStartCheck{})
+//     if err != nil {
+//         return
+//     }
+
+//     response, err := client.ContainerExecAttach(
+//         context.Background(), execId.ID, execConf)
+//     if err != nil {
+//         return
+//     }
+//     defer response.Close()
+
+//     out, err := ioutil.ReadAll(response.Reader)
+//     if err != nil {
+//         return
+//     }
+
+//     fmt.Println(string(out[:]))
+
+//     return ok, s, nil
+// }

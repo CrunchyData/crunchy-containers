@@ -18,12 +18,15 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 CONTAINER_NAME=pgadmin4
 VOLUME_NAME=$CONTAINER_NAME-volume
 
+DOCKER_NETWORK=${DOCKER_NETWORK:-"bridge"}
+
 $DIR/cleanup.sh
 
 docker volume create --driver local --name=$VOLUME_NAME
 
 docker run \
 	-p 5050:5050 \
+	--network=$DOCKER_NETWORK
 	--privileged=true \
 	--volume-driver=local \
 	-v $VOLUME_NAME:/pgdata:z \

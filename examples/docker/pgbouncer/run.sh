@@ -13,17 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting pgbouncer container...."
+set -u
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 "$DIR"/cleanup.sh
 
 CONTAINER_NAME=pgbouncer
 
-sudo chcon -Rt svirt_sandbox_file_t "$DIR"
+# sudo chcon -Rt svirt_sandbox_file_t "$DIR"/conf
 
-sudo docker run \
-	-v "$DIR":/pgconf \
+echo "starting pgbouncer container...."
+
+docker run \
+	-v "$DIR"/pgconf:/pgconf:Z \
 	-p 12005:5432 \
 	--privileged \
 	-v /run/docker.sock:/run/docker.sock \

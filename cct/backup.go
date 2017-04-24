@@ -41,6 +41,7 @@ func waitForBackup(
     conStr, err := buildConnectionString(
         docker, containerId, "postgres", "postgres")
     if err != nil {
+        err = fmt.Errorf("Error building Connection String\n%s", err.Error())
         return
     }
 
@@ -58,6 +59,7 @@ func waitForBackup(
             close(doneC)
         }
         if bkup, err := isInBackup(conStr); err != nil {
+            err = fmt.Errorf("Error checking isInBackup on: %s\n%s", conStr, err.Error())
             return err
         } else if ! bkup {
             ok = true
@@ -234,6 +236,7 @@ func getBackupName(
         &network.NetworkingConfig{}, 
         "ls-backup")
     if err != nil {
+        err = fmt.Errorf("Error creating container\n%s", err.Error())
         return
     }
 
@@ -246,12 +249,13 @@ func getBackupName(
                 RemoveVolumes: true,
                 Force: true,
             }); e != nil {
-            err = e
+            err = fmt.Errorf("Error removing container: %s\n%s", c.ID, e.Error())
         }
     } ()
 
     err = docker.ContainerStart(context.Background(), c.ID, types.ContainerStartOptions{})
     if err != nil {
+        err = fmt.Errorf("Error starting container: %s\n%s", c.ID, err.Error())
         return
     }
 
@@ -266,6 +270,7 @@ func getBackupName(
         })
     defer logReader.Close()
     if err != nil {
+        err = fmt.Errorf("Error getting container Logs: %s\n%s", c.ID, err.Error())
         return
     }
 
@@ -274,7 +279,7 @@ func getBackupName(
 
     ok = scanner.Scan()
     if ! ok {
-        err = scanner.Err()
+        err = fmt.Errorf("Error on Scan\n%s", scanner.Err())
         return
     }
     name = scanner.Text()

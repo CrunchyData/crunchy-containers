@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -euo pipefail
+
 function trap_sigterm() {
         echo "doing trap logic..."
 	kill -SIGINT $PGBOUNCER_PID
@@ -35,8 +37,9 @@ ose_hack
 
 rm -rf /tmp/pgbouncer.pid
 
-BINDIR=/opt/cpm/bin
-CONFDIR=/pgconf/bouncerconfig
+# BINDIR=/opt/cpm/bin
+# CONFDIR=/pgconf/bouncerconfig
+CONFDIR=/pgconf
 
 if [ -f $CONFDIR/users.txt ]; then
 	echo "users.txt found in " $CONFDIR
@@ -66,7 +69,3 @@ echo "waiting for sigterm or sigint to be received..."
 
 wait
 
-#while true; do
-#	echo "main sleeping..."
-#	sleep 100
-#done

@@ -125,6 +125,7 @@ test:
 	./tests/docker/test-pgpool.sh; /usr/bin/test "$$?" -eq 0
 	./tests/docker/test-badger.sh; /usr/bin/test "$$?" -eq 0
 	./tests/docker/test-backup.sh; /usr/bin/test "$$?" -eq 0
+	./tests/docker/test-pgbouncer.sh; /usr/bin/test "$$?" -eq 0
 	./tests/docker/test-restore.sh; /usr/bin/test "$$?" -eq 0
 	# ./tests/standalone/test-watch.sh; /usr/bin/test "$$?" -eq 0
 	# docker stop master

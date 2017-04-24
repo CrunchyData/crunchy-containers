@@ -24,7 +24,6 @@ import (
 
 func TestDockerPgBouncer(t *testing.T) {
 
-    // const exampleName = "pgpool"
     const timeoutSeconds = 60
     const skipCleanup = false
 
@@ -50,31 +49,65 @@ func TestDockerPgBouncer(t *testing.T) {
     }
 
     fmt.Println("Starting pgbouncer example")
-    poolCleanup := startDockerExampleForTest(t, buildBase, "pgbouncer")
-    defer poolCleanup(skipCleanup)
+    bouncerCleanup := startDockerExampleForTest(t, buildBase, "pgbouncer")
+    defer bouncerCleanup(skipCleanup)
 
     containerId := testContainer(t, "PgBouncerContainer", docker, "pgbouncer")
     if t.Failed() {
         t.Fatal("Cannot proceed")
     }
 
-    conStr := conStrTestUser(t, docker, containerId)
-
     fmt.Println("Sleep 3 to allow pgbouncer to startup")
     time.Sleep(3 * time.Second)
 
-    if t.Run("TestConnect", func (t *testing.T) {
+
+    if t.Run("TestPrimary", func (t *testing.T) {
+        conStr, err := buildConnectionString(docker, containerId, "master", testuser)
+        if err != nil {
+            t.Fatal(err)
+        }
+
+        t.Logf("PRIMARY connection string is %s\n", conStr)
         if ok, err := isAcceptingConnectionString(conStr); err != nil {
             t.Fatal(err)
         } else if ! ok {
             t.Fatal("Could not connect to pgbouncer")
         }
+        t.Run("TestInsert", func (t *testing.T) {
+            facts, err := writeSomeData(docker, containerId, "master")
+            if err != nil {
+                t.Fatal(err)
+            }
+            t.Logf("Inserted %v rows\n", facts.rowcount)
+        })
     }); t.Failed() {
         t.Fatal("Cannot proceed")
     }
 
-    t.Run("TestInsert", func (t *testing.T) {
-        _ = insertTestTable(t, docker, containerId)
-    })
+
+    if t.Run("TestReplica", func (t *testing.T) {
+        conStr, err := buildConnectionString(docker, containerId, "replica", testuser)
+        if err != nil {
+            t.Fatal(err)
+        }
+
+        t.Logf("REPLICA connection string is %s\n", conStr)
+        if ok, err := isAcceptingConnectionString(conStr); err != nil {
+            t.Fatal(err)
+        } else if ! ok {
+            t.Fatal("Could not connect to pgbouncer")
+        }
+
+        t.Run("TestNoInsert", func (t *testing.T) {
+            _, err := writeSomeData(docker, containerId, "replica")
+            if !isReadOnlyErr(err) {
+                t.Fatal(err)
+            }
+        })
+
+    }); t.Failed() {
+        t.Fatal("Cannot proceed")
+    }
+
     t.Log("All tests complete.")
 }

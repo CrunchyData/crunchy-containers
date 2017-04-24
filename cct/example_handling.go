@@ -44,6 +44,7 @@ func startDockerExample(
 
     cmdout = bytes.NewBuffer(out).String()
     if err != nil {
+        err = fmt.Errorf("Failed to start Docker Example: %s\n%s", pathToExample, err.Error())
         return
     }
     return
@@ -53,6 +54,7 @@ func startDockerExample(
 func cleanupExample(pathToCleanup string) (cmdout string, err error) {
     out, err := exec.Command(pathToCleanup).CombinedOutput()
     if err != nil {
+        err = fmt.Errorf("Failed to cleanup Docker Example: %s\n%s", pathToCleanup, err.Error())
         return
     }
     cmdout = bytes.NewBuffer(out).String()
@@ -146,7 +148,7 @@ func startBasic(
     return
 }
 
-// Starts the master-replica example, and wait for both servers to start
+// Starts the master-replica example, and waits for both servers to start
 func startMasterReplica(
     t *testing.T,
     docker *client.Client,
