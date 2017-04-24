@@ -29,8 +29,8 @@ backup:	versiontest
 	docker build -t crunchy-backup -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backup.$(CCP_BASEOS) .
 	docker tag crunchy-backup crunchydata/crunchy-backup:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
-backrest: versiontest
-	docker build -t crunchy-backrest-restore -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbackrest.$(CCP_BASEOS) .
+backrestrestore: versiontest
+	docker build -t crunchy-backrest-restore -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backrest-restore.$(CCP_BASEOS) .
 	docker tag crunchy-backrest-restore crunchydata/crunchy-backrest-restore:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
 collectserver:	versiontest
@@ -110,7 +110,7 @@ watch:
 #============
 # All target
 #============
-all:	pgadmin4 backup collectserver dbaserver grafana pgbadger pgbouncer pgpool postgres postgres-gis prometheus promgateway watch vac upgrade
+all:	backup collectserver dbaserver grafana pgbadger pgbouncer pgpool postgres postgres-gis prometheus promgateway watch vac upgrade
 
 push:
 	./bin/push-to-dockerhub.sh
