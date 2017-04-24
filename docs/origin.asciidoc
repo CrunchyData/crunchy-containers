@@ -6,6 +6,7 @@ v1.3, {docdate}
 == Installation Instructions
 
 The crunchy-containers can run on different environments including:
+
  * standalone docker
  * openshift enterprise
 
@@ -14,56 +15,22 @@ environments.
 
 === Project Setup
 
-This instruction assumes you are installing on Centos 7 or RHEL 7.
+This instruction assumes you are installing on Centos 7 or RHEL 7 and have 
+followed the initial environment setup found  
+link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/install.asciidoc[here].
 
-=== Step 1 - Project Directory Structure
-
-First steps are to create a proper directory structure to
-hold the conatiner code:
-....
-mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
-export GOPATH=$HOME/cdev
-export GOBIN=$GOPATH/bin
-export PATH=$PATH:$GOBIN
-cd $GOPATH
-go get github.com/tools/godep
-cd src/github.com
-mkdir crunchydata
-git clone https://github.com/crunchydata/crunchy-containers
-....
-
-*If you are a Crunchy enterprise customer, you will place the CRUNCHY repo
-key and yum repo file into the $CCPROOT/conf directory at this point.*
-
-=== Step 2 - Install the Host Dependencies
-
-Next, install system dependencies:
-....
-export CCPROOT=$GOPATH/github.com/crunchydata/crunchy-containers
-cd $CCPROOT
-make setup
-....
-
-=== Step 3 - Build the Containers
-
-Next, compile the code, and build the Docker images as follows:
-....
-cd $CCPROOT
-make all
-....
-
-=== Step 4 - Openshift Enterprise Installation
+=== Openshift Enterprise Installation
 
 See the OSE installation guide for details on how to install 
 OSE on your host.  The main instructions are here:
 
-link:https://docs.openshift.com/enterprise/3.2/install_config/install/index.html
+https://docs.openshift.com/enterprise/3.2/install_config/install/index.html
 
 To install the OSE router, here are the instructions I use:
 
-link:https://github.com/openshift/training/blob/master/05-Services-Routing-Complete-Example.md#routing
+https://github.com/openshift/training/blob/master/05-Services-Routing-Complete-Example.md#routing
 
-link:https://docs.openshift.com/enterprise/3.2/install_config/install/deploy_router.html
+https://docs.openshift.com/enterprise/3.2/install_config/install/deploy_router.html
 
 I have the commands to create the router here, *run as root user*:
 ....
@@ -77,20 +44,18 @@ oc expose service v3simple-spatial -l name=v3simple-spatial
 oc get route
 ....
 
+To set up dnsmasq, this set of instructions is most helpful:
 
-To set up dnsmasq, here are the instructions I basically follow
-this set of instructions:
+http://developers.redhat.com/blog/2015/11/19/dns-your-openshift-v3-cluster/
 
-link:http://developers.redhat.com/blog/2015/11/19/dns-your-openshift-v3-cluster/
-
-However!  On my dev setup, I use KVM (libvirt) to run OSE within
+Alternatively, on my dev setup, I use KVM (libvirt) to run OSE within
 a VM.  The libvirt already runs a dnsmasq server on the host
 to handle the default libvirt network which causes a conflict when
 trying to run another dnsmasq on the same server.
 
 Details on libvirt and dnsmasq are here:
 
-link:http://wiki.libvirt.org/page/Libvirtd_and_dnsmasq
+http://wiki.libvirt.org/page/Libvirtd_and_dnsmasq
 
 So, here is how I modified by dnsmasq:
 
@@ -145,6 +110,7 @@ oc project openshift
 
 Binary releases of Openshift Origin are available here:
 https://github.com/openshift/origin/releases
+
 == Origin Installion Instructions and Advice
 
 The setup and installation of Origin is described below.
@@ -210,7 +176,7 @@ NFS is required for some of the Openshift examples, those dealing with
 backups and restores will require a working NFS.
 
 NFS is able to run in selinux Enforcing mode if you 
-following the instructions here:
+follow the instructions here:
 
 https://github.com/openshift/origin/tree/master/examples/wordpress
 
@@ -289,6 +255,7 @@ can NOT have a one-to-many relationship between PV and PVC(s).
 
 So, to do a database backup repeatably, you will need to following
 this general pattern:
+
  * as openshift admin user, create a unique PV (e.g. backup-pv-mydatabase)
  * as a project user, create a unique PVC (e.g. backup-pvc-mydatabase)
  * reference the unique PVC within the backup-job template
@@ -317,6 +284,7 @@ match to the correct PV.
 
 
 To perform a database restore, we do the following:
+
  * locate the NFS path to the database backup we want to restore with
  * edit a PV to use that NFS path
  * edit a PV to specify a unique label
@@ -337,7 +305,7 @@ occur since this might be a large amount of data and the volumes
 might be on slow networks. You can view the logs of the database pod
 to measure the copy progress.
 
-=== Tip 6: Password Mgmt
+=== Tip 6: Password Management
 
 Remember that if you do a database restore, you will get
 whatever user IDs and passwords that were saved in the
@@ -419,6 +387,7 @@ server.
 === Tip 12: Setting up Docker storage
 
 I typically set up Docker storage this way:
+
  * add an extra IDE drive to my VM
  * fdisk /dev/sd? to format the drive
  * vgcreate /dev/sd?1 to create a volume group on the new drive partition
