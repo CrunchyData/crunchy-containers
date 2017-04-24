@@ -12,7 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+kubectl scale --replicas=0 rc/replica-rc
+sleep 2
+kubectl delete rc replica-rc
+sleep 2
+kubectl delete pod master-rc
+sleep 1
 kubectl delete service master-rc
 kubectl delete service replica-rc
-kubectl delete pod master-rc
-kubectl delete rc replica-rc
