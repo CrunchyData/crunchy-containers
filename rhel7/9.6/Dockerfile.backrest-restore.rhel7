@@ -1,0 +1,65 @@
+FROM rhel7.2
+
+MAINTAINER Crunchy Data <support@crunchydata.com>
+
+LABEL name="crunchydata/postgres" \
+        vendor="crunchy data" \
+        PostgresVersion="9.6" \
+        version="7.2" \
+        release="1.4" \
+        build-date="2017-04-21" \
+        url="https://crunchydata.com" \
+        summary="crunchy data backrest restore container" \
+        description="backrest restore container" \
+        io.k8s.description="backrest restore container" \
+        io.k8s.display-name="Crunchy backrest restore container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY docs/backrestrestore/help.md /tmp/
+
+ENV PGVERSION="9.6" 
+
+# Crunchy Postgres repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg95.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm  && \
+ && yum -y update glibc-common \
+ && yum -y install bind-utils \
+	gettext \
+	hostname \
+	nss_wrapper \
+	openssh-clients \
+	kubernetes-client \
+ 	procps-ng  \
+	rsync \
+ && yum -y clean all
+
+RUN yum -y install postgresql96-server postgresql96-contrib postgresql96 \
+        pgaudit_96 \
+        pgbackrest \
+ && yum -y clean all
+
+ENV	PGROOT="/usr/pgsql-${PGVERSION}"
+
+# add path settings for postgres user
+ADD conf/.bash_profile /var/lib/pgsql/
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgconf /backrestrepo
+
+RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
+	/pgdata /pgconf /backrestrepo /var/log/pgbackrest
+
+# volume pgconf to store pgbackrest.conf
+# volume backrestrepo for pgbackrest to restore from and log
+
+VOLUME /pgconf /pgdata /backrestrepo
+
+ADD bin/backrest_restore /opt/cpm/bin
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]
