@@ -1,15 +1,10 @@
 {
-    "apiVersion": "extensions/v1beta1",
+    "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {
         "name": "vacuum-job"
     },
     "spec": {
-        "selector": {
-            "matchLabels": {
-                "app": "vacuum-job"
-            }
-        },
         "template": {
             "metadata": {
                 "name": "vacuum-job",
