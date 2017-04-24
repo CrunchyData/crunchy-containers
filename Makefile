@@ -30,7 +30,7 @@ backup:	versiontest
 	docker tag crunchy-backup crunchydata/crunchy-backup:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
 backrest: versiontest
-	docker build -t crunchy-backrest-restore -f $(CCP_BASEOS)/Dockerfile.pgbackrest.$(CCP_BASEOS) .
+	docker build -t crunchy-backrest-restore -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbackrest.$(CCP_BASEOS) .
 	docker tag crunchy-backrest-restore crunchydata/crunchy-backrest-restore:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
 collectserver:	versiontest
