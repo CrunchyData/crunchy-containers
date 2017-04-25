@@ -17,20 +17,21 @@
 # set up some env vars that all examples can relate to
 #
 
-#export CCP_CLI=kubectl
-export CCP_CLI=oc
-#export NAMESPACE=default
-export NAMESPACE=crunchy
+export CCP_CLI=kubectl
+#export CCP_CLI=oc
+export NAMESPACE=default
+#export NAMESPACE=crunchy
 export PV_PATH=/nfsfileshare
 #export PV_PATH=/data
 export GCE_DISK_ZONE=us-central1-a
 export GCE_DISK_NAME=gce-disk-crunchy
 export GCE_DISK_SIZE=4
 export GCE_FS_FORMAT=ext4
+export NFS_IP=`hostname --ip-address`
 export LOCAL_IP=`hostname --ip-address`
 
 if [ -v $CCP_IMAGE_TAG ]; then
-	export CCP_IMAGE_TAG=centos7-9.5-1.4.0
+	export CCP_IMAGE_TAG=centos7-9.6-1.4.0
 	echo "CCP_IMAGE_TAG was not found...using current tag of " $CCP_IMAGE_TAG
 fi
 
