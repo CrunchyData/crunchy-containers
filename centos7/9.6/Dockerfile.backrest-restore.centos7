@@ -9,19 +9,14 @@ ENV PGVERSION="9.6" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 RUN yum -y install epel-release \
- && yum -y update glibc-common \
- && yum -y install bind-utils \
-	gettext \
+ && yum -y install  \
 	hostname \
 	nss_wrapper \
 	openssh-clients \
-	kubernetes-client \
  	procps-ng  \
-	rsync \
  && yum -y clean all
 
-RUN yum -y install postgresql96-server postgresql96-contrib postgresql96 \
-        pgaudit_96 \
+RUN yum -y install postgresql96-server  \
         pgbackrest \
  && yum -y clean all
 
