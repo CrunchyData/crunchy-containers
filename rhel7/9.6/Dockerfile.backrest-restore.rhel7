@@ -44,11 +44,12 @@ ENV	PGROOT="/usr/pgsql-${PGVERSION}"
 ADD conf/.bash_profile /var/lib/pgsql/
 
 # set up cpm directory
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgconf /backrestrepo
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgconf /backrestrepo \
+	/var/lib/pgsql /var/log/pgbackrest
 
-RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
-	/pgdata /pgconf /backrestrepo 
-#	/pgdata /pgconf /backrestrepo /var/log/pgbackrest
+RUN chown -R postgres:postgres /opt/cpm  \
+	/pgdata /pgconf /backrestrepo  \
+	/var/lib/pgsql /var/log/pgbackrest
 
 # volume pgconf to store pgbackrest.conf
 # volume backrestrepo for pgbackrest to restore from and log
