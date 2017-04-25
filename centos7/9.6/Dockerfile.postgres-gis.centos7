@@ -1,11 +1,11 @@
 FROM centos:7
 
-LABEL Release="1.4" Vendor="Crunchy Data Solutions" PostgresVersion="9.6"
+LABEL Release="1.4" Vendor="Crunchy Data Solutions"  \
+	PostgresVersion="9.6" \
+	PostgresFullVersion="9.6.2"
 
-ENV PGVERSION="9.6" \
-	PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+ENV PGVERSION="9.6" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
 
-# PGDG Postgres repo
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 RUN yum -y install epel-release \
@@ -30,7 +30,6 @@ ENV PGROOT="/usr/pgsql-${PGVERSION}"
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/
 
-# set up cpm directory
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \

@@ -1,11 +1,11 @@
 FROM centos:7
 
-LABEL Release="1.4" Vendor="Crunchy Data Solutions" PostgresVersion="9.5"
+LABEL Release="1.4" Vendor="Crunchy Data Solutions" \
+	PostgresVersion="9.5" \
+	PostgresFullVersion="9.5.6"
 
-ENV PGVERSION="9.5" \
-	PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
+ENV PGVERSION="9.5" PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
 
-# PGDG Postgres repo
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 RUN yum install -y epel-release \
