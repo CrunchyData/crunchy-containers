@@ -110,7 +110,7 @@
                     "value": "password"
                 }, {
                     "name": "BACKUP_PATH",
-                    "value": "basic-backups//2017-04-24-12-04-33"
+                    "value": "basic-backups/2017-04-26-10-06-18"
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"

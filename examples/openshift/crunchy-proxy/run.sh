@@ -23,4 +23,4 @@ $DIR/cleanup.sh
 sudo cp $DIR/crunchy-proxy-config.json $PV_PATH/config.json
 
 PROXY_IMAGE_TAG=centos7-0.0.1-alpha
-oc process -f $DIR/crunchy-proxy.json -v PROXY_IMAGE_TAG=$PROXY_IMAGE_TAG | oc create -f -
+oc process -f $DIR/crunchy-proxy.json -p PROXY_IMAGE_TAG=$PROXY_IMAGE_TAG | oc create -f -
