@@ -40,7 +40,7 @@ export CCP_VERSION=1.2.8
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PGVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 ....
-You will then need to restart your computer for the changes to your .bashrc
+You will then need to log out and back in for the changes to your .bashrc
 file to take effect.
 
 Next, set up a project directory structure and pull down the project:
@@ -59,7 +59,9 @@ godep restore
 ....
 
 *If you are a Crunchy enterprise customer, you will place the CRUNCHY repo
-key and yum repo file into the $CCPROOT/conf directory at this point.*
+key and yum repo file into the $CCPROOT/conf directory at this point. These
+files can be obtained through https://access.crunchydata.com/ on the downloads
+page.*
 
 === Step 2 - Install the Host Dependencies
 
@@ -89,6 +91,9 @@ This is described if you run:
 ....
 man docker-storage-setup
 ....
+
+Follow the instructions available link:https://docs.openshift.com/container-platform/3.4/install_config/install/host_preparation.html#configuring-docker-storage[on the main Openshift documentation page] 
+to configure docker storage appropriately.
 
 Next, we enable and start up docker:
 ....
@@ -130,107 +135,7 @@ OSE on your host.  The main instructions are here:
 
 https://docs.openshift.com/enterprise/3.2/install_config/install/index.html
 
-==== Step 4a - Openshift Router Setup
-
-To install the OSE router, here are the instructions I use:
-
-https://github.com/openshift/training/blob/master/05-Services-Routing-Complete-Example.md#routing
-
-https://docs.openshift.com/enterprise/3.2/install_config/install/deploy_router.html
-
-I have the commands to create the router here, *run as root user*:
-....
-bin/create-router.sh
-....
-
-An example of using the router:
-
-....
-oc expose service v3simple-spatial -l name=v3simple-spatial
-oc get route
-....
-
-==== Step 4b - Openshift DNS Setup
-
-To set up dnsmasq, here are the instructions I basically follow
-this set of instructions:
-
-http://developers.redhat.com/blog/2015/11/19/dns-your-openshift-v3-cluster/
-
-However!  On my dev setup, I use KVM (libvirt) to run OSE within
-a VM.  The libvirt already runs a dnsmasq server on the host
-to handle the default libvirt network which causes a conflict when
-trying to run another dnsmasq on the same server.
-
-Details on libvirt and dnsmasq are here:
-
-http://wiki.libvirt.org/page/Libvirtd_and_dnsmasq
-
-So, here is how I modified by dnsmasq:
-
-Uncommented the following, setting the listen-address to my eth0 IP address:
-....
-listen-address=192.168.0.114
-bind-interfaces
-host-record=osejeff.crunchy.lab,192.168.0.114
-address=/apps.crunchy.lab/192.168.0.114
-server=/local/127.0.0.1#53
-server=/17.30.172.in-addr.arpa/127.0.0.1#53
-....
-
-Within the /etc/origin/master/master-config.yaml I use the
-following:
-....
-  bindAddress: 127.0.0.1:53
-....
-
-
-Also, as of OSE 3.2, be sure to place the host-record, address, server
-config lines BEFORE the conf-file and conf-dir lines at the end
-of /etc/dnsmasq.conf.  If you put them before the end, they will be
-overwritten with the OSE dnsmasq configuration.
-
-Your /etc/resolv.conf should look roughly like this:
-....
-search openshift.svc.cluster.local crunchy.lab
-nameserver 192.168.0.114
-nameserver 192.168.0.1
-....
-
-After this, you will have OSE listening on 127.0.0.1:53 and
-our special dnsmasq listening on 192.168.0.114:53.  You can
-run the following commands to verify your DNS setup:
-....
-dig @127.0.0.1 single-master.openshift.svc.cluster.local
-dig @192.168.0.114 single-master.openshift.svc.cluster.local
-dig @192.168.0.114 osejeff.crunchy.lab
-....
-
-You can now log in as an OSE user and start creating containers:
-....
-oc login -u system:admin
-oc project openshift
-....
-
-The most recent DNS related configuration files that I test with
-are included in the $CCPROOT/docs/openshift-install directory
-as a reference.
-
-=== Step 5 - Configure Container UID Control
-
-Openshift will run containers with a random UID by default.  This can cause files written by the
-Postgres containers to have random UIDs if you persist data for example to an NFS fileshare.  The
-containers will work with a random UID, but you can also override this Openshift security
-setting to have the containers run as the postgres UID (26).
-
-You can make Openshift run as the Postgres UID if you set the *runAsUser* security setting to the *RunAsAny* value
-as follows:
-....
-oc login -u system:admin
-oc edit scc restricted
-....
-
-=== Step 6 - Configure NFS for Persistence Examples
+=== Step 5 - Configure NFS for Persistence Examples
 
 NFS is required for some of the Openshift examples, those dealing with
 backups and restores will require a working NFS for example.
