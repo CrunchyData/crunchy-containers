@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete service master
-oc delete service replica
-oc delete pod master
 oc delete pod replica
 oc delete pod syncreplica
+oc delete pod master
 $CCPROOT/examples/waitforterm.sh master oc
 $CCPROOT/examples/waitforterm.sh replica oc
+oc delete service master
+oc delete service replica

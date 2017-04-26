@@ -98,7 +98,7 @@ function kube_failover() {
 	#oc project $OSE_PROJECT
 	echo "performing failover..."
 
-	TRIGGERSLAVES=`kubectl get pod --selector=name=$PG_SLAVE_SERVICE --selector=slavetype=trigger --no-headers | cut -f1 -d' '`
+	TRIGGERSLAVES=`kubectl get pod --selector=name=$PG_SLAVE_SERVICE,slavetype=trigger --no-headers | cut -f1 -d' '`
 	echo $TRIGGERSLAVES " is TRIGGERSLAVES"
 	if [ "$TRIGGERSLAVES" = "" ]; then
 		echo "no trigger slaves found...using any slave"
@@ -144,7 +144,7 @@ function ose_failover() {
 	echo "sleeping for 10 to give slaves chance to halt..."
 	sleep 10
 
-	TRIGGERSLAVES=`oc get pod --selector=name=$PG_SLAVE_SERVICE --selector=slavetype=trigger --no-headers | cut -f1 -d' '`
+	TRIGGERSLAVES=`oc get pod --selector=name=$PG_SLAVE_SERVICE,slavetype=trigger --no-headers | cut -f1 -d' '`
 	echo $TRIGGERSLAVES " is TRIGGERSLAVES"
 	if [ "$TRIGGERSLAVES" = "" ]; then
 		echo "no trigger slaves found...using any slave"
