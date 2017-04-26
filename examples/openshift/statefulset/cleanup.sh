@@ -15,3 +15,4 @@
 oc delete statefulset pgset
 oc delete service pgset pgset-master pgset-replica
 oc delete sa pgset-sa
+oc delete pod pgset-0
