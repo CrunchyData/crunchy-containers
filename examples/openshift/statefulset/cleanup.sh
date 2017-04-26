@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#oc delete sa pgset-sa
-oc delete service pgset pgset-master pgset-replica
 oc delete statefulset pgset
+oc delete service pgset pgset-master pgset-replica
+oc delete sa pgset-sa
