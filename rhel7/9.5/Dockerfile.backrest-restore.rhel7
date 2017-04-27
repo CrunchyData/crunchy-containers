@@ -29,6 +29,7 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm  \
  && yum -y install  \
 	hostname \
+	gettext \
 	nss_wrapper \
 	openssh-clients \
  	procps-ng  \
@@ -57,6 +58,7 @@ RUN chown -R postgres:postgres /opt/cpm \
 VOLUME /pgconf /pgdata /backrestrepo
 
 ADD bin/backrest_restore /opt/cpm/bin
+ADD conf/backrest_restore /opt/cpm/conf
 
 USER 26
 
