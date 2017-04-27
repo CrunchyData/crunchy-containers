@@ -769,11 +769,22 @@ cd examples/openshift/backrest
 
 This will create the following:
 
- * A configMap named backrestconf which contains the pgbackrest.conf file
- * master-backrest pod with pgbackrest archive enabled. An initial stanza db will be created on initialization
- * master-backrest service
+ * PV/PVC for /pgconf and /backrestrepo volumes
+ * master database pod
+ * master service
 
-The crunchy-pvc will be used for /pgdata, and crunchy-pvc2 for the /backrestrepo. Examine the /backrestrepo location to view the archive directory and ensure WAL archiving is working. See backrest.asciidoc for steps to backup and restore using pgbackrest.
+The run.sh script copies the pgbackrest.conf configuration file
+to /nfsfileshare/pgconf which is our NFS file path.
+
+The archive files are written to the NFS path of /nfsfileshare/backrestrepo.
+
+The presence of /pgconf/pgbackrest.conf is what is used to
+determine whether pgbackrest will be used as the archive command or not.
+You will need to specify the ARCHIVE_TIMEOUT environment variable
+as well to use this.
+
+After you run the example, you should see archive files
+being written to the /backrestrepo volume (/nfsfileshare/backrestrepo).
 
 You can create a backup using backrest using this command within
 the container:
