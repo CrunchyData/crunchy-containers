@@ -119,6 +119,9 @@
                     "name": "PG_USER",
                     "value": "testuser"
                 }, {
+                    "name": "PGHOST",
+                    "value": "/tmp"
+                }, {
                     "name": "PG_PASSWORD",
                     "value": "password"
                 }, {
