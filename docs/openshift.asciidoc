@@ -769,22 +769,11 @@ cd examples/openshift/backrest
 
 This will create the following:
 
- * PV/PVC for /pgconf and /backrestrepo volumes
- * master database pod
- * master service
+ * A configMap named backrestconf which contains the pgbackrest.conf file
+ * master-backrest pod with pgbackrest archive enabled. An initial stanza db will be created on initialization
+ * master-backrest service
 
-The run.sh script copies the pgbackrest.conf configuration file
-to /nfsfileshare/pgconf which is our NFS file path.
-
-The archive files are written to the NFS path of /nfsfileshare/backrestrepo.
-
-The presence of /pgconf/pgbackrest.conf is what is used to
-determine whether pgbackrest will be used as the archive command or not.
-You will need to specify the ARCHIVE_TIMEOUT environment variable
-as well to use this.
-
-After you run the example, you should see archive files
-being written to the /backrestrepo volume (/nfsfileshare/backrestrepo).
+The crunchy-pvc will be used for /pgdata, and crunchy-pvc2 for the /backrestrepo. Examine the /backrestrepo location to view the archive directory and ensure WAL archiving is working. See backrest.asciidoc for steps to backup and restore using pgbackrest.
 
 You can create a backup using backrest using this command within
 the container:
@@ -792,6 +781,25 @@ the container:
 pgbackrest --stanza=db backup --db-path=/pgdata/master-backrest/ --log-path=/tmp --repo-path=/backrestrepo -conf=/pgconf/pgbackrest.conf
 ....
 
+=== backrest restore
+
+This assumes you have run the pgbackrest example above. There are two options to choose from when performing a restore, DELTA and FULL. A FULL is the default; a DELTA will only occur if the environment variable DELTA is specified in the restore-job spec. Consult the pgbackrest user guide to determine which is best suited to run.
+
+Steps for FULL restore
+
+ * Delete the master-backrest pod, if still running
+ * Empty the PGDATA directory (remove all files)
+ * Navigate to the backrest_restore examples directory. Execute the full-restore.sh script.
+ * Check the restore logs (db-restore.log) in the /backrestrepo mountpointfor success. You can also view the logs of the completed job pod with kubectl get pod -a
+ * Re-create the master-backrest pod in the backrest examples directory. The database will recover.
+
+Steps for DELTA restore
+
+ * Delete the master-backrest pod, if still running
+ * rm postmaster.pid from PGDATA.
+ * Navigate to the backrest_restore examples directory. Execute the delta-restore.sh script.
+ * Check the restore logs (db-restore.log) in the /backrestrepo mountpointfor success. You can also view the logs of the completed job pod with kubectl get pod -a
+ * Re-create the master-backrest pod in the backrest examples directory. The database will recover only files that have changed from the last backup.
 
 === *configmap*- database credentials from a configmap
 
