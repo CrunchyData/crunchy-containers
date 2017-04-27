@@ -1,0 +1,21 @@
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "recover-pv",
+        "labels": {
+            "name": "recover-pv"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "199M"
+        },
+        "accessModes": ["ReadOnlyMany"],
+        "nfs": {
+            "path": "$PV_PATH/master-pitr-wal",
+            "server": "$NFS_IP"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}

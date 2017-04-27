@@ -20,4 +20,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 oc create -f $DIR/set-sa.json
 
 # grant the SA permission to update a pod label
-oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:myproject:pgset-sa
+#oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:default:pgset-sa
+#oadm policy add-cluster-role-to-user cluster-reader system:serviceaccount:default:pgset-sa
+
+# the most wide open permissions, adjust for your security posture
+oc policy add-role-to-group view system:serviceaccounts -n default
+oc policy add-role-to-group edit system:serviceaccounts -n default
+

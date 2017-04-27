@@ -786,6 +786,12 @@ as well to use this.
 After you run the example, you should see archive files
 being written to the /backrestrepo volume (/nfsfileshare/backrestrepo).
 
+You can create a backup using backrest using this command within
+the container:
+....
+pgbackrest --stanza=db backup --db-path=/pgdata/master-backrest/ --log-path=/tmp --repo-path=/backrestrepo -conf=/pgconf/pgbackrest.conf
+....
+
 
 === *configmap*- database credentials from a configmap
 

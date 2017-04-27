@@ -5,6 +5,7 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
 	PostgresVersion="9.6" \
+	PostgresFullVersion="9.6.2" \
         version="7.2" \
         release="1.4" \
         build-date="2017-04-21" \

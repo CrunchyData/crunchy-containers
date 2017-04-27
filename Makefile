@@ -22,8 +22,10 @@ docbuild:
 # Targets that generate images (alphabetized)
 #=============================================
 upgrade: versiontest
+    ifneq ($(CCP_PGVERSION), 9.5)
 	docker build -t crunchy-upgrade -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.upgrade.$(CCP_BASEOS) .
 	docker tag crunchy-upgrade crunchydata/crunchy-upgrade:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
+    endif
 
 backup:	versiontest
 	docker build -t crunchy-backup -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backup.$(CCP_BASEOS) .
@@ -75,11 +77,13 @@ pgpool:	versiontest
 
 postgres:	versiontest
 	cp `which kubectl` bin/postgres
+	cp `which oc` bin/postgres
 	docker build -t crunchy-postgres -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres.$(CCP_BASEOS) .
 	docker tag crunchy-postgres crunchydata/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
 postgres-gis:	versiontest
 	cp `which kubectl` bin/postgres
+	cp `which oc` bin/postgres
 	docker build -t crunchy-postgres-gis -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS) .
 	docker tag crunchy-postgres-gis crunchydata/crunchy-postgres-gis:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
@@ -110,7 +114,7 @@ watch:
 #============
 # All target
 #============
-all:	backup collectserver dbaserver grafana pgbadger pgbouncer pgpool postgres postgres-gis prometheus promgateway watch vac upgrade
+all:	upgrade backup collectserver dbaserver grafana pgbadger pgbouncer pgpool postgres postgres-gis prometheus promgateway watch vac
 
 push:
 	./bin/push-to-dockerhub.sh
