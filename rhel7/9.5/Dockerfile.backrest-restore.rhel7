@@ -25,24 +25,12 @@ ADD conf/CRUNCHY-GPG-KEY.public  /
 ADD conf/crunchypg95.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
-RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm  \
- && yum -y update glibc-common \
- && yum -y install bind-utils \
-	gettext \
-	hostname \
-	nss_wrapper \
-	openssh-clients \
-	kubernetes-client \
- 	procps-ng  \
-	rsync \
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm  
+
+RUN yum -y install postgresql95-server pgbackrest  \
  && yum -y clean all
 
-RUN yum -y install postgresql95-server postgresql95-contrib postgresql95 \
-        pgaudit_95 \
-        pgbackrest \
- && yum -y clean all
-
-ENV	PGROOT="/usr/pgsql-${PGVERSION}"
+ENV    PGROOT="/usr/pgsql-${PGVERSION}"
 
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/
@@ -51,8 +39,7 @@ ADD conf/.bash_profile /var/lib/pgsql/
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgconf /backrestrepo
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
-	/pgdata /pgconf /backrestrepo 
-#	/pgdata /pgconf /backrestrepo /var/log/pgbackrest
+    /pgdata /pgconf /backrestrepo /var/log/pgbackrest
 
 # volume pgconf to store pgbackrest.conf
 # volume backrestrepo for pgbackrest to restore from and log
@@ -64,3 +51,4 @@ ADD bin/backrest_restore /opt/cpm/bin
 USER 26
 
 CMD ["/opt/cpm/bin/start.sh"]
+
