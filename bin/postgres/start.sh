@@ -169,9 +169,9 @@ function check_for_restore() {
 }
 function check_for_pitr() {
 	echo "checking for PITR WAL files to recover with.."
-	if [ "$(ls -A /recover/$WAL_DIR)" ]; then
+	if [ "$(ls -A /recover)" ]; then
 		echo "found non-empty //recover ...assuming a PITR is requested"
-		ls -l /recover/$WAL_DIR
+		ls -l /recover
 		rm $PGDATA/pg_xlog/*0* $PGDATA/pg_xlog/archive_status/*0*
 		cp /opt/cpm/conf/pitr-recovery.conf /tmp
 		export ENABLE_RECOVERY_TARGET_NAME=#
@@ -331,10 +331,7 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	mkdir -p $PGDATA
 
 	check_for_restore
-	if [ "$(ls -A /recover/$WAL_DIR)" ]; then
-		echo "found non-empty /recover ...assuming a PITR is requested...removing any pg_xlog files from the restored backup"
-		rm $PGDATA/pg_xlog/*0* $PGDATA/pg_xlog/archive_status/*0*
-	fi
+	check_for_pitr
 
         echo "starting db" >> /tmp/start-db.log
        
@@ -389,7 +386,6 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	if [[ -v SYNC_SLAVE ]]; then
 		echo "synchronous_standby_names = '"$SYNC_SLAVE"'" >> $PGDATA/postgresql.conf
 	fi
-	check_for_pitr
 fi
 }
 

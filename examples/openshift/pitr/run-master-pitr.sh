@@ -19,4 +19,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
 # start up the database container
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/master-pitr.json | oc create -f -
+oc process -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/master-pitr.json | oc create -f -

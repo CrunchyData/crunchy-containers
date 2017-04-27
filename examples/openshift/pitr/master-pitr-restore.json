@@ -89,7 +89,7 @@
             }, {
                 "name": "recover",
                 "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc2"
+                    "claimName": "recover-pvc"
                 }
             }, {
                 "name": "backup",
@@ -121,7 +121,7 @@
                     "value": "password"
                 }, {
                     "name": "BACKUP_PATH",
-                    "value": "master-pitr-backups/2017-02-08-17-28-14"
+                    "value": "master-pitr-backups/2017-04-26-20-35-14"
                 }, {
                     "name": "RECOVERY_TARGET_NAME",
                     "value": "beforechanges"

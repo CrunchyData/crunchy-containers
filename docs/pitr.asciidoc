@@ -70,6 +70,15 @@ The RECOVERY_TARGET_INCLUSIVE environment variable is also available to
 let you control the setting of the recovery.conf setting *recovery_target_inclusive*.  If you do not set this environment variable the default is *true*.
 
 
+=== Hint
+
+Once you recover a database using PITR, it will be in read-only mode.  To
+make the database resume as a writable database, run the following
+sql command:
+....
+select pg_xlog_replay_resume();
+....
+
 === Examples
 
 Examples for PITR have been created within the standalone, openshift,

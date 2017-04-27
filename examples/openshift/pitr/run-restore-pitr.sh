@@ -16,12 +16,13 @@ source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# remove any existing components of this example 
-
 oc delete pod master-pitr-restore
 oc delete service master-pitr-restore
-
 sudo rm -rf $PV_PATH/master-pitr-restore
 
+# create the recover pv and pvc
+envsubst < $DIR/recover-pv.json | oc create -f -
+oc create -f $DIR/recover-pvc.json
+
 # start up the database container
-oc process -f $DIR/master-pitr-restore.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/master-pitr-restore.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
