@@ -1,5 +1,5 @@
 == Crunchy PostgreSQL Containers
-v1.3, {docdate}
+v1.4.0, {docdate}
 
 image::docs/crunchy_logo.png?raw=true[]
 
