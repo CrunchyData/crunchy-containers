@@ -21,6 +21,16 @@ fi
 
 echo "Starting restore. Examine restore log in /backrestrepo for results" `date`
 
+# this lets us run the pgbackrest cmd  on Openshift
+# when it is configured to use random UIDs
+export USER_ID=$(id -u)
+export GROUP_ID=$(id -g)
+envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
+export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
+export NSS_WRAPPER_PASSWD=/tmp/passwd
+export NSS_WRAPPER_GROUP=/etc/group
+
+
 if [ -v DELTA ]; then
     pgbackrest --config=/pgconf/pgbackrest.conf --stanza=$STANZA --log-path=/backrestrepo --delta restore
 else
