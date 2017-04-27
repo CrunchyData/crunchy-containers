@@ -792,6 +792,25 @@ the container:
 pgbackrest --stanza=db backup --db-path=/pgdata/master-backrest/ --log-path=/tmp --repo-path=/backrestrepo -conf=/pgconf/pgbackrest.conf
 ....
 
+=== backrest restore
+
+This assumes you have run the pgbackrest example above. There are two options to choose from when performing a restore, DELTA and FULL. A FULL is the default; a DELTA will only occur if the environment variable DELTA is specified in the restore-job spec. Consult the pgbackrest user guide to determine which is best suited to run.
+
+Steps for FULL restore
+
+ * Delete the master-backrest pod, if still running
+ * Empty the PGDATA directory (remove all files)
+ * Navigate to the backrest_restore examples directory. Execute the full-restore.sh script.
+ * Check the restore logs (db-restore.log) in the /backrestrepo mountpointfor success. You can also view the logs of the completed job pod with kubectl get pod -a
+ * Re-create the master-backrest pod in the backrest examples directory. The database will recover.
+
+Steps for DELTA restore
+
+ * Delete the master-backrest pod, if still running
+ * rm postmaster.pid from PGDATA.
+ * Navigate to the backrest_restore examples directory. Execute the delta-restore.sh script.
+ * Check the restore logs (db-restore.log) in the /backrestrepo mountpointfor success. You can also view the logs of the completed job pod with kubectl get pod -a
+ * Re-create the master-backrest pod in the backrest examples directory. The database will recover only files that have changed from the last backup.
 
 === *configmap*- database credentials from a configmap
 

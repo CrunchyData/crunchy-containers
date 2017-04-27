@@ -10,6 +10,7 @@ RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/r
 
 RUN yum -y install epel-release \
  && yum -y install \
+	gettext \
 	hostname \
 	nss_wrapper \
 	openssh-clients \
@@ -39,6 +40,7 @@ RUN chown -R postgres:postgres /opt/cpm  \
 VOLUME /pgconf /pgdata /backrestrepo
 
 ADD bin/backrest_restore /opt/cpm/bin
+ADD conf/backrest_restore /opt/cpm/conf
 
 USER 26
 

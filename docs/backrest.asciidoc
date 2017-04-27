@@ -53,7 +53,7 @@ and kubernetes examples directories.
 Once you configure the crunchy-postgres container to use pgbackrest, you
 will perform a backup using the following commands:
 ....
-docker exec -it backtestdb bash
+docker exec -it master-backrest bash
 /usr/bin/pgbackrest --config=/pgconf/pgbackrest.conf --log-path=/backrestrepo --stanza=db backup
 ....
 
@@ -68,17 +68,17 @@ Steps for FULL restore
 
  * Delete the master-backrest pod, if still running
  * Empty the PGDATA directory (remove all files)
- * Create the restore job using the restore-job.json template. Do NOT include the DELTA var.
- * Check the restore logs (db-restore.log) for success. You can also view the completed job pod with kubectl get pod -a
- * Re-create the master-backrest pod. The database will recover.
+ * Navigate to the backrest_restore examples directory. Execute the full-restore.sh script.
+ * Check the restore logs (db-restore.log) in the /backrestrepo mountpointfor success. You can also view the logs of the completed job pod with kubectl get pod -a
+ * Re-create the master-backrest pod in the backrest examples directory. The database will recover.
 
 Steps for DELTA restore
 
  * Delete the master-backrest pod, if still running
  * rm postmaster.pid from PGDATA.
- * Create the restore job using the restore-job.json template. Be sure to include the DELTA var.
- * Check the restore logs (db-restore.log) for success. You can also view the completed job pod with kubectl get pod -a
- * Re-create the master-backrest pod. The database will recover only files that have changed from the last backup.
+ * Navigate to the backrest_restore examples directory. Execute the delta-restore.sh script.
+ * Check the restore logs (db-restore.log) in the /backrestrepo mountpointfor success. You can also view the logs of the completed job pod with kubectl get pod -a
+ * Re-create the master-backrest pod in the backrest examples directory. The database will recover only files that have changed from the last backup.
 
 == Legal Notices
 

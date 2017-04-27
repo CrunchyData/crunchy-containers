@@ -19,7 +19,9 @@
                 "env": [{
                     "name": "STANZA",
                     "value": "db"
-                }],
+                }, {
+		    "name": "DELTA"
+		}],
                 "volumeMounts": [{
                     "mountPath": "/pgdata",
                     "name": "pgdata",
