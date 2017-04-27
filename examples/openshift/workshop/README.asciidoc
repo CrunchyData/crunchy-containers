@@ -1,7 +1,7 @@
 
 = Openshift Tutorial - Crunchy Containers
 Crunchy Data Solutions, Inc.
-v1.2.2, {docdate}
+v1.4.0, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Openshift Tutorial
@@ -42,15 +42,16 @@ be entered for configured databases.
 To execute the examples, pull down the container images
 from Dockerhub onto the VM host:
 ....
-docker pull crunchydata/crunchy-postgres:centos7-9.5-1.2.2
-docker pull crunchydata/crunchy-backup:centos7-9.5-1.2.2
-docker pull crunchydata/crunchy-collect:centos7-9.5-1.2.2
-docker pull crunchydata/crunchy-pgbadger:centos7-9.5-1.2.2
-docker pull crunchydata/crunchy-pgadmin4:centos7-9.5-1.2.2
-docker pull crunchydata/crunchy-prometheus:centos7-9.5-1.2.2
-docker pull crunchydata/crunchy-promgateway:centos7-9.5-1.2.2
-docker pull crunchydata/crunchy-grafana:centos7-9.5-1.2.2
-docker pull crunchydata/crunchy-watch:centos7-9.5-1.2.2
+docker pull crunchydata/crunchy-postgres:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-postgres-gis:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-backup:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-collect:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-pgbadger:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-pgadmin4:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-prometheus:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-promgateway:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-grafana:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-watch:centos7-9.5-1.4.0
 ....
 
 
@@ -59,12 +60,12 @@ Running the example:
 ....
 git clone https://github.com/crunchydata/crunchy-containers.git
 cd crunchy-containers/examples/workshop
-oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.2.2 -f master.json
-oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.2.2 -f replicas.json
-oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.2.2 -f pgadmin4.json
-oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.2.2 -f metrics.json
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f master.json
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f replicas.json
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f pgadmin4.json
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f metrics.json
 oc policy add-role-to-group edit system:serviceaccounts -n default
-oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.2.2 -f watch.json
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f watch.json
 oc create -f jeff-route.json
 ....
 
@@ -124,7 +125,7 @@ psql -h pgmaster.openshift.svc.cluster.local -U postgres postgres
 
 == Legal Notices
 
-Copyright © 2016 Crunchy Data Solutions, Inc.
+Copyright © 2017 Crunchy Data Solutions, Inc.
 
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 

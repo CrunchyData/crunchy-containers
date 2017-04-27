@@ -17,9 +17,10 @@
 # set up some env vars that all examples can relate to
 #
 
-export CCP_CLI=kubectl
-#export CCP_CLI=oc
+#export CCP_CLI=kubectl
+export CCP_CLI=oc
 export NAMESPACE=default
+export NAMESPACE=myproject
 #export NAMESPACE=crunchy
 #export PV_PATH=/nfsfileshare
 export PV_PATH=/data
