@@ -649,10 +649,10 @@ This example shows how to run a master and replica database
 container on a Docker Swarm (v.1.12) cluster.
 
 First, set up a cluster, the Kubernetes libvirt coreos cluster
-example works well, see link:http://kubernetes.io/docs/getting-started-guides/libvirt-coreos/[coreos-libvirt-cluster]
+example works well, see link:http://kubernetes.io/docs/getting-started-guides/libvirt-coreos/[coreos-libvirt-cluster.]
 
 Next, on each node, create the Swarm using these
-link:https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/[Swarm Install]
+link:https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/[Swarm Install instructions.]
 
 Includes the command on the manager node:
 ....
@@ -674,7 +674,7 @@ docker network create --driver overlay crunchynet
 ....
 
 We want to have the master database always placed on
-a specific node, we accomplish this using node constraints
+a specific node. This is accomplished using node constraints
 as follows:
 ....
 docker node inspect kubernetes-node-1 | grep ID
@@ -682,7 +682,7 @@ docker node update --label-add type=master 18yrb7m650umx738rtevojpqy
 ....
 
 In the above example, the kubernetes-node-1 node with ID 18yrb7m650umx738rtevojpqy has a user defined label of *master* added to it.  The master service
-specifies *master* as a constraint when created, this tells Swarm
+specifies *master* as a constraint when created; this tells Swarm
 to place the service on that specific node.  The replica specifies
 a constraint of *node.labels.type != master* to have the replica
 always placed on a node that is not hosting the master service.
@@ -730,7 +730,7 @@ read-write access to /run/docker.sock.  The crunchy-watch
 container runs as the postgres user, so adjust the
 file permissions of /run/docker.sock accordingly.
 
-Run the example as follows, (depends on master-replica example
+Run the example as follows (depends on master-replica example
 being run prior):
 ....
 cd examples/docker/watch
@@ -749,15 +749,15 @@ docker logs watch
 
 Look at the watch container logs to see it perform the failover.
 
-=== Tips - send a signal to postgres
+=== Tips - Send a signal to postgres
 
-first, find the PID of the postmaster:
+First, find the PID of the postmaster:
 
 ....
 docker exec -it master cat /pgdata/master/postmaster.pid
 ....
 
-then, send it the signal to kill it or other signal depending on what you want to do:
+Then, send it the signal to kill it or other signal depending on what you want to do:
 
 ....
 docker exec -it master kill -SIGTERM 22
