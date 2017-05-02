@@ -63,8 +63,13 @@ This script will do the following:
  * initialize the database using the passed in environment variables, building a user, database, schema, and table based on the environment variable values.
  * maps the PostgreSQL port of 5432 in the container to your local host port of 12000.
 
-The container creates a default database called *testdb*, a default
-user called *testuser* with a default password of *testpsw*, you can
+To start the instance, run the following commands:
+....
+docker start master replica
+....
+ 
+The container creates a default database called *userdb*, a default
+user called *testuser* with a default password of *password*, you can
 use this to connect from your local host as follows:
 ....
 psql -h localhost -p 12007 -U testuser -W userdb
@@ -74,11 +79,6 @@ psql -h localhost -p 12008 -U testuser -W userdb
 To shut down the instance, run the following commands:
 ....
 docker stop master replica
-....
-
-To start the instance, run the following commands:
-....
-docker start master replica
 ....
 
 === *backup* - Performing a backup
