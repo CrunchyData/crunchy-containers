@@ -117,7 +117,7 @@ cd examples/docker/restore
 
 This script will do the following:
 
- * start up a container named masterrestore
+ * start up a container named master-restore
  * copy the backup files from Example 3 into /pgdata
  * start up the container using the backup files
  * maps the PostgreSQL port of 5432 in the container to your local host port of 12001 as to not conflict with the master running in the previous example.
@@ -137,12 +137,13 @@ The following env variables are specified for this configuration option:
  * PG_DATABASE - The name of the database that will be created value=userdb
  * PG_ROOT_PASSWORD - The password for the PG admin
 
-This examples assumes you have run Example 1, and that the master
+This example assumes you have run Example 1, and that the basic
 container is running.
 
-For running the master-slave configuration , you can run the following scripts:
+For running the master-slave configuration , you can run the following script:
 ....
-run.sh
+cd examples/docker/master-replica/
+./run.sh
 ....
 
 You can verify that replication is working by connecting to
