@@ -97,7 +97,7 @@ cd examples/docker/backup
 
 This script will do the following:
 
- * start up a backup container named masterbackup
+ * start up a backup container named basicbackup
  * run pg_basebackup on the container named master
  * store the backup in /tmp/backups/master directory
  * exit after the backup
