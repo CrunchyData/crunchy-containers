@@ -10,8 +10,8 @@ environment are found in the examples/docker directory.
 Those examples are explained below.  The examples make use of
 the local Docker volume driver and data volumes created
 by the *docker create volume* command.  There is a bug however
-that requires the container to run as priviledged when in
-selinux enforcing mode.  See https://github.com/docker/docker/issues/20859[here] for more details.  Also, see link:https://github.com/docker/docker/pull/23024[here].  When this is fixed, you will not need to specify *priviledged*
+that requires the container to run as privileged when in
+SELinux enforcing mode.  See https://github.com/docker/docker/issues/20859[here] for more details.  Also, see link:https://github.com/docker/docker/pull/23024[here].  When this is fixed, you will not need to specify *privileged*
 when starting the examples.
 
 === *basic* - Running a single database container
@@ -36,14 +36,14 @@ use this to connect from your local host as follows:
 psql -h localhost -p 12000 -U testuser -W testdb
 ....
 
-To shut down the instance, run the following commands:
-....
-docker stop basic
-....
-
 To start the instance, run the following commands:
 ....
 docker start basic
+....
+
+To shut down the instance, run the following commands:
+....
+docker stop basic
 ....
 
 === *master-replica* - Creating a master and replica database cluster
@@ -273,6 +273,7 @@ curl http://127.0.0.1:14000/api/badgergenerate
 
 Some users will need or want a DNS name to resolve to their container
 names.  The crunchy-dns container provides the following:
+
  * listens to a Docker URL or socket for events that would indicate
  a container is created or destroyed
  * implements the consul.io DNS server
