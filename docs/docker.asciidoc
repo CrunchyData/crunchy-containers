@@ -105,7 +105,7 @@ This script will do the following:
 === *restore* - Performing a restore
 
 In order to run this backup script, you first need to edit
-run-restore.sh to specify your host IP address you are running
+run.sh to specify your host IP address you are running
 on.  The script assumes you are going to backup the container
 created in Example 2.
 
