@@ -85,9 +85,9 @@ docker stop master replica
 
 In order to run this backup script, you first need to edit
 run.sh to specify your host IP address you are running
-on.  The script assumes you are going to backup the container
-created in Example 2. The *basic* container needs to be
-running.
+on.  The script assumes you are going to backup the *basic*
+container created in the first example, so you need to ensure
+that container is running.
 
 Run the backup with this command:
 ....
