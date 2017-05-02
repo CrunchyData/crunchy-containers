@@ -67,7 +67,7 @@ To start the instance, run the following commands:
 ....
 docker start master replica
 ....
- 
+
 The container creates a default database called *userdb*, a default
 user called *testuser* with a default password of *password*, you can
 use this to connect from your local host as follows:
@@ -84,14 +84,15 @@ docker stop master replica
 === *backup* - Performing a backup
 
 In order to run this backup script, you first need to edit
-run-backup.sh to specify your host IP address you are running
+run.sh to specify your host IP address you are running
 on.  The script assumes you are going to backup the container
-created in Example 2.
+created in Example 2. The *basic* container needs to be
+running.
 
 Run the backup with this command:
 ....
 cd examples/docker/backup
-./run-backup.sh
+./run.sh
 ....
 
 This script will do the following:
