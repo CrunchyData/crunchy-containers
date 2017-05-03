@@ -348,10 +348,10 @@ can graph them using the crunchy grafana container.
 You can perform a postgres vacuum command by running the crunchy-vacuum
 container.  You specify a database to vacuum using environment variables.
 
-An example is shown in the $CCPROOT/examples/docker/run-vacuum.sh script
+An example is shown in the $CCPROOT/examples/docker/vacuum/run.sh script
 and can be run as follows:
 ....
-cd $CCPROOT/examples/docker/master-replica
+cd $CCPROOT/examples/docker/vacuum
 ./run.sh
 ....
 
@@ -403,7 +403,7 @@ cd $CCPROOT/examples/docker/master-replica
 ./run.sh
 ....
 
-An example is shown in the examples/docker/pgbouncer/run.sh script
+An example is shown in the $CCPROOT/examples/docker/pgbouncer/run.sh script
 and can be run as follows:
 
 ....
@@ -429,7 +429,7 @@ pgbouncer to relabel the slave database into the master database so clients
 to pgbouncer will be able to connect to the master as before the failover.
 
 To just log into the database from the pgbouncer connection pool
-you would enter the following:
+you would enter the following using the password "password":
 ....
 psql -h localhost -p 12005 -U testuser master
 ....
@@ -449,7 +449,8 @@ cd $CCPROOT/examples/docker/sync
 ./run.sh
 ....
 
-You can test the replication status on the master by using the following command:
+You can test the replication status on the master by using the following command
+and the password "password":
 ....
 psql -h 127.0.0.1 -p 12000 -U postgres postgres -c 'table pg_stat_replication'
 ....
