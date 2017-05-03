@@ -6,7 +6,7 @@ v1.4.0, {docdate}
 == Docker Examples
 
 Examples of running the Crunchy containers in a pure Docker
-environment are found in the examples/docker directory.
+environment are found in the $CCPROOT/examples/docker directory.
 Those examples are explained below.  The examples make use of
 the local Docker volume driver and data volumes created
 by the *docker create volume* command.  There is a bug however
@@ -18,7 +18,7 @@ when starting the examples.
 
 Create the container with this command:
 ....
-cd examples/docker/basic
+cd $CCPROOT/examples/docker/basic
 ./run.sh
 ....
 
@@ -50,7 +50,7 @@ docker stop basic
 
 Run the container with this command:
 ....
-cd examples/docker/master-replica
+cd $CCPROOT/examples/docker/master-replica
 ./run.sh
 ....
 
@@ -91,7 +91,7 @@ that container is running.
 
 Run the backup with this command:
 ....
-cd examples/docker/backup
+cd $CCPROOT/examples/docker/backup
 ./run.sh
 ....
 
@@ -111,7 +111,7 @@ created in Example 2.
 
 Run the backup with this command:
 ....
-cd examples/docker/restore
+cd $CCPROOT/examples/docker/restore
 ./run.sh
 ....
 
@@ -142,7 +142,7 @@ container is running.
 
 For running the master-slave configuration , you can run the following script:
 ....
-cd examples/docker/master-replica/
+cd $CCPROOT/examples/docker/master-replica/
 ./run.sh
 ....
 
@@ -231,7 +231,7 @@ those commands to create a master and replica, you can
 create a pgpool container by running the following example command:
 
 ....
-cd examples/docker/pgpool
+cd $CCPROOT/examples/docker/pgpool
 ./run.sh
 ....
 
@@ -259,7 +259,7 @@ To run the example, modify the run-badger.sh script to refer to the
 Docker container that you want to run pgbadger against, also referring
 to the container's data directory, then run the example as follows:
 ....
-cd examples/docker/badger
+cd $CCPROOT/examples/docker/badger
 ./run.sh
 ....
 
@@ -285,7 +285,7 @@ names.  The crunchy-dns container provides the following:
 
 Start the crunchy-dns server by running its container as follows:
 ....
-cd examples/docker/dns
+cd $CCPROOT/examples/docker/dns
 ./run.sh
 ....
 
@@ -324,7 +324,7 @@ that includes:
 
 To start this set of containers, run the following:
 ....
-cd examples/docker/metrics
+cd $CCPROOT/examples/docker/metrics
 ./run.sh
 ....
 
@@ -335,7 +335,7 @@ and also the associated metrics collection container, run the
 example as follows:
 
 ....
-cd examples/docker/collect
+cd $CCPROOT/examples/docker/collect
 ./run.sh
 ....
 
@@ -348,10 +348,10 @@ can graph them using the crunchy grafana container.
 You can perform a postgres vacuum command by running the crunchy-vacuum
 container.  You specify a database to vacuum using environment variables.
 
-An example is shown in the examples/docker/run-vacuum.sh script
+An example is shown in the $CCPROOT/examples/docker/run-vacuum.sh script
 and can be run as follows:
 ....
-cd examples/docker/master-replica
+cd $CCPROOT/examples/docker/master-replica
 ./run.sh
 ....
 
@@ -376,11 +376,11 @@ You can use your own version of the setup.sql SQL file to customize
 the initialization of database data and objects when the container and
 database are created.
 
-An example is shown in the examples/docker/custom-setup/run.sh script
+An example is shown in the $CCPROOT/examples/docker/custom-setup/run.sh script
 and can be run as follows:
 
 ....
-cd examples/docker/custom-setup
+cd $CCPROOT/examples/docker/custom-setup
 ./run.sh
 ....
 
@@ -399,7 +399,7 @@ To test this failover, you first create a running master/slave
 cluster as follows:
 
 ....
-cd examples/docker/master-replica
+cd $CCPROOT/examples/docker/master-replica
 ./run.sh
 ....
 
@@ -407,7 +407,7 @@ An example is shown in the examples/docker/pgbouncer/run.sh script
 and can be run as follows:
 
 ....
-cd examples/docker/pgbouncer
+cd $CCPROOT/examples/docker/pgbouncer
 ./run.sh
 ....
 
@@ -438,14 +438,14 @@ psql -h localhost -p 12005 -U testuser master
 
 === *sync* - synchronous replication
 
-This example, examples/docker/sync, provides a
+This example, $CCPROOT/examples/docker/sync, provides a
 streaming replication configuration that includes both
 synchronous and asynchronous slaves.
 
 To run this example, run the following:
 
 ....
-cd examples/docker/sync
+cd $CCPROOT/examples/docker/sync
 ./run.sh
 ....
 
@@ -469,13 +469,13 @@ psql -h 127.0.0.1 -p 12003 -U postgres postgres -c 'table foo'
 
 === *pgadmin* - pgadmin4
 
-This example, examples/docker/pgadmin4, provides a
+This example, $CCPROOT/examples/docker/pgadmin4, provides a
 container that runs the pgadmin4 web application.
 
 To run this example, run the following:
 
 ....
-cd examples/docker/pgadmin4
+cd $CCPROOT/examples/docker/pgadmin4
 ./run.sh
 ....
 
@@ -487,14 +487,14 @@ your local IP address happens to be.
 
 === *pitr* - PITR (point in time recovery)
 
-This example, examples/docker/pitr, provides an
+This example, $CCPROOT/examples/docker/pitr, provides an
 example of performing a point in time recovery.
 
 To run this example, run the following to create a
 database container:
 
 ....
-cd ./examples/docker/pitr
+cd $CCPROOT/examples/docker/pitr
 ./run-master-pitr.sh
 ....
 
@@ -610,7 +610,7 @@ full details.
 
 === *pgaudit* - pgaudit
 
-This example, examples/docker/pgaudit, provides an
+This example, $CCPROOT/examples/docker/pgaudit, provides an
 example of enabling pgaudit output.  As of release 1.3,
 pgaudit is included in the crunchy-postgres container and is
 added to the postgres shared library list in the postgresql.conf.
@@ -630,7 +630,7 @@ To run this example, run the following to create a
 database container:
 
 ....
-cd ./examples/docker/pgaudit
+cd $CCPROOT/examples/docker/pgaudit
 ./run.sh
 ....
 
@@ -691,11 +691,11 @@ always placed on a node that is not hosting the master service.
 
 
 After you set up the Swarm cluster, you can then
-run the *examples/docker/swarm-service* example as follows
+run the *$CCPROOT/examples/docker/swarm-service* example as follows
 on the *Swarm Manager Node*:
 
 ....
-cd examples/docker/swarm-service
+cd $CCPROOT/examples/docker/swarm-service
 ./run.sh
 ....
 
@@ -735,7 +735,7 @@ file permissions of /run/docker.sock accordingly.
 Run the example as follows (depends on master-replica example
 being run prior):
 ....
-cd examples/docker/watch
+cd $CCPROOT/examples/docker/watch
 ./run.sh
 ....
 
