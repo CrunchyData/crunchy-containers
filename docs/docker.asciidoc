@@ -9,10 +9,7 @@ Examples of running the Crunchy containers in a pure Docker
 environment are found in the $CCPROOT/examples/docker directory.
 Those examples are explained below.  The examples make use of
 the local Docker volume driver and data volumes created
-by the *docker create volume* command.  There is a bug however
-that requires the container to run as privileged when in
-SELinux enforcing mode.  See https://github.com/docker/docker/issues/20859[here] for more details.  Also, see link:https://github.com/docker/docker/pull/23024[here].  When this is fixed, you will not need to specify *privileged*
-when starting the examples.
+by the *docker create volume* command.  
 
 === *basic* - Running a single database container
 
