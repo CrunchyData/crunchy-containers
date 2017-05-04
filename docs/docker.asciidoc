@@ -9,7 +9,7 @@ Examples of running the Crunchy containers in a pure Docker
 environment are found in the $CCPROOT/examples/docker directory.
 Those examples are explained below.  The examples make use of
 the local Docker volume driver and data volumes created
-by the *docker create volume* command.  
+by the *docker create volume* command.
 
 === *basic* - Running a single database container
 
@@ -266,45 +266,6 @@ the database, you can invoke this URL to generate updated reports:
 ....
 curl http://127.0.0.1:14000/api/badgergenerate
 ....
-
-
-=== *dns* - dns
-
-Some users will need or want a DNS name to resolve to their container
-names.  The crunchy-dns container provides the following:
-
- * listens to a Docker URL or socket for events that would indicate
- a container is created or destroyed
- * implements the consul.io DNS server
- * registers new container information into the DNS server
- * deregisters container information from the DNS serve when a container
- is destroyed
-
-Start the crunchy-dns server by running its container as follows:
-....
-cd $CCPROOT/examples/docker/dns
-./run.sh
-....
-
-This is a privileged container and will bind to your local IP address
-at port 53.  At this point, you can now start a new Postgres container
-and you should be able to do a DNS lookup as follows:
-
-....
-dig @192.168.122.138 containername.service.dc1.crunchy.lab
-....
-
-In this example, the local IP address of the DNS container is
-192.168.122.138 and it assumes you have started a container named
-containername
-
-You can alter the DNS domain name within the startup script if desired.
-
-You can also browse the consul web UI at:
-....
-http://<your ip address>:8500/ui
-....
-
 
 === *metrics* - metrics collection
 
