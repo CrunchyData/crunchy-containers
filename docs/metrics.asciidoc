@@ -14,13 +14,14 @@ crunchy-collect container into the pod that holds the crunchy-pg container.
 Metrics are stored in the crunchy-prometheus container.  crunchy-prometheus runs
 the prometheus time series database. The prometheus pushgateway is
 found within the crunchy-promgateway container, and
-the grafana web application is foud within the crunchy-grafana container.  
+the grafana web application is foud within the crunchy-grafana container.
 An example of starting the metrics containers
 is in examples/openshift/scope.json.
 
 To start the crunchy-scope container, run the following:
 ....
-examples/openshift/metrics/run.sh
+cd $CCPROOT/examples/docker/metrics
+./run.sh
 ....
 
 The crunchy-prometheus data in this example is stored in emptyDir volume types.
@@ -28,6 +29,7 @@ To persist the data and grafana templates long term, you will want to
 use NFS volume types as specified in examples/openshift/metrics/run-nfs.sh
 
 When running crunchy-scope, the following ports are available:
+
  * crunchy-prometheus:9090 - the prometheus web user interface
  * crunchy-promgateway:9091 - the prometheus pushgateway REST API
  * crunchy-grafana:3000 - the grafana web user interface
@@ -38,7 +40,7 @@ When running crunchy-scope, the following ports are available:
  * PROM_GATEWAY - the http URL of the prometheus pushgateway into which the metrics will be pushed.  defaults to http://crunchy-promgateway:9091
 
 === Example
-An example of using crunchy-collect is stored in examples/openshift/master-collect.json
+An example of using crunchy-collect is stored in $CCPROOT/examples/openshift/collect/master-collect.json.
 
 This example collects metrics for the pg-master database.  Run the
 example as follows:
@@ -169,4 +171,3 @@ Copyright © 2017 Crunchy Data Solutions, Inc.
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
-
