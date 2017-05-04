@@ -1,4 +1,4 @@
-= Openshift Examples - Crunchy Containers
+= Openshift Installation, Examples, and Tips - Crunchy Containers
 Crunchy Data Solutions, Inc.
 v1.4.0, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
