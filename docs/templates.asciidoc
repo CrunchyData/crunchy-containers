@@ -12,6 +12,10 @@ the creation of Crunchy Container Suite containers.
 
 === Installation
 
+If you haven't already followed the instructions in the
+link:https://github.com/CrunchyData/crunchy-containers/blob/master/docs/install.asciidoc[install documentation],
+follow the instructions as follows.
+
 Users can install the templates into their Openshift environment
 using the following commands:
 ....
@@ -22,6 +26,15 @@ git clone https://github.com/CrunchyData/crunchy-containers.git
 export CCPROOT=$HOME/crunchy-containers
 export CCP_IMAGE_TAG=centos7-9.5-1.4.0
 cd crunchy-containers/examples/templates
+./create-all.sh
+....
+
+If you've already set up your environment as described in link:https://github.com/CrunchyData/crunchy-containers/blob/master/docs/install.asciidoc[install documentation],
+all you'll need to do is follow this script:
+
+....
+oc login -u system:admin
+cd $CCPROOT/examples/templates
 ./create-all.sh
 ....
 
