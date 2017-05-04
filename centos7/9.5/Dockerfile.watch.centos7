@@ -11,7 +11,7 @@ RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/r
 # install docker from docker repo
 ADD conf/watch/docker-rhel.repo /etc/yum.repos.d/
 
-RUN yum -y install epel-release && yum -y install nss_wrapper gettext docker-engine curl rsync libxslt libxml2 procps-ng \
+RUN yum -y update && yum -y install epel-release && yum -y install nss_wrapper gettext docker-engine curl rsync libxslt libxml2 procps-ng \
 postgresql95-server  openssh-clients atomic-openshift-clients hostname bind-utils \
  && yum clean all -y
 

@@ -27,7 +27,7 @@ ADD conf/CRUNCHY-GPG-KEY.public  /
 ADD conf/crunchypg95.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public && groupadd -g 26 postgres && useradd -g 26 -u 26 postgres
 
-RUN yum -y install procps-ng pgbadger openssh-clients hostname && yum clean all -y
+RUN yum -y update && yum -y install procps-ng pgbadger openssh-clients hostname && yum clean all -y
 
 # set up cpm directory
 #

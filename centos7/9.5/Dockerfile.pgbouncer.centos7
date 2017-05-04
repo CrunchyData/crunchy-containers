@@ -11,7 +11,7 @@ RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/r
 # install docker from docker repo
 ADD conf/pgbouncer/docker-rhel.repo /etc/yum.repos.d/
 
-RUN yum -y install epel-release && yum -y install nss_wrapper gettext docker-engine procps-ng \
+RUN yum -y update && yum -y install epel-release && yum -y install nss_wrapper gettext docker-engine procps-ng \
 pgbouncer \
 postgresql95 \
 openssh-clients \

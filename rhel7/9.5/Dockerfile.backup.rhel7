@@ -30,7 +30,7 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
 # install deps
-RUN yum -y install nss_wrapper gettext procps-ng \
+RUN yum -y update && yum -y install nss_wrapper gettext procps-ng \
 postgresql9?-server  \
 postgresql9? \
 openssh-clients \

@@ -11,7 +11,7 @@ RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/r
 # install docker from docker repo
 ADD conf/watch/docker-rhel.repo /etc/yum.repos.d/
 
-RUN yum -y install epel-release \
+RUN yum -y update && yum -y install epel-release \
  && yum -y update glibc-common \
  && yum -y install  bind-utils \
 	curl \

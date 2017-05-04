@@ -9,7 +9,7 @@ ENV PGVERSION="9.5" PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 # Install pgpool deps
-RUN yum -y --enablerepo=centosplus install gettext && \
+RUN yum -y update && yum -y --enablerepo=centosplus install gettext && \
 	yum install -y procps-ng postgresql9?  pgpool-II-95*3.5.4* \
 	openssh-clients hostname &&  \
 	yum clean all -y

@@ -30,7 +30,7 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 ADD conf/watch/docker-rhel.repo /etc/yum.repos.d/
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
- && yum -y install  bind-utils \
+ && yum -y update && yum -y install  bind-utils \
 	curl \
 	docker-engine \
 	gettext \

@@ -26,7 +26,7 @@ ADD conf/CRUNCHY-GPG-KEY.public  /
 ADD conf/crunchypg96.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
-RUN yum -y install gettext \
+RUN yum -y update && yum -y install gettext \
 	hostname  \
 	openssh-clients \
 	libxslt \

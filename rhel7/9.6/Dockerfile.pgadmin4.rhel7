@@ -27,7 +27,7 @@ ADD conf/crunchypg96.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
- && yum -y install epel-release \
+ && yum -y update && yum -y install epel-release \
  && yum -y install glibc-common-*2.17* \
  && yum -y install gcc \
 	gettext \

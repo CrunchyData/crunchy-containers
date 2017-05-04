@@ -3,7 +3,7 @@ FROM centos:7
 LABEL Release="1.4" Vendor="Crunchy Data Solutions"
 
 #RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-RUN yum -y install procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
+RUN yum -y update && yum -y install procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
 
 # set up cpm directory
 #
