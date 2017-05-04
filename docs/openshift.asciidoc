@@ -1108,6 +1108,350 @@ would use the fsGroup setting for the AWS file system.  Check out
 this link for details:
 https://docs.openshift.org/latest/install_config/persistent_storage/pod_security_context.html
 
+== Openshift Dedicated Environment
+
+Here are instructions for running examples on an Openshift Dedicated
+environment.  For Dedicated, we have built a set of templates
+that can be installed into a Dedicated instance to help automate
+the creation of Crunchy Container Suite containers.
+
+=== Installation
+
+If you've already set up your environment as described in link:https://github.com/CrunchyData/crunchy-containers/blob/master/docs/install.asciidoc[install documentation],
+use the following commands to install the templates into the Openshift environment:
+
+....
+oc login -u system:admin
+cd $CCPROOT/examples/templates
+./create-all.sh
+....
+
+=== Example Details
+
+Each example will build a template to be later used by
+users when they want to deploy a Crunchy container.
+
+The templates are installed by running the following script
+within each example directory:
+
+....
+./run.sh
+....
+
+When you run the examples, there are variable substitutions taking
+place to set the image path and image tags within the Openshift
+templates.  This substitution allows for better support of different
+deployments and deployment environments.
+
+=== database backup
+
+Template Name is *crunchy-postgres-database-backup*
+
+Example is found here:
+....
+examples/templates/backup
+....
+
+This template will create the following:
+
+ * Job which generates a backup container
+
+This example deploys a Job which results in a Pod
+created which will run the crunchy-backup container.  It
+will create a backup of a database and store the backup
+files in a PVC.
+
+=== Badger
+
+Template Name is *crunchy-postgres-database-with-pgbadger*
+
+Example is found here:
+....
+examples/templates/badger
+....
+
+This template will create the following:
+
+ * database container (emptyDir)
+ * pgbadger container
+ * database service
+
+=== Metrics Collection
+
+Template Name is *crunchy-postgres-database-with-collect*
+
+Example is found here:
+....
+examples/templates/collect
+....
+
+This template will create the following:
+
+ * database container (emptyDir)
+ * collect container
+ * database service
+
+This example will pull postgres metrics from the database
+and push them to the metrics backend.
+
+=== Metrics Collection and Badger Analysis
+
+Template Name is *crunchy-postgres-database-with-collect-badger*
+
+Example is found here:
+....
+examples/templates/master-collect-badger
+....
+
+This template will create the following:
+
+ * master database container (emptyDir)
+ * collect container
+ * badger container
+ * master database service
+
+This example will pull postgres metrics from the database
+and push them to the metrics backend as well as provide
+a pgbadger container for log analysis.
+
+=== Master - Replica Database Cluster
+
+Template Name is *crunchy-postgres-master-replica-emptydir*
+
+Example is found here:
+....
+examples/templates/master-replica
+....
+
+This template will create the following:
+
+ * database container as the master (emptyDir)
+ * database container as the replica (emptyDir)
+ * database service for the master
+ * database service for the replica
+
+This example deploys a master-replica configuration
+which uses emptyDir for persistence.
+
+=== Master - Replica Database Cluster using DeploymentConfig for Replica
+
+Template Name is *crunchy-postgres-master-replica-deployment-emptydir*
+
+Example is found here:
+....
+examples/templates/master-slave-dc
+....
+
+This template will create the following:
+
+ * database container as the master (emptyDir)
+ * DeploymentConfig for the replica (emptyDir) allowing scaling
+ * database service for the master
+ * database service for the replica
+
+This example deploys a master-slave configuration
+which uses emptyDir for persistence.  The DeploymentConfig allows
+you to scale up the number of replica containers.
+
+=== Restore Database
+
+Template Name is *crunchy-postgres-database-restore-emptydir*
+
+Example is found here:
+....
+examples/templates/master-restore
+....
+
+This template will create the following:
+
+ * database container (emptyDir)
+ * database service
+
+This example performs a database restore using a backup archive
+found in a PVC.
+
+=== Metrics
+
+Template Name is *crunchy-metrics*
+
+Example is found here:
+....
+examples/templates/metrics
+....
+
+This template will create the following:
+
+ * prometheus container (PVC for persistence)
+ * grafana container (PVC for persistence)
+ * promgateway container
+ * services for prometheus, grafana, and promgateway
+
+This example deploys all the required metrics containers
+which are used to store and visualize collected postgres metrics.
+The example uses a single PVC to store all the metrics and
+dashboard data.
+
+=== pgadmin4
+
+Template Name is *crunchy-pgadmin4-using-pvc*
+
+Example is found here:
+....
+examples/templates/pgadmin4
+....
+
+This template will create the following:
+
+ * pgadmin4 container (PVC for persistence)
+ * service for pgadmin4
+
+This example deploys the pgadmin4 container and uses
+a PVC to persist the data.
+
+=== pgbouncer
+
+Template Name is *crunchy-pgbouncer*
+
+Example is found here:
+....
+examples/templates/pgbouncer
+....
+
+This template will create the following:
+
+ * pgbouncer container
+ * PVC to hold configuration
+ * service for pgbouncer
+
+=== pgpool
+
+Template Name is *crunchy-postgres-pgpool-template*
+
+Example is found here:
+....
+examples/templates/pgpool
+....
+
+This template will create the following:
+
+ * pgpool container within a DeploymentConfig
+ * service for pgpool
+
+This example deploys the pgpool container and service.  The DeploymentConfig
+allows you to scale up the pgpool container.
+
+=== replica with DeploymentConfig
+
+Template names is *crunchy-postgres-replica-deployment-emptydir*
+
+Example is found here:
+....
+examples/templates/replica-dc
+....
+
+These templates create the following:
+
+ * replica database container using emptyDir volume and a DeploymentConfig
+   allowing scaling
+ * service for replica
+
+This example deploys a single replica container which
+uses emptyDir that can be scaled up within a DeploymentConfig.
+
+=== secrets
+
+Template names are *master-with-secrets-example*.
+
+Example is found here:
+....
+examples/templates/secret
+....
+
+This run.sh script creates the following:
+
+ * master database container using emptyDir volume
+ * service for database
+ * secrets to hold database credentials
+
+
+=== single master database
+
+Template names are *crunchy-postgres-database-emptydir* and
+*crunchy-postgres-database-pvc*
+
+Example is found here:
+....
+examples/templates/single-master
+....
+
+These templates create the following:
+
+ * master database container using emptyDir volume or a PVC
+ * service for database
+
+This example deploys a single database container which
+uses emptyDir or a PVC for volume persistence.
+
+=== replica database
+
+Template names are *crunchy-postgres-replica-emptydir* and
+*crunchy-postgres-replica-pvc*.
+
+Example is found here:
+....
+examples/templates/single-replica
+....
+
+This template will create the following:
+
+ * replica database container using emptyDir or PVC as the data volume
+ * service to the replica
+
+This example deploys a replica database pod using either
+emptyDir or a PVC to store data.  A service is also
+created to the replica.
+
+=== synchronous replica database
+
+Template Name is *crunchy-postgres-master-sync-replica-pvc*
+
+Example is found here:
+....
+examples/templates/sync
+....
+
+This template will create the following:
+
+ * PVC for the master database
+ * PVC for the replica database
+ * master database container using PVC as the data volume
+ * replica database container using PVC as the data volume
+ * service to the master database
+ * service to the replica database
+
+This example deploys a database pod using a PVC to store data.
+A service is also created to the database.  This example creates
+a synchronous replica.
+
+=== watch
+
+Template Name is *crunchy-cluster-watch-template*
+
+Example is found here:
+....
+examples/templates/watch
+....
+
+This template will create the following:
+
+ * watch pod for watching a database cluster
+
+This example deploys a watch pod that watches a database
+master, if the master dies, it will trigger a failover to
+a replica.  This pod uses a ServiceAccount which is required
+to be defined.
+
+
 == Legal Notices
 
 Copyright © 2017 Crunchy Data Solutions, Inc.
