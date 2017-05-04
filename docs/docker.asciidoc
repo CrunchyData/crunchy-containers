@@ -9,7 +9,7 @@ Examples of running the Crunchy containers in a pure Docker
 environment are found in the $CCPROOT/examples/docker directory.
 Those examples are explained below.  The examples make use of
 the local Docker volume driver and data volumes created
-by the *docker create volume* command.  
+by the *docker create volume* command.
 
 === *basic* - Running a single database container
 
@@ -119,81 +119,6 @@ This script will do the following:
  * start up the container using the backup files
  * maps the PostgreSQL port of 5432 in the container to your local host port of 12001 as to not conflict with the master running in the previous example.
 
-=== *master-replica* - Running PostgreSQL in Master-Slave Configuration
-
-The container can be passed environment variables that will cause
-it to assume a PostgreSQL replication configuration with
-a master instance streaming to a slave replica instance.
-
-The following env variables are specified for this configuration option:
-
- * PG_MASTER_USER - The username used for master-slave replication value=master
- * PG_MASTER_PASSWORD - The password for the PG master user
- * PG_USER - The username that clients will use to connect to PG server value=user
- * PG_PASSWORD  - The password for the PG master user
- * PG_DATABASE - The name of the database that will be created value=userdb
- * PG_ROOT_PASSWORD - The password for the PG admin
-
-This example assumes you have run Example 1, and that the basic
-container is running.
-
-For running the master-slave configuration , you can run the following script:
-....
-cd $CCPROOT/examples/docker/master-replica/
-./run.sh
-....
-
-You can verify that replication is working by connecting to
-the replica as follows:
-
-....
-psql -h 127.0.0.1 -p 12002 -U postgres postgres
-....
-
-If you have created tables or data in the master database, they
-should show up in this replicated copy of that database.
-
-=== *crunchy-proxy* - crunchy-proxy
-
-This example shows how to use the *crunchy-proxy* to
-act as a smart proxy to a PostgreSQL cluster.  The example
-depends upon the *master-replica* example being run prior.
-
-*crunchy-proxy* offers a high performance alternative to
-pgbouncer and pgpool.
-
-The proxy example copies a configuration file to the PV_PATH
-and starts up the *crunchy-proxy* within a Deployment.
-
-The proxy reads the configuration file from a */config* volume
-mount and begins execution.
-
-Start by running the proxy container:
-....
-cd $CCPROOT/examples/docker/crunchy-proxy
-./run.sh
-....
-
-The proxy will listen on port 5432 as specified in the
-configuration file.  The example creates a Service named
-*crunchy-proxy* that you can use to access the configured
-PostgreSQL backend containers from the *master-replica* example.
-
-See the following link for more information on the *crunchy-proxy*:
-
-https://github.com/CrunchyData/crunchy-proxy
-
-Test the proxy by running psql commands via the proxy connection:
-....
-psql -h crunchy-proxy -U postgres postgres
-....
-
-SQL "reads" will be sent to the PostgreSQL replica database if your
-SQL includes the *crunchy-proxy* read annotation.  SQL statements
-that do not include the read annotation will be sent to the master
-database container within the PostgreSQL cluster.
-
-
 === *crunchy-proxy* - a smart proxy for Postgres
 
 A *crunchy-proxy* example is provided that will run a  container that
@@ -266,45 +191,6 @@ the database, you can invoke this URL to generate updated reports:
 ....
 curl http://127.0.0.1:14000/api/badgergenerate
 ....
-
-
-=== *dns* - dns
-
-Some users will need or want a DNS name to resolve to their container
-names.  The crunchy-dns container provides the following:
-
- * listens to a Docker URL or socket for events that would indicate
- a container is created or destroyed
- * implements the consul.io DNS server
- * registers new container information into the DNS server
- * deregisters container information from the DNS serve when a container
- is destroyed
-
-Start the crunchy-dns server by running its container as follows:
-....
-cd $CCPROOT/examples/docker/dns
-./run.sh
-....
-
-This is a privileged container and will bind to your local IP address
-at port 53.  At this point, you can now start a new Postgres container
-and you should be able to do a DNS lookup as follows:
-
-....
-dig @192.168.122.138 containername.service.dc1.crunchy.lab
-....
-
-In this example, the local IP address of the DNS container is
-192.168.122.138 and it assumes you have started a container named
-containername
-
-You can alter the DNS domain name within the startup script if desired.
-
-You can also browse the consul web UI at:
-....
-http://<your ip address>:8500/ui
-....
-
 
 === *metrics* - metrics collection
 
