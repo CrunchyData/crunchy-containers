@@ -19,7 +19,7 @@ follow the instructions as follows.
 Users can install the templates into their Openshift environment
 using the following commands:
 ....
-oc login
+oc login -u system:admin
 oc project <your project name>
 cd $HOME
 git clone https://github.com/CrunchyData/crunchy-containers.git
