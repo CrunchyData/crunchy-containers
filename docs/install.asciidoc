@@ -128,12 +128,19 @@ for use in a *standalone docker* environment.
 
 To install an Openshift environment, continue on to Step 4.
 
-=== Step 4 - Openshift Enterprise Installation
+=== Step 4 - Openshift Installation
 
 See the OSE installation guide for details on how to install
 OSE on your host.  The main instructions are here:
 
 https://docs.openshift.com/enterprise/3.2/install_config/install/index.html
+
+*Or*, if you'd prefer to install Openshift Origin, the easiest way to get
+Openshift Origin up and running is found here:
+https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md
+
+For examples and tips on how to run Openshift Enterprise & Origin, please look
+at the openshift.asciidoc documentation.
 
 === Step 5 - Configure NFS for Persistence Examples
 
