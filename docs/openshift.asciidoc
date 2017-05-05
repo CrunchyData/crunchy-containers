@@ -224,7 +224,7 @@ The restore only takes place if:
  * the /pgdata directory is empty
  * the /backups directory contains a valid postgresql.conf file
 
-=== Openshift Example 7 - Failover Example
+=== Failover Example
 
 An example of performing a database failover is described
 in the following steps:
