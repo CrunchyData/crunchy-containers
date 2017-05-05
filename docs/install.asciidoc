@@ -47,7 +47,7 @@ Next, set up a project directory structure and pull down the project:
 ....
 mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
 cd $GOPATH
-sudo yum -y install golang git docker
+sudo yum -y install golang git docker postgresql kubernetes
 go get github.com/tools/godep
 cd src/github.com
 mkdir crunchydata
