@@ -75,7 +75,7 @@ This openshift template will create a single master PostgreSQL instance.
 Running the example:
 
 ....
-cd examples/openshift/basic
+cd $CCPROOT/examples/openshift/basic
 ./run.sh
 ....
 
@@ -103,7 +103,7 @@ the master replica pods, then run the following command
 to deploy the pgpool service:
 
 ....
-cd examples/openshift/pgpool
+cd $CCPROOT/examples/openshift/pgpool
 ./run.sh
 ....
 
@@ -182,7 +182,7 @@ You can perform a database backup by executing the following
 step:
 
 ....
-cd examples/openshift/backup-job
+cd $CCPROOT/examples/openshift/backup-job
 ./run.sh
 ....
 
@@ -257,7 +257,9 @@ oc edit pod/pg-replica-rc-1-lt5a5
 original line: labels/name: pg-replica-rc
 updated line: labels/name: pg-master-rc
 ....
-   or alternatively:
+
+ * or alternatively:
+
 ....
 oc label --overwrite=true pod pg-replica-rc-1-lt5a5 name=pg-master-rc
 ....
@@ -331,7 +333,7 @@ to install.
 To run the example:
 
 ....
-cd examples/openshift/badger
+cd $CCPROOT/examples/openshift/badger
 ./run.sh
 ....
 
@@ -383,7 +385,8 @@ encoded password value is *password*.  Run the example
 as follows:
 
 ....
-examples/openshift/secret/run.sh
+cd $CCPROOT/examples/openshift/secret/run.sh
+./run.sh
 ....
 
 The secrets are mounted in the */pguser*, */pgmaster*, */pgroot* volumes within the
@@ -416,7 +419,7 @@ First, create a master and a replica, in this case the replica lives in a
 Deployment which can scale up:
 
 ....
-cd examples/openshift/master-replica-dc
+cd $CCPROOT/examples/openshift/master-replica-dc
 ./run.sh
 ....
 
@@ -434,7 +437,7 @@ oc policy add-role-to-group edit system:serviceaccounts -n default
 Next, create the container that will 'watch' the Postgresql cluster:
 
 ....
-cd examples/openshift/watch
+cd $CCPROOT/examples/openshift/watch
 ./run.sh
 ....
 
@@ -505,7 +508,7 @@ To run the vacuum a single time, an example is included
 as follows from the examples/openshift directory:
 
 ....
-cd examples/openshift/master-replica
+cd $CCPROOT/examples/openshift/master-replica
 ./run.sh
 cd ../vacuum-job
 ./run.sh
@@ -541,9 +544,10 @@ will use that file instead of the default files.  Currently, if you specify a po
 file, you also need to specify a pg_hba.conf file.
 
 The example shows how a custom setup.sql file can be used.
-Run it as follows from the examples/openshift/custom-config directory:
+Run it as follows:
 
 ....
+cd $CCPROOT/examples/openshift/custom-config
 ./run.sh
 ....
 
@@ -562,9 +566,10 @@ for postgresql.conf, pg_hba.conf, and setup.sql.  If it finds one of them it
 will use that file instead of the default files.  Currently, if you specify a postgresql.conf
 file, you also need to specify a pg_hba.conf file.
 
-Run it as follows from the examples/openshift/custom-config-sync directory:
+Run it as follows:
 
 ....
+cd $CCPROOT/examples/openshift/custom-config-sync
 ./run.sh
 ....
 
@@ -581,13 +586,14 @@ when running under Openshift.
 The example assumes you have run the master/replica example
 found here:
 ....
-examples/openshift/master-replica-dc
+$CCPROOT/examples/openshift/master-replica-dc
 ....
 
 Then you would start up the pgbouncer container using the following
 example:
 ....
-examples/openshift/pgbouncer
+cd $CCPROOT/examples/openshift/pgbouncer
+./run.sh
 ....
 
 The example assumes you have an NFS share path of /nfsfileshare/!  NFS
@@ -634,7 +640,8 @@ two replicas share the same Service.
 
 Running the example:
 ....
-examples/openshift/sync/run.sh
+cd $CCPROOT/examples/openshift/sync
+./run.sh
 ....
 
 Connect to the *master* and *replica* databases as follows:
@@ -675,7 +682,7 @@ your local IP address happens to be.
 
 === *workshop* - workshop
 
-This example, examples/openshift/workshop, provides an
+This example, $CCPROOT/examples/openshift/workshop, provides an
 example of using Openshift Templates to build pods, routes, services, etc.
 
 You use the *oc new-app* command to create objects from the
@@ -696,7 +703,7 @@ on running the example.
 This is a complex example.  For details on how PITR is implemented
 within the Suite, see the link:pitr.asciidoc[PITR Documentation] for details and background.
 
-This example, examples/openshift/pitr, provides an
+This example, $CCPROOT/examples/openshift/pitr, provides an
 example of performing a PITR using Openshift.
 
 Lets start by running the example database container:
@@ -795,7 +802,7 @@ See the link:backrest.asciidoc[pgbackrest Documentation] for details and backgro
 
 Start by running the example database container:
 ....
-cd examples/openshift/backrest
+cd $CCPROOT/examples/openshift/backrest
 ./run.sh
 ....
 
@@ -1267,7 +1274,8 @@ Template Name is *crunchy-postgres-database-backup*
 
 Example is found here:
 ....
-examples/templates/backup
+cd $CCPROOT/examples/templates/backup
+./run.sh
 ....
 
 This template will create the following:
@@ -1285,7 +1293,8 @@ Template Name is *crunchy-postgres-database-with-pgbadger*
 
 Example is found here:
 ....
-examples/templates/badger
+cd $CCPROOT/examples/templates/badger
+./run.sh
 ....
 
 This template will create the following:
@@ -1300,7 +1309,8 @@ Template Name is *crunchy-postgres-database-with-collect*
 
 Example is found here:
 ....
-examples/templates/collect
+cd $CCPROOT/examples/templates/collect
+./run.sh
 ....
 
 This template will create the following:
@@ -1318,7 +1328,8 @@ Template Name is *crunchy-postgres-database-with-collect-badger*
 
 Example is found here:
 ....
-examples/templates/master-collect-badger
+cd $CCPROOT/examples/templates/master-collect-badger
+./run.sh
 ....
 
 This template will create the following:
@@ -1338,7 +1349,8 @@ Template Name is *crunchy-postgres-master-replica-emptydir*
 
 Example is found here:
 ....
-examples/templates/master-replica
+cd $CCPROOT/examples/templates/master-replica
+./run.sh
 ....
 
 This template will create the following:
@@ -1357,7 +1369,8 @@ Template Name is *crunchy-postgres-master-replica-deployment-emptydir*
 
 Example is found here:
 ....
-examples/templates/master-slave-dc
+cd $CCPROOT/examples/templates/master-slave-dc
+./run.sh
 ....
 
 This template will create the following:
@@ -1377,7 +1390,8 @@ Template Name is *crunchy-postgres-database-restore-emptydir*
 
 Example is found here:
 ....
-examples/templates/master-restore
+cd $CCPROOT/examples/templates/master-restore
+./run.sh
 ....
 
 This template will create the following:
@@ -1394,7 +1408,8 @@ Template Name is *crunchy-metrics*
 
 Example is found here:
 ....
-examples/templates/metrics
+cd $CCPROOT/examples/templates/metrics
+./run.sh
 ....
 
 This template will create the following:
@@ -1415,7 +1430,8 @@ Template Name is *crunchy-pgadmin4-using-pvc*
 
 Example is found here:
 ....
-examples/templates/pgadmin4
+cd $CCPROOT/examples/templates/pgadmin4
+./run.sh
 ....
 
 This template will create the following:
@@ -1432,7 +1448,8 @@ Template Name is *crunchy-pgbouncer*
 
 Example is found here:
 ....
-examples/templates/pgbouncer
+cd $CCPROOT/examples/templates/pgbouncer
+./run.sh
 ....
 
 This template will create the following:
@@ -1447,7 +1464,8 @@ Template Name is *crunchy-postgres-pgpool-template*
 
 Example is found here:
 ....
-examples/templates/pgpool
+cd $CCPROOT/examples/templates/pgpool
+./run.sh
 ....
 
 This template will create the following:
@@ -1464,7 +1482,8 @@ Template names is *crunchy-postgres-replica-deployment-emptydir*
 
 Example is found here:
 ....
-examples/templates/replica-dc
+cd $CCPROOT/examples/templates/replica-dc
+./run.sh
 ....
 
 These templates create the following:
@@ -1482,7 +1501,8 @@ Template names are *master-with-secrets-example*.
 
 Example is found here:
 ....
-examples/templates/secret
+cd $CCPROOT/examples/templates/secret
+./run.sh
 ....
 
 This run.sh script creates the following:
@@ -1499,7 +1519,8 @@ Template names are *crunchy-postgres-database-emptydir* and
 
 Example is found here:
 ....
-examples/templates/single-master
+cd $CCPROOT/examples/templates/single-master
+./run.sh
 ....
 
 These templates create the following:
@@ -1517,7 +1538,8 @@ Template names are *crunchy-postgres-replica-emptydir* and
 
 Example is found here:
 ....
-examples/templates/single-replica
+cd $CCPROOT/examples/templates/single-replica
+./run.sh
 ....
 
 This template will create the following:
@@ -1535,7 +1557,8 @@ Template Name is *crunchy-postgres-master-sync-replica-pvc*
 
 Example is found here:
 ....
-examples/templates/sync
+cd $CCPROOT/examples/templates/sync
+./run.sh
 ....
 
 This template will create the following:
@@ -1557,7 +1580,8 @@ Template Name is *crunchy-cluster-watch-template*
 
 Example is found here:
 ....
-examples/templates/watch
+cd $CCPROOT/examples/templates/watch
+./run.sh
 ....
 
 This template will create the following:
