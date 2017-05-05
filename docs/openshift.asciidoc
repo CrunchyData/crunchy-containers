@@ -32,7 +32,7 @@ Notes on NFS installation and file system permissions are in the install.asciido
 For running the examples that require persistent volumes, you
 will need to run the following script:
 ....
-cd $CCPROOT/examples/openshift
+cd $CCPROOT/examples/pv
 ./create-pv.sh
 ./create-pvc.sh
 ....
