@@ -199,6 +199,10 @@ that we want to keep the volume contents after the removal of the PV.
 This example will create a single master postgres pod that is using
 an PVC based volume to store the postgres data files.
 
+....
+cd $CCPROOT/examples/openshift/master-pvc
+./run.sh
+....
 
 === *master-restore* - example of restoring a database from a backup
 
@@ -271,7 +275,7 @@ backup and be prepared to recreate your cluster from that backup.
 
 === *master-replica-rc-pvc*  - Master Slave Deployment using pvc
 
-This example uses a pvc based volumes for the master and the replicas.  In
+This example uses a pvc based volume for the master and the replicas.  In
 some scenarios, customers might want to have all the Postgres
 instances using NFS volumes for persistence.
 
