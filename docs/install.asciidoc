@@ -47,7 +47,7 @@ Next, set up a project directory structure and pull down the project:
 ....
 mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
 cd $GOPATH
-sudo yum -y install golang git docker
+sudo yum -y install golang git docker postgresql kubernetes
 go get github.com/tools/godep
 cd src/github.com
 mkdir crunchydata
@@ -92,7 +92,7 @@ This is described if you run:
 man docker-storage-setup
 ....
 
-Follow the instructions available link:https://docs.openshift.com/container-platform/3.4/install_config/install/host_preparation.html#configuring-docker-storage[on the main Openshift documentation page] 
+Follow the instructions available link:https://docs.openshift.com/container-platform/3.4/install_config/install/host_preparation.html#configuring-docker-storage[on the main Openshift documentation page]
 to configure docker storage appropriately.
 
 Next, we enable and start up docker:
@@ -103,7 +103,7 @@ sudo systemctl start docker.service
 
 === Step 3 - Build the Containers
 
-At this point, you have a decision to make - either download prebuilt 
+At this point, you have a decision to make - either download prebuilt
 containers from dockerhub, *or* build the containers on your local host.
 
 To download the prebuilt containers, make sure you can login to
@@ -114,7 +114,7 @@ cd $CCPROOT
 ./bin/pull-from-dockerhub.sh
 ....
 
-Or if you'd rather build the containers from source, perform a container 
+Or if you'd rather build the containers from source, perform a container
 build as follows:
 
 ....
@@ -128,12 +128,19 @@ for use in a *standalone docker* environment.
 
 To install an Openshift environment, continue on to Step 4.
 
-=== Step 4 - Openshift Enterprise Installation
+=== Step 4 - Openshift Installation
 
 See the OSE installation guide for details on how to install
 OSE on your host.  The main instructions are here:
 
 https://docs.openshift.com/enterprise/3.2/install_config/install/index.html
+
+*Or*, if you'd prefer to install Openshift Origin, the easiest way to get
+Openshift Origin up and running is found here:
+https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md
+
+For examples and tips on how to run Openshift Enterprise & Origin, please look
+at the openshift.asciidoc documentation.
 
 === Step 5 - Configure NFS for Persistence Examples
 
@@ -196,182 +203,6 @@ of the way port translation is done between the VM host and the VM instance.
 see this for more details:
 
 http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting
-
-
-== Openshift Tips
-
-=== Tip 1: Finding the Postgresql Passwords
-
-The passwords used for the PostgreSQL user accounts are generated
-by the Openshift 'process' command.  To inspect what value was
-supplied, you can inspect the master pod as follows:
-
-....
-oc get pod pg-master-rc-1-n5z8r -o json
-....
-
-Look for the values of the environment variables:
-
- *  PG_USER
- *  PG_PASSWORD
- *  PG_DATABASE
-
-
-=== Tip 2: Examining a backup job log
-
-Database backups are implemented as a Kubernetes Job.  A Job is meant to run one time only
-and not be restarted by Kubernetes.  To view jobs in Openshift you enter:
-
-....
-oc get jobs
-oc describe job backupjob
-....
-
-You can get detailed logs by referring to the pod identifier in the job 'describe'
-output as follows:
-
-....
-oc logs backupjob-pxh2o
-....
-
-=== Tip 3: Backup Lifecycle
-
-Backups require the use of network storage like NFS in Openshift.
-There is a required order of using NFS volumes in the manner
-we do database backups.
-
-So, first off, there is a one-to-one relationship between
-a PV (persistent volume) and a PVC (persistence volume claim).  You
-can NOT have a one-to-many relationship between PV and PVC(s).
-
-So, to do a database backup repeatably, you will need to following
-this general pattern:
-
- * as openshift admin user, create a unique PV (e.g. backup-pv-mydatabase)
- * as a project user, create a unique PVC (e.g. backup-pvc-mydatabase)
- * reference the unique PVC within the backup-job template
- * execute the backup job template
- * as a project user, delete the job
- * as a project user, delete the pvc
- * as openshift admin user, delete the unique PV
-
-This procedure will need to be scripted and executed by the devops team when
-performing a database backup.
-
-=== Tip 4: Persistent Volume Matching
-
-Restoring a database from an NFS backup requires the building
-of a PV which maps to the NFS backup archive path.  For example,
-if you have a backup at /backups/pg-foo/2016-01-29:22:34:20
-then we create a PV that maps to that NFS path.  We also use
-a "label" on the PV so that the specific backup PV can be identified.
-
-We use the pod name in the label value to make the PV unique.  This
-way, the related PVC can find the right PV to map to and not some other
-PV.  In the PVC, we specify the same "label" which lets Kubernetes
-match to the correct PV.
-
-=== Tip 5: Restore Lifecycle
-
-
-To perform a database restore, we do the following:
-
- * locate the NFS path to the database backup we want to restore with
- * edit a PV to use that NFS path
- * edit a PV to specify a unique label
- * create the PV
- * edit a PVC to use the previously created PV, specifying the same label
-   used in the PV
- * edit a database template, specifying the PVC to be used for mounting
-   to the /backup directory in the database pod
- * create the database pod
-
-If the /pgdata directory is blank AND the /backup directory contains
-a valid postgres backup, it is assumed the user wants to perform a
-database restore.
-
-The restore logic will copy /backup files to /pgdata before starting
-the database.  It will take time for the copying of the files to
-occur since this might be a large amount of data and the volumes
-might be on slow networks. You can view the logs of the database pod
-to measure the copy progress.
-
-=== Tip 6: Password Mgmt
-
-Remember that if you do a database restore, you will get
-whatever user IDs and passwords that were saved in the
-backup.  So, if you do a restore to a new database
-and use generated passwords, the new passwords will
-not be the same as the passwords stored in the backup!
-
-You have various options to deal with managing your
-passwords.
-
- * externalize your passwords using secrets instead of using generated values
- * manually update your passwords to your known values after a restore
-
-Note that you can edit the environment variables when there is a 'dc'
-using, currently only the slaves have a 'dc' to avoid the possiblity
-of creating multiple masters, this might need to change in the future,
-to better support password management:
-....
-oc env dc/pg-master-rc PG_MASTER_PASSWORD=foo PG_MASTER=user1
-....
-
-=== Tip 7: Log Aggregation
-
-Openshift can be configured to include the EFK stack for log aggregation.
-Openshift Administrators can configure the EFK stack as documented
-here:
-
-https://docs.openshift.com/enterprise/3.1/install_config/aggregate_logging.html
-
-=== Tip 8: build box setup
-
-golang is required to build the pgbadger container, on RH 7.2, golang
-is found in the 'server optional' repository and needs to be enabled
-to install. For example:
-....
-subscription-manager repos --enable=rhel-7-server-optional-rpms
-sudo yum -y install golang
-....
-
-
-=== Tip 9: encoding secrets
-
-You can use kubernetes secrets to set and maintain your database
-credentials.  Secrets requires you base64 encode your user and password
-values as follows:
-
-....
-echo -n 'myuserid' | base64
-....
-
-You will paste these values into  your JSON secrets files for values.
-
-
-=== Tip 10: DNS host entry and DeploymentConfig
-
-If your openshift environment can not resolve your hostname via
-a DNS server (external to openshift!), you will get errors when trying
-to create a DeploymentConfig.  So, you can either install dnsmasq
-and reconfigure openshift for that, or, you can run a DNS server
-on another host and add the openshift host entry to that DNS server.  I
-use the skybridge2 Docker container for this purpose.  You have
-to remember to adjust your /etc/resolv.conf to specify this new DNS
-server.
-
-
-
-=== Tip 11: Setting up Docker storage
-
-I typically set up Docker storage this way:
-
- * add an extra IDE drive to my VM
- * fdisk /dev/sd? to format the drive
- * vgcreate /dev/sd?1 to create a volume group on the new drive partition
- * add VG=docker-vg to /etc/sysconfig/docker-storage-setup
- * run docker-storage-setup to use that new volume group
 
 
 == Legal Notices

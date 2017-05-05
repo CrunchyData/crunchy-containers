@@ -735,7 +735,32 @@ example, this example will mount the newly created and upgraded
 database files.  Database tables and data that were in the *master-pvc*
 test database should be found in the *master-upgrade* database.
 
-=== Tip 1
+=== master using gluster fs
+
+This example deploys a master database container that uses
+a gluster file system as the persistent volume.
+
+Set up gluster according to
+https://wiki.centos.org/SpecialInterestGroup/Storage/gluster-Quickstart
+
+
+Start the example as follows:
+....
+cd $CCPROOT/examples/kube/gluster
+./run.sh
+....
+
+This will start a container and service for the master database.
+
+You can access the master database as follows:
+....
+psql -h master-gluster -U postgres postgres
+....
+
+This example has a mount point of /mnt/gluster which is mapped
+to the gluster fs at yourhost:/gv0
+
+=== Tip
 
 Create a static route from your host to 10.0.0.0/16 if you
 want to test the user interfaces of the metrics tools.
