@@ -777,17 +777,21 @@ The Postgres Container Suite was tested on Google Container Engine.
 Here is a link to set up a Kube cluster on GCE:
 https://kubernetes.io/docs/getting-started-guides/gce
 
-Here is a link that describes how to set up persistent disk:
-https://cloud.google.com/container-engine/docs/tutorials/persistent-disk/
+Setup the persistent disks using GCE disks by first editing
+*examples/envvars.sh* and set the GCE settings to match your
+GCE environment.
 
-You can however create GCE disk automatically by creating PV's using:
+Then create the PVs used by the examples, passing in the *gce* 
+value as a parameter, this will cause the GCE disks to be created:
 ....
 examples/pv/create-pv.sh gce
 examples/pv/create-pvc.sh
 ....
 
-Prior to running the above script, edit the examples/envvars.sh script to specify your
-GCE environment settings used for creating the GCE disks.
+
+Here is a link that describes more information on GCE persistent disk:
+https://cloud.google.com/container-engine/docs/tutorials/persistent-disk/
+
 
 To have the persistent disk examples work, you will need to specify
 a *fsGroup* setting in the *SecurityContext* of each pod script
