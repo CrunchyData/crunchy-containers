@@ -770,6 +770,38 @@ On my host, 114, and my bridge, br1, this worked for me:
  ip route add 10.0.0.0/16 via 192.168.0.114 dev br1
 ....
 
+== Google Cloud Environment
+
+The Postgres Container Suite was tested on Google Container Engine.
+
+Here is a link to set up a Kube cluster on GCE:
+https://kubernetes.io/docs/getting-started-guides/gce
+
+Here is a link that describes how to set up persistent disk:
+https://cloud.google.com/container-engine/docs/tutorials/persistent-disk/
+
+You can however create GCE disk automatically by creating PV's using:
+....
+examples/pv/create-pv.sh gce
+examples/pv/create-pvc.sh
+....
+
+Prior to running the above script, edit the examples/envvars.sh script to specify your
+GCE environment settings used for creating the GCE disks.
+
+To have the persistent disk examples work, you will need to specify
+a *fsGroup* setting in the *SecurityContext* of each pod script
+as follows:
+....
+       "securityContext": {
+        "fsGroup": 26
+        },
+....
+
+For our Postgres container, we have specified a UID of 26 as the user
+which corresponds to the *fsGroup* value.
+
+
 == Legal Notices
 
 Copyright © 2017 Crunchy Data Solutions, Inc.
