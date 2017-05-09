@@ -13,7 +13,7 @@ based on a cron scheduler that is built in.
 The container itself consists of:
     - RHEL7 base image
     - bash script that performs the container startup
-    - golang executable 
+    - golang executable
 
 Files added to the container during docker build include: /help.1.
 
@@ -36,6 +36,4 @@ The Red Hat Enterprise Linux version from which the container was built. For exa
 
 `Release=`
 
-The specific release number of the container. For example, Release="1.3.1"
-
-
+The specific release number of the container. For example, Release="1.4.0"
