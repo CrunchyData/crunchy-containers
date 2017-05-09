@@ -13,6 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+export PIDFILE=/tmp/badgerserver.pid
+
+function trap_sigterm() {
+        echo "doing trap logic..."
+
+        echo "Clean shut-down of badgerserver ..."
+
+        kill -SIGINT $(head -1 $PIDFILE)
+
+}
+
+trap 'trap_sigterm' SIGINT SIGTERM
+
 if [ -v BADGER_TARGET ]; then
 	echo "BADGER_TARGET set for standalone environment"
 	export BADGER_TARGET=$BADGER_TARGET
@@ -20,5 +33,10 @@ fi
 
 export PATH=$PATH:/opt/cpm/bin
 
-/opt/cpm/bin/badgerserver 
+/opt/cpm/bin/badgerserver &
+echo $! > $PIDFILE
+
+echo "waiting for badgerserver to catch signal..."
+
+wait
 

@@ -9,8 +9,6 @@ ENV PGVERSION="9.6" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 RUN yum -y update && yum -y install hostname \
-	openssh-clients \
-	procps-ng \
 	pgbadger-9.0* \
  && yum clean all -y \
  && groupadd -g 26 postgres && useradd -g 26 -u 26 postgres 

@@ -8,7 +8,7 @@ ENV PGVERSION="9.5" PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO} && groupadd -g 26 postgres && useradd -g 26 -u 26 postgres 
 
-RUN yum -y update && yum -y install procps-ng pgbadger-9.1* openssh-clients hostname && yum clean all -y
+RUN yum -y update && yum -y install pgbadger-9.1* hostname && yum clean all -y
 
 RUN mkdir -p /opt/cpm/bin
 

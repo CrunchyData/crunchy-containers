@@ -27,8 +27,6 @@ ADD conf/crunchypg96.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN yum -y update && yum -y install hostname \
-	openssh-clients \
-	procps-ng \
 	pgbadger \
  && yum clean all -y \
  && groupadd -g 26 postgres && useradd -g 26 -u 26 postgres 
