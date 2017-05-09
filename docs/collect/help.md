@@ -1,12 +1,12 @@
-% postgres (1) Container Image Pages
+% collect (1) Container Image Pages
 % Jeff McCormick
 % April 13, 2017
 
 # NAME
-postgres \- postgres container image
+collect \- collect container image
 
 # DESCRIPTION
-The postgres image provides the open source Postgres database.
+PostgreSQL metrics collection container. Every 3 minutes the collection container will collect PostgreSQL metrics and push them to the Crunchy Prometheus database. These can be graphed using the Crunchy grafana container.
 
 The container itself consists of:
     - RHEL7 base image
@@ -26,7 +26,7 @@ That atomic command runs the docker command set in this label:
 
 `Name=`
 
-The registry location and name of the image. For example, Name="crunchydata/postgres".
+The registry location and name of the image. For example, Name="crunchydata/collect".
 
 `Version=`
 
@@ -34,6 +34,4 @@ The Red Hat Enterprise Linux version from which the container was built. For exa
 
 `Release=`
 
-The specific release number of the container. For example, Release="1.3.1"
-
-
+The specific release number of the container. For example, Release="1.4.0"
