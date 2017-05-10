@@ -138,7 +138,7 @@ psql -h pgpool-rc -U testuser userdb
 psql -h pgpool-rc -U testuser postgres
 ....
 
-when prompted, enter the password for the PG_USERNAME testuser
+When prompted, enter the password for the PG_USERNAME testuser
 that was set for the pg-master pod, typically it is *password*.
 
 At this point, you can enter SELECT and INSERT statements and
@@ -153,7 +153,7 @@ running:
 psql -h pgpool-rc -U testuser userdb -c 'show pool_nodes'
 ....
 
-=== *master-replica-rc-dc* - master replica with scalable replicas
+=== *master-replica-dc* - master replica with scalable replicas
 
 This example is similar to the previous examples but
 builds a master pod, and a single replica that can be scaled up
