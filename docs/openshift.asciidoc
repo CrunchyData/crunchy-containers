@@ -37,7 +37,7 @@ cd $CCPROOT/examples/pv
 ./create-pvc.sh
 ....
 
-If you are wanting to run the examples on a minishift instance
+If you are wanting to run the examples on a Minishift instance
 you will need to create the PVs using hostPath as follows:
 ....
 oc login -u system:admin
@@ -55,7 +55,7 @@ oc edit scc restricted
 
 Above, you will change runAsUser.Type strategy to RunAsAny.
 
-On the boot2docker instance running minishift, you will need
+On the boot2docker instance running Minishift, you will need
 to set the host path permissions as follows:
 ....
 chmod 777 /mnt/sda1/data
@@ -452,7 +452,8 @@ service account the ability to edit resources within the openshift and
 default projects :
 
 ....
-oc create -f sa.json
+cd $CCPROOT/examples/openshift/watch
+oc create -f watch-sa.json
 oc policy add-role-to-group edit system:serviceaccounts -n openshift
 oc policy add-role-to-group edit system:serviceaccounts -n default
 ....
@@ -460,7 +461,6 @@ oc policy add-role-to-group edit system:serviceaccounts -n default
 Next, create the container that will 'watch' the Postgresql cluster:
 
 ....
-cd $CCPROOT/examples/openshift/watch
 ./run.sh
 ....
 
