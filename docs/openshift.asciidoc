@@ -610,6 +610,7 @@ The example assumes you have run the master/replica example
 found here:
 ....
 $CCPROOT/examples/openshift/master-replica-dc
+./run.sh
 ....
 
 Then you would start up the pgbouncer container using the following
@@ -991,7 +992,7 @@ by the Openshift 'process' command.  To inspect what value was
 supplied, you can inspect the master pod as follows:
 
 ....
-oc get pod pg-master-rc-1-n5z8r -o json
+oc get pod ms-master -o json | grep PG
 ....
 
 Look for the values of the environment variables:
