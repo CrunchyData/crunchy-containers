@@ -12,8 +12,8 @@ are supported.
 The containers will execute in the following environments:
 
  * Docker 1.12
- * Openshift 3.4
- * Kubernetes 1.5
+ * Openshift 3.5
+ * Kubernetes 1.6
 
 The project includes the following containers:
 
