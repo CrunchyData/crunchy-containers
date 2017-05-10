@@ -163,14 +163,14 @@ a single pod since it can not be scaled like read-only replicas.
 Running the example:
 
 ....
-oc create -f master-replica-rc-dc-replicas-only.json | oc create -f -
+oc create -f master-replica.json | oc create -f -
 ....
 
 Connect to the PostgreSQL instances with the following:
 
 ....
-psql -h pg-master-rc-dc.pgproject.svc.cluster.local -U testuser userdb
-psql -h pg-replica-rc-dc.pgproject.svc.cluster.local -U testuser userdb
+psql -h master-dc.pgproject.svc.cluster.local -U testuser userdb
+psql -h replica-dc.pgproject.svc.cluster.local -U testuser userdb
 ....
 
 Here is an example of increasing or scaling up the Postgres 'replica' pods to 2:
@@ -239,6 +239,7 @@ First, locate the database backup you want to restore, for example:
 
 Then create the pod:
 ....
+cd $CCPROOT/examples/openshift/master-restore
 ./run.sh
 ....
 
