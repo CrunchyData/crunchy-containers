@@ -198,8 +198,8 @@ psql -c 'select inet_server_addr()' -h pg-replica-rc -U master postgres
 === *backup* - Performing a Full Backup
 
 This example assumes you have a database pod running called *basic*
-as created by the *basic* example and that you have configured NFS as decribed
-in the Prerequisites section of this document..
+as created by the *basic* example and that you have configured NFS as described
+in Step 5 of the install.asciidoc.
 
 You can perform a database backup by executing the following
 step:
