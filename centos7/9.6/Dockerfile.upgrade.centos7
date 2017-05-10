@@ -2,7 +2,7 @@ FROM centos:7
 
 LABEL Release="1.4" Vendor="Crunchy Data Solutions" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.2"
+	PostgresFullVersion="9.6.3"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-3.noarch.rpm
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm

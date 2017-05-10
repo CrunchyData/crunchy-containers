@@ -1,5 +1,5 @@
 == Crunchy PostgreSQL Containers
-v1.4.0, {docdate}
+v1.4.1, {docdate}
 
 image::docs/crunchy_logo.png?raw=true[]
 
@@ -80,7 +80,7 @@ environment variable which indicates which version of the
 container you will pull down and execute, for example:
 ....
 export CCPROOT=$HOME/crunchy-containers
-export CCP_IMAGE_TAG=centos7-9.5-1.4.0
+export CCP_IMAGE_TAG=centos7-9.5-1.4.1
 ....
 
 The CCPROOT is the location of where you cloned the containers github

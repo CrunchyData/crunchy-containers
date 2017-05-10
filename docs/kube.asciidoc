@@ -1,6 +1,6 @@
 = Kubernetes Examples - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.4.0, {docdate}
+v1.4.1, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Kube Environment
@@ -702,13 +702,13 @@ you perform a pg_upgrade on a 9.5 database converting its data
 to a 9.6 version.
 
 This example assumes you have run *master-pvc* using a 9.5 image
-such as *centos7-9.5-1.4.0* prior to running this upgrade.
+such as *centos7-9.5-1.4.1* prior to running this upgrade.
 
 Prior to starting this example, shut down the *master-pvc* database
 using the *examples/kube/master-pvc/cleanup.sh* script.
 
 Prior to running this example, make sure your CCP_IMAGE_TAG
-environment variable is using a 9.6 image such as *centos7-9.6-1.4.0*.
+environment variable is using a 9.6 image such as *centos7-9.6-1.4.1*.
 
 Start the upgrade as follows:
 ....

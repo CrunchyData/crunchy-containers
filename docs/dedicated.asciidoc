@@ -1,6 +1,6 @@
 = Openshift Dedicated Examples - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.4.0, {docdate}
+v1.4.1, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Openshift Dedicated Environment
@@ -43,7 +43,7 @@ oc project <your project name>
 cd $HOME
 git clone https://github.com/CrunchyData/crunchy-containers.git
 export CCPROOT=$HOME/crunchy-containers
-export CCP_IMAGE_TAG=centos7-9.5-1.4.0
+export CCP_IMAGE_TAG=centos7-9.5-1.4.1
 cd crunchy-containers/examples/dedicated
 ./create-all.sh
 ....
@@ -155,7 +155,7 @@ which uses a Persistent Volume Claim for persistence.
 
 |CCP_IMAGE_TAG
 | the image version to use for the container 
-| rhel7-9.6-1.4.0 
+| rhel7-9.6-1.4.1 
 
 |CCP_IMAGE_PREFIX
 | the image prefix to use, typically the image stream prefix of your registry
@@ -255,7 +255,7 @@ files in a PVC.
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6-1.4.0
+| rhel7-9.6-1.4.1
 |===
 
 === Restore Database
@@ -345,7 +345,7 @@ found in a PVC.
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6-1.4.0
+| rhel7-9.6-1.4.1
 |===
 
 === Replica Database
@@ -408,7 +408,7 @@ These templates create the following:
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6-1.4.0
+| rhel7-9.6-1.4.1
 |===
 
 === pgadmin4 Web User Interface
@@ -455,7 +455,7 @@ This example creates a pgadmin4 pod and service.
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6-1.4.0
+| rhel7-9.6-1.4.1
 |===
 
 

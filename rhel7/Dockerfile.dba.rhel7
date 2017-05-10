@@ -4,8 +4,8 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/dba" \
 	vendor="crunchy data" \
 	version="7.2" \
-	release="1.4" \
-	build-date="2017-04-25" \
+	release="1.4.1" \
+	build-date="2017-05-11" \
 	url="https://crunchydata.com" \
 	summary="crunchy data dba container" \
 	description="DBA container" \

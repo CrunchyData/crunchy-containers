@@ -5,8 +5,8 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/promgateway" \
         vendor="crunchy data" \
         version="7.2" \
-        release="1.4" \
-        build-date="2017-04-21" \
+        release="1.4.1" \
+        build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="crunchy data promgateway container" \
         description="promgateway container" \

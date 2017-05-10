@@ -5,10 +5,10 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
         PostgresVersion="9.5" \
-        PostgresFullVersion="9.5.6" \
+        PostgresFullVersion="9.5.7" \
         version="7.2" \
-        release="1.4" \
-        build-date="2017-04-21" \
+        release="1.4.1" \
+        build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="crunchy data backrest restore container" \
         description="backrest restore container" \
