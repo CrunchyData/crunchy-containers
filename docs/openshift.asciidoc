@@ -305,21 +305,19 @@ This example uses a pvc based volume for the master and the replicas.  In
 some scenarios, customers might want to have all the Postgres
 instances using NFS volumes for persistence.
 
-Relevant files for this example:
-
- * master-replica-rc-pvc.json
-This file creates the master and replica deployment, creating pods and services
-where the replica is controlled by a Replication Controller, allowing you
-to scale up the replicas.
-
 To run the example, follow these steps:
 
 As the project user, create the master replica deployment:
 ....
+cd $CCPROOT/examples/openshift/master-replica-rc-pvc
 ./run.sh
 ....
 
-If you examing your NFS directory, you will see postgres data directories
+Note:  The *master-replica.json* file creates the master and replica deployment,
+creating pods and services where the replica is controlled by a Replication Controller,
+allowing you to scale up the replicas.
+
+If you examine your NFS directory, you will see postgres data directories
 created and used by your master and replica pods.
 
 Next, add some test data to the master:
@@ -409,7 +407,7 @@ encoded password value is *password*.  Run the example
 as follows:
 
 ....
-cd $CCPROOT/examples/openshift/secret/run.sh
+cd $CCPROOT/examples/openshift/secret
 ./run.sh
 ....
 
