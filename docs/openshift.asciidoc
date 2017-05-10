@@ -502,6 +502,7 @@ First, create the crunchy-metrics pod which contains
 the prometheus data store and the grafana graphing web application:
 
 ....
+cd $CCPROOT/examples/openshift/metrics
 ./run.sh
 ....
 

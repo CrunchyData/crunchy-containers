@@ -16,4 +16,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/vacuum-job.json | oc create -f -
+oc process -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/vacuum-job.json | oc create -f -
