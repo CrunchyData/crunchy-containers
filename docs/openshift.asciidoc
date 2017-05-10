@@ -92,10 +92,33 @@ the value of PG_PASSWORD from above for the password when prompted:
 psql -h basic.openshift.svc.cluster.local -U testuser userdb
 ....
 
+=== *master-replica* - Creating a master and replica database cluster
+
+Run the following command to deploy a master and replica database cluster:
+
+....
+cd $CCPROOT/examples/openshift/master-replica
+./run.sh
+....
+
+Similarly to the previous example on *basic*, you can view the generated
+passwords by running this command:
+
+....
+oc describe pod ms-master | grep PG
+....
+
+You can then connect to the database instance as follows using the password
+shown with the previous command:
+
+....
+psql -h mc-master -U testuser -W userdb
+....
+
 === *pgpool*  - pgpool for master replica examples
 
 You can create a pgpool service that will work with the
-master and replica created in the previous Example 1 and Example 2.
+master and replica created in the previous example.
 
 You will need to edit the pgpool-for-master-replica-rc-dc-replicas-only.json and supply the
 testuser password that was generated when you created
