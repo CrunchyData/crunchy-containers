@@ -120,7 +120,7 @@ psql -h mc-master -U testuser -W userdb
 You can create a pgpool service that will work with the
 master and replica created in the previous example.
 
-You will need to edit the pgpool-for-master-replica-rc-dc-replicas-only.json and supply the
+You will need to edit the pgpool-rc.json and supply the
 testuser password that was generated when you created
 the master replica pods, then run the following command
 to deploy the pgpool service:
@@ -448,7 +448,7 @@ cd $CCPROOT/examples/openshift/master-replica-dc
 
 Next, create an Openshift service account which is used by the crunchy-watch
 container to perform the failover, also set policies that allow the
-service account the ability to edit resources within the openshift and
+service account the ability to edit resources within the Openshift and
 default projects :
 
 ....
@@ -468,13 +468,13 @@ At this point, the watcher will sleep every 20 seconds (configurable) to
 see if the master is responding.  If the master doesn't respond, the watcher
 will perform the following logic:
 
- * log into openshift using the service account
+ * log into Openshift using the service account
  * set its current project
  * find the first replica pod
  * delete the master service saving off the master service definition
  * create the trigger file on the first replica pod
  * wait 20 seconds for the failover to complete on the replica pod
- * edit the replica pod's lable to match that of the master
+ * edit the replica pod's label to match that of the master
  * recreate the master service using the stored service definition
  * loop through the other remaining replica and delete its pod
 
@@ -486,7 +486,7 @@ started as each new replica is started by Openshift.
 
 To test it out, delete the master pod and view the watch pod log:
 ....
-oc delete pod pg-master-rc-dc
+oc delete pod pg-master-dc
 oc logs watch
 oc get pod
 ....
