@@ -17,8 +17,6 @@ LABEL name="crunchydata/postgres" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-RUN subscription-manager repos --disable=rhel-7-server-rt-beta-rpms
-
 COPY docs/postgres/help.md /tmp/
 
 ENV PGVERSION="9.6"
