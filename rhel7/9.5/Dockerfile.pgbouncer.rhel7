@@ -17,8 +17,6 @@ LABEL name="crunchydata/pgbouncer" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-RUN subscription-manager repos --disable=rhel-7-server-rt-beta-rpms
-
 COPY docs/pgbouncer/help.md /tmp/
 
 # PGDG Postgres repo

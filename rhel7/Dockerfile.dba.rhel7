@@ -14,8 +14,6 @@ LABEL name="crunchydata/dba" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-RUN subscription-manager repos --disable=rhel-7-server-rt-beta-rpms
-
 COPY docs/dba/help.md /tmp/
 
 RUN yum -y update && yum -y install psmisc procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
