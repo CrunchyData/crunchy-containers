@@ -112,7 +112,7 @@ You can then connect to the database instance as follows using the password
 shown with the previous command:
 
 ....
-psql -h mc-master -U testuser -W userdb
+psql -h ms-master -U testuser -W userdb
 ....
 
 === *pgpool*  - pgpool for master replica examples
@@ -1080,15 +1080,6 @@ echo -n 'myuserid' | base64
 ....
 
 You will paste these values into  your JSON secrets files for values.
-
-docker to be installed.
-
-You can keep yum from upgrading docker by including this line
-in your /etc/yum.conf file:
-
-....
-exclude=docker-1.9* docker-selinux-1.9*
-....
 
 === Tip 7: DNS configuration for Openshift development
 
