@@ -134,8 +134,8 @@ Next, you can access the master replica cluster via the pgpool
 service by entering the following command:
 
 ....
-psql -h pgpool-rc -U testuser userdb
-psql -h pgpool-rc -U testuser postgres
+psql -h pgpool -U testuser userdb
+psql -h pgpool -U testuser postgres
 ....
 
 When prompted, enter the password for the PG_USERNAME testuser
@@ -150,7 +150,7 @@ to the replica(s).
 You can view the nodes that pgpool is configured for by
 running:
 ....
-psql -h pgpool-rc -U testuser userdb -c 'show pool_nodes'
+psql -h pgpool -U testuser userdb -c 'show pool_nodes'
 ....
 
 === *master-replica-dc* - master replica with scalable replicas
@@ -163,7 +163,8 @@ a single pod since it can not be scaled like read-only replicas.
 Running the example:
 
 ....
-oc create -f master-replica.json | oc create -f -
+cd $CCPROOT/examples/openshift/master-replica-dc
+./run.sh
 ....
 
 Connect to the PostgreSQL instances with the following:
@@ -176,14 +177,22 @@ psql -h replica-dc.pgproject.svc.cluster.local -U testuser userdb
 Here is an example of increasing or scaling up the Postgres 'replica' pods to 2:
 
 ....
-oc scale rc pg-replica-rc-dc-1 --replicas=2
+oc scale rc replica-dc-1 --replicas=2
 ....
 
-Enter the following commands to verify the PostgreSQL replication is working.
+To check the *master* default password, enter the following command and look for
+the *PG_MASTER_USER* and *PG_MASTER_PASSWORD* variables:
 
 ....
-psql -c 'table pg_stat_replication' -h pg-master-rc.pgproject.svc.cluster.local -U master postgres
-psql -h pg-replica-rc.pgproject.svc.cluster.local -U master postgres
+oc describe pod master-dc | grep PG
+....
+
+Enter the following commands to verify the PostgreSQL replication is working, using
+the password for master found with the previous command.
+
+....
+psql -c 'table pg_stat_replication' -h master-dc.pgproject.svc.cluster.local -U master postgres
+psql -h replica-dc.pgproject.svc.cluster.local -U master postgres
 ....
 
 You can see that the replica service is load balancing between
@@ -192,7 +201,7 @@ multiple times and the ip address should alternate between
 the replicas:
 
 ....
-psql -c 'select inet_server_addr()' -h pg-replica-rc -U master postgres
+psql -c 'select inet_server_addr()' -h replica-dc -U master postgres
 ....
 
 === *backup* - Performing a Full Backup
@@ -257,43 +266,44 @@ The restore only takes place if:
 An example of performing a database failover is described
 in the following steps:
 
- * create a master and replica replication using master-replica-rc-dc-replicas-only.json
+ * create a master and replica replication
 ....
-oc process -f master-replica-rc-dc-replicas-only.json | oc create -f -
+cd $CCPROOT/examples/openshift/master-replica-dc
+./run.sh
 ....
  * scale up the number of replicas to 2
 ....
-oc scale rc pg-replica-rc-1 --replicas=2
+oc scale rc replica-dc-1 --replicas=2
 ....
  * delete the master pod
 ....
-oc delete pod pg-master-rc
+oc delete pod master-dc
 ....
  * exec into a replica and create a trigger file to being
    the recovery process, effectively turning the replica into a master
 ....
-oc exec -it pg-replica-rc-1-lt5a5
+oc exec -it replica-dc-1-lt5a5
 touch /tmp/pg-failover-trigger
 ....
- * change the label on the replica to pg-master-rc instead of pg-replica-rc
+ * change the label on the replica to master-dc instead of replica-dc
 ....
-oc edit pod/pg-replica-rc-1-lt5a5
-original line: labels/name: pg-replica-rc
-updated line: labels/name: pg-master-rc
+oc edit pod/replica-dc-1-lt5a5
+original line: labels/name: replica-dc
+updated line: labels/name: master-dc
 ....
 
  * or alternatively:
 
 ....
-oc label --overwrite=true pod pg-replica-rc-1-lt5a5 name=pg-master-rc
+oc label --overwrite=true pod replica-dc-1-lt5a5 name=master-dc
 ....
 
 You can test the failover by creating some data on the master
 and then test to see if the replicas have the replicated data.
 
 ....
-psql -c 'create table foo (id int)' -U master -h pg-master-rc postgres
-psql -c 'table foo' -U master -h pg-replica-rc postgres
+psql -c 'create table foo (id int)' -U master -h master-dc postgres
+psql -c 'table foo' -U master -h replica-dc postgres
 ....
 
 After a failover, you would most likely want to create a database
