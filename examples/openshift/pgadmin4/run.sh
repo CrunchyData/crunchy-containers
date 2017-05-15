@@ -28,4 +28,4 @@ if [ ! -d "$DATADIR" ]; then
 	sudo chmod -R 777 $DATADIR
 fi
 
-oc process -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/pgadmin4.json | oc create -f -
+oc process -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/pgadmin4.json | oc create -f -
