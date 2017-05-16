@@ -32,6 +32,6 @@ oc policy add-role-to-user view system:serviceaccount:$NAMESPACE:dba-sa
 oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:$NAMESPACE:dba-sa
 
 oc process \
-	-v CCP_IMAGE_TAG=$CCP_IMAGE_TAG \
-	-v NAMESPACE=$NAMESPACE \
+	-p CCP_IMAGE_TAG=$CCP_IMAGE_TAG \
+	-p NAMESPACE=$NAMESPACE \
 	-f $DIR/master-dba-backup.json | oc create -f -

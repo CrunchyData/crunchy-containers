@@ -19,4 +19,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-oc process -f $DIR/master-restore-pvc -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/master-restore-pvc -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
