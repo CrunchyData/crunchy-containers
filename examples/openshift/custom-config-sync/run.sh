@@ -29,5 +29,5 @@ sudo chmod g+r $PV_PATH/postgresql.conf $PV_PATH/pg_hba.conf $PV_PATH/setup.sql
 
 oc create -f $DIR/master-service.json
 oc create -f $DIR/replica-service.json
-oc process -f $DIR/master-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-oc process -f $DIR/sync-replica-pod.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/master-pod.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/sync-replica-pod.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
