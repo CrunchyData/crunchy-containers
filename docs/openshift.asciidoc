@@ -495,7 +495,7 @@ started as each new replica is started by Openshift.
 
 To test it out, delete the master pod and view the watch pod log:
 ....
-oc delete pod pg-master-dc
+oc delete pod master-dc
 oc logs watch
 oc get pod
 ....
@@ -641,7 +641,7 @@ will use that file instead of the default files.
 Test the example by killing off the master database container as
 follows:
 ....
-oc delete pod pg-master-rc-dc
+oc delete pod master-dc
 ....
 
 Then watch the pgbouncer log as follows to confirm it detects the loss
@@ -653,12 +653,12 @@ oc logs pgbouncer
 After the failover is completed, you should be able to access
 the new master using the master service as follows:
 ....
-psql -h pg-master-rc-dc.openshift.svc.cluster.local -U master postgres
+psql -h master-dc.openshift.svc.cluster.local -U master postgres
 ....
 
 and access the replica as follows:
 ....
-psql -h pg-replica-rc-dc.openshift.svc.cluster.local -U master postgres
+psql -h replica-dc.openshift.svc.cluster.local -U master postgres
 ....
 
 or via the pgbouncer proxy as follows:
