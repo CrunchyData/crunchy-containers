@@ -332,20 +332,20 @@ created and used by your master and replica pods.
 
 Next, add some test data to the master:
 ....
-psql -c 'create table testtable (id int)' -U master -h pg-master-rc-pvc postgres
-psql -c 'insert into testtable values (123)' -U master -h pg-master-rc-pvc postgres
+psql -c 'create table testtable (id int)' -U master -h m-s-rc-pvc-master postgres
+psql -c 'insert into testtable values (123)' -U master -h m-s-rc-pvc-master postgres
 ....
 
 Next, add a new replica:
 ....
-oc scale rc pg-replica-rc-pvc-1 --replicas=2
+oc scale rc m-s-rc-pvc-replica-1 --replicas=2
 ....
 
 At this point, you should see the new NFS directory created by the new
 replica pod, and you should also be able to test that replication is
 working on the new replica:
 ....
-psql -c 'table testtable' -U master -h pg-replica-rc-pvc postgres
+psql -c 'table testtable' -U master -h m-s-rc-pvc-replica postgres
 ....
 
 === *badger* - pgbadger example
@@ -388,9 +388,9 @@ This command maps port 10000 of the service/container to port
 see the badger report.
 
 This is a short-cut way to expose a service to the external world,
-Openshift would normally configure a Router whereby you could
-'expose' the service in an Openshift way.  Here is the docs
-on installing the Openshift Router:
+Openshift would normally configure a router whereby you could
+'expose' the service in an Openshift way.  Here are the docs
+on installing Openshift on a router:
 
 ....
 https://docs.openshift.com/enterprise/3.0/install_config/install/deploy_router.html
@@ -408,7 +408,7 @@ echo -n 'myuserid' | base64
 
 You will paste these values into  your JSON secrets files for values.
 
-This example allows you to set the Postgresql passwords
+This example allows you to set the PostgreSQL passwords
 using Kube Secrets.
 
 The secret uses a base64 encoded string to represent the
