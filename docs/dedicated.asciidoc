@@ -183,6 +183,8 @@ command when the initial data files are created, for example:
 
 By default, no locale is specified when the initdb command is executed.
 
+== Openshift Dedicated Template Examples
+
 === Master Database Template
 
 Template Name is *crunchy-master*
