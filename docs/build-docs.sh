@@ -42,6 +42,17 @@ asciidoc \
 -a toc-placement=right \
 ./install.asciidoc
 
+asciidoctor-pdf ./dedicated.asciidoc --out-file ./pdf/dedicated.pdf
+
+asciidoc \
+-b bootstrap \
+-f ./demo.conf \
+-o ./htmldoc/dedicated.html \
+-a toc2 \
+-a toc-placement=right \
+./dedicated.asciidoc
+
+
 asciidoctor-pdf ./install.asciidoc --out-file ./pdf/install.pdf
 
 asciidoc \
