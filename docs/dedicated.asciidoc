@@ -16,7 +16,7 @@ A defined set of templates are supported including:
  * replica database
  * full database backup
  * database restore
- * pgadmin4 
+ * pgadmin4
 
 Each template is described below.
 
@@ -35,7 +35,7 @@ within the Deployment or StatefulSet.
 
 === Installation
 
-Users can install the templates into their Openshift environment 
+Users can install the templates into their Openshift environment
 using the following commands:
 ....
 oc login
@@ -77,13 +77,14 @@ that shows how to use the template using the *oc* CLI.
 You can deploy the Crunchy built container images to the Openshift
 registry by running the following script:
 ....
-examples/dedicated/push-images.sh
+cd $CCPROOT/examples/dedicated
+./push-images.sh
 ....
 
 You will first need to login to the Openshift registry to perform
 this script.
 
-The script will create the appropate image tag and push the image to the
+The script will create the appropriate image tag and push the image to the
 remote registry.
 
 As you use the templates, you can specify the images in your templates using the Openshift
@@ -92,7 +93,7 @@ registry URL as follows for the *default* Openshift project:
 172.30.149.135:5000/default
 ....
 
-=== Master Database 
+=== Master Database
 
 Template Name is *crunchy-master*
 
@@ -103,7 +104,7 @@ examples/dedicated/crunchy-master
 
 This template will create the following:
 
- * database container as the master running within a Deployment 
+ * database container as the master running within a Deployment
  * database service for the master
 
 This example deploys a master database configuration
@@ -115,87 +116,87 @@ which uses a Persistent Volume Claim for persistence.
 
 |NAME
 | the database service name
-| example 
+| example
 
 |PGDATA_PATH_OVERRIDE
 | should match the name of the NAME parameter in most cases
-| example 
+| example
 
 |PG_MASTER_PORT
 | the postgres port to use
-| 5432 
+| 5432
 
 |PG_MASTER_USER
 | the user name to create and use for a master user
-| master 
+| master
 
 |PG_MASTER_PASSWORD
 | the password to use for the master user
-| password 
+| password
 
 |PG_USER
 | the user name to create as a normal user
 | testuser
- 
+
 |PG_PASSWORD
 | the password to use for the normal user
-| password 
+| password
 
 |PG_DATABASE
 | the name of the the normal user database which will be created
 | userdb
- 
+
 |PG_ROOT_PASSWORD
 | the password of the postgres user
-| password 
- 
+| password
+
 |SYNC_SLAVE
 | the name of a sync replica that will be allowed to connect if any
-| 
+|
 
 |CCP_IMAGE_TAG
-| the image version to use for the container 
-| rhel7-9.6-1.4.1 
+| the image version to use for the container
+| rhel7-9.6-1.4.1
 
 |CCP_IMAGE_PREFIX
 | the image prefix to use, typically the image stream prefix of your registry
 | 172.30.149.135:5000/default
- 
+
 |CCP_IMAGE_NAME
 | the image name to use, either crunchy-postgres or crunchy-postgres-gis
 | crunchy-postgres
- 
+
 |PVC_NAME
 | the name to assign to the PVC created for this database typically NAME-pvc
 | example-pvc
- 
+
 |PVC_SIZE
 | the size of the PVC to create
 | 300M
- 
+
 |PVC_ACCESS_MODE
 | the PVC access mode to use for the created PVC
 | ReadWriteMany
- 
+
 |TEMP_BUFFERS
 | the postgres temp_buffers configuration setting
-| 9MB 
+| 9MB
 
 |MAX_CONNECTIONS
 | the postgres max_connections setting
 | 101
- 
+
 |SHARED_BUFFERS
 | the postgres shared_buffers configuration setting
 | 129MB
- 
+
 |MAX_WAL_SENDERS
 | the postgres max_wal_senders configuration setting
-| 7 
+| 7
 
 |WORK_MEM
 | the postgres work-mem configuration setting
-| 5MB 
+| 5MB
 |===
 
 
@@ -213,9 +214,40 @@ This template will create the following:
  * Job which generates a backup container
 
 This example deploys a Job which results in a Pod
-created which will run the crunchy-backup container.  It
+created which will run the *crunchy-backup* container.  It
 will create a backup of a database and store the backup
 files in a PVC.
+
+The *crunchy-backup* container executes a pg_basebackup against another
+database container.  The backup is a full backup using the standard
+utility included with postgres, pg_basebackup.
+
+*Backup Location*
+
+Backups are stored in a mounted backup volume location, using the
+database host name plus *-backups*  as a sub-directory, then followed by a unique
+backup directory based upon a date/timestamp.  It is left to the
+user to perform database backup archives in this current version
+of the container.  This backup location is referenced when performing
+a database restore.
+
+*Dependencies*
+
+The container is meant to be using a NFS or similar network file system
+to persist database backups.
+
+*Environment Variables*
+
+ * BACKUP_LABEL - when set, will set the label of the backup, if not
+   set the default label used is *crunchy-backup*
+ * BACKUP_HOST - required, this is the database we will be doing the
+   backup for
+ * BACKUP_USER - required, this is the database user we will be doing the
+   backup with
+ * BACKUP_PASS - required, this is the database password we will be doing the
+   backup with
+ * BACKUP_PORT - required, this is the database port we will be doing the
+   backup with
 
 .Table Template Parameters
 |===
@@ -223,7 +255,7 @@ files in a PVC.
 
 |JOB_NAME
 | the job name
-| backupjob 
+| backupjob
 
 |DB_NAME
 | the service name of the database to backup
@@ -269,7 +301,7 @@ examples/dedicated/crunchy-restore
 
 This template will create the following:
 
- * database container 
+ * database container
  * database service
 
 This example performs a database restore using a backup archive
@@ -281,7 +313,7 @@ found in a PVC.
 
 |NAME
 | the job name
-| restoredb 
+| restoredb
 
 |PG_MASTER_PORT
 | the postgres port to use
@@ -289,27 +321,27 @@ found in a PVC.
 
 |PG_MASTER_USER
 | the user name to create and use for a master user
-| master 
+| master
 
 |PG_MASTER_PASSWORD
 | the password to use for the master user
-| password 
+| password
 
 |PG_USER
 | the user name to create as a normal user
 | testuser
- 
+
 |PG_PASSWORD
 | the password to use for the normal user
-| password 
+| password
 
 |PG_DATABASE
 | the name of the the normal user database which will be created
 | userdb
- 
+
 |PG_ROOT_PASSWORD
 | the password of the postgres user
-| password 
+| password
 
 |PGDATA_PATH_OVERRIDE
 | the name to overide the pgdata path with typically the NAME value
@@ -359,8 +391,8 @@ examples/dedicated/crunchy-replica
 
 These templates create the following:
 
- * replica database container using Persistent Volume CLaim
- * service for replica 
+ * replica database container using Persistent Volume Claim
+ * service for replica
 
 .Table Template Parameters
 |===
@@ -380,11 +412,11 @@ These templates create the following:
 
 |PG_MASTER_USER
 | the user name to create and use for a master user
-| master 
+| master
 
 |PG_MASTER_PASSWORD
 | the password to use for the master user
-| password 
+| password
 
 |PVC_NAME
 | the PVC name to use when creating the new PVC typically NAME-pvc
@@ -426,8 +458,15 @@ This template will create the following:
  * pod containing the crunchy-pgadmin4 container
  * service for the pgadmin4 container
 
+The crunchy-pgadmin4 container executes the pgadmin4 web application.
 
-This example creates a pgadmin4 pod and service.  
+The pgadmin4 project is found at the following location:
+https://www.pgadmin.org/
+
+pgadmin4 provides a web user interface to PostgreSQL databases.  A
+sample screenshot is below:
+
+image:pgadmin4-screenshot.png["pgadmin screenshot",align="center",scaledwidth="80%"]
 
 .Table Template Parameters
 |===
@@ -440,11 +479,11 @@ This example creates a pgadmin4 pod and service.
 |PVC_NAME
 | the name to assign to the PVC created for this pgadmin4 typically NAME-pvc
 | pgadmin4-pvc
- 
+
 |PVC_SIZE
 | the size of the PVC to create
 | 300M
- 
+
 |PVC_ACCESS_MODE
 | the PVC access mode to use for the created PVC
 | ReadWriteMany
@@ -467,4 +506,3 @@ Copyright © 2017 Crunchy Data Solutions, Inc.
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
-
