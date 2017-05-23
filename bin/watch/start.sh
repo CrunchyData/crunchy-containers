@@ -85,7 +85,7 @@ function standalone_failover() {
 	# env var is required to talk to older docker
 	# server using a more recent docker client
 	export DOCKER_API_VERSION=1.20
-	echo "creating the trigger file on " $PG_MASTER_SERVICE
+	echo "creating the trigger file on " $PG_SLAVE_SERVICE
 	docker exec $PG_SLAVE_SERVICE touch /tmp/pg-failover-trigger
 	echo "exiting after the failover has been triggered..."
 	exit 0
