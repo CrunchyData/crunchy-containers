@@ -93,10 +93,11 @@ registry URL as follows for the *default* Openshift project:
 172.30.149.135:5000/default
 ....
 
+== Containers Used
+
 === crunchy-postgres container
 
-The crunchy-postgres container executes the Postgres database. The *crunchy-master*,
-*crunchy-replica* and *crunchy-restore* templates utilize this container.
+The crunchy-postgres container executes the Postgres database.
 
 *Packages*
 
@@ -183,6 +184,73 @@ command when the initial data files are created, for example:
 
 By default, no locale is specified when the initdb command is executed.
 
+
+=== crunchy-backup
+
+The crunchy-backup container executes a pg_basebackup against another
+database container.  The backup is a full backup using the standard
+utility included with postgres, pg_basebackup.
+
+*Backup Location*
+
+Backups are stored in a mounted backup volume location, using the
+database host name plus *-backups*  as a sub-directory, then followed by a unique
+backup directory based upon a date/timestamp.  It is left to the
+user to perform database backup archives in this current version
+of the container.  This backup location is referenced when performing
+a database restore.
+
+*Dependencies*
+
+The container is meant to be using a NFS or similar network file system
+to persist database backups.
+
+*Environment Variables*
+
+ * BACKUP_LABEL - when set, will set the label of the backup, if not
+   set the default label used is *crunchy-backup*
+ * BACKUP_HOST - required, this is the database we will be doing the
+   backup for
+ * BACKUP_USER - required, this is the database user we will be doing the
+   backup with
+ * BACKUP_PASS - required, this is the database password we will be doing the
+   backup with
+ * BACKUP_PORT - required, this is the database port we will be doing the
+   backup with
+
+
+   === crunchy-pgadmin4
+
+   The crunchy-ppgadmin4 container executes the pgadmin4 web application.
+
+   The pgadmin4 project is found at the following location:
+   https://www.pgadmin.org/
+
+   pgadmin4 provides a web user interface to PostgreSQL databases.  A
+   sample screenshot is below:
+
+   image:pgadmin4-screenshot.png["pgadmin screenshot",align="center",scaledwidth="80%"]
+
+
+   *Environment Variables*
+
+    * None
+
+   *Features*
+
+   The following features are supported by the crunchy-pgadmin4 container:
+
+    * mount config_local.py and pgadmin4.db to /data volume inside the
+      container to support customization and store the pgadmin4 database
+      file
+    * expose port 5050 which is the web server port
+    * a sample pgadmin4 database is provided with an initial administrator
+      user *admin@admin.org* and password of *password*
+
+   *Restrictions*
+
+    * None
+
 == Openshift Dedicated Template Examples
 
 === Master Database Template
@@ -196,7 +264,7 @@ examples/dedicated/crunchy-master
 
 This template will create the following:
 
- * database container as the master running within a Deployment
+ * database container crunchy-postgres as the master running within a Deployment
  * database service for the master
 
 This example deploys a master database configuration
@@ -310,37 +378,6 @@ created which will run the *crunchy-backup* container.  It
 will create a backup of a database and store the backup
 files in a PVC.
 
-The *crunchy-backup* container executes a pg_basebackup against another
-database container.  The backup is a full backup using the standard
-utility included with postgres, pg_basebackup.
-
-*Backup Location*
-
-Backups are stored in a mounted backup volume location, using the
-database host name plus *-backups*  as a sub-directory, then followed by a unique
-backup directory based upon a date/timestamp.  It is left to the
-user to perform database backup archives in this current version
-of the container.  This backup location is referenced when performing
-a database restore.
-
-*Dependencies*
-
-The container is meant to be using a NFS or similar network file system
-to persist database backups.
-
-*Environment Variables*
-
- * BACKUP_LABEL - when set, will set the label of the backup, if not
-   set the default label used is *crunchy-backup*
- * BACKUP_HOST - required, this is the database we will be doing the
-   backup for
- * BACKUP_USER - required, this is the database user we will be doing the
-   backup with
- * BACKUP_PASS - required, this is the database password we will be doing the
-   backup with
- * BACKUP_PORT - required, this is the database port we will be doing the
-   backup with
-
 .Table Template Parameters
 |===
 |Parameter|Description|Default
@@ -393,7 +430,7 @@ examples/dedicated/crunchy-restore
 
 This template will create the following:
 
- * database container
+ * database container crunchy-postgres
  * database service
 
 This example performs a database restore using a backup archive
@@ -483,7 +520,7 @@ examples/dedicated/crunchy-replica
 
 These templates create the following:
 
- * replica database container using Persistent Volume Claim
+ * replica database container crunchy-postgres using Persistent Volume Claim
  * service for replica
 
 .Table Template Parameters
@@ -549,16 +586,6 @@ This template will create the following:
  * PVC for the pgadmin4 configuration files and database
  * pod containing the crunchy-pgadmin4 container
  * service for the pgadmin4 container
-
-The crunchy-pgadmin4 container executes the pgadmin4 web application.
-
-The pgadmin4 project is found at the following location:
-https://www.pgadmin.org/
-
-pgadmin4 provides a web user interface to PostgreSQL databases.  A
-sample screenshot is below:
-
-image:pgadmin4-screenshot.png["pgadmin screenshot",align="center",scaledwidth="80%"]
 
 .Table Template Parameters
 |===
