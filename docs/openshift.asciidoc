@@ -1,25 +1,25 @@
-= Openshift Installation, Examples, and Tips - Crunchy Containers
+= OpenShift Installation, Examples, and Tips - Crunchy Containers
 Crunchy Data Solutions, Inc.
 v1.4.1, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
-== Openshift Installation
+== OpenShift Installation
 
-=== Install Openshift Enterprise
+=== Install OpenShift Enterprise
 
 See the OSE installation guide for details on how to install
 OSE on your host.  The main instructions are here:
 
 https://docs.openshift.com/enterprise/3.2/install_config/install/index.html
 
-=== Install Openshift Origin
+=== Install OpenShift Origin
 
-The easiest way to get Openshift Origin up and running is found here:
+The easiest way to get OpenShift Origin up and running is found here:
 https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md
 
-== Examples for the Openshift Environment
+== Examples for the OpenShift Environment
 The examples/openshift directory containers examples for
-running the Crunchy containers in an Openshift environment.
+running the Crunchy containers in an OpenShift environment.
 
 The examples are explained below.
 
@@ -62,14 +62,14 @@ chmod 777 /mnt/sda1/data
 ....
 
 
-The NAMESPACE environment variable is set to indicate which Openshift
+The NAMESPACE environment variable is set to indicate which OpenShift
 project you want various example objects to use.  This variable
 is set to *default* within the *examples/envvars.sh* script.  Set this
 to match your project configuration.
 
 === *basic* - Running a single database container
 
-This openshift template will create a single master PostgreSQL instance.
+This OpenShift template will create a single master PostgreSQL instance.
 
 
 Running the example:
@@ -223,7 +223,7 @@ the backup in the NFS mounted volume under a directory named pg-master, each
 backup will be stored in a subdirectory with a timestamp as the name.  This
 allows any number of backups to be kept.
 
-The *examples/openshift/crunchy-pv-backup.json* specifies a *persistentVolumeReclaimPolicy* of *Retain* to tell Openshift
+The *examples/openshift/crunchy-pv-backup.json* specifies a *persistentVolumeReclaimPolicy* of *Retain* to tell OpenShift
 that we want to keep the volume contents after the removal of the PV.
 
 === *master-pvc* - master using a PVC Example
@@ -388,9 +388,9 @@ This command maps port 10000 of the service/container to port
 see the badger report.
 
 This is a short-cut way to expose a service to the external world,
-Openshift would normally configure a router whereby you could
-'expose' the service in an Openshift way.  Here are the docs
-on installing Openshift on a router:
+OpenShift would normally configure a router whereby you could
+'expose' the service in an OpenShift way.  Here are the docs
+on installing OpenShift on a router:
 
 ....
 https://docs.openshift.com/enterprise/3.0/install_config/install/deploy_router.html
@@ -455,9 +455,9 @@ cd $CCPROOT/examples/openshift/master-replica-dc
 ./run.sh
 ....
 
-Next, create an Openshift service account which is used by the crunchy-watch
+Next, create an OpenShift service account which is used by the crunchy-watch
 container to perform the failover, also set policies that allow the
-service account the ability to edit resources within the Openshift and
+service account the ability to edit resources within the OpenShift and
 default projects :
 
 ....
@@ -477,7 +477,7 @@ At this point, the watcher will sleep every 20 seconds (configurable) to
 see if the master is responding.  If the master doesn't respond, the watcher
 will perform the following logic:
 
- * log into Openshift using the service account
+ * log into OpenShift using the service account
  * set its current project
  * find the first replica pod
  * delete the master service saving off the master service definition
@@ -488,10 +488,10 @@ will perform the following logic:
  * loop through the other remaining replica and delete its pod
 
 At this point, clients when access the master's service will actually
-be accessing the new master.  Also, Openshift will recreate the number
+be accessing the new master.  Also, OpenShift will recreate the number
 of replicas to its original configuration which each replica pointed to the
 new master.  Replication from the master to the new replicas will be
-started as each new replica is started by Openshift.
+started as each new replica is started by OpenShift.
 
 To test it out, delete the master pod and view the watch pod log:
 ....
@@ -614,7 +614,7 @@ connected to the master via streaming replication.
 === *pgbouncer* - pgbouncer
 
 This example shows how you can use the crunchy-pgbouncer container
-when running under Openshift.
+when running under OpenShift.
 
 The example assumes you have run the master/replica example
 found here:
@@ -717,14 +717,14 @@ your local IP address happens to be.
 === *workshop* - workshop
 
 This example, $CCPROOT/examples/openshift/workshop, provides an
-example of using Openshift Templates to build pods, routes, services, etc.
+example of using OpenShift Templates to build pods, routes, services, etc.
 
 You use the *oc new-app* command to create objects from the
-JSON templates.  This is an alternative way to create Openshift objects
+JSON templates.  This is an alternative way to create OpenShift objects
 instead of using *oc create*.
 
 This example is used within a joint Redhat-Crunchy workshop that is
-given at various conferences to demonstrate Openshift and Crunchy Containers
+given at various conferences to demonstrate OpenShift and Crunchy Containers
 working together.  Thanks to Steven Pousty from Redhat for this
 example!
 
@@ -738,7 +738,7 @@ This is a complex example.  For details on how PITR is implemented
 within the Suite, see the link:pitr.asciidoc[PITR Documentation] for details and background.
 
 This example, $CCPROOT/examples/openshift/pitr, provides an
-example of performing a PITR using Openshift.
+example of performing a PITR using OpenShift.
 
 Lets start by running the example database container:
 ....
@@ -907,7 +907,7 @@ how the /pgconf mount is related to the configmap.
 === *statefulset*- a StatefulSet example
 
 This example shows how to use a StatefulSet (available
-in Openshift Origin 1.5) to create a PostgreSQL cluster.
+in OpenShift Origin 1.5) to create a PostgreSQL cluster.
 
 Build the example by:
 ....
@@ -993,12 +993,12 @@ a master-dc deployment with replicas count of 1 and a
 replica-dc deployment with replicas count of 2.
 
 
-== Openshift Tips
+== OpenShift Tips
 
 === Tip 1: Finding the Postgresql Passwords
 
 The passwords used for the PostgreSQL user accounts are generated
-by the Openshift 'process' command.  To inspect what value was
+by the OpenShift 'process' command.  To inspect what value was
 supplied, you can inspect the master pod as follows:
 
 ....
@@ -1014,7 +1014,7 @@ Look for the values of the environment variables:
 === Tip 2: Examining a backup job log
 
 Database backups are implemented as a Kubernetes Job.  A Job is meant to run one time only
-and not be restarted by Kubernetes.  To view jobs in Openshift you enter:
+and not be restarted by Kubernetes.  To view jobs in OpenShift you enter:
 
 ....
 oc get jobs
@@ -1052,18 +1052,18 @@ oc env dc/pg-master-rc PG_MASTER_PASSWORD=foo PG_MASTER=user1
 
 === Tip 4: Log Aggregation
 
-Openshift can be configured to include the EFK stack for log aggregation.
-Openshift Administrators can configure the EFK stack as documented
+OpenShift can be configured to include the EFK stack for log aggregation.
+OpenShift Administrators can configure the EFK stack as documented
 here:
 
 https://docs.openshift.com/enterprise/3.1/install_config/aggregate_logging.html
 
 === Tip 5: nss_wrapper
 
-If an Openshift deployment requires that random generated UIDs be
+If an OpenShift deployment requires that random generated UIDs be
 supported by containers, the Crunchy containers can be modified
 similar to those located here to support the use of nss_wrapper
-to equate the random generated UIDs/GIDs by openshift with
+to equate the random generated UIDs/GIDs by OpenShift with
 the postgres user:
 
 https://github.com/openshift/postgresql/blob/master/9.4/root/usr/share/container-scripts/postgresql/common.sh
@@ -1081,13 +1081,13 @@ echo -n 'myuserid' | base64
 
 You will paste these values into  your JSON secrets files for values.
 
-=== Tip 7: DNS configuration for Openshift development
+=== Tip 7: DNS configuration for OpenShift development
 
 As of OSE 3.3, the following DNS modifications are not typically necessary
 any longer....but I'm leaving them here as a reference....
 
 Luke Meyer from Redhat wrote an excellent blog on how
-to configure dnsmasq and Openshift, it is located here:
+to configure dnsmasq and OpenShift, it is located here:
 
 http://developers.redhat.com/blog/2015/11/19/dns-your-openshift-v3-cluster/
 
@@ -1095,9 +1095,9 @@ Key things included in this blog are:
 
  * configuring dhcp to include the local IP address in /etc/resolv.conf upon boot
  * configuring dnsmasq
- * configuring openshift dns to listen on another port
+ * configuring OpenShift dns to listen on another port
 
-In my dev setup, I have openshifts DNS listening on 127.0.0.1:8053.
+In my dev setup, I have OpenShifts DNS listening on 127.0.0.1:8053.
 I have my dnsmasq listening on the local IP address 192.168.0.109:53
 
 Therefore in my /etc/dhcp/dhclient.conf I have this config:
@@ -1174,7 +1174,7 @@ https://docs.openshift.org/latest/install_config/persistent_storage/pod_security
 
 === Tip 11: Backup Lifecycle
 
-Backups require the use of network storage like NFS in Openshift.
+Backups require the use of network storage like NFS in OpenShift.
 There is a required order of using NFS volumes in the manner
 we do database backups.
 
@@ -1185,13 +1185,13 @@ can NOT have a one-to-many relationship between PV and PVC(s).
 So, to do a database backup repeatably, you will need to following
 this general pattern:
 
- * as openshift admin user, create a unique PV (e.g. backup-pv-mydatabase)
+ * as OpenShift admin user, create a unique PV (e.g. backup-pv-mydatabase)
  * as a project user, create a unique PVC (e.g. backup-pvc-mydatabase)
  * reference the unique PVC within the backup-job template
  * execute the backup job template
  * as a project user, delete the job
  * as a project user, delete the pvc
- * as openshift admin user, delete the unique PV
+ * as OpenShift admin user, delete the unique PV
 
 This procedure will need to be scripted and executed by the devops team when
 performing a database backup.
@@ -1236,11 +1236,11 @@ match to the correct PV.
 
 === Tip 14: DNS host entry and DeploymentConfig
 
-If your openshift environment can not resolve your hostname via
-a DNS server (external to openshift!), you will get errors when trying
+If your OpenShift environment can not resolve your hostname via
+a DNS server (external to OpenShift!), you will get errors when trying
 to create a DeploymentConfig.  So, you can either install dnsmasq
-and reconfigure openshift for that, or, you can run a DNS server
-on another host and add the openshift host entry to that DNS server.  I
+and reconfigure OpenShift for that, or, you can run a DNS server
+on another host and add the OpenShift host entry to that DNS server.  I
 use the skybridge2 Docker container for this purpose.  You have
 to remember to adjust your /etc/resolv.conf to specify this new DNS
 server.
@@ -1255,7 +1255,7 @@ I typically set up Docker storage this way:
  * add VG=docker-vg to /etc/sysconfig/docker-storage-setup
  * run docker-storage-setup to use that new volume group
 
-Follow the instructions available link:https://docs.openshift.com/container-platform/3.4/install_config/install/host_preparation.html#configuring-docker-storage[on the main Openshift documentation page]
+Follow the instructions available link:https://docs.openshift.com/container-platform/3.4/install_config/install/host_preparation.html#configuring-docker-storage[on the main OpenShift documentation page]
 to better understand how to customize Docker storage according to your needs.
 
 == Legal Notices
