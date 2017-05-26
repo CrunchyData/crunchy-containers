@@ -208,13 +208,51 @@ see this for more details:
 
 http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting
 
+=== Examples
+
+
+For running the examples that require persistent volumes, you
+will need to run the following script:
+....
+cd $CCPROOT/examples/pv
+./create-pv.sh
+./create-pvc.sh
+....
+
+If you are wanting to run the examples on a Minishift instance
+you will need to create the PVs using hostPath as follows:
+....
+oc login -u system:admin
+./create-pv.sh hostpath
+oc login -u developer
+./create-pvc.sh
+....
+
+Additional steps are required to allow persistence to work
+on minishift including:
+....
+oc login -u system:admin
+oc edit scc restricted
+....
+
+Above, you will change runAsUser.Type strategy to RunAsAny.
+
+On the boot2docker instance running Minishift, you will need
+to set the host path permissions as follows:
+....
+chmod 777 /mnt/sda1/data
+....
+
+
+The NAMESPACE environment variable is set to indicate which OpenShift
+project you want various example objects to use.  This variable
+is set to *default* within the *examples/envvars.sh* script.  Set this
+to match your project configuration.
+
+See link:examples.asciidoc[here] to view the documentation showing various
+examples.
+
 == Kubernetes Environment
-
-Here are instructions for running examples on a pure Kubernetes cluster.
-
-Note, some of the examples assume an NFS file system for creating
-persistent volumes.  See above for details on setting NFS permissions and
-the use of *supplementalGroups* within pod specs.
 
 === Installation
 
@@ -225,6 +263,19 @@ See the following links for installation instructions:
  * https://github.com/Kubernetes/minikube
  * http://linoxide.com/containers/setup-kubernetes-kubeadm-centos/
  * https://kubernetes.io/docs/getting-started-guides/kubeadm/
+
+=== Examples
+
+The namespace is set for the examples within the *examples/envvars.sh* script
+and defaults to *default*.  Set this variable according to your
+project configuration.
+
+Note, some of the examples assume an NFS file system for creating
+persistent volumes.  See above for details on setting NFS permissions and
+the use of *supplementalGroups* within pod specs.
+
+Visit the link:examples.asciidoc[examples documentation] for different use cases
+and examples.
 
 ===  Tips
 
