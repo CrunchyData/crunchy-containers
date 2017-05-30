@@ -1,13 +1,13 @@
 = Ceph Setup
 
-this is sort of experimental in that I do not know enough about Ceph
+This is sort of experimental in that I do not know enough about Ceph
 to advise on this, but I was able to get this example working after
 some *effort*.
 
 == Ceph Host Setup
 
-for this test, I installed ceph on a centos
-host, I then connect to it from the RHEL ose host.
+For this test, I installed ceph on a centos
+host and then connect to it from the RHEL ose host.
 
 Here is the how-to that I followed when
 installing ceph on the centos host:
@@ -40,7 +40,7 @@ yum -y install ntp ntpdate ntp-doc
 yum -y install yum-plugin-priorities
 ....
 
-then as ceph user, for the host called *centos* we create
+Then as ceph user, for the host called *centos* we create
 a single node on the *centos* host:
 
 ....
@@ -69,7 +69,7 @@ ceph-deploy admin 192.168.0.109
 rbd ls
 ....
 
-the ceph.conf looks like:
+The ceph.conf looks like:
 
 ....
 [global]
@@ -118,7 +118,7 @@ priority=1
 
 == OSE Host Setup
 
-on the RHEL ose host (ceph client), I ran the following
+On the RHEL ose host (ceph client), I ran the following
 to test out a ceph mounted RBD (block device):
 
 ....

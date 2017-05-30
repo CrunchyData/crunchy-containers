@@ -2,8 +2,8 @@
 
 == Gluster Host Setup
 
-for this test, I installed gluster on a centos
-host, I then connect to it from the RHEL ose host.
+For this test, I installed gluster on a centos
+host and then connect to it from the RHEL ose host.
 
 Here is the how-to that I followed when
 installing gluster on the centos host:
@@ -11,7 +11,7 @@ installing gluster on the centos host:
 https://wiki.centos.org/HowTos/GlusterFSonCentOS
 https://wiki.centos.org/SpecialInterestGroup/Storage/gluster-Quickstart
 
-here is the list of commands on the centos box:
+Here is the list of commands on the centos box:
 
 ....
 wget -P /etc/yum.repos.d/ http://download.gluster.org/pub/gluster/glusterfs/LATEST/CentOS/glusterfs-epel.repo
@@ -46,7 +46,7 @@ chmod 777 brick
 
 == OSE Host Setup
 
-on the RHEL ose host, I installed the following:
+On the RHEL ose host, I installed the following:
 
 ....
 yum -y install glusterfs glusterfs-fuse

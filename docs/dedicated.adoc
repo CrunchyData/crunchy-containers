@@ -124,7 +124,7 @@ executed when the database is first created.
    case of *set*, it means the container is started within a StatefulSet
    in a Kubernetes cluster.
  * PG_MASTER_USER - the value to use for the user ID created as
-   master.  The *master* user has super user priviledges.
+   master.  The *master* user has super user privileges.
  * PG_MASTER_PASSWORD - the password for the PG_MASTER_USER database user
  * PG_USER - the value to use for the user ID created as a normal user.
    This user is created as part of the setup.sql script upon database
@@ -141,7 +141,7 @@ executed when the database is first created.
    option when initdb is executed at initialization, if not set, the
    default is to *not* enable data checksums
  * XLOGDIR - if set, initdb will use the specified directory for WAL
- * ARCHIVE_MODE - if set to *on*, will enable continious WAL archiving
+ * ARCHIVE_MODE - if set to *on*, will enable continuous WAL archiving
    by setting the value within the postgresql.conf file *archive_mode*
    setting, if not set, the default is *off*
  * ARCHIVE_TIMEOUT - if set to a number (in seconds) , will specify
@@ -165,7 +165,7 @@ The following features are supported by the crunchy-postgres container:
  * ability to set the database locale
  * ability to specify a synchronous slave application_name
  * ability to specify a recovery using PITR and WAL files, see
-   pitr.asciidoc for a detailed design explaination of how PITR
+   pitr.adoc for a detailed design explanation of how PITR
    is implemented within the container suite
 
 *Locale Support*
