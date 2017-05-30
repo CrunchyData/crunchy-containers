@@ -1374,6 +1374,38 @@ of environment variables read by the vacuum job include:
  * VAC_VERBOSE - when set to true adds the VERBOSE parameter to the VACUUM command
  * VAC_FREEZE - when set to true adds the FREEZE parameter to the VACUUM command
 
+=== crunchy-dba - cron scheduler for simple DBA tasks
+
+==== Kubernetes
+
+The crunchy-dba container implements a cron scheduler. The purpose of the crunchy-dba
+container is to offer a way to perform simple DBA tasks that occur on some form of
+schedule such as backup jobs or running a vacuum on a single Postgres database container.
+Both of these examples are provided as scripts.
+
+You can either run the crunchy-dba container as a single pod or include the container
+within a database pod.
+
+The crunchy-dba container makes use of a Service Account to perform the startup of
+scheduled jobs. The Kube Job type is used to execute the scheduled jobs with a Restart
+policy of Never.
+
+The script to schedule vacuum on a regular schedule is executed through the following
+commands:
+....
+cd $CCPROOT/examples/kube/dba
+./run-vac.sh
+....
+
+To run the script for scheduled backups, run the following in the same directory:
+
+....
+./run-backup.sh
+....
+
+Individual parameters for both can be modified within their respective JSON files;
+please see link:containers.asciidoc for a full list of what can be modified.
+
 === custom-setup - Custom setup.sql
 
 ==== Docker
