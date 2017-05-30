@@ -40,25 +40,7 @@ project worth taking a look at that uses the containers found
 in this repo and provides a higher level automation.
 That project is link:https://github.com/crunchydata/postgres-operator[PostgresOperator]
 
-=== Build Prerequisites
-
-The Crunchy containers have been tested on Centos 7, RHEL 7, Openshift 3.4,
-Kubernetes 1.5.3, and Docker 1.12
-
-1) Installing / configuring Docker
-
-On an EL7 system, Docker can be installed with the following commands:
-
- * sudo yum -y install docker
- * sudo groupadd docker
- * sudo usermod -a -G docker ${USER}
- * sudo systemctl enable docker;systemctl start docker
- * TIP:  remember to log out $USER for the docker group to take effect!
-
-2) Building the Containers (Optional)
-
-If you don't want to pull the containers from link:https://hub.docker.com/u/crunchydata/[DockerHub], you can perform a build of
-all the containers locally on your development host.
+=== Installation
 
 Complete build and install documentation is found here: link:docs/install.asciidoc[Install Docs].  The provided Dockerfiles build the containers
 on a Centos 7 base image and use the community PostgreSQL RPMs.
@@ -69,22 +51,8 @@ for more details at http://www.crunchydata.com.
 
 === Examples
 
-Various examples are provided in the /examples directory and described
-in the documentation for running Docker, Kubernetes, and Openshift examples..
+Various examples are provided in link:docs/examples.adoc[the Examples documentation] for running Docker,
+Kubernetes, and OpenShift environments.
 
-See the following link for documentation on the Docker
-examples: link:docs/docker.asciidoc[docker-examples]
-
-To run the examples, you will need to set the CCP_IMAGE_TAG
-environment variable which indicates which version of the
-container you will pull down and execute, for example:
-....
-export CCPROOT=$HOME/crunchy-containers
-export CCP_IMAGE_TAG=centos7-9.5-1.4.1
-....
-
-The CCPROOT is the location of where you cloned the containers github
-repository.
-
-The CCP_IMAGE_TAG is the version of the container you want to test
-with.  That version is out on Dockerhub.
+You will need to set up your environment as per the link:docs/install.adoc[Install documentation] in order to
+execute the examples.
