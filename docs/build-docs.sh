@@ -16,33 +16,13 @@
 asciidoc \
 -b bootstrap \
 -f ./demo.conf \
--o ./htmldoc/docker.html \
+-o ./htmldoc/examples.html \
 -a toc2 \
 -a footer \
 -a toc-placement=right \
-./docker.asciidoc
+./examples.adoc
 
-asciidoctor-pdf ./docker.asciidoc --out-file ./pdf/docker.pdf
-
-asciidoc \
--b bootstrap \
--f ./demo.conf \
--o ./htmldoc/openshift.html \
--a toc2 \
--a toc-placement=right \
-./openshift.asciidoc
-
-asciidoctor-pdf ./openshift.asciidoc --out-file ./pdf/openshift.pdf
-
-asciidoc \
--b bootstrap \
--f ./demo.conf \
--o ./htmldoc/install.html \
--a toc2 \
--a toc-placement=right \
-./install.asciidoc
-
-asciidoctor-pdf ./dedicated.asciidoc --out-file ./pdf/dedicated.pdf
+asciidoctor-pdf ./examples.adoc --out-file ./pdf/examples.pdf
 
 asciidoc \
 -b bootstrap \
@@ -50,10 +30,19 @@ asciidoc \
 -o ./htmldoc/dedicated.html \
 -a toc2 \
 -a toc-placement=right \
-./dedicated.asciidoc
+./dedicated.adoc
 
+asciidoctor-pdf ./dedicated.adoc --out-file ./pdf/dedicated.pdf
 
-asciidoctor-pdf ./install.asciidoc --out-file ./pdf/install.pdf
+asciidoc \
+-b bootstrap \
+-f ./demo.conf \
+-o ./htmldoc/install.html \
+-a toc2 \
+-a toc-placement=right \
+./install.adoc
+
+asciidoctor-pdf ./install.adoc --out-file ./pdf/install.pdf
 
 asciidoc \
 -b bootstrap \
@@ -61,9 +50,9 @@ asciidoc \
 -o ./htmldoc/metrics.html \
 -a toc2 \
 -a toc-placement=right \
-./metrics.asciidoc
+./metrics.adoc
 
-asciidoctor-pdf ./metrics.asciidoc --out-file ./pdf/metrics.pdf
+asciidoctor-pdf ./metrics.adoc --out-file ./pdf/metrics.pdf
 
 asciidoc \
 -b bootstrap \
@@ -71,19 +60,9 @@ asciidoc \
 -o ./htmldoc/containers.html \
 -a toc2 \
 -a toc-placement=right \
-./containers.asciidoc
+./containers.adoc
 
-asciidoctor-pdf ./containers.asciidoc --out-file ./pdf/containers.pdf
-
-asciidoc \
--b bootstrap \
--f ./demo.conf \
--o ./htmldoc/kube.html \
--a toc2 \
--a toc-placement=right \
-./kube.asciidoc
-
-asciidoctor-pdf ./kube.asciidoc --out-file ./pdf/kube.pdf
+asciidoctor-pdf ./containers.adoc --out-file ./pdf/containers.pdf
 
 asciidoc \
 -b bootstrap \
@@ -91,6 +70,6 @@ asciidoc \
 -o ./htmldoc/pitr.html \
 -a toc2 \
 -a toc-placement=right \
-./pitr.asciidoc
+./pitr.adoc
 
-asciidoctor-pdf ./pitr.asciidoc --out-file ./pdf/pitr.pdf
+asciidoctor-pdf ./pitr.adoc --out-file ./pdf/pitr.pdf

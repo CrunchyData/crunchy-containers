@@ -144,7 +144,7 @@ OpenShift Origin up and running is found here:
 https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md
 
 For examples and tips on how to run OpenShift Enterprise & Origin, please look
-at the examples.asciidoc documentation.
+at the examples.adoc documentation.
 
 === Configure NFS for Persistence
 
@@ -249,7 +249,7 @@ project you want various example objects to use.  This variable
 is set to *default* within the *examples/envvars.sh* script.  Set this
 to match your project configuration.
 
-See link:examples.asciidoc[here] to view the documentation showing various
+See link:examples.adoc[here] to view the documentation showing various
 examples.
 
 == Kubernetes Environment
@@ -274,7 +274,7 @@ Note, some of the examples assume an NFS file system for creating
 persistent volumes.  See above for details on setting NFS permissions and
 the use of *supplementalGroups* within pod specs.
 
-Visit the link:examples.asciidoc[examples documentation] for different use cases
+Visit the link:examples.adoc[examples documentation] for different use cases
 and examples.
 
 ===  Tips
