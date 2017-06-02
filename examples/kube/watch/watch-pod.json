@@ -19,14 +19,17 @@
                 "name": "SLEEP_TIME",
                 "value": "20"
             }, {
+                "name": "MAX_FAILURES",
+                "value": "4"
+            }, {
                 "name": "SLAVE_TO_TRIGGER_LABEL",
-                "value": "replica-1b"
+                "value": "ms-replica-2"
             }, {
                 "name": "PG_MASTER_SERVICE",
-                "value": "master-1"
+                "value": "ms-master"
             }, {
                 "name": "PG_SLAVE_SERVICE",
-                "value": "replica-1"
+                "value": "ms-replica"
             }, {
                 "name": "PG_MASTER_PORT",
                 "value": "5432"

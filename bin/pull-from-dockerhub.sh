@@ -29,5 +29,5 @@ docker pull crunchydata/crunchy-backup:$CCP_IMAGE_TAG
 docker pull crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 docker pull crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG
 docker pull crunchydata/crunchy-pgadmin4:$CCP_IMAGE_TAG
-docker pull crunchydata/crunchy-dba:$CCP_IMAGE_TAG
-docker pull crunchydata/crunchy-vacuum:$CCP_IMAGE_TAG
+#docker pull crunchydata/crunchy-dba:$CCP_IMAGE_TAG
+#docker pull crunchydata/crunchy-vacuum:$CCP_IMAGE_TAG
