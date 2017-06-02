@@ -40,8 +40,12 @@ fi
 if [ ! -v WAIT_TIME ]; then
 	WAIT_TIME=40
 fi
+if [ ! -v MAX_FAILURES ]; then
+	MAX_FAILURES=3
+fi
 echo "SLEEP_TIME is set to " $SLEEP_TIME
 echo "WAIT_TIME is set to " $WAIT_TIME
+echo "MAX_FAILURES is set to " $MAX_FAILURES
 
 export PG_MASTER_SERVICE=$PG_MASTER_SERVICE
 export PG_SLAVE_SERVICE=$PG_SLAVE_SERVICE
@@ -181,6 +185,7 @@ function ose_failover() {
 	echo "failover completed @ " `date`
 }
 
+FAILURES=0
 while true; do 
 	if [ "$shutdownrequested" = true ] ; then
 		echo "doing shutdown..."
@@ -193,6 +198,11 @@ while true; do
 		echo "Successfully reached master @ " `date`
 	else
 		echo "Could not reach master @ " `date`
+		FAILURES=$[$FAILURES+1]
+		if [[ $FAILURES -lt $MAX_FAILURES ]]; then
+			continue
+		fi
+		echo "Maximum failures reached"
 		failover
 	fi
 done
