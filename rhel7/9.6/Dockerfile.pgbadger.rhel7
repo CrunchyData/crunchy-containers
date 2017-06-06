@@ -4,8 +4,8 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/pgbadger" \
         vendor="crunchy data" \
-	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.3" \
+      	PostgresVersion="9.6" \
+      	PostgresFullVersion="9.6.3" \
         version="7.2" \
         release="1.4.1" \
         build-date="2017-05-11" \
@@ -29,7 +29,7 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 RUN yum -y update && yum -y install hostname \
 	pgbadger \
  && yum clean all -y \
- && groupadd -g 26 postgres && useradd -g 26 -u 26 postgres 
+ && groupadd -g 26 postgres && useradd -g 26 -u 26 postgres
 
 # set up cpm directory
 RUN mkdir -p /opt/cpm/bin
@@ -46,4 +46,3 @@ USER postgres
 VOLUME ["/pgdata"]
 
 CMD ["/opt/cpm/bin/start-pgbadger.sh"]
-

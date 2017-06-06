@@ -1,8 +1,19 @@
 FROM centos:7
 
-LABEL Release="1.4" Vendor="Crunchy Data Solutions" \
-	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.7"
+LABEL name="crunchydata/backup" \
+        vendor="crunchy data" \
+      	PostgresRelease="9.5" \
+      	PostgresFullRelease="9.5.7" \
+        version="7.2" \
+        release="1.4.1" \
+        build-date="2017-05-11" \
+        url="https://crunchydata.com" \
+        summary="crunchy data backup container" \
+        description="backup container" \
+        io.k8s.description="backup container" \
+        io.k8s.display-name="Crunchy backup container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
 
 ENV PGVERSION="9.5" \
         PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"

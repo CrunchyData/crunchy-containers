@@ -19,7 +19,7 @@ LABEL name="crunchydata/postgres" \
 
 COPY docs/backrestrestore/help.md /help.1
 
-ENV PGVERSION="9.5" 
+ENV PGVERSION="9.5"
 
 # Crunchy Postgres repo
 ADD conf/CRUNCHY-GPG-KEY.public  /

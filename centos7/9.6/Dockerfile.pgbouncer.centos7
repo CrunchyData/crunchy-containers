@@ -1,8 +1,19 @@
 FROM centos:7
 
-LABEL Release="1.4" Vendor="Crunchy Data Solutions" \
-	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.3"
+LABEL name="crunchydata/pgbouncer" \
+        vendor="crunchy data" \
+        version="7.2" \
+      	PostgresVersion="9.6" \
+      	PostgresFullVersion="9.6.3" \
+        release="1.4.1" \
+        build-date="2017-05-11" \
+        url="https://crunchydata.com" \
+        summary="crunchy data pgbouncer container" \
+        description="pgbouncer container" \
+        io.k8s.description="pgbouncer container" \
+        io.k8s.display-name="Crunchy pgbouncer container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
 
 ENV PGVERSION="9.6" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
 

@@ -1,8 +1,19 @@
 FROM centos:7
 
-LABEL Release="1.4" Vendor="Crunchy Data Solutions" \
-	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.7"
+LABEL name="crunchydata/pgbouncer" \
+				PostgresVersion="9.5" \
+				PostgresFullVersion="9.5.7" \
+        vendor="crunchy data" \
+        version="7.2" \
+        release="1.4.1" \
+        build-date="2017-05-11" \
+        url="https://crunchydata.com" \
+        summary="crunchy data pgbouncer container" \
+        description="pgbouncer container" \
+        io.k8s.description="pgbouncer container" \
+        io.k8s.display-name="Crunchy pgbouncer container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
 
 ENV PGVERSION="9.5" PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
 
@@ -34,4 +45,3 @@ RUN chown -R daemon:daemon /opt/cpm/bin
 USER pgbouncer
 
 CMD ["/opt/cpm/bin/startpgbouncer.sh"]
-
