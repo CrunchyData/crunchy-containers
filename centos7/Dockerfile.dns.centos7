@@ -1,6 +1,17 @@
 FROM centos:7
 
-LABEL Release="1.4.1" Vendor="Crunchy Data Solutions"
+LABEL name="crunchydata/dns" \
+        vendor="crunchy data" \
+        version="7.2" \
+        release="1.4.1" \
+        build-date="2017-05-11" \
+        url="https://crunchydata.com" \
+        summary="crunchy data dns container" \
+        description="dns container" \
+        io.k8s.description="dns container" \
+        io.k8s.display-name="Crunchy dns container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
 
 #RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum -y update && yum -y install procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
@@ -20,4 +31,3 @@ EXPOSE 8600
 VOLUME ["consuldata"]
 
 CMD ["/opt/cpm/bin/start-dnsbridge.sh"]
-

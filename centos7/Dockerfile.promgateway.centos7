@@ -1,10 +1,21 @@
 FROM centos:7
 
-LABEL Release="1.4.1" Vendor="Crunchy Data Solutions"
+LABEL name="crunchydata/promgateway" \
+        vendor="crunchy data" \
+        version="7.2" \
+        release="1.4.1" \
+        build-date="2017-05-11" \
+        url="https://crunchydata.com" \
+        summary="crunchy data promgateway container" \
+        description="promgateway container" \
+        io.k8s.description="promgateway container" \
+        io.k8s.display-name="Crunchy promgateway container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
 
 RUN yum -y update && yum -y install procps-ng openssh-clients && yum clean all -y
 
-RUN mkdir -p /opt/cpm/bin 
+RUN mkdir -p /opt/cpm/bin
 RUN chown -R daemon:daemon /opt/cpm
 
 # open up the prometheus pushgateway port
@@ -16,4 +27,3 @@ ADD bin/promgateway /opt/cpm/bin
 USER daemon
 
 CMD ["/opt/cpm/bin/start-promgateway.sh"]
-
