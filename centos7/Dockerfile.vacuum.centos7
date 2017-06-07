@@ -1,6 +1,17 @@
 FROM centos:7
 
-LABEL Release="1.4.1" Vendor="Crunchy Data Solutions"
+LABEL name="crunchydata/vacuum" \
+        vendor="crunchy data" \
+        version="7.2" \
+        release="1.4.1" \
+        build-date="2017-05-11" \
+        url="https://crunchydata.com" \
+        summary="crunchy data vacuum container" \
+        description="vacuum container" \
+        io.k8s.description="vacuum container" \
+        io.k8s.display-name="Crunchy vacuum container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
 
 RUN yum -y update && yum -y install procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
 
@@ -13,4 +24,3 @@ ADD bin/vacuum /opt/cpm/bin
 USER root
 
 CMD ["/opt/cpm/bin/start-vacuum.sh"]
-

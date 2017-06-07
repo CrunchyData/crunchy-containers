@@ -1,6 +1,17 @@
 FROM centos:7
 
-LABEL Release="1.4.1" Vendor="Crunchy Data Solutions"
+LABEL name="crunchydata/grafana" \
+        vendor="crunchy data" \
+        version="7.2" \
+        release="1.4.1" \
+        build-date="2017-05-11" \
+        url="https://crunchydata.com" \
+        summary="crunchy data grafana container" \
+        description="grafana container" \
+        io.k8s.description="grafana container" \
+        io.k8s.display-name="Crunchy grafana container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
 
 RUN yum -y update && yum -y install procps-ng openssh-clients  hostname   && yum clean all -y
 
@@ -18,4 +29,3 @@ USER daemon
 VOLUME ["/data"]
 
 CMD ["/opt/cpm/bin/start-grafana.sh"]
-

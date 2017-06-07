@@ -1,6 +1,17 @@
 FROM centos:7
 
-LABEL Release="1.4.1" Vendor="Crunchy Data Solutions"
+LABEL name="crunchydata/dba" \
+	vendor="crunchy data" \
+	version="7.2" \
+	release="1.4.1" \
+	build-date="2017-05-11" \
+	url="https://crunchydata.com" \
+	summary="crunchy data dba container" \
+	description="DBA container" \
+	io.k8s.description="DBA container" \
+	io.k8s.display-name="Crunchy DBA container" \
+	io.openshift.expose-services="" \
+	io.openshift.tags="crunchy,database"
 
 RUN yum -y update && yum -y install psmisc procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
 
@@ -15,4 +26,3 @@ ADD conf/dba /opt/cpm/conf
 USER root
 
 CMD ["/opt/cpm/bin/start-dba.sh"]
-

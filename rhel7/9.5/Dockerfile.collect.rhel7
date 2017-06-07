@@ -3,8 +3,8 @@ FROM rhel7.2
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/collect" \
-	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.7" \
+				PostgresVersion="9.5" \
+				PostgresFullVersion="9.5.7" \
         vendor="crunchy data" \
         version="7.2" \
         release="1.4.1" \
@@ -44,4 +44,3 @@ RUN chown -R postgres:postgres /opt/cpm/bin
 USER postgres
 
 ENTRYPOINT ["/opt/cpm/bin/collectserver"]
-

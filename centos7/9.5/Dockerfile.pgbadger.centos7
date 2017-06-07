@@ -1,12 +1,23 @@
 FROM centos:7
 
-LABEL Release="1.4" Vendor="Crunchy Data Solutions" \
-	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.7"
+LABEL name="crunchydata/pgbadger" \
+				PostgresVersion="9.5" \
+				PostgresFullVersion="9.5.7" \
+        vendor="crunchy data" \
+        version="7.2" \
+        release="1.4.1" \
+        build-date="2017-05-11" \
+        url="https://crunchydata.com" \
+        summary="crunchy data pgbadger container" \
+        description="pgbadger container" \
+        io.k8s.description="pgbadger container" \
+        io.k8s.display-name="Crunchy pgbadger container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
 
 ENV PGVERSION="9.5" PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
 
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO} && groupadd -g 26 postgres && useradd -g 26 -u 26 postgres 
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO} && groupadd -g 26 postgres && useradd -g 26 -u 26 postgres
 
 RUN yum -y update && yum -y install pgbadger hostname && yum clean all -y
 
@@ -24,4 +35,3 @@ USER postgres
 VOLUME ["/pgdata"]
 
 CMD ["/opt/cpm/bin/start-pgbadger.sh"]
-
