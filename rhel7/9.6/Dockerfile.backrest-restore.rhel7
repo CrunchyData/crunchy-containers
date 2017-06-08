@@ -36,7 +36,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  && yum -y clean all
 
 RUN yum -y install postgresql96-server  \
-        pgbackrest \
+        crunchy-backrest \
  && yum -y clean all
 
 ENV	PGROOT="/usr/pgsql-${PGVERSION}"

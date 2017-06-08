@@ -11,7 +11,7 @@ ADD conf/crunchypg93.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN yum -y install gettext libxslt libxml2 procps-ng \
-pgpool-II* postgresql9?  openssh-clients hostname && yum clean all -y
+pgpool-II* postgresql93  openssh-clients hostname && yum clean all -y
 
 # set up cpm directory
 #

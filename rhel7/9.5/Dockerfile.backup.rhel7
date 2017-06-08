@@ -31,8 +31,8 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 
 # install deps
 RUN yum -y update && yum -y install nss_wrapper gettext procps-ng \
-postgresql9?-server  \
-postgresql9? \
+postgresql95-server  \
+postgresql95 \
 openssh-clients \
 hostname bind-utils \
  && yum clean all -y
