@@ -12,10 +12,10 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 
 #RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum -y install rsync nss_wrapper gettext libxslt libxml2 procps-ng \
-postgresql9?-server  \
-postgresql9?-libs  \
-postgresql9?-contrib  \
-postgresql9? \
+postgresql93-server  \
+postgresql93-libs  \
+postgresql93-contrib  \
+postgresql93 \
 openssh-clients \
 hostname bind-utils \
 && yum -y reinstall glibc-common  && yum clean all -y

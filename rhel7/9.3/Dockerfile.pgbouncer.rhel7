@@ -15,7 +15,7 @@ ADD conf/pgbouncer/docker-rhel.repo /etc/yum.repos.d/
 
 RUN yum -y install docker-engine procps-ng \
 pgbouncer \
-postgresql9? \
+postgresql93 \
 openssh-clients \
 hostname  \
  && yum clean all -y

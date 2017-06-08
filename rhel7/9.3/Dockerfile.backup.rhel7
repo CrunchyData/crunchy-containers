@@ -12,7 +12,7 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 
 # install deps
 RUN yum -y install libxslt libxml2 procps-ng \
-postgresql9?-server   postgresql9?  openssh-clients  hostname bind-utils \
+postgresql93-server   postgresql93  openssh-clients  hostname bind-utils \
  && yum clean all -y
 
 RUN mkdir -p /opt/cpm/bin /pgdata

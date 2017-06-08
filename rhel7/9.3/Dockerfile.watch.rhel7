@@ -14,7 +14,7 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 ADD conf/watch/docker-rhel.repo /etc/yum.repos.d/
 
 RUN yum -y install docker-engine curl rsync libxslt libxml2 procps-ng \
-postgresql9?  openssh-clients atomic-openshift-clients hostname bind-utils \
+postgresql93  openssh-clients atomic-openshift-clients hostname bind-utils \
  && yum clean all -y
 
 # set up cpm directory
