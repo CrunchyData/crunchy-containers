@@ -20,7 +20,7 @@ ENV PGVERSION="9.5" PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 RUN yum -y update && yum -y install gettext libxslt libxml2 procps-ng \
-postgresql9?-server \
+postgresql95-server \
 openssh-clients \
 hostname  \
  && yum clean all -y
