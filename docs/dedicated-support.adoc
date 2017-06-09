@@ -1,0 +1,152 @@
+= Crunchy Support for Openshift Dedicated Customers
+Crunchy Data Solutions, Inc.
+v1.4.1, {docdate}
+:title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
+
+== Supported Configurations
+
+.Supported PostgreSQL Versions
+[width="60%",cols="2m,2m,2m",frame="topbot",options="header"]
+|==========================
+|Postgres Version|Operating System| CPU Arch
+|9.5       |RHEL 7 | x86_64  
+|9.5 (w/postgis)        |RHEL 7   | x86_64
+|9.6       |RHEL 7   | x86_64
+|9.6 (w/postgis)       |RHEL 7   | x86_64
+|==========================
+
+.Supported Openshift Versions
+[width="90%",cols="2m,2m,2m",frame="topbot",options="header"]
+|==========================
+|Openshift Version|Operating System| CPU Arch
+|3.4       |RHEL 7  | x86_64 
+|3.5       |RHEL 7  | x86_64 
+|==========================
+
+=== Supported PostgreSQL Authentication
+
+The PostgreSQL md5 user authentication method is supported.
+
+=== Supported PostgreSQL Database Size
+
+PostgresSQL database sizes up to 1 TB are supported.
+
+=== Supported Openshift Persistence Technologies
+
+The Crunchy Container templates will work with any Openshift supported
+persistence technology provided that the template is modified to support
+either the Security Context *fsGroup* or *supplementalGroups* attribute.
+This modification will need to be made by a Redhat administrator
+when the Crunchy templates are used for a given customer deployment.
+
+=== Supported Container Customizations
+
+Currently Crunchy doesn't offer support for modified versions
+of the Crunchy Containers or the Crunchy provided Openshift
+templates. 
+
+Use of the currently defined Openshift Template variables is supported.
+
+=== Release Life Cycle
+
+Crunchy provides new container updates in these cases:
+
+ * new features are added
+ * bugs are found and require a fix
+ * security vulnerabilities are found
+ * new versions of Postgres are released
+
+In these cases, Crunchy builds new containers and makes them
+available on a Crunchy Docker Registry that is accessible only
+to customers or vendors with special access to that registry.
+
+Email announcements are created and sent to customers when a new
+release is made available.
+
+The containers are built on a RHEL 7 base Docker image.  Images
+are built that include either the PostgreSQL 9.5 version or the
+PostgreSQL 9.6 version.  Customers can choose which version of 
+PostgreSQL they want to run by using the specific tagged version
+of the container, for example, the Crunchy PostgreSQL 9.5 container
+has a tag of *rhel7-9.5-1.4.1* which means this is a RHEL based
+container that includes the PostgreSQL version 9.5 components and
+is at version 1.4.1 of the Crunchy code base.
+
+=== Crunchy Container Images for Openshift Dedicated
+
+.Crunchy Containers
+[width="90%",cols="2m",frame="topbot",options="header"]
+|==========================
+|Container Name 
+|crunchy-postgres:rhel7-9.5-1.4.1
+|crunchy-postgres:rhel7-9.6-1.4.1
+|crunchy-postgres-gis:rhel7-9.5-1.4.1
+|crunchy-postgres-gis:rhel7-9.6-1.4.1
+|crunchy-pgadmin4:rhel7-9.5-1.4.1
+|crunchy-pgadmin4:rhel7-9.6-1.4.1
+|crunchy-backup:rhel7-9.5-1.4.1
+|crunchy-backup:rhel7-9.6-1.4.1
+|==========================
+
+=== Supported Configurations of the Crunchy Containers
+
+The following container deployments are supported by Crunchy in
+an Openshift Dedicated installation:
+
+==== Single PostgreSQL Master
+
+This is a single PostgreSQL container running as a *master*.  This
+is deployed using the *master* template.  This will deploy
+a PostgreSQL database that users can access and read/write data
+to.  This configuration is the most simple deployment example.
+
+Each master database writes to a unique PVC as specified in the 
+provided Openshift template.
+
+==== PostgreSQL Replica
+
+Customers might require a read-only PostgreSQL replica database.  This
+use case lets customers deploy a single PostgreSQL container
+that acts as a replica to a currently running PostgreSQL master containers.
+
+Each replica writes its data to a unique PVC that is specified in the
+Openshift template that is provided.
+
+As more replicas are required, they can be deployed one-by-one by a
+customer.  When dynamic storage is supported by Openshift Dedicated,
+more sophisticated deployment models will be made possible.
+
+==== PostgreSQL Backup
+
+A full database backup is supported using the Crunchy Backup container
+and provided template.  This template when executed will create a
+unique full database backup using the PostgreSQL *pg_basebackup* utility.
+The backup will be written to a unique PVC that will hold the backup
+files.  The Backup is run as a Job and when the backup is completed
+the Job and Pod are left in a completed state.
+
+==== pgadmin4 Container
+
+Users that want a PostgreSQL aware GUI interface to their database
+containers can deploy a pgadmin4 container.  Once deployed, the users
+will need to enter connection details about their database containers
+in order to access them via the pgadmin4 user interface.
+
+=== Support Life Cycle
+
+==== Phase 1: Full Support
+
+Crunchy will provide full support for Crunchy Containers deployed within
+the Redhat Openshift Dedicated environment to valid subscribers for the
+duration of their subscription.  This level of support applies to any
+version of the Crunchy Container Suite for as long as the customer
+requires support.
+
+
+== Legal Notices
+
+Copyright © 2017 Crunchy Data Solutions, Inc.
+
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
