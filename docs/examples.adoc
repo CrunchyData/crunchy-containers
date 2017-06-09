@@ -2427,8 +2427,7 @@ which corresponds to the *fsGroup* value.
 
 == Docker - Tips
 
-[discrete]
-==== Send a signal to PostgreSQL
+*Send a signal to PostgreSQL*
 
 First, find the PID of the postmaster:
 
@@ -2444,8 +2443,7 @@ docker exec -it master kill -SIGTERM 22
 
 == OpenShift - Tips
 
-[discrete]
-==== Find PostgreSQL passwords
+*Find PostgreSQL passwords*
 
 The passwords used for the PostgreSQL user accounts are generated
 by the OpenShift 'process' command.  To inspect what value was
@@ -2461,8 +2459,7 @@ Look for the values of the environment variables:
  *  PG_PASSWORD
  *  PG_DATABASE
 
-[discrete]
-==== Password management
+*Password management*
 
 Remember that if you do a database restore, you will get
 whatever user IDs and passwords that were saved in the
@@ -2484,8 +2481,7 @@ to better support password management:
 oc env dc/pg-master-rc PG_MASTER_PASSWORD=foo PG_MASTER=user1
 ....
 
-[discrete]
-==== NFS Setup
+*NFS Setup*
 
 To control the permissions of the NFS file system
 certain examples make use of the *supplementalGroups* security context
@@ -2518,8 +2514,7 @@ would use the fsGroup setting for the AWS file system.  Check out
 this link for details:
 https://docs.openshift.org/latest/install_config/persistent_storage/pod_security_context.html
 
-[discrete]
-==== Examine backup job log
+*Examine backup job log*
 
 Database backups are implemented as a Kubernetes Job.  A Job is meant to run one time only
 and not be restarted by Kubernetes.  To view jobs in OpenShift you enter:
@@ -2536,8 +2531,7 @@ output as follows:
 oc logs backupjob-pxh2o
 ....
 
-[discrete]
-==== Backup lifecycle
+*Backup lifecycle*
 
 Backups require the use of network storage like NFS in OpenShift.
 There is a required order of using NFS volumes in the manner
@@ -2561,8 +2555,7 @@ this general pattern:
 This procedure will need to be scripted and executed by the devops team when
 performing a database backup.
 
-[discrete]
-==== Restore lifecycle
+*Restore lifecycle*
 
 To perform a database restore, we do the following:
 
@@ -2586,8 +2579,7 @@ occur since this might be a large amount of data and the volumes
 might be on slow networks. You can view the logs of the database pod
 to measure the copy progress.
 
-[discrete]
-==== Log aggregation
+*Log aggregation*
 
 OpenShift can be configured to include the EFK stack for log aggregation.
 OpenShift Administrators can configure the EFK stack as documented
@@ -2595,8 +2587,7 @@ here:
 
 https://docs.openshift.com/enterprise/3.1/install_config/aggregate_logging.html
 
-[discrete]
-==== nss_wrapper
+*nss_wrapper*
 
 If an OpenShift deployment requires that random generated UIDs be
 supported by containers, the Crunchy containers can be modified
@@ -2606,8 +2597,7 @@ the postgres user:
 
 https://github.com/openshift/postgresql/blob/master/9.4/root/usr/share/container-scripts/postgresql/common.sh
 
-[discrete]
-==== DNS configuration
+*DNS configuration*
 
 As of OSE 3.3, the following DNS modifications are not typically necessary
 any longer....but I'm leaving them here as a reference....
@@ -2635,8 +2625,7 @@ prepend domain-name-servers 192.168.0.109;
 If you don't have your DNS configured correctly, replication controllers
 and deployment configs basically will not work.
 
-[discrete]
-==== DNS host entry
+*DNS host entry*
 
 If your OpenShift environment can not resolve your hostname via
 a DNS server (external to OpenShift!), you will get errors when trying
@@ -2647,8 +2636,7 @@ use the skybridge2 Docker container for this purpose.  You have
 to remember to adjust your /etc/resolv.conf to specify this new DNS
 server.
 
-[discrete]
-==== System policies for PV creation/listing
+*System policies for PV creation/listing*
 
 For my testing, I wanted to allow the *system* user to be able
 to create and list persistent volumes, as of OSE 3.3, I had to
@@ -2663,8 +2651,7 @@ oc describe clusterPolicyBindings :default
 oadm policy add-cluster-role-to-user cluster-admin system
 ....
 
-[discrete]
-==== Persistent volume matching
+*Persistent volume matching*
 
 Restoring a database from an NFS backup requires the building
 of a PV which maps to the NFS backup archive path.  For example,
@@ -2677,8 +2664,7 @@ way, the related PVC can find the right PV to map to and not some other
 PV.  In the PVC, we specify the same "label" which lets Kubernetes
 match to the correct PV.
 
-[discrete]
-==== anyuid permissions
+*anyuid permissions*
 
 For my testing, I created a user named *test* on OSE, then
 I ran the following command to grant it permission to use the *anyuid* SCC:
@@ -2691,6 +2677,3 @@ This says that any authenticate user can run with the anyuid SCC which lets
 them create PVCs and use the *fsGroup* setting for the Postgres containers to
 work using NFS.  There is most likely a smarter and more precise way to grant
 this permission but this is one suggested process.
-
-[discrete]
-==== deploymentconfig
