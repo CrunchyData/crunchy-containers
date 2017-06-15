@@ -16,9 +16,9 @@
 function trap_sigterm() {
 	echo "doing trap logic..." >> $PGDATA/trap.output
 
-	# Clean shutdowns begin here
+	# Clean shutdowns begin here (force fast mode in case of PostgreSQL < 9.5)
 	echo "Clean shut-down of postgres..."
-	pg_ctl -w -D $PGDATA stop
+	pg_ctl -w -D $PGDATA -m fast stop
 
 	# Unclean shutdowns begin here (if all else fails)
 	if [ -f $PGDATA/postmaster.pid ]; then
