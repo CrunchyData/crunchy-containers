@@ -1,6 +1,6 @@
 = Installation Guide - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-:toc:
+:toc: left
 v1.4.1, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
