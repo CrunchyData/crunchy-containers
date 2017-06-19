@@ -1,11 +1,11 @@
-= Openshift Dedicated Examples - Crunchy Containers for PostgreSQL
+= OpenShift Dedicated Examples - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
 v1.4.1, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
-== Openshift Dedicated Environment
+== OpenShift Dedicated Environment
 
-Here are instructions for running examples on an Openshift 3.4 Dedicated
+Here are instructions for running examples on an OpenShift 3.4 Dedicated
 environment.  For Dedicated, we have built a set of templates
 that can be installed into a Dedicated instance to help automate
 the creation of Crunchy Container Suite containers.
@@ -20,7 +20,7 @@ A defined set of templates are supported including:
 
 Each template is described below.
 
-There are some limitations presented by Openshift 3.4 in the way
+There are some limitations presented by OpenShift 3.4 in the way
 in which we can scale up the replica databases.  Without support
 for dynamic volume provisioning and stateful sets, the replica
 databases can be scaled in a more manual way by creating a new
@@ -28,22 +28,48 @@ replica database using the provided template.  If you want say
 3 replica databases, you would use the template 3 times to create
 the 3 replicas.
 
-When Openshift supports StatefulSets and Dynamic Provisioning, the
+When OpenShift supports StatefulSets and Dynamic Provisioning, the
 replica can be included within a Deployment and/or StatefulSet which
 will allow for scaling to be done by manipulating the Replica Count
 within the Deployment or StatefulSet.
 
 == Installation
 
-Users can install the templates into their Openshift environment
-using the following commands:
+Users can install the templates into their OpenShift environment
+using the following commands.
+
+First, add the following lines to your .bashrc file to set
+the project paths:
 ....
-oc login
-oc project <your project name>
-cd $HOME
-git clone https://github.com/CrunchyData/crunchy-containers.git
-export CCPROOT=$HOME/crunchy-containers
-export CCP_IMAGE_TAG=centos7-9.5-1.4.1
+export GOPATH=$HOME/cdev
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
+export CCP_BASEOS=centos7
+export CCP_PGVERSION=9.6
+export CCP_VERSION=1.4.1
+export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PGVERSION-$CCP_VERSION
+export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
+....
+You will then need to log out and back in for the changes to your .bashrc
+file to take effect.
+
+Next, set up a project directory structure and pull down the project:
+....
+mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
+cd $GOPATH
+sudo yum -y install golang git docker postgresql
+go get github.com/tools/godep
+cd src/github.com
+mkdir crunchydata
+cd crunchydata
+git clone https://github.com/crunchydata/crunchy-containers
+cd crunchy-containers
+git checkout 1.4.1
+godep restore
+....
+
+Finally, you'll change directories to your Dedicated examples repository and create all the templates stored there.
+....
 cd crunchy-containers/examples/dedicated
 ./create-all.sh
 ....
@@ -61,34 +87,41 @@ within each example directory:
 ....
 
 When you run the examples, there are variable substitutions taking
-place to set the image path and image tags within the Openshift
+place to set the image path and image tags within the OpenShift
 templates.  This substitution allows for better support of different
 deployments and deployment environments.
 
-You can either use the templates within the Openshift Web Console
+You can either use the templates within the OpenShift Web Console
 using the *Add to Project* functionality or use the *oc* CLI locally
 to use the templates to deploy databases.
 
 Within each template directory, there is an *example.sh* script
 that shows how to use the template using the *oc* CLI.
 
-=== Deploying Images to Openshift Registry
+=== Deploying Images to OpenShift Registry
 
-You can deploy the Crunchy built container images to the Openshift
+You can deploy the Crunchy built container images to the OpenShift
 registry by running the following script:
 ....
 cd $CCPROOT/examples/dedicated
 ./push-images.sh
 ....
 
-You will first need to login to the Openshift registry to perform
+You will first need to login to the OpenShift registry to perform
 this script.
 
 The script will create the appropriate image tag and push the image to the
 remote registry.
 
-As you use the templates, you can specify the images in your templates using the Openshift
-registry URL as follows for the *default* Openshift project:
+*If you are a Crunchy enterprise customer, you will need to change the $TOKEN and $REG
+values in the push-images.sh script to the ones that correspond to your company's registries
+along with your personal access token. The necessary token and server information can be
+obtained either through the web console (console.$YOURCOPMANY.openshift.com) or by visiting
+your company's API server and requesting a token
+(https://api.$YOURCOPMANY.openshift.com/oath/token/request).*
+
+As you use the templates, you can specify the images in your templates using the OpenShift
+registry URL as follows for the *default* OpenShift project:
 ....
 172.30.149.135:5000/default
 ....
@@ -104,7 +137,7 @@ The crunchy-postgres container executes the Postgres database.
 The container image is built using either the Crunchy Postgres release
 or the community version based upon a flag in the Makefile.
 
-The Crunchy postgres RPMs are available to Crunchy customers only.  The
+The Crunchy Postgres RPMs are available to Crunchy customers only.  The
 Crunchy release is meant for customers that require enterprise level
 support.
 
@@ -157,7 +190,7 @@ executed when the database is first created.
 
 The following features are supported by the crunchy-postgres container:
 
- * use of openshift secrets
+ * use of OpenShift secrets
  * ability to restore from a database backup
  * use of custom pg_hba.conf and postgresql.conf files
  * ability to override postgresql.conf configuration parameters
@@ -250,7 +283,7 @@ user *admin@admin.org* and password of *password*
 
 * None
 
-== Openshift Dedicated Template Examples
+== OpenShift Dedicated Template Examples
 
 === Master Database Template
 
