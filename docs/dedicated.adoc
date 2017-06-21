@@ -116,9 +116,9 @@ remote registry.
 *If you are a Crunchy enterprise customer, you will need to change the $TOKEN and $REG
 values in the push-images.sh script to the ones that correspond to your company's registries
 along with your personal access token. The necessary token and server information can be
-obtained either through the web console (console.$YOURCOPMANY.openshift.com) or by visiting
+obtained either through the web console (console.$YOURCOMPANY.openshift.com) or by visiting
 your company's API server and requesting a token
-(https://api.$YOURCOPMANY.openshift.com/oath/token/request).*
+(https://api.$YOURCOMPANY.openshift.com/oath/token/request).*
 
 As you use the templates, you can specify the images in your templates using the OpenShift
 registry URL as follows for the *default* OpenShift project:
