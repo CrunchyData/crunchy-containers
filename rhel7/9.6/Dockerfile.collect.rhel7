@@ -1,4 +1,4 @@
-FROM rhel7.2
+FROM registry.access.redhat.com/rhel7.2
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
@@ -8,10 +8,13 @@ LABEL name="crunchydata/collect" \
       	PostgresFullVersion="9.6.3" \
         version="7.2" \
         release="1.4.1" \
-        build-date="2017-05-11" \
+        #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="crunchy data collect container" \
         description="collect container" \
+        run="" \ 
+        start="" \ 
+        stop="" \ 
         io.k8s.description="collect container" \
         io.k8s.display-name="Crunchy collect container" \
         io.openshift.expose-services="" \
