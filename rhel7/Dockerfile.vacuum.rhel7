@@ -15,7 +15,7 @@ LABEL name="crunchydata/vacuum" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-COPY docs/vacuum/help.md /tmp/
+COPY docs/vacuum/help.1 /help.1
 
 RUN yum -y update && yum -y install procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
 

@@ -1,0 +1,53 @@
+.TH "promgateway " "1" " Container Image Pages" "Jeff McCormick" "April 13, 2017" 
+.nh
+.ad l
+
+
+.SH NAME
+.PP
+promgateway \- promgateway container image
+
+
+.SH DESCRIPTION
+.PP
+The promgateway image provides the open source prometheus push gateway
+
+.PP
+The container itself consists of:
+    \- RHEL7 base image
+    \- bash script that performs the container startup
+    \- prometheus push gateway binary packages
+
+.PP
+Files added to the container during docker build include: /help.1.
+
+
+.SH USAGE
+.PP
+See the crunchy docs.
+
+
+.SH LABELS
+.PP
+The starter container includes the following LABEL settings:
+
+.PP
+That atomic command runs the docker command set in this label:
+
+.PP
+\fB\fCName=\fR
+
+.PP
+The registry location and name of the image. For example, Name="crunchydata/promgateway".
+
+.PP
+\fB\fCVersion=\fR
+
+.PP
+The Red Hat Enterprise Linux version from which the container was built. For example, Version="7.2".
+
+.PP
+\fB\fCRelease=\fR
+
+.PP
+The specific release number of the container. For example, Release="1.4.0"

@@ -1,4 +1,4 @@
-FROM rhel:7.2
+FROM rhel7.2
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
@@ -17,7 +17,7 @@ LABEL name="crunchydata/backup" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-COPY docs/backup/help.md /help.1
+COPY docs/backup/help.1 /help.1
 
 ENV PGVERSION="9.6"
 

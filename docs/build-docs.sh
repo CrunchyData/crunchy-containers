@@ -13,6 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 asciidoc \
 -b bootstrap \
 -f ./demo.conf \
@@ -73,3 +74,24 @@ asciidoc \
 ./pitr.adoc
 
 asciidoctor-pdf ./pitr.adoc --out-file ./pdf/pitr.pdf
+
+# this utility is used for redhat container atomic help files
+go get github.com/cpuguy83/go-md2man
+
+go-md2man -in ./backup/help.md -out ./backup/help.1
+go-md2man -in ./collect/help.md -out ./collect/help.1
+go-md2man -in ./dba/help.md -out ./dba/help.1
+go-md2man -in ./grafana/help.md -out ./grafana/help.1
+go-md2man -in ./pgadmin4/help.md -out ./pgadmin4/help.1
+go-md2man -in ./pgbadger/help.md -out ./pgbadger/help.1
+go-md2man -in ./pgbouncer/help.md -out ./pgbouncer/help.1
+go-md2man -in ./pgpool/help.md -out ./pgpool/help.1
+go-md2man -in ./postgres-gis/help.md -out ./postgres-gis/help.1
+go-md2man -in ./postgres/help.md -out ./postgres/help.1
+go-md2man -in ./prometheus/help.md -out ./prometheus/help.1
+go-md2man -in ./promgateway/help.md -out ./promgateway/help.1
+go-md2man -in ./upgrade/help.md -out ./upgrade/help.1
+go-md2man -in ./vacuum/help.md -out ./vacuum/help.1
+go-md2man -in ./watch/help.md -out ./watch/help.1
+go-md2man -in ./backrestrestore/help.md -out ./backrestrestore/help.1
+

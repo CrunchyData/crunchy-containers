@@ -15,7 +15,7 @@ LABEL name="crunchydata/prometheus" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-COPY docs/prometheus/help.md /tmp/
+COPY docs/prometheus/help.1 /help.1
 
 RUN yum -y update && yum -y install procps-ng openssh-clients hostname  && yum clean all -y
 

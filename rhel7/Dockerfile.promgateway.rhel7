@@ -15,7 +15,7 @@ LABEL name="crunchydata/promgateway" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-COPY docs/promgateway/help.md /tmp/
+COPY docs/promgateway/help.1 /help.1
 
 RUN yum -y update && yum -y install procps-ng openssh-clients && yum clean all -y
 

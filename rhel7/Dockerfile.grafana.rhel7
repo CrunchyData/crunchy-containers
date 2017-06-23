@@ -15,7 +15,7 @@ LABEL name="crunchydata/grafana" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-COPY docs/grafana/help.md /tmp/
+COPY docs/grafana/help.1 /help.1
 
 RUN yum -y update && yum -y install procps-ng openssh-clients  hostname   && yum clean all -y
 

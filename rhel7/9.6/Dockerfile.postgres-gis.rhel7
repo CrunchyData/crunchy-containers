@@ -17,7 +17,7 @@ LABEL name="crunchydata/postgres-gis" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-COPY docs/postgres-gis/help.md /help.1
+COPY docs/postgres-gis/help.1 /help.1
 
 ENV PGVERSION="9.6"
 
