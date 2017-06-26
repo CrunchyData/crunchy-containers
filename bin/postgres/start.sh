@@ -96,7 +96,7 @@ fi
 
 function role_discovery() {
 	PATH=$PATH:/opt/cpm/bin
-	ordinal=$(echo $HOSTNAME | cut -f2 -d'-')
+	ordinal=${HOSTNAME##*-}
 	echo $ordinal is ordinal
 	if [ $ordinal -eq 0 ]; then
 		kubectl label --overwrite=true pod $HOSTNAME  name=$PG_MASTER_HOST
