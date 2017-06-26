@@ -97,16 +97,16 @@ function standalone_failover() {
 
 function kube_failover() {
 
-	TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
+	export TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
 	#oc login https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true --token="$TOKEN"
 	#oc project $OSE_PROJECT
 	echo "performing failover..."
 
-	TRIGGERSLAVES=`kubectl get pod --selector=name=$PG_SLAVE_SERVICE,slavetype=trigger --no-headers | cut -f1 -d' '`
+	TRIGGERSLAVES=`kubectl --token=$TOKEN get pod --selector=name=$PG_SLAVE_SERVICE,slavetype=trigger --no-headers | cut -f1 -d' '`
 	echo $TRIGGERSLAVES " is TRIGGERSLAVES"
 	if [ "$TRIGGERSLAVES" = "" ]; then
 		echo "no trigger slaves found...using any slave"
-		SLAVES=`kubectl get pod --selector=name=$PG_SLAVE_SERVICE --no-headers | cut -f1 -d' '`
+		SLAVES=`kubectl --token=$TOKEN get pod --selector=name=$PG_SLAVE_SERVICE --no-headers | cut -f1 -d' '`
 	else
 		echo "trigger slaves found!"
 		SLAVES=$TRIGGERSLAVES
@@ -124,14 +124,14 @@ function kube_failover() {
 	do
 		if [ "$targetslave" = $i ] ; then
 			echo "going to trigger failover on slave:" $i
-			kubectl exec $i touch /tmp/pg-failover-trigger
+			kubectl --token=$TOKEN exec $i touch /tmp/pg-failover-trigger
 			echo "sleeping WAIT_TIME to give failover a chance before setting label"
 			sleep $WAIT_TIME
 			echo "changing label of slave to " $PG_MASTER_SERVICE
-			kubectl label --overwrite=true pod $i name=$PG_MASTER_SERVICE
+			kubectl --token=$TOKEN label --overwrite=true pod $i name=$PG_MASTER_SERVICE
 		else
 			echo "deleting old slave " $i 
-			kubectl delete pod $i
+			kubectl --token=$TOKEN delete pod $i
 		fi
 	done
 	echo "failover completed @ " `date`
