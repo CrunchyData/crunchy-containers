@@ -13,6 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+if [ ! -v MONGO_HOST ]; then
+        echo "MONGO_HOST is not set, required value"
+        exit 2
+fi
 if [ ! -v MONGO_USER ]; then
 	echo "MONGO_USER is not set, required value"
 	exit 2
