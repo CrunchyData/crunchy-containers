@@ -1723,7 +1723,7 @@ kubectl scale pgset --replica=3
 ==== OpenShift
 
 This example shows how to use a StatefulSet (available
-in OpenShift Origin 1.5) to create a PostgreSQL cluster.
+in OpenShift Origin 3.5) to create a PostgreSQL cluster.
 
 Build the example by:
 ....
