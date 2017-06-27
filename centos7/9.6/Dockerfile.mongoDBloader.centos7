@@ -1,0 +1,49 @@
+FROM centos:7
+
+LABEL name="crunchydata/postgres" \
+        vendor="crunchy data" \
+        MongoVersion="3.4" \
+        PostgresVersion="9.6" \
+        version="7.2" \
+        release="1.4.2" \
+        build-date="2017-06-27" \
+        url="https://crunchydata.com" \
+        summary="Loader container MongoDB to PostgreSQL" \
+        description="MongoDB Data ETL container" \
+        io.k8s.description="MongoDB Data ETL container" \
+        io.k8s.display-name="MongoDB to Postgres Loader" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+ENV MongoVersion="3.4" PGVERSION="9.6" PGDG_REPO="pgdg-centos95-9.6-3.noarch.rpm"
+
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y install postgresql96 postgresql96-server nss_wrapper epel-release \
+ && yum -y clean all
+
+ADD conf/mongo.repo /etc/yum.repos.d/mongo.repo
+
+RUN yum -y update && yum -y install mongodb-org-tools \
+ && yum -y clean all
+
+# add path settings for postgres user
+ADD conf/.bash_profile /var/lib/pgsql/
+
+# set up loader directory
+RUN mkdir -p /pgloader 
+
+ENV	PGROOT="/usr/pgsql-${PGVERSION}"
+
+RUN chown -R postgres:postgres /pgloader
+
+# volume pgloader to store exported MongoDB data if no PV present
+
+VOLUME /pgloader 
+
+ADD bin/mongo_loader /opt/cpm/bin
+ADD conf/mongo_loader /opt/cpm/conf
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]
