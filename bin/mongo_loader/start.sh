@@ -43,7 +43,7 @@ export NSS_WRAPPER_GROUP=/etc/group
 
 #Perform ETL
 
-mongoexport -u $MONGO_USER -p $MONGO_PWD --authenticationDatabase admin --db $MONGO_DATABASE --collection $MONGO_COLLECTION --out /pgloader/{$MONGO_COLLECTION}.json
+mongoexport -h $MONGO_HOST -u $MONGO_USER -p $MONGO_PWD --authenticationDatabase admin --db $MONGO_DATABASE --collection $MONGO_COLLECTION --out /pgloader/{$MONGO_COLLECTION}.json
 
 echo "Completed ETL at " `date`
 exit 0
