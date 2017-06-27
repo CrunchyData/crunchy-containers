@@ -3,8 +3,6 @@ Crunchy Data Solutions, Inc.
 v1.4.1, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
-== Collected Metrics
-
 == Description
 PostgreSQL metrics are collected by the crunchy-collect container, which collects 32 different
 PostgreSQL metrics from a database container and pushes them to a Prometheus time series data
