@@ -241,6 +241,22 @@ project:
 oc policy add-role-to-group edit system:serviceaccounts -n default
 ....
 
+In Kube 1.5, if a policy file is being used for securing down the
+Kube cluster, you could possibly need to add a policy to allow
+the pg-watcher service account access to the Kube API as mentioned
+here: https://kubernetes.io/docs/admin/authorization/abac/#a-quick-note-on-service-accounts
+
+In Kube 1.6, an equivalent RBAC policy is also possibly required depending
+on your authorization/authentication configuration.  See this 
+link for details on the new RBAC policy mechanism:
+https://kubernetes.io/docs/admin/authorization/rbac/
+
+For example, you can grant cluster-admin permissions on the pg-watcher service
+account, in the my-namespace namespace as follows:
+....
+kubectl create clusterrolebinding pgwatcher-view-binding --clusterrole=cluster-admin --serviceaccount=my-namespace:pg-watcher
+....
+
 You then reference the SA within the POD spec.
 
 The oc/docker/kubectl commands are included into the container from the
