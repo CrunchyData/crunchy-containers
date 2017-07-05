@@ -15,19 +15,19 @@
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-TOKEN=fillinvaluehere
+TOKEN=yourtokengoeshere
 REG=docker-registry-default.router.default.svc.cluster.local
 REG=172.30.240.45:5000
 REG=registry.crunchydata.openshift.com
 NS=default
-NS=jeff-project
+NS=jeff2
 # login into openshift registry
 docker login -p $TOKEN -u unused $REG
 
 
 #	for CONTAINER in "crunchy-postgres" "crunchy-postgres-gis" "crunchy-backup" "crunchy-pgadmin4"
 # tag the local image using openshift naming
-for CCP_IMAGE_TAG in "rhel7-9.6-1.4.0"
+for CCP_IMAGE_TAG in "rhel7-9.6-1.4.1"
 do
 	for CONTAINER in "crunchy-pgadmin4"
 	do
