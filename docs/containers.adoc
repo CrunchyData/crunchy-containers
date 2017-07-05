@@ -257,6 +257,16 @@ account, in the my-namespace namespace as follows:
 kubectl create clusterrolebinding pgwatcher-view-binding --clusterrole=cluster-admin --serviceaccount=my-namespace:pg-watcher
 ....
 
+A less wide open policy would be applied like this on Kube 1.6 rbac:
+....
+kubectl create rolebinding my-sa-binding --clusterrole=admin --serviceaccount=default:pg-watcher --namespace=default
+....
+
+NOTE:  this kubectl command is only available in Kube 1.6, for prior
+Kube release such as 1.5 and the alpha RBAC, you will need to 
+specify the role binding in a JSON/YAML file instead of using
+this command syntax above.
+
 You then reference the SA within the POD spec.
 
 The oc/docker/kubectl commands are included into the container from the
