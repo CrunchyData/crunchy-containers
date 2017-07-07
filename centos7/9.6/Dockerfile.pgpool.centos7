@@ -2,7 +2,7 @@ FROM centos:7
 
 LABEL name="crunchydata/pgpool" \
         vendor="crunchy data" \
-        version="7.2" \
+        version="7.3" \
       	PostgresVersion="9.6" \
       	PostgresFullVersion="9.6.3" \
         release="1.4.1" \
@@ -14,7 +14,7 @@ LABEL name="crunchydata/pgpool" \
         io.k8s.display-name="Crunchy pgpool container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
-				
+
 ENV PGVERSION="9.6" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
