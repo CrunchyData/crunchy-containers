@@ -4,7 +4,7 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/watch" \
         vendor="crunchy data" \
-        version="7.2" \
+        version="7.3" \
       	PostgresVersion="9.6" \
       	PostgresFullVersion="9.6.3" \
         release="1.4.1" \
