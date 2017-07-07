@@ -22,7 +22,7 @@ $DIR/cleanup.sh
 CONTAINER_NAME=crunchyproxy
 CONF_VOLUME=$CONTAINER_NAME-config
 
-PROXY_IMAGE_TAG=centos7-0.0.1-alpha
+PROXY_IMAGE_TAG=centos7-1.0.0-beta
 
 docker volume create --driver local --name=$CONF_VOLUME
 
