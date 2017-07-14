@@ -266,7 +266,7 @@ multiple times and the ip address should alternate between
 the replicas:
 
 ....
-psql -c 'select inet_server_addr()' -h replica-dc -U master postgres
+psql -h replica-dc -U postgres postgres -c 'select inet_server_addr()'
 ....
 
 === master-replica-rc - Master and scaling replica example
