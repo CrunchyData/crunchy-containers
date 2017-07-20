@@ -95,7 +95,7 @@ My typical process for setting up Docker storage is as follows:
 
  * add an extra IDE drive to my VM
  * fdisk /dev/sd? to format the drive
- * vgcreate /dev/sd?1 to create a volume group on the new drive partition
+ * vgcreate docker-vg /dev/sd?1 to create a volume group on the new drive partition
  * add VG=docker-vg to /etc/sysconfig/docker-storage-setup
  * run docker-storage-setup to use that new volume group
 
