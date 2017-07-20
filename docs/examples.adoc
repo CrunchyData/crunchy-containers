@@ -142,20 +142,20 @@ It takes about a minute for the replica to begin replicating with the
 master.  To test out replication, see if replication is underway
 with this command:
 ....
-psql -h master -U postgres postgres -c 'table pg_stat_replication'
+psql -h ms-master -U postgres postgres -c 'table pg_stat_replication'
 ....
 
 If you see a line returned from that query it means the master is replicating
 to the replica.  Try creating some data on the master:
 
 ....
-psql -h master -U postgres postgres -c 'create table foo (id int)'
-psql -h master -U postgres postgres -c 'insert into foo values (1)'
+psql -h ms-master -U postgres postgres -c 'create table foo (id int)'
+psql -h ms-master -U postgres postgres -c 'insert into foo values (1)'
 ....
 
 Then verify that the data is replicated to the replica:
 ....
-psql -h replica -U postgres postgres -c 'table foo'
+psql -h ms-replica -U postgres postgres -c 'table foo'
 ....
 
 
@@ -266,7 +266,7 @@ multiple times and the ip address should alternate between
 the replicas:
 
 ....
-psql -c 'select inet_server_addr()' -h replica-dc -U master postgres
+psql -h replica-dc -U postgres postgres -c 'select inet_server_addr()'
 ....
 
 === master-replica-rc - Master and scaling replica example

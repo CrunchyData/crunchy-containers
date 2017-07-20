@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/rhel7.2
+FROM registry.access.redhat.com/rhel7.3
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
@@ -6,15 +6,15 @@ LABEL name="crunchydata/pgadmin4" \
         vendor="crunchy data" \
       	PostgresVersion="9.5" \
       	PostgresFullVersion="9.5.7" \
-        version="7.2" \
+        version="7.3" \
         release="1.4.1" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
-        summary="crunchy data pgadmin4 container" \
-        description="pgadmin4 container" \
-        run="" \ 
-        start="" \ 
-        stop="" \ 
+        summary="Crunchy Data pgAdmin4 GUI utility" \
+        description="Provides GUI for the pgAdmin utility." \
+        run="" \
+        start="" \
+        stop="" \
         io.k8s.description="pgadmin4 container" \
         io.k8s.display-name="Crunchy pgadmin4 container" \
         io.openshift.expose-services="" \

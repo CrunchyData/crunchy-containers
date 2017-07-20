@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/rhel7.2
+FROM registry.access.redhat.com/rhel7.3
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
@@ -6,15 +6,15 @@ LABEL name="crunchydata/upgrade" \
         vendor="crunchy data" \
         PostgresVersion="9.6" \
         PostgresFullVersion="9.6.3" \
-        version="7.2" \
+        version="7.3" \
         release="1.4.1" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
-        summary="crunchy data upgrade container" \
-        description="postgres upgrade container" \
-        run="" \ 
-        start="" \ 
-        stop="" \ 
+        summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
+        description="Provides a means to perform a major PostgreSQL upgrade from 9.5 to 9.6. Old data files are left intact." \
+        run="" \
+        start="" \
+        stop="" \
         io.k8s.description="postgres upgrade container" \
         io.k8s.display-name="Crunchy postgres upgrade container" \
         io.openshift.expose-services="" \

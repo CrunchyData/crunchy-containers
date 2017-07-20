@@ -2,12 +2,12 @@ FROM centos:7
 
 LABEL name="crunchydata/grafana" \
         vendor="crunchy data" \
-        version="7.2" \
+        version="7.3" \
         release="1.4.1" \
         build-date="2017-05-11" \
         url="https://crunchydata.com" \
-        summary="crunchy data grafana container" \
-        description="grafana container" \
+        summary="Provides a Grafana web dashboard to view collected PostgreSQL metrics" \
+        description="Connect this container to the crunchy-prometheus container as a data source, then use the metrics to build dashboards. Works in conjunction with crunchy-collect, crunchy-prometheus, crunchy-promgateway." \
         io.k8s.description="grafana container" \
         io.k8s.display-name="Crunchy grafana container" \
         io.openshift.expose-services="" \

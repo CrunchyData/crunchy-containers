@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/rhel7.2
+FROM registry.access.redhat.com/rhel7.3
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
@@ -6,15 +6,15 @@ LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
       	PostgresVersion="9.6" \
       	PostgresFullVersion="9.6.3" \
-        version="7.2" \
+        version="7.3" \
         release="1.4.1" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
-        summary="crunchy data postgres container" \
-        description="postgres container" \
-        run="" \ 
-        start="" \ 
-        stop="" \ 
+        summary="PostgreSQL 9.5/9.6 (PGDG) on a RHEL7 base image" \
+        description="Allows multiple deployment methods for PostgreSQL, including basic single master, streaming replication with sync/async replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
+        run="" \
+        start="" \
+        stop="" \
         io.k8s.description="postgres container" \
         io.k8s.display-name="Crunchy postgres container" \
         io.openshift.expose-services="" \

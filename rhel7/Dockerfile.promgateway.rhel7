@@ -1,18 +1,18 @@
-FROM registry.access.redhat.com/rhel7.2
+FROM registry.access.redhat.com/rhel7.3
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/promgateway" \
         vendor="crunchy data" \
-        version="7.2" \
+        version="7.3" \
         release="1.4.1" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
-        summary="crunchy data promgateway container" \
-        description="promgateway container" \
-        run="" \ 
-        start="" \ 
-        stop="" \ 
+        summary="Contains the Prometheus push gateway, eventually is scraped by the crunchy-prometheus container" \
+        description="crunchy-collect containers push metrics to this gateway. The gateway is scraped on a frequency by the crunchy-prometheus container. Works in conjunction with crunchy-collect, crunchy-prometheus, crunchy-grafana." \
+        run="" \
+        start="" \
+        stop="" \
         io.k8s.description="promgateway container" \
         io.k8s.display-name="Crunchy promgateway container" \
         io.openshift.expose-services="" \
@@ -34,4 +34,3 @@ ADD bin/promgateway /opt/cpm/bin
 USER daemon
 
 CMD ["/opt/cpm/bin/start-promgateway.sh"]
-

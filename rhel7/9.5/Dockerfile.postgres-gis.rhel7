@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/rhel7.2
+FROM registry.access.redhat.com/rhel7.3
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
@@ -6,15 +6,15 @@ LABEL name="crunchydata/postgres-gis" \
         vendor="crunchy data" \
       	PostgresVersion="9.5" \
       	PostgresFullVersion="9.5.7" \
-        version="7.2" \
+        version="7.3" \
         release="1.4.1" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
-        summary="crunchy data postgres-gis container" \
-        description="postgres-gis container" \
-        run="" \ 
-        start="" \ 
-        stop="" \ 
+        summary="Includes PostGIS extensions on top of crunchy-postgres" \
+        description="An identical image of crunchy-postgres with the extra PostGIS and pgrouting packages added for users that require PostGIS." \
+        run="" \
+        start="" \
+        stop="" \
         io.k8s.description="postgres-gis container" \
         io.k8s.display-name="Crunchy postgres-gis container" \
         io.openshift.expose-services="" \

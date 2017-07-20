@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/rhel7.2
+FROM registry.access.redhat.com/rhel7.3
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
@@ -6,15 +6,15 @@ LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
         PostgresVersion="9.6" \
         PostgresFullVersion="9.6.3" \
-        version="7.2" \
+        version="7.3" \
         release="1.4.1" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
-        summary="crunchy data backrest restore container" \
-        description="backrest restore container" \
-        run="" \ 
-        start="" \ 
-        stop="" \ 
+        summary="Executes the pgbackrest utility, allowing FULL & DELTA restore capability." \
+        description="Executes pgbackrest utility, allowing FULL & DELTA restore capability. Capable of mounting the pgbackrest.conf config file via /pgconf volume in addition to mounting the /backrestrepo for access to pgbackrest archives." \
+        run="" \
+        start="" \
+        stop="" \
         io.k8s.description="backrest restore container" \
         io.k8s.display-name="Crunchy backrest restore container" \
         io.openshift.expose-services="" \
@@ -22,7 +22,7 @@ LABEL name="crunchydata/postgres" \
 
 COPY docs/backrestrestore/help.1 /help.1
 
-ENV PGVERSION="9.6" 
+ENV PGVERSION="9.6"
 
 # Crunchy Postgres repo
 ADD conf/CRUNCHY-GPG-KEY.public  /

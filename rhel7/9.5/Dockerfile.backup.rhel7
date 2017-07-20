@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/rhel7.2
+FROM registry.access.redhat.com/rhel7.3
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
@@ -6,15 +6,15 @@ LABEL name="crunchydata/backup" \
         vendor="crunchy data" \
       	PostgresRelease="9.5" \
       	PostgresFullRelease="9.5.7" \
-        version="7.2" \
+        version="7.3" \
         release="1.4.1" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
-        summary="crunchy data backup container" \
-        description="backup container" \
-        run="" \ 
-        start="" \ 
-        stop="" \ 
+        summary="Performs a pg_basebackup full database backup on a database container" \
+        description="Meant to be executed upon demand, this container will run pg_basebackup against a running database container and write the backup files to a mounted directory." \
+        run="" \
+        start="" \
+        stop="" \
         io.k8s.description="backup container" \
         io.k8s.display-name="Crunchy backup container" \
         io.openshift.expose-services="" \
