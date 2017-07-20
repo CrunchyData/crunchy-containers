@@ -91,13 +91,30 @@ man docker-storage-setup
 Follow the instructions available link:https://docs.openshift.com/container-platform/3.4/install_config/install/host_preparation.html#configuring-docker-storage[on the main OpenShift documentation page]
 to configure Docker storage appropriately.
 
-My typical process for setting up Docker storage is as follows:
+These steps are illustrative of a typical process for setting up Docker storage. You will need to run these commands as root.
 
- * add an extra IDE drive to my VM
- * fdisk /dev/sd? to format the drive
- * vgcreate docker-vg /dev/sd?1 to create a volume group on the new drive partition
- * add VG=docker-vg to /etc/sysconfig/docker-storage-setup
- * run docker-storage-setup to use that new volume group
+First, add an extra virtual hard disk to your virtual machine (see link:http://catlingmindswipe.blogspot.com/2012/02/how-to-create-new-virtual-disks-in.html[this blog post] for tips on how to do so).
+
+Run this command to format the drive, where /dev/sd? is the new hard drive that was added:
+
+....
+fdisk /dev/sd?
+....
+
+Next, create a volume group on the new drive partition within the fdisk utility:
+
+....
+vgcreate docker-vg /dev/sd?
+....
+
+Then, you'll need to edit the docker-storage-setup configuration file in order to override default options. Add these two lines to **/etc/sysconfig/docker-storage-setup**:
+
+....
+DEVS=/dev/sd?
+VG=docker-vg
+....
+
+Finally, run the command **docker-storage-setup** to use that new volume group. The results should state that the physical volume /dev/sd? and the volume group docker-vg have both been successfully created.
 
 Next, we enable and start up Docker:
 ....
