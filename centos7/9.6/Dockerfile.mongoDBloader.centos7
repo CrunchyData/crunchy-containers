@@ -15,11 +15,12 @@ LABEL name="crunchydata/postgres" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV MongoVersion="3.4" PGVERSION="9.6" PGDG_REPO="pgdg-centos95-9.6-3.noarch.rpm"
+ENV MongoVersion="3.4" PGVERSION="9.6" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
-RUN yum -y install postgresql96 postgresql96-server nss_wrapper epel-release \
+RUN yum -y install postgresql96 postgresql96-server \
+	   gettext nss_wrapper epel-release \
  && yum -y clean all
 
 ADD conf/mongo.repo /etc/yum.repos.d/mongo.repo

@@ -18,10 +18,10 @@
                 "image": "crunchydata/crunchy-mongodb-loader:$CCP_IMAGE_TAG",
                 "env": [{
                     "name": "MONGO_USER",
-                    "value": "stupid"
+                    "value": "read_user"
                 }, {
 		    "name": "MONGO_PWD",
-		    "value": "stupid"
+		    "value": "getit"
 		}, {
                     "name": "MONGO_DATABASE",
                     "value": "chfort"
@@ -30,7 +30,7 @@
                     "value": "chfort"
                 }, {
                     "name": "MONGO_HOST",
-                    "value": "192.168.0.107:27017"
+                    "value": "myhost:27017"
                 }, {
                     "name": "PG_USER",
                     "value": "postgres"
