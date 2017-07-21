@@ -219,6 +219,8 @@ cd $CCPROOT/examples/pv
 ./create-pvc.sh
 ....
 
+View the README.txt for command-line usage.
+
 If you are wanting to run the examples on a Minishift instance
 you will need to create the PVs using hostPath as follows:
 ....
@@ -229,7 +231,7 @@ oc login -u developer
 ....
 
 Additional steps are required to allow persistence to work
-on minishift including:
+on Minishift including:
 ....
 oc login -u system:admin
 oc edit scc restricted
