@@ -37,7 +37,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  && yum -y update && yum --enablerepo=epel --enablerepo="rhel-7-server-optional-rpms" -y install bind-utils \
 	gettext \
 	hostname \
-	R texinfo-tex texlive-epsf \
+	R-core libRmath texinfo-tex texlive-epsf \
 	nss_wrapper \
 	openssh-clients \
 	procps-ng \

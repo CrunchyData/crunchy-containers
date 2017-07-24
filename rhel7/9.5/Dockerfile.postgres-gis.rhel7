@@ -35,7 +35,7 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
  && yum -y update && yum --enablerepo=epel --enablerepo="rhel-7-server-optional-rpms" -y install bind-utils \
-        R texinfo-tex texlive-epsf \
+        R-core libRmath texinfo-tex texlive-epsf \
         gettext \
         hostname \
         nss_wrapper \
