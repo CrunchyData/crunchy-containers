@@ -224,7 +224,7 @@ SECURITY_EMAIL_SUBJECT_PASSWORD_CHANGE_NOTICE = \
 ##########################################################################
 
 # Check for new versions of the application?
-UPGRADE_CHECK_ENABLED = True
+UPGRADE_CHECK_ENABLED = False
 
 # Where should we get the data from?
 UPGRADE_CHECK_URL = 'https://www.pgadmin.org/versions.json'
