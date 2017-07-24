@@ -34,18 +34,19 @@ ADD conf/crunchypg96.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
- && yum -y update && yum -y install bind-utils \
+ && yum -y update && yum --enablerepo=epel --enablerepo="rhel-7-server-optional-rpms" -y install bind-utils \
 	gettext \
 	hostname \
+	R texinfo-tex texlive-epsf \
 	nss_wrapper \
 	openssh-clients \
 	procps-ng \
  	rsync \
- && yum -y reinstall glibc-common \
- && yum -y install postgresql96 postgresql96-contrib postgresql96-server \
+        postgresql96 postgresql96-contrib postgresql96-server \
 	pgaudit96 pgaudit96_set_user \
-	crunchy-backrest \
+	crunchy-backrest plr96 \
 	postgis2_96 postgis2_96-client pgrouting_96 \
+ && yum -y reinstall glibc-common \
  && yum -y --setopt=tsflags='' install pgaudit_analyze \
  && yum -y clean all
 

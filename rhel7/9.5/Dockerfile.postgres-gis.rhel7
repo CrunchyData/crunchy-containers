@@ -34,18 +34,19 @@ ADD conf/crunchypg95.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
- && yum -y update && yum -y install bind-utils \
+ && yum -y update && yum --enablerepo=epel --enablerepo="rhel-7-server-optional-rpms" -y install bind-utils \
+        R texinfo-tex texlive-epsf \
         gettext \
         hostname \
         nss_wrapper \
         openssh-clients \
         procps-ng \
         rsync \
- && yum -y reinstall glibc-common \
- && yum -y install postgresql95 postgresql95-contrib postgresql95-server \
+        postgresql95 postgresql95-contrib postgresql95-server \
         pgaudit95 pgaudit95_set_user \
         crunchy-backrest \
-        postgis2_95 postgis2_95-client pgrouting_95 \
+        postgis2_95 postgis2_95-client pgrouting_95 plr95 \
+ && yum -y reinstall glibc-common \
  && yum -y --setopt=tsflags='' install pgaudit_analyze \
  && yum -y clean all
 
