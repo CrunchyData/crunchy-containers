@@ -28,9 +28,8 @@ RUN yum -y update && yum -y install epel-release \
 	openssh-clients \
  	procps-ng  \
 	rsync \
- && yum -y clean all
-
-RUN yum -y install postgresql95-server postgresql95-contrib postgresql95 \
+	postgresql95-server postgresql95-contrib postgresql95 \
+	R plr95 \
 	pgaudit_95 \
 	pgbackrest \
 	postgis2_95 postgis2_95-client  \

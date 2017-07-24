@@ -28,9 +28,8 @@ RUN yum -y update && yum -y install epel-release \
 	openssh-clients \
  	procps-ng  \
 	rsync \
- && yum -y clean all
-
-RUN yum -y install postgresql96-server postgresql96-contrib postgresql96 \
+	postgresql96-server postgresql96-contrib postgresql96 \
+	R plr96 \
 	pgaudit_96 \
 	pgbackrest \
 	postgis2_96 postgis2_96-client \
