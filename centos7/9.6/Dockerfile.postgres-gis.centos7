@@ -29,7 +29,7 @@ RUN yum -y update && yum -y install epel-release \
  	procps-ng  \
 	rsync \
 	postgresql96-server postgresql96-contrib postgresql96 \
-	R plr96 \
+	R-core libRmath plr96 \
 	pgaudit_96 \
 	pgbackrest \
 	postgis2_96 postgis2_96-client \

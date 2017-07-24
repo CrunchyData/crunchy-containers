@@ -29,7 +29,7 @@ RUN yum -y update && yum -y install epel-release \
  	procps-ng  \
 	rsync \
 	postgresql95-server postgresql95-contrib postgresql95 \
-	R plr95 \
+	R-core libRmath plr95 \
 	pgaudit_95 \
 	pgbackrest \
 	postgis2_95 postgis2_95-client  \
