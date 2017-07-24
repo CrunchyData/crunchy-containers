@@ -103,6 +103,14 @@ command when the initial data files are created, for example:
 
 By default, no locale is specified when the initdb command is executed.
 
+== crunchy-postgres-gis
+
+This container is the same as the crunchy-postgres container except
+that it includes the following PostgreSQL extensions:
+
+ * postgis
+ * pg_routing
+ * pl/r
 
 == crunchy-backup
 
