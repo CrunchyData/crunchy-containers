@@ -9,7 +9,7 @@ LABEL name="crunchydata/postgres-gis" \
         build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Includes PostGIS extensions on top of crunchy-postgres" \
-        description="An identical image of crunchy-postgres with the extra PostGIS and pgrouting packages added for users that require PostGIS." \
+        description="An identical image of crunchy-postgres with the extra PostGIS packages added for users that require PostGIS." \
         io.k8s.description="postgres-gis container" \
         io.k8s.display-name="Crunchy postgres-gis container" \
         io.openshift.expose-services="" \
@@ -28,9 +28,8 @@ RUN yum -y update && yum -y install epel-release \
 	openssh-clients \
  	procps-ng  \
 	rsync \
- && yum -y clean all
-
-RUN yum -y install postgresql95-server postgresql95-contrib postgresql95 \
+	postgresql95-server postgresql95-contrib postgresql95 \
+	R-core libRmath plr95 \
 	pgaudit_95 \
 	pgbackrest \
 	postgis2_95 postgis2_95-client  \
