@@ -71,6 +71,9 @@ executed when the database is first created.
  * PGDATA_PATH_OVERRIDE - if set, will cause the container to use a /pgdata path
    name of your choosing rather than the hostname of the container which
    is the default...this is useful for a master in a deployment.
+ * XLOGDIR - if set to true, will cause initdb to include --xlogdir=$PGWAL,
+   this will cause a symlink to be created from /pgdata/containername/pg_xlog
+   to /pgwal/containername-wal
 
 === Features
 
