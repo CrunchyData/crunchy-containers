@@ -13,7 +13,7 @@ gendeps:
 	github.com/crunchydata/crunchy-containers/dba \
 	github.com/crunchydata/crunchy-containers/collectapi \
 	github.com/crunchydata/crunchy-containers/badger  \
-	github.com/crunchydata/crunchy-containers/cct 
+	github.com/crunchydata/crunchy-containers/cct
 
 docbuild:
 	cd docs && ./build-docs.sh
@@ -56,6 +56,10 @@ grafana:	versiontest
 pgadmin4:	versiontest
 	docker build -t crunchy-pgadmin4 -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgadmin4.$(CCP_BASEOS) .
 	docker tag crunchy-pgadmin4 crunchydata/crunchy-pgadmin4:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
+
+postage:	versiontest
+	docker build -t crunchy-postage -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postage.$(CCP_BASEOS) .
+	docker tag crunchy-postage crunchydata/crunchy-postage:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
 pgbadger:	versiontest
 	cd badger && godep go install badgerserver.go
@@ -140,4 +144,3 @@ testopenshift:
 	./tests/openshift/test-watch.sh; /usr/bin/test "$$?" -eq 0
 	./tests/openshift/test-scope.sh; /usr/bin/test "$$?" -eq 0
 	./tests/openshift/test-backup.sh; /usr/bin/test "$$?" -eq 0
-

@@ -23,6 +23,11 @@ wget -O $CCPROOT/prometheus.tar.gz https://github.com/prometheus/prometheus/rele
 wget -O $CCPROOT/grafana.tar.gz https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.2.0.linux-x64.tar.gz
 
 #
+# download postage source package, required to build the container
+#
+wget -O $CCPROOT/postage.tar.gz https://github.com/workflowproducts/postage/archive/eV3.2.16.tar.gz
+
+#
 # this set is required to build the docs
 #
 sudo yum -y install asciidoc ruby
