@@ -175,6 +175,14 @@ to allow NFS write permissions:
 sudo setsebool -P virt_use_nfs 1
 ....
 
+The necessary dependencies will need to be installed and started next:
+....
+sudo setsebool -P virt_use_nfs 1
+sudo yum -y install nfs-utils libnfsidmap
+sudo systemctl enable rpcbind nfs-server
+sudo systemctl start rpcbind nfs-server rpc-statd nfs-idmapd
+....
+
 Next, you will need to set the permissions of your NFS
 path so that your pods can have write access.  For the
 Crunchy examples, the *nfsnobody* GUI was chosen as
@@ -185,7 +193,8 @@ and therefore be able to write to the NFS persistent volumes.
 
 The permissions on the NFS path are set as follows:
 ....
-drwxrwx---.   3 nfsnobody nfsnobody   23 Dec 16 11:28 nfsfileshare
+sudo mkdir /nfsfileshare
+sudo chmod 777 /nfsfileshare
 ....
 
 Most of the Crunchy containers run as the postgres UID (26), but you
@@ -196,7 +205,22 @@ The case of Amazon file systems is different, for that you use the
 *fsGroup* security context setting but the idea for allowing
 write permissions is the same.
 
-Here are the instructions I use when setting up NFS:
+You will then need to modify the /etc/exports file. 
+....
+sudo vi /etc/exports
+....
+
+The /etc/exports file should contain a line similar to this one except with the applicable IP address specified:
+....
+/nfsfileshare 192.168.122.9(rw,sync)
+....
+
+After saving and closing the file, you will need to re-export all directories:
+....
+sudo exportfs -r
+....
+
+Detailed instructions that you can use for setting up a NFS server on Centos 7 are provided in the following link.
 
 http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html
 
@@ -207,7 +231,6 @@ https://github.com/openshift/origin/tree/master/examples/wordpress/nfs
 The examples specify a test NFS server running at IP address 192.168.0.103.
 
 On that server, the /etc/exports file looks like this:
-
 ....
 /nfsfileshare *(rw,sync)
 ....
@@ -221,7 +244,7 @@ if you are running your client on a VM, you will need to
 add 'insecure' to the exportfs file on the NFS server, this is because
 of the way port translation is done between the VM host and the VM instance.
 
-see this for more details:
+For more details on this bug, please see the following link.
 
 http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting
 
