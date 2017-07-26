@@ -1,0 +1,54 @@
+# Create a primary and async replica from the dockerhub images
+# db-replica can be optionally scaled using:
+# docker-compose up --scale db-replica=2
+---
+version: '3'
+
+services:
+  db-primary:
+    container_name: db-primary
+    image: crunchydata/crunchy-postgres:centos7-9.6-1.4.1
+    ports:
+    - "5432"
+    volumes:
+    - ./primary:/pgdata
+    environment:
+    - PGHOST=/tmp
+    - MAX_CONNECTIONS=101
+    - SHARED_BUFFERS=128MB
+    - MAX_WAL_SENDERS=7
+    - WORK_MEM=5MB
+    - TEMP_BUFFERS=9MB
+    - PG_MASTER_USER=master
+    - PG_MASTER_HOST=db-primary
+    - PG_MASTER_PASSWORD=password
+    - PG_MASTER_PORT=5432
+    - PG_MODE=master
+    - PG_USER=testuser
+    - PG_PASSWORD=password
+    - PG_ROOT_PASSWORD=password
+    - PG_DATABASE=userdb
+  db-replica:
+    image: crunchydata/crunchy-postgres:centos7-9.6-1.4.1
+    ports:
+    - "5432"
+    volumes:
+    - ./replica:/pgdata
+    links:
+    - db-primary
+    environment:
+    - PGHOST=/tmp
+    - MAX_CONNECTIONS=101
+    - SHARED_BUFFERS=128MB
+    - MAX_WAL_SENDERS=7
+    - WORK_MEM=5MB
+    - TEMP_BUFFERS=9MB
+    - PG_MASTER_USER=master
+    - PG_MASTER_HOST=db-primary
+    - PG_MASTER_PORT=5432
+    - PG_MASTER_PASSWORD=password
+    - PG_MODE=slave
+    - PG_USER=testuser
+    - PG_PASSWORD=password
+    - PG_ROOT_PASSWORD=password
+    - PG_DATABASE=userdb
