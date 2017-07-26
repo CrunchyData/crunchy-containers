@@ -27,9 +27,9 @@ func LockMetrics(logger *log.Logger, dbs []string, HOSTNAME string, dbConn *sql.
 	var metrics = make([]Metric, 0)
 
 	for i := 0; i < len(dbs); i++ {
-		metric := Metric{}
+		metric := NewPGMetric(HOSTNAME, "lock_count")
 
-		var lockCount int64
+		var lockCount float64
 		var lockType, lockMode string
 		err := dbConn.QueryRow("select locktype,mode, count(*) from pg_locks, pg_database where pg_locks.database = pg_database.oid and pg_database.datname = '"+dbs[i]+"' group by pg_locks.locktype, pg_locks.mode").Scan(&lockType, &lockMode, &lockCount)
 		if err != nil {
@@ -37,10 +37,8 @@ func LockMetrics(logger *log.Logger, dbs []string, HOSTNAME string, dbConn *sql.
 			return metrics
 		}
 
-		metric.Hostname = HOSTNAME
-		metric.MetricName = "lock_count"
 		metric.Units = "count"
-		metric.Value = lockCount
+		metric.SetValue(lockCount)
 		metric.LockType = lockType
 		metric.LockMode = lockMode
 		metric.DatabaseName = dbs[i]

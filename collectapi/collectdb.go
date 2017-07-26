@@ -26,7 +26,7 @@ func GetMetrics(logger *log.Logger, HOSTNAME string, USER string, PORT string, P
 	dbs := GetDatabases(logger, conn)
 	metrics := GetConnectionMetrics(logger, HOSTNAME, conn)
 	metric := GetConnectionUtilMetrics(logger, HOSTNAME, conn)
-	metrics = append(metrics, *metric)
+	metrics = append(metrics, metric)
 	sizeMetrics := GetDatabaseSizeMetrics(logger, dbs, HOSTNAME, conn)
 	for i := 0; i < len(sizeMetrics); i++ {
 		metrics = append(metrics, sizeMetrics[i])

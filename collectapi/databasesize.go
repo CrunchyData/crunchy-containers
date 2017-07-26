@@ -27,19 +27,17 @@ func GetDatabaseSizeMetrics(logger *log.Logger, dbs []string, HOSTNAME string, d
 	var metrics = make([]Metric, 0)
 
 	for i := 0; i < len(dbs); i++ {
-		metric := Metric{}
+		metric := NewPGMetric(HOSTNAME, "databasesize")
 
-		var dbsize int64
+		var dbsize float64
 		err := dbConn.QueryRow("select pg_database_size('" + dbs[i] + "') / 1024 / 1024").Scan(&dbsize)
 		if err != nil {
 			logger.Println("error: " + err.Error())
 			return metrics
 		}
 
-		metric.Hostname = HOSTNAME
-		metric.MetricName = "databasesize"
 		metric.Units = "megabytes"
-		metric.Value = dbsize
+		metric.SetValue(dbsize)
 		metric.DatabaseName = dbs[i]
 		metrics = append(metrics, metric)
 	}

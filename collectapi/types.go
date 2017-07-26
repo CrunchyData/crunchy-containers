@@ -17,14 +17,44 @@ package collectapi
 
 import (
 	"fmt"
+	"strconv"
 )
 
-type Metric struct {
-	Hostname     string
-	MetricName   string
+type Metric interface {
+	Hostname() string
+	Name() string
+	Value() float64
+	SetValue(v float64)
+	Labels() map[string]string
+	Print()
+}
+
+type baseMetric struct {
+	hostname string
+	name     string
+	value    float64
+}
+
+func (bm baseMetric) Hostname() string {
+	return bm.hostname
+}
+
+func (bm baseMetric) Name() string {
+	return bm.name
+}
+
+func (bm baseMetric) Value() float64 {
+	return bm.value
+}
+
+func (bm baseMetric) SetValue(v float64) {
+	bm.value = v
+}
+
+type PGMetric struct {
+	baseMetric
 	DatabaseName string
 	TableName    string
-	Value        int64
 	Units        string //count, item, percent, megabytes, time
 	LockType     string //only used for lock metrics
 	LockMode     string //only used for lock metrics
@@ -40,37 +70,82 @@ type Metric struct {
 
 }
 
-func (f Metric) Print() {
-	fmt.Print("metric: " + f.MetricName)
-	fmt.Print(" hostname: " + f.Hostname)
-	fmt.Print(" database: " + f.DatabaseName)
-	if f.TableName != "" {
-		fmt.Print(" tablename: " + f.TableName)
+func (p PGMetric) Labels() map[string]string {
+	labels := make(map[string]string)
+
+	labels["DatabaseName"] = p.DatabaseName
+	labels["Units"] = p.Units
+	if p.TableName != "" {
+		labels["TableName"] = p.TableName
 	}
-	if f.LockType != "" {
-		fmt.Print(" locktype: " + f.LockType)
-		fmt.Print(" lockmode: " + f.LockMode)
+
+	if p.LockType != "" {
+		labels["LockType"] = p.LockType
+		labels["LockMode"] = p.LockMode
 	}
-	fmt.Printf(" value: %d", f.Value)
-	if f.MetricName == "pct_dead" {
-		fmt.Print(" n_dead_tup: %d ", f.DeadTup)
-		fmt.Print(" reltuples: %d", f.RelTup)
-		fmt.Print(" table_sz: %d", f.TableSz)
-		fmt.Print(" total_sz: %d ", f.TotalSz)
-		fmt.Print(" last_vacuum: " + f.LastVacuum)
-		fmt.Print(" last_analyze: " + f.LastAnalyze)
-		fmt.Print(" av_needed: " + f.AvNeeded)
+	if p.LastVacuum != "" {
+		labels["LastVacuum"] = p.LastVacuum
+		labels["LastAnalyze"] = p.LastAnalyze
+		labels["AvNeeded"] = p.AvNeeded
 	}
-	if f.MetricName == "wraparound" {
-		fmt.Print(" age: " + f.Age)
-		fmt.Print(" table_sz: %d", f.TableSz)
-		fmt.Print(" total_sz: %d ", f.TotalSz)
-		fmt.Print(" last_vacuum: " + f.LastVacuum)
-		fmt.Print(" kind: " + f.Kind)
+	if p.Age != "" {
+		labels["Age"] = p.Age
+		labels["Kind"] = p.Kind
 	}
-	if f.MetricName == "stale_age" {
-		fmt.Print(" last_analyze: " + f.LastAnalyze)
-		fmt.Print(" last_vacuum: " + f.LastVacuum)
+	if p.name == "wraparound" {
+		labels["TableSz"] = strconv.FormatInt(p.TableSz, 10)
+		labels["TotalSz"] = strconv.FormatInt(p.TotalSz, 10)
 	}
-	fmt.Println(" units: " + f.Units)
+	if p.name == "pct_dead" {
+		labels["DeadTup"] = strconv.FormatInt(p.DeadTup, 10)
+		labels["RelTup"] = strconv.FormatInt(p.RelTup, 10)
+		labels["TableSz"] = strconv.FormatInt(p.TableSz, 10)
+		labels["TotalSz"] = strconv.FormatInt(p.TotalSz, 10)
+	}
+
+	return labels
+}
+
+func NewPGMetric(hostname, name string) PGMetric {
+	return PGMetric{
+		baseMetric: baseMetric{
+			hostname: hostname,
+			name:     name,
+		},
+	}
+}
+
+func (p PGMetric) Print() {
+	fmt.Print("metric: " + p.name)
+	fmt.Print(" hostname: " + p.hostname)
+	fmt.Print(" database: " + p.DatabaseName)
+	if p.TableName != "" {
+		fmt.Print(" tablename: " + p.TableName)
+	}
+	if p.LockType != "" {
+		fmt.Print(" locktype: " + p.LockType)
+		fmt.Print(" lockmode: " + p.LockMode)
+	}
+	fmt.Printf(" value: %d", p.Value)
+	if p.name == "pct_dead" {
+		fmt.Print(" n_dead_tup: %d ", p.DeadTup)
+		fmt.Print(" reltuples: %d", p.RelTup)
+		fmt.Print(" table_sz: %d", p.TableSz)
+		fmt.Print(" total_sz: %d ", p.TotalSz)
+		fmt.Print(" last_vacuum: " + p.LastVacuum)
+		fmt.Print(" last_analyze: " + p.LastAnalyze)
+		fmt.Print(" av_needed: " + p.AvNeeded)
+	}
+	if p.name == "wraparound" {
+		fmt.Print(" age: " + p.Age)
+		fmt.Print(" table_sz: %d", p.TableSz)
+		fmt.Print(" total_sz: %d ", p.TotalSz)
+		fmt.Print(" last_vacuum: " + p.LastVacuum)
+		fmt.Print(" kind: " + p.Kind)
+	}
+	if p.name == "stale_age" {
+		fmt.Print(" last_analyze: " + p.LastAnalyze)
+		fmt.Print(" last_vacuum: " + p.LastVacuum)
+	}
+	fmt.Println(" units: " + p.Units)
 }

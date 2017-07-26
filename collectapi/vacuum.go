@@ -39,7 +39,7 @@ func DeadRowsMetrics(logger *log.Logger, dbs []string, HOSTNAME string, USER str
 		var n_dead_tup, reltuples, table_sz, total_sz int64
 		var last_vacuum, last_analyze string //pg date types
 		var av_needed string
-		var pct_dead int64
+		var pct_dead float64
 		rows, err := d.Query(
 			"SELECT" +
 				" nspname," +
@@ -95,11 +95,9 @@ func DeadRowsMetrics(logger *log.Logger, dbs []string, HOSTNAME string, USER str
 				return metrics
 			}
 
-			metric := Metric{}
-			metric.Hostname = HOSTNAME
-			metric.MetricName = "pct_dead"
+			metric := NewPGMetric(HOSTNAME, "pct_dead")
 			metric.Units = "item"
-			metric.Value = pct_dead
+			metric.SetValue(pct_dead)
 			metric.DeadTup = n_dead_tup
 			metric.RelTup = reltuples
 			metric.TableSz = table_sz
