@@ -18,7 +18,7 @@ package collectapi
 import (
 	"database/sql"
 	"log"
-	//_ "github.com/lib/pq"
+	"strconv"
 )
 
 //get tables with dead rows
@@ -95,17 +95,17 @@ func DeadRowsMetrics(logger *log.Logger, dbs []string, HOSTNAME string, USER str
 				return metrics
 			}
 
-			metric := NewPGMetric(HOSTNAME, "pct_dead", pct_dead)
-			metric.Units = "item"
-			metric.DeadTup = n_dead_tup
-			metric.RelTup = reltuples
-			metric.TableSz = table_sz
-			metric.TotalSz = total_sz
-			metric.LastVacuum = last_vacuum
-			metric.LastAnalyze = last_analyze
-			metric.AvNeeded = av_needed
-			metric.DatabaseName = dbs[i]
-			metric.TableName = relname
+			metric := NewMetric(HOSTNAME, "pct_dead", pct_dead)
+			metric.AddLabel("Units", "item")
+			metric.AddLabel("DeadTup", strconv.FormatInt(n_dead_tup, 10))
+			metric.AddLabel("RelTup", strconv.FormatInt(reltuples, 10))
+			metric.AddLabel("TableSz", strconv.FormatInt(table_sz, 10))
+			metric.AddLabel("TotalSz", strconv.FormatInt(total_sz, 10))
+			metric.AddLabel("LastVacuum", last_vacuum)
+			metric.AddLabel("LastAnalyze", last_analyze)
+			metric.AddLabel("AvNeeded", av_needed)
+			metric.AddLabel("DatabaseName", dbs[i])
+			metric.AddLabel("TableName", relname)
 			metrics = append(metrics, metric)
 		}
 

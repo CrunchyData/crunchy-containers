@@ -77,12 +77,12 @@ func StaleTablesMetrics(logger *log.Logger, dbs []string, HOSTNAME string, USER 
 				return metrics
 			}
 
-			metric := NewPGMetric(HOSTNAME, "stale_age", age)
-			metric.Units = "count"
-			metric.LastVacuum = last_vacuum
-			metric.LastAnalyze = last_analyze
-			metric.DatabaseName = dbs[i]
-			metric.TableName = relname
+			metric := NewMetric(HOSTNAME, "stale_age", age)
+			metric.AddLabel("Units", "count")
+			metric.AddLabel("LastVacuum", last_vacuum)
+			metric.AddLabel("LastAnalyze", last_analyze)
+			metric.AddLabel("DatabaseName", dbs[i])
+			metric.AddLabel("TableName", relname)
 			metrics = append(metrics, metric)
 		}
 

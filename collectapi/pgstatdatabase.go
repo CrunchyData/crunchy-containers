@@ -44,85 +44,85 @@ func PgStatDatabaseMetrics(logger *log.Logger, dbs []string, HOSTNAME string, db
 			return metrics
 		}
 
-		metric := NewPGMetric(HOSTNAME, "xact_commit", xact_commit)
-		metric.Units = "count"
-		metric.DatabaseName = dbs[i]
+		metric := NewMetric(HOSTNAME, "xact_commit", xact_commit)
+		metric.AddLabel("Units", "count")
+		metric.AddLabel("DatabaseName", dbs[i])
 		metrics = append(metrics, metric)
 
-		metric2 := NewPGMetric(HOSTNAME, "xact_rollback", xact_rollback)
-		metric2.Units = "count"
-		metric2.DatabaseName = dbs[i]
-		metrics = append(metrics, metric2)
+		metric = NewMetric(HOSTNAME, "xact_rollback", xact_rollback)
+		metric.AddLabel("Units", "count")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 
-		metric3 := NewPGMetric(HOSTNAME, "tup_returned", tup_returned)
-		metric3.Units = "count"
-		metric3.DatabaseName = dbs[i]
-		metrics = append(metrics, metric3)
+		metric = NewMetric(HOSTNAME, "tup_returned", tup_returned)
+		metric.AddLabel("Units", "count")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 
-		metric4 := NewPGMetric(HOSTNAME, "tup_fetched", tup_fetched)
-		metric4.Units = "count"
-		metric4.DatabaseName = dbs[i]
-		metrics = append(metrics, metric4)
+		metric = NewMetric(HOSTNAME, "tup_fetched", tup_fetched)
+		metric.AddLabel("Units", "count")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 
-		metric5 := NewPGMetric(HOSTNAME, "tup_inserted", tup_inserted)
-		metric5.Units = "count"
-		metric5.DatabaseName = dbs[i]
-		metrics = append(metrics, metric5)
+		metric = NewMetric(HOSTNAME, "tup_inserted", tup_inserted)
+		metric.AddLabel("Units", "count")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 
-		metric6 := NewPGMetric(HOSTNAME, "tup_updated", tup_updated)
-		metric6.Units = "count"
-		metric6.DatabaseName = dbs[i]
-		metrics = append(metrics, metric6)
+		metric = NewMetric(HOSTNAME, "tup_updated", tup_updated)
+		metric.AddLabel("Units", "count")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 
-		metric7 := NewPGMetric(HOSTNAME, "tup_deleted", tup_deleted)
-		metric7.Units = "count"
-		metric7.DatabaseName = dbs[i]
-		metrics = append(metrics, metric7)
+		metric = NewMetric(HOSTNAME, "tup_deleted", tup_deleted)
+		metric.AddLabel("Units", "count")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 
-		metric8 := NewPGMetric(HOSTNAME, "conflicts", conflicts)
-		metric8.Units = "count"
-		metric8.DatabaseName = dbs[i]
-		metrics = append(metrics, metric8)
+		metric = NewMetric(HOSTNAME, "conflicts", conflicts)
+		metric.AddLabel("Units", "count")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 
-		metric9 := NewPGMetric(HOSTNAME, "temp_files", temp_files)
-		metric9.Units = "count"
-		metric9.DatabaseName = dbs[i]
-		metrics = append(metrics, metric9)
+		metric = NewMetric(HOSTNAME, "temp_files", temp_files)
+		metric.AddLabel("Units", "count")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 
-		metric10 := NewPGMetric(HOSTNAME, "temp_bytes", temp_bytes)
-		metric10.Units = "count"
-		metric10.DatabaseName = dbs[i]
-		metrics = append(metrics, metric10)
+		metric = NewMetric(HOSTNAME, "temp_bytes", temp_bytes)
+		metric.AddLabel("Units", "count")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 
-		metric11 := NewPGMetric(HOSTNAME, "deadlocks", deadlocks)
-		metric11.Units = "count"
-		metric11.DatabaseName = dbs[i]
-		metrics = append(metrics, metric11)
+		metric = NewMetric(HOSTNAME, "deadlocks", deadlocks)
+		metric.AddLabel("Units", "count")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 
-		metric12 := NewPGMetric(HOSTNAME, "blks_read", blks_read)
-		metric12.Units = "count"
-		metric12.DatabaseName = dbs[i]
-		metrics = append(metrics, metric12)
+		metric = NewMetric(HOSTNAME, "blks_read", blks_read)
+		metric.AddLabel("Units", "count")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 
-		metric13 := NewPGMetric(HOSTNAME, "blks_hit", blks_hit)
-		metric13.Units = "count"
-		metric13.DatabaseName = dbs[i]
-		metrics = append(metrics, metric13)
+		metric = NewMetric(HOSTNAME, "blks_hit", blks_hit)
+		metric.AddLabel("Units", "count")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 
-		metric14 := NewPGMetric(HOSTNAME, "hit_ratio", blks_hit/blks_read*100.0)
-		metric14.Units = "percent"
-		metric14.DatabaseName = dbs[i]
-		metrics = append(metrics, metric14)
+		metric = NewMetric(HOSTNAME, "hit_ratio", blks_hit/blks_read*100.0)
+		metric.AddLabel("Units", "percent")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 
-		metric15 := NewPGMetric(HOSTNAME, "blk_read_time", blk_read_time)
-		metric15.Units = "time"
-		metric15.DatabaseName = dbs[i]
-		metrics = append(metrics, metric15)
+		metric = NewMetric(HOSTNAME, "blk_read_time", blk_read_time)
+		metric.AddLabel("Units", "time")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 
-		metric16 := NewPGMetric(HOSTNAME, "blk_write_time", blk_write_time)
-		metric16.Units = "time"
-		metric16.DatabaseName = dbs[i]
-		metrics = append(metrics, metric16)
+		metric = NewMetric(HOSTNAME, "blk_write_time", blk_write_time)
+		metric.AddLabel("Units", "time")
+		metric.AddLabel("DatabaseName", dbs[i])
+		metrics = append(metrics, metric)
 	}
 
 	return metrics

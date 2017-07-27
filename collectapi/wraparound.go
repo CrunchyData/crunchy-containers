@@ -17,8 +17,10 @@ package collectapi
 
 import (
 	"database/sql"
-	_ "github.com/lib/pq"
 	"log"
+	"strconv"
+
+	_ "github.com/lib/pq"
 )
 
 //get tables that are approaching a wraparound
@@ -82,15 +84,15 @@ func WraparoundMetrics(logger *log.Logger, dbs []string, HOSTNAME string, USER s
 				return metrics
 			}
 
-			metric := NewPGMetric(HOSTNAME, "wraparound", 1.0)
-			metric.Units = "item"
-			metric.Kind = kind
-			metric.TableSz = table_sz
-			metric.TotalSz = total_sz
-			metric.LastVacuum = last_vacuum
-			metric.Age = age
-			metric.DatabaseName = dbs[i]
-			metric.TableName = relname
+			metric := NewMetric(HOSTNAME, "wraparound", 1.0)
+			metric.AddLabel("Units", "item")
+			metric.AddLabel("Kind", kind)
+			metric.AddLabel("TableSz", strconv.FormatInt(table_sz, 10))
+			metric.AddLabel("TotalSz", strconv.FormatInt(total_sz, 10))
+			metric.AddLabel("LastVacuum", last_vacuum)
+			metric.AddLabel("Age", age)
+			metric.AddLabel("DatabaseName", dbs[i])
+			metric.AddLabel("TableName", relname)
 			metrics = append(metrics, metric)
 		}
 

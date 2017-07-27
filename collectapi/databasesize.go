@@ -38,9 +38,9 @@ func GetDatabaseSizeMetrics(logger *log.Logger, dbs []string, HOSTNAME string, d
 			return metrics
 		}
 
-		metric := NewPGMetric(HOSTNAME, "databasesize", dbsize)
-		metric.Units = "megabytes"
-		metric.DatabaseName = dbs[i]
+		metric := NewMetric(HOSTNAME, "databasesize", dbsize)
+		metric.AddLabel("Units", "megabytes")
+		metric.AddLabel("DatabaseName", dbs[i])
 		metrics = append(metrics, metric)
 	}
 

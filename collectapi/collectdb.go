@@ -17,7 +17,6 @@ package collectapi
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 
 	"github.com/akhenakh/statgo"
@@ -61,7 +60,6 @@ func GetMetrics(logger *log.Logger, HOSTNAME string, USER string, PORT string, P
 
 	s := statgo.NewStat()
 
-	fmt.Printf("Metric Count: %d", len(metrics))
 	cpuMetrics := GetCPUMetrics(HOSTNAME, s)
 	metrics = append(metrics, cpuMetrics...)
 

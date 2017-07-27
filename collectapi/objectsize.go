@@ -35,9 +35,9 @@ func ObjectSizeMetrics(logger *log.Logger, dbs []string, HOSTNAME string, dbConn
 			return metrics
 		}
 
-		metric := NewPGMetric(HOSTNAME, "database_size", dbSize)
-		metric.Units = "megabytes"
-		metric.DatabaseName = dbs[i]
+		metric := NewMetric(HOSTNAME, "database_size", dbSize)
+		metric.AddLabel("Units", "megabytes")
+		metric.AddLabel("DatabaseName", dbs[i])
 		metrics = append(metrics, metric)
 	}
 
@@ -83,23 +83,23 @@ func TableSizesMetrics(logger *log.Logger, dbs []string, HOSTNAME string, USER s
 		}
 
 		if tableSize > 0 {
-			metric := NewPGMetric(HOSTNAME, "table_size", tableSize)
-			metric.Units = "megabytes"
-			metric.DatabaseName = dbs[i]
-			metric.TableName = tableName
+			metric := NewMetric(HOSTNAME, "table_size", tableSize)
+			metric.AddLabel("Units", "megabytes")
+			metric.AddLabel("DatabaseName", dbs[i])
+			metric.AddLabel("TableName", tableName)
 			metrics = append(metrics, metric)
 
-			metric2 := NewPGMetric(HOSTNAME, "index_size", float64(indexSize))
-			metric2.Units = "megabytes"
-			metric2.DatabaseName = dbs[i]
-			metric2.TableName = tableName
-			metrics = append(metrics, metric2)
+			metric = NewMetric(HOSTNAME, "index_size", float64(indexSize))
+			metric.AddLabel("Units", "megabytes")
+			metric.AddLabel("DatabaseName", dbs[i])
+			metric.AddLabel("TableName", tableName)
+			metrics = append(metrics, metric)
 
-			metric3 := NewPGMetric(HOSTNAME, "total_size", float64(totalSize))
-			metric3.Units = "megabytes"
-			metric3.DatabaseName = dbs[i]
-			metric3.TableName = tableName
-			metrics = append(metrics, metric3)
+			metric = NewMetric(HOSTNAME, "total_size", float64(totalSize))
+			metric.AddLabel("Units", "megabytes")
+			metric.AddLabel("DatabaseName", dbs[i])
+			metric.AddLabel("TableName", tableName)
+			metrics = append(metrics, metric)
 		}
 	}
 

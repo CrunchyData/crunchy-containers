@@ -36,11 +36,11 @@ func LockMetrics(logger *log.Logger, dbs []string, HOSTNAME string, dbConn *sql.
 			return metrics
 		}
 
-		metric := NewPGMetric(HOSTNAME, "lock_count", lockCount)
-		metric.Units = "count"
-		metric.LockType = lockType
-		metric.LockMode = lockMode
-		metric.DatabaseName = dbs[i]
+		metric := NewMetric(HOSTNAME, "lock_count", lockCount)
+		metric.AddLabel("Units", "count")
+		metric.AddLabel("LockType", lockType)
+		metric.AddLabel("LockMode", lockMode)
+		metric.AddLabel("DatabaseName", dbs[i])
 		metrics = append(metrics, metric)
 	}
 

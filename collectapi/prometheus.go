@@ -14,21 +14,21 @@ func WritePrometheusMetrics(logger *log.Logger, PROM_GATEWAY string, HOST string
 		metric.Print()
 
 		opts := prometheus.GaugeOpts{
-			Name: PREFIX + metric.Name(),
+			Name: PREFIX + metric.Name,
 			Help: "no help available",
 		}
 
-		opts.ConstLabels = metric.Labels()
+		opts.ConstLabels = metric.Labels
 
 		newMetric := prometheus.NewGauge(opts)
-		newMetric.Set(metric.Value())
+		newMetric.Set(metric.Value)
 		if err := prometheus.PushCollectors(
-			metric.Name(), HOST,
+			metric.Name, HOST,
 			PROM_GATEWAY,
 			newMetric,
 		); err != nil {
 			logger.Printf("Could not push %s completion time to Pushgateway: %s\n",
-				metric.Name(), err.Error())
+				metric.Name, err.Error())
 			return err
 		}
 	}

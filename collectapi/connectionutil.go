@@ -30,13 +30,13 @@ func GetConnectionUtilMetrics(logger *log.Logger, HOSTNAME string, dbConn *sql.D
 
 	if err := row.Scan(&bootval, &usedval); err != nil {
 		logger.Println("error: " + err.Error())
-		return NewPGMetric(HOSTNAME, "connectionutil", 0.0)
+		return NewMetric(HOSTNAME, "connectionutil", 0.0)
 	}
 
 	value := usedval / bootval * 100.0
-	metric := NewPGMetric(HOSTNAME, "connectionutil", value)
-	metric.Units = "percent"
-	metric.DatabaseName = "cluster"
+	metric := NewMetric(HOSTNAME, "connectionutil", value)
+	metric.AddLabel("Units", "percent")
+	metric.AddLabel("DatabaseName", "cluster")
 
 	return metric
 
