@@ -6,12 +6,11 @@ version: '3'
 
 services:
   db-primary:
-    container_name: db-primary
     image: crunchydata/crunchy-postgres:centos7-9.6-1.4.1
     ports:
     - "5432"
     volumes:
-    - ./primary:/pgdata
+    - primary:/pgdata
     environment:
     - PGHOST=/tmp
     - MAX_CONNECTIONS=101
@@ -33,7 +32,7 @@ services:
     ports:
     - "5432"
     volumes:
-    - ./replica:/pgdata
+    - replica:/pgdata
     links:
     - db-primary
     environment:
@@ -52,3 +51,7 @@ services:
     - PG_PASSWORD=password
     - PG_ROOT_PASSWORD=password
     - PG_DATABASE=userdb
+
+volumes:
+  primary:
+  replica:
