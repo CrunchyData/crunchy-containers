@@ -124,6 +124,52 @@ To shut down the instance, run the following commands:
 docker stop master replica
 ....
 
+==== Docker-Compose
+
+This is a *docker-compose* example of deploying master
+and read replicas using the crunchy-postgres image from DockerHub.
+
+To install docker-compose, please follow the instructions located
+in the link:https://docs.docker.com/compose/install/[official Docker documentation].
+
+You can also access docker-compose by setting up the following Vagrant/VirtualBox
+virtualized environment containing CentOS 7, Docker, and docker-compose:
+https://github.com/jasonodonnell/docker-vm
+
+To deploy this example, run the following commands:
+
+....
+cd $CCPROOT/examples/compose/master-replica
+docker-compose up
+....
+
+Optionally, to deploy more than one replica, run the following:
+
+....
+docker-compose up --scale db-replica=3
+....
+
+To psql into the created database containers, first identify the ports exposed
+on the containers:
+
+....
+docker ps
+....
+
+Next, using psql, connect to the service:
+
+....
+psql -d userdb -h 0.0.0.0 -p <CONTAINER_PORT> -U testuser
+....
+
+*Note:* See *PG_PASSWORD* in *docker-compose.yml* for the user password.
+
+To tear down the example, run the following:
+
+....
+docker-compose stop
+docker-compose rm
+....
 
 ==== Kubernetes
 
