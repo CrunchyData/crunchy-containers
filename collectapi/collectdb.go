@@ -17,8 +17,11 @@ package collectapi
 
 import (
 	"database/sql"
-	_ "github.com/lib/pq"
+	"fmt"
 	"log"
+
+	"github.com/akhenakh/statgo"
+	_ "github.com/lib/pq"
 )
 
 func GetMetrics(logger *log.Logger, HOSTNAME string, USER string, PORT string, PASS string, conn *sql.DB) ([]Metric, error) {
@@ -55,6 +58,19 @@ func GetMetrics(logger *log.Logger, HOSTNAME string, USER string, PORT string, P
 	for i := 0; i < len(xlogMetrics); i++ {
 		metrics = append(metrics, xlogMetrics[i])
 	}
+
+	s := statgo.NewStat()
+
+	fmt.Printf("Metric Count: %d", len(metrics))
+	cpuMetrics := GetCPUMetrics(HOSTNAME, s)
+	metrics = append(metrics, cpuMetrics...)
+
+	memMetrics := GetMemoryMetrics(HOSTNAME, s)
+	metrics = append(metrics, memMetrics...)
+
+	netMetrics := GetNetworkIOMetrics(HOSTNAME, s)
+	metrics = append(metrics, netMetrics...)
+
 	return metrics, err
 }
 
