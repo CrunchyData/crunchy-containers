@@ -1,8 +1,10 @@
 package collectapi
 
 import (
-	"github.com/prometheus/client_golang/prometheus"
+	"fmt"
 	"log"
+
+	"github.com/prometheus/client_golang/prometheus"
 )
 
 const PREFIX = "crunchy_"
@@ -11,7 +13,7 @@ func WritePrometheusMetrics(logger *log.Logger, PROM_GATEWAY string, HOST string
 	var err error
 	logger.Printf("writing %d metrics\n", len(metrics))
 	for _, metric := range metrics {
-		metric.Print()
+		fmt.Println(metric)
 
 		opts := prometheus.GaugeOpts{
 			Name: PREFIX + metric.Name,

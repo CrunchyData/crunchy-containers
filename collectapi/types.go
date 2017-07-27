@@ -39,14 +39,13 @@ func (m Metric) AddLabel(label, value string) {
 	m.Labels[label] = value
 }
 
-func (m Metric) Print() {
-	fmt.Print("metric: " + m.Name)
-	fmt.Print(" hostname: " + m.Hostname)
-	fmt.Printf(" value: %f", m.Value)
+func (m Metric) String() string {
+	labels := ""
 
 	for label, value := range m.Labels {
-		fmt.Printf(" %s: %s", label, value)
+		labels += fmt.Sprintf(" %s: %s", label, value)
 	}
 
-	fmt.Println()
+	return fmt.Sprintf("metric: %s hostname: %s value: %f labels: {%s}",
+		m.Name, m.Hostname, m.Value, labels)
 }

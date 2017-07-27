@@ -17,6 +17,7 @@ package collectapi
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 
 	"github.com/akhenakh/statgo"
@@ -76,7 +77,7 @@ func PrintMetrics(logger *log.Logger, metrics []Metric) error {
 	var err error
 	logger.Println("writing metrics")
 	for i := 0; i < len(metrics); i++ {
-		metrics[i].Print()
+		fmt.Println(metrics[i])
 	}
 	return err
 }
