@@ -70,6 +70,9 @@ func GetMetrics(logger *log.Logger, HOSTNAME string, USER string, PORT string, P
 	netMetrics := GetNetworkIOMetrics(HOSTNAME, s)
 	metrics = append(metrics, netMetrics...)
 
+	storageMetrics := GetStorageMetrics(HOSTNAME, s)
+	metrics = append(metrics, storageMetrics...)
+
 	return metrics, err
 }
 
