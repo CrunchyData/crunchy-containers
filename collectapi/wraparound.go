@@ -82,9 +82,8 @@ func WraparoundMetrics(logger *log.Logger, dbs []string, HOSTNAME string, USER s
 				return metrics
 			}
 
-			metric := NewPGMetric(HOSTNAME, "wraparound")
+			metric := NewPGMetric(HOSTNAME, "wraparound", 1.0)
 			metric.Units = "item"
-			metric.SetValue(1)
 			metric.Kind = kind
 			metric.TableSz = table_sz
 			metric.TotalSz = total_sz

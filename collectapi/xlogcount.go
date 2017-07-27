@@ -47,9 +47,8 @@ func XlogCountMetrics(logger *log.Logger, HOSTNAME string, dbConn *sql.DB) []Met
 	logger.Println("xlog count got back " + result)
 	count, err = strconv.ParseFloat(result, 64)
 
-	metric := NewPGMetric(HOSTNAME, "xlog_count")
+	metric := NewPGMetric(HOSTNAME, "xlog_count", count)
 	metric.Units = "count"
-	metric.SetValue(count)
 	metric.DatabaseName = "cluster"
 	metrics = append(metrics, metric)
 

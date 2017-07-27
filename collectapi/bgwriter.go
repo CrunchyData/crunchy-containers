@@ -42,62 +42,52 @@ func BgwriterMetrics(logger *log.Logger, HOSTNAME string, dbConn *sql.DB) []Metr
 		return metrics
 	}
 
-	metric := NewPGMetric(HOSTNAME, "checkpoints_time")
-	metric.SetValue(checkpoints_timed)
+	metric := NewPGMetric(HOSTNAME, "checkpoints_time", checkpoints_timed)
 	metric.Units = "count"
 	metric.DatabaseName = "cluster"
 	metrics = append(metrics, metric)
 
-	metric2 := NewPGMetric(HOSTNAME, "checkpoints_req")
-	metric2.SetValue(checkpoints_req)
+	metric2 := NewPGMetric(HOSTNAME, "checkpoints_req", checkpoints_req)
 	metric2.Units = "count"
 	metric2.DatabaseName = "cluster"
 	metrics = append(metrics, metric2)
 
-	metric3 := NewPGMetric(HOSTNAME, "checkpoint_write_time")
-	metric3.SetValue(checkpoint_write_time)
+	metric3 := NewPGMetric(HOSTNAME, "checkpoint_write_time", checkpoint_write_time)
 	metric3.Units = "count"
 	metric3.DatabaseName = "cluster"
 	metrics = append(metrics, metric3)
 
-	metric4 := NewPGMetric(HOSTNAME, "checkpoint_sync_time")
-	metric4.SetValue(checkpoint_sync_time)
+	metric4 := NewPGMetric(HOSTNAME, "checkpoint_sync_time", checkpoint_sync_time)
 	metric4.Units = "count"
 	metric4.DatabaseName = "cluster"
 	metrics = append(metrics, metric4)
 
-	metric5 := NewPGMetric(HOSTNAME, "buffers_checkpoint")
-	metric5.SetValue(buffers_checkpoint)
+	metric5 := NewPGMetric(HOSTNAME, "buffers_checkpoint", buffers_checkpoint)
 	metric5.Units = "count"
 	metric5.DatabaseName = "cluster"
 	metrics = append(metrics, metric5)
 
-	metric6 := NewPGMetric(HOSTNAME, "buffers_clean")
-	metric6.SetValue(buffers_clean)
+	metric6 := NewPGMetric(HOSTNAME, "buffers_clean", buffers_clean)
 	metric6.Units = "count"
 	metric6.DatabaseName = "cluster"
 	metrics = append(metrics, metric6)
 
-	metric7 := NewPGMetric(HOSTNAME, "maxwritten_clean")
-	metric7.SetValue(maxwritten_clean)
+	metric7 := NewPGMetric(HOSTNAME, "maxwritten_clean", maxwritten_clean)
 	metric7.Units = "count"
 	metric7.DatabaseName = "cluster"
 	metrics = append(metrics, metric7)
 
-	metric8 := NewPGMetric(HOSTNAME, "buffers_backend")
-	metric8.SetValue(buffers_backend)
+	metric8 := NewPGMetric(HOSTNAME, "buffers_backend", buffers_backend)
 	metric8.Units = "count"
 	metric8.DatabaseName = "cluster"
 	metrics = append(metrics, metric8)
 
-	metric9 := NewPGMetric(HOSTNAME, "buffers_backend_fsync")
-	metric9.SetValue(buffers_backend_fsync)
+	metric9 := NewPGMetric(HOSTNAME, "buffers_backend_fsync", buffers_backend_fsync)
 	metric9.Units = "count"
 	metric9.DatabaseName = "cluster"
 	metrics = append(metrics, metric9)
 
-	metric10 := NewPGMetric(HOSTNAME, "buffers_alloc")
-	metric10.SetValue(buffers_alloc)
+	metric10 := NewPGMetric(HOSTNAME, "buffers_alloc", buffers_alloc)
 	metric10.Units = "count"
 	metric10.DatabaseName = "cluster"
 	metrics = append(metrics, metric10)

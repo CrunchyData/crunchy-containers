@@ -27,7 +27,6 @@ func ObjectSizeMetrics(logger *log.Logger, dbs []string, HOSTNAME string, dbConn
 	var metrics = make([]Metric, 0)
 
 	for i := 0; i < len(dbs); i++ {
-		metric := NewPGMetric(HOSTNAME, "database_size")
 
 		var dbSize float64
 		err := dbConn.QueryRow("select pg_database_size(d.datname)/1024/1024 from pg_database d where d.datname = '" + dbs[i] + "'").Scan(&dbSize)
@@ -36,8 +35,8 @@ func ObjectSizeMetrics(logger *log.Logger, dbs []string, HOSTNAME string, dbConn
 			return metrics
 		}
 
+		metric := NewPGMetric(HOSTNAME, "database_size", dbSize)
 		metric.Units = "megabytes"
-		metric.SetValue(dbSize)
 		metric.DatabaseName = dbs[i]
 		metrics = append(metrics, metric)
 	}
@@ -84,23 +83,20 @@ func TableSizesMetrics(logger *log.Logger, dbs []string, HOSTNAME string, USER s
 		}
 
 		if tableSize > 0 {
-			metric := NewPGMetric(HOSTNAME, "table_size")
+			metric := NewPGMetric(HOSTNAME, "table_size", tableSize)
 			metric.Units = "megabytes"
-			metric.SetValue(tableSize)
 			metric.DatabaseName = dbs[i]
 			metric.TableName = tableName
 			metrics = append(metrics, metric)
 
-			metric2 := NewPGMetric(HOSTNAME, "index_size")
+			metric2 := NewPGMetric(HOSTNAME, "index_size", float64(indexSize))
 			metric2.Units = "megabytes"
-			metric2.SetValue(float64(indexSize))
 			metric2.DatabaseName = dbs[i]
 			metric2.TableName = tableName
 			metrics = append(metrics, metric2)
 
-			metric3 := NewPGMetric(HOSTNAME, "total_size")
+			metric3 := NewPGMetric(HOSTNAME, "total_size", float64(totalSize))
 			metric3.Units = "megabytes"
-			metric3.SetValue(float64(totalSize))
 			metric3.DatabaseName = dbs[i]
 			metric3.TableName = tableName
 			metrics = append(metrics, metric3)

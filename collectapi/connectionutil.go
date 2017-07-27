@@ -23,18 +23,19 @@ import (
 
 func GetConnectionUtilMetrics(logger *log.Logger, HOSTNAME string, dbConn *sql.DB) Metric {
 	logger.Println("get connection util metrics")
-	metric := NewPGMetric(HOSTNAME, "connectionutil")
 
 	var bootval float64
 	var usedval float64
-	err := dbConn.QueryRow("select boot_val::numeric , (select sum(numbackends) from pg_stat_database) as used_val from pg_settings where name = 'max_connections'").Scan(&bootval, &usedval)
-	if err != nil {
+	row := dbConn.QueryRow("select boot_val::numeric, (select sum(numbackends) from pg_stat_database) as used_val from pg_settings where name = 'max_connections'")
+
+	if err := row.Scan(&bootval, &usedval); err != nil {
 		logger.Println("error: " + err.Error())
-		return metric
+		return NewPGMetric(HOSTNAME, "connectionutil", 0.0)
 	}
 
+	value := usedval / bootval * 100.0
+	metric := NewPGMetric(HOSTNAME, "connectionutil", value)
 	metric.Units = "percent"
-	metric.SetValue(usedval / bootval * 100.0)
 	metric.DatabaseName = "cluster"
 
 	return metric

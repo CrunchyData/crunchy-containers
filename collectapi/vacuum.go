@@ -95,9 +95,8 @@ func DeadRowsMetrics(logger *log.Logger, dbs []string, HOSTNAME string, USER str
 				return metrics
 			}
 
-			metric := NewPGMetric(HOSTNAME, "pct_dead")
+			metric := NewPGMetric(HOSTNAME, "pct_dead", pct_dead)
 			metric.Units = "item"
-			metric.SetValue(pct_dead)
 			metric.DeadTup = n_dead_tup
 			metric.RelTup = reltuples
 			metric.TableSz = table_sz

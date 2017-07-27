@@ -24,7 +24,6 @@ type Metric interface {
 	Hostname() string
 	Name() string
 	Value() float64
-	SetValue(v float64)
 	Labels() map[string]string
 	Print()
 }
@@ -45,10 +44,6 @@ func (bm baseMetric) Name() string {
 
 func (bm baseMetric) Value() float64 {
 	return bm.value
-}
-
-func (bm baseMetric) SetValue(v float64) {
-	bm.value = v
 }
 
 type PGMetric struct {
@@ -106,11 +101,12 @@ func (p PGMetric) Labels() map[string]string {
 	return labels
 }
 
-func NewPGMetric(hostname, name string) PGMetric {
+func NewPGMetric(hostname, name string, value float64) PGMetric {
 	return PGMetric{
 		baseMetric: baseMetric{
 			hostname: hostname,
 			name:     name,
+			value:    value,
 		},
 	}
 }
@@ -126,7 +122,9 @@ func (p PGMetric) Print() {
 		fmt.Print(" locktype: " + p.LockType)
 		fmt.Print(" lockmode: " + p.LockMode)
 	}
-	fmt.Printf(" value: %d", p.Value)
+
+	fmt.Printf(" value: %f", p.Value())
+
 	if p.name == "pct_dead" {
 		fmt.Print(" n_dead_tup: %d ", p.DeadTup)
 		fmt.Print(" reltuples: %d", p.RelTup)
@@ -148,4 +146,76 @@ func (p PGMetric) Print() {
 		fmt.Print(" last_vacuum: " + p.LastVacuum)
 	}
 	fmt.Println(" units: " + p.Units)
+}
+
+type CPUMetric struct {
+	baseMetric
+}
+
+func NewCPUMetric(hostname, name string, value float64) CPUMetric {
+	return CPUMetric{
+		baseMetric: baseMetric{
+			hostname: hostname,
+			name:     name,
+		},
+	}
+}
+
+func (o CPUMetric) Labels() map[string]string {
+	labels := make(map[string]string)
+
+	return labels
+}
+
+func (o CPUMetric) Print() {
+
+}
+
+type MemoryMetric struct {
+	baseMetric
+}
+
+func NewMemoryMetric(hostname, name string, value float64) MemoryMetric {
+	return MemoryMetric{
+		baseMetric: baseMetric{
+			hostname: hostname,
+			name:     name,
+			value:    value,
+		},
+	}
+}
+
+func (m MemoryMetric) Labels() map[string]string {
+	labels := make(map[string]string)
+	return labels
+}
+
+func (m MemoryMetric) Print() {
+	fmt.Printf("Memory: %s Value: %f\n", m.Name(), m.Value())
+}
+
+type NetworkIOMetric struct {
+	baseMetric
+	Interface string
+}
+
+func NewNetworkIOMetric(hostname, name string, value float64) NetworkIOMetric {
+	return NetworkIOMetric{
+		baseMetric: baseMetric{
+			hostname: hostname,
+			name:     name,
+			value:    value,
+		},
+	}
+}
+
+func (n NetworkIOMetric) Labels() map[string]string {
+	labels := make(map[string]string)
+
+	labels["Interface"] = n.Interface
+
+	return labels
+}
+
+func (n NetworkIOMetric) Print() {
 }

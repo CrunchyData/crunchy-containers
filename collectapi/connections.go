@@ -38,15 +38,14 @@ func GetConnectionMetrics(logger *log.Logger, HOSTNAME string, dbConn *sql.DB) [
 	for rows.Next() {
 		var numbackends float64
 		var databaseName string
-		metric := NewPGMetric(HOSTNAME, "connections")
-		metric.Units = "count"
 
 		if err = rows.Scan(&numbackends, &databaseName); err != nil {
 			logger.Println("error:" + err.Error())
 			return metrics
 		}
 
-		metric.SetValue(numbackends)
+		metric := NewPGMetric(HOSTNAME, "connections", numbackends)
+		metric.Units = "count"
 		metric.DatabaseName = databaseName
 
 		total = total + numbackends
@@ -58,8 +57,7 @@ func GetConnectionMetrics(logger *log.Logger, HOSTNAME string, dbConn *sql.DB) [
 	}
 
 	//enter a metric for the whole cluster
-	metric := NewPGMetric(HOSTNAME, "connections")
-	metric.SetValue(total)
+	metric := NewPGMetric(HOSTNAME, "connections", total)
 	metric.Units = "count"
 	metric.DatabaseName = "cluster"
 	metrics = append(metrics, metric)
