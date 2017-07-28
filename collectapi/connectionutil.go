@@ -21,23 +21,22 @@ import (
 	"log"
 )
 
-func GetConnectionUtilMetrics(logger *log.Logger, HOSTNAME string, dbConn *sql.DB) *Metric {
+func GetConnectionUtilMetrics(logger *log.Logger, HOSTNAME string, dbConn *sql.DB) Metric {
 	logger.Println("get connection util metrics")
-	metric := new(Metric)
 
-	var bootval int64
-	var usedval int64
-	err := dbConn.QueryRow("select boot_val::numeric , (select sum(numbackends) from pg_stat_database) as used_val from pg_settings where name = 'max_connections'").Scan(&bootval, &usedval)
-	if err != nil {
+	var bootval float64
+	var usedval float64
+	row := dbConn.QueryRow("select boot_val::numeric, (select sum(numbackends) from pg_stat_database) as used_val from pg_settings where name = 'max_connections'")
+
+	if err := row.Scan(&bootval, &usedval); err != nil {
 		logger.Println("error: " + err.Error())
-		return metric
+		return NewMetric(HOSTNAME, "connectionutil", 0.0)
 	}
 
-	metric.Hostname = HOSTNAME
-	metric.MetricName = "connectionutil"
-	metric.Units = "percent"
-	metric.Value = int64(float64(usedval) / float64(bootval) * 100.0)
-	metric.DatabaseName = "cluster"
+	value := usedval / bootval * 100.0
+	metric := NewMetric(HOSTNAME, "connectionutil", value)
+	metric.AddLabel("Units", "percent")
+	metric.AddLabel("DatabaseName", "cluster")
 
 	return metric
 

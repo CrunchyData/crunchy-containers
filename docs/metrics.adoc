@@ -229,6 +229,57 @@ Metric,Description,Scope,unit
 *crunchy_xlog_count*,count of pg_xlog archive files,cluster,count
 |===
 
+.Table cpu Metrics
+[format="csv", options="header"]
+|===
+Metric,Description,Scope,unit
+crunchy_cpu_user, percentage of cpu utilization occurring at user level, system, percent
+crunchy_cpu_kernel, percent of cpu utilization occurring at the system/kernel level, system, percent
+crunchy_cpu_idle, percentage of time cpu is idle, system, percent
+crunchy_cpu_iowait, percentage of time cpu is waiting on disk IO, system, percent
+crunchy_cpu_nice, percentage of time cpu executing at user level with nice priority, system, percent
+|===
+
+.Table memory Metrics
+[format="csv", options="header"]
+|===
+Metric,Description,Scope,unit
+crunchy_mem_total, total amount of real memory, system, bytes
+crunchy_mem_free, free amount of real memory, system, bytes
+crunchy_mem_used, used amount of real memory, system, bytes
+crunchy_mem_cache, amount of real memory used for caching, system, bytes
+crunchy_mem_swap_total, total swap space, system, bytes
+crunchy_mem_swap_used, total used swap space, system, bytes
+crunchy_mem_swap_free, total free swap space, system, bytes
+|===
+
+.Table network Metrics
+[format="csv", options="header"]
+|===
+Metric,Description,Scope,unit
+crunchy_net_tx, number of bytes transmitted, system, bytes
+crunchy_net_rx, number of bytes received, system, bytes
+crunchy_net_ipackets, number of packets received, system, count
+crunchy_net_opackets, number of packets trasmitted, system, count
+crunchy_net_ierrors, number of receive errors, system, count
+crunchy_net_oerrors, number of transmit errors, system, count
+crunchy_net_collisions, number of collisions, system, count
+|===
+
+.Table storage Metrics
+[format="csv", options="header"]
+|===
+Metric,Description,Scope,unit
+crunchy_storage_size, total size of file system, system, bytes
+crunchy_storage_used, amount of space used on file system, system, bytes
+crunchy_storage_free, amount of space free on file system, system, bytes
+crunchy_storage_available, amount of space available on file system, system, bytes
+crunchy_storage_inodes_total, total number of inodes in the file system, system, count
+crunchy_storage_inodes_used, number of inodes used in the file system, system, count
+crunchy_storage_inodes_free, number of inodes free in the file system, system, count
+crunchy_storage_inodes_available, number of inodes available in the file system, system, count
+|===
+
 <<<
 == Grafana Dashboard
 
