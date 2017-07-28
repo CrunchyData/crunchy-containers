@@ -9,30 +9,23 @@ func GetCPUMetrics(hostname string, s *statgo.Stat) []Metric {
 	cpuInfo := s.CPUStats()
 
 	metric := NewMetric(hostname, "cpu_user", cpuInfo.User)
+	metric.AddLabel("Units", "percent")
 	metrics = append(metrics, metric)
 
 	metric = NewMetric(hostname, "cpu_kernel", cpuInfo.Kernel)
+	metric.AddLabel("Units", "percent")
 	metrics = append(metrics, metric)
 
 	metric = NewMetric(hostname, "cpu_idle", cpuInfo.Idle)
+	metric.AddLabel("Units", "percent")
 	metrics = append(metrics, metric)
 
 	metric = NewMetric(hostname, "cpu_iowait", cpuInfo.IOWait)
-	metrics = append(metrics, metric)
-
-	metric = NewMetric(hostname, "cpu_swap", cpuInfo.Swap)
+	metric.AddLabel("Units", "percent")
 	metrics = append(metrics, metric)
 
 	metric = NewMetric(hostname, "cpu_nice", cpuInfo.Nice)
-	metrics = append(metrics, metric)
-
-	metric = NewMetric(hostname, "cpu_load_min_1", cpuInfo.LoadMin1)
-	metrics = append(metrics, metric)
-
-	metric = NewMetric(hostname, "cpu_load_min_5", cpuInfo.LoadMin5)
-	metrics = append(metrics, metric)
-
-	metric = NewMetric(hostname, "cpu_load_min_15", cpuInfo.LoadMin15)
+	metric.AddLabel("Units", "percent")
 	metrics = append(metrics, metric)
 
 	return metrics
