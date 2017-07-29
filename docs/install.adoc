@@ -205,7 +205,7 @@ The case of Amazon file systems is different, for that you use the
 *fsGroup* security context setting but the idea for allowing
 write permissions is the same.
 
-You will then need to modify the /etc/exports file. 
+You will then need to modify the /etc/exports file.
 ....
 sudo vi /etc/exports
 ....
@@ -247,6 +247,21 @@ of the way port translation is done between the VM host and the VM instance.
 For more details on this bug, please see the following link.
 
 http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting
+
+A suggested best practice for tuning NFS for PostgreSQL is to configure the PostgreSQL fstab
+mount options like so:
+
+....
+proto=tcp,suid,rw,vers=3,proto=tcp,timeo=600,retrans=2,hard,fg,rsize=8192,wsize=8192
+....
+
+Network options:
+....
+MTU=9000
+....
+
+If interested in mounting the same NFS share multiple times on the same mount point,
+look into the link:https://www.novell.com/support/kb/doc.php?id=7010210[noac mount option].
 
 === Examples
 
