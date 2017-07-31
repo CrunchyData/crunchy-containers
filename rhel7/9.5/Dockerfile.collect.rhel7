@@ -36,6 +36,10 @@ openssh-clients \
 hostname  \
  && yum clean all -y
 
+# Install libstatgrab and dependencies
+RUN yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/log4cplus-1.1.3-0.4.rc3.el7.x86_64.rpm
+Run yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/libstatgrab-0.91-4.el7.x86_64.rpm
+
 # set up cpm directory
 #
 RUN mkdir -p /opt/cpm/bin
