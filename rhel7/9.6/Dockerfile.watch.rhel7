@@ -21,6 +21,8 @@ LABEL name="crunchydata/watch" \
         io.openshift.tags="crunchy,database"
 
 COPY docs/watch/help.1 /help.1
+COPY docs/watch/help.md /help.md
+COPY docs/licenses /licenses
 
 ENV PGVERSION="9.6"
 
