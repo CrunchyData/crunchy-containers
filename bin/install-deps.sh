@@ -72,11 +72,11 @@ if [ $? -ne 0 ]; then
 # install oc binary into /usr/bin
 #
 
-FILE=openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit.tar.gz
+FILE=openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz
 wget -O /tmp/$FILE \
-https://github.com/openshift/origin/releases/download/v1.4.1/$FILE
+https://github.com/openshift/origin/releases/download/v1.5.1/$FILE
 
 tar xvzf /tmp/$FILE  -C /tmp
-sudo cp /tmp/openshift-origin-client-tools-v1.4.1+3f9807a-linux-64bit/oc /usr/bin/oc
+sudo cp /tmp/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit/oc /usr/bin/oc
 
 fi
