@@ -1,7 +1,7 @@
 = Examples & Use Cases - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
 :toc: left
-v1.4.1, {docdate}
+v1.5, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Container Examples
@@ -2373,6 +2373,77 @@ oc logs watch
 oc get pod
 ....
 
+=== ssl - postgres ssl auth method
+
+==== OpenShift
+
+This example shows how you can configure Postgres to use ssl for
+client authentication.
+
+The example is found at:
+....
+./examples/openshift/customer-config-ssl
+....
+
+The example requires SSL keys to be created, the example script
+*keys.sh* is required to be executed to create the required
+server and client certificates.  This script also creates
+a client key configuration you can use to test with.
+
+The example requires an NFS volume, /pgconf, be mounted into which
+the Postgres configuration files and keys are copied to.  Permissions
+of the keys are important as well, they will need to be owned
+by either the *root* or *postgres* user.  The *run.sh* script
+copies the required files and sets these permissions when executing the example.
+
+The *keys.sh* script creates a client cert with the *testuser* specified
+as the CN.  The *testuser* Postgres user is created by the *setup.sql*
+configuration script as normal.  It is with the *testuser* role that
+you will test with.
+
+Run the Postgres example as follows:
+....
+./run.sh
+....
+
+A required step to make this example work is to define
+in your */etc/hosts* file an entry that maps *server.crunchydata.com*
+to the example's service IP address, this is because we generate
+a server certificate with the server name of *server.crunchyhdata.com*.
+
+For example, if your service has an address as follows:
+....
+ oc get service
+NAME                CLUSTER-IP       EXTERNAL-IP   PORT(S)                   AGE
+custom-config-ssl   172.30.211.108   <none>        5432/TCP
+....
+
+Then your */etc/hosts* file needs an entry like this:
+....
+172.30.211.108 server.crunchydata.com
+....
+
+For a production Openshift installation, you'll likely want DNS
+names to resolve to the Postgres Service name and generate
+server certificates using the DNS names instead of an example
+name like *server.crunchydata.com*.
+
+Once the container starts up, you can test the SSL connection
+as follows:
+....
+psql -h server.crunchydata.com -U testuser userdb
+....
+
+You should see a connection that looks like the following:
+....
+psql (9.6.3)
+SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
+Type "help" for help.
+
+userdb=>
+....
+
+
 === workshop - OpenShift Workshop
 
 ==== OpenShift
@@ -2401,13 +2472,13 @@ you perform a pg_upgrade on a 9.5 database converting its data
 to a 9.6 version.
 
 This example assumes you have run *master-pvc* using a 9.5 image
-such as *centos7-9.5-1.4.1* prior to running this upgrade.
+such as *centos7-9.5-1.5* prior to running this upgrade.
 
 Prior to starting this example, shut down the *master-pvc* database
 using the *examples/kube/master-pvc/cleanup.sh* script.
 
 Prior to running this example, make sure your CCP_IMAGE_TAG
-environment variable is using a 9.6 image such as *centos7-9.6-1.4.1*.
+environment variable is using a 9.6 image such as *centos7-9.6-1.5*.
 
 Start the upgrade as follows:
 ....

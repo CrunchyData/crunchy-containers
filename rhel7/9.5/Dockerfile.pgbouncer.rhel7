@@ -1,13 +1,13 @@
-FROM registry.access.redhat.com/rhel7.3
+FROM registry.access.redhat.com/rhel
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/pgbouncer" \
-				PostgresVersion="9.5" \
-				PostgresFullVersion="9.5.7" \
+	PostgresVersion="9.5" \
+	PostgresFullVersion="9.5.7" \
         vendor="crunchy data" \
         version="7.3" \
-        release="1.4.1" \
+        release="1.5" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Lightweight connection pooler for crunchy-postgres" \

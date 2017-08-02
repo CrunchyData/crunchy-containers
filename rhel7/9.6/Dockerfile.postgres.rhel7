@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/rhel7.3
+FROM registry.access.redhat.com/rhel
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
@@ -7,7 +7,7 @@ LABEL name="crunchydata/postgres" \
       	PostgresVersion="9.6" \
       	PostgresFullVersion="9.6.3" \
         version="7.3" \
-        release="1.4.1" \
+        release="1.5" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="PostgreSQL 9.5/9.6 (PGDG) on a RHEL7 base image" \
@@ -21,6 +21,7 @@ LABEL name="crunchydata/postgres" \
         io.openshift.tags="crunchy,database"
 
 COPY docs/postgres/help.1 /help.1
+COPY docs/postgres/help.md /help.md
 COPY docs/licenses /licenses
 
 ENV PGVERSION="9.6"
