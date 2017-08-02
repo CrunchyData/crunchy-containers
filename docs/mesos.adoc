@@ -72,30 +72,30 @@ added to your system as part of the installation.
 
 == Examples for the Mesos Environment
 
-The examples/mesos directory contains examples for 
+The examples/mesos directory contains examples for
 running the Crunchy containers in a mesos environment.
 
 The examples are explained below.
 
-=== mesos Example 1 - master-slave
+=== mesos Example 1 - master-replica
 
 This example starts a postgres master container and a replica container
 to form a cluster.
 
 Running the example:
 ....
-examples/mesos/master-slave/run.sh
+examples/mesos/master-replica/run.sh
 marathonctl -h http://10.0.2.15:8080 app list
 ....
 
 After the database starts up you can connect to it as follows:
 ....
 psql -h pgmaster.marathon.mesos -U postgres postgres
-psql -h pgslave.marathon.mesos -U postgres postgres
+psql -h pgreplica.marathon.mesos -U postgres postgres
 ....
 
 This example currently uses a NFS mounted volume path to persist
-both the master and slave data files.
+both the master and replica data files.
 
 == Legal Notices
 

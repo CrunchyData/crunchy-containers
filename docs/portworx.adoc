@@ -252,7 +252,7 @@ to be created for any new database container.
 The pgbouncer utility can be used to provide a connection pool
 to postgres databases.  The crunchy-pgbouncer container also
 contains logic that lets it perform a failover from a master
-to a slave database.
+to a replica database.
 
 To test this failover, you first need to have run the Example 1
 which creates the *master* container, and also the *replica* container
@@ -299,7 +299,7 @@ to pgbouncer will be able to connect to the master as before the failover.
 === Example 8 - synchronous replication
 
 This example provides a streaming replication configuration that includes both
-synchronous and asynchronous slaves.
+synchronous and asynchronous replicas.
 
 To run this example, run the following:
 
@@ -308,8 +308,8 @@ cd $CCPROOT/examples/portworx/sync
 ./create-volumes.sh
 ./run-sync-master.sh
 sleep 20
-./run-sync-slave.sh
-./run-async-slave.sh
+./run-sync-replica.sh
+./run-async-replica.sh
 ....
 
 You can test the replication status on the master by using the following command:
@@ -317,11 +317,11 @@ You can test the replication status on the master by using the following command
 psql -h 127.0.0.1 -p 12010 -U postgres postgres -c 'table pg_stat_replication'
 ....
 
-You should see 2 rows, 1 for the async slave and 1 for the sync slave.  The
+You should see 2 rows, one for the asynchronous replica and one for the synchronous replica.  The
 sync_state column shows values of async or sync.
 
-You can test replication to the slaves by entering some data on
-the master like this, and then querying the slaves for that data:
+You can test replication to the replicas by entering some data on
+the master like this, and then querying the replicas for that data:
 ....
 psql -h 127.0.0.1 -p 12010 -U postgres postgres -c 'create table foo (id int)'
 psql -h 127.0.0.1 -p 12010 -U postgres postgres -c 'insert into foo values (1)'

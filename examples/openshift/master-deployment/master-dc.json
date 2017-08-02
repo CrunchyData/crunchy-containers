@@ -15,7 +15,7 @@
         "value": "5432"
     }, {
         "name": "PG_MASTER_USER",
-        "description": "The username used for master-slave replication",
+        "description": "The username used for master-replica replication",
         "value": "master"
     }, {
         "name": "PGDATA_PATH_OVERRIDE",

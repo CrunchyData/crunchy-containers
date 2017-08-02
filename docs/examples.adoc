@@ -315,8 +315,8 @@ the replicas:
 psql -h replica-dc -U postgres postgres -c 'select inet_server_addr()'
 ....
 
-=== master-replica-rc-pvc - Master/Slave deployment using pvc
-
+=== master-replica-rc-pvc - Master/Replica deployment using pvc
+ 
 
 ==== OpenShift
 
@@ -1452,11 +1452,11 @@ to work, see comments within the sample setup.sql file.
 ==== Docker
 
 The pgbouncer utility can be used to provide a connection pool
-to postgres databases.  The crunchy-pgbouncer container also
+to PostgreSQL databases.  The crunchy-pgbouncer container also
 contains logic that lets it perform a failover from a master
-to a slave database.
+to a replica database.
 
-To test this failover, you first create a running master/slave
+To test this failover, you first create a running master/replica
 cluster as follows:
 
 ....
@@ -1484,9 +1484,9 @@ docker stop master
 ....
 
 At this point, the pgbouncer will notice that the master is not reachable
-and touch the trigger file on the configured slave database to start
+and touch the trigger file on the configured replica database to start
 the failover.  The pgbouncer container will then reconfigure
-pgbouncer to relabel the slave database into the master database so clients
+pgbouncer to relabel the replica database into the master database so clients
 to pgbouncer will be able to connect to the master as before the failover.
 
 To just log into the database from the pgbouncer connection pool
@@ -1600,7 +1600,7 @@ psql -h pgbouncer.openshift.svc.cluster.local  -U master master
 
 This example, $CCPROOT/examples/docker/sync, provides a
 streaming replication configuration that includes both
-synchronous and asynchronous slaves.
+synchronous and asynchronous replicas.
 
 To run this example, run the following:
 
@@ -1615,11 +1615,11 @@ and the password "password":
 psql -h 127.0.0.1 -p 12000 -U postgres postgres -c 'table pg_stat_replication'
 ....
 
-You should see 2 rows, 1 for the async slave and 1 for the sync slave.  The
+You should see 2 rows, 1 for the asynchronous replica and 1 for the synchronous replica.  The
 sync_state column shows values of async or sync.
 
-You can test replication to the slaves by entering some data on
-the master like this, and then querying the slaves for that data:
+You can test replication to the replicas by entering some data on
+the master like this, and then querying the replicas for that data:
 ....
 psql -h 127.0.0.1 -p 12000 -U postgres postgres -c 'create table foo (id int)'
 psql -h 127.0.0.1 -p 12000 -U postgres postgres -c 'insert into foo values (1)'

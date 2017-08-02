@@ -1,5 +1,5 @@
 {
-  "id": "pgslave",
+  "id": "pgreplica",
   "cmd": null,
   "cpus": 1,
   "mem": 128,
@@ -12,7 +12,7 @@
       "parameters": [
 	{
 	"key": "hostname",
-	"value": "pgslave"
+	"value": "pgreplica"
  	}
 	],
       "portMappings": [
@@ -42,7 +42,7 @@
     {
       "protocol": "COMMAND",
       "command": {
-        "value": "/usr/pgsql-9.5/bin/pg_isready --host=pgslave.marathon.mesos"
+        "value": "/usr/pgsql-9.5/bin/pg_isready --host=pgreplica.marathon.mesos"
       },
       "gracePeriodSeconds": 300,
       "intervalSeconds": 60,

@@ -25,10 +25,10 @@ import (
 var logger *log.Logger
 
 /*
-this program reads an input file, and removes the master database,
-replacing the slave database as the new master, and writes out the file to
-the same input filename..it is used to rewrite a pgbouncer.ini file after
-a failover has been performed..
+This program reads an input file, removes the master database,
+replacing the replica database as the new master, and writes out the file to
+the same input filename. It is used to rewrite a pgbouncer.ini file after
+a failover has been performed.
 */
 func main() {
 	logger = log.New(os.Stdout, "logger: ", log.Lshortfile|log.Ldate|log.Ltime)
@@ -53,7 +53,7 @@ func main() {
 	lines := strings.Split(string(content), "\n")
 
 	//logger.Println("here is the file....")
-	var slaveflipped = false
+	var replicaflipped = false
 	var sectionfound = false
 	var outputString string
 	for i := 0; i < len(lines); i++ {
@@ -75,12 +75,12 @@ func main() {
 					if strings.Contains(lines[i], "master") {
 						//logger.Println("dropping this one " + lines[i])
 					} else {
-						//logger.Println("should be slave " + lines[i])
+						//logger.Println("should be replica " + lines[i])
 
 						//logger.Println("master " + lines[i][pos:length])
-						if slaveflipped == false {
+						if replicaflipped == false {
 							outputString += replace(lines[i])
-							slaveflipped = true
+							replicaflipped = true
 						} else {
 							outputString += lines[i] + "\n"
 						}
