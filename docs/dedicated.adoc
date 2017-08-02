@@ -1,6 +1,6 @@
 = OpenShift Dedicated Examples - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.4.1, {docdate}
+v1.5, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == OpenShift Dedicated Environment
