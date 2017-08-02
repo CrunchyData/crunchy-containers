@@ -315,6 +315,9 @@ the replicas:
 psql -h replica-dc -U postgres postgres -c 'select inet_server_addr()'
 ....
 
+=== master-replica-rc-pvc - Master/Replica deployment using pvc
+ 
+
 ==== OpenShift
 
 This example uses a pvc based volume for the master and the replicas.  In
