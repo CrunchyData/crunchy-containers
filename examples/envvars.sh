@@ -31,7 +31,7 @@ export NFS_IP=`hostname --ip-address`
 export LOCAL_IP=`hostname --ip-address`
 
 if [ -v $CCP_IMAGE_TAG ]; then
-	export CCP_IMAGE_TAG=rhel7-9.6-1.4.1
+	export CCP_IMAGE_TAG=rhel7-9.6-1.5
 	echo "CCP_IMAGE_TAG was not found...using current tag of " $CCP_IMAGE_TAG
 fi
 

@@ -2397,7 +2397,7 @@ by either the *root* or *postgres* user.  The *run.sh* script
 copies the required files and sets these permissions when executing the example.
 
 The *keys.sh* script creates a client cert with the *testuser* specified
-as the CN.  The *testuser* Postgres user is created by the *setup.sql* 
+as the CN.  The *testuser* Postgres user is created by the *setup.sql*
 configuration script as normal.  It is with the *testuser* role that
 you will test with.
 
@@ -2406,7 +2406,7 @@ Run the Postgres example as follows:
 ./run.sh
 ....
 
-A required step to make this example work is to define 
+A required step to make this example work is to define
 in your */etc/hosts* file an entry that maps *server.crunchydata.com*
 to the example's service IP address, this is because we generate
 a server certificate with the server name of *server.crunchyhdata.com*.
@@ -2415,7 +2415,7 @@ For example, if your service has an address as follows:
 ....
  oc get service
 NAME                CLUSTER-IP       EXTERNAL-IP   PORT(S)                   AGE
-custom-config-ssl   172.30.211.108   <none>        5432/TCP                 
+custom-config-ssl   172.30.211.108   <none>        5432/TCP
 ....
 
 Then your */etc/hosts* file needs an entry like this:
@@ -2440,7 +2440,7 @@ psql (9.6.3)
 SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
 Type "help" for help.
 
-userdb=> 
+userdb=>
 ....
 
 
@@ -2472,13 +2472,13 @@ you perform a pg_upgrade on a 9.5 database converting its data
 to a 9.6 version.
 
 This example assumes you have run *master-pvc* using a 9.5 image
-such as *centos7-9.5-1.4.1* prior to running this upgrade.
+such as *centos7-9.5-1.5* prior to running this upgrade.
 
 Prior to starting this example, shut down the *master-pvc* database
 using the *examples/kube/master-pvc/cleanup.sh* script.
 
 Prior to running this example, make sure your CCP_IMAGE_TAG
-environment variable is using a 9.6 image such as *centos7-9.6-1.4.1*.
+environment variable is using a 9.6 image such as *centos7-9.6-1.5*.
 
 Start the upgrade as follows:
 ....
