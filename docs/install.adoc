@@ -263,7 +263,7 @@ MTU=9000
 If interested in mounting the same NFS share multiple times on the same mount point,
 look into the link:https://www.novell.com/support/kb/doc.php?id=7010210[noac mount option].
 
-=== Examples
+=== Persistent Volumes
 
 
 For running the examples that require persistent volumes, you
