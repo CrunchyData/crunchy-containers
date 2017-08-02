@@ -21,6 +21,8 @@ LABEL name="crunchydata/upgrade" \
         io.openshift.tags="crunchy,database"
 
 COPY docs/upgrade/help.1 /help.1
+COPY docs/upgrade/help.md /help.md
+COPY docs/licenses /licenses
 
 ENV PGVERSION="9.6"
 

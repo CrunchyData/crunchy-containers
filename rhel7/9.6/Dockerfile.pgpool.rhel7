@@ -21,6 +21,8 @@ LABEL name="crunchydata/pgpool" \
         io.openshift.tags="crunchy,database"
 
 COPY docs/pgpool/help.1 /help.1
+COPY docs/pgpool/help.md /help.md
+COPY docs/licenses /licenses
 
 ENV PGVERSION="9.6"
 

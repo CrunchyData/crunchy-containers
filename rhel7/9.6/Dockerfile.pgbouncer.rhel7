@@ -21,6 +21,8 @@ LABEL name="crunchydata/pgbouncer" \
         io.openshift.tags="crunchy,database"
 
 COPY docs/pgbouncer/help.1 /help.1
+COPY docs/pgbouncer/help.md /help.md
+COPY docs/licenses /licenses
 
 ENV PGVERSION="9.6"
 
