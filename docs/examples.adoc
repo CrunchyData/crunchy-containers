@@ -101,8 +101,8 @@ This script will do the following:
 
  * create a docker volume using the local driver for the master
  * create a docker volume using the local driver for the replica
- * start up a container named master binding to port 12000
- * start up a container named replica binding to port 12002
+ * start up a container named master binding to port 12007
+ * start up a container named replica binding to port 12008
  * initialize the database using the passed in environment variables, building a user, database, schema, and table based on the environment variable values.
  * maps the PostgreSQL port of 5432 in the container to your local host port of 12000.
 
@@ -580,7 +580,7 @@ cd $CCPROOT/examples/docker/restore
 This script will do the following:
 
  * start up a container named master-restore
- * copy the backup files from Example 3 into /pgdata
+ * copy the backup files from the previous backup example into /pgdata
  * start up the container using the backup files
  * maps the PostgreSQL port of 5432 in the container to your local host port of 12001 as to not conflict with the master running in the previous example.
 

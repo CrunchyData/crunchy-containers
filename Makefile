@@ -57,10 +57,6 @@ pgadmin4:	versiontest
 	docker build -t crunchy-pgadmin4 -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgadmin4.$(CCP_BASEOS) .
 	docker tag crunchy-pgadmin4 crunchydata/crunchy-pgadmin4:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
-postage:	versiontest
-	docker build -t crunchy-postage -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postage.$(CCP_BASEOS) .
-	docker tag crunchy-postage crunchydata/crunchy-postage:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
-
 pgbadger:	versiontest
 	cd badger && godep go install badgerserver.go
 	cp $(GOBIN)/badgerserver bin/pgbadger
