@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,14 +28,14 @@ sudo docker rm master-restore-pitr
 
 # the following path is where the base backup files
 # are located for doing the database restore
-BACKUP=/tmp/backups/master-pitr/2016-12-21-21-08-57
+BACKUP=/tmp/backups/master-pitr-backups/2016-12-21-21-08-57
 
 # WAL_DIR contains the WAL files generated from
 # this database after recovery and ongoing afterwards
 WAL_DIR=/tmp/master-pitr-restore-wal
 
 # RECOVER_DIR contains the WAL files from where we
-# want to recover from 
+# want to recover from
 RECOVER_DIR=/tmp/master-pitr-wal/master-pitr
 
 DATA_DIR=/tmp/master-pitr-restore
@@ -71,4 +71,3 @@ sudo docker run \
 	--name=master-restore-pitr \
 	--hostname=master-restore-pitr \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
-

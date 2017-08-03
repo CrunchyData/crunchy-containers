@@ -1916,7 +1916,8 @@ and after the test table were made.
 
 Next, lets edit the restore script to use the base backup files
 created in the step above.  You can view the backup path name
-under /tmp/backups/master-pitr directory.  You will see a value like
+under the /tmp/backups/master-pitr-backups/ directory. You will see
+another directory inside of this path with a name similar to
 *2016-09-21-21-03-29*.  Copy and paste that value into the
 run-restore-pitr.sh script in the *BACKUP* environment variable.
 ....
