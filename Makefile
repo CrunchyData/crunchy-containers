@@ -125,22 +125,3 @@ push:
 
 default:
 	all
-
-test:
-	./tests/docker/test-basic.sh; /usr/bin/test "$$?" -eq 0
-	./tests/docker/test-vacuum.sh; /usr/bin/test "$$?" -eq 0
-	./tests/docker/test-replica.sh; /usr/bin/test "$$?" -eq 0
-	./tests/docker/test-pgpool.sh; /usr/bin/test "$$?" -eq 0
-	./tests/docker/test-badger.sh; /usr/bin/test "$$?" -eq 0
-	./tests/docker/test-backup.sh; /usr/bin/test "$$?" -eq 0
-	./tests/docker/test-restore.sh; /usr/bin/test "$$?" -eq 0
-	# ./tests/standalone/test-watch.sh; /usr/bin/test "$$?" -eq 0
-	# docker stop master
-
-testopenshift:
-	./tests/openshift/test-master.sh; /usr/bin/test "$$?" -eq 0
-	./tests/openshift/test-replica.sh; /usr/bin/test "$$?" -eq 0
-	./tests/openshift/test-pgpool.sh; /usr/bin/test "$$?" -eq 0
-	./tests/openshift/test-watch.sh; /usr/bin/test "$$?" -eq 0
-	./tests/openshift/test-scope.sh; /usr/bin/test "$$?" -eq 0
-	./tests/openshift/test-backup.sh; /usr/bin/test "$$?" -eq 0
