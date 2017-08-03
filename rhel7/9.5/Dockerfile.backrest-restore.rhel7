@@ -21,6 +21,8 @@ LABEL name="crunchydata/postgres" \
         io.openshift.tags="crunchy,database"
 
 COPY docs/backrestrestore/help.1 /help.1
+COPY docs/backrestrestore/help.md /help.md
+COPY docs/licenses /licenses
 
 ENV PGVERSION="9.5"
 
