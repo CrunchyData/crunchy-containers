@@ -315,31 +315,6 @@ the replicas:
 psql -h replica-dc -U postgres postgres -c 'select inet_server_addr()'
 ....
 
-=== master-replica-rc - Master and scaling replica example
-
-
-==== Kubernetes
-
-This example starts a master pod, master service, replica pod, and replica
-service.  The replica is a replica of the master.  This example uses
-emptyDir volumes for persistence.  This example runs the replicas in a
-Replication Controller.  A replication controller lets you scale up the replicas and create an initial replica set.  Deployments will likely be the
-preferred way to create a replica set going forward but I wanted to
-provide an example for thoroughness.
-
-Running the example:
-....
-examples/kube/master-replica-rc/run.sh
-....
-
-You can also scale up the number of replicas using this replication
-controller mechanism.  The command to scale up is as follows:
-....
-kubectl get rc
-kubectl scale rc replica-rc --replicas=3
-kubectl get pod
-....
-
 === master-replica-rc-pvc - Master/Slave deployment using pvc
 
 
