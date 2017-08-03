@@ -31,7 +31,7 @@ docker run -it --privileged=true \
         -v $DIR:/fromdir \
         -v $CONF_VOLUME:/config:z \
         --name=crunchyproxysetup \
-	docker.io/centos:7 cp /fromdir/crunchy-proxy-config.json /config/config.json
+	docker.io/centos:7 cp /fromdir/crunchy-proxy-config.yaml /config/config.yaml
 
 docker rm -f crunchyproxysetup
 
