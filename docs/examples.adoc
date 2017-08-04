@@ -357,7 +357,7 @@ working on the new replica:
 psql -c 'table testtable' -U master -h m-s-rc-pvc-replica postgres
 ....
 
-=== master-deployment - Deploy a master and replica both in a Deployment
+=== master-deployment - Deploy a master and replica deployment
 
 
 ==== Kubernetes
@@ -387,7 +387,13 @@ This will create the following in your Kube environment:
  * create a replica-dc service, uses emptyDir persistence
  * create a master-dc Deployment of replica count 1 for the master
    postgres database pod
- * create a replica-dc Deployment of replica count 2 for the replica(s)
+ * create a replica-dc Deployment of replica count 1 for the replica
+ * create a replica2-dc Deployment of replica count 1 for the 2nd replica
+ * create a ConfigMap to hold a custom postgresql.conf, setup.sql, and
+   pg_hba.conf files
+ * create secrets for the master user, superuser, and normal user to
+   hold the passwords
+ * create a volume mount for /pgbackrest and /pgwal
 
 The persisted master postgres data is found under /pgdata/master-dc.
 If you delete the master pod, the Deployment will create another
