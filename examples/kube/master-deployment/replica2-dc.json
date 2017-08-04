@@ -2,9 +2,9 @@
     "kind": "Deployment",
     "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "master-dc",
+        "name": "replica2-dc",
         "labels": {
-            "name": "master-dc"
+            "name": "replica-dc"
         }
     },
     "spec": {
@@ -12,25 +12,34 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "master-dc"
+                    "name": "replica-dc"
                 }
             },
             "spec": {
                 "containers": [{
-                    "name": "master-dc",
+                    "name": "database",
                     "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
                     "env": [{
+                        "name": "PG_MASTER_HOST",
+                        "value": "master-dc"
+                    }, {
+                        "name": "PG_MASTER_SERVICE_NAME",
+                        "value": "master-dc"
+                    }, {
                         "name": "PG_MASTER_PORT",
                         "value": "5432"
                     }, {
                         "name": "PG_MODE",
-                        "value": "master"
-                    }, {
-                        "name": "PGDATA_PATH_OVERRIDE",
-                        "value": "master-dc"
+                        "value": "slave"
                     }, {
                         "name": "PG_MASTER_USER",
                         "value": "master"
+                    }, {
+                        "name": "PG_USER",
+                        "value": "testuser"
+                    }, {
+                        "name": "PG_DATABASE",
+                        "value": "userdb"
                     }, {
                         "name": "PG_MASTER_PASSWORD",
                         "value": ""
@@ -41,25 +50,11 @@
                         "name": "PG_PASSWORD",
                         "value": ""
                     }, {
-                        "name": "PG_USER",
-                        "value": "testuser"
-                    }, {
-                        "name": "PG_DATABASE",
-                        "value": "userdb"
-                    }, {
                         "name": "PGHOST",
                         "value": "/tmp"
                     }],
                     "volumeMounts": [
 			{
-                        "mountPath": "/pgbackrest",
-                        "name": "pgbackrest",
-                        "readOnly": false
-                    }, {
-                        "mountPath": "/pgwal",
-                        "name": "pgwal",
-                        "readOnly": false
-                    }, {
                         "mountPath": "/pgdata",
                         "name": "pgdata",
                         "readOnly": false
@@ -72,10 +67,9 @@
                     }, {
                         "mountPath": "/pgroot",
                         "name": "pgroot-volume"
-                    }, {
-                        "mountPath": "/pgconf",
-                        "name": "postgresql-conf"
-                    } ],
+                    }
+
+			],
 
                     "ports": [{
                         "containerPort": 5432,
@@ -84,53 +78,25 @@
                     "resources": {},
                     "imagePullPolicy": "IfNotPresent"
                 }],
-                "volumes": [
-		{
-                    "name": "pgwal",
-            		"persistentVolumeClaim": {
-                		"claimName": "crunchy-pvc3"
-            		}
-                },{
-                    "name": "pgbackrest",
-            		"persistentVolumeClaim": {
-                		"claimName": "crunchy-pvc2"
-            		}
-                },{
+                "volumes": [{
                     "name": "pgdata",
-            		"persistentVolumeClaim": {
-                		"claimName": "crunchy-pvc"
-            		}
-                },{
+                    "emptyDir": {}
+                }, {
                     "name": "pguser-volume",
                     "secret": {
                         "secretName": "pguser-secret"
                     }
-                },{
+                }, {
                     "name": "pgmaster-volume",
                     "secret": {
                         "secretName": "pgmaster-secret"
                     }
-                },{
+                }, {
                     "name": "pgroot-volume",
                     "secret": {
                         "secretName": "pgroot-secret"
                     }
-                }, {
-                "name": "postgresql-conf",
-                "configMap": {
-                    "name": "postgresql-conf",
-                    "items": [{
-                        "key": "setup.sql",
-                        "path": "setup.sql"
-                    }, {
-                        "key": "postgresql.conf",
-                        "path": "postgresql.conf"
-                    }, {
-                        "key": "pghba",
-                        "path": "pg_hba.conf"
-                    }]
                 }
-            }
 
 		],
 
