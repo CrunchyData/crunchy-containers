@@ -17,5 +17,6 @@ kubectl delete job master-dba-backup
 kubectl delete serviceaccount dba-sa
 kubectl delete pod master-dba
 kubectl delete service master-dba
+kubectl delete clusterrolebinding permissive-binding
 
 ../../waitforterm.sh master-dba kubectl

@@ -1,15 +1,10 @@
 {
-    "apiVersion": "extensions/v1beta1",
+    "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {
         "name": "{{.JOB_HOST}}-vac"
     },
     "spec": {
-        "selector": {
-            "matchLabels": {
-                "app": "{{.JOB_HOST}}-vac"
-            }
-        },
         "template": {
             "metadata": {
                 "name": "{{.JOB_HOST}}-vac",
