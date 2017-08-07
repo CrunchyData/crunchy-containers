@@ -25,11 +25,11 @@ APP_ICON = 'icon-postgres-alt'
 
 # Application version number components
 APP_RELEASE = 1
-APP_REVISION = 0
+APP_REVISION = 6
 
 # Application version suffix, e.g. 'beta1', 'dev'. Usually an empty string
 # for GA releases.
-APP_SUFFIX = 'beta3'
+APP_SUFFIX = 'dev'
 
 # Copyright string for display in the app
 APP_COPYRIGHT = 'Copyright 2013 - 2016, The pgAdmin Development Team'
