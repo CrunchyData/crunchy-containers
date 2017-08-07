@@ -19,5 +19,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 sudo rm -rf $PV_PATH/master-dc
 
 oc delete service master-dc replica-dc
-oc delete deployments master-dc replica-dc
-oc delete pod master-dc
+oc delete deployments master-dc replica-dc replica2-dc
+
+oc delete configmap postgresql-conf
+oc delete secret pguser-secret pgmaster-secret pgroot-secret

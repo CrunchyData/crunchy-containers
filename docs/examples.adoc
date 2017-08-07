@@ -403,23 +403,12 @@ we are using the same /pgdata/master-dc data directory.
 
 ==== OpenShift
 
-This example shows how to deploy a master pod in a Deployment
-and use the PGDATA_PATH_OVERRIDE env var to determine the /pgdata
-path.  With the override, you can restart the master pod and it
-will be able to find the original postgres data path.
-
-The example also starts a replica pod within a Deployment of its own
-so that you can scale up the replica pods.
-
 Start by running the example:
 ....
 cd $CCPROOT/examples/openshift/master-deployment
 ./run.sh
 ....
 
-this will start a master-dc service, a replica-dc service,
-a master-dc deployment with replicas count of 1 and a
-replica-dc deployment with replicas count of 2.
 
 === master using gluster fs
 
