@@ -1,11 +1,10 @@
-% collect (1) Container Image Pages
-% Jeff McCormick
-% April 13, 2017
+= collect (1)
+Jeff McCormick
+April 13, 2017
+== NAME
+collect - collect container image
 
-# NAME
-collect \- collect container image
-
-# DESCRIPTION
+== DESCRIPTION
 PostgreSQL metrics collection container. Every 3 minutes the collection container will collect PostgreSQL metrics and push them to the Crunchy Prometheus database. These can be graphed using the Crunchy grafana container.
 
 The container itself consists of:
@@ -15,11 +14,11 @@ The container itself consists of:
 
 Files added to the container during docker build include: /help.1.
 
-# USAGE
+== USAGE
 See the crunchy docs.
 
 
-# LABELS
+== LABELS
 The starter container includes the following LABEL settings:
 
 That atomic command runs the docker command set in this label:

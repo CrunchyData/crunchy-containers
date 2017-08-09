@@ -1,11 +1,10 @@
-% pgbouncer (1) Container Image Pages
-% Jeff McCormick
-% April 13, 2017
+= pgbouncer (1)
+Jeff McCormick
+April 13, 2017
+== NAME
+pgbouncer - pgbouncer container image
 
-# NAME
-pgbouncer \- pgbouncer container image
-
-# DESCRIPTION
+== DESCRIPTION
 The pgbouncer image provides the open source pgbouncer postgres utility.
 
 The container itself consists of:
@@ -15,11 +14,11 @@ The container itself consists of:
 
 Files added to the container during docker build include: /help.1.
 
-# USAGE
+== USAGE
 See the crunchy docs.
 
 
-# LABELS
+== LABELS
 The starter container includes the following LABEL settings:
 
 That atomic command runs the docker command set in this label:

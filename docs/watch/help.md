@@ -1,11 +1,10 @@
-% watch (1) Container Image Pages
-% Jeff McCormick
-% April 13, 2017
+= watch (1)
+Jeff McCormick
+April 13, 2017
+== NAME
+watch - watch container image
 
-# NAME
-watch \- watch container image
-
-# DESCRIPTION
+== DESCRIPTION
 The watch image provides a means of watching the health of a postgres
 master and performing a failover if the master is not responding.
 
@@ -16,11 +15,11 @@ The container itself consists of:
 
 Files added to the container during docker build include: /help.1.
 
-# USAGE
+== USAGE
 See the crunchy docs.
 
 
-# LABELS
+== LABELS
 The starter container includes the following LABEL settings:
 
 That atomic command runs the docker command set in this label:
