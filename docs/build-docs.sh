@@ -13,85 +13,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Generate PDFs -
 
-asciidoc \
--b bootstrap \
--f ./demo.conf \
--o ./htmldoc/examples.html \
--a toc2 \
--a footer \
--a toc-placement=right \
-./examples.adoc
+a2x -f pdf ./examples.adoc
+a2x -f pdf ./dedicated.adoc
+a2x -f pdf ./install.adoc
+a2x -f pdf ./metrics.adoc
+a2x -f pdf ./containers.adoc
+a2x -f pdf ./pitr.adoc
 
-asciidoctor-pdf ./examples.adoc --out-file ./pdf/examples.pdf
+# Generate XHTML files into the ./xhtml/ directory -
 
-asciidoc \
--b bootstrap \
--f ./demo.conf \
--o ./htmldoc/dedicated.html \
--a toc2 \
--a toc-placement=right \
-./dedicated.adoc
+a2x -f xhtml ./examples.adoc -D ./xhtml/
+a2x -f xhtml ./dedicated.adoc -D ./xhtml/
+a2x -f xhtml ./install.adoc -D ./xhtml/
+a2x -f xhtml ./metrics.adoc -D ./xhtml/
+a2x -f xhtml ./containers.adoc -D ./xhtml/
+a2x -f xhtml ./pitr.adoc -D ./xhtml/
 
-asciidoctor-pdf ./dedicated.adoc --out-file ./pdf/dedicated.pdf
+# Generate manpages -
 
-asciidoc \
--b bootstrap \
--f ./demo.conf \
--o ./htmldoc/install.html \
--a toc2 \
--a toc-placement=right \
-./install.adoc
-
-asciidoctor-pdf ./install.adoc --out-file ./pdf/install.pdf
-
-asciidoc \
--b bootstrap \
--f ./demo.conf \
--o ./htmldoc/metrics.html \
--a toc2 \
--a toc-placement=right \
-./metrics.adoc
-
-asciidoctor-pdf ./metrics.adoc --out-file ./pdf/metrics.pdf
-
-asciidoc \
--b bootstrap \
--f ./demo.conf \
--o ./htmldoc/containers.html \
--a toc2 \
--a toc-placement=right \
-./containers.adoc
-
-asciidoctor-pdf ./containers.adoc --out-file ./pdf/containers.pdf
-
-asciidoc \
--b bootstrap \
--f ./demo.conf \
--o ./htmldoc/pitr.html \
--a toc2 \
--a toc-placement=right \
-./pitr.adoc
-
-asciidoctor-pdf ./pitr.adoc --out-file ./pdf/pitr.pdf
-
-# this utility is used for redhat container atomic help files
-go get github.com/cpuguy83/go-md2man
-
-go-md2man -in ./backup/help.md -out ./backup/help.1
-go-md2man -in ./collect/help.md -out ./collect/help.1
-go-md2man -in ./dba/help.md -out ./dba/help.1
-go-md2man -in ./grafana/help.md -out ./grafana/help.1
-go-md2man -in ./pgadmin4/help.md -out ./pgadmin4/help.1
-go-md2man -in ./pgbadger/help.md -out ./pgbadger/help.1
-go-md2man -in ./pgbouncer/help.md -out ./pgbouncer/help.1
-go-md2man -in ./pgpool/help.md -out ./pgpool/help.1
-go-md2man -in ./postgres-gis/help.md -out ./postgres-gis/help.1
-go-md2man -in ./postgres/help.md -out ./postgres/help.1
-go-md2man -in ./prometheus/help.md -out ./prometheus/help.1
-go-md2man -in ./promgateway/help.md -out ./promgateway/help.1
-go-md2man -in ./upgrade/help.md -out ./upgrade/help.1
-go-md2man -in ./vacuum/help.md -out ./vacuum/help.1
-go-md2man -in ./watch/help.md -out ./watch/help.1
-go-md2man -in ./backrestrestore/help.md -out ./backrestrestore/help.1
-
+a2x -f manpage ./backup/help.md
+a2x -f manpage ./collect/help.md
+a2x -f manpage ./dba/help.md
+a2x -f manpage ./grafana/help.md
+a2x -f manpage ./pgadmin4/help.md
+a2x -f manpage ./pgbadger/help.md
+a2x -f manpage ./pgbouncer/help.md
+a2x -f manpage ./pgpool/help.md
+a2x -f manpage ./postgres-gis/help.md
+a2x -f manpage ./postgres/help.md
+a2x -f manpage ./prometheus/help.md
+a2x -f manpage ./promgateway/help.md
+a2x -f manpage ./upgrade/help.md
+a2x -f manpage ./vacuum/help.md
+a2x -f manpage ./watch/help.md
+a2x -f manpage ./backrestrestore/help.md

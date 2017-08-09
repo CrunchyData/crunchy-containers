@@ -1,11 +1,10 @@
-% vacuum (1) Container Image Pages
-% Jeff McCormick
-% April 13, 2017
+= vacuum (1)
+Jeff McCormick
+April 13, 2017
+== NAME
+vacuum - vacuum container image
 
-# NAME
-vacuum \- vacuum container image
-
-# DESCRIPTION
+== DESCRIPTION
 The vacuum image provides a means of performing a database
 vacuum on a postgres database or set table.
 
@@ -16,11 +15,11 @@ The container itself consists of:
 
 Files added to the container during docker build include: /help.1.
 
-# USAGE
+== USAGE
 See the crunchy docs.
 
 
-# LABELS
+== LABELS
 The starter container includes the following LABEL settings:
 
 That atomic command runs the docker command set in this label:

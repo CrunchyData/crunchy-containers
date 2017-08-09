@@ -1,11 +1,10 @@
-% prometheus (1) Container Image Pages
-% Jeff McCormick
-% April 13, 2017
+= prometheus (1)
+Jeff McCormick
+April 13, 2017
+== NAME
+prometheus - prometheus container image
 
-# NAME
-prometheus \- prometheus container image
-
-# DESCRIPTION
+== DESCRIPTION
 The prometheus image provides the open source prometheus push gateway
 
 The container itself consists of:
@@ -15,11 +14,11 @@ The container itself consists of:
 
 Files added to the container during docker build include: /help.1.
 
-# USAGE
+== USAGE
 See the crunchy docs.
 
 
-# LABELS
+== LABELS
 The starter container includes the following LABEL settings:
 
 That atomic command runs the docker command set in this label:

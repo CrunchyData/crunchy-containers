@@ -1,11 +1,10 @@
-% pgadmin4 (1) Container Image Pages
-% Jeff McCormick
-% April 13, 2017
+= pgadmin4 (1)
+Jeff McCormick
+April 13, 2017
+== NAME
+pgadmin4 - pgadmin4 container image
 
-# NAME
-pgadmin4 \- pgadmin4 container image
-
-# DESCRIPTION
+== DESCRIPTION
 The pgadmin4 image provides the open source pgadmin4 web user interface
 program for managing and viewing postgres databases.
 
@@ -16,11 +15,11 @@ The container itself consists of:
 
 Files added to the container during docker build include: /help.1.
 
-# USAGE
+== USAGE
 See the crunchy docs.
 
 
-# LABELS
+== LABELS
 The starter container includes the following LABEL settings:
 
 That atomic command runs the docker command set in this label:
