@@ -94,8 +94,8 @@
 		"value": "${PG_DATABASE}"
 	      }
 	    ],
-	    "image": "${REDHAT_REGISTRY}/crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
-	    "name": "${PG_MASTER_SERVICE_NAME",
+	    "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+	    "name": "${PG_MASTER_SERVICE_NAME}",
 	    "ports": [
 	      {
 		"containerPort": 5432,
@@ -254,7 +254,7 @@
                     "value": "${PG_DATABASE}"
                   }
 		],
-		"image": "${REDHAT_REGISTRY}/crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+		"image": "$crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
 		"livenessProbe": {
 		  "exec": {
 		    "command": [
@@ -416,7 +416,7 @@
                     "value": "${PG_DATABASE}"
                   }
 		],
-		"image": "${REDHAT_REGISTRY}/crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+		"image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
 		"livenessProbe": {
 		  "exec": {
 		    "command": [
@@ -531,8 +531,7 @@
     },
     {
         "description": "The RedHat provided registry for Crunchy images",
-        "name": "REDHAT_REGISTRY",
-        "required": true
+        "name": "REDHAT_REGISTRY"
     },
     {
         "description": "The name of the db to be created",
