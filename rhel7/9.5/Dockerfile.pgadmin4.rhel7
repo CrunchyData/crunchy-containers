@@ -1,4 +1,4 @@
-FROM rhel7.2
+FROM registry.access.redhat.com/rhel
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
@@ -6,18 +6,23 @@ LABEL name="crunchydata/pgadmin4" \
         vendor="crunchy data" \
       	PostgresVersion="9.5" \
       	PostgresFullVersion="9.5.7" \
-        version="7.2" \
-        release="1.4.1" \
-        build-date="2017-05-11" \
+        version="7.3" \
+        release="1.5" \
+        #build-date="2017-05-11" \
         url="https://crunchydata.com" \
-        summary="crunchy data pgadmin4 container" \
-        description="pgadmin4 container" \
+        summary="Crunchy Data pgAdmin4 GUI utility" \
+        description="Provides GUI for the pgAdmin utility." \
+        run="" \
+        start="" \
+        stop="" \
         io.k8s.description="pgadmin4 container" \
         io.k8s.display-name="Crunchy pgadmin4 container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
 COPY docs/pgadmin4/help.1 /help.1
+COPY docs/pgadmin4/help.md /help.md
+COPY docs/licenses /licenses
 
 ENV PGVERSION="9.5"
 
@@ -28,14 +33,14 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
  && yum -y update && yum -y install epel-release \
- && yum -y install glibc-common-*2.17* \
+ && yum -y install glibc-common \
  && yum -y install gcc \
 	gettext \
 	hostname \
  	nss_wrapper \
 	openssh-clients \
 	procps-ng \
-	pgadmin4-v1-web \
+ && yum --enablerepo rhel-7-server-extras-rpms -y install pgadmin4-v1-web \
  && yum -y install postgresql95-devel postgresql95-server \
  && yum -y clean all
 

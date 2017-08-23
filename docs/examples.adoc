@@ -1,7 +1,7 @@
 = Examples & Use Cases - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
 :toc: left
-v1.4.1, {docdate}
+v1.5, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Container Examples
@@ -101,8 +101,8 @@ This script will do the following:
 
  * create a docker volume using the local driver for the master
  * create a docker volume using the local driver for the replica
- * start up a container named master binding to port 12000
- * start up a container named replica binding to port 12002
+ * start up a container named master binding to port 12007
+ * start up a container named replica binding to port 12008
  * initialize the database using the passed in environment variables, building a user, database, schema, and table based on the environment variable values.
  * maps the PostgreSQL port of 5432 in the container to your local host port of 12000.
 
@@ -124,6 +124,52 @@ To shut down the instance, run the following commands:
 docker stop master replica
 ....
 
+==== Docker-Compose
+
+This is a *docker-compose* example of deploying master
+and read replicas using the crunchy-postgres image from DockerHub.
+
+To install docker-compose, please follow the instructions located
+in the link:https://docs.docker.com/compose/install/[official Docker documentation].
+
+You can also access docker-compose by setting up the following Vagrant/VirtualBox
+virtualized environment containing CentOS 7, Docker, and docker-compose:
+https://github.com/jasonodonnell/docker-vm
+
+To deploy this example, run the following commands:
+
+....
+cd $CCPROOT/examples/compose/master-replica
+docker-compose up
+....
+
+Optionally, to deploy more than one replica, run the following:
+
+....
+docker-compose up --scale db-replica=3
+....
+
+To psql into the created database containers, first identify the ports exposed
+on the containers:
+
+....
+docker ps
+....
+
+Next, using psql, connect to the service:
+
+....
+psql -d userdb -h 0.0.0.0 -p <CONTAINER_PORT> -U testuser
+....
+
+*Note:* See *PG_PASSWORD* in *docker-compose.yml* for the user password.
+
+To tear down the example, run the following:
+
+....
+docker-compose stop
+docker-compose rm
+....
 
 ==== Kubernetes
 
@@ -142,20 +188,20 @@ It takes about a minute for the replica to begin replicating with the
 master.  To test out replication, see if replication is underway
 with this command:
 ....
-psql -h master -U postgres postgres -c 'table pg_stat_replication'
+psql -h ms-master -U postgres postgres -c 'table pg_stat_replication'
 ....
 
 If you see a line returned from that query it means the master is replicating
 to the replica.  Try creating some data on the master:
 
 ....
-psql -h master -U postgres postgres -c 'create table foo (id int)'
-psql -h master -U postgres postgres -c 'insert into foo values (1)'
+psql -h ms-master -U postgres postgres -c 'create table foo (id int)'
+psql -h ms-master -U postgres postgres -c 'insert into foo values (1)'
 ....
 
 Then verify that the data is replicated to the replica:
 ....
-psql -h replica -U postgres postgres -c 'table foo'
+psql -h ms-replica -U postgres postgres -c 'table foo'
 ....
 
 
@@ -266,35 +312,10 @@ multiple times and the ip address should alternate between
 the replicas:
 
 ....
-psql -c 'select inet_server_addr()' -h replica-dc -U master postgres
+psql -h replica-dc -U postgres postgres -c 'select inet_server_addr()'
 ....
 
-=== master-replica-rc - Master and scaling replica example
-
-
-==== Kubernetes
-
-This example starts a master pod, master service, replica pod, and replica
-service.  The replica is a replica of the master.  This example uses
-emptyDir volumes for persistence.  This example runs the replicas in a
-Replication Controller.  A replication controller lets you scale up the replicas and create an initial replica set.  Deployments will likely be the
-preferred way to create a replica set going forward but I wanted to
-provide an example for thoroughness.
-
-Running the example:
-....
-examples/kube/master-replica-rc/run.sh
-....
-
-You can also scale up the number of replicas using this replication
-controller mechanism.  The command to scale up is as follows:
-....
-kubectl get rc
-kubectl scale rc replica-rc --replicas=3
-kubectl get pod
-....
-
-=== master-replica-rc-pvc - Master/Slave deployment using pvc
+=== master-replica-rc-pvc - Master/replica deployment using pvc
 
 
 ==== OpenShift
@@ -336,7 +357,7 @@ working on the new replica:
 psql -c 'table testtable' -U master -h m-s-rc-pvc-replica postgres
 ....
 
-=== master-deployment - Deploy a master and replica both in a Deployment
+=== master-deployment - Deploy a master and replica deployment
 
 
 ==== Kubernetes
@@ -366,7 +387,13 @@ This will create the following in your Kube environment:
  * create a replica-dc service, uses emptyDir persistence
  * create a master-dc Deployment of replica count 1 for the master
    postgres database pod
- * create a replica-dc Deployment of replica count 2 for the replica(s)
+ * create a replica-dc Deployment of replica count 1 for the replica
+ * create a replica2-dc Deployment of replica count 1 for the 2nd replica
+ * create a ConfigMap to hold a custom postgresql.conf, setup.sql, and
+   pg_hba.conf files
+ * create secrets for the master user, superuser, and normal user to
+   hold the passwords
+ * create a volume mount for /pgbackrest and /pgwal
 
 The persisted master postgres data is found under /pgdata/master-dc.
 If you delete the master pod, the Deployment will create another
@@ -376,23 +403,12 @@ we are using the same /pgdata/master-dc data directory.
 
 ==== OpenShift
 
-This example shows how to deploy a master pod in a Deployment
-and use the PGDATA_PATH_OVERRIDE env var to determine the /pgdata
-path.  With the override, you can restart the master pod and it
-will be able to find the original postgres data path.
-
-The example also starts a replica pod within a Deployment of its own
-so that you can scale up the replica pods.
-
 Start by running the example:
 ....
 cd $CCPROOT/examples/openshift/master-deployment
 ./run.sh
 ....
 
-this will start a master-dc service, a replica-dc service,
-a master-dc deployment with replicas count of 1 and a
-replica-dc deployment with replicas count of 2.
 
 === master using gluster fs
 
@@ -522,7 +538,7 @@ locate the container.
 
 This example assumes you have a database pod running called *basic*
 as created by the *basic* example and that you have configured NFS as described
-in Step 5 of the install.adoc.
+in the link:install.adoc[installation documentation].
 
 You can perform a database backup by executing the following
 step:
@@ -559,7 +575,7 @@ cd $CCPROOT/examples/docker/restore
 This script will do the following:
 
  * start up a container named master-restore
- * copy the backup files from Example 3 into /pgdata
+ * copy the backup files from the previous backup example into /pgdata
  * start up the container using the backup files
  * maps the PostgreSQL port of 5432 in the container to your local host port of 12001 as to not conflict with the master running in the previous example.
 
@@ -693,14 +709,14 @@ This will create the following in your Kube environment:
  * master-backrest pod with pgbackrest archive enabled. An initial stanza db will be created on initialization
  * master-backrest service
 
-The crunchy-pvc will be used for /pgdata, and crunchy-pvc2 for the /backrestrepo. Examine the /backrestrepo location to view the archive directory and ensure WAL archiving is working. See backrest.adoc for steps to backup and restore using pgbackrest.
+The crunchy-pvc will be used for /pgdata, and crunchy-pvc2 for the /backrestrepo. Examine the /backrestrepo location to view the archive directory and ensure WAL archiving is working. See link:backrest.adoc[pgbackrest Documentation] for steps to backup and restore using pgbackrest.
 
 
 ==== OpenShift
 
 This example shows how to enable pgbackrest as the archiver
 within the crunchy-postgres container.
-See the link:backrest.adoc[pgbackrest Documentation] for details and background.
+See the link:backrest.adoc[pgbackrest documentation] for details and background.
 
 Start by running the example database container:
 ....
@@ -744,7 +760,7 @@ Steps for FULL restore
 
  * Delete the master-backrest pod, if still running
  * Empty the PGDATA directory (remove all files)
- * Navigate to the backrest_restore examples directory. Execute the full-restore.sh script.
+ * Navigate to the backrest-restore examples directory. Execute the full-restore.sh script.
  * Check the restore logs (db-restore.log) in the /backrestrepo mountpoint for success. You can also view the logs of the completed job pod with kubectl get pod -a
  * Re-create the master-backrest pod in the backrest examples directory. The database will recover.
 
@@ -752,7 +768,7 @@ Steps for DELTA restore
 
  * Delete the master-backrest pod, if still running
  * rm postmaster.pid from PGDATA.
- * Navigate to the backrest_restore examples directory. Execute the delta-restore.sh script.
+ * Navigate to the backrest-restore examples directory. Execute the delta-restore.sh script.
  * Check the restore logs (db-restore.log) in the /backrestrepo mountpoint for success. You can also view the logs of the completed job pod with kubectl get pod -a
  * Re-create the master-backrest pod in the backrest examples directory. The database will recover only files that have changed from the last backup.
 
@@ -1187,9 +1203,9 @@ to your database container.
 Metrics collection requires you run the crunchy 'scope' set of containers
 that includes:
 
- * prometheus
- * prometheus push gateway
- * grafana
+ * Prometheus
+ * Prometheus push gateway
+ * Grafana
 
 To start this set of containers, run the following:
 ....
@@ -1197,7 +1213,7 @@ cd $CCPROOT/examples/docker/metrics
 ./run.sh
 ....
 
-These metrics are described in this link:/docs/metrics.adoc[document.]
+These metrics are described in this link:metrics.adoc[document.]
 
 An example has been provided that runs a database container
 and also the associated metrics collection container, run the
@@ -1209,12 +1225,12 @@ cd $CCPROOT/examples/docker/collect
 ....
 
 Every 3 minutes the collection container will collect postgres
-metrics and push them to the crunchy prometheus database.  You
-can graph them using the crunchy grafana container.
+metrics and push them to the crunchy-prometheus database.  You
+can graph them using the crunchy-grafana container.
 
 ==== Kubernetes
 
-This example starts up prometheus, grafana, and prometheus gateway.
+This example starts up Prometheus, Grafana, and Prometheus gateway.
 
 It is required to view or capture metrics collected by crunchy-collect.
 
@@ -1225,9 +1241,9 @@ examples/kube/metrics/run.sh
 
 This will start up 3 containers and services:
 
- * prometheus (http://crunchy-prometheus:9090)
- * prometheus gateway (http://crunchy-promgateway:9091)
- * grafana (http://crunchy-grafana:3000)
+ * Prometheus (http://crunchy-prometheus:9090)
+ * Prometheus gateway (http://crunchy-promgateway:9091)
+ * Grafana (http://crunchy-grafana:3000)
 
 If you want your metrics and dashboards to persist to NFS, run
 this script:
@@ -1235,7 +1251,7 @@ this script:
 examples/kube/metrics/run-pvc.sh
 ....
 
-In the docs folder of the github repo, check out the metrics.adoc
+In the /docs/ folder of the GitHub repository, check out the link:metrics.adoc[metrics documentation]
 for details on the exact metrics being collected.
 
 This example runs a pod that includes a database container and
@@ -1259,22 +1275,22 @@ psql -h master-collect -U postgres postgres
 
 ==== OpenShift
 
-This example shows how postgres metrics can be collected
-and stored in prometheus and graphed with grafana.
+This example shows how Postgres metrics can be collected
+and stored in Prometheus and graphed with Grafana.
 
 First, create the crunchy-metrics pod which contains
-the prometheus data store and the grafana graphing web application:
+the Prometheus data store and the Grafana graphing web application:
 
 ....
 cd $CCPROOT/examples/openshift/metrics
 ./run.sh
 ....
 
-At this point, you can view the prometheus web console at
-crunchy-metrics:9090, the prometheus push gateway at crunchy-metrics:9091,
-and the grafana web app at crunchy-metrics:3000.
+At this point, you can view the Prometheus web console at
+crunchy-metrics:9090, the Prometheus push gateway at crunchy-metrics:9091,
+and the Grafana web app at crunchy-metrics:3000.
 
-Next, start a postgres pod that has the crunchy-collect container
+Next, start a Postgres pod that has the crunchy-collect container
 as follows:
 ....
 cd $CCPROOT/examples/openshift/collect
@@ -1282,13 +1298,13 @@ cd $CCPROOT/examples/openshift/collect
 ....
 
 At this point, metrics will be collected every 3 minutes and pushed
-to prometheus.  You can build graphs off the metrics using grafana.
+to Prometheus.  You can build graphs off the metrics using Grafana.
 
 === vacuum-job - PostgreSQL vacuum command
 
 ==== Docker
 
-You can perform a postgres vacuum command by running the crunchy-vacuum
+You can perform a Postgres vacuum command by running the crunchy-vacuum
 container.  You specify a database to vacuum using environment variables.
 
 An example is shown in the $CCPROOT/examples/docker/vacuum/run.sh script
@@ -1298,16 +1314,16 @@ cd $CCPROOT/examples/docker/vacuum
 ./run.sh
 ....
 
-This example performs a vacuum on a single table in the master postgres
+This example performs a vacuum on a single table in the master Postgres
 database.  Vacuum is controlled via the following environment variables:
 
  * VAC_FULL - when set to true adds the FULL parameter to the VACUUM command
  * VAC_TABLE - when set, allows you to specify a single table to vacuum, when
  not specified, the entire database tables are vacuumed
- * JOB_HOST - required variable is the postgres host we connect to
- * PG_USER - required variable is the postgres user we connect with
- * PG_DATABASE - required variable is the postgres database we connect to
- * PG_PASSWORD - required variable is the postgres user password we connect with
+ * JOB_HOST - required variable is the Postgres host we connect to
+ * PG_USER - required variable is the Postgres user we connect with
+ * PG_DATABASE - required variable is the Postgres database we connect to
+ * PG_PASSWORD - required variable is the Postgres user password we connect with
  * PG_PORT - allows you to override the default value of 5432
  * VAC_ANALYZE - when set to true adds the ANALYZE parameter to the VACUUM command
  * VAC_VERBOSE - when set to true adds the VERBOSE parameter to the VACUUM command
@@ -1339,7 +1355,7 @@ docker logs $(docker ps -a | grep crunchy-vacuum | cut -f 1 -d' ')
 ==== OpenShift
 
 This example shows how you can run a vacuum job against
-a postgres database container.
+a Postgres database container.
 
 The crunchy-vacuum container image exists to allow a DBA
 a way to run a job either one-off or scheduled to perform
@@ -1357,7 +1373,7 @@ cd ../vacuum-job
 
 This will start a vacuum container that runs as a Kube Job type.  It
 will run once.  The crunchy-vacuum image is executed, passed in
-the Postgres connection parameters to the single-master postgres
+the Postgres connection parameters to the single-master Postgres
 container.  The type of vacuum performed is dictated by the
 environment variables passed into the job. The complete set
 of environment variables read by the vacuum job include:
@@ -1365,10 +1381,10 @@ of environment variables read by the vacuum job include:
  * VAC_FULL - when set to true adds the FULL parameter to the VACUUM command
  * VAC_TABLE - when set, allows you to specify a single table to vacuum, when
  not specified, the entire database tables are vacuumed
- * JOB_HOST - required variable is the postgres host we connect to
- * PG_USER - required variable is the postgres user we connect with
- * PG_DATABASE - required variable is the postgres database we connect to
- * PG_PASSWORD - required variable is the postgres user password we connect with
+ * JOB_HOST - required variable is the Postgres host we connect to
+ * PG_USER - required variable is the Postgres user we connect with
+ * PG_DATABASE - required variable is the Postgres database we connect to
+ * PG_PASSWORD - required variable is the Postgres user password we connect with
  * PG_PORT - allows you to override the default value of 5432
  * VAC_ANALYZE - when set to true adds the ANALYZE parameter to the VACUUM command
  * VAC_VERBOSE - when set to true adds the VERBOSE parameter to the VACUUM command
@@ -1431,11 +1447,11 @@ to work, see comments within the sample setup.sql file.
 ==== Docker
 
 The pgbouncer utility can be used to provide a connection pool
-to postgres databases.  The crunchy-pgbouncer container also
+to Postgres databases.  The crunchy-pgbouncer container also
 contains logic that lets it perform a failover from a master
-to a slave database.
+to a replica database.
 
-To test this failover, you first create a running master/slave
+To test this failover, you first create a running master/replica
 cluster as follows:
 
 ....
@@ -1463,9 +1479,9 @@ docker stop master
 ....
 
 At this point, the pgbouncer will notice that the master is not reachable
-and touch the trigger file on the configured slave database to start
+and touch the trigger file on the configured replica database to start
 the failover.  The pgbouncer container will then reconfigure
-pgbouncer to relabel the slave database into the master database so clients
+pgbouncer to relabel the replica database into the master database so clients
 to pgbouncer will be able to connect to the master as before the failover.
 
 To just log into the database from the pgbouncer connection pool
@@ -1480,7 +1496,7 @@ This example assumes you have run the master-replica example prior
 to this example!
 
 This example runs a crunchy-pgbouncer container to look for the
-master within a postgres cluster, if it can not find the master it
+master within a Postgres cluster, if it can not find the master it
 will proceed to cause a failover to a replica.  It will also configure
 a pgbouncer container that sets up a connection pool to the
 configured master and replica.
@@ -1579,7 +1595,7 @@ psql -h pgbouncer.openshift.svc.cluster.local  -U master master
 
 This example, $CCPROOT/examples/docker/sync, provides a
 streaming replication configuration that includes both
-synchronous and asynchronous slaves.
+synchronous and asynchronous replicas.
 
 To run this example, run the following:
 
@@ -1594,11 +1610,11 @@ and the password "password":
 psql -h 127.0.0.1 -p 12000 -U postgres postgres -c 'table pg_stat_replication'
 ....
 
-You should see 2 rows, 1 for the async slave and 1 for the sync slave.  The
+You should see 2 rows, 1 for the async replica and 1 for the sync replica.  The
 sync_state column shows values of async or sync.
 
-You can test replication to the slaves by entering some data on
-the master like this, and then querying the slaves for that data:
+You can test replication to the replicas by entering some data on
+the master like this, and then querying the replicas for that data:
 ....
 psql -h 127.0.0.1 -p 12000 -U postgres postgres -c 'create table foo (id int)'
 psql -h 127.0.0.1 -p 12000 -U postgres postgres -c 'insert into foo values (1)'
@@ -1812,7 +1828,7 @@ cd $CCPROOT/examples/openshift/secret
 The secrets are mounted in the */pguser*, */pgmaster*, */pgroot* volumes within the
 container and read during initialization.  The container
 scripts create a Postgres user with those values, and sets the passwords
-for the master user and postgres superuser using the mounted secret volumes.
+for the master user and Postgres superuser using the mounted secret volumes.
 
 When using secrets, you do NOT have to specify the following
 env vars if you specify all three secrets volumes:
@@ -1858,7 +1874,7 @@ It takes about 1 minute for the database to become ready
 for use after initially starting.
 
 This database is created with the ARCHIVE_MODE and ARCHIVE_TIMEOUT
-environment variables set.  See the pitr.adoc for more details
+environment variables set.  See the link:pitr.adoc[PITR documentation]for more details
 on these settings.  Warning:  this example writes the WAL segment
 files to the /tmp directory...running it for a long time could
 fill up your /tmp!
@@ -1895,17 +1911,17 @@ and after the test table were made.
 
 Next, lets edit the restore script to use the base backup files
 created in the step above.  You can view the backup path name
-under /tmp/backups/master-pitr directory.  You will see a value like
+under the /tmp/backups/master-pitr-backups/ directory. You will see
+another directory inside of this path with a name similar to
 *2016-09-21-21-03-29*.  Copy and paste that value into the
 run-restore-pitr.sh script in the *BACKUP* environment variable.
+
+In order to restore the database before we created test table in the
+last command, you'll need uncomment to the RECOVERY_TARGET_NAME label
+*-e RECOVERY_TARGET_NAME=beforechanges* to define the restore target name.
+After that, run the script.
 ....
 vi ./run-restore-pitr.sh
-....
-
-Next, lets see if we can restore the database before we created the
-test table in the last command, we will restore using the backup and
-will use the *beforechanges* label as the restore target name in the PITR:
-....
 ./run-restore-pitr.sh
 ....
 
@@ -1916,8 +1932,8 @@ database was restored to the point before creating the test table:
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
 ....
 
-This sql command should show that the pitrtest table does not exist
-at this recovery time.
+This SQL command should show that the pitrtest table does not exist
+at this recovery time. The output should be similar to:
 
 PostgreSQL allows you to pause the recovery process if the target name
 or time is specified.  This pause would allow a DBA a chance to review
@@ -1938,16 +1954,14 @@ vi ./run-restore-pitr.sh
 ./run-restore-pitr.sh
 ....
 
-
 After this restore, you should be able to see the test table:
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
 ....
 
-
-Lastly, lets recovery using all of the WAL files, this will get the
-restored database as current as possible, edit the script
+Lastly, lets start a recovery using all of the WAL files. This will get the
+restored database as current as possible. To do so, edit the script
 to remove the RECOVERY_TARGET_NAME environment setting completely:
 ....
 ./run-restore-pitr.sh
@@ -1960,7 +1974,7 @@ At this point, you should be able to create new data in the restored database
 and the test table should be present.  When you recover the entire
 WAL history, resuming the recovery is not necessary to enable writes.
 
-Other options exist for performing a PITR, see the pitr.adoc for
+Other options exist for performing a PITR. See the link:pitr.adoc[PITR documentation] for
 full details.
 
 ==== Kubernetes
@@ -2082,7 +2096,7 @@ system with the following path configurations be present:
 This example, $CCPROOT/examples/docker/pgaudit, provides an
 example of enabling pgaudit output.  As of release 1.3,
 pgaudit is included in the crunchy-postgres container and is
-added to the postgres shared library list in the postgresql.conf.
+added to the Postgres shared library list in the postgresql.conf.
 
 Given the numerous ways pgaudit can be configured, the exact
 pgaudit configuration is left to the user to define.  pgaudit
@@ -2121,8 +2135,8 @@ the pg_log log file created by the database container.
 This example shows how to run a master and replica database
 container on a Docker Swarm (v.1.12) cluster.
 
-First, set up a cluster, the Kubernetes libvirt coreos cluster
-example works well, see link:http://kubernetes.io/docs/getting-started-guides/libvirt-coreos/[coreos-libvirt-cluster.]
+First, set up a cluster. The Kubernetes libvirt coreos cluster
+example works well; see link:http://kubernetes.io/docs/getting-started-guides/libvirt-coreos/[coreos-libvirt-cluster.]
 
 Next, on each node, create the Swarm using these
 link:https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/[Swarm Install instructions.]
@@ -2201,7 +2215,7 @@ This example shows how to run the crunchy-watch container
 to perform an automated failover.  For the example to
 work, the host on which you are running needs to allow
 read-write access to /run/docker.sock.  The crunchy-watch
-container runs as the postgres user, so adjust the
+container runs as the *postgres* user, so adjust the
 file permissions of /run/docker.sock accordingly.
 
 Run the example as follows (depends on master-replica example
@@ -2229,7 +2243,7 @@ This example assumes you have run the master-replica example prior
 to this example!
 
 This example runs a crunchy-watch container to look for the
-master within a postgres cluster, if it can not find the master it
+master within a Postgres cluster, if it can not find the master it
 will proceed to cause a failover to a replica.
 
 Running the example:
@@ -2327,6 +2341,77 @@ oc logs watch
 oc get pod
 ....
 
+=== ssl - PostgreSQL ssl auth method
+
+==== OpenShift
+
+This example shows how you can configure Postgres to use ssl for
+client authentication.
+
+The example is found at:
+....
+./examples/openshift/customer-config-ssl
+....
+
+The example requires SSL keys to be created, the example script
+*keys.sh* is required to be executed to create the required
+server and client certificates.  This script also creates
+a client key configuration you can use to test with.
+
+The example requires an NFS volume, /pgconf, be mounted into which
+the Postgres configuration files and keys are copied to.  Permissions
+of the keys are important as well, they will need to be owned
+by either the *root* or *postgres* user.  The *run.sh* script
+copies the required files and sets these permissions when executing the example.
+
+The *keys.sh* script creates a client cert with the *testuser* specified
+as the CN.  The *testuser* Postgres user is created by the *setup.sql*
+configuration script as normal.  It is with the *testuser* role that
+you will test with.
+
+Run the Postgres example as follows:
+....
+./run.sh
+....
+
+A required step to make this example work is to define
+in your */etc/hosts* file an entry that maps *server.crunchydata.com*
+to the example's service IP address, this is because we generate
+a server certificate with the server name of *server.crunchyhdata.com*.
+
+For example, if your service has an address as follows:
+....
+ oc get service
+NAME                CLUSTER-IP       EXTERNAL-IP   PORT(S)                   AGE
+custom-config-ssl   172.30.211.108   <none>        5432/TCP
+....
+
+Then your */etc/hosts* file needs an entry like this:
+....
+172.30.211.108 server.crunchydata.com
+....
+
+For a production Openshift installation, you'll likely want DNS
+names to resolve to the Postgres Service name and generate
+server certificates using the DNS names instead of an example
+name like *server.crunchydata.com*.
+
+Once the container starts up, you can test the SSL connection
+as follows:
+....
+psql -h server.crunchydata.com -U testuser userdb
+....
+
+You should see a connection that looks like the following:
+....
+psql (9.6.3)
+SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
+Type "help" for help.
+
+userdb=>
+....
+
+
 === workshop - OpenShift Workshop
 
 ==== OpenShift
@@ -2355,13 +2440,13 @@ you perform a pg_upgrade on a 9.5 database converting its data
 to a 9.6 version.
 
 This example assumes you have run *master-pvc* using a 9.5 image
-such as *centos7-9.5-1.4.1* prior to running this upgrade.
+such as *centos7-9.5-1.5* prior to running this upgrade.
 
 Prior to starting this example, shut down the *master-pvc* database
 using the *examples/kube/master-pvc/cleanup.sh* script.
 
 Prior to running this example, make sure your CCP_IMAGE_TAG
-environment variable is using a 9.6 image such as *centos7-9.6-1.4.1*.
+environment variable is using a 9.6 image such as *centos7-9.6-1.5*.
 
 Start the upgrade as follows:
 ....
@@ -2489,7 +2574,7 @@ setting for pods.  In these examples, we specify the GID of the *nfsnobody*
 group (65534).  If you want to use a different GID for the supplementalGroup
 then you will need to alter the NFS examples accordingly.
 
-When the pod runs, the pod user is UID *26* which is the postgres
+When the pod runs, the pod user is UID *26* which is the Postgres
 user ID.  By specifying the *supplementalGroup* the pod will also
 be added to the *nfsnobody* group.  So, when you set up your NFS
 mount, you can specify the permissions to be as follows:
@@ -2570,7 +2655,7 @@ To perform a database restore, we do the following:
  * create the database pod
 
 If the /pgdata directory is blank AND the /backup directory contains
-a valid postgres backup, it is assumed the user wants to perform a
+a valid Postgres backup, it is assumed the user wants to perform a
 database restore.
 
 The restore logic will copy /backup files to /pgdata before starting

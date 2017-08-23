@@ -1,5 +1,5 @@
 == Crunchy PostgreSQL Containers
-v1.4.1, {docdate}
+v1.5, {docdate}
 
 image::docs/crunchy_logo.png?raw=true[]
 
@@ -11,9 +11,9 @@ are supported.
 
 The containers will execute in the following environments:
 
- * Docker 1.12
- * Openshift 3.5
- * Kubernetes 1.6
+ * Docker 1.12 and above
+ * Openshift 3.4 and above
+ * Kubernetes 1.5 and above
 
 The project includes the following containers:
 

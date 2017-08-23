@@ -30,7 +30,7 @@ func XlogCountMetrics(logger *log.Logger, HOSTNAME string, dbConn *sql.DB) []Met
 
 	var metrics = make([]Metric, 0)
 
-	var count int
+	var count float64
 
 	var cmd *exec.Cmd
 	cmd = exec.Command("/opt/cpm/bin/xlog-count.sh")
@@ -43,15 +43,13 @@ func XlogCountMetrics(logger *log.Logger, HOSTNAME string, dbConn *sql.DB) []Met
 		logger.Println("error:" + err.Error())
 		return metrics
 	}
-	logger.Println("xlog count got back " + strings.TrimSpace(out.String()))
-	count, err = strconv.Atoi(strings.TrimSpace(out.String()))
+	result := strings.TrimSpace(out.String())
+	logger.Println("xlog count got back " + result)
+	count, err = strconv.ParseFloat(result, 64)
 
-	metric := Metric{}
-	metric.Hostname = HOSTNAME
-	metric.MetricName = "xlog_count"
-	metric.Units = "count"
-	metric.Value = int64(count)
-	metric.DatabaseName = "cluster"
+	metric := NewMetric(HOSTNAME, "xlog_count", count)
+	metric.AddLabel("Units", "count")
+	metric.AddLabel("DatabaseName", "cluster")
 	metrics = append(metrics, metric)
 
 	return metrics

@@ -17,8 +17,10 @@ package collectapi
 
 import (
 	"database/sql"
-	_ "github.com/lib/pq"
+	"fmt"
 	"log"
+
+	_ "github.com/lib/pq"
 )
 
 func GetDatabaseSizeMetrics(logger *log.Logger, dbs []string, HOSTNAME string, dbConn *sql.DB) []Metric {
@@ -27,20 +29,18 @@ func GetDatabaseSizeMetrics(logger *log.Logger, dbs []string, HOSTNAME string, d
 	var metrics = make([]Metric, 0)
 
 	for i := 0; i < len(dbs); i++ {
-		metric := Metric{}
 
-		var dbsize int64
-		err := dbConn.QueryRow("select pg_database_size('" + dbs[i] + "') / 1024 / 1024").Scan(&dbsize)
+		var dbsize float64
+		query := fmt.Sprintf("select pg_database_size('%s') / 1024 / 1024", dbs[i])
+		err := dbConn.QueryRow(query).Scan(&dbsize)
 		if err != nil {
 			logger.Println("error: " + err.Error())
 			return metrics
 		}
 
-		metric.Hostname = HOSTNAME
-		metric.MetricName = "databasesize"
-		metric.Units = "megabytes"
-		metric.Value = dbsize
-		metric.DatabaseName = dbs[i]
+		metric := NewMetric(HOSTNAME, "databasesize", dbsize)
+		metric.AddLabel("Units", "megabytes")
+		metric.AddLabel("DatabaseName", dbs[i])
 		metrics = append(metrics, metric)
 	}
 

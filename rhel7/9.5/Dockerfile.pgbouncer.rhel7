@@ -1,23 +1,28 @@
-FROM rhel7.2
+FROM registry.access.redhat.com/rhel
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/pgbouncer" \
-				PostgresVersion="9.5" \
-				PostgresFullVersion="9.5.7" \
+	PostgresVersion="9.5" \
+	PostgresFullVersion="9.5.7" \
         vendor="crunchy data" \
-        version="7.2" \
-        release="1.4.1" \
-        build-date="2017-05-11" \
+        version="7.3" \
+        release="1.5" \
+        #build-date="2017-05-11" \
         url="https://crunchydata.com" \
-        summary="crunchy data pgbouncer container" \
-        description="pgbouncer container" \
+        summary="Lightweight connection pooler for crunchy-postgres" \
+        description="The aim of crunchy-pgbouncer is to lower the performance impact of opening new connections to PostgreSQL; clients connect through this service. It offers session, transaction and statement pooling." \
+        run="" \
+        start="" \
+        stop="" \
         io.k8s.description="pgbouncer container" \
         io.k8s.display-name="Crunchy pgbouncer container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
 COPY docs/pgbouncer/help.1 /help.1
+COPY docs/pgbouncer/help.md /help.md
+COPY docs/licenses /licenses
 
 # PGDG Postgres repo
 #RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm

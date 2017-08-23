@@ -1,0 +1,31 @@
+server:
+  proxy:
+    hostport: 0.0.0.0:5432
+  admin:
+    hostport: 0.0.0.0:10000
+
+nodes:
+  master:
+    hostport: ms-master:5432
+    role: master
+    metadata: {}
+  replica1:
+    hostport: ms-replica:5432
+    role: replica
+    metadata: {}
+
+credentials:
+  username: postgres
+  database: postgres
+  password: password
+  options:
+  ssl:
+    enable: false
+    sslmode: disable
+
+pool:
+  capacity: 2
+
+healthcheck:
+  delay: 60
+  query: select now();

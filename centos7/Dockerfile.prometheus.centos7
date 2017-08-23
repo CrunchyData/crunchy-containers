@@ -2,12 +2,12 @@ FROM centos:7
 
 LABEL name="crunchydata/prometheus" \
         vendor="crunchy data" \
-        version="7.2" \
-        release="1.4.1" \
+        version="7.3" \
+        release="1.5" \
         build-date="2017-05-11" \
         url="https://crunchydata.com" \
-        summary="crunchy data prometheus container" \
-        description="prometheus container" \
+        summary="Prometheus server that stores metrics for crunchy-postgres" \
+        description="PostgreSQL collected metrics are stored here as defined by the Crunchy Container Suite. Prometheus will scrape metrics from a Prometheus push gateway (crunchy-promgateway) using the supplied config file. Works in conjunction with crunchy-collect, crunchy-grafana, crunchy-promgateway." \
         io.k8s.description="prometheus container" \
         io.k8s.display-name="Crunchy prometheus container" \
         io.openshift.expose-services="" \

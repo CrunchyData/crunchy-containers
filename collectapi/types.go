@@ -20,57 +20,32 @@ import (
 )
 
 type Metric struct {
-	Hostname     string
-	MetricName   string
-	DatabaseName string
-	TableName    string
-	Value        int64
-	Units        string //count, item, percent, megabytes, time
-	LockType     string //only used for lock metrics
-	LockMode     string //only used for lock metrics
-	DeadTup      int64  //only used for DeadRows metrics
-	RelTup       int64  //only used for DeadRows metrics
-	TableSz      int64  //used for DeadRows, Wraparound metrics
-	TotalSz      int64  //used for DeadRows, Wraparound metrics
-	LastVacuum   string //used for DeadRows, Wraparound, stale_age metrics
-	LastAnalyze  string //only used for DeadRows, stale_age metrics
-	AvNeeded     string //only used for DeadRows metrics
-	Age          string //only used for Wraparound metrics
-	Kind         string //only used for Wraparound metrics
-
+	Hostname string
+	Name     string
+	Value    float64
+	Labels   map[string]string
 }
 
-func (f Metric) Print() {
-	fmt.Print("metric: " + f.MetricName)
-	fmt.Print(" hostname: " + f.Hostname)
-	fmt.Print(" database: " + f.DatabaseName)
-	if f.TableName != "" {
-		fmt.Print(" tablename: " + f.TableName)
+func NewMetric(hostname, name string, value float64) Metric {
+	return Metric{
+		Hostname: hostname,
+		Name:     name,
+		Value:    value,
+		Labels:   make(map[string]string),
 	}
-	if f.LockType != "" {
-		fmt.Print(" locktype: " + f.LockType)
-		fmt.Print(" lockmode: " + f.LockMode)
+}
+
+func (m Metric) AddLabel(label, value string) {
+	m.Labels[label] = value
+}
+
+func (m Metric) String() string {
+	labels := ""
+
+	for label, value := range m.Labels {
+		labels += fmt.Sprintf(" %s: %s", label, value)
 	}
-	fmt.Printf(" value: %d", f.Value)
-	if f.MetricName == "pct_dead" {
-		fmt.Print(" n_dead_tup: %d ", f.DeadTup)
-		fmt.Print(" reltuples: %d", f.RelTup)
-		fmt.Print(" table_sz: %d", f.TableSz)
-		fmt.Print(" total_sz: %d ", f.TotalSz)
-		fmt.Print(" last_vacuum: " + f.LastVacuum)
-		fmt.Print(" last_analyze: " + f.LastAnalyze)
-		fmt.Print(" av_needed: " + f.AvNeeded)
-	}
-	if f.MetricName == "wraparound" {
-		fmt.Print(" age: " + f.Age)
-		fmt.Print(" table_sz: %d", f.TableSz)
-		fmt.Print(" total_sz: %d ", f.TotalSz)
-		fmt.Print(" last_vacuum: " + f.LastVacuum)
-		fmt.Print(" kind: " + f.Kind)
-	}
-	if f.MetricName == "stale_age" {
-		fmt.Print(" last_analyze: " + f.LastAnalyze)
-		fmt.Print(" last_vacuum: " + f.LastVacuum)
-	}
-	fmt.Println(" units: " + f.Units)
+
+	return fmt.Sprintf("metric: %s hostname: %s value: %f labels: {%s}",
+		m.Name, m.Hostname, m.Value, labels)
 }

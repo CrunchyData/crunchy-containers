@@ -1,21 +1,26 @@
-FROM rhel7.2
+FROM registry.access.redhat.com/rhel
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/vacuum" \
         vendor="crunchy data" \
-        version="7.2" \
-        release="1.4.1" \
-        build-date="2017-05-11" \
+        version="7.3" \
+        release="1.5" \
+        #build-date="2017-05-11" \
         url="https://crunchydata.com" \
-        summary="crunchy data vacuum container" \
-        description="vacuum container" \
+        summary="Provides a simple SQL VACUUM execution for a PostgreSQL table" \
+        description="The crunchy-vacuum container runs a SQL VACUUM statement against a database table(s). You can pass in environment variables to determine how it functions, such as the tables to run the vacuum against and if the ANALYZE is to be performed." \
+        run="" \
+        start="" \
+        stop="" \
         io.k8s.description="vacuum container" \
         io.k8s.display-name="Crunchy vacuum container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
 COPY docs/vacuum/help.1 /help.1
+COPY docs/vacuum/help.md /help.md
+COPY docs/licenses /licenses
 
 RUN yum -y update && yum -y install procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
 
@@ -28,4 +33,3 @@ ADD bin/vacuum /opt/cpm/bin
 USER root
 
 CMD ["/opt/cpm/bin/start-vacuum.sh"]
-

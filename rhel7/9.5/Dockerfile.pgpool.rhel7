@@ -1,23 +1,28 @@
-FROM rhel7.2
+FROM registry.access.redhat.com/rhel
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/pgpool" \
-				PostgresVersion="9.5" \
-				PostgresFullVersion="9.5.7" \
+	PostgresVersion="9.5" \
+	PostgresFullVersion="9.5.7" \
         vendor="crunchy data" \
-        version="7.2" \
-        release="1.4.1" \
-        build-date="2017-05-11" \
+        version="7.3" \
+        release="1.5" \
+        #build-date="2017-05-11" \
         url="https://crunchydata.com" \
-        summary="crunchy data pgpool container" \
-        description="pgpool container" \
+        summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
+        description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the master and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \
+        run="" \
+        start="" \
+        stop="" \
         io.k8s.description="pgpool container" \
         io.k8s.display-name="Crunchy pgpool container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
 COPY docs/pgpool/help.1 /help.1
+COPY docs/pgpool/help.md /help.md
+COPY docs/licenses /licenses
 
 # PGDG Postgres repo
 #RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
@@ -28,7 +33,7 @@ ADD conf/crunchypg95.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN yum -y update && yum -y install gettext libxslt libxml2 procps-ng \
-pgpool-II-95-*3.4.3* \
+pgpool-II-95 pgpool-II-95-extensions \
 postgresql95 \
 openssh-clients \
 hostname  \

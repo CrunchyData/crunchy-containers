@@ -1,20 +1,25 @@
-FROM rhel7.2
+FROM registry.access.redhat.com/rhel
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/dba" \
-	vendor="crunchy data" \
-	version="7.2" \
-	release="1.4.1" \
-	build-date="2017-05-11" \
-	url="https://crunchydata.com" \
-	summary="crunchy data dba container" \
-	description="DBA container" \
-	io.k8s.description="DBA container" \
-	io.k8s.display-name="Crunchy DBA container" \
-	io.openshift.expose-services="" \
-	io.openshift.tags="crunchy,database"
+				vendor="crunchy data" \
+				version="7.3" \
+				release="1.5" \
+				#build-date="2017-05-11" \
+				url="https://crunchydata.com" \
+				summary="Implements a cron scheduler." \
+				description="Offers a way to perform simple DBA tasks that occur on some form of schedule such as backup jobs or running a vacuum on a single Postgres database container. You can either run the crunchy-dba container as a single pod or include the container within a database pod. The crunchy-dba container makes use of a Service Account to perform the startup of scheduled jobs. The Kube Job type is used to execute the scheduled jobs with a Restart policy of Never." \
+				run="" \
+				start="" \
+				stop="" \
+				io.k8s.description="DBA container" \
+				io.k8s.display-name="Crunchy DBA container" \
+				io.openshift.expose-services="" \
+				io.openshift.tags="crunchy,database"
 
 COPY docs/dba/help.1 /help.1
+COPY docs/dba/help.md /help.md
+COPY docs/licenses /licenses
 
 RUN yum -y update && yum -y install psmisc procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
 
@@ -27,4 +32,3 @@ ADD conf/dba /opt/cpm/conf
 USER root
 
 CMD ["/opt/cpm/bin/start-dba.sh"]
-

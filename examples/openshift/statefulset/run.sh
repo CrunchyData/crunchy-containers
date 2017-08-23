@@ -19,7 +19,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
 # create the service account used in the containers
-oc create -f $DIR/set-sa.json
+$DIR/create-sa.sh
 
 # create the services for the example
 oc create -f $DIR/set-service.json

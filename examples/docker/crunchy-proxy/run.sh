@@ -22,7 +22,7 @@ $DIR/cleanup.sh
 CONTAINER_NAME=crunchyproxy
 CONF_VOLUME=$CONTAINER_NAME-config
 
-PROXY_IMAGE_TAG=centos7-0.0.1-alpha
+PROXY_IMAGE_TAG=centos7-1.0.0-beta
 
 docker volume create --driver local --name=$CONF_VOLUME
 
@@ -31,7 +31,7 @@ docker run -it --privileged=true \
         -v $DIR:/fromdir \
         -v $CONF_VOLUME:/config:z \
         --name=crunchyproxysetup \
-	docker.io/centos:7 cp /fromdir/crunchy-proxy-config.json /config/config.json
+	docker.io/centos:7 cp /fromdir/crunchy-proxy-config.yaml /config/config.yaml
 
 docker rm -f crunchyproxysetup
 

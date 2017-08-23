@@ -26,6 +26,7 @@ if [ ! -d "$DATADIR" ]; then
 	sudo cp $CCPROOT/conf/pgadmin4/config_local.py $DATADIR
 	sudo cp $CCPROOT/conf/pgadmin4/pgadmin4.db $DATADIR
 	sudo chmod -R 777 $DATADIR
+	sudo chown -R 26:26 $DATADIR
 fi
 
 oc process -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/pgadmin4.json | oc create -f -

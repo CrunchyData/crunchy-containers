@@ -2,14 +2,14 @@ FROM centos:7
 
 LABEL name="crunchydata/pgbouncer" \
         vendor="crunchy data" \
-        version="7.2" \
+        version="7.3" \
       	PostgresVersion="9.6" \
       	PostgresFullVersion="9.6.3" \
-        release="1.4.1" \
-        build-date="2017-05-11" \
+        release="1.5" \
+        build-date="2017-08-01" \
         url="https://crunchydata.com" \
-        summary="crunchy data pgbouncer container" \
-        description="pgbouncer container" \
+        summary="Lightweight connection pooler for crunchy-postgres" \
+        description="The aim of crunchy-pgbouncer is to lower the performance impact of opening new connections to PostgreSQL; clients connect through this service. It offers session, transaction and statement pooling." \
         io.k8s.description="pgbouncer container" \
         io.k8s.display-name="Crunchy pgbouncer container" \
         io.openshift.expose-services="" \

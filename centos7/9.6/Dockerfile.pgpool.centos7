@@ -2,19 +2,19 @@ FROM centos:7
 
 LABEL name="crunchydata/pgpool" \
         vendor="crunchy data" \
-        version="7.2" \
+        version="7.3" \
       	PostgresVersion="9.6" \
       	PostgresFullVersion="9.6.3" \
-        release="1.4.1" \
-        build-date="2017-05-11" \
+        release="1.5" \
+        build-date="2017-08-01" \
         url="https://crunchydata.com" \
-        summary="crunchy data pgpool container" \
-        description="pgpool container" \
+        summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
+        description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the master and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \
         io.k8s.description="pgpool container" \
         io.k8s.display-name="Crunchy pgpool container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
-				
+
 ENV PGVERSION="9.6" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}

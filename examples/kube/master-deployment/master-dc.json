@@ -9,11 +9,6 @@
     },
     "spec": {
         "replicas": 1,
-        "selector": {
-            "matchLabels": {
-                "name": "master-dc"
-            }
-        },
         "template": {
             "metadata": {
                 "labels": {
@@ -38,28 +33,49 @@
                         "value": "master"
                     }, {
                         "name": "PG_MASTER_PASSWORD",
-                        "value": "password"
+                        "value": ""
+                    }, {
+                        "name": "PG_ROOT_PASSWORD",
+                        "value": ""
+                    }, {
+                        "name": "PG_PASSWORD",
+                        "value": ""
                     }, {
                         "name": "PG_USER",
                         "value": "testuser"
                     }, {
-                        "name": "PG_PASSWORD",
-                        "value": "password"
-                    }, {
                         "name": "PG_DATABASE",
                         "value": "userdb"
-                    }, {
-                        "name": "PG_ROOT_PASSWORD",
-                        "value": "password"
                     }, {
                         "name": "PGHOST",
                         "value": "/tmp"
                     }],
-                    "volumeMounts": [{
+                    "volumeMounts": [
+			{
+                        "mountPath": "/pgbackrest",
+                        "name": "pgbackrest",
+                        "readOnly": false
+                    }, {
+                        "mountPath": "/pgwal",
+                        "name": "pgwal",
+                        "readOnly": false
+                    }, {
                         "mountPath": "/pgdata",
                         "name": "pgdata",
                         "readOnly": false
-                    }],
+                    }, {
+                        "mountPath": "/pguser",
+                        "name": "pguser-volume"
+                    }, {
+                        "mountPath": "/pgmaster",
+                        "name": "pgmaster-volume"
+                    }, {
+                        "mountPath": "/pgroot",
+                        "name": "pgroot-volume"
+                    }, {
+                        "mountPath": "/pgconf",
+                        "name": "postgresql-conf"
+                    } ],
 
                     "ports": [{
                         "containerPort": 5432,
@@ -68,12 +84,55 @@
                     "resources": {},
                     "imagePullPolicy": "IfNotPresent"
                 }],
-                "volumes": [{
+                "volumes": [
+		{
+                    "name": "pgwal",
+            		"persistentVolumeClaim": {
+                		"claimName": "crunchy-pvc3"
+            		}
+                },{
+                    "name": "pgbackrest",
+            		"persistentVolumeClaim": {
+                		"claimName": "crunchy-pvc2"
+            		}
+                },{
                     "name": "pgdata",
             		"persistentVolumeClaim": {
                 		"claimName": "crunchy-pvc"
             		}
-                }],
+                },{
+                    "name": "pguser-volume",
+                    "secret": {
+                        "secretName": "pguser-secret"
+                    }
+                },{
+                    "name": "pgmaster-volume",
+                    "secret": {
+                        "secretName": "pgmaster-secret"
+                    }
+                },{
+                    "name": "pgroot-volume",
+                    "secret": {
+                        "secretName": "pgroot-secret"
+                    }
+                }, {
+                "name": "postgresql-conf",
+                "configMap": {
+                    "name": "postgresql-conf",
+                    "items": [{
+                        "key": "setup.sql",
+                        "path": "setup.sql"
+                    }, {
+                        "key": "postgresql.conf",
+                        "path": "postgresql.conf"
+                    }, {
+                        "key": "pghba",
+                        "path": "pg_hba.conf"
+                    }]
+                }
+            }
+
+		],
 
                 "restartPolicy": "Always",
                 "terminationGracePeriodSeconds": 30,

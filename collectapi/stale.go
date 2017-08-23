@@ -36,7 +36,7 @@ func StaleTablesMetrics(logger *log.Logger, dbs []string, HOSTNAME string, USER 
 
 		var nspname, relname, kind string
 		var last_vacuum, last_analyze string //pg date types
-		var age int64
+		var age float64
 
 		rows, err2 := d.Query(
 			" SELECT " +
@@ -77,15 +77,12 @@ func StaleTablesMetrics(logger *log.Logger, dbs []string, HOSTNAME string, USER 
 				return metrics
 			}
 
-			metric := Metric{}
-			metric.Hostname = HOSTNAME
-			metric.MetricName = "stale_age"
-			metric.Units = "count"
-			metric.Value = age
-			metric.LastVacuum = last_vacuum
-			metric.LastAnalyze = last_analyze
-			metric.DatabaseName = dbs[i]
-			metric.TableName = relname
+			metric := NewMetric(HOSTNAME, "stale_age", age)
+			metric.AddLabel("Units", "count")
+			metric.AddLabel("LastVacuum", last_vacuum)
+			metric.AddLabel("LastAnalyze", last_analyze)
+			metric.AddLabel("DatabaseName", dbs[i])
+			metric.AddLabel("TableName", relname)
 			metrics = append(metrics, metric)
 		}
 

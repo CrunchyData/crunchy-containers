@@ -8,12 +8,7 @@
         }
     },
     "spec": {
-        "replicas": 2,
-        "selector": {
-            "matchLabels": {
-                "name": "replica-dc"
-            }
-        },
+        "replicas": 1,
         "template": {
             "metadata": {
                 "labels": {
@@ -22,7 +17,7 @@
             },
             "spec": {
                 "containers": [{
-                    "name": "replica-dc",
+                    "name": "database",
                     "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
                     "env": [{
                         "name": "PG_MASTER_HOST",
@@ -40,29 +35,38 @@
                         "name": "PG_MASTER_USER",
                         "value": "master"
                     }, {
-                        "name": "PG_MASTER_PASSWORD",
-                        "value": "password"
-                    }, {
                         "name": "PG_USER",
                         "value": "testuser"
-                    }, {
-                        "name": "PG_PASSWORD",
-                        "value": "password"
                     }, {
                         "name": "PG_DATABASE",
                         "value": "userdb"
                     }, {
+                        "name": "PG_MASTER_PASSWORD",
+                        "value": ""
+                    }, {
                         "name": "PG_ROOT_PASSWORD",
-                        "value": "password"
+                        "value": ""
+                    }, {
+                        "name": "PG_PASSWORD",
+                        "value": ""
                     }, {
                         "name": "PGHOST",
                         "value": "/tmp"
                     }],
-                    "volumeMounts": [{
+                    "volumeMounts": [ {
                         "mountPath": "/pgdata",
                         "name": "pgdata",
                         "readOnly": false
-                    }],
+                    	}, {
+                        "mountPath": "/pguser",
+                        "name": "pguser-volume"
+                    }, {
+                        "mountPath": "/pgmaster",
+                        "name": "pgmaster-volume"
+                    }, {
+                        "mountPath": "/pgroot",
+                        "name": "pgroot-volume"
+                    } ],
 
                     "ports": [{
                         "containerPort": 5432,
@@ -71,10 +75,26 @@
                     "resources": {},
                     "imagePullPolicy": "IfNotPresent"
                 }],
-                "volumes": [{
+                "volumes": [
+		{
                     "name": "pgdata",
                     "emptyDir": {}
-                }],
+                }, {
+                    "name": "pguser-volume",
+                    "secret": {
+                        "secretName": "pguser-secret"
+                    }
+                }, {
+                    "name": "pgmaster-volume",
+                    "secret": {
+                        "secretName": "pgmaster-secret"
+                    }
+                }, {
+                    "name": "pgroot-volume",
+                    "secret": {
+                        "secretName": "pgroot-secret"
+                    }
+                } ],
 
                 "restartPolicy": "Always",
                 "terminationGracePeriodSeconds": 30,

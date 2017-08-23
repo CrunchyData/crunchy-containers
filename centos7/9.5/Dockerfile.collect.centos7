@@ -4,12 +4,12 @@ LABEL name="crunchydata/collect" \
 				PostgresVersion="9.5" \
 				PostgresFullVersion="9.5.7" \
         vendor="crunchy data" \
-        version="7.2" \
-        release="1.4.1" \
-        build-date="2017-05-11" \
+        version="7.3" \
+        release="1.5" \
+        build-date="2017-08-01" \
         url="https://crunchydata.com" \
-        summary="crunchy data collect container" \
-        description="collect container" \
+        summary="Provides metrics for crunchy-postgres" \
+        description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus, crunchy-grafana, crunchy-promgateway." \
         io.k8s.description="collect container" \
         io.k8s.display-name="Crunchy collect container" \
         io.openshift.expose-services="" \
@@ -24,6 +24,10 @@ postgresql95-server \
 openssh-clients \
 hostname  \
  && yum clean all -y
+
+# Install libstatgrab and dependencies
+RUN yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/log4cplus-1.1.3-0.4.rc3.el7.x86_64.rpm
+Run yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/libstatgrab-0.91-4.el7.x86_64.rpm
 
 RUN mkdir -p /opt/cpm/bin
 

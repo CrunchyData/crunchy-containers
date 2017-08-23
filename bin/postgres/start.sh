@@ -129,10 +129,15 @@ function initdb_logic() {
 		cmd+=" --locale="$PG_LOCALE
 	fi
         if [[ -v XLOGDIR ]]; then
-		if [ -d "$XLOGDIR" ]; then
-                	cmd+=" --xlogdir="$XLOGDIR
-		else
-			echo "XLOGDIR not found! Using default pg_xlog"
+		if [ $XLOGDIR = "true" ]; then
+			echo "XLOGDIR found and true"
+			mkdir $PGWAL
+			chown postgres:postgres $PGWAL
+			if [ -d "$PGWAL" ]; then
+                		cmd+=" --xlogdir="$PGWAL
+			else
+				echo "XLOGDIR not found! Using default pg_xlog"
+			fi
 		fi 
         fi
 	if [[ -v CHECKSUMS ]]; then

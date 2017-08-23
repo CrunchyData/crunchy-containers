@@ -20,7 +20,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-sudo cp $DIR/crunchy-proxy-config.json $PV_PATH/config.json
+sudo cp $DIR/config.yaml $PV_PATH/config.yaml
 
-PROXY_IMAGE_TAG=centos7-0.0.1-alpha
+PROXY_IMAGE_TAG=centos7-1.0.0-beta
+
 oc process -f $DIR/crunchy-proxy.json -p PROXY_IMAGE_TAG=$PROXY_IMAGE_TAG | oc create -f -

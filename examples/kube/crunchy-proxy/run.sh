@@ -20,8 +20,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-sudo cp $DIR/crunchy-proxy-config.json $PV_PATH/config.json
+sudo cp $DIR/config.yaml $PV_PATH/config.yaml
 
-export PROXY_IMAGE_TAG=centos7-0.0.1-alpha
+export PROXY_IMAGE_TAG=centos7-1.0.0-beta
+
 envsubst < $DIR/crunchy-proxy.json | kubectl create -f -
 kubectl create -f $DIR/crunchy-proxy-service.json

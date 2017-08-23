@@ -1,7 +1,7 @@
 = Installation Guide - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
 :toc: left
-v1.4.1, {docdate}
+v1.5, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Project Setup & Docker Installation
@@ -33,7 +33,7 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
 export CCP_PGVERSION=9.6
-export CCP_VERSION=1.4.1
+export CCP_VERSION=1.5
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PGVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 ....
@@ -51,7 +51,7 @@ mkdir crunchydata
 cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 1.4.1
+git checkout 1.5
 godep restore
 ....
 
@@ -91,13 +91,30 @@ man docker-storage-setup
 Follow the instructions available link:https://docs.openshift.com/container-platform/3.4/install_config/install/host_preparation.html#configuring-docker-storage[on the main OpenShift documentation page]
 to configure Docker storage appropriately.
 
-My typical process for setting up Docker storage is as follows:
+These steps are illustrative of a typical process for setting up Docker storage. You will need to run these commands as root.
 
- * add an extra IDE drive to my VM
- * fdisk /dev/sd? to format the drive
- * vgcreate /dev/sd?1 to create a volume group on the new drive partition
- * add VG=docker-vg to /etc/sysconfig/docker-storage-setup
- * run docker-storage-setup to use that new volume group
+First, add an extra virtual hard disk to your virtual machine (see link:http://catlingmindswipe.blogspot.com/2012/02/how-to-create-new-virtual-disks-in.html[this blog post] for tips on how to do so).
+
+Run this command to format the drive, where /dev/sd? is the new hard drive that was added:
+
+....
+fdisk /dev/sd?
+....
+
+Next, create a volume group on the new drive partition within the fdisk utility:
+
+....
+vgcreate docker-vg /dev/sd?
+....
+
+Then, you'll need to edit the docker-storage-setup configuration file in order to override default options. Add these two lines to **/etc/sysconfig/docker-storage-setup**:
+
+....
+DEVS=/dev/sd?
+VG=docker-vg
+....
+
+Finally, run the command **docker-storage-setup** to use that new volume group. The results should state that the physical volume /dev/sd? and the volume group docker-vg have both been successfully created.
 
 Next, we enable and start up Docker:
 ....
@@ -158,6 +175,14 @@ to allow NFS write permissions:
 sudo setsebool -P virt_use_nfs 1
 ....
 
+The necessary dependencies will need to be installed and started next:
+....
+sudo setsebool -P virt_use_nfs 1
+sudo yum -y install nfs-utils libnfsidmap
+sudo systemctl enable rpcbind nfs-server
+sudo systemctl start rpcbind nfs-server rpc-statd nfs-idmapd
+....
+
 Next, you will need to set the permissions of your NFS
 path so that your pods can have write access.  For the
 Crunchy examples, the *nfsnobody* GUI was chosen as
@@ -168,7 +193,8 @@ and therefore be able to write to the NFS persistent volumes.
 
 The permissions on the NFS path are set as follows:
 ....
-drwxrwx---.   3 nfsnobody nfsnobody   23 Dec 16 11:28 nfsfileshare
+sudo mkdir /nfsfileshare
+sudo chmod 777 /nfsfileshare
 ....
 
 Most of the Crunchy containers run as the postgres UID (26), but you
@@ -179,7 +205,22 @@ The case of Amazon file systems is different, for that you use the
 *fsGroup* security context setting but the idea for allowing
 write permissions is the same.
 
-Here are the instructions I use when setting up NFS:
+You will then need to modify the /etc/exports file.
+....
+sudo vi /etc/exports
+....
+
+The /etc/exports file should contain a line similar to this one except with the applicable IP address specified:
+....
+/nfsfileshare 192.168.122.9(rw,sync)
+....
+
+After saving and closing the file, you will need to re-export all directories:
+....
+sudo exportfs -r
+....
+
+Detailed instructions that you can use for setting up a NFS server on Centos 7 are provided in the following link.
 
 http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html
 
@@ -190,7 +231,6 @@ https://github.com/openshift/origin/tree/master/examples/wordpress/nfs
 The examples specify a test NFS server running at IP address 192.168.0.103.
 
 On that server, the /etc/exports file looks like this:
-
 ....
 /nfsfileshare *(rw,sync)
 ....
@@ -204,9 +244,24 @@ if you are running your client on a VM, you will need to
 add 'insecure' to the exportfs file on the NFS server, this is because
 of the way port translation is done between the VM host and the VM instance.
 
-see this for more details:
+For more details on this bug, please see the following link.
 
 http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting
+
+A suggested best practice for tuning NFS for PostgreSQL is to configure the PostgreSQL fstab
+mount options like so:
+
+....
+proto=tcp,suid,rw,vers=3,proto=tcp,timeo=600,retrans=2,hard,fg,rsize=8192,wsize=8192
+....
+
+Network options:
+....
+MTU=9000
+....
+
+If interested in mounting the same NFS share multiple times on the same mount point,
+look into the link:https://www.novell.com/support/kb/doc.php?id=7010210[noac mount option].
 
 === Examples
 
@@ -219,6 +274,8 @@ cd $CCPROOT/examples/pv
 ./create-pvc.sh
 ....
 
+View the README.txt for command-line usage.
+
 If you are wanting to run the examples on a Minishift instance
 you will need to create the PVs using hostPath as follows:
 ....
@@ -229,7 +286,7 @@ oc login -u developer
 ....
 
 Additional steps are required to allow persistence to work
-on minishift including:
+on Minishift including:
 ....
 oc login -u system:admin
 oc edit scc restricted

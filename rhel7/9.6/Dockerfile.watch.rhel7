@@ -1,23 +1,28 @@
-FROM rhel7.2
+FROM registry.access.redhat.com/rhel
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/watch" \
         vendor="crunchy data" \
-        version="7.2" \
+        version="7.3" \
       	PostgresVersion="9.6" \
       	PostgresFullVersion="9.6.3" \
-        release="1.4.1" \
-        build-date="2017-05-11" \
+        release="1.5" \
+        #build-date="2017-05-11" \
         url="https://crunchydata.com" \
-        summary="crunchy data watch container" \
-        description="watch container" \
+        summary="Watches the master in a master/slave deployment, triggering a failover when master can't be reached" \
+        description="Time between connection attempts to the master is configurable. When multiple slaves are available, you can set a preferred slave to be promoted to master." \
+        run="" \
+        start="" \
+        stop="" \
         io.k8s.description="watch container" \
         io.k8s.display-name="Crunchy watch container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
 COPY docs/watch/help.1 /help.1
+COPY docs/watch/help.md /help.md
+COPY docs/licenses /licenses
 
 ENV PGVERSION="9.6"
 

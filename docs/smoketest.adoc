@@ -1,6 +1,6 @@
 = Smoke Test Guide - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.4.1, {docdate}
+v1.5, {docdate}
 
 == Smoke Test Guide Prerequsites
 

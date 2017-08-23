@@ -1,0 +1,48 @@
+FROM centos:7
+
+LABEL name="crunchydata/postage" \
+        vendor="crunchy data" \
+      	PostgresVersion="9.6" \
+      	PostgresFullVersion="9.6.3" \
+        version="7.3" \
+        release="1.5" \
+        build-date="2017-08-01" \
+        url="https://crunchydata.com" \
+        summary="Fast PostgreSQL graphical client" \
+        description="Contains the Postage GUI utility for PostgreSQL." \
+        io.k8s.description="postage container" \
+        io.k8s.display-name="Crunchy postage container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+ENV PGVERSION="9.6" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y update && yum -y install epel-release \
+ && yum -y install glibc-common-*2.17* \
+ && yum -y install gcc \
+ openssl-devel \
+ openssl
+ && yum -y install postgresql96-devel postgresql96-server \
+ && yum -y clean all
+
+ENV PGROOT="/usr/pgsql-${PGVERSION}"
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+ADD postage.tar.gz /opt/cpm/bin
+ADD bin/postage/ /opt/cpm/bin
+
+# open up the postage http port
+EXPOSE 8080
+
+RUN mkdir -p /pgdata \
+ && chown -R root:root /pgdata /opt/cpm
+
+
+VOLUME ["/pgdata"]
+
+USER root
+
+CMD ["/opt/cpm/bin/start-postage.sh"]

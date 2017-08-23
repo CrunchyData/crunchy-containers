@@ -1,0 +1,29 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "dotnet",
+        "labels": {
+            "name": "dotnet"
+        }
+    },
+    "spec": {
+        "containers": [{
+            "name": "dotnet",
+            "image": "dchq/dotnet-names-directory:latest",
+            "ports": [{
+                "containerPort": 5000,
+                "protocol": "TCP"
+            }],
+            "env": [{
+                "name": "database_driverClassName",
+                "value": "postgres"
+            }, {
+                "name": "database_url",
+                "value": "Host=master-restore;Database=userdb;Username=testuser;Password=password"
+            }],
+            "volumeMounts": [ ]
+        }],
+        "volumes": [ ]
+    }
+}

@@ -23,34 +23,15 @@ wget -O $CCPROOT/prometheus.tar.gz https://github.com/prometheus/prometheus/rele
 wget -O $CCPROOT/grafana.tar.gz https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-4.2.0.linux-x64.tar.gz
 
 #
-# this set is required to build the docs
+# download postage source package, required to build the container
+#
+wget -O $CCPROOT/postage.tar.gz https://github.com/workflowproducts/postage/archive/eV3.2.16.tar.gz
+
+#
+# this set is required to build the docs with a2x
 #
 sudo yum -y install asciidoc ruby
-
-# Install a specific set of gems in order to get asciidoctor-pdf.
-# Note that "gem install --pre asciidoctor-pdf" may not work because prawn dependency ttfunk 1.5.0 requires Ruby >= 2.1.
-# Prawn 2.1.0 is the latest version which is still compatible with Ruby 2.0.0 supported by RHEL 7
-gem install --minimal-deps ttfunk -v 1.4.0
-gem install --minimal-deps pdf-core -v 0.6.1
-gem install --minimal-deps prawn -v 2.1.0
-gem install --minimal-deps asciidoctor -v 1.5.5
-gem install --minimal-deps prawn-table -v 0.2.2
-gem install --minimal-deps Ascii85 -v 1.0.2
-gem install --minimal-deps ruby-rc4 -v 0.1.5
-gem install --minimal-deps hashery -v 2.1.2
-gem install --minimal-deps afm -v 0.2.2
-gem install --minimal-deps pdf-reader -v 1.4.1
-gem install --minimal-deps prawn-templates -v 0.0.3
-gem install --minimal-deps public_suffix -v 2.0.5
-gem install --minimal-deps addressable -v 2.5.0
-gem install --minimal-deps css_parser -v 1.4.10
-gem install --minimal-deps prawn-svg -v 0.26.0
-gem install --minimal-deps prawn-icon -v 1.3.0
-gem install --minimal-deps safe_yaml -v 1.0.4
-gem install --minimal-deps thread_safe -v 0.3.6
-gem install --minimal-deps polyglot -v 0.3.5
-gem install --minimal-deps treetop -v 1.5.3
-gem install --minimal-deps --no-ri asciidoctor-pdf -v 1.5.0.alpha.14
+sudo yum -y install lynx dblatex
 
 wget -O $HOME/bootstrap-4.5.0.zip http://laurent-laville.org/asciidoc/bootstrap/bootstrap-4.5.0.zip
 asciidoc --backend install $HOME/bootstrap-4.5.0.zip
@@ -67,11 +48,21 @@ if [ $? -ne 0 ]; then
 # install oc binary into /usr/bin
 #
 
-FILE=openshift-origin-client-tools-v1.4.1-3f9807a-linux-64bit.tar.gz
+FILE=openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz
 wget -O /tmp/$FILE \
-https://github.com/openshift/origin/releases/download/v1.4.1/$FILE
+https://github.com/openshift/origin/releases/download/v1.5.1/$FILE
 
 tar xvzf /tmp/$FILE  -C /tmp
-sudo cp /tmp/openshift-origin-client-tools-v1.4.1+3f9807a-linux-64bit/oc /usr/bin/oc
+sudo cp /tmp/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit/oc /usr/bin/oc
 
 fi
+
+#
+# Install libstatgrab dependencies for collectapi container
+#
+
+sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/log4cplus-1.1.3-0.4.rc3.el7.x86_64.rpm
+sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/log4cplus-devel-1.1.3-0.4.rc3.el7.x86_64.rpm
+sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/libstatgrab-0.91-4.el7.x86_64.rpm
+sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/libstatgrab-devel-0.91-4.el7.x86_64.rpm
+sudo yum -y install gcc
