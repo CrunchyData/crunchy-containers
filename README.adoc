@@ -31,6 +31,7 @@ The project includes the following containers:
  * link:docs/containers.adoc#crunchy-dba[crunchy-dba] - implements a cron scheduler to perform simple DBA tasks
  * link:docs/containers.adoc#crunchy-upgrade[crunchy-upgrade] - allows you to perform a major postgres upgrade using pg_upgrade
  * link:docs/containers.adoc#crunchy-backrest-restore[crunchy-backrest-restore] - allows you to perform a pgbackrest restore
+ * link:docs/containers.adoc#crunchy-sim[crunchy-sim] - executes queries over a specified interval range for Postgres traffic simulation purposes
 
 
 image::docs/containers.png?raw=true[]

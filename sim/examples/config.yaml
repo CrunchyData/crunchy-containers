@@ -1,0 +1,9 @@
+---
+host: "127.0.0.1"
+port: "5432"
+database: "postgres"
+username: "postgres"
+password: "password"
+interval: "second"
+mininterval: 4
+maxinterval: 10
