@@ -1,3 +1,7 @@
+.PHONY: versiontest setup gendeps docbuild upgrade backup backrestrestore \
+		collectserver dbaserver grafana pgadmin4 pgbadger pgbouncer pgpool \
+		postgres postgres-gis prometheus promgateway vac version watch \
+
 ifndef CCPROOT
 	export CCPROOT=$(GOPATH)/src/github.com/crunchydata/crunchy-containers
 endif
