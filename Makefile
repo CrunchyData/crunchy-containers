@@ -1,7 +1,3 @@
-.PHONY: versiontest setup gendeps docbuild upgrade backup backrestrestore \
-		collectserver dbaserver grafana pgadmin4 pgbadger pgbouncer pgpool \
-		postgres postgres-gis prometheus promgateway vac version watch sim
-
 ifndef CCPROOT
 	export CCPROOT=$(GOPATH)/src/github.com/crunchydata/crunchy-containers
 endif
@@ -115,7 +111,7 @@ watch:
 	docker build -t crunchy-watch -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.watch.$(CCP_BASEOS) .
 	docker tag crunchy-watch crunchydata/crunchy-watch:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
-sim:
+pgsim:
 	cd sim && make
 	cp sim/build/crunchy-sim bin/crunchy-sim
 	docker build -t crunchy-sim -f $(CCP_BASEOS)/Dockerfile.sim.$(CCP_BASEOS) .
@@ -124,7 +120,7 @@ sim:
 #============
 # All target
 #============
-all:	upgrade backup collectserver dbaserver grafana pgbadger pgbouncer pgpool postgres postgres-gis prometheus promgateway watch vac backrestrestore sim
+all:	upgrade backup collectserver dbaserver grafana pgbadger pgbouncer pgpool postgres postgres-gis prometheus promgateway watch vac backrestrestore pgsim
 
 push:
 	./bin/push-to-dockerhub.sh
