@@ -115,7 +115,7 @@ pgsim:
 	cd sim && make
 	cp sim/build/crunchy-sim bin/crunchy-sim
 	docker build -t crunchy-sim -f $(CCP_BASEOS)/Dockerfile.sim.$(CCP_BASEOS) .
-	docker tag crunchy-sim crunchydata/crunchy-sim:$(CCP_BASEOS)-$(CCP_VERSION)
+	docker tag crunchy-sim crunchydata/crunchy-sim:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
 #============
 # All target
