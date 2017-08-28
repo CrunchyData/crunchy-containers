@@ -712,6 +712,39 @@ The following features are supported by the crunchy-upgrade container:
  * all environment variables are required
  * only supports a 9.5 to 9.6 upgrade
 
+== crunchy-sim
+
+The crunchy-sim container is a simple traffic simulator for PostgreSQL
+
+== Environment Variables
+
+* PGSIM_HOST - required, the PostgreSQL host address
+* PGSIM_PORT - required, the PostgreSQL host port
+* PGSIM_USERNAME - required, the PostgreSQL username
+* PGSIM_PASSWORD - required, the PostgreSQL password
+* PGSIM_DATABASE - required, the database to connect
+* PGSIM_INTERVAL - required, The units of the simulation interval
+* PGSIM_MININTERVAL - required, the minimum interval value
+* PGSIM_MAXINTERVAL - requited, the maximum interval value
+
+Valid values for PGSIM_INTERVAL are as follows:
+
+* millisecond
+* second
+* minute
+
+== Features
+
+* Creates a single connection to PostgreSQL and will execute
+queries over a specified interval range.
+* Queries are specified through a simple YAML file. Each query is a name-value
+  pair and can span multiple lines by utilizing scalar notation ("|" or ">") as
+  defined by the YAML spec.
+* Queries are randomly chosen for execution.
+
+== Restrictions
+
+* Only one connection is created for all queries.
 
 == Legal Notices
 
