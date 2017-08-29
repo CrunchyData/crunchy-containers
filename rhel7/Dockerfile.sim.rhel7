@@ -1,7 +1,21 @@
 FROM registry.access.redhat.com/rhel
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
-LABEL Release="0.0.1" Vendor="Crunchy Data Solutions"
+LABEL name="crunchydata/sim" \
+                                vendor="crunchy data" \
+                                version="0.0.1" \
+                                release="1.5" \
+                                #build-date="2017-08-29" \
+                                url="https://crunchydata.com" \
+                                summary="A simple traffic simulator for PostgreSQL." \
+                                description="This simulator creates a single connection to PostgreSQL and will execute queries over a specified interval range." \
+                                run="" \
+                                start="" \
+                                stop="" \
+                                io.k8s.description="Sim container" \
+                                io.k8s.display-name="Crunchy Sim container" \
+                                io.openshift.expose-services="" \
+                                io.openshift.tags="crunchy,database"
 
 ADD bin/crunchy-sim /usr/bin
 
