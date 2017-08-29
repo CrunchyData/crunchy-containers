@@ -17,10 +17,11 @@
 # set up some env vars that all examples can relate to
 #
 
-export CCP_CLI=oc
 export CCP_CLI=kubectl
+export CCP_CLI=oc
 export NAMESPACE=myproject
 export NAMESPACE=default
+export NAMESPACE=storage-project
 export PV_PATH=/data
 export PV_PATH=/nfsfileshare
 export GCE_DISK_ZONE=us-central1-a
