@@ -56,7 +56,9 @@ ADD conf/pgadmin4/ /opt/cpm/conf
 EXPOSE 5050
 
 RUN mkdir -p /pgdata \
- && chown -R 26:26 /pgdata /opt/cpm /usr/lib/python2.7/site-packages/pgadmin4-web
+ && chown -R 26:26 /pgdata /opt/cpm /usr/lib/python2.7/site-packages/pgadmin4-web \
+ && chmod -R g+rwx /usr/lib/python2.7/site-packages/pgadmin4-web \
+ && chgrp -R root /usr/lib/python2.7/site-packages/pgadmin4-web
 
 VOLUME ["/pgdata"]
 
