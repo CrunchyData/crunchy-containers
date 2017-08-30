@@ -1,0 +1,146 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "crunchy-metrics",
+        "creationTimestamp": null,
+        "annotations": {
+            "description": "Crunchy PostgreSQL Metrics Backend",
+            "iconClass": "icon-postgresql",
+            "tags": "database,crunchy,postgresql"
+        }
+    },
+    "parameters": [{
+        "name": "CCP_IMAGE_TAG",
+        "value": "rhel7-9.6-1.5",
+        "description": "The image tag to use"
+    }, {
+        "name": "STORAGE_CLASS",
+        "description": "The storage class to use ",
+        "value": "gluster-container"
+    }, {
+        "name": "PVC_SIZE",
+        "description": "The size of the PVC used for storage",
+        "value": "200M"
+    }],
+    "objects": [{
+        "kind": "PersistentVolumeClaim",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "crunchy-metrics-pvc",
+            "annotations": {
+                "volume.beta.kubernetes.io/storage-class": "${STORAGE_CLASS}"
+            }
+
+        },
+        "spec": {
+            "accessModes": [
+                "ReadWriteOnce"
+            ],
+            "resources": {
+                "requests": {
+                    "storage": "${PVC_SIZE}"
+                }
+            }
+        }
+    }, {
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "crunchy-metrics",
+            "labels": {
+                "name": "crunchy-metrics"
+            }
+        },
+        "spec": {
+            "ports": [{
+                "name": "prometheus",
+                "protocol": "TCP",
+                "port": 9090,
+                "targetPort": 9090,
+                "nodePort": 0
+            }, {
+                "name": "promgateway",
+                "protocol": "TCP",
+                "port": 9091,
+                "targetPort": 9091,
+                "nodePort": 0
+            }, {
+                "name": "grafana",
+                "protocol": "TCP",
+                "port": 3000,
+                "targetPort": 3000,
+                "nodePort": 0
+            }],
+            "selector": {
+                "name": "crunchy-metrics"
+            }
+        },
+        "status": {
+            "loadBalancer": {}
+        }
+    }, {
+        "kind": "Pod",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "crunchy-metrics",
+            "labels": {
+                "name": "crunchy-metrics"
+            }
+        },
+        "spec": {
+            "securityContext": {
+                "supplementalGroups": [590]
+            },
+
+            "containers": [{
+                "name": "prometheus",
+                "image": "crunchydata/crunchy-prometheus:${CCP_IMAGE_TAG}",
+                "imagePullPolicy": "IfNotPresent",
+                "ports": [{
+                    "containerPort": 9090,
+                    "protocol": "TCP"
+                }],
+                "env": [],
+                "volumeMounts": [{
+                    "mountPath": "/data",
+                    "name": "data",
+                    "readOnly": false
+                }]
+            }, {
+                "name": "promgateway",
+                "image": "crunchydata/crunchy-promgateway:${CCP_IMAGE_TAG}",
+                "imagePullPolicy": "IfNotPresent",
+                "ports": [{
+                    "containerPort": 9091,
+                    "protocol": "TCP"
+                }],
+                "env": [],
+                "volumeMounts": []
+            }, {
+                "name": "grafana",
+                "image": "crunchydata/crunchy-grafana:${CCP_IMAGE_TAG}",
+                "imagePullPolicy": "IfNotPresent",
+                "ports": [{
+                    "containerPort": 3000,
+                    "protocol": "TCP"
+                }],
+                "env": [],
+                "securityContext": {
+                    "capabilities": {}
+                },
+                "volumeMounts": [{
+                    "mountPath": "/data",
+                    "name": "data",
+                    "readOnly": false
+                }]
+            }],
+            "volumes": [{
+                "name": "data",
+                "persistentVolumeClaim": {
+                    "claimName": "crunchy-metrics-pvc"
+                }
+            }]
+        }
+    }]
+}

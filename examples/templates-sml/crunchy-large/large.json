@@ -5,7 +5,7 @@
         "name": "crunchy-large-config",
         "annotations": {
             "description": "Crunchy large configuration includes master Deployment, master Service, replica Service, dynamic storage, a StatefulSet of replicas, unlimited memory and CPU",
-            "iconClass": "icon-database",
+            "iconClass": "icon-postgresql",
             "tags": "crunchy,database,postgresql"
         }
     },
