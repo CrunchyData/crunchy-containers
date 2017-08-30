@@ -18,4 +18,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/crunchy-small/run.sh
 $DIR/crunchy-medium/run.sh
 $DIR/crunchy-large/run.sh
+$DIR/pgweb/run.sh
 
