@@ -2,11 +2,11 @@ FROM centos:7
 
 LABEL name="crunchydata/pgbouncer" \
 				PostgresVersion="9.5" \
-				PostgresFullVersion="9.5.7" \
+				PostgresFullVersion="9.5.9" \
         vendor="crunchy data" \
         version="7.3" \
-        release="1.5" \
-        build-date="2017-08-01" \
+        release="1.5.1" \
+        build-date="2017-09-01" \
         url="https://crunchydata.com" \
         summary="Lightweight connection pooler for crunchy-postgres" \
         description="The aim of crunchy-pgbouncer is to lower the performance impact of opening new connections to PostgreSQL; clients connect through this service. It offers session, transaction and statement pooling." \

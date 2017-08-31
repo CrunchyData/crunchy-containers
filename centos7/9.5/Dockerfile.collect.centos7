@@ -2,11 +2,11 @@ FROM centos:7
 
 LABEL name="crunchydata/collect" \
 				PostgresVersion="9.5" \
-				PostgresFullVersion="9.5.7" \
+				PostgresFullVersion="9.5.9" \
         vendor="crunchy data" \
         version="7.3" \
-        release="1.5" \
-        build-date="2017-08-01" \
+        release="1.5.1" \
+        build-date="2017-09-01" \
         url="https://crunchydata.com" \
         summary="Provides metrics for crunchy-postgres" \
         description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus, crunchy-grafana, crunchy-promgateway." \
