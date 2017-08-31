@@ -1,0 +1,62 @@
+FROM registry.access.redhat.com/rhel
+
+MAINTAINER Crunchy Data <support@crunchydata.com>
+
+LABEL name="crunchydata/watch" \
+        vendor="crunchy data" \
+        version="7.3" \
+      	PostgresVersion="10.0" \
+      	PostgresFullVersion="10.0.0" \
+        release="1.5" \
+        #build-date="2017-05-11" \
+        url="https://crunchydata.com" \
+        summary="Watches the master in a master/slave deployment, triggering a failover when master can't be reached" \
+        description="Time between connection attempts to the master is configurable. When multiple slaves are available, you can set a preferred slave to be promoted to master." \
+        run="" \
+        start="" \
+        stop="" \
+        io.k8s.description="watch container" \
+        io.k8s.display-name="Crunchy watch container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY docs/watch/help.1 /help.1
+COPY docs/watch/help.md /help.md
+COPY docs/licenses /licenses
+
+ENV PGVERSION="10.0"
+
+# Crunchy Postgres repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg96.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+# install docker from docker repo
+ADD conf/watch/docker-rhel.repo /etc/yum.repos.d/
+
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+ && yum -y update && yum -y install  bind-utils \
+	curl \
+	docker-engine \
+	gettext \
+	hostname \
+	libxslt \
+	libxml2 \
+	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+	rsync \
+ && yum -y install postgresql96-server atomic-openshift-clients \
+ && yum clean all -y
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+ADD bin/watch /opt/cpm/bin
+ADD conf/watch /opt/cpm/conf
+
+RUN chown -R postgres:postgres /opt/cpm
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]

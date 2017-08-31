@@ -1,0 +1,58 @@
+FROM registry.access.redhat.com/rhel
+
+MAINTAINER Crunchy Data <support@crunchydata.com>
+
+LABEL name="crunchydata/upgrade" \
+        vendor="crunchy data" \
+        PostgresVersion="10.0" \
+        PostgresFullVersion="10.0.0" \
+        version="7.3" \
+        release="1.5" \
+        #build-date="2017-05-11" \
+        url="https://crunchydata.com" \
+        summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
+        description="Provides a means to perform a major PostgreSQL upgrade from 9.5 to 9.6 and 9.6 to 10.0. Old data files are left intact." \
+        run="" \
+        start="" \
+        stop="" \
+        io.k8s.description="postgres upgrade container" \
+        io.k8s.display-name="Crunchy postgres upgrade container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY docs/upgrade/help.1 /help.1
+COPY docs/upgrade/help.md /help.md
+COPY docs/licenses /licenses
+
+ENV PGVERSION="10.0"
+
+# Crunchy Postgres repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg96.repo /etc/yum.repos.d/
+ADD conf/crunchypg95.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+ && yum -y update && yum -y update glibc-common \
+ && yum install -y bind-utils \
+	gettext \
+	hostname \
+ 	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+	unzip \
+ && yum -y install \
+ postgresql95 postgresql95-server postgresql95-contrib pgaudit95 \
+ postgresql96 postgresql96-server postgresql96-contrib pgaudit96 \
+ && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin /pgolddata /pgnewdata /opt/cpm/conf
+ADD bin/upgrade/ /opt/cpm/bin
+ADD conf/upgrade/ /opt/cpm/conf
+RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata
+
+VOLUME /pgolddata /pgnewdata
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]

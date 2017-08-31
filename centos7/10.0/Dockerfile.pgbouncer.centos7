@@ -1,0 +1,50 @@
+FROM centos:7
+
+LABEL name="crunchydata/pgbouncer" \
+        vendor="crunchy data" \
+        version="7.3" \
+      	PostgresVersion="10.0" \
+      	PostgresFullVersion="10.0.0" \
+        release="1.5" \
+        build-date="2017-09-15" \
+        url="https://crunchydata.com" \
+        summary="Lightweight connection pooler for crunchy-postgres" \
+        description="The aim of crunchy-pgbouncer is to lower the performance impact of opening new connections to PostgreSQL; clients connect through this service. It offers session, transaction and statement pooling." \
+        io.k8s.description="pgbouncer container" \
+        io.k8s.display-name="Crunchy pgbouncer container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+# install docker from docker repo
+ADD conf/pgbouncer/docker-rhel.repo /etc/yum.repos.d/
+
+RUN yum -y update && yum -y install epel-release \
+ && yum -y install docker-engine \
+	gettext \
+	hostname  \
+	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+ && yum -y install 	postgresql96 pgbouncer \
+ && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+# add volumes to allow override of pgbouncer config files
+VOLUME ["/pgconf"]
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin/pgbouncer /opt/cpm/bin
+ADD conf/pgbouncer /opt/cpm/conf
+
+RUN chown -R daemon:daemon /opt/cpm/bin
+
+USER pgbouncer
+
+CMD ["/opt/cpm/bin/startpgbouncer.sh"]

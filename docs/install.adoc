@@ -1,7 +1,7 @@
 = Installation Guide - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
 :toc: left
-v1.5, {docdate}
+v1.6, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Project Setup & Docker Installation
@@ -32,8 +32,8 @@ export GOPATH=$HOME/cdev
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
-export CCP_PGVERSION=9.6
-export CCP_VERSION=1.5
+export CCP_PGVERSION=10.0
+export CCP_VERSION=1.6
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PGVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 ....
@@ -51,7 +51,7 @@ mkdir crunchydata
 cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 1.5
+git checkout 1.6
 godep restore
 ....
 

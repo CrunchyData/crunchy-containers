@@ -1,0 +1,54 @@
+FROM registry.access.redhat.com/rhel
+
+MAINTAINER Crunchy Data <support@crunchydata.com>
+
+LABEL name="crunchydata/backup" \
+        vendor="crunchy data" \
+      	PostgresVersion="10.0" \
+      	PostgresFullVersion="10.0.0" \
+        version="7.3" \
+        release="1.5" \
+        #build-date="2017-05-11" \
+        url="https://crunchydata.com" \
+        summary="Performs a pg_basebackup full database backup on a database container" \
+        description="Meant to be executed upon demand, this container will run pg_basebackup against a running database container and write the backup files to a mounted directory." \
+        run="" \
+        start="" \
+        stop="" \
+        io.k8s.description="backup container" \
+        io.k8s.display-name="Crunchy backup container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY docs/backup/help.1 /help.1
+COPY docs/backup/help.md /help.md
+COPY docs/licenses /licenses
+
+ENV PGVERSION="10.0"
+
+# Crunchy Postgres repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg96.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+ && yum -y update && yum install -y bind-utils \
+	gettext \
+	hostname \
+ 	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+	unzip \
+ && yum -y install postgresql96 postgresql96-server \
+ && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
+ADD bin/backup/ /opt/cpm/bin
+ADD conf/backup/ /opt/cpm/conf
+RUN chown -R postgres:postgres /opt/cpm /pgdata
+
+VOLUME ["/pgdata"]
+
+USER 26
+
+CMD ["/opt/cpm/bin/start-backupjob.sh"]
