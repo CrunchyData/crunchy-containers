@@ -28,7 +28,7 @@ ENV PGVERSION="10.0"
 
 # Crunchy Postgres repo
 ADD conf/CRUNCHY-GPG-KEY.public  /
-ADD conf/crunchypg96.repo /etc/yum.repos.d/
+ADD conf/crunchypg10.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN yum -y update && yum -y install gettext \
@@ -37,7 +37,7 @@ RUN yum -y update && yum -y install gettext \
 	libxslt \
 	libxml2 \
 	procps-ng \
- && yum -y install postgresql96-server \
+ && yum -y install postgresql10-server \
  && yum clean all -y
 
 # Install libstatgrab and dependencies
