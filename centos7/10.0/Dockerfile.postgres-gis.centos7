@@ -15,9 +15,10 @@ LABEL name="crunchydata/postgres-gis" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos10-10-1.noarch.rpm"
 
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+#RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/testing/10/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 RUN yum -y update && yum -y install epel-release \
  && yum -y update glibc-common \
@@ -28,11 +29,11 @@ RUN yum -y update && yum -y install epel-release \
 	openssh-clients \
  	procps-ng  \
 	rsync \
-	postgresql96-server postgresql96-contrib postgresql96 \
-	R-core libRmath plr96 \
-	pgaudit_96 \
+	postgresql10-server postgresql10-contrib postgresql10 \
+	R-core libRmath plr10 \
+	pgaudit_10 \
 	pgbackrest \
-	postgis2_96 postgis2_96-client \
+	postgis2_10 postgis2_10-client \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"

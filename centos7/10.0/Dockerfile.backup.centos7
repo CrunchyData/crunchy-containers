@@ -15,10 +15,10 @@ LABEL name="crunchydata/backup" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos10-10-1.noarch.rpm"
 
-# PGDG Postgres repo
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+#RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/testing/10/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 RUN yum -y update && yum install -y epel-release \
  && yum -y update glibc-common \
@@ -29,7 +29,7 @@ RUN yum -y update && yum install -y epel-release \
 	openssh-clients \
 	procps-ng \
 	unzip \
- && yum -y install postgresql96 postgresql96-server \
+ && yum -y install postgresql10 postgresql10-server \
  && yum clean all -y
 
 RUN mkdir -p /opt/cpm/bin /pgdata /opt/cpm/conf

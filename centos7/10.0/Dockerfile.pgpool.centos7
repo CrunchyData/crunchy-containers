@@ -15,16 +15,16 @@ LABEL name="crunchydata/pgpool" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos10-10-1.noarch.rpm"
 
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
-
+#RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/testing/10/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 RUN yum -y update && yum -y install hostname \
 	gettext \
 	openssh-clients \
 	procps-ng \
- && yum -y install postgresql96 pgpool-II-96 pgpool-II-96-extensions \
+ && yum -y install postgresql10 pgpool-II-10 pgpool-II-10-extensions \
  && yum -y clean all
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
@@ -37,8 +37,8 @@ EXPOSE 5432
 
 ADD bin/pgpool /opt/cpm/bin
 ADD conf/pgpool /opt/cpm/conf/pgpool
-ADD conf/pgpool/pool_hba.conf  /etc/pgpool-II-96/pool_hba.conf
-ADD conf/pgpool/pool_passwd /etc/pgpool-II-96/pool_passwd
+ADD conf/pgpool/pool_hba.conf  /etc/pgpool-II-10/pool_hba.conf
+ADD conf/pgpool/pool_passwd /etc/pgpool-II-10/pool_passwd
 
 RUN chown -R daemon:daemon /opt/cpm/bin
 
