@@ -28,6 +28,7 @@ ENV PGVERSION="10.0"
 
 # Crunchy Postgres repo
 ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg10.repo /etc/yum.repos.d/
 ADD conf/crunchypg96.repo /etc/yum.repos.d/
 ADD conf/crunchypg95.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
@@ -44,6 +45,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  && yum -y install \
  postgresql95 postgresql95-server postgresql95-contrib pgaudit95 \
  postgresql96 postgresql96-server postgresql96-contrib pgaudit96 \
+ postgresql10 postgresql10-server postgresql10-contrib pgaudit10 \
  && yum clean all -y
 
 RUN mkdir -p /opt/cpm/bin /pgolddata /pgnewdata /opt/cpm/conf

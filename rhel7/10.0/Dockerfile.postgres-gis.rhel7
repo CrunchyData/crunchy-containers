@@ -31,7 +31,7 @@ ENV PGVERSION="10.0"
 
 # Crunchy Postgres repo
 ADD conf/CRUNCHY-GPG-KEY.public  /
-ADD conf/crunchypg96.repo /etc/yum.repos.d/
+ADD conf/crunchypg10.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
@@ -43,10 +43,10 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 	openssh-clients \
 	procps-ng \
  	rsync \
-        postgresql96 postgresql96-contrib postgresql96-server \
-	pgaudit96 pgaudit96_set_user \
-	crunchy-backrest plr96 \
-	postgis2_96 postgis2_96-client pgrouting_96 \
+        postgresql10 postgresql10-contrib postgresql10-server \
+	pgaudit10 pgaudit10_set_user \
+	crunchy-backrest plr10 \
+	postgis2_10 postgis2_10-client pgrouting_10 \
  && yum -y reinstall glibc-common \
  && yum -y --setopt=tsflags='' install pgaudit_analyze \
  && yum -y clean all
