@@ -15,16 +15,17 @@ LABEL name="crunchydata/postage" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos10-10-1.noarch.rpm"
 
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+#RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/testing/10/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 RUN yum -y update && yum -y install epel-release \
  && yum -y install glibc-common-*2.17* \
  && yum -y install gcc \
  openssl-devel \
  openssl
- && yum -y install postgresql96-devel postgresql96-server \
+ && yum -y install postgresql10-devel postgresql10-server \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"

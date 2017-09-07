@@ -15,9 +15,10 @@ LABEL name="crunchydata/collect" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos10-10-1.noarch.rpm"
 
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+#RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/testing/10/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 RUN yum -y update && yum -y install gettext \
 	hostname  \
@@ -25,7 +26,7 @@ RUN yum -y update && yum -y install gettext \
 	libxslt \
 	libxml2 \
 	procps-ng \
- && yum -y install postgresql96-server \
+ && yum -y install postgresql10-server \
  && yum clean all -y
 
 # Install libstatgrab and dependencies
