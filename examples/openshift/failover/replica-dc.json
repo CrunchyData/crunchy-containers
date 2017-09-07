@@ -22,7 +22,7 @@
             },
             "spec": {
                 "containers": [{
-                    "name": "replica-dc",
+                    "name": "postgres",
                     "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
                     "env": [{
                         "name": "PG_MASTER_HOST",

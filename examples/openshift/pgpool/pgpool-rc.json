@@ -89,7 +89,7 @@
                     },
 
                     "containers": [{
-                        "name": "server",
+                        "name": "pgpool",
                         "image": "crunchydata/crunchy-pgpool:${CCP_IMAGE_TAG}",
                         "ports": [{
                             "containerPort": 5432,

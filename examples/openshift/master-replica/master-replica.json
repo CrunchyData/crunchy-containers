@@ -97,7 +97,7 @@
         },
         "spec": {
             "containers": [{
-                "name": "ms-master",
+                "name": "postgres",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
@@ -174,7 +174,7 @@
         },
         "spec": {
             "containers": [{
-                "name": "ms-replica",
+                "name": "postgres",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {

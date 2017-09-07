@@ -75,7 +75,7 @@
         },
         "spec": {
             "containers": [{
-                "name": "configmap",
+                "name": "postgres",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {

@@ -38,7 +38,7 @@
                 "value": "75M"
             }]
         }, {
-            "name": "server",
+            "name": "postgres",
             "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5432,

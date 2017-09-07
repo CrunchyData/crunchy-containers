@@ -127,7 +127,7 @@
                     "readOnly": true
                 }]
             }, {
-                "name": "server",
+                "name": "postgres",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
@@ -247,7 +247,7 @@
                 },
                 "spec": {
                     "containers": [{
-                        "name": "server",
+                        "name": "postgres",
                         "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                         "readinessProbe": {
                             "exec": {
