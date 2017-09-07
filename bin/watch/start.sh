@@ -130,8 +130,8 @@ function kube_failover() {
 			echo "changing label of slave to " $PG_MASTER_SERVICE
 			kubectl --token=$TOKEN label --overwrite=true pod $i name=$PG_MASTER_SERVICE
 		else
-			echo "deleting old slave " $i 
-			kubectl --token=$TOKEN delete pod $i
+			#echo "deleting old slave " $i 
+			#kubectl --token=$TOKEN delete pod $i
 		fi
 	done
 	echo "failover completed @ " `date`
