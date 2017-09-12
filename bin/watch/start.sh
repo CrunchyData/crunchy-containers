@@ -204,5 +204,6 @@ while true; do
 		fi
 		echo "Maximum failures reached"
 		failover
+		FAILURES=0
 	fi
 done
