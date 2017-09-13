@@ -4,19 +4,24 @@ v1.5, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Description
-PostgreSQL metrics are collected by the crunchy-collect container, which collects 32 different
-PostgreSQL metrics from a database container and pushes them to a Prometheus time series data
-store. A web-based graphing dashboard, Grafana, runs from crunchy-grafana, which displays the
-collected PostgreSQL metrics from the crunchy-prometheus container as a data source and uses
-the metrics to build dashboards.
+
+PostgreSQL metrics are collected by the crunchy-collect container, which executes both the postgres_exporter and node_exporter. Written in Go, these are both metrics exporters that work with Prometheus to provide PostgreSQL server metrics in addition to hardware and OS metrics. The crunchy-collect container gathers [x number of] different metrics from the crunchy-postgres PostgreSQL database container.
+
+The collector is similar to the Prometheus Pushgateway, in that it allows exporting of statistics from batch jobs. It can also be used to export static metrics, such as what role a machine has. These SQL metrics would be collected by crunchy-prometheus which hosts Prometheus. Grafana runs from crunchy-grafana, which displays the collected PostgreSQL metrics from the crunchy-prometheus container as a data source and uses the metrics to build dashboards. The Grafana template used is defined by default using a JSON template and is indexed by Grafana as an accessible dashboard.
+
+Prometheus is a multi-dimensional time series data model with an elastic query language. It is used in collaboration with Grafana in this metrics suite. Overall, it’s reliable, manageable, and operationally simple for efficiently storing and analyzing data for large-scale environments.
+
+Grafana is open source, adaptable and efficient data conceptualization software. This technology is capable of converting raw data to beautifully represented graphs, allowing you to easily monitor your database with a glance. In addition, it has a strong query and transformation language that allows for instantaneous and complex combinations of metrics, queries, correlations, and mathematical graphing.
 
 To start collection of metrics on a PostgreSQL database, you add the crunchy-collect container
 into the pod that holds the crunchy-postgres container.
 
+image::after.png[Crunchy Containers Metrics Collection]
+
 === Overview
+
 Metrics are stored in the crunchy-prometheus container, which runs the Prometheus time series
-database. The Prometheus pushgateway is found within the crunchy-promgateway container, and
-the Grafana web application is found within the crunchy-grafana container.
+database. It scrapes the crunchy-collect container which hosts the postgres_exporter and node_exporter for PostgreSQL server metrics as well as host and OS level metrics. These metrics are then pushed to crunchy-grafana in order to visualize the results.
 
 The crunchy-prometheus data in this example is stored in emptyDir volume types. To persist the
 data and Grafana templates long term, you will want to use NFS volume types as specified in
@@ -25,7 +30,6 @@ the script examples/openshift/metrics/run-pvc.sh.
 When running crunchy-metrics, the following ports are available:
 
  * crunchy-prometheus:9090 - the Prometheus web user interface
- * crunchy-promgateway:9091 - the Prometheus pushgateway REST API
  * crunchy-grafana:3000 - the Grafana web user interface
 
 === Examples
@@ -38,7 +42,6 @@ crunchy-collect container that points to your database container.
 Metrics collection requires you run the crunchy-metrics set of containers that includes:
 
  * Prometheus
- * Prometheus push gateway
  * Grafana
 
 To start this set of containers, run the following:
@@ -62,7 +65,7 @@ can graph them using the Crunchy Grafana container.
 
 ==== Kubernetes
 
-This example starts up Prometheus, Grafana, and Prometheus gateway.
+This example starts up Prometheus and Grafana.
 
 It is required to view or capture metrics collected by crunchy-collect.
 
@@ -74,7 +77,6 @@ examples/kube/metrics/run.sh
 This will start up 3 containers and services:
 
  * Prometheus (http://crunchy-prometheus:9090)
- * Prometheus gateway (http://crunchy-promgateway:9091)
  * Grafana (http://crunchy-grafana:3000)
 
 If you want your metrics and dashboards to persist to NFS, run
@@ -116,8 +118,7 @@ cd $CCPROOT/examples/openshift/metrics
 ....
 
 At this point, you can view the Prometheus web console at
-crunchy-metrics:9090, the Prometheus push gateway at crunchy-metrics:9091,
-and the Grafana web app at crunchy-metrics:3000.
+crunchy-metrics:9090 and the Grafana web app at crunchy-metrics:3000.
 
 When accessing the Grafana web application, the default user credentials will be
 the username **admin** and the password **admin**.
@@ -135,7 +136,6 @@ to Prometheus.  You can build graphs off the metrics using Grafana.
 == crunchy-collect Environment Variables
 
  * POLL_INT - number of minutes to sleep until metrics are collected.  defaults to 15 minutes
- * PROM_GATEWAY - the http URL of the Prometheus pushgateway into which the metrics will be pushed.  defaults to http://crunchy-promgateway:9091
 
 == Collected Metrics
 
@@ -180,104 +180,6 @@ crunchy_blks_hit, blks_hit, database, count
 crunchy_hit_ratio, hit_ratio, database, percent
 crunchy_blk_read_time, blk_read_time, database, time
 crunchy_blk_write_time, blk_write_time, database, time
-|===
-
-.Table bgwriter Metrics
-[format="csv", options="header"]
-|===
-Metric,Description,Scope,Unit
-crunchy_checkpoints_timed, checkpoints_timed, cluster, count
-crunchy_checkpoints_req, checkpoints_req, cluster, count
-crunchy_checkpoint_write_time, checkpoint_write_time, cluster, count
-crunchy_checkpoint_sync_time, checkpoint_sync_time, cluster, count
-crunchy_buffers_checkpoint, buffers_checkpoint, cluster, count
-crunchy_buffers_clean, buffers_clean, cluster, count
-crunchy_maxwritten_clean, maxwritten_clean, cluster, count
-crunchy_buffers_backend, buffers_backend, cluster, count
-crunchy_buffers_backend_fsync, buffers_backend_fsync, cluster, count
-crunchy_buffers_alloc, buffers_alloc, cluster, count
-|===
-
-.Table Table Size Metrics
-[format="csv", options="header"]
-|===
-Metric,Description,Scope,Unit
-crunchy_database_size, database_size in megs, database, megabytes
-crunchy_table_size, table size in megs, database, megabytes
-crunchy_index_size, index size in megs, database, megabytes
-crunchy_total_size, total size in megs, database, megabytes
-|===
-
-.Table Dead Rows Metrics
-[format="csv", options="header"]
-|===
-Metric,Description,Scope,Unit
-crunchy_pct_dead, percentage dead rows in table, database, item
-|===
-
-.Table Lock Metrics
-[format="csv", options="header"]
-|===
-Metric,Description,Scope,Unit
-crunchy_lock_count, locks held for a database, database, count
-|===
-
-.Table pg_xlog Metrics
-[format="csv", options="header"]
-|===
-Metric,Description,Scope,unit
-*crunchy_xlog_count*,count of pg_xlog archive files,cluster,count
-|===
-
-.Table cpu Metrics
-[format="csv", options="header"]
-|===
-Metric,Description,Scope,unit
-crunchy_cpu_user, percentage of cpu utilization occurring at user level, system, percent
-crunchy_cpu_kernel, percent of cpu utilization occurring at the system/kernel level, system, percent
-crunchy_cpu_idle, percentage of time cpu is idle, system, percent
-crunchy_cpu_iowait, percentage of time cpu is waiting on disk IO, system, percent
-crunchy_cpu_nice, percentage of time cpu executing at user level with nice priority, system, percent
-|===
-
-.Table memory Metrics
-[format="csv", options="header"]
-|===
-Metric,Description,Scope,unit
-crunchy_mem_total, total amount of real memory, system, bytes
-crunchy_mem_free, free amount of real memory, system, bytes
-crunchy_mem_used, used amount of real memory, system, bytes
-crunchy_mem_cache, amount of real memory used for caching, system, bytes
-crunchy_mem_swap_total, total swap space, system, bytes
-crunchy_mem_swap_used, total used swap space, system, bytes
-crunchy_mem_swap_free, total free swap space, system, bytes
-|===
-
-.Table network Metrics
-[format="csv", options="header"]
-|===
-Metric,Description,Scope,unit
-crunchy_net_tx, number of bytes transmitted, system, bytes
-crunchy_net_rx, number of bytes received, system, bytes
-crunchy_net_ipackets, number of packets received, system, count
-crunchy_net_opackets, number of packets trasmitted, system, count
-crunchy_net_ierrors, number of receive errors, system, count
-crunchy_net_oerrors, number of transmit errors, system, count
-crunchy_net_collisions, number of collisions, system, count
-|===
-
-.Table storage Metrics
-[format="csv", options="header"]
-|===
-Metric,Description,Scope,unit
-crunchy_storage_size, total size of file system, system, bytes
-crunchy_storage_used, amount of space used on file system, system, bytes
-crunchy_storage_free, amount of space free on file system, system, bytes
-crunchy_storage_available, amount of space available on file system, system, bytes
-crunchy_storage_inodes_total, total number of inodes in the file system, system, count
-crunchy_storage_inodes_used, number of inodes used in the file system, system, count
-crunchy_storage_inodes_free, number of inodes free in the file system, system, count
-crunchy_storage_inodes_available, number of inodes available in the file system, system, count
 |===
 
 <<<
