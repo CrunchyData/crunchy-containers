@@ -170,7 +170,7 @@ meminfo, Exposes memory statistics.
 netdev, Exposes network interface statistics such as bytes transferred.
 netstat, Exposes network statistics from `/proc/net/netstat`. This is the same information as `netstat -s`.
 sockstat, Exposes various statistics from `/proc/net/sockstat`.
-stat, Exposes various statistics from `/proc/stat`. This includes boot time, forks and interrupts.
+stat, Exposes various statistics from `/proc/stat`. This includes boot time & forks as well as interrupts.
 textfile, Exposes statistics read from local disk. The `--collector.textfile.directory` flag must be set.
 time, Exposes the current system time.
 uname, Exposes system information as provided by the uname system call.
