@@ -135,17 +135,11 @@ cd $CCPROOT/examples/openshift/collect
 At this point, metrics will be collected every 3 minutes and pushed
 to Prometheus.  You can build graphs off the metrics using Grafana.
 
-== crunchy-collect Environment Variables
-
- * POLL_INT - number of minutes to sleep until metrics are collected.  defaults to 15 minutes
-
 == Collected Metrics
 
 === node_exporter
 
-The tables below list all existing collectors that are gathered by the node_expoter.
-
-Which collectors are used is controlled by the `--collectors.enabled` flag.
+The tables below list all existing collectors that are gathered by the node_exporter.
 
 .*Enabled by Default*
 [format="csv", options="header"]
@@ -180,6 +174,8 @@ xfs, Exposes XFS runtime statistics.
 zfs, Exposes [ZFS](http://open-zfs.org/) performance statistics.
 |===
 
+The following table contains metrics that are not enabled by default; these can be enabled using the --collectors.enabled flag.
+
 .*Disabled by Default*
 [format="csv", options="header"]
 |===
@@ -201,7 +197,7 @@ systemd, Exposes service and system status from [systemd](http://www.freedesktop
 tcpstat, Exposes TCP connection status information from `/proc/net/tcp` and `/proc/net/tcp6`. (Warning: the current version has potential performance issues in high load situations.)
 |===
 
-*The Deprecated collectors will be (re)moved in future releases of node_exporter.*
+These metrics will be deprecated and (re)moved in future releases of node_exporter.
 
 .*Deprecated*
 [format="csv", options="header"]
@@ -214,6 +210,8 @@ ntp, Exposes time drift from an NTP server.
 
 === postgres_exporter
 
+postgres_exporter focuses on collecting PostgreSQL server metrics. The following are some general metrics it collects:
+
 .*General*
 [format="csv", options="header"]
 |===
@@ -221,6 +219,8 @@ Name, Description, Usage, Query
 pg_replication, Replication lag behind master in seconds, GAUGE, SELECT EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp()))::INT as lag
 pg_postmaster, Time at which postmaster started, GAUGE, SELECT pg_postmaster_start_time as start_time_seconds from pg_postmaster_start_time()
 |===
+
+These metrics are general statistics on tables.
 
 .*pg_stat_user_tables*
 [format="csv", options="header"]
@@ -249,6 +249,8 @@ analyze_count, Number of times this table has been manually analyzed, COUNTER, S
 autoanalyze_count, Number of times this table has been analyzed by the autovacuum daemon, COUNTER, SELECT autoanalyze_count FROM pg_stat_user_tables
 |===
 
+These statistics provide database queries.
+
 .*pg_database*
 [format="csv", options="header"]
 |===
@@ -260,8 +262,7 @@ usage, GAUGE, Disk space used by the database, SELECT pg_database_size(pg_databa
 <<<
 == Grafana Dashboard
 
-You can create dashboards of various graphs using the Grafana Dashboard
-editor:
+You can create dashboards of various graphs using the Grafana Dashboard editor, but the following images display the default Grafana template that comes packaged in the Metrics suite:
 
 image::grafana-dashboard-1.png[]
 
