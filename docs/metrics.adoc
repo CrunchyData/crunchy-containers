@@ -5,16 +5,15 @@ v1.5, {docdate}
 
 == Description
 
-PostgreSQL metrics are collected by the crunchy-collect container, which executes both the postgres_exporter and node_exporter. Written in Go, these are both metrics exporters that work with Prometheus to provide PostgreSQL server metrics in addition to hardware and OS metrics. The crunchy-collect container gathers [x number of] different metrics from the crunchy-postgres PostgreSQL database container.
+PostgreSQL metrics are collected by the crunchy-collect container, which executes both the postgres_exporter and node_exporter. Written in Go, these are both metrics exporters that work with Prometheus to provide PostgreSQL server metrics in addition to hardware and OS metrics. The crunchy-collect container gathers different metrics from the crunchy-postgres PostgreSQL database container and pushes these to the Prometheus Promgateway.
 
-The collector is similar to the Prometheus Pushgateway, in that it allows exporting of statistics from batch jobs. It can also be used to export static metrics, such as what role a machine has. These SQL metrics would be collected by crunchy-prometheus which hosts Prometheus. Grafana runs from crunchy-grafana, which displays the collected PostgreSQL metrics from the crunchy-prometheus container as a data source and uses the metrics to build dashboards. The Grafana template used is defined by default using a JSON template and is indexed by Grafana as an accessible dashboard.
+The collector is similar to the Prometheus Pushgateway, in that it allows exporting of statistics from batch jobs. It can also be used to export static metrics, such as what role a machine has. These SQL metrics are pushed to the crunchy-promgateway container, which holds the Prometheus Promgateway. This container is then scraped by crunchy-prometheus which hosts Prometheus. Grafana runs from crunchy-grafana, which displays the collected PostgreSQL metrics from the crunchy-prometheus container as a data source and uses the metrics to build dashboards. The Grafana template used is defined by default using a JSON template and is indexed by Grafana as an accessible dashboard.
 
-Prometheus is a multi-dimensional time series data model with an elastic query language. It is used in collaboration with Grafana in this metrics suite. Overall, it’s reliable, manageable, and operationally simple for efficiently storing and analyzing data for large-scale environments.
+Prometheus is a multi-dimensional time series data model with an elastic query language. It is used in collaboration with Grafana in this metrics suite. Overall, it’s reliable, manageable, and operationally simple for efficiently storing and analyzing data for large-scale environments. It targets the Promgateway as an endpoint for scraping metrics.
 
 Grafana is open source, adaptable and efficient data conceptualization software. This technology is capable of converting raw data to beautifully represented graphs, allowing you to easily monitor your database with a glance. In addition, it has a strong query and transformation language that allows for instantaneous and complex combinations of metrics, queries, correlations, and mathematical graphing.
 
-To start collection of metrics on a PostgreSQL database, you add the crunchy-collect container
-into the pod that holds the crunchy-postgres container.
+To start collection of metrics on a PostgreSQL database, you add the crunchy-collect container into the pod that holds the crunchy-postgres container.
 
 === Structure
 
@@ -22,8 +21,7 @@ image::after.png[alt=Crunchy Containers Metrics Collection,width=700,height=700]
 
 === Overview
 
-Metrics are stored in the crunchy-prometheus container, which runs the Prometheus time series
-database. It scrapes the crunchy-collect container which hosts the postgres_exporter and node_exporter for PostgreSQL server metrics as well as host and OS level metrics. These metrics are then pushed to crunchy-grafana in order to visualize the results.
+Metrics are stored in the crunchy-prometheus container, which runs the Prometheus time series database. It scrapes the crunchy-collect container which hosts the postgres_exporter and node_exporter for PostgreSQL server metrics as well as host and OS level metrics. These metrics are then pushed to crunchy-grafana in order to visualize the results.
 
 The crunchy-prometheus data in this example is stored in emptyDir volume types. To persist the
 data and Grafana templates long term, you will want to use NFS volume types as specified in
@@ -32,6 +30,7 @@ the script examples/openshift/metrics/run-pvc.sh.
 When running crunchy-metrics, the following ports are available:
 
  * crunchy-prometheus:9090 - the Prometheus web user interface
+ * crunchy-promgateway:9091 - the Prometheus pushgateway REST API
  * crunchy-grafana:3000 - the Grafana web user interface
 
 === Examples
@@ -44,6 +43,7 @@ crunchy-collect container that points to your database container.
 Metrics collection requires you run the crunchy-metrics set of containers that includes:
 
  * Prometheus
+ * Promgateway
  * Grafana
 
 To start this set of containers, run the following:
@@ -79,6 +79,7 @@ examples/kube/metrics/run.sh
 This will start up 3 containers and services:
 
  * Prometheus (http://crunchy-prometheus:9090)
+ * Prometheus Promgateway (crunchy-promgateway:9091)
  * Grafana (http://crunchy-grafana:3000)
 
 If you want your metrics and dashboards to persist to NFS, run
@@ -120,7 +121,7 @@ cd $CCPROOT/examples/openshift/metrics
 ....
 
 At this point, you can view the Prometheus web console at
-crunchy-metrics:9090 and the Grafana web app at crunchy-metrics:3000.
+crunchy-metrics:9090, the Prometheus Promgateway at crunchy-metrics:9091, and the Grafana web app at crunchy-metrics:3000.
 
 When accessing the Grafana web application, the default user credentials will be
 the username **admin** and the password **admin**.
@@ -149,7 +150,7 @@ arp, Exposes ARP statistics from `/proc/net/arp`.
 bcache, Exposes bcache statistics from `/sys/fs/bcache/`.
 conntrack, Shows conntrack statistics (does nothing if no `/proc/sys/net/netfilter/` present).
 cpu, Exposes CPU statistics,
-diskstats, Exposes disk I/O statistics. 
+diskstats, Exposes disk I/O statistics.
 edac, Exposes error detection and correction statistics.
 entropy, Exposes available entropy.
 exec, Exposes execution statistics.
@@ -190,7 +191,7 @@ logind, Exposes session counts from [logind](http://www.freedesktop.org/wiki/Sof
 meminfo\_numa, Exposes memory statistics from `/proc/meminfo_numa`.
 mountstats, Exposes filesystem statistics from `/proc/self/mountstats`. Exposes detailed NFS client statistics.
 nfs, Exposes NFS client statistics from `/proc/net/rpc/nfs`. This is the same information as `nfsstat -c`.
-qdisc, Exposes [queuing discipline](https://en.wikipedia.org/wiki/Network_scheduler#Linux_kernel) statistics 
+qdisc, Exposes [queuing discipline](https://en.wikipedia.org/wiki/Network_scheduler#Linux_kernel) statistics
 runit, Exposes service status from [runit](http://smarden.org/runit/).
 supervisord, Exposes service status from [supervisord](http://supervisord.org/).
 systemd, Exposes service and system status from [systemd](http://www.freedesktop.org/wiki/Software/systemd/).
