@@ -147,7 +147,7 @@ The tables below list all existing collectors that are gathered by the node_expo
 
 Which collectors are used is controlled by the `--collectors.enabled` flag.
 
-.Table Enabled by Default
+.*Enabled by Default*
 [format="csv", options="header"]
 |===
 Name, Description
@@ -180,7 +180,7 @@ xfs, Exposes XFS runtime statistics.
 zfs, Exposes [ZFS](http://open-zfs.org/) performance statistics.
 |===
 
-.Table Disabled by Default
+.*Disabled by Default*
 [format="csv", options="header"]
 |===
 Name, Description
@@ -203,7 +203,7 @@ tcpstat, Exposes TCP connection status information from `/proc/net/tcp` and `/pr
 
 *The Deprecated collectors will be (re)moved in future releases of node_exporter.*
 
-.Table Deprecated
+.*Deprecated*
 [format="csv", options="header"]
 |===
 Name, Description
@@ -214,7 +214,7 @@ ntp, Exposes time drift from an NTP server.
 
 === postgres_exporter
 
-.Table Queries
+.*General*
 [format="csv", options="header"]
 |===
 Name, Description, Usage, Query
@@ -222,7 +222,7 @@ pg_replication, Replication lag behind master in seconds, GAUGE, SELECT EXTRACT(
 pg_postmaster, Time at which postmaster started, GAUGE, SELECT pg_postmaster_start_time as start_time_seconds from pg_postmaster_start_time()
 |===
 
-.Table pg_stat_user_tables
+.*pg_stat_user_tables*
 [format="csv", options="header"]
 |===
 Name, Description, Usage, Query
@@ -249,7 +249,7 @@ analyze_count, Number of times this table has been manually analyzed, COUNTER, S
 autoanalyze_count, Number of times this table has been analyzed by the autovacuum daemon, COUNTER, SELECT autoanalyze_count FROM pg_stat_user_tables
 |===
 
-.Table pg_database
+.*pg_database*
 [format="csv", options="header"]
 |===
 Name, Description, Usage, Query
@@ -263,26 +263,15 @@ usage, GAUGE, Disk space used by the database, SELECT pg_database_size(pg_databa
 You can create dashboards of various graphs using the Grafana Dashboard
 editor:
 
-image::grafana-dashboard-sample.png[]
+image::grafana-dashboard-1.png[]
+
+image::grafana-dashboard-2.png[]
+
+image::grafana-dashboard-3.png[]
 
 Some more information on creating custom Grafana dashboards can be found in the official documentation - http://docs.grafana.org/guides/getting_started/.
 
 <<<
-== Grafana Data Source
-
-You create a Grafana data source that represents the Prometheus
-database running within crunchy-prometheus:
-
-image::grafana-data-source.png[]
-
-<<<
-== Prometheus Console
-
-You can issue raw queries to Prometheus using its web
-console:
-
-image::prometheus-console.png[]
-
 == Legal Notices
 
 Copyright © 2017 Crunchy Data Solutions, Inc.
