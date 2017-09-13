@@ -79,7 +79,7 @@ examples/kube/metrics/run.sh
 This will start up 3 containers and services:
 
  * Prometheus (http://crunchy-prometheus:9090)
- * Prometheus Promgateway (crunchy-promgateway:9091)
+ * Prometheus Promgateway (http://crunchy-promgateway:9091)
  * Grafana (http://crunchy-grafana:3000)
 
 If you want your metrics and dashboards to persist to NFS, run
