@@ -235,7 +235,7 @@ idx_tup_fetch, Number of live rows fetched by index scans, COUNTER, SELECT idx_t
 n_tup_ins, Number of rows inserted, COUNTER, SELECT n_tup_ins FROM pg_stat_user_tables
 n_tup_upd, Number of rows updated, COUNTER, SELECT n_tup_upd FROM pg_stat_user_tables
 n_tup_del, Number of rows deleted, COUNTER, SELECT n_tup_del FROM pg_stat_user_tables
-n_tup_hot_upd, Number of rows HOT updated (i.e., with no separate index update required), COUNTER, SELECT n_tup_hot_upd FROM pg_stat_user_tables
+n_tup_hot_upd, Number of rows HOT updated (i.e. with no separate index update required), COUNTER, SELECT n_tup_hot_upd FROM pg_stat_user_tables
 n_live_tup, Estimated number of live rows, GAUGE, SELECT n_live_tup FROM pg_stat_user_tables
 n_dead_tup, Estimated number of dead rows, GAUGE, SELECT n_dead_tup FROM pg_stat_user_tables
 n_mod_since_analyze, Estimated number of rows changed since last analyze, GAUGE, SELECT n_mod_since_analyze FROM pg_stat_user_tables
