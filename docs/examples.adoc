@@ -409,45 +409,6 @@ cd $CCPROOT/examples/openshift/master-deployment
 ./run.sh
 ....
 
-
-=== master using gluster fs
-
-
-==== Kubernetes
-
-This example deploys a master database container that uses
-a gluster file system as the persistent volume.
-
-Set up gluster according to
-https://wiki.centos.org/SpecialInterestGroup/Storage/gluster-Quickstart
-
-
-Start the example as follows:
-....
-cd $CCPROOT/examples/kube/gluster
-./run.sh
-....
-
-This will start a container and service for the master database.
-
-You can access the master database as follows:
-....
-psql -h master-gluster -U postgres postgres
-....
-
-This example has a mount point of /mnt/gluster which is mapped
-to the gluster fs at yourhost:/gv0
-
-*Tip*
-
-Create a static route from your host to 10.0.0.0/16 if you
-want to test the user interfaces of the metrics tools.
-
-On my host, 114, and my bridge, br1, this worked for me:
-....
- ip route add 10.0.0.0/16 via 192.168.0.114 dev br1
-....
-
 === master-pvc - Master using PVC
 
 
