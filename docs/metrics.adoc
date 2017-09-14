@@ -143,6 +143,7 @@ to Prometheus.  You can build graphs off the metrics using Grafana.
 The tables below list all existing collectors that are gathered by the node_exporter.
 
 .*Enabled by Default*
+
 [format="csv", options="header"]
 |===
 Name, Description
@@ -175,9 +176,10 @@ xfs, Exposes XFS runtime statistics.
 zfs, Exposes [ZFS](http://open-zfs.org/) performance statistics.
 |===
 
+.*Disabled by Default*
+
 The following table contains metrics that are not enabled by default; these can be enabled using the --collectors.enabled flag.
 
-.*Disabled by Default*
 [format="csv", options="header"]
 |===
 Name, Description
@@ -198,9 +200,10 @@ systemd, Exposes service and system status from [systemd](http://www.freedesktop
 tcpstat, Exposes TCP connection status information from `/proc/net/tcp` and `/proc/net/tcp6`. (Warning: the current version has potential performance issues in high load situations.)
 |===
 
+.*Deprecated*
+
 These metrics will be deprecated and (re)moved in future releases of node_exporter.
 
-.*Deprecated*
 [format="csv", options="header"]
 |===
 Name, Description
@@ -211,9 +214,12 @@ ntp, Exposes time drift from an NTP server.
 
 === postgres_exporter
 
-postgres_exporter focuses on collecting PostgreSQL server metrics. The following are some general metrics it collects:
+postgres_exporter focuses on collecting PostgreSQL server metrics. 
 
 .*General*
+
+The following are some general metrics it collects:
+
 [format="csv", options="header"]
 |===
 Name, Description, Usage, Query
@@ -221,9 +227,10 @@ pg_replication, Replication lag behind master in seconds, GAUGE, SELECT EXTRACT(
 pg_postmaster, Time at which postmaster started, GAUGE, SELECT pg_postmaster_start_time as start_time_seconds from pg_postmaster_start_time()
 |===
 
+.*pg_stat_user_tables*
+
 These metrics are general statistics on tables.
 
-.*pg_stat_user_tables*
 [format="csv", options="header"]
 |===
 Name, Description, Usage, Query
@@ -250,9 +257,10 @@ analyze_count, Number of times this table has been manually analyzed, COUNTER, S
 autoanalyze_count, Number of times this table has been analyzed by the autovacuum daemon, COUNTER, SELECT autoanalyze_count FROM pg_stat_user_tables
 |===
 
+.*pg_database*
+
 These statistics provide database queries.
 
-.*pg_database*
 [format="csv", options="header"]
 |===
 Name, Description, Usage, Query
