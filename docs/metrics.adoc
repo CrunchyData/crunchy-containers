@@ -40,17 +40,17 @@ When running crunchy-metrics, the following ports are available:
 You can collect various PostgreSQL metrics from your database container by running a
 crunchy-collect container that points to your database container.
 
-Metrics collection requires you run the crunchy-metrics set of containers that includes:
-
- * Prometheus
- * Promgateway
- * Grafana
-
 To start this set of containers, run the following:
 ....
 cd $CCPROOT/examples/docker/metrics
 ./run.sh
 ....
+
+This will start up 3 containers and services:
+
+ * Prometheus (http://crunchy-prometheus:9090)
+ * Prometheus Promgateway (http://crunchy-promgateway:9091)
+ * Grafana (http://crunchy-grafana:3000)
 
 An example has been provided that runs a database container
 and also the associated metrics collection container, run the
@@ -73,7 +73,8 @@ It is required to view or capture metrics collected by crunchy-collect.
 
 Running the example:
 ....
-examples/kube/metrics/run.sh
+cd $CCPROOT/examples/kube/metrics/
+./run.sh
 ....
 
 This will start up 3 containers and services:
@@ -112,6 +113,10 @@ psql -h master-collect -U postgres postgres
 
 ==== OpenShift
 
+This example starts up Prometheus and Grafana.
+
+It is required to view or capture metrics collected by crunchy-collect.
+
 First, create the crunchy-metrics pod which contains
 the Prometheus data store and the Grafana graphing web application:
 
@@ -120,9 +125,12 @@ cd $CCPROOT/examples/openshift/metrics
 ./run.sh
 ....
 
-At this point, you can view the Prometheus web console at
-crunchy-metrics:9090, the Prometheus Promgateway at crunchy-metrics:9091, and the Grafana web app at crunchy-metrics:3000.
+This will start up 3 containers and services:
 
+ * Prometheus (http://crunchy-prometheus:9090)
+ * Prometheus Promgateway (http://crunchy-promgateway:9091)
+ * Grafana (http://crunchy-grafana:3000)
+ 
 When accessing the Grafana web application, the default user credentials will be
 the username **admin** and the password **admin**.
 
@@ -141,6 +149,7 @@ to Prometheus.  You can build graphs off the metrics using Grafana.
 === node_exporter
 
 The tables below list all existing collectors that are gathered by the node_exporter.
+
 
 .*Enabled by Default*
 
@@ -166,39 +175,41 @@ meminfo, Exposes memory statistics.
 netdev, Exposes network interface statistics such as bytes transferred.
 netstat, Exposes network statistics from `/proc/net/netstat`. This is the same information as `netstat -s`.
 sockstat, Exposes various statistics from `/proc/net/sockstat`.
-stat, Exposes various statistics from `/proc/stat`. This includes boot time & forks as well as interrupts.
+stat, Exposes various statistics from `/stat`. This includes boot time & forks as well as interrupts.
 textfile, Exposes statistics read from local disk. The `--collector.textfile.directory` flag must be set.
 time, Exposes the current system time.
 uname, Exposes system information as provided by the uname system call.
 vmstat, Exposes statistics from `/proc/vmstat`.
 wifi, Exposes WiFi device and station statistics.
 xfs, Exposes XFS runtime statistics.
-zfs, Exposes [ZFS](http://open-zfs.org/) performance statistics.
+zfs, Exposes link:http://open-zfs.org/[ZFS] performance statistics.
 |===
+
 
 .*Disabled by Default*
 
-The following table contains metrics that are not enabled by default; these can be enabled using the --collectors.enabled flag.
+The following table contains metrics that are not enabled by default; these can be enabled using the `--collectors.enabled` flag.
 
 [format="csv", options="header"]
 |===
 Name, Description
 bonding, Exposes the number of configured and active slaves of Linux bonding interfaces.
-buddyinfo, Exposes statistics of memory fragments as reported by /proc/buddyinfo.
+buddyinfo, Exposes statistics of memory fragments as reported by `/proc/buddyinfo`.
 devstat, Exposes device statistics
 drbd, Exposes Distributed Replicated Block Device statistics (to version 8.4)
 interrupts, Exposes detailed interrupts statistics.
 ksmd, Exposes kernel and system statistics from `/sys/kernel/mm/ksm`.
-logind, Exposes session counts from [logind](http://www.freedesktop.org/wiki/Software/systemd/logind/).
+logind, Exposes session counts from link:http://www.freedesktop.org/wiki/Software/systemd/logind/[logind].
 meminfo\_numa, Exposes memory statistics from `/proc/meminfo_numa`.
 mountstats, Exposes filesystem statistics from `/proc/self/mountstats`. Exposes detailed NFS client statistics.
 nfs, Exposes NFS client statistics from `/proc/net/rpc/nfs`. This is the same information as `nfsstat -c`.
-qdisc, Exposes [queuing discipline](https://en.wikipedia.org/wiki/Network_scheduler#Linux_kernel) statistics
-runit, Exposes service status from [runit](http://smarden.org/runit/).
-supervisord, Exposes service status from [supervisord](http://supervisord.org/).
-systemd, Exposes service and system status from [systemd](http://www.freedesktop.org/wiki/Software/systemd/).
+qdisc, Exposes link:https://en.wikipedia.org/wiki/Network_scheduler#Linux_kernel[queuing discipline] statistics
+runit, Exposes service status from link:http://smarden.org/runit/[runit].
+supervisord, Exposes service status from link:http://supervisord.org/[supervisord].
+systemd, Exposes service and system status from link:http://www.freedesktop.org/wiki/Software/systemd/[systemd].
 tcpstat, Exposes TCP connection status information from `/proc/net/tcp` and `/proc/net/tcp6`. (Warning: the current version has potential performance issues in high load situations.)
 |===
+
 
 .*Deprecated*
 
@@ -212,9 +223,11 @@ megacli, Exposes RAID statistics from MegaCLI.
 ntp, Exposes time drift from an NTP server.
 |===
 
+
 === postgres_exporter
 
 postgres_exporter focuses on collecting PostgreSQL server metrics. 
+
 
 .*General*
 
@@ -223,9 +236,10 @@ The following are some general metrics it collects:
 [format="csv", options="header"]
 |===
 Name, Description, Usage, Query
-pg_replication, Replication lag behind master in seconds, GAUGE, SELECT EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp()))::INT as lag
-pg_postmaster, Time at which postmaster started, GAUGE, SELECT pg_postmaster_start_time as start_time_seconds from pg_postmaster_start_time()
+pg_replication, Replication lag behind master in seconds, GAUGE, `SELECT EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp()))::INT as lag`
+pg_postmaster, Time at which postmaster started, GAUGE, `SELECT pg_postmaster_start_time as start_time_seconds from pg_postmaster_start_time()`
 |===
+
 
 .*pg_stat_user_tables*
 
@@ -234,28 +248,29 @@ These metrics are general statistics on tables.
 [format="csv", options="header"]
 |===
 Name, Description, Usage, Query
-schemaname, Name of the schema that this table is in, LABEL, SELECT schemaname FROM pg_stat_user_tables
-relname, Name of this table, LABEL, SELECT relname FROM pg_stat_user_tables
-seq_scan, Number of sequential scans initiated on this table, COUNTER, SELECT seq_scan FROM pg_stat_user_tables
-seq_tup_read, Number of live rows fetched by sequential scans, COUNTER, SELECT seq_tup_read FROM pg_stat_user_tables
-idx_scan, Number of index scans initiated on this table, COUNTER, SELECT idx_scan FROM pg_stat_user_tables
-idx_tup_fetch, Number of live rows fetched by index scans, COUNTER, SELECT idx_tup_fetch FROM pg_stat_user_tables
-n_tup_ins, Number of rows inserted, COUNTER, SELECT n_tup_ins FROM pg_stat_user_tables
-n_tup_upd, Number of rows updated, COUNTER, SELECT n_tup_upd FROM pg_stat_user_tables
-n_tup_del, Number of rows deleted, COUNTER, SELECT n_tup_del FROM pg_stat_user_tables
-n_tup_hot_upd, Number of rows HOT updated (i.e. with no separate index update required), COUNTER, SELECT n_tup_hot_upd FROM pg_stat_user_tables
-n_live_tup, Estimated number of live rows, GAUGE, SELECT n_live_tup FROM pg_stat_user_tables
-n_dead_tup, Estimated number of dead rows, GAUGE, SELECT n_dead_tup FROM pg_stat_user_tables
-n_mod_since_analyze, Estimated number of rows changed since last analyze, GAUGE, SELECT n_mod_since_analyze FROM pg_stat_user_tables
-last_vacuum, Last time at which this table was manually vacuumed (not counting VACUUM FULL), GAUGE, SELECT last_vacuum FROM pg_stat_user_tables
-last_autovacuum, Last time at which this table was vacuumed by the autovacuum daemon, GAUGE, SELECT last_autovacuum FROM pg_stat_user_tables
-last_analyze, Last time at which this table was manually analyzed, GAUGE, SELECT last_analyze FROM pg_stat_user_tables
-last_autoanalyze, Last time at which this table was analyzed by the autovacuum daemon, GAUGE, SELECT last_autoanalyze FROM pg_stat_user_tables
-vacuum_count, Number of times this table has been manually vacuumed (not counting VACUUM FULL), COUNTER, SELECT vacuum_count FROM pg_stat_user_tables
-autovacuum_count, Number of times this table has been vacuumed by the autovacuum daemon, COUNTER, SELECT autovacuum_count FROM pg_stat_user_tables
-analyze_count, Number of times this table has been manually analyzed, COUNTER, SELECT analyze_count FROM pg_stat_user_tables
-autoanalyze_count, Number of times this table has been analyzed by the autovacuum daemon, COUNTER, SELECT autoanalyze_count FROM pg_stat_user_tables
+schemaname, Name of the schema that this table is in, LABEL, `SELECT schemaname FROM pg_stat_user_tables`
+relname, Name of this table, LABEL, `SELECT relname FROM pg_stat_user_tables`
+seq_scan, Number of sequential scans initiated on this table, COUNTER, `SELECT seq_scan FROM pg_stat_user_tables`
+seq_tup_read, Number of live rows fetched by sequential scans, COUNTER, `SELECT seq_tup_read FROM pg_stat_user_tables`
+idx_scan, Number of index scans initiated on this table, COUNTER, `SELECT idx_scan FROM pg_stat_user_tables`
+idx_tup_fetch, Number of live rows fetched by index scans, COUNTER, `SELECT idx_tup_fetch FROM pg_stat_user_tables`
+n_tup_ins, Number of rows inserted, COUNTER, `SELECT n_tup_ins FROM pg_stat_user_tables`
+n_tup_upd, Number of rows updated, COUNTER, `SELECT n_tup_upd FROM pg_stat_user_tables`
+n_tup_del, Number of rows deleted, COUNTER, `SELECT n_tup_del FROM pg_stat_user_tables`
+n_tup_hot_upd, Number of rows HOT updated (i.e. with no separate index update required), COUNTER, `SELECT n_tup_hot_upd FROM pg_stat_user_tables`
+n_live_tup, Estimated number of live rows, GAUGE, `SELECT n_live_tup FROM pg_stat_user_tables`
+n_dead_tup, Estimated number of dead rows, GAUGE, `SELECT n_dead_tup FROM pg_stat_user_tables`
+n_mod_since_analyze, Estimated number of rows changed since last analyze, GAUGE, `SELECT n_mod_since_analyze FROM pg_stat_user_tables`
+last_vacuum, Last time at which this table was manually vacuumed (not counting VACUUM FULL), GAUGE, `SELECT last_vacuum FROM pg_stat_user_tables`
+last_autovacuum, Last time at which this table was vacuumed by the autovacuum daemon, GAUGE, `SELECT last_autovacuum FROM pg_stat_user_tables`
+last_analyze, Last time at which this table was manually analyzed, GAUGE, `SELECT last_analyze FROM pg_stat_user_tables`
+last_autoanalyze, Last time at which this table was analyzed by the autovacuum daemon, GAUGE, `SELECT last_autoanalyze FROM pg_stat_user_tables`
+vacuum_count, Number of times this table has been manually vacuumed (not counting VACUUM FULL), COUNTER, `SELECT vacuum_count FROM pg_stat_user_tables`
+autovacuum_count, Number of times this table has been vacuumed by the autovacuum daemon, COUNTER, `SELECT autovacuum_count FROM pg_stat_user_tables`
+analyze_count, Number of times this table has been manually analyzed, COUNTER, `SELECT analyze_count FROM pg_stat_user_tables`
+autoanalyze_count, Number of times this table has been analyzed by the autovacuum daemon, COUNTER, `SELECT autoanalyze_count FROM pg_stat_user_tables`
 |===
+
 
 .*pg_database*
 
@@ -264,8 +279,8 @@ These statistics provide database queries.
 [format="csv", options="header"]
 |===
 Name, Description, Usage, Query
-datname, LABEL, Name of the database, SELECT pg_database.datname as size FROM pg_database
-usage, GAUGE, Disk space used by the database, SELECT pg_database_size(pg_database.datname) as size FROM pg_database
+datname, LABEL, Name of the database, `SELECT pg_database.datname as size FROM pg_database`
+usage, GAUGE, Disk space used by the database, `SELECT pg_database_size(pg_database.datname) as size FROM pg_database`
 |===
 
 <<<
