@@ -10,7 +10,12 @@ You will need to do the following steps prior to testing.
 
 *Note*: If version numbers have not been updated, you will need update version numbers in documentation and examples in your test instance.
 
-It is recommended to build a clean virtual machine for all three applications (Docker, OpenShift, Kubernetes) on both operating systems (CentOS 7, RHEL 7). This will ensure the most accurate results from testing.
+It is recommended to build a clean virtual machine for all three applications (Docker, OpenShift, Kubernetes) on both operating systems (CentOS 7, RHEL 7).
+This will ensure the most accurate results from testing.
+
+If you wanted a more automated (or at least faster) way of setting these up, two shell scripts have been provided in the /docs directory, link:setup-env.sh
+and link:setup-env-2.sh. Ensure setup-env.sh has the proper version numbers for what you are testing, and run that script first; then after following the
+instructions it outputs, run setup-env-2.sh.
 
  * Build a clean Docker CentOS 7 host (VM)
  * Build a clean OpenShift CentOS 7 host (VM)
