@@ -44,12 +44,17 @@ docker stop basic
 
 ==== Kubernetes
 
-This example starts a single postgres container and service, the most simple
+This example starts a single PostgreSQL container and service, the most simple
 of examples.
 
 Running the example:
 ....
-examples/kube/basic/run.sh
+cd $CCPROOT/examples/kube/basic
+./run.sh
+....
+
+You can verify that everything is running successfully by using the following commands:
+....
 kubectl get pod basic
 kubectl get service basic
 kubectl logs basic
