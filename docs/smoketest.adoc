@@ -15,7 +15,7 @@ This will ensure the most accurate results from testing.
 
 If you wanted a more automated (or at least faster) way of setting these up, two shell scripts have been provided in the /docs directory, link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/setup-env.sh[setup-env.sh]
 and link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/setup-env-2.sh[setup-env-2.sh]. Ensure setup-env.sh has the proper version numbers for what you are testing, and run that script first; then after following the
-instructions it outputs, run setup-env-2.sh.
+instructions it outputs, run setup-env-2.sh. This will set up an environment with all the necessary prerequisites, including Docker, Git, and Golang. After running these, you will only need to install OpenShift and/or Kubernetes, respectively.
 
  * Build a clean Docker CentOS 7 host (VM)
  * Build a clean OpenShift CentOS 7 host (VM)
