@@ -93,6 +93,18 @@ For each container, a link is added below that corresponds to the link:https://g
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-11[proxy]
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-9[proxy]
 
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-12[custom-config]
+| -
+
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-13[custom-config-sync]
+| -
+
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-14[configmap]
+| -
+
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-6[pgpool]
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-15[pgpool]
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-10[pgpool]
@@ -109,6 +121,14 @@ For each container, a link is added below that corresponds to the link:https://g
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-18[vacuum]
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-13[vacuum]
 
+| -
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-13[dba]
+
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#docker-10[custom-setup]
+| -
+| -
+
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-11[pgbouncer]
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-19[pgbouncer]
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-15[pgbouncer]
@@ -121,6 +141,14 @@ For each container, a link is added below that corresponds to the link:https://g
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-21[statefulsets]
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-17[statefulsets]
 
+| -
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-17[statefulsets using dynamic provisioning]
+
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-22[secrets]
+| -
+
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-13[pitr]
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-23[pitr]
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-19[pitr]
@@ -129,13 +157,29 @@ For each container, a link is added below that corresponds to the link:https://g
 | -
 | -
 
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#docker-15[swarm]
+| -
+| -
+
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-16[watch]
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-24[watch]
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-20[watch]
 
 | -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-25[ssl]
+| -
+
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-26[workshop]
+| -
+
+| -
 | -
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-21[upgrade]
+
+| -
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-21[Google Cloud Environment]
 |===
 
 == Legal Notices
