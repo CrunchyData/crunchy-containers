@@ -36,6 +36,8 @@ The following examples are used to test each environment. This applies to whethe
 
 For each container, a link is added below that corresponds to the link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc[Examples Documentation]. Follow the steps for each, and verify that everything is running successfully. 
 
+=== Verifying the Containers
+
 An example using the *basic* container of how you would both run the container on all three applications and verify it is running successfully is as follows:
 
 *Docker*
@@ -104,6 +106,7 @@ the value of PG_PASSWORD from above for the password when prompted:
 psql -h basic.openshift.svc.cluster.local -U testuser userdb
 ....
 
+=== Full List of Containers for Testing
 
 |===
 | Docker | OpenShift | Kubernetes
