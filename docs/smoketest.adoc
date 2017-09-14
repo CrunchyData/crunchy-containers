@@ -13,8 +13,8 @@ You will need to do the following steps prior to testing.
 It is recommended to build a clean virtual machine for all three applications (Docker, OpenShift, Kubernetes) on both operating systems (CentOS 7, RHEL 7).
 This will ensure the most accurate results from testing.
 
-If you wanted a more automated (or at least faster) way of setting these up, two shell scripts have been provided in the /docs directory, link:setup-env.sh
-and link:setup-env-2.sh. Ensure setup-env.sh has the proper version numbers for what you are testing, and run that script first; then after following the
+If you wanted a more automated (or at least faster) way of setting these up, two shell scripts have been provided in the /docs directory, link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/setup-env.sh[setup-env.sh]
+and link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/setup-env-2.sh[setup-env-2.sh]. Ensure setup-env.sh has the proper version numbers for what you are testing, and run that script first; then after following the
 instructions it outputs, run setup-env-2.sh.
 
  * Build a clean Docker CentOS 7 host (VM)
