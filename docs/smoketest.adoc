@@ -1,21 +1,30 @@
 = Smoke Test Guide - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
+:toc:
 v1.5, {docdate}
 
-== Smoke Test Guide Prerequsites
+== Prerequsites
 
-Here is a series of setup steps required to test a new release:
+You will need to do the following steps prior to testing.
 
- * Update version numbers in documentation and examples
- * Build a clean Docker centos host (vm)
+*Note*: If version numbers have not been updated, you will need update version numbers in documentation and examples in your test instance.
+
+It is recommended to build a clean virtual machine for all three applications (Docker, OpenShift, Kubernetes) on both operating systems (CentOS 7, RHEL 7). This will ensure the most accurate results from testing.
+
+ * Build a clean Docker CentOS 7 host (VM)
+ * Build a clean OpenShift CentOS 7 host (VM)
+ * Build a clean Kubernetes CentOS 7 host (VM)
+ * Build a clean Docker RHEL 7 host (VM)
+ * Build a clean OpenShift RHEL 7 host (VM)
+ * Build a clean Kubernetes RHEL 7 host (VM)
+
+At this point, you can build the 9.5 and 9.6 images on all three hosts. (Or if you're testing a new PostgreSQL release, you can build those at this point also.)
+
  * Build the 9.5 and 9.6 images on the new Docker host
- * Build a clean RHEL Openshift host (vm)
- * Build the 9.5 and 9.6 images on the new openshift host
- * Build a clean centos kube host (vm)
- * Build the 9.5 and 9.6 images on the new kube host
- * Verify PDF and HTML docs were generated with the new version
+ * Build the 9.5 and 9.6 images on the new OpenShift host
+ * Build the 9.5 and 9.6 images on the new Kubernetes host
 
-=== Smoke Test Steps
+== New Container Release Testing
 
 The following examples are used to test each environment:
 
@@ -24,9 +33,24 @@ The following examples are used to test each environment:
  * restore
  * grafana/prometheus/promgateway
  * collect example
- * master-replica 
- * pgpool 
- * pgbouncer 
+ * master-replica
+ * pgpool
+ * pgbouncer
+ * crunchy-proxy
+ * sync example
+
+ == New PostgreSQL Release Testing
+
+ The following examples are used to test each environment:
+
+ * basic
+ * backup
+ * restore
+ * grafana/prometheus/promgateway
+ * collect example
+ * master-replica
+ * pgpool
+ * pgbouncer
  * crunchy-proxy
  * sync example
 
