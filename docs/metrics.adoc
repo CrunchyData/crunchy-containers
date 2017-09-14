@@ -215,12 +215,18 @@ tcpstat, Exposes TCP connection status information from `/proc/net/tcp` and `/pr
 
 These metrics will be deprecated and (re)moved in future releases of node_exporter.
 
-[format="csv", options="header"]
+[%autowidth.spread]
 |===
-Name, Description
-gmond, Exposes statistics from Ganglia.
-megacli, Exposes RAID statistics from MegaCLI.
-ntp, Exposes time drift from an NTP server.
+| Name | Description
+
+| gmond
+| Exposes statistics from Ganglia.
+
+| megacli
+| Exposes RAID statistics from MegaCLI.
+
+| ntp
+| Exposes time drift from an NTP server.
 |===
 
 
