@@ -29,9 +29,9 @@ the script examples/openshift/metrics/run-pvc.sh.
 
 When running crunchy-metrics, the following ports are available:
 
- * crunchy-prometheus:9090 - the Prometheus web user interface
- * crunchy-promgateway:9091 - the Prometheus pushgateway REST API
- * crunchy-grafana:3000 - the Grafana web user interface
+ * http://crunchy-metrics:9090 - the Prometheus web user interface
+ * http://crunchy-metrics:9091 - the Prometheus pushgateway REST API
+ * http://crunchy-metrics:3000 - the Grafana web user interface
 
 === Examples
 
@@ -48,9 +48,9 @@ cd $CCPROOT/examples/docker/metrics
 
 This will start up 3 containers and services:
 
- * Prometheus (http://crunchy-prometheus:9090)
- * Prometheus Promgateway (http://crunchy-promgateway:9091)
- * Grafana (http://crunchy-grafana:3000)
+ * http://crunchy-metrics:9090 - the Prometheus web user interface
+ * http://crunchy-metrics:9091 - the Prometheus pushgateway REST API
+ * http://crunchy-metrics:3000 - the Grafana web user interface
 
 An example has been provided that runs a database container
 and also the associated metrics collection container, run the
@@ -79,9 +79,9 @@ cd $CCPROOT/examples/kube/metrics/
 
 This will start up 3 containers and services:
 
- * Prometheus (http://crunchy-prometheus:9090)
- * Prometheus Promgateway (http://crunchy-promgateway:9091)
- * Grafana (http://crunchy-grafana:3000)
+ * http://crunchy-metrics:9090 - the Prometheus web user interface
+ * http://crunchy-metrics:9091 - the Prometheus pushgateway REST API
+ * http://crunchy-metrics:3000 - the Grafana web user interface
 
 If you want your metrics and dashboards to persist to NFS, run
 this script:
@@ -127,9 +127,9 @@ cd $CCPROOT/examples/openshift/metrics
 
 This will start up 3 containers and services:
 
- * Prometheus (http://crunchy-prometheus:9090)
- * Prometheus Promgateway (http://crunchy-promgateway:9091)
- * Grafana (http://crunchy-grafana:3000)
+ * http://crunchy-metrics:9090 - the Prometheus web user interface
+ * http://crunchy-metrics:9091 - the Prometheus pushgateway REST API
+ * http://crunchy-metrics:3000 - the Grafana web user interface
  
 When accessing the Grafana web application, the default user credentials will be
 the username **admin** and the password **admin**.
