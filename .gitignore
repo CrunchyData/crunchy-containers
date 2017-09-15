@@ -6,3 +6,5 @@ prometheus-pushgateway.tar.gz*
 prometheus.tar.gz*
 postage.tar.gz*
 bin/crunchy-sim
+node_exporter.tar.gz
+postgres_exporter
