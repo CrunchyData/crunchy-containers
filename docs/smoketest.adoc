@@ -1,40 +1,191 @@
 = Smoke Test Guide - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
+:toc:
 v1.5, {docdate}
 
-== Smoke Test Guide Prerequsites
 
-Here is a series of setup steps required to test a new release:
+== Prerequisites
 
- * Update version numbers in documentation and examples
- * Build a clean Docker centos host (vm)
+You will need to do the following steps prior to testing.
+
+*Note*: If version numbers have not been updated, you will need update version numbers in documentation and examples in your test instance.
+
+It is recommended to build a clean virtual machine for all three applications (Docker, OpenShift, Kubernetes) on both operating systems (CentOS 7, RHEL 7).
+This will ensure the most accurate results from testing.
+
+Installation instructions are located link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/install.adoc[here] in the officially
+supported installation document for the containers suite. In the document, you will find instructions on prerequisites for the environment, setting
+up your machines, and external links for installing Docker, OpenShift and Kubernetes.
+
+If you wanted a more automated way of setting these up, a bash script has been provided in the /docs directory, link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/setup-env.sh[setup-env.sh]. Ensure the script has the proper version numbers for what you are testing before running the script. This will set up an environment with all the necessary prerequisites, including Docker, Git, and Golang. After running these, you will only need to install OpenShift and/or Kubernetes, respectively.
+
+ * Build a clean Docker CentOS 7 host (VM)
+ * Build a clean OpenShift CentOS 7 host (VM)
+ * Build a clean Kubernetes CentOS 7 host (VM)
+ * Build a clean Docker RHEL 7 host (VM)
+ * Build a clean OpenShift RHEL 7 host (VM)
+ * Build a clean Kubernetes RHEL 7 host (VM)
+
+At this point, you can build the 9.5 and 9.6 images on all three hosts. (Or if you're testing a new PostgreSQL release, you can build those at this point also.)
+
  * Build the 9.5 and 9.6 images on the new Docker host
- * Build a clean RHEL Openshift host (vm)
- * Build the 9.5 and 9.6 images on the new openshift host
- * Build a clean centos kube host (vm)
- * Build the 9.5 and 9.6 images on the new kube host
- * Verify PDF and HTML docs were generated with the new version
+ * Build the 9.5 and 9.6 images on the new OpenShift host
+ * Build the 9.5 and 9.6 images on the new Kubernetes host
 
-=== Smoke Test Steps
+== Container Release Testing
 
-The following examples are used to test each environment:
+The following examples are used to test each environment. This applies to whether you're testing a new PostgreSQL release or a new Container Suite release.
 
- * basic
- * backup
- * restore
- * grafana/prometheus/promgateway
- * collect example
- * master-replica 
- * pgpool 
- * pgbouncer 
- * crunchy-proxy
- * sync example
+For each container, a link is added below that corresponds to the link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc[Examples Documentation]. Follow the steps for each, and verify that everything is running successfully.
 
+=== Full List of Containers for Testing
+
+|===
+| Docker | OpenShift | Kubernetes
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker[basic]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift[basic]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes[basic]
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-1[master-replica]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-1[master-replica]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-1[master-replica]
+
+| -
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-2[master-replica-dc]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-2[master-replica-dc]
+
+| -
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-3[master-replica-rc-pvc]
+| -
+
+| -
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-4[master-deployment]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-3[master-deployment]
+
+| -
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-5[master-pvc]
+| -
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-2[backup]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-6[backup]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-5[backup]
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-3[master-restore]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-7[master-restore]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-6[master-restore]
+
+| -
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-8[failover]
+| -
+
+| -
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-9[pgbackrest]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-7[pgbackrest]
+
+| -
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes--openshift[pgbackrest-restore]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes--openshift[pgbackrest-restore]
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-4[pgadmin4]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-10[pgadmin4]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-8[pgadmin4]
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-5[proxy]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-11[proxy]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-9[proxy]
+
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-12[custom-config]
+| -
+
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-13[custom-config-sync]
+| -
+
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-14[configmap]
+| -
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-6[pgpool]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-15[pgpool]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-10[pgpool]
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-7[pgbadger]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-16[pgbadger]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-11[pgbadger]
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-8[metrics]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-17[metrics]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-12[metrics]
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-9[vacuum]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-18[vacuum]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-13[vacuum]
+
+| -
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-13[dba]
+
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#docker-10[custom-setup]
+| -
+| -
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-11[pgbouncer]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-19[pgbouncer]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-15[pgbouncer]
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-12[sync]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-20[sync]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-16[sync]
+
+| -
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-21[statefulsets]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-17[statefulsets]
+
+| -
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-17[statefulsets using dynamic provisioning]
+
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-22[secrets]
+| -
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-13[pitr]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-23[pitr]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-19[pitr]
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-14[pgaudit]
+| -
+| -
+
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#docker-15[swarm]
+| -
+| -
+
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-16[watch]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-24[watch]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-20[watch]
+
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-25[ssl]
+| -
+
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-26[workshop]
+| -
+
+| -
+| -
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-21[upgrade]
+
+| -
+| -
+| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-21[Google Cloud Environment]
+|===
 
 == Legal Notices
 
 Copyright © 2017 Crunchy Data Solutions, Inc.
 
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
-
-Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
