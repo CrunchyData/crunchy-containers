@@ -1899,7 +1899,7 @@ scripts create a PostgreSQL user with those values, and sets the passwords
 for the master user and PostgreSQL superuser using the mounted secret volumes.
 
 When using secrets, you do NOT have to specify the following
-env vars if you specify all three secrets volumes:
+environment variables if you specify all three secrets volumes:
 
  * PG_USER
  * PG_PASSWORD
@@ -1921,7 +1921,7 @@ values as follows:
 echo -n 'myuserid' | base64
 ....
 
-You will paste these values into  your JSON secrets files for values.
+You can paste these values into your JSON secrets files for values.
 
 === pitr - PITR (point in time recovery)
 
@@ -1977,7 +1977,7 @@ use to mark the points in the recovery process we want to
 reference when creating our restored database.  Points before
 and after the test table were made.
 
-Next, lets edit the restore script to use the base backup files
+Next, let's edit the restore script to use the base backup files
 created in the step above.  You can view the backup path name
 under the /tmp/backups/master-pitr-backups/ directory. You will see
 another directory inside of this path with a name similar to
@@ -2177,8 +2177,7 @@ to configure pgaudit via a postgresql.conf file, then you will
 need to define your own custom postgresql.conf file and mount
 it to override the default postgresql.conf file.
 
-To run this example, run the following to create a
-database container:
+Run the following to create a database container:
 
 ....
 cd $CCPROOT/examples/docker/pgaudit
@@ -2259,16 +2258,14 @@ docker service ps master
 docker service ps replica
 ....
 
-Given the PostgreSQL replica service is named *replica*, you can scale up
-the number of replica containers by running this command:
+You can also scale up the number of *replica* containers.
 ....
 docker service scale replica=2
 docker service ls
 ....
 
-You can verify you have two replicas within PostgreSQL by viewing
-the *pg_stat_replication* table, the password is *password*, when
-logged into the kubernetes-node-1 host:
+Verify you have two replicas within PostgreSQL by viewing the *pg_stat_replication* table.
+The password is *password* by default when logged into the kubernetes-node-1 host:
 ....
 docker exec -it $(docker ps -q) psql -U postgres -c 'table pg_stat_replication' postgres
 ....
@@ -2522,7 +2519,7 @@ cd $CCPROOT/examples/kube/upgrade
 ./run.sh
 ....
 
-This will create the following in your Kube environment:
+This will create the following in your Kubernetes environment:
 
  * a Kube Job running the *crunchy-upgrade* container
  * a new data directory name *master-upgrade* found in the *pgnewdata*
@@ -2594,7 +2591,7 @@ docker exec -it master kill -SIGTERM 22
 
 == OpenShift - Tips
 
-=== Find PostgreSQL passwords
+=== PostgreSQL Passwords
 
 The passwords used for the PostgreSQL user accounts are generated
 by the OpenShift 'process' command.  To inspect what value was
@@ -2610,13 +2607,12 @@ Look for the values of the environment variables:
  *  PG_PASSWORD
  *  PG_DATABASE
 
-=== Password management
+=== Password Management
 
-Remember that if you do a database restore, you will get
-whatever user IDs and passwords that were saved in the
-backup.  So, if you do a restore to a new database
-and use generated passwords, the new passwords will
-not be the same as the passwords stored in the backup!
+When you backup a database, the original user IDs and password credentials
+are copied over from the original database and saved. Because of this, you
+cannot use generated passwords as the new passwords will not be the same as the
+passwords stored in the backup.
 
 You have various options to deal with managing your
 passwords:
@@ -2624,18 +2620,17 @@ passwords:
  * externalize your passwords using secrets instead of using generated values
  * manually update your passwords to your known values after a restore
 
-Note that you can edit the environment variables when there is a 'dc'
-using, currently only the replicas have a 'dc' to avoid the possiblity
-of creating multiple masters, this might need to change in the future,
-to better support password management:
+*Note*: Environment variables can be modified when there is a a deployment
+controller in use. Currently, only the replicas have a deployment controller in
+order to avoid the possibility of creating multiple masters.
 ....
 oc env dc/pg-master-rc PG_MASTER_PASSWORD=foo PG_MASTER=user1
 ....
 
-=== Examine backup job log
+=== Examine Backup Logs
 
-Database backups are implemented as a Kubernetes Job.  A Job is meant to run one time only
-and not be restarted by Kubernetes.  To view jobs in OpenShift you enter:
+Database backups are implemented as a Kubernetes Job. These are meant to run one time only
+and not be restarted by Kubernetes. To view jobs in OpenShift you enter:
 
 ....
 oc get jobs
@@ -2649,7 +2644,7 @@ output as follows:
 oc logs backupjob-pxh2o
 ....
 
-=== Backup lifecycle
+=== Backups
 
 Backups require the use of network storage like NFS in OpenShift.
 There is a required order of using NFS volumes in the manner
@@ -2672,7 +2667,7 @@ So, to do a database backup repeatedly, this general pattern will need to be fol
 This procedure will need to be scripted and executed by the devops team when
 performing a database backup.
 
-=== Restore lifecycle
+=== Restores
 
 To perform a database restore, we do the following:
 
@@ -2696,7 +2691,7 @@ occur since this might be a large amount of data and the volumes
 might be on slow networks. You can view the logs of the database pod
 to measure the copy progress.
 
-=== Log aggregation
+=== Log Aggregation
 
 OpenShift can be configured to include the EFK stack for log aggregation.
 OpenShift Administrators can configure the EFK stack as documented
