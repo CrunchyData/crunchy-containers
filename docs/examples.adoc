@@ -496,7 +496,7 @@ cd $CCPROOT/examples/openshift/master-pvc
 ./run.sh
 ....
 
-=== backup - Performing a backup
+=== Performing a Backup
 
 
 ==== Docker
@@ -592,7 +592,7 @@ allows any number of backups to be kept.
 The *examples/openshift/crunchy-pv-backup.json* specifies a *persistentVolumeReclaimPolicy* of *Retain* to tell OpenShift
 that we want to keep the volume contents after the removal of the PV.
 
-=== master-restore - Restoration of backup example
+=== Restoring a Backup
 
 
 ==== Docker
@@ -673,7 +673,7 @@ The restore only takes place if:
  * the /pgdata directory is empty
  * the /backups directory contains a valid postgresql.conf file
 
-=== failover - Manual database failover
+=== Manual Failover
 
 
 ==== OpenShift
@@ -724,7 +724,7 @@ psql -c 'table foo' -U master -h replica-dc postgres
 After a failover, you would most likely want to create a database
 backup and be prepared to recreate your cluster from that backup.
 
-=== pgbackrest - Backup Utility
+=== pgbackrest
 
 
 ==== Kubernetes
@@ -786,7 +786,7 @@ the container:
 pgbackrest --stanza=db backup --db-path=/pgdata/master-backrest/ --log-path=/tmp --repo-path=/backrestrepo -conf=/pgconf/pgbackrest.conf
 ....
 
-=== pgbackrest restore - Restoring backups made with pgbackrest
+=== Restoring pgbackrest
 
 
 ==== Kubernetes & OpenShift
@@ -809,7 +809,7 @@ Steps for DELTA restore
  * Check the restore logs (db-restore.log) in the /backrestrepo mountpoint for success. You can also view the logs of the completed job pod with kubectl get pod -a
  * Re-create the master-backrest pod in the backrest examples directory. The database will recover only files that have changed from the last backup.
 
-=== pgadmin4 - PostgreSQL web user interface
+=== pgadmin4
 
 ==== Docker
 
@@ -870,7 +870,7 @@ and log into the web application using a user ID of *admin@admin.org*
 and password of *password*.  Replace YOURLOCALIP with whatever
 your local IP address happens to be.
 
-=== crunchy-proxy - A smart proxy for PostgreSQL
+=== Proxy
 
 ==== Docker
 
@@ -985,7 +985,7 @@ SQL includes the *crunchy-proxy* read annotation.  SQL statements
 that do not include the read annotation will be sent to the master
 database container within the PostgreSQL cluster.
 
-=== custom-config - Custom Configuration Files
+=== Openshift Customized Configuration
 
 ==== OpenShift
 
@@ -1009,13 +1009,13 @@ This will start a database container that will use an NFS mounted /pgconf
 directory that will container the custom setup.sql file found in the example
 directory.
 
-=== custom-config sync - Custom Configuration Files with Sync Replica
+=== Openshift Customized Configuration with Synchronous Replica
 
 ==== OpenShift
 
 This example shows how you can use your own customized version of postgresql.conf
 and pg_hba.conf to override the default configuration.  It also specifies
-a sync replica in the postgresql.conf and starts up a sync replica.
+a synchronous replica in the postgresql.conf and starts it up upon creation.
 
 If you mount a /pgconf volume, crunchy-postgres will look at that directory
 for postgresql.conf, pg_hba.conf, and setup.sql.  If it finds one of them it
@@ -1031,10 +1031,10 @@ cd $CCPROOT/examples/openshift/custom-config-sync
 
 This will start a *csmaster* container that will use the custom
 config files when the database is running.  It will also create
-a sync replica named *cssyncreplica*, this replica is
+a synchronous replica named *cssyncreplica*. This replica is then
 connected to the master via streaming replication.
 
-=== configmap - database credentials from a configmap
+=== Openshift Configmap Database Credentials
 
 ==== OpenShift
 
