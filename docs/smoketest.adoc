@@ -17,9 +17,7 @@ Installation instructions are located link:https://github.com/crunchydata/crunch
 supported installation document for the containers suite. In the document, you will find instructions on prerequisites for the environment, setting
 up your machines, and external links for installing Docker, OpenShift and Kubernetes.
 
-If you wanted a more automated (or at least faster) way of setting these up, two shell scripts have been provided in the /docs directory, link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/setup-env.sh[setup-env.sh]
-and link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/setup-env-2.sh[setup-env-2.sh]. Ensure setup-env.sh has the proper version numbers for what you are testing, and run that script first; then after following the
-instructions it outputs, run setup-env-2.sh. This will set up an environment with all the necessary prerequisites, including Docker, Git, and Golang. After running these, you will only need to install OpenShift and/or Kubernetes, respectively.
+If you wanted a more automated (or at least faster) way of setting these up, a bash script has been provided in the /docs directory, link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/setup-env.sh[setup-env.sh]. Ensure setup-env.sh has the proper version numbers for what you are testing before running the script. This will set up an environment with all the necessary prerequisites, including Docker, Git, and Golang. After running these, you will only need to install OpenShift and/or Kubernetes, respectively.
 
  * Build a clean Docker CentOS 7 host (VM)
  * Build a clean OpenShift CentOS 7 host (VM)
