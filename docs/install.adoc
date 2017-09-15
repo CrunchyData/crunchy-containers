@@ -9,7 +9,8 @@ v1.5, {docdate}
 The crunchy-containers can run on different environments including:
 
  * Docker
- * OpenShift 3.3+
+ * OpenShift Enterprise
+ * OpenShift Origin
  * Kubernetes 1.2+
 
 In this document we list the basic installation steps required for these
@@ -17,8 +18,8 @@ environments.
 
 These installation instructions are developed and tested for the following operating systems:
 
- * CentOS 7
- * RHEL 7
+ * *CentOS 7*
+ * *RHEL 7*
 
 === Step 1 - Project Directory Structure
 
@@ -275,6 +276,94 @@ cd $CCPROOT/examples/pv
 
 View the README.txt for command-line usage.
 
+==== System policies for PVC creation/listing
+
+In order to allow the *system* user to be able to create and list
+persistent volumes using *OpenShift version 3.3+*, you have to enter
+these commands as the *root* user after installation in order to
+modify the policies.
+....
+oadm policy add-role-to-user cluster-reader system
+oc describe clusterPolicyBindings :default
+oadm policy add-cluster-role-to-user cluster-reader system
+oc describe clusterPolicyBindings :default
+oc describe clusterPolicyBindings :default
+oadm policy add-cluster-role-to-user cluster-admin system
+....
+
+==== Persistent volume matching
+
+Restoring a database from an NFS backup requires the building
+of a PV which maps to the NFS backup archive path.  For example,
+if you have a backup at /backups/pg-foo/2016-01-29:22:34:20
+then we create a PV that maps to that NFS path.  We also use
+a "label" on the PV so that the specific backup PV can be identified.
+
+We use the pod name in the label value to make the PV unique.  This
+way, the related PVC can find the right PV to map to and not some other
+PV.  In the PVC, we specify the same "label" which lets Kubernetes
+match to the correct PV.
+
+=== anyuid permissions
+
+One suggested method to use in order to grant a user permission to use the *anyuid* SCC:
+....
+oc adm policy add-scc-to-group anyuid system:authenticated
+....
+
+This says that any authenticated user can run with the anyuid SCC which lets
+them create PVCs and use the *fsGroup* setting for the PostgreSQL containers to
+work using NFS.
+
+=== DNS Configuration
+
+==== DNS host entry
+
+If your OpenShift environment can not resolve your hostname via
+a DNS server (external to OpenShift!), you will get errors when trying
+to create a DeploymentConfig.
+
+Because of this, it is advisable to either install dnsmasq
+and reconfigure OpenShift, or run a DNS server on another host and add
+the OpenShift host entry to that DNS server. The *skybridge2* Docker
+container is sufficient for this purpose.
+
+*Note*: Remember to adjust your /etc/resolv.conf to specify the new DNS
+server.
+
+==== OpenShift v3
+
+The following DNS modifications are necessary for versions prior to OpenShift Enterprise 3.3.
+
+Luke Meyer from Redhat wrote an excellent blog on how to configure dnsmasq and OpenShift;
+this is available link:http://developers.redhat.com/blog/2015/11/19/dns-your-openshift-v3-cluster/[here].
+
+Key things included in this blog are how to:
+
+ * Configure DHCP to include the local IP address in /etc/resolv.conf upon boot
+ * Configure dnsmasq
+ * Configure OpenShift DNS to listen on another port
+
+A sample setup would typically have the following IP addresses/ports configured:
+
+ * OpenShift DNS listening on 127.0.0.1:8053
+ * dnsmasq listening on the local IP address 192.168.0.109:53
+
+Therefore in /etc/dhcp/dhclient.conf it is necessary to append the following line in
+this sample setup:
+
+....
+prepend domain-name-servers 192.168.0.109;
+....
+
+If you don't have your DNS configured correctly, replication controllers
+and deployment configurations will not work as expected.
+
+==== OpenShift Origin
+
+The official instructions for configuring DNS on your OpenShift Origin cluster can be
+found link:https://docs.openshift.org/latest/install_config/install/prerequisites.html#prereq-dns[here].
+
 == Kubernetes Environment
 
 === Installation
@@ -334,6 +423,11 @@ to match your project configuration.
 
 See link:examples.adoc[here] to view the documentation showing various
 examples.
+
+=== DNS
+
+Please see link:https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/[here]
+to view the official documentation regarding configuring DNS for your Kubernetes cluster.
 
 ===  Tips
 

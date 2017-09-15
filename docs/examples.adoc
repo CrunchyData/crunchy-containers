@@ -2474,7 +2474,7 @@ example, this example will mount the newly created and upgraded
 database files.  Database tables and data that were in the *master-pvc*
 test database should be found in the *master-upgrade* database.
 
-=== google cloud environment - Kubernetes cluster
+=== Kubernetes Google Cloud Environment
 
 ==== Kubernetes
 
@@ -2494,7 +2494,6 @@ examples/pv/create-pv.sh gce
 examples/pv/create-pvc.sh
 ....
 
-
 Here is a link that describes more information on GCE persistent disk:
 https://cloud.google.com/container-engine/docs/tutorials/persistent-disk/
 
@@ -2508,15 +2507,14 @@ as follows:
         },
 ....
 
-For our Postgres container, we have specified a UID of 26 as the user
+For our Postgres container, a UID of 26 is specified as the user
 which corresponds to the *fsGroup* value.
 
 == Docker - Tips
 
-*Send a signal to PostgreSQL*
+=== Send a signal to PostgreSQL
 
 First, find the PID of the postmaster:
-
 ....
 docker exec -it master cat /pgdata/master/postmaster.pid
 ....
@@ -2529,7 +2527,7 @@ docker exec -it master kill -SIGTERM 22
 
 == OpenShift - Tips
 
-*Find PostgreSQL passwords*
+=== Find PostgreSQL passwords
 
 The passwords used for the PostgreSQL user accounts are generated
 by the OpenShift 'process' command.  To inspect what value was
@@ -2545,7 +2543,7 @@ Look for the values of the environment variables:
  *  PG_PASSWORD
  *  PG_DATABASE
 
-*Password management*
+=== Password management
 
 Remember that if you do a database restore, you will get
 whatever user IDs and passwords that were saved in the
@@ -2567,40 +2565,7 @@ to better support password management:
 oc env dc/pg-master-rc PG_MASTER_PASSWORD=foo PG_MASTER=user1
 ....
 
-*NFS Setup*
-
-To control the permissions of the NFS file system
-certain examples make use of the *supplementalGroups* security context
-setting for pods.  In these examples, we specify the GID of the *nfsnobody*
-group (65534).  If you want to use a different GID for the supplementalGroup
-then you will need to alter the NFS examples accordingly.
-
-When the pod runs, the pod user is UID *26* which is the Postgres
-user ID.  By specifying the *supplementalGroup* the pod will also
-be added to the *nfsnobody* group.  So, when you set up your NFS
-mount, you can specify the permissions to be as follows:
-....
-drwxrwx---.   3 nfsnobody nfsnobody   23 Dec 16 11:28 nfsfileshare
-....
-
-This restricts *other* users from writing to the NFS share, but will
-allow the *nfsnobody* group to have write access.  This way, the
-NFS mount permissions can be managed to only allow certain pods
-write access.
-
-Also, remember that on systems with SELinux set to enforcing mode
-that you will need to allow NFS write permissions by running
-this command:
-....
-sudo setsebool -P virt_use_nfs 1
-....
-
-Note that supplementalGroup settings are required for NFS but you
-would use the fsGroup setting for the AWS file system.  Check out
-this link for details:
-https://docs.openshift.org/latest/install_config/persistent_storage/pod_security_context.html
-
-*Examine backup job log*
+=== Examine backup job log
 
 Database backups are implemented as a Kubernetes Job.  A Job is meant to run one time only
 and not be restarted by Kubernetes.  To view jobs in OpenShift you enter:
@@ -2617,18 +2582,17 @@ output as follows:
 oc logs backupjob-pxh2o
 ....
 
-*Backup lifecycle*
+=== Backup lifecycle
 
 Backups require the use of network storage like NFS in OpenShift.
 There is a required order of using NFS volumes in the manner
 we do database backups.
 
-So, first off, there is a one-to-one relationship between
-a PV (persistent volume) and a PVC (persistence volume claim).  You
-can NOT have a one-to-many relationship between PV and PVC(s).
+There is a one-to-one relationship between a PV (persistent volume) and a PVC
+(persistence volume claim).  You can NOT have a one-to-many relationship between
+PV and PVC(s).
 
-So, to do a database backup repeatably, you will need to following
-this general pattern:
+So, to do a database backup repeatedly, this general pattern will need to be followed.
 
  * as OpenShift admin user, create a unique PV (e.g. backup-pv-mydatabase)
  * as a project user, create a unique PVC (e.g. backup-pvc-mydatabase)
@@ -2641,7 +2605,7 @@ this general pattern:
 This procedure will need to be scripted and executed by the devops team when
 performing a database backup.
 
-*Restore lifecycle*
+=== Restore lifecycle
 
 To perform a database restore, we do the following:
 
@@ -2665,7 +2629,7 @@ occur since this might be a large amount of data and the volumes
 might be on slow networks. You can view the logs of the database pod
 to measure the copy progress.
 
-*Log aggregation*
+=== Log aggregation
 
 OpenShift can be configured to include the EFK stack for log aggregation.
 OpenShift Administrators can configure the EFK stack as documented
@@ -2673,96 +2637,15 @@ here:
 
 https://docs.openshift.com/enterprise/3.1/install_config/aggregate_logging.html
 
-*nss_wrapper*
+=== nss_wrapper
 
 If an OpenShift deployment requires that random generated UIDs be
 supported by containers, the Crunchy containers can be modified
 similar to those located here to support the use of nss_wrapper
 to equate the random generated UIDs/GIDs by OpenShift with
-the postgres user:
+the postgres user.
 
 https://github.com/openshift/postgresql/blob/master/9.4/root/usr/share/container-scripts/postgresql/common.sh
-
-*DNS configuration*
-
-As of OSE 3.3, the following DNS modifications are not typically necessary
-any longer....but I'm leaving them here as a reference....
-
-Luke Meyer from Redhat wrote an excellent blog on how
-to configure dnsmasq and OpenShift, it is located here:
-
-http://developers.redhat.com/blog/2015/11/19/dns-your-openshift-v3-cluster/
-
-Key things included in this blog are:
-
- * configuring dhcp to include the local IP address in /etc/resolv.conf upon boot
- * configuring dnsmasq
- * configuring OpenShift dns to listen on another port
-
-In my dev setup, I have OpenShifts DNS listening on 127.0.0.1:8053.
-I have my dnsmasq listening on the local IP address 192.168.0.109:53
-
-Therefore in my /etc/dhcp/dhclient.conf I have this config:
-
-....
-prepend domain-name-servers 192.168.0.109;
-....
-
-If you don't have your DNS configured correctly, replication controllers
-and deployment configs basically will not work.
-
-*DNS host entry*
-
-If your OpenShift environment can not resolve your hostname via
-a DNS server (external to OpenShift!), you will get errors when trying
-to create a DeploymentConfig.  So, you can either install dnsmasq
-and reconfigure OpenShift for that, or, you can run a DNS server
-on another host and add the OpenShift host entry to that DNS server.  I
-use the skybridge2 Docker container for this purpose.  You have
-to remember to adjust your /etc/resolv.conf to specify this new DNS
-server.
-
-*System policies for PV creation/listing*
-
-In order to allow the *system* user to be able to create and list
-persistent volumes using OpenShift version 3.3+, you have to enter
-these commands as the *root* user after installation in order to
-modify the policies.
-....
-oadm policy add-role-to-user cluster-reader system
-oc describe clusterPolicyBindings :default
-oadm policy add-cluster-role-to-user cluster-reader system
-oc describe clusterPolicyBindings :default
-oc describe clusterPolicyBindings :default
-oadm policy add-cluster-role-to-user cluster-admin system
-....
-
-*Persistent volume matching*
-
-Restoring a database from an NFS backup requires the building
-of a PV which maps to the NFS backup archive path.  For example,
-if you have a backup at /backups/pg-foo/2016-01-29:22:34:20
-then we create a PV that maps to that NFS path.  We also use
-a "label" on the PV so that the specific backup PV can be identified.
-
-We use the pod name in the label value to make the PV unique.  This
-way, the related PVC can find the right PV to map to and not some other
-PV.  In the PVC, we specify the same "label" which lets Kubernetes
-match to the correct PV.
-
-*anyuid permissions*
-
-For my testing, I created a user named *test* on OSE, then
-I ran the following command to grant it permission to use the *anyuid* SCC:
-
-....
-oc adm policy add-scc-to-group anyuid system:authenticated
-....
-
-This says that any authenticate user can run with the anyuid SCC which lets
-them create PVCs and use the *fsGroup* setting for the Postgres containers to
-work using NFS.  There is most likely a smarter and more precise way to grant
-this permission but this is one suggested process.
 
 == Legal Notices
 
