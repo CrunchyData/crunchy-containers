@@ -172,10 +172,6 @@ and read replicas using the crunchy-postgres image from DockerHub.
 To install docker-compose, please follow the instructions located
 in the link:https://docs.docker.com/compose/install/[official Docker documentation].
 
-You can also access docker-compose by setting up the following Vagrant/VirtualBox
-virtualized environment containing CentOS 7, Docker, and docker-compose:
-https://github.com/jasonodonnell/docker-vm
-
 To deploy this example, run the following commands:
 
 ....
