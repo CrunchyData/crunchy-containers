@@ -1,5 +1,7 @@
 # !/bin/bash
-
+# Installation script to set up a test environment in a more automated fashion.
+#
+# Replace variables here!
 cat <<EOF >> ~/.bashrc
 export GOPATH=$HOME/cdev
 export GOBIN=$GOPATH/bin
@@ -22,12 +24,19 @@ mkdir crunchydata
 cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
+
+# Replace variable here with current container version!
+
 git checkout 1.5
 godep restore
 
 sudo yum -y update
 sudo groupadd docker
 sudo usermod -a -G docker "${USER}"
+
+cd $CCPROOT
+make setup
+make all
 
 printf "Now time to create Docker storage hard disk...\n"
 printf "(1) Add new hard disk via VirtualBox.\n"
