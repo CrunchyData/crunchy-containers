@@ -8,20 +8,17 @@ v1.5, {docdate}
 
 The crunchy-containers can run on different environments including:
 
- * Standalone Docker
- * OpenShift Enterprise
- * Kubernetes 1.2.X
+ * Docker
+ * OpenShift 3.3+
+ * Kubernetes 1.2+
 
 In this document we list the basic installation steps required for these
 environments.
 
-=== Assumptions
+These installation instructions are developed and tested for the following operating systems:
 
-The install assumes the following about your host configuration:
-
- * Centos 7 or RHEL 7 VM
- * user called *someuser* has been created
- * *someuser* has sudo privileges with no password
+ * CentOS 7
+ * RHEL 7
 
 === Step 1 - Project Directory Structure
 
@@ -37,7 +34,7 @@ export CCP_VERSION=1.5
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PGVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 ....
-You will then need to log out and back in for the changes to your .bashrc
+It will be necessary to log out and back in for the changes to your .bashrc
 file to take effect.
 
 Next, set up a project directory structure and pull down the project:
@@ -62,9 +59,14 @@ page.*
 
 === Step 2 - Install the Host Dependencies
 
-Next, install system dependencies:
+As good practice, at this point you'll update your system.
 ....
 sudo yum -y update
+....
+
+After that, it's necessary to add the *docker* group and give your user access
+to that group (here referenced as *someuser*):
+....
 sudo groupadd docker
 sudo usermod -a -G docker someuser
 ....
@@ -151,25 +153,23 @@ for use in a *standalone Docker* environment.
 
 === Installation
 
-See the OSE installation guide for details on how to install
-OSE on your host.  The main instructions are here:
+See the OpenShift installation guide for details on how to install
+OpenShift Enterprise on your host.  The main instructions are here:
 
 https://docs.openshift.com/enterprise/3.2/install_config/install/index.html
 
-*Or*, if you'd prefer to install OpenShift Origin, the easiest way to get
-OpenShift Origin up and running is found here:
-https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md
+For testing purposes, OpenShift Origin is the simplest to install and configure. The
+easiest way to get OpenShift Origin up and running is through the link:https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md[oc cluster up] cluster configuration.
 
 For examples and tips on how to run OpenShift Enterprise & Origin, please look
-at the examples.adoc documentation.
+at the link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc[Examples Documentation].
 
 === Configure NFS for Persistence
 
-NFS is required for some of the OpenShift examples, those dealing with
-backups and restores will require a working NFS for example.
+NFS is required for some of the OpenShift examples, including the backup and restore
+containers.
 
-First, if you are running your NFS system with SELinux
-in enforcing mode, you will need to run the following command
+First, if you are running your NFS system with SELinux in enforcing mode, you will need to run the following command
 to allow NFS write permissions:
 ....
 sudo setsebool -P virt_use_nfs 1
@@ -183,7 +183,7 @@ sudo systemctl enable rpcbind nfs-server
 sudo systemctl start rpcbind nfs-server rpc-statd nfs-idmapd
 ....
 
-Next, you will need to set the permissions of your NFS
+You will then need to set the permissions of your NFS
 path so that your pods can have write access.  For the
 Crunchy examples, the *nfsnobody* GUI was chosen as
 an example.  Pods will reference the *nfsnobody* GID (65534)
@@ -263,8 +263,7 @@ MTU=9000
 If interested in mounting the same NFS share multiple times on the same mount point,
 look into the link:https://www.novell.com/support/kb/doc.php?id=7010210[noac mount option].
 
-=== Examples
-
+=== Persistent Volume Claims
 
 For running the examples that require persistent volumes, you
 will need to run the following script:
@@ -275,6 +274,34 @@ cd $CCPROOT/examples/pv
 ....
 
 View the README.txt for command-line usage.
+
+== Kubernetes Environment
+
+=== Installation
+
+link:https://kubernetes.io/docs/setup/independent/install-kubeadm/[kubeadm] or link:https://kubernetes.io/docs/tasks/tools/install-minikube/[minikube] are simple methods
+for setting up a test environment of Kubernetes.
+
+See the following links for installation instructions:
+
+ * https://github.com/Kubernetes/minikube
+ * http://linoxide.com/containers/setup-kubernetes-kubeadm-centos/
+ * https://kubernetes.io/docs/getting-started-guides/kubeadm/
+
+=== Examples
+
+The namespace is set for the examples within the *examples/envvars.sh* script
+and defaults to *default*.  Set this variable according to your
+project configuration.
+
+Note, some of the examples assume an NFS file system for creating
+persistent volumes.  See above for details on setting NFS permissions and
+the use of *supplementalGroups* within pod specs.
+
+Visit the link:examples.adoc[examples documentation] for different use cases
+and examples.
+
+=== Minishift Configuration
 
 If you are wanting to run the examples on a Minishift instance
 you will need to create the PVs using hostPath as follows:
@@ -300,7 +327,6 @@ to set the host path permissions as follows:
 chmod 777 /mnt/sda1/data
 ....
 
-
 The NAMESPACE environment variable is set to indicate which OpenShift
 project you want various example objects to use.  This variable
 is set to *default* within the *examples/envvars.sh* script.  Set this
@@ -308,31 +334,6 @@ to match your project configuration.
 
 See link:examples.adoc[here] to view the documentation showing various
 examples.
-
-== Kubernetes Environment
-
-=== Installation
-
-I recommend using kubeadm or minikube to try the examples out.
-
-See the following links for installation instructions:
-
- * https://github.com/Kubernetes/minikube
- * http://linoxide.com/containers/setup-kubernetes-kubeadm-centos/
- * https://kubernetes.io/docs/getting-started-guides/kubeadm/
-
-=== Examples
-
-The namespace is set for the examples within the *examples/envvars.sh* script
-and defaults to *default*.  Set this variable according to your
-project configuration.
-
-Note, some of the examples assume an NFS file system for creating
-persistent volumes.  See above for details on setting NFS permissions and
-the use of *supplementalGroups* within pod specs.
-
-Visit the link:examples.adoc[examples documentation] for different use cases
-and examples.
 
 ===  Tips
 

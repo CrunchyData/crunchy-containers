@@ -2724,10 +2724,10 @@ server.
 
 *System policies for PV creation/listing*
 
-For my testing, I wanted to allow the *system* user to be able
-to create and list persistent volumes, as of OSE 3.3, I had to
-enter these commands as the *root* user after installation to
-modify the policies:
+In order to allow the *system* user to be able to create and list
+persistent volumes using OpenShift version 3.3+, you have to enter
+these commands as the *root* user after installation in order to
+modify the policies.
 ....
 oadm policy add-role-to-user cluster-reader system
 oc describe clusterPolicyBindings :default
