@@ -20,7 +20,7 @@
         "description": "The image prefix to pull with"
     }, {
         "name": "PG_MASTER_USER",
-        "description": "The username used for master-slave replication",
+        "description": "The username used for master / replica replication",
         "value": "master"
     }, {
         "name": "PG_MASTER_PASSWORD",
@@ -56,7 +56,7 @@
         "value": "password"
     }, {
         "name": "PG_ROOT_PASSWORD",
-        "description": "The password for the PG adminitrator",
+        "description": "The password for the PG administrator",
         "value": "password"
     }],
 
