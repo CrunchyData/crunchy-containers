@@ -177,9 +177,9 @@ function ose_failover() {
 			oc label --overwrite=true pod $i name=$PG_MASTER_SERVICE
 #			echo "recreating master service..."
 #			oc create -f /tmp/master-service.json
-		else
-			echo "deleting old slave " $i 
-			oc delete pod $i
+#		else
+#			echo "deleting old slave " $i 
+#			oc delete pod $i
 		fi
 	done
 	echo "failover completed @ " `date`
