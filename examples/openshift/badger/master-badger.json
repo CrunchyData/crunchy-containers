@@ -35,7 +35,7 @@
         "value": "userdb"
     }, {
         "name": "PG_ROOT_PASSWORD",
-        "description": "The password for the PG adminitrator",
+        "description": "The password for the PG administrator",
         "value": "password"
     }],
 

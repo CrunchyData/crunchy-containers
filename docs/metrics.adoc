@@ -130,7 +130,7 @@ This will start up 3 containers and services:
  * http://crunchy-metrics:9090 - the Prometheus web user interface
  * http://crunchy-metrics:9091 - the Prometheus pushgateway REST API
  * http://crunchy-metrics:3000 - the Grafana web user interface
- 
+
 When accessing the Grafana web application, the default user credentials will be
 the username **admin** and the password **admin**.
 
@@ -193,7 +193,7 @@ The following table contains metrics that are not enabled by default; these can 
 [format="csv", options="header"]
 |===
 Name, Description
-bonding, Exposes the number of configured and active slaves of Linux bonding interfaces.
+bonding, Exposes the number of configured and active replicas of Linux bonding interfaces.
 buddyinfo, Exposes statistics of memory fragments as reported by `/proc/buddyinfo`.
 devstat, Exposes device statistics
 drbd, Exposes Distributed Replicated Block Device statistics (to version 8.4)
@@ -232,7 +232,7 @@ These metrics will be deprecated and (re)moved in future releases of node_export
 
 === postgres_exporter
 
-postgres_exporter focuses on collecting PostgreSQL server metrics. 
+postgres_exporter focuses on collecting PostgreSQL server metrics.
 
 
 .*General*
