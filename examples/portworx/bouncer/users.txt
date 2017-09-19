@@ -1,4 +1,0 @@
-"masteruser" "password"
-"testuser" "password"
-"postgres" "password"
-"admin" "password"
