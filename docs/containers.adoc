@@ -38,7 +38,7 @@ executed when the database is first created.
 
 === Environment Variables
 
- * PG_MODE - either *master*, *replica* or *set*, this value determines whether
+ * PG_MODE - either *master*, *slave* or *set*, this value determines whether
    the database is set up as a master or replica instance, in the
    case of *set*, it means the container is started within a StatefulSet
    in a Kubernetes cluster.
@@ -54,7 +54,7 @@ executed when the database is first created.
    initialization
  * PG_LOCALE - if set, the locale you want to create the database with, if
    not set, the default locale is used
- * SYNC_REPLICA - if set, this value is used to specify the application_name
+ * SYNC_SLAVE - if set, this value is used to specify the application_name
    of a replica that will be used for a synchronous replication
  * CHECKSUMS - if set, this value is used to enable the *--data-checksums*
    option when initdb is executed at initialization, if not set, the
@@ -286,7 +286,7 @@ capable.
  * PG_USERNAME - user to connect to PostgreSQL
  * PG_PASSWORD - user password to connect to PostgreSQL
  * PG_MASTER_SERVICE_NAME - database host to connect to for the master node
- * PG_REPLICA_SERVICE_NAME - database host to connect to for the replica node
+ * PG_SLAVE_SERVICE_NAME - database host to connect to for the replica node
 
 === Features
 
@@ -358,7 +358,7 @@ the watch logic to interact with the replica containers.
  * PG_MASTER_USER -  database user account to use when checking the database
    using pg_isready utility
  * PG_DATABASE - database to use when checking the database using pg_isready
- * REPLICA_TO_TRIGGER_LABEL - this is the pod name of a replica that you
+ * SLAVE_TO_TRIGGER_LABEL - this is the pod name of a replica that you
    want to choose as the new master in a failover, this will override
    the normal replica selection
 
@@ -369,10 +369,10 @@ the watcher will:
 
  * create the trigger file on the replica that will become the new master
  * change the labels on the replica to be those of the master
- * will start watching the new master in case that falls over next
- * will look for replicas that have the metadata label value of *replicatype=trigger* to prefer
-   the failover to, if found it will use the first replica with that label, if
-   not found, it will use the first replica it finds
+ * start watching the new master in case that falls over next
+ * look for replicas that have the metadata label value of *slavetype=trigger* to prefer
+   the failover to. If found, it will use the first replica with that label,; if
+   not found, it will use the first replica it finds.
 
 Example of looking for the failover replica:
 ....
