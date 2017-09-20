@@ -5,7 +5,7 @@ v1.5, {docdate}
 
 == Description
 
-PostgreSQL metrics are collected by the crunchy-collect container, which executes both the postgres_exporter and node_exporter. Written in Go, these are both metrics exporters that work with Prometheus to provide PostgreSQL server metrics in addition to hardware and OS metrics. The crunchy-collect container gathers different metrics from the crunchy-postgres PostgreSQL database container and pushes these to the Prometheus Promgateway.
+70 different PostgreSQL metrics are collected by the crunchy-collect container, which executes both the postgres_exporter and node_exporter. Written in Go, these are both metrics exporters that work with Prometheus to provide PostgreSQL server metrics in addition to hardware and OS metrics. The crunchy-collect container gathers different metrics from the crunchy-postgres PostgreSQL database container and pushes these to the Prometheus Promgateway.
 
 The collector is similar to the Prometheus Pushgateway, in that it allows exporting of statistics from batch jobs. It can also be used to export static metrics, such as what role a machine has. These SQL metrics are pushed to the crunchy-promgateway container, which holds the Prometheus Promgateway. This container is then scraped by crunchy-prometheus which hosts Prometheus. Grafana runs from crunchy-grafana, which displays the collected PostgreSQL metrics from the crunchy-prometheus container as a data source and uses the metrics to build dashboards. The Grafana template used is defined by default using a JSON template and is indexed by Grafana as an accessible dashboard.
 
@@ -32,6 +32,13 @@ When running crunchy-metrics, the following ports are available:
  * http://crunchy-metrics:9090 - the Prometheus web user interface
  * http://crunchy-metrics:9091 - the Prometheus pushgateway REST API
  * http://crunchy-metrics:3000 - the Grafana web user interface
+
+=== Environment Variables
+
+ * PROM_GATEWAY - The HTTP URL of the Prometheus Pushgateway into which the metrics will be pushed
+ * NODE_EXPORTER_URL - The HTTP URL of the node_exporter utility which collects host and OS level system metrics.
+ * POSTGRES_EXPORTER_URL - The HTTP URL of the postgres_exporter utility which collects PostgreSQL server metrics.
+ * DATA_SOURCE_NAME - The URL for the PostgreSQL server's data source name. This is *required* to be in the form of *postgresql://*.
 
 === Examples
 
@@ -299,6 +306,12 @@ image::grafana-dashboard-1.png[]
 image::grafana-dashboard-2.png[]
 
 image::grafana-dashboard-3.png[]
+
+image::grafana-dashboard-4.png[]
+
+image::grafana-dashboard-5.png[]
+
+image::grafana-dashboard-6.png[]
 
 Some more information on creating custom Grafana dashboards can be found in the official documentation - http://docs.grafana.org/guides/getting_started/.
 
