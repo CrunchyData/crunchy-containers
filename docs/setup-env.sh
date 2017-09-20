@@ -45,4 +45,4 @@ printf "Next, create a volume group on the new drive partition within the fdisk 
 printf "Then, you’ll need to edit the docker-storage-setup configuration file in order to override default options. Add these two lines to /etc/sysconfig/docker-storage-setup:\n DEVS=/dev/sd?\n VG=docker-vg\n\n"
 printf "Finally, run the command docker-storage-setup to use that new volume group. The results should state that the physical volume /dev/sd? and the volume group docker-vg have both been successfully created."
 printf "Next, we enable and start up Docker:\n sudo systemctl enable docker.service\nsudo systemctl start docker.service\n\n"
-printf "After that, run setup-env-2.sh."
+printf "After that, you should only need to set up your DNS service if necessary and you will then be complete with your initial environment setup! Note: oc and kubectl will need to be installed separately."
