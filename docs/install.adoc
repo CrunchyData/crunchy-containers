@@ -150,24 +150,9 @@ make all
 After this, you will have all the Crunchy containers built and are ready
 for use in a *standalone Docker* environment.
 
-== OpenShift Environment
+=== Step 4 - Configure NFS for Persistence
 
-=== Installation
-
-See the OpenShift installation guide for details on how to install
-OpenShift Enterprise on your host.  The main instructions are here:
-
-https://docs.openshift.com/container-platform/3.6/install_config/install/quick_install.html
-
-For testing purposes, OpenShift Origin is the simplest to install and configure. The
-easiest way to get OpenShift Origin up and running is through the link:https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md[oc cluster up] cluster configuration.
-
-For examples and tips on how to run OpenShift Enterprise & Origin, please look
-at the link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc[Examples Documentation].
-
-=== Configure NFS for Persistence
-
-NFS is required for some of the OpenShift examples, including the backup and restore
+NFS is required for some of the examples, including the backup and restore
 containers.
 
 First, if you are running your NFS system with SELinux in enforcing mode, you will need to run the following command
@@ -264,7 +249,7 @@ MTU=9000
 If interested in mounting the same NFS share multiple times on the same mount point,
 look into the link:https://www.novell.com/support/kb/doc.php?id=7010210[noac mount option].
 
-=== Persistent Volume Claims
+=== Step 5 - Persistent Volume Claims
 
 For running the examples that require persistent volumes, you
 will need to run the following script:
@@ -275,6 +260,21 @@ cd $CCPROOT/examples/pv
 ....
 
 View the README.txt for command-line usage.
+
+== OpenShift Environment
+
+=== Installation
+
+See the OpenShift installation guide for details on how to install
+OpenShift Enterprise on your host.  The main instructions are here:
+
+https://docs.openshift.com/container-platform/3.6/install_config/install/quick_install.html
+
+For testing purposes, OpenShift Origin is the simplest to install and configure. The
+easiest way to get OpenShift Origin up and running is through the link:https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md[oc cluster up] cluster configuration.
+
+For examples and tips on how to run OpenShift Enterprise & Origin, please look
+at the link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc[Examples Documentation].
 
 ==== System policies for PVC creation/listing
 
