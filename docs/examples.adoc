@@ -277,7 +277,8 @@ create an initial replica set.
 
 Running the example:
 ....
-examples/kube/master-replica-dc/run.sh
+cd $CCPROOT/examples/kube/master-replica-dc
+./run.sh
 ....
 
 You can insert data in the master and make sure it replicates to
@@ -635,7 +636,8 @@ backup data to startup with.
 
 Running the example:
 ....
-examples/kube/master-restore/run.sh
+cd $CCPROOT/examples/kube/master-restore
+./run.sh
 ....
 
 Test the restored database as follows:
@@ -1170,7 +1172,8 @@ a pgbadger container. A service is also created for the pod.
 
 Running the example:
 ....
-examples/kube/badger/run.sh
+cd $CCPROOT/examples/kube/badger
+./run.sh
 ....
 
 You can access pgbadger at:
@@ -1241,23 +1244,18 @@ You can collect various PostgreSQL metrics from your database
 container by running a crunchy-collect container that points
 to your database container.
 
-Metrics collection requires you run the crunchy 'scope' set of containers
-that includes:
-
- * Prometheus
- * Prometheus push gateway
- * Grafana
-
 To start this set of containers, run the following:
 ....
+cd $CCPROOT/examples/docker/basic
+./run.sh
 cd $CCPROOT/examples/docker/metrics
 ./run.sh
 ....
 
-These metrics are described in this link:metrics.adoc[document.]
+These metrics are fully described in this link:metrics.adoc[document.]
 
 An example has been provided that runs a database container
-and also the associated metrics collection container, run the
+in addition to the associated metrics collection container. Run the
 example as follows:
 
 ....
@@ -1265,9 +1263,27 @@ cd $CCPROOT/examples/docker/collect
 ./run.sh
 ....
 
-Every 3 minutes the collection container will collect postgres
+This will start up 3 containers and services:
+
+ * Prometheus (http://crunchy-prometheus:9090)
+ * Prometheus gateway (http://crunchy-promgateway:9091)
+ * Grafana (http://crunchy-grafana:3000)
+
+Every 3 minutes the collection container will collect PostgreSQL
 metrics and push them to the crunchy-prometheus database.  You
 can graph them using the crunchy-grafana container.
+
+If firewalld is enabled in your environment, it may be necessary
+to allow the necessary ports through the firewall. This can be
+accomplished by the following:
+
+....
+firewall-cmd --permanent --new-zone metrics
+firewall-cmd --permanent --zone metrics --add-port 9090/tcp
+firewall-cmd --permanent --zone metrics --add-port 9091/tcp
+firewall-cmd --permanent --zone metrics --add-port 3000/tcp
+firewall-cmd --reload
+....
 
 ==== Kubernetes
 
@@ -1277,7 +1293,8 @@ It is required to view or capture metrics collected by crunchy-collect.
 
 Running the example:
 ....
-examples/kube/metrics/run.sh
+cd $CCPROOT/examples/kube/metrics
+./run.sh
 ....
 
 This will start up 3 containers and services:
@@ -1289,7 +1306,8 @@ This will start up 3 containers and services:
 If you want your metrics and dashboards to persist to NFS, run
 this script:
 ....
-examples/kube/metrics/run-pvc.sh
+cd $CCPROOT/examples/kube/metrics
+./run-pvc.sh
 ....
 
 In the /docs/ folder of the GitHub repository, check out the link:metrics.adoc[metrics documentation]
@@ -1300,7 +1318,20 @@ a metrics collection container. A service is also created for the pod.
 
 Running the example:
 ....
-examples/kube/collect/run.sh
+cd $CCPROOT/examples/kube/collect
+./run.sh
+....
+
+If firewalld is enabled in your environment, it may be necessary
+to allow the necessary ports through the firewall. This can be
+accomplished by the following:
+
+....
+firewall-cmd --permanent --new-zone metrics
+firewall-cmd --permanent --zone metrics --add-port 9090/tcp
+firewall-cmd --permanent --zone metrics --add-port 9091/tcp
+firewall-cmd --permanent --zone metrics --add-port 3000/tcp
+firewall-cmd --reload
 ....
 
 You can view the collect container logs using this command:
@@ -1340,6 +1371,18 @@ cd $CCPROOT/examples/openshift/collect
 
 At this point, metrics will be collected every 3 minutes and pushed
 to Prometheus.  You can build graphs off the metrics using Grafana.
+
+If firewalld is enabled in your environment, it may be necessary
+to allow the necessary ports through the firewall. This can be
+accomplished by the following:
+
+....
+firewall-cmd --permanent --new-zone metrics
+firewall-cmd --permanent --zone metrics --add-port 9090/tcp
+firewall-cmd --permanent --zone metrics --add-port 9091/tcp
+firewall-cmd --permanent --zone metrics --add-port 3000/tcp
+firewall-cmd --reload
+....
 
 === Vacuum
 
@@ -1567,7 +1610,8 @@ configured master and replica.
 
 Running the example:
 ....
-examples/kube/pgbouncer/run.sh
+cd $CCPROOT/examples/kube/pgbouncer
+./run.sh
 ....
 
 Connect to the *master* and *replica* databases as follows:
@@ -1694,7 +1738,8 @@ two replicas share the same Service.
 
 Running the example:
 ....
-examples/kube/sync/run.sh
+cd $CCPROOT/examples/kube/sync
+./run.sh
 ....
 
 Connect to the *mastersync* and *replicasync* databases as follows:
@@ -2309,7 +2354,8 @@ will proceed to cause a failover to a replica.
 
 Running the example:
 ....
-examples/kube/watch/run.sh
+cd $CCPROOT/examples/kube/watch
+./run.sh
 ....
 
 Check out the log of the watch container as follows:
@@ -2548,10 +2594,12 @@ Setup the persistent disks using GCE disks by first editing
 GCE environment.
 
 Then create the PVs used by the examples, passing in the *gce*
-value as a parameter, this will cause the GCE disks to be created:
+value as a parameter. This will cause the GCE disks to be created:
 ....
-examples/pv/create-pv.sh gce
-examples/pv/create-pvc.sh
+cd $CCPROOT/examples/pv
+./create-pv.sh gce
+cd $CCPROOT/examples/pv
+./create-pvc.sh
 ....
 
 Here is a link that describes more information on GCE persistent disk:
