@@ -113,8 +113,8 @@ func main() {
 
 	for {
 		for _, g := range gatherers {
-			if err := push.AddFromGatherer("crunchy-collect", nil,
-				*gateway, g,
+			if err := push.AddFromGatherer("crunchy-collect",
+				push.HostnameGroupingKey(), *gateway, g,
 			); err != nil {
 				fmt.Println(err.Error())
 			}
