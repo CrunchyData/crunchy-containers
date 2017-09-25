@@ -135,7 +135,8 @@ func (p *PGSim) Execute(query string) {
 	p.wait.Add(1)
 	defer p.wait.Done()
 
-	_, err := p.db.Query(query)
+	rows, err := p.db.Query(query)
+	defer rows.Close()
 
 	if err != nil {
 		fmt.Println(err)
