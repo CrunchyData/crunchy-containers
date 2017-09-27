@@ -17,10 +17,10 @@
                 "value": "default"
             }, {
                 "name": "SLEEP_TIME",
-                "value": "20"
+                "value": "10"
             }, {
                 "name": "MAX_FAILURES",
-                "value": "4"
+                "value": "2"
             }, {
                 "name": "SLAVE_TO_TRIGGER_LABEL",
                 "value": "ms-replica-2"

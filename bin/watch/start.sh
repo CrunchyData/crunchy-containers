@@ -129,9 +129,6 @@ function kube_failover() {
 			sleep $WAIT_TIME
 			echo "changing label of slave to " $PG_MASTER_SERVICE
 			kubectl --token=$TOKEN label --overwrite=true pod $i name=$PG_MASTER_SERVICE
-		#else
-			#echo "deleting old slave " $i 
-			#kubectl --token=$TOKEN delete pod $i
 		fi
 	done
 	echo "failover completed @ " `date`
@@ -175,11 +172,6 @@ function ose_failover() {
 			sleep $WAIT_TIME
 			echo "changing label of slave to " $PG_MASTER_SERVICE
 			oc label --overwrite=true pod $i name=$PG_MASTER_SERVICE
-#			echo "recreating master service..."
-#			oc create -f /tmp/master-service.json
-#		else
-#			echo "deleting old slave " $i 
-#			oc delete pod $i
 		fi
 	done
 	echo "failover completed @ " `date`

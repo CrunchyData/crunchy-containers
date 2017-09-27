@@ -8,7 +8,6 @@
         }
     },
     "spec": {
-
         "containers": [{
             "name": "pgpool",
             "image": "crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG",
@@ -29,10 +28,29 @@
                 "name": "PG_SLAVE_SERVICE_NAME",
                 "value": "ms-replica"
             }],
-            "volumeMounts": [
+            "volumeMounts": [{
+                    "name": "pgpool-conf",
+                    "mountPath": "/pgconf/pgpoolconfigdir",
+		    "readOnly": false
+                }
 	    ]
         }],
-        "volumes": [
+        "volumes": [{
+                "name": "pgpool-conf",
+                "configMap": {
+                    "name": "pgpool-conf",
+                    "items": [{
+                        "key": "pgpool.conf",
+                        "path": "pgpool.conf"
+                    }, {
+                        "key": "hba",
+                        "path": "pool_hba.conf"
+                    }, {
+                        "key": "psw",
+                        "path": "pool_passwd"
+                    }]
+                }
+            }
 	]
     }
 }

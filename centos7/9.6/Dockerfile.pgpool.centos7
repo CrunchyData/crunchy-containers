@@ -40,7 +40,7 @@ ADD conf/pgpool /opt/cpm/conf/pgpool
 ADD conf/pgpool/pool_hba.conf  /etc/pgpool-II-96/pool_hba.conf
 ADD conf/pgpool/pool_passwd /etc/pgpool-II-96/pool_passwd
 
-RUN chown -R daemon:daemon /opt/cpm/bin
+RUN chown -R daemon:daemon /opt/cpm/bin /pgconf
 
 USER daemon
 
