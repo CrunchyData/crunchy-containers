@@ -361,6 +361,8 @@ the watch logic to interact with the replica containers.
  * SLAVE_TO_TRIGGER_LABEL - this is the pod name of a replica that you
    want to choose as the new master in a failover, this will override
    the normal replica selection
+ * WATCH_PRE_HOOK - path to an executable file to run before failover is processed.
+ * WATCH_POST_HOOK - path to an executable file to run after failover is processed.
 
 === Logic
 

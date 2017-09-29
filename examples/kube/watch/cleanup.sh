@@ -14,4 +14,5 @@
 
 kubectl delete pod watch
 kubectl delete serviceaccount pg-watcher
+kubectl delete configmap watch-hooks-configmap
 $CCPROOT/examples/waitforterm.sh watch kubectl

@@ -18,6 +18,11 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+# Create 'watch-hooks-configmap'.
+oc create configmap watch-hooks-configmap \
+	--from-file=./hooks/watch-pre-hook \
+	--from-file=./hooks/watch-post-hook
+
 oc create -f $DIR/watch-sa.json
 oc policy add-role-to-group edit system:serviceaccounts -n $NAMESPACE
 oc process -f $DIR/watch.json \
