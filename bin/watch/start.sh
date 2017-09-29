@@ -71,6 +71,10 @@ export PATH=$PATH:/opt/cpm/bin:$PGROOT/bin
 ose_hack
 
 function failover() {
+	# Perform watch pre-hook
+	exec_pre_hook
+
+	# Perform failover
 	if [[ -v KUBE_PROJECT ]]; then
 		echo "kube failover ....."
 		kube_failover
@@ -81,6 +85,9 @@ function failover() {
 		echo "standalone failover....."
 		standalone_failover
 	fi
+
+	# Perform watch post-hook
+	exec_post_hook
 }
 
 function standalone_failover() {
@@ -177,8 +184,25 @@ function ose_failover() {
 	echo "failover completed @ " `date`
 }
 
+# Execute 'watch' pre-hook.
+function exec_pre_hook() {
+	echo HOOK: $WATCH_PRE_HOOK
+	if [ ! -z $WATCH_PRE_HOOK ] &&
+	   [ -e $WATCH_PRE_HOOK ]; then
+		/bin/bash $WATCH_PRE_HOOK
+	fi
+}
+
+# Execute 'watch' post-hook.
+function exec_post_hook() {
+	if [ ! -z $WATCH_POST_HOOK ] &&
+	   [ -e $WATCH_POST_HOOK ]; then
+		/bin/bash $WATCH_POST_HOOK
+	fi
+}
+
 FAILURES=0
-while true; do 
+while true; do
 	if [ "$shutdownrequested" = true ] ; then
 		echo "doing shutdown..."
 		exit 0

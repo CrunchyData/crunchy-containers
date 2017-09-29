@@ -35,7 +35,10 @@ sudo docker run \
 	-e PG_MASTER_USER=masteruser \
 	-e PG_DATABASE=postgres \
 	-e SLEEP_TIME=20 \
+	-e WATCH_PRE_HOOK="/hooks/watch-pre-hook" \
+	-e WATCH_POST_HOOK="/hooks/watch-post-hook" \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
+	-v $PWD/hooks:/hooks \
 	-d crunchydata/crunchy-watch:$CCP_IMAGE_TAG
 
