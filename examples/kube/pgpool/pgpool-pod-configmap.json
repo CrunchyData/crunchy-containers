@@ -25,7 +25,7 @@
                 "name": "PG_MASTER_SERVICE_NAME",
                 "value": "ms-master"
             }, {
-                "name": "PG_SLAVE_SERVICE_NAME",
+                "name": "PG_REPLICA_SERVICE_NAME",
                 "value": "ms-replica"
             }],
             "volumeMounts": [{
