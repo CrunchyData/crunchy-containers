@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ sudo docker run \
 	-e FAILOVER=true \
 	-e SLEEP_TIME=12 \
 	-e PG_MASTER_SERVICE=master \
-	-e PG_SLAVE_SERVICE=replica \
+	-e PG_REPLICA_SERVICE=replica \
 	-e PG_MASTER_PORT=5432 \
 	-e PG_MASTER_USER=masteruser \
 	-e PG_DATABASE=postgres \

@@ -1,4 +1,4 @@
-{
+REPLICA{
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
