@@ -35,7 +35,7 @@
                         "value": "5432"
                     }, {
                         "name": "PG_MODE",
-                        "value": "slave"
+                        "value": "replica"
                     }, {
                         "name": "PG_MASTER_USER",
                         "value": "master"

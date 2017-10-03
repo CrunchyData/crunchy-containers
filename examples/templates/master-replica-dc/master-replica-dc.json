@@ -291,7 +291,7 @@
                             "value": "/tmp"
                         }, {
                             "name": "PG_MODE",
-                            "value": "slave"
+                            "value": "replica"
                         }, {
                             "name": "PG_MASTER_USER",
                             "value": "${PG_MASTER_USER}"

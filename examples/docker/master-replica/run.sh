@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +39,7 @@ $DIR/cleanup.sh
 
 VOLUME_NAME=master-volume
 MASTER_CONTAINER_NAME=master
-docker volume create --driver local --name=$VOLUME_NAME 
+docker volume create --driver local --name=$VOLUME_NAME
 
 docker run \
 	-p 12007:5432 \
@@ -67,7 +67,7 @@ sleep 20
 
 VOLUME_NAME=replica-volume
 CONTAINER_NAME=replica
-docker volume create --driver local --name=$VOLUME_NAME 
+docker volume create --driver local --name=$VOLUME_NAME
 
 docker run \
 	-p 12008:5432 \
@@ -80,7 +80,7 @@ docker run \
 	-e SHARED_BUFFERS=129MB \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
-	-e PG_MODE=slave \
+	-e PG_MODE=replica \
 	-e PG_MASTER_USER=masteruser \
 	-e PG_MASTER_PASSWORD=password \
 	--link $MASTER_CONTAINER_NAME:$MASTER_CONTAINER_NAME \
@@ -92,4 +92,3 @@ docker run \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
-

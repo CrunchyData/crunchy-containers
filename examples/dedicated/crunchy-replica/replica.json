@@ -145,7 +145,7 @@
                         "value": "${PG_MASTER_PORT}"
                     }, {
                         "name": "PG_MODE",
-                        "value": "slave"
+                        "value": "replica"
                     }, {
                         "name": "PG_USER",
                         "value": "testuser"

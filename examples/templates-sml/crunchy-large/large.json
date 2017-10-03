@@ -195,7 +195,7 @@
                                 "value": "/tmp"
                             }, {
                                 "name": "PG_MODE",
-                                "value": "slave"
+                                "value": "replica"
                             }, {
                                 "name": "PG_MASTER_PASSWORD",
                                 "value": "${PG_MASTER_PASSWORD}"
