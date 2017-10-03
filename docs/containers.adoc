@@ -372,20 +372,20 @@ the watcher will:
  * create the trigger file on the replica that will become the new master
  * change the labels on the replica to be those of the master
  * start watching the new master in case that falls over next
- * look for replicas that have the metadata label value of *slavetype=trigger* to prefer
+ * look for replicas that have the metadata label value of *replicatype=trigger* to prefer
    the failover to. If found, it will use the first replica with that label,; if
    not found, it will use the first replica it finds.
 
 Example of looking for the failover replica:
 ....
-oc get pod -l name=pg-slave-rc-dc
+oc get pod -l name=pg-replica-rc-dc
 NAME                     READY     STATUS    RESTARTS   AGE
-pg-slave-rc-dc           1/1       Running   2          16m
-pg-slave-rc-dc-1-96qs8   1/1       Running   1          16m
+pg-replica-rc-dc           1/1       Running   2          16m
+pg-replica-rc-dc-1-96qs8   1/1       Running   1          16m
 
-oc get pod -l slavetype=trigger
+oc get pod -l replicatype=trigger
 NAME             READY     STATUS    RESTARTS   AGE
-pg-slave-rc-dc   1/1       Running   2          16m
+pg-replica-rc-dc   1/1       Running   2          16m
 ....
 
 == crunchy-vacuum

@@ -20,7 +20,7 @@ fi
 echo "SLEEP_TIME is set to " $SLEEP_TIME
 
 export PG_MASTER_SERVICE=$PG_MASTER_SERVICE
-export PG_SLAVE_SERVICE=$PG_SLAVE_SERVICE
+export PG_REPLICA_SERVICE=$PG_REPLICA_SERVICE
 export PG_MASTER_PORT=$PG_MASTER_PORT
 export PG_MASTER_USER=$PG_MASTER_USER
 export PG_DATABASE=$PG_DATABASE
@@ -58,8 +58,8 @@ function standalone_failover() {
 	# env var is required to talk to older docker
 	# server using a more recent docker client
 	export DOCKER_API_VERSION=1.20
-	echo "creating the trigger file on " $PG_SLAVE_SERVICE
-	docker exec $PG_SLAVE_SERVICE touch /tmp/pg-failover-trigger
+	echo "creating the trigger file on " $PG_REPLICA_SERVICE
+	docker exec $PG_REPLICA_SERVICE touch /tmp/pg-failover-trigger
 	echo "exiting after the failover has been triggered..."
 
 	/opt/cpm/bin/bounce /tmp/pgbouncer.ini
@@ -77,31 +77,31 @@ function kube_failover() {
 	#oc projects $OSE_PROJECT
 	echo "performing failover..."
 
-	TRIGGERSLAVES=`kubectl get pod --selector=name=$PG_SLAVE_SERVICE --selector=slavetype=trigger --no-headers | cut -f1 -d' '`
-	echo $TRIGGERSLAVES " is TRIGGERSLAVES"
-	if [ "$TRIGGERSLAVES" = "" ]; then
-		echo "no trigger slaves found...using any slave"
-		SLAVES=`kubectl get pod --selector=name=$PG_SLAVE_SERVICE --no-headers | cut -f1 -d' '`
+	TRIGGERREPLICAS=`kubectl get pod --selector=name=$PG_REPLICA_SERVICE --selector=replicatype=trigger --no-headers | cut -f1 -d' '`
+	echo $TRIGGERREPLICAS " is TRIGGERREPLICAS"
+	if [ "$TRIGGERREPLICAS" = "" ]; then
+		echo "no trigger replicas found...using any replica"
+		REPLICAS=`kubectl get pod --selector=name=$PG_REPLICA_SERVICE --no-headers | cut -f1 -d' '`
 	else
-		echo "trigger slaves found!"
-		SLAVES=$TRIGGERSLAVES
+		echo "trigger replicas found!"
+		REPLICAS=$TRIGGERREPLICAS
 	fi
 
-	declare -a arr=($SLAVES)
-	firstslave=true
+	declare -a arr=($REPLICAS)
+	firstreplica=true
 	for i in  "${arr[@]}"
 	do
-		if [ "$firstslave" = true ] ; then
-                	echo 'first slave is:' $i
-			firstslave=false
-			echo "going to trigger failover on slave:" $i
+		if [ "$firstreplica" = true ] ; then
+                	echo 'first replica is:' $i
+			firstreplica=false
+			echo "going to trigger failover on replica:" $i
 			kubectl exec $i touch /tmp/pg-failover-trigger
 			echo "sleeping 60 secs to give failover a chance before setting label"
 			sleep 60
-			echo "changing label of slave to " $PG_MASTER_SERVICE
+			echo "changing label of replica to " $PG_MASTER_SERVICE
 			kubectl label --overwrite=true pod $i name=$PG_MASTER_SERVICE
 		else
-			echo "deleting old slave " $i
+			echo "deleting old replica " $i
 			kubectl delete pod $i
 		fi
 	done
@@ -114,39 +114,39 @@ function ose_failover() {
 	oc login https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true --token="$TOKEN"
 	oc projects $OSE_PROJECT
 	echo "performing failover..."
-	echo "deleting master service to block slaves..."
+	echo "deleting master service to block replicas..."
 	oc get service $PG_MASTER_SERVICE -o json > /tmp/master-service.json
 	oc delete service $PG_MASTER_SERVICE
-	echo "sleeping for 10 to give slaves chance to halt..."
+	echo "sleeping for 10 to give replicas chance to halt..."
 	sleep 10
 
-	TRIGGERSLAVES=`oc get pod --selector=name=$PG_SLAVE_SERVICE --selector=slavetype=trigger --no-headers | cut -f1 -d' '`
-	echo $TRIGGERSLAVES " is TRIGGERSLAVES"
-	if [ "$TRIGGERSLAVES" = "" ]; then
-		echo "no trigger slaves found...using any slave"
-		SLAVES=`oc get pod --selector=name=$PG_SLAVE_SERVICE --no-headers | cut -f1 -d' '`
+	TRIGGERREPLICAS=`oc get pod --selector=name=$PG_REPLICA_SERVICE --selector=replicatype=trigger --no-headers | cut -f1 -d' '`
+	echo $TRIGGERREPLICAS " is TRIGGERREPLICAS"
+	if [ "$TRIGGERREPLICAS" = "" ]; then
+		echo "no trigger replicas found...using any replica"
+		REPLICAS=`oc get pod --selector=name=$PG_REPLICA_SERVICE --no-headers | cut -f1 -d' '`
 	else
-		echo "trigger slaves found!"
-		SLAVES=$TRIGGERSLAVES
+		echo "trigger replicas found!"
+		REPLICAS=$TRIGGERREPLICAS
 	fi
 
-	declare -a arr=($SLAVES)
-	firstslave=true
+	declare -a arr=($REPLICAS)
+	firstreplica=true
 	for i in  "${arr[@]}"
 	do
-		if [ "$firstslave" = true ] ; then
-                	echo 'first slave is:' $i
-			firstslave=false
-			echo "going to trigger failover on slave:" $i
+		if [ "$firstreplica" = true ] ; then
+                	echo 'first replica is:' $i
+			firstreplica=false
+			echo "going to trigger failover on replica:" $i
 			oc exec $i touch /tmp/pg-failover-trigger
 			echo "sleeping 60 secs to give failover a chance before setting label"
 			sleep 60
-			echo "changing label of slave to " $PG_MASTER_SERVICE
+			echo "changing label of replica to " $PG_MASTER_SERVICE
 			oc label --overwrite=true pod $i name=$PG_MASTER_SERVICE
 			echo "recreating master service..."
 			oc create -f /tmp/master-service.json
 		else
-			echo "deleting old slave " $i
+			echo "deleting old replica " $i
 			oc delete pod $i
 		fi
 	done
