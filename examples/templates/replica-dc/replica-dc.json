@@ -48,8 +48,8 @@
         "value": "pg-master-dc"
     }, {
         "name": "PG_SLAVE_SERVICE_NAME",
-        "description": "The name of the PostgreSQL replica ",
-        "value": "pg-slave-dc"
+        "description": "The name of the PostgreSQL replica",
+        "value": "pg-replica-dc"
     }, {
         "name": "TEMP_BUFFERS",
         "description": "postgres temp_buffers memory size",
