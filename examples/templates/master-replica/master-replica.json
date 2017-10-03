@@ -229,7 +229,7 @@
                 }],
                 "env": [{
                     "name": "PG_MODE",
-                    "value": "slave"
+                    "value": "replica"
                 }, {
                     "name": "PG_MASTER_HOST",
                     "value": "${MASTER_SERVICE_NAME}"

@@ -45,7 +45,7 @@
                     "value": "/tmp"
                 }, {
                     "name": "PG_MODE",
-                    "value": "slave"
+                    "value": "replica"
                 }, {
                     "name": "SYNC_SLAVE",
                     "value": "syncreplica"
