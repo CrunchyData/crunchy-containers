@@ -38,7 +38,7 @@
                     "name": "SLEEP_TIME",
                     "value": "20"
                 }, {
-                    "name": "SLAVE_TO_TRIGGER_LABEL",
+                    "name": "REPLICA_TO_TRIGGER_LABEL",
                     "value": "thisone"
                 }, {
                     "name": "PG_MASTER_SERVICE",
