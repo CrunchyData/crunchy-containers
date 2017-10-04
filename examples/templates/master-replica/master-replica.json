@@ -16,8 +16,8 @@
         "value": "pgmaster"
     }, {
         "name": "SLAVE_SERVICE_NAME",
-        "description": "The name for the slave service and container",
-        "value": "pgslave"
+        "description": "The name for the replica service and container",
+        "value": "pgreplica"
     }, {
         "name": "CCP_IMAGE_TAG",
         "value": "centos7-9.5-1.2.7",
