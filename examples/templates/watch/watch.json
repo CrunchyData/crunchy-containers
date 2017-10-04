@@ -35,8 +35,8 @@
         "description": "The time to sleep for polling the master",
         "value": "20"
     }, {
-        "name": "SLAVE_TO_TRIGGER",
-        "description": "The name of a slave to trigger a failover upon",
+        "name": "REPLICA_TO_TRIGGER",
+        "description": "The name of a replica to trigger a failover upon",
         "value": "thisone"
     }, {
         "name": "MASTER_TO_WATCH",
@@ -72,8 +72,8 @@
                     "name": "SLEEP_TIME",
                     "value": "${SLEEP_TIME}"
                 }, {
-                    "name": "SLAVE_TO_TRIGGER_LABEL",
-                    "value": "${SLAVE_TO_TRIGGER}"
+                    "name": "REPLICA_TO_TRIGGER_LABEL",
+                    "value": "${REPLICA_TO_TRIGGER}"
                 }, {
                     "name": "PG_MASTER_SERVICE",
                     "value": "${MASTER_TO_WATCH}"

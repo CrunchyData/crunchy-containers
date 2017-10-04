@@ -120,9 +120,9 @@ function kube_failover() {
 	fi
 
 	declare -a arr=($SLAVES)
-	if [[ -v SLAVE_TO_TRIGGER_LABEL ]]; then
-		echo "trigger to specific replica..using SLAVE_TO_TRIGGER_LABEL env var"
-		targetslave=$SLAVE_TO_TRIGGER_LABEL
+	if [[ -v REPLICA_TO_TRIGGER_LABEL ]]; then
+		echo "trigger to specific replica... using REPLICA_TO_TRIGGER_LABEL environment variable"
+		targetslave=$REPLICA_TO_TRIGGER_LABEL
 	else
 		targetslave=${arr[0]}
 	fi
@@ -163,9 +163,9 @@ function ose_failover() {
 	fi
 
 	declare -a arr=($SLAVES)
-	if [[ -v SLAVE_TO_TRIGGER_LABEL ]]; then
-		echo "trigger to specific replica..using SLAVE_TO_TRIGGER_LABEL env var"
-		targetslave=$SLAVE_TO_TRIGGER_LABEL
+	if [[ -v REPLICA_TO_TRIGGER_LABEL ]]; then
+		echo "trigger to specific replica... using REPLICA_TO_TRIGGER_LABEL environment variable"
+		targetslave=$REPLICA_TO_TRIGGER_LABEL
 	else
 		targetslave=${arr[0]}
 	fi

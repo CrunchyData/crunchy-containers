@@ -358,8 +358,8 @@ the watch logic to interact with the replica containers.
  * PG_MASTER_USER -  database user account to use when checking the database
    using pg_isready utility
  * PG_DATABASE - database to use when checking the database using pg_isready
- * SLAVE_TO_TRIGGER_LABEL - this is the pod name of a replica that you
-   want to choose as the new master in a failover, this will override
+ * REPLICA_TO_TRIGGER_LABEL - the pod name of a replica that you
+   want to choose as the new master in a failover; this will override
    the normal replica selection
  * WATCH_PRE_HOOK - path to an executable file to run before failover is processed.
  * WATCH_POST_HOOK - path to an executable file to run after failover is processed.
