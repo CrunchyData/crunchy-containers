@@ -15,14 +15,14 @@
 
 source $CCPROOT/examples/envvars.sh
 
-echo "this example depends upon the master-replica example being run prior!"
+echo "This example depends upon the primary-replica example being run prior!"
 
 CONFIGDIR=$PV_PATH/bouncerconfig
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-echo "this example depends upon the master-replica example being run prior!"
+echo "This example depends upon the primary-replica example being run prior!"
 
 CONFIGDIR=$PV_PATH/bouncerconfig
 sudo rm -rf $CONFIGDIR

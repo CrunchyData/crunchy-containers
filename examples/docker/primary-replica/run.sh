@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting master container..."
+echo "starting primary container..."
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -37,8 +37,8 @@ $DIR/cleanup.sh
 #sudo chown postgres:postgres $DATA_DIR
 #sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-VOLUME_NAME=master-volume
-MASTER_CONTAINER_NAME=master
+VOLUME_NAME=primary-volume
+MASTER_CONTAINER_NAME=primary
 docker volume create --driver local --name=$VOLUME_NAME
 
 docker run \

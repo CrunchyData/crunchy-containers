@@ -34,7 +34,7 @@ func TestDockerPgPool(t *testing.T) {
     defer docker.Close()
 
     // masterId, replicaId
-    masterId, _, cleanup := startMasterReplica(t, docker, buildBase, timeoutSeconds)
+    masterId, _, cleanup := startPrimaryReplica(t, docker, buildBase, timeoutSeconds)
     defer cleanup(skipCleanup)
 
     if t.Run("ReplicationStarted", func (t *testing.T) {

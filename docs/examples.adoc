@@ -115,41 +115,41 @@ the value of PG_PASSWORD from above for the password when prompted:
 psql -h basic.openshift.svc.cluster.local -U testuser userdb
 ....
 
-=== Creating a Master / Replica Database Cluster
+=== Creating a Primary / Replica Database Cluster
 
 
 ==== Docker
 
 Create this example by running the following:
 ....
-cd $CCPROOT/examples/docker/master-replica
+cd $CCPROOT/examples/docker/primary-replica
 ./run.sh
 ....
 
 This script will do the following:
 
- * Create a docker volume using the local driver for the master
+ * Create a docker volume using the local driver for the primary
  * Create a docker volume using the local driver for the replica
- * Create a container named *master* binding to port 12007
+ * Create a container named *primary* binding to port 12007
  * Create a container named *replica* binding to port 12008
  * Initialize the database using the predefined environment variables
  * Map the PostgreSQL port 5432 within the container to the localhost port 12000
 
 Start the containers by running the following.
 ....
-docker start master replica
+docker start primary replica
 ....
 
 View the status of these containers by running:
 ....
-docker ps | grep 'master\|replica'
+docker ps | grep 'primary\|replica'
 ....
 
 This will display the container that was just created and started, and should state that it is up in addition to the IP address and port it resides on.
 
 If you need to diagnose the container, you can do so by viewing the logs.
 ....
-docker logs master
+docker logs primary
 docker logs replica
 ....
 
@@ -161,12 +161,12 @@ psql -h localhost -p 12008 -U testuser -W userdb
 
 To shut down the instance, run the following:
 ....
-docker stop master replica
+docker stop primary replica
 ....
 
 ==== Docker-Compose
 
-This is a *docker-compose* example of deploying master
+This is a *docker-compose* example of deploying primary
 and read replicas using the crunchy-postgres image from DockerHub.
 
 To install docker-compose, please follow the instructions located
@@ -175,7 +175,7 @@ in the link:https://docs.docker.com/compose/install/[official Docker documentati
 To deploy this example, run the following commands:
 
 ....
-cd $CCPROOT/examples/compose/master-replica
+cd $CCPROOT/examples/compose/primary-replica
 docker-compose up
 ....
 
@@ -209,30 +209,30 @@ docker-compose rm
 
 ==== Kubernetes
 
-This example starts a master pod, master service, replica pod, and replica
-service.  The replica is a replica of the master.  This example uses
+This example starts a primary pod, primary service, replica pod, and replica
+service.  The replica is a replica of the primary.  This example uses
 emptyDir volumes for persistence.  This example does not allow
 you to scale up the replicas.
 
 Running the example:
 ....
-cd $CCPROOT/examples/kube/master-replica
+cd $CCPROOT/examples/kube/primary-replica
 ./run.sh
 ....
 
 It takes about a minute for the replica to begin replicating with the
-master.  To test out replication, see if replication is underway
+primary.  To test out replication, see if replication is underway
 with this command:
 ....
-psql -h ms-master -U postgres postgres -c 'table pg_stat_replication'
+psql -h ms-primary -U postgres postgres -c 'table pg_stat_replication'
 ....
 
-If you see a line returned from that query it means the master is replicating
-to the replica.  Try creating some data on the master:
+If you see a line returned from that query it means the primary is replicating
+to the replica.  Try creating some data on the primary:
 
 ....
-psql -h ms-master -U postgres postgres -c 'create table foo (id int)'
-psql -h ms-master -U postgres postgres -c 'insert into foo values (1)'
+psql -h ms-primary -U postgres postgres -c 'create table foo (id int)'
+psql -h ms-primary -U postgres postgres -c 'insert into foo values (1)'
 ....
 
 Then verify that the data is replicated to the replica:
@@ -243,10 +243,10 @@ psql -h ms-replica -U postgres postgres -c 'table foo'
 
 ==== OpenShift
 
-Run the following command to deploy a master and replica database cluster:
+Run the following command to deploy a primary and replica database cluster:
 
 ....
-cd $CCPROOT/examples/openshift/master-replica
+cd $CCPROOT/examples/openshift/primary-replica
 ./run.sh
 ....
 
@@ -254,14 +254,14 @@ Similarly to the previous example on *basic*, you can view the generated
 passwords by running this command:
 
 ....
-oc describe pod ms-master | grep PG
+oc describe pod ms-primary | grep PG
 ....
 
 You can then connect to the database instance as follows using the password
 shown with the previous command:
 
 ....
-psql -h ms-master -U testuser -W userdb
+psql -h ms-primary -U testuser -W userdb
 ....
 
 === Primary / Scaling Replica
@@ -600,7 +600,7 @@ on.
 
 Run the backup with this command:
 ....
-cd $CCPROOT/examples/docker/master-replica
+cd $CCPROOT/examples/docker/primary-replica
 ./run.sh
 cd $CCPROOT/examples/docker/restore
 ./run.sh
@@ -874,18 +874,18 @@ your local IP address happens to be.
 
 A *crunchy-proxy* example is provided that will run a container that
 is configured to be used with the master and replica example provided
-in the *master-replica* example.
+in the *primary-replica* example.
 
 You can create the proxy by running:
 ....
-cd $CCPROOT/examples/docker/master-replica
+cd $CCPROOT/examples/docker/primary-replica
 ./run.sh
 cd $CCPROOT/examples/docker/crunchy-proxy
 ./run.sh
 ....
 
 This proxy will listen on localhost:12432.  You can access the
-*master-replica* cluster by:
+*primary-replica* cluster by:
 ....
 psql -h localhost -p 12432 -U postgres postgres
 ....
@@ -916,7 +916,7 @@ mount and begins execution.
 
 Start by running the proxy container:
 ....
-cd $CCPROOT/examples/kube/master-replica
+cd $CCPROOT/examples/kube/primary-replica
 ./run.sh
 cd $CCPROOT/examples/kube/crunchy-proxy
 ./run.sh
@@ -925,7 +925,7 @@ cd $CCPROOT/examples/kube/crunchy-proxy
 The proxy will listen on port 5432 as specified in the
 configuration file.  The example creates a Service named
 *crunchy-proxy* that you can use to access the configured
-PostgreSQL backend containers from the *master-replica* example.
+PostgreSQL backend containers from the *primary-replica* example.
 
 See the following link for more information on the *crunchy-proxy*:
 
@@ -945,7 +945,7 @@ database container within the PostgreSQL cluster.
 
 This example shows how to use the *crunchy-proxy* to
 act as a smart proxy to a PostgreSQL cluster.  The example
-depends upon the *master-replica* example being run prior.
+depends upon the *primary-replica* example being run prior.
 
 *crunchy-proxy* offers a high performance alternative to
 pgbouncer and pgpool.
@@ -958,7 +958,7 @@ mount and begins execution.
 
 Start by running the proxy container:
 ....
-cd $CCPROOT/examples/openshift/master-replica
+cd $CCPROOT/examples/openshift/primary-replica
 ./run.sh
 cd $CCPROOT/examples/openshift/crunchy-proxy
 ./run.sh
@@ -967,7 +967,7 @@ cd $CCPROOT/examples/openshift/crunchy-proxy
 The proxy will listen on port 5432 as specified in the
 configuration file.  The example creates a Service named
 *crunchy-proxy* that you can use to access the configured
-PostgreSQL backend containers from the *master-replica* example.
+PostgreSQL backend containers from the *primary-replica* example.
 
 See the following link for more information on the *crunchy-proxy*:
 
@@ -1058,12 +1058,12 @@ how the /pgconf mount is related to the configmap.
 
 A pgpool example is provided that will run a pgpool container that
 is configured to be used with the master and replica example provided
-in the *master-replica* example. After running
+in the *primary-replica* example. After running
 those commands to create a master and replica, you can
 create a pgpool container by running the following example command:
 
 ....
-cd $CCPROOT/examples/docker/master-replica
+cd $CCPROOT/examples/docker/primary-replica
 ./run.sh
 cd $CCPROOT/examples/docker/pgpool
 ./run.sh
@@ -1088,7 +1088,7 @@ database.
 
 Running the example:
 ....
-cd $CCPROOT/examples/kube/master-replica
+cd $CCPROOT/examples/kube/primary-replica
 ./run.sh
 cd $CCPROOT/examples/kube/pgpool
 ./run.sh
@@ -1111,7 +1111,7 @@ was generated when the master/replica pods were generated. Then, run
 the following command to deploy the pgpool service:
 
 ....
-cd $CCPROOT/examples/openshift/master-replica
+cd $CCPROOT/examples/openshift/primary-replica
 ./run.sh
 cd $CCPROOT/examples/openshift/pgpool
 ./run.sh
@@ -1472,7 +1472,7 @@ To run the vacuum a single time, an example database to run this
 against is included as follows:
 
 ....
-cd $CCPROOT/examples/openshift/master-replica
+cd $CCPROOT/examples/openshift/primary-replica
 ./run.sh
 cd ../vacuum-job
 ./run.sh
@@ -1562,7 +1562,7 @@ To test this failover, you first create a running master/replica
 cluster as follows:
 
 ....
-cd $CCPROOT/examples/docker/master-replica
+cd $CCPROOT/examples/docker/primary-replica
 ./run.sh
 ....
 
@@ -1599,7 +1599,7 @@ psql -h localhost -p 12005 -U testuser master
 
 ==== Kubernetes
 
-*Note*: This example assumes you have run the master-replica example prior
+*Note*: This example assumes you have run the primary-replica example prior
 to this example!
 
 This example runs a crunchy-pgbouncer container to look for the
@@ -2324,7 +2324,7 @@ read-write access to /run/docker.sock.  The crunchy-watch
 container runs as the *postgres* user, so adjust the
 file permissions of /run/docker.sock accordingly.
 
-Run the example as follows (depends on master-replica example
+Run the example as follows (depends on primary-replica example
 being run prior):
 ....
 cd $CCPROOT/examples/docker/watch
@@ -2345,7 +2345,7 @@ Look at the watch container logs to see it perform the failover.
 
 ==== Kubernetes
 
-This example assumes you have run the master-replica example prior
+This example assumes you have run the primary-replica example prior
 to this example!
 
 This example runs a crunchy-watch container to look for the

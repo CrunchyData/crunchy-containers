@@ -24,7 +24,7 @@ import (
 
 func TestDockerReplica(t *testing.T) {
 
-    // const exampleName = "master-replica"
+    // const exampleName = "primary-replica"
     const timeoutSeconds = 60
     const skipCleanup = false
 
@@ -33,7 +33,7 @@ func TestDockerReplica(t *testing.T) {
     docker := getDockerTestClient(t)
     defer docker.Close()
 
-    masterId, replicaId, cleanup := startMasterReplica(t, docker, buildBase, timeoutSeconds)
+    masterId, replicaId, cleanup := startPrimaryReplica(t, docker, buildBase, timeoutSeconds)
     defer cleanup(skipCleanup)
 
     conStr := conStrTestPostgres(t, docker, masterId)

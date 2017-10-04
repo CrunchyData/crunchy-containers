@@ -1,6 +1,6 @@
-# Master/Replica Docker Compose Example
+# Primary/Replica Docker Compose Example
 
-This is a `docker-compose` example of deploying a master 
+This is a `docker-compose` example of deploying primary
 and read replicas using the Crunchy Container image from DockerHub.
 
 ## Prerequirements
@@ -14,7 +14,7 @@ To deploy this example, run the following commands:
 
 ```bash
 $ git clone git@github.com:CrunchyData/crunchy-containers.git
-$ cd ./crunchy-containers/examples/compose/master-replica
+$ cd ./crunchy-containers/examples/compose/primary-replica
 $ docker-compose up
 ```
 
@@ -28,7 +28,7 @@ $ docker-compose up --scale db-replica=3
 
 ## Using
 
-To `psql` into the created database containers, first identify the ports exposed 
+To `psql` into the created database containers, first identify the ports exposed
 on the containers:
 
 ```bash
