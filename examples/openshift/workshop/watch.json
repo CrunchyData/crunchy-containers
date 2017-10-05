@@ -44,7 +44,7 @@
                     "name": "PG_MASTER_SERVICE",
                     "value": "master"
                 }, {
-                    "name": "PG_SLAVE_SERVICE",
+                    "name": "PG_REPLICA_SERVICE",
                     "value": "replica"
                 }, {
                     "name": "PG_MASTER_PORT",

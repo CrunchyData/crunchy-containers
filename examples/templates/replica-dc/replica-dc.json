@@ -47,7 +47,7 @@
         "description": "The name of the PostgreSQL master ",
         "value": "pg-master-dc"
     }, {
-        "name": "PG_SLAVE_SERVICE_NAME",
+        "name": "PG_REPLICA_SERVICE_NAME",
         "description": "The name of the PostgreSQL replica",
         "value": "pg-replica-dc"
     }, {
@@ -75,9 +75,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${PG_SLAVE_SERVICE_NAME}",
+            "name": "${PG_REPLICA_SERVICE_NAME}",
             "labels": {
-                "name": "${PG_SLAVE_SERVICE_NAME}"
+                "name": "${PG_REPLICA_SERVICE_NAME}"
             }
         },
         "spec": {
@@ -88,7 +88,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "${PG_SLAVE_SERVICE_NAME}"
+                "name": "${PG_REPLICA_SERVICE_NAME}"
             }
         },
         "status": {
@@ -99,7 +99,7 @@
         "kind": "DeploymentConfig",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${PG_SLAVE_SERVICE_NAME}",
+            "name": "${PG_REPLICA_SERVICE_NAME}",
             "creationTimestamp": null
         },
         "spec": {
@@ -112,13 +112,13 @@
             }],
             "replicas": 1,
             "selector": {
-                "name": "${PG_SLAVE_SERVICE_NAME}"
+                "name": "${PG_REPLICA_SERVICE_NAME}"
             },
             "template": {
                 "metadata": {
                     "creationTimestamp": null,
                     "labels": {
-                        "name": "${PG_SLAVE_SERVICE_NAME}"
+                        "name": "${PG_REPLICA_SERVICE_NAME}"
                     }
                 },
                 "spec": {

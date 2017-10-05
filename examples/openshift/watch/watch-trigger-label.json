@@ -41,7 +41,7 @@
                     "name": "PG_MASTER_SERVICE",
                     "value": "ms-master"
                 }, {
-                    "name": "PG_SLAVE_SERVICE",
+                    "name": "PG_REPLICA_SERVICE",
                     "value": "ms-replica"
                 }, {
                     "name": "SLAVE_TO_TRIGGER_LABEL",

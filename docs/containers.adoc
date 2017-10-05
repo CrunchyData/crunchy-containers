@@ -286,7 +286,7 @@ capable.
  * PG_USERNAME - user to connect to PostgreSQL
  * PG_PASSWORD - user password to connect to PostgreSQL
  * PG_MASTER_SERVICE_NAME - database host to connect to for the master node
- * PG_SLAVE_SERVICE_NAME - database host to connect to for the replica node
+ * PG_REPLICA_SERVICE_NAME - database host to connect to for the replica node
 
 === Features
 
@@ -353,7 +353,7 @@ the watch logic to interact with the replica containers.
  * SLEEP_TIME - the time to sleep in seconds between checking on the master
  * WAIT_TIME - the time to sleep in seconds between triggering the failover and updating its label (default is 40 secs)
  * PG_MASTER_SERVICE -  the master service name
- * PG_SLAVE_SERVICE - the replica service name
+ * PG_REPLICA_SERVICE - the replica service name
  * PG_MASTER_PORT - database port to use when checking the database
  * PG_MASTER_USER -  database user account to use when checking the database
    using pg_isready utility
@@ -617,7 +617,7 @@ utility and a failover watch script.
  * PG_DATABASE - the database to use when checking the readiness of the master
  * PG_MASTER_PORT - the PostgreSQL port to use when checking the master
  * PG_MASTER_SERVICE - the name of the master database container
- * PG_SLAVE_SERVICE - the name of the replica database container, this is
+ * PG_REPLICA_SERVICE - the name of the replica database container, this is
    used to know which container to trigger the failover on
 
 === Features
