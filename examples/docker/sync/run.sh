@@ -42,7 +42,7 @@ sudo docker run \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=master \
-	-e SYNC_SLAVE=sync-replica \
+	-e SYNC_REPLICA=sync-replica \
 	-e PG_MASTER_USER=master \
 	-e PG_MASTER_PASSWORD=password \
 	-e PG_USER=testuser \
@@ -80,7 +80,7 @@ sudo docker run \
 	-e PG_MASTER_USER=master \
 	-e PG_MASTER_PASSWORD=password \
 	-e PG_MASTER_HOST=sync-master \
-	-e SYNC_SLAVE=sync-replica \
+	-e SYNC_REPLICA=sync-replica \
 	--link sync-master:sync-master \
 	-e PG_MASTER_PORT=5432 \
 	-e PG_USER=testuser \

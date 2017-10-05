@@ -31,7 +31,7 @@
                     "name": "PG_MODE",
                     "value": "replica"
                 }, {
-                    "name": "SYNC_SLAVE",
+                    "name": "SYNC_REPLICA",
                     "value": "replicasync"
                 }, {
                     "name": "PG_MASTER_PASSWORD",

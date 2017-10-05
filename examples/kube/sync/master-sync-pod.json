@@ -28,7 +28,7 @@
                     "name": "PG_MASTER_PASSWORD",
                     "value": "password"
                 }, {
-                    "name": "SYNC_SLAVE",
+                    "name": "SYNC_REPLICA",
                     "value": "replicasync"
                 }, {
                     "name": "PG_USER",

@@ -191,7 +191,7 @@
                         "name": "PG_MODE",
                         "value": "replica"
                     }, {
-                        "name": "SYNC_SLAVE",
+                        "name": "SYNC_REPLICA",
                         "value": "${REPLICA_SERVICE_NAME}"
                     }, {
                         "name": "PG_MASTER_PASSWORD",
@@ -282,7 +282,7 @@
                         "name": "PG_MASTER_PASSWORD",
                         "value": "${MASTER_PASSWORD}"
                     }, {
-                        "name": "SYNC_SLAVE",
+                        "name": "SYNC_REPLICA",
                         "value": "${REPLICA_SERVICE_NAME}"
                     }, {
                         "name": "PG_USER",
