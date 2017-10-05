@@ -352,34 +352,34 @@ the replicas:
 psql -h replica-dc -U postgres postgres -c 'select inet_server_addr()'
 ....
 
-=== Master / Replica Deployment with PVC
+=== Primary / Replica Deployment with PVC
 
 
 ==== OpenShift
 
-This example uses a PVC based volume for the master and the replicas.  In
+This example uses a PVC based volume for the primary and the replicas.  In
 some scenarios, customers might want to have all the PostgreSQL
 instances using NFS volumes for persistence.
 
 To run the example, follow these steps:
 
-As the project user, create the master replica deployment:
+As the project user, create the primary / replica deployment:
 ....
-cd $CCPROOT/examples/openshift/master-replica-rc-pvc
+cd $CCPROOT/examples/openshift/primary-replica-rc-pvc
 ./run.sh
 ....
 
-Note:  The *master-replica.json* file creates the master and replica deployment,
+Note:  The *primary-replica.json* file creates the primary and replica deployment,
 creating pods and services where the replica is controlled by a Replication Controller,
 allowing you to scale up the replicas.
 
 If you examine your NFS directory, you will see PostgreSQL data directories
-created and used by your master and replica pods.
+created and used by your primary and replica pods.
 
-Next, add some test data to the master:
+Next, add some test data to the primary:
 ....
-psql -c 'create table testtable (id int)' -U master -h m-s-rc-pvc-master postgres
-psql -c 'insert into testtable values (123)' -U master -h m-s-rc-pvc-master postgres
+psql -c 'create table testtable (id int)' -U master -h m-s-rc-pvc-primary postgres
+psql -c 'insert into testtable values (123)' -U master -h m-s-rc-pvc-primary postgres
 ....
 
 Next, add a new replica:
