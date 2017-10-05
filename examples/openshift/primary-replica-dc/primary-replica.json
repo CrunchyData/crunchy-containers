@@ -12,7 +12,7 @@
     },
     "parameters": [{
         "name": "PG_MASTER_USER",
-        "description": "The username used for master-replica replication",
+        "description": "The username used for primary-replica replication",
         "value": "master"
     }, {
         "name": "CCP_IMAGE_TAG",
@@ -39,7 +39,7 @@
         "value": "password"
     }, {
         "name": "PG_MASTER_SERVICE_NAME",
-        "value": "master-dc"
+        "value": "primary-dc"
     }, {
         "name": "PG_SLAVE_SERVICE_NAME",
         "value": "replica-dc"

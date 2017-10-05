@@ -13,9 +13,9 @@
 # limitations under the License.
 
 oc delete dc replica-dc
-oc delete service master-dc
+oc delete service primary-dc
 oc delete service replica-dc
-oc delete pod master-dc
+oc delete pod primary-dc
 oc delete pod -l name=replica-dc
-oc delete pod -l name=master-dc
-$CCPROOT/examples/waitforterm.sh master-dc oc
+oc delete pod -l name=primary-dc
+$CCPROOT/examples/waitforterm.sh primary-dc oc
