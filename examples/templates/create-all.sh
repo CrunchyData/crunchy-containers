@@ -19,7 +19,7 @@ $DIR/backup/run.sh
 $DIR/badger/run.sh
 $DIR/collect/run.sh
 $DIR/master-collect-badger/run.sh
-$DIR/master-replica-dc/run.sh
+$DIR/primary-replica-dc/run.sh
 $DIR/master-replica/run.sh
 $DIR/master-restore/run.sh
 $DIR/metrics/run.sh
