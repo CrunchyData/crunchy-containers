@@ -2,9 +2,10 @@ ifndef CCPROOT
 	export CCPROOT=$(GOPATH)/src/github.com/crunchydata/crunchy-containers
 endif
 
-.PHONY:	default versiontest
+.PHONY:	all versiontest
 
-default:	all
+# Default target
+all:	backup backrestrestore collectserver dbaserver grafana pgadmin4 pgbadger pgbouncer pgpool postgres postgres-gis prometheus promgateway upgrade vac watch
 
 versiontest:
 ifndef CCP_BASEOS
@@ -129,11 +130,9 @@ pgsim:
 	docker build -t crunchy-sim -f $(CCP_BASEOS)/Dockerfile.sim.$(CCP_BASEOS) .
 	docker tag crunchy-sim crunchydata/crunchy-sim:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
 
-#============
-# All target
-#============
-all:	backup backrestrestore collectserver dbaserver grafana pgadmin4 pgbadger pgbouncer pgpool postgres postgres-gis prometheus promgateway upgrade vac watch
-
+#=================
+# Utility targets
+#=================
 push:
 	./bin/push-to-dockerhub.sh
 
