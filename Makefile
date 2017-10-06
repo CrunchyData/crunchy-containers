@@ -2,12 +2,24 @@ ifndef CCPROOT
 	export CCPROOT=$(GOPATH)/src/github.com/crunchydata/crunchy-containers
 endif
 
+.PHONY:	default versiontest
+
+default:	all
+
 versiontest:
-	if test -z "$$CCP_PGVERSION"; then echo "CCP_PGVERSION undefined"; exit 1;fi;
-	if test -z "$$CCP_BASEOS"; then echo "CCP_BASEOS undefined"; exit 1;fi;
-	if test -z "$$CCP_VERSION"; then echo "CCP_VERSION undefined"; exit 1;fi;
+ifndef CCP_BASEOS
+	$(error CCP_BASEOS is not defined)
+endif
+ifndef CCP_PGVERSION
+	$(error CCP_PGVERSION is not defined)
+endif
+ifndef CCP_VERSION
+	$(error CCP_VERSION is not defined)
+endif
+
 setup:
 	$(CCPROOT)/bin/install-deps.sh
+
 gendeps:
 	godep save \
 	github.com/crunchydata/crunchy-containers/dba \
@@ -125,5 +137,3 @@ all:	backup backrestrestore collectserver dbaserver grafana pgadmin4 pgbadger pg
 push:
 	./bin/push-to-dockerhub.sh
 
-default:
-	all
