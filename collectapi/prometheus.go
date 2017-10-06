@@ -1,7 +1,7 @@
 package collectapi
 
 import (
-	"fmt"
+	//"fmt"
 	"log"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -13,7 +13,7 @@ func WritePrometheusMetrics(logger *log.Logger, PROM_GATEWAY string, HOST string
 	var err error
 	logger.Printf("writing %d metrics\n", len(metrics))
 	for _, metric := range metrics {
-		fmt.Println(metric)
+		//fmt.Println(metric)
 
 		opts := prometheus.GaugeOpts{
 			Name: PREFIX + metric.Name,

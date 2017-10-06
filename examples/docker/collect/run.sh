@@ -18,14 +18,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-# uncomment these lines to override the pg config files with
-# your own versions of pg_hba.conf and postgresql.conf
-#PGCONF=$HOME/openshift-dedicated-container/pgconf
-#sudo chown postgres:postgres $PGCONF
-#sudo chmod 0700 $PGCONF
-#sudo chcon -Rt svirt_sandbox_file_t $PGCONF
-# add this next line to the docker run to override pg config files
-
 export HOSTIP=`hostname --ip-address`
 
 BASIC_VOLUME=basic-example-volume
@@ -34,12 +26,13 @@ docker run \
 	--privileged=true \
 	--volume-driver=local \
 	-v $BASIC_VOLUME:/pgdata:ro \
-	-e PG_ROOT_PASSWORD=password \
-	-e PG_PORT=5432 \
 	-e PROM_GATEWAY=http://crunchy-promgateway:9091 \
-	-e HOSTNAME=basic \
+	-e DATA_SOURCE_NAME="postgresql://postgres:password@basic:5432/postgres?sslmode=disable" \
+	-e POSTGRES_EXPORTER_URL="http://localhost:9187/metrics" \
+	-e NODE_EXPORTER_URL="http://localhost:9100/metrics" \
 	--link basic:basic \
 	--link crunchy-promgateway:crunchy-promgateway \
 	--name=master-collect \
 	--hostname=master-collect \
+	-p 9187:9187 \
 	-d crunchydata/crunchy-collect:$CCP_IMAGE_TAG

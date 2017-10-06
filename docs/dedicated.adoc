@@ -152,8 +152,8 @@ executed when the database is first created.
 
 *Environment Variables*
 
- * PG_MODE - either *master*, *slave* or *set*, this value determines whether
-   the database is set up as a master or slave instance, in the
+ * PG_MODE - either *master*, *replica* or *set*, this value determines whether
+   the database is set up as a master or replica instance, in the
    case of *set*, it means the container is started within a StatefulSet
    in a Kubernetes cluster.
  * PG_MASTER_USER - the value to use for the user ID created as
@@ -196,7 +196,7 @@ The following features are supported by the crunchy-postgres container:
  * ability to override postgresql.conf configuration parameters
  * ability to override the default setup.sql script
  * ability to set the database locale
- * ability to specify a synchronous slave application_name
+ * ability to specify a synchronous replica application_name
  * ability to specify a recovery using PITR and WAL files, see
    pitr.adoc for a detailed design explanation of how PITR
    is implemented within the container suite

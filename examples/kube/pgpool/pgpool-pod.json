@@ -8,6 +8,7 @@
         }
     },
     "spec": {
+
         "containers": [{
             "name": "pgpool",
             "image": "crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG",
@@ -28,8 +29,10 @@
                 "name": "PG_SLAVE_SERVICE_NAME",
                 "value": "ms-replica"
             }],
-            "volumeMounts": []
+            "volumeMounts": [
+	    ]
         }],
-        "volumes": []
+        "volumes": [
+	]
     }
 }

@@ -14,4 +14,5 @@
 
 oc delete pod watch
 oc delete sa pg-watcher
+oc delete configmap watch-hooks-configmap
 $CCPROOT/examples/waitforterm.sh watch oc

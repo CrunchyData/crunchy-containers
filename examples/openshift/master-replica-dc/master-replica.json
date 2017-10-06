@@ -127,7 +127,7 @@
                     "readOnly": true
                 }]
             }, {
-                "name": "server",
+                "name": "postgres",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
@@ -247,7 +247,7 @@
                 },
                 "spec": {
                     "containers": [{
-                        "name": "server",
+                        "name": "postgres",
                         "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                         "readinessProbe": {
                             "exec": {
@@ -285,7 +285,7 @@
                             "value": "/tmp"
                         }, {
                             "name": "PG_MODE",
-                            "value": "slave"
+                            "value": "replica"
                         }, {
                             "name": "PG_MASTER_USER",
                             "value": "${PG_MASTER_USER}"

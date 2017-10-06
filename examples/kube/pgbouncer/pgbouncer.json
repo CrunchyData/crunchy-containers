@@ -18,7 +18,7 @@
             }
         }],
         "containers": [{
-            "name": "server",
+            "name": "pgbouncer",
             "image": "crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5432,
@@ -46,7 +46,7 @@
                 "name": "PG_MASTER_SERVICE",
                 "value": "ms-master"
             }, {
-                "name": "PG_SLAVE_SERVICE",
+                "name": "PG_REPLICA_SERVICE",
                 "value": "ms-replica"
             }],
             "volumeMounts": [{

@@ -4,9 +4,9 @@ LABEL name="crunchydata/pgpool" \
         vendor="crunchy data" \
         version="7.3" \
       	PostgresVersion="9.6" \
-      	PostgresFullVersion="9.6.3" \
-        release="1.5" \
-        build-date="2017-08-01" \
+      	PostgresFullVersion="9.6.5" \
+        release="1.5.1" \
+        build-date="2017-09-01" \
         url="https://crunchydata.com" \
         summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
         description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the master and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \
@@ -40,7 +40,7 @@ ADD conf/pgpool /opt/cpm/conf/pgpool
 ADD conf/pgpool/pool_hba.conf  /etc/pgpool-II-96/pool_hba.conf
 ADD conf/pgpool/pool_passwd /etc/pgpool-II-96/pool_passwd
 
-RUN chown -R daemon:daemon /opt/cpm/bin
+RUN chown -R daemon:daemon /opt/cpm/bin /pgconf
 
 USER daemon
 

@@ -18,6 +18,11 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+# Create 'watch-hooks-configmap'.
+kubectl create configmap watch-hooks-configmap \
+		--from-file=./hooks/watch-pre-hook \
+		--from-file=./hooks/watch-post-hook
+
 kubectl create -f $DIR/watch-sa.json
 #kubectl.sh policy add-role-to-group edit system:serviceaccounts -n openshift
 #kubectl.sh policy add-role-to-group edit system:serviceaccounts -n default

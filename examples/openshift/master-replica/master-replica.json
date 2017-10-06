@@ -35,7 +35,7 @@
         "value": "userdb"
     }, {
         "name": "PG_ROOT_PASSWORD",
-        "description": "The password for the PG adminitrator",
+        "description": "The password for the PG administrator",
         "value": "password"
     }],
 
@@ -97,7 +97,7 @@
         },
         "spec": {
             "containers": [{
-                "name": "ms-master",
+                "name": "postgres",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
@@ -174,7 +174,7 @@
         },
         "spec": {
             "containers": [{
-                "name": "ms-replica",
+                "name": "postgres",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
@@ -212,7 +212,7 @@
                     "value": "${PG_MASTER_USER}"
                 }, {
                     "name": "PG_MODE",
-                    "value": "slave"
+                    "value": "replica"
                 }, {
                     "name": "PG_MASTER_PASSWORD",
                     "value": "${PG_MASTER_PASSWORD}"

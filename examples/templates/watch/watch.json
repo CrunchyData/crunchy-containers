@@ -13,42 +13,42 @@
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
         "value": "centos7-9.5-1.2.7",
-        "description": "the image tag to use"
+        "description": "The image tag to use"
     }, {
         "name": "CCP_IMAGE_PREFIX",
         "value": "crunchydata",
-        "description": "the image prefix to use"
+        "description": "The image prefix to use"
     }, {
         "name": "SERVICE_NAME",
-        "description": "the name to use for the watch service",
+        "description": "The name to use for the watch service",
         "value": "pgwatch"
     }, {
         "name": "SERVICE_ACCOUNT_NAME",
-        "description": "the name of the service account to use",
+        "description": "The name of the service account to use",
         "value": "pg-watcher"
     }, {
         "name": "OSE_PROJECT",
-        "description": "the name of the OSE project to use",
+        "description": "The name of the OSE project to use",
         "value": "jeff-project"
     }, {
         "name": "SLEEP_TIME",
-        "description": "the time to sleep for polling the master",
+        "description": "The time to sleep for polling the master",
         "value": "20"
     }, {
-        "name": "SLAVE_TO_TRIGGER",
-        "description": "the name of a slave to trigger a failover upon",
+        "name": "REPLICA_TO_TRIGGER",
+        "description": "The name of a replica to trigger a failover upon",
         "value": "thisone"
     }, {
         "name": "MASTER_TO_WATCH",
-        "description": "the name of a master service to watch",
+        "description": "The name of a master service to watch",
         "value": "pgmaster"
     }, {
         "name": "SLAVE_TO_WATCH",
-        "description": "the name of a slave service to watch",
-        "value": "pgslave"
+        "description": "The name of a replica service to watch",
+        "value": "pgreplica"
     }, {
         "name": "MASTER_USER",
-        "description": "the master user to watch with",
+        "description": "The master user to watch with",
         "value": "master"
     }],
     "objects": [{
@@ -72,8 +72,8 @@
                     "name": "SLEEP_TIME",
                     "value": "${SLEEP_TIME}"
                 }, {
-                    "name": "SLAVE_TO_TRIGGER_LABEL",
-                    "value": "${SLAVE_TO_TRIGGER}"
+                    "name": "REPLICA_TO_TRIGGER_LABEL",
+                    "value": "${REPLICA_TO_TRIGGER}"
                 }, {
                     "name": "PG_MASTER_SERVICE",
                     "value": "${MASTER_TO_WATCH}"

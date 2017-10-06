@@ -17,12 +17,12 @@
                 "value": "default"
             }, {
                 "name": "SLEEP_TIME",
-                "value": "20"
+                "value": "10"
             }, {
                 "name": "MAX_FAILURES",
-                "value": "4"
+                "value": "2"
             }, {
-                "name": "SLAVE_TO_TRIGGER_LABEL",
+                "name": "REPLICA_TO_TRIGGER_LABEL",
                 "value": "ms-replica-2"
             }, {
                 "name": "PG_MASTER_SERVICE",
@@ -42,7 +42,23 @@
             }, {
                 "name": "PG_DATABASE",
                 "value": "postgres"
-            }]
-        }]
+            }, {
+				"name": "WATCH_PRE_HOOK",
+				"value": "/hooks/watch-pre-hook"
+			}, {
+				"name": "WATCH_POST_HOOK",
+				"value": "/hooks/watch-post-hook"
+			}],
+			"volumeMounts": [{
+				"name": "watch-hooks-volume",
+				"mountPath": "/hooks"
+			}]
+        }],
+		"volumes": [{
+			"name": "watch-hooks-volume",
+			"configMap": {
+				"name": "watch-hooks-configmap"
+			}
+		}]
     }
 }

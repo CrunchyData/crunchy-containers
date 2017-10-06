@@ -1,4 +1,4 @@
-{
+REPLICA{
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
@@ -68,7 +68,7 @@
                 }
             }],
             "containers": [{
-                "name": "server",
+                "name": "pgbouncer",
                 "image": "crunchydata/crunchy-pgbouncer:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,

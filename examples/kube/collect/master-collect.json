@@ -11,29 +11,28 @@
         "containers": [{
             "name": "collect",
             "image": "crunchydata/crunchy-collect:$CCP_IMAGE_TAG",
+			"ports": [{
+				"containerPort": 9187,
+				"protocol": "TCP"
+			}, {
+				"containerPort": 9100,
+				"protocol": "TCP"
+			}],
             "env": [{
-                "name": "PG_MASTER_USER",
-                "value": "master"
-            }, {
-                "name": "PG_MASTER_PASSWORD",
-                "value": "password"
-            }, {
-                "name": "PG_PORT",
-                "value": "5432"
-            }, {
                 "name": "PROM_GATEWAY",
                 "value": "http://crunchy-metrics:9091"
             }, {
-                "name": "PG_ROOT_PASSWORD",
-                "value": "password"
-            }],
-            "volumeMounts": [{
-                "mountPath": "/pgdata",
-                "name": "pgdata",
-                "readOnly": true
-            }]
+				"name": "DATA_SOURCE_NAME",
+				"value": "postgresql://master:password@master-collect:5432/postgres?sslmode=disable"
+            }, {
+				"name": "POSTGRES_EXPORTER_URL",
+				"value": "http://localhost:9187/metrics"
+			}, {
+				"name": "NODE_EXPORTER_URL",
+				"value": "http://localhost:9100/metrics"
+			}]
         }, {
-            "name": "server",
+            "name": "postgres",
             "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5432,
@@ -64,7 +63,13 @@
             "securityContext": {
                 "capabilities": {}
             },
-
+			"readinessProbe": {
+				"tcpSocket": {
+					"port": 5432
+				},
+				"initialDelaySeconds": 5,
+				"periodSeconds": 10
+			},
             "volumeMounts": [{
                 "mountPath": "/pgdata",
                 "name": "pgdata",

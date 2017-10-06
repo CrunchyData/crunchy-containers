@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,7 +76,7 @@ sudo docker run \
 	-e SHARED_BUFFERS=129MB \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
-	-e PG_MODE=slave \
+	-e PG_MODE=replica \
 	-e PG_MASTER_USER=master \
 	-e PG_MASTER_PASSWORD=password \
 	-e PG_MASTER_HOST=sync-master \
@@ -112,7 +112,7 @@ sudo docker run \
 	-e SHARED_BUFFERS=129MB \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
-	-e PG_MODE=slave \
+	-e PG_MODE=replica \
 	-e PG_MASTER_USER=master \
 	-e PG_MASTER_PASSWORD=password \
 	-e PG_MASTER_HOST=sync-master \
@@ -125,4 +125,3 @@ sudo docker run \
 	--name=async-replica \
 	--hostname=async-replica \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
-

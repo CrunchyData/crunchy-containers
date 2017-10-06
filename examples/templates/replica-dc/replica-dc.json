@@ -12,7 +12,7 @@
     },
     "parameters": [{
         "name": "PG_MASTER_USER",
-        "description": "The username used for master-slave replication",
+        "description": "The username used for master / replica replication",
         "value": "master"
     }, {
         "name": "CCP_IMAGE_TAG",
@@ -48,8 +48,8 @@
         "value": "pg-master-dc"
     }, {
         "name": "PG_SLAVE_SERVICE_NAME",
-        "description": "The name of the PostgreSQL replica ",
-        "value": "pg-slave-dc"
+        "description": "The name of the PostgreSQL replica",
+        "value": "pg-replica-dc"
     }, {
         "name": "TEMP_BUFFERS",
         "description": "postgres temp_buffers memory size",
@@ -163,7 +163,7 @@
                             "value": "/tmp"
                         }, {
                             "name": "PG_MODE",
-                            "value": "slave"
+                            "value": "replica"
                         }, {
                             "name": "PG_MASTER_USER",
                             "value": "${PG_MASTER_USER}"

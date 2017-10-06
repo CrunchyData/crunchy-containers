@@ -3,10 +3,10 @@ FROM centos:7
 LABEL name="crunchydata/collect" \
         vendor="crunchy data" \
       	PostgresVersion="9.6" \
-      	PostgresFullVersion="9.6.3" \
+      	PostgresFullVersion="9.6.5" \
         version="7.3" \
-        release="1.5" \
-        build-date="2017-08-01" \
+        release="1.5.1" \
+        build-date="2017-09-01" \
         url="https://crunchydata.com" \
         summary="Provides metrics for crunchy-postgres" \
         description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus, crunchy-grafana, crunchy-promgateway." \
@@ -17,27 +17,29 @@ LABEL name="crunchydata/collect" \
 
 ENV PGVERSION="9.6" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
 
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+# Install the PGDG yum repo
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/${PGDG_REPO}
 
-RUN yum -y update && yum -y install gettext \
-	hostname  \
-	openssh-clients \
-	libxslt \
-	libxml2 \
-	procps-ng \
- && yum -y install postgresql96-server \
- && yum clean all -y
+# Install postgres client tools and libraries
+RUN yum install -y postgresql96 postgresql96-libs
 
-# Install libstatgrab and dependencies
-RUN yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/log4cplus-1.1.3-0.4.rc3.el7.x86_64.rpm
-Run yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/libstatgrab-0.91-4.el7.x86_64.rpm
+# Create postgres user and group
+RUN groupadd -r -g 26 postgres
+RUN useradd -r -u 26 -g postgres postgres
 
 RUN mkdir -p /opt/cpm/bin
 
+ADD postgres_exporter /opt/cpm/bin
+ADD node_exporter.tar.gz /opt/cpm/bin
 ADD bin/collect /opt/cpm/bin
 
 RUN chown -R postgres:postgres /opt/cpm/bin
 
 USER postgres
 
-ENTRYPOINT ["/opt/cpm/bin/collectserver"]
+# postgres_exporter
+EXPOSE 9187
+# node_exporter
+EXPOSE 9100
+
+CMD ["/opt/cpm/bin/start.sh"]

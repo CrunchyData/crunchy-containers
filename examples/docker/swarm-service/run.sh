@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,7 +52,7 @@ docker service create \
  --constraint 'node.labels.type != master' \
  --env PGHOST=/tmp \
  --env PG_USER=testuser \
- --env PG_MODE=slave \
+ --env PG_MODE=replica \
  --env PG_MASTER_USER=master \
  --env PG_ROOT_PASSWORD=password \
  --env PG_PASSWORD=password \

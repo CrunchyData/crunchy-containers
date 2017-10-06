@@ -38,9 +38,9 @@ if [ ! -v PG_MODE ]; then
 	exit 1
 fi
 
-if [ "$PG_MODE" = "slave" ]; then
+if [ "$PG_MODE" = "replica" ]; then
 	if [ ! -v PG_MASTER_HOST ]; then
-		echo "PG_MASTER_HOST env var is not set and required when PG_MODE is slave, aborting"
+		echo "PG_MASTER_HOST env var is not set and required when PG_MODE is replica, aborting"
 		exit 1
 	fi
 fi
@@ -104,8 +104,8 @@ function role_discovery() {
 		echo "setting PG_MODE to master"
 		export PG_MODE=master
 	else
-		echo "setting PG_MODE to slave"
-		export PG_MODE=slave
+		echo "setting PG_MODE to replica"
+		export PG_MODE=replica
 	fi
 }
 
@@ -138,7 +138,7 @@ function initdb_logic() {
 			else
 				echo "XLOGDIR not found! Using default pg_xlog"
 			fi
-		fi 
+		fi
         fi
 	if [[ -v CHECKSUMS ]]; then
 		cmd+=" --data-checksums"
@@ -261,7 +261,7 @@ function fill_conf_file() {
 }
 
 function create_pgpass() {
-cd /tmp  
+cd /tmp
 cat >> ".pgpass" <<-EOF
 *:*:*:*:${PG_MASTER_PASSWORD}
 EOF
@@ -339,8 +339,8 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	check_for_pitr
 
         echo "starting db" >> /tmp/start-db.log
-       
-	echo "temporarily starting db to run setup.sql" 
+
+	echo "temporarily starting db to run setup.sql"
 	pg_ctl -D $PGDATA start
 
 	echo "waiting for pg to start up..."
@@ -361,7 +361,7 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 		echo "creating stanza..."
 		pgbackrest --log-path=/backrestrepo --config=/pgconf/pgbackrest.conf --stanza=db stanza-create
 	fi
-	
+
         echo "loading setup.sql" >> /tmp/start-db.log
 	cp /opt/cpm/bin/setup.sql /tmp
 	if [ -f /pgconf/setup.sql ]; then
@@ -410,7 +410,7 @@ echo "user id is..."
 id
 
 # for stateful set support
-case "$PG_MODE" in 
+case "$PG_MODE" in
 	"set")
 	role_discovery
 	;;
@@ -420,9 +420,9 @@ ose_hack
 
 fill_conf_file
 
-case "$PG_MODE" in 
-	"slave")
-	echo "working on slave"
+case "$PG_MODE" in
+	"replica")
+	echo "working on replica"
 	create_pgpass
 	export PGPASSFILE=/tmp/.pgpass
 	if [ ! -f $PGDATA/postgresql.conf ]; then
@@ -445,7 +445,7 @@ else
 	postgres -D $PGDATA  &
 fi
 
-date 
+date
 
 if [[ -v PGAUDIT_ANALYZE ]]; then
 	echo "pgaudit_analyze will be started up..."
@@ -457,4 +457,3 @@ fi
 wait
 
 echo "exiting...at end"
-

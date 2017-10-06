@@ -36,8 +36,8 @@
         "value": "pgmaster"
     }, {
         "name": "PG_SLAVE_SERVICE_NAME",
-        "description": "The database slave configured in pgpool",
-        "value": "pgslave"
+        "description": "The database replica configured in pgpool",
+        "value": "pgreplica"
     }],
     "objects": [{
         "kind": "Service",

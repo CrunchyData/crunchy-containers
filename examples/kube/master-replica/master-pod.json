@@ -9,7 +9,7 @@
     },
     "spec": {
         "containers": [{
-            "name": "master",
+            "name": "postgres",
             "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
             "readinessProbe": {
                 "exec": {

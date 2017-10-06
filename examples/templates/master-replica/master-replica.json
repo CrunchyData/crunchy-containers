@@ -16,8 +16,8 @@
         "value": "pgmaster"
     }, {
         "name": "SLAVE_SERVICE_NAME",
-        "description": "The name for the slave service and container",
-        "value": "pgslave"
+        "description": "The name for the replica service and container",
+        "value": "pgreplica"
     }, {
         "name": "CCP_IMAGE_TAG",
         "value": "centos7-9.5-1.2.7",
@@ -28,7 +28,7 @@
         "description": "The image prefix to pull with"
     }, {
         "name": "PG_MASTER_USER",
-        "description": "The username used for master-slave replication",
+        "description": "The username used for master / replica replication",
         "value": "master"
     }, {
         "name": "PG_MASTER_PASSWORD",
@@ -48,7 +48,7 @@
         "value": "userdb"
     }, {
         "name": "PG_ROOT_PASSWORD",
-        "description": "The password for the PG adminitrator",
+        "description": "The password for the PG administrator",
         "value": "password"
     }],
 
@@ -229,7 +229,7 @@
                 }],
                 "env": [{
                     "name": "PG_MODE",
-                    "value": "slave"
+                    "value": "replica"
                 }, {
                     "name": "PG_MASTER_HOST",
                     "value": "${MASTER_SERVICE_NAME}"

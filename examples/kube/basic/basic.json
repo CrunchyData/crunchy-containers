@@ -9,7 +9,7 @@
     },
     "spec": {
         "containers": [{
-            "name": "basic",
+            "name": "postgres",
             "securityContext": {
                 "privileged": false
             },

@@ -38,8 +38,8 @@ executed when the database is first created.
 
 === Environment Variables
 
- * PG_MODE - either *master*, *slave* or *set*, this value determines whether
-   the database is set up as a master or slave instance, in the
+ * PG_MODE - either *master*, *replica* or *set*, this value determines whether
+   the database is set up as a master or replica instance, in the
    case of *set*, it means the container is started within a StatefulSet
    in a Kubernetes cluster.
  * PG_MASTER_USER - the value to use for the user ID created as
@@ -55,7 +55,7 @@ executed when the database is first created.
  * PG_LOCALE - if set, the locale you want to create the database with, if
    not set, the default locale is used
  * SYNC_SLAVE - if set, this value is used to specify the application_name
-   of a slave that will be used for a synchronous replication
+   of a replica that will be used for a synchronous replication
  * CHECKSUMS - if set, this value is used to enable the *--data-checksums*
    option when initdb is executed at initialization, if not set, the
    default is to *not* enable data checksums
@@ -84,7 +84,7 @@ The following features are supported by the crunchy-postgres container:
  * ability to override postgresql.conf configuration parameters
  * ability to override the default setup.sql script
  * ability to set the database locale
- * ability to specify a synchronous slave application_name
+ * ability to specify a synchronous replica application_name
  * ability to specify a recovery using PITR and WAL files, see
    pitr.adoc for a detailed design explanation of how PITR
    is implemented within the container suite
@@ -165,10 +165,12 @@ to persist database backups.
 
 === Description
 
-PostgreSQL metrics are collected by the crunchy-collect container. This container
-collects 32 different PostgreSQL metrics from crunchy-postgres. To start collection
-of metrics on a PostgreSQL database, you add the crunchy-collect container into the
-pod that holds the crunchy-postgres container.
+70 different PostgreSQL metrics are collected by the crunchy-collect container,
+which executes both the postgres_exporter and node_exporter. Written in Go, these
+are both metrics exporters that work with Prometheus to provide PostgreSQL server
+metrics in addition to hardware and OS metrics. The crunchy-collect container gathers
+different metrics from the crunchy-postgres PostgreSQL database container and
+pushes these to the Prometheus Promgateway (crunchy-promgateway).
 
 A full description with examples of the metrics collection containers is available
 link:https://github.com/CrunchyData/crunchy-containers/blob/master/docs/metrics.adoc[here].
@@ -183,8 +185,10 @@ which is found in the crunchy-grafana container.
 
 === Environment Variables
 
- * POLL_INT - number of minutes to sleep until metrics are collected.  defaults to 15 minutes
- * PROM_GATEWAY - the http URL of the prometheus promgateway into which the metrics will be pushed. Defaults to *http://crunchy-promgateway:9091*.
+ * PROM_GATEWAY - The HTTP URL of the Prometheus Pushgateway into which the metrics will be pushed
+ * NODE_EXPORTER_URL - The HTTP URL of the node_exporter utility which collects host and OS level system metrics.
+ * POSTGRES_EXPORTER_URL - The HTTP URL of the postgres_exporter utility which collects PostgreSQL server metrics.
+ * DATA_SOURCE_NAME - The URL for the PostgreSQL server's data source name. This is *required* to be in the form of *postgresql://*.
 
 == crunchy-prometheus
 
@@ -194,6 +198,10 @@ The container crunchy-collect collects PostgreSQL metrics from the crunchy-postg
 and pushes them to a Prometheus time series data store, which is located in this crunchy-prometheus container.
 Prometheus is a flexible, highly dimensional time series data model that stores data efficiently,
 where time series are defined through a metric name and set of key-value pairs.
+
+Prometheus is a multi-dimensional time series data model with an elastic query language. It is used in collaboration
+with Grafana in this metrics suite. Overall, it’s reliable, manageable, and operationally simple for efficiently
+storing and analyzing data for large-scale environments. It targets the Promgateway as an endpoint for scraping metrics.
 
 A full description with examples of the metrics collection containers is available
 link:https://github.com/CrunchyData/crunchy-containers/blob/master/docs/metrics.adoc[here].
@@ -229,6 +237,7 @@ The following port is exposed by the crunchy-promgateway container:
 
 Visual dashboards are created from the collected and stored data that crunchy-collect and crunchy-prometheus
 provides with the crunchy-grafana container, which hosts a web-based graphing dashboard called Grafana.
+
 Grafana is an open-source platform which can then apply the defined metrics and visualize information through
 various tools. It is extremely flexible with a powerful query and transformation language, producing beautiful
 and easily understandable graphics to analyze and monitor your data.
@@ -266,10 +275,10 @@ The following features are supported by the crunchy-pgbadger container:
 
 The crunchy-pgpool container executes the pgpool utility.  Pgpool can
 be used to provide a smart PostgreSQL-aware proxy to a PostgreSQL cluster,
-both master and slave, so that applications can only have to work
+both master and replica, so that applications can only have to work
 with a single database connection.
 
-Postgres slaves are read-only whereas a master is both read and write
+Postgres replicas are read-only whereas a master is both read and write
 capable.
 
 === Environment Variables
@@ -277,7 +286,7 @@ capable.
  * PG_USERNAME - user to connect to PostgreSQL
  * PG_PASSWORD - user password to connect to PostgreSQL
  * PG_MASTER_SERVICE_NAME - database host to connect to for the master node
- * PG_SLAVE_SERVICE_NAME - database host to connect to for the slave node
+ * PG_SLAVE_SERVICE_NAME - database host to connect to for the replica node
 
 === Features
 
@@ -344,37 +353,39 @@ the watch logic to interact with the replica containers.
  * SLEEP_TIME - the time to sleep in seconds between checking on the master
  * WAIT_TIME - the time to sleep in seconds between triggering the failover and updating its label (default is 40 secs)
  * PG_MASTER_SERVICE -  the master service name
- * PG_SLAVE_SERVICE - the slave service name
+ * PG_SLAVE_SERVICE - the replica service name
  * PG_MASTER_PORT - database port to use when checking the database
  * PG_MASTER_USER -  database user account to use when checking the database
    using pg_isready utility
  * PG_DATABASE - database to use when checking the database using pg_isready
- * SLAVE_TO_TRIGGER_LABEL - this is the pod name of a replica that you
-   want to choose as the new master in a failover, this will override
+ * REPLICA_TO_TRIGGER_LABEL - the pod name of a replica that you
+   want to choose as the new master in a failover; this will override
    the normal replica selection
+ * WATCH_PRE_HOOK - path to an executable file to run before failover is processed.
+ * WATCH_POST_HOOK - path to an executable file to run after failover is processed.
 
 === Logic
 
 The watch container will watch the master, if the master dies, then
 the watcher will:
 
- * create the trigger file on the slave that will become the new master
- * change the labels on the slave to be those of the master
- * will start watching the new master in case that falls over next
- * will look for slaves that have the metadata label value of *slavetype=trigger* to prefer
-   the failover to, if found it will use the first slave with that label, if
-   not found, it will use the first slave it finds
+ * create the trigger file on the replica that will become the new master
+ * change the labels on the replica to be those of the master
+ * start watching the new master in case that falls over next
+ * look for replicas that have the metadata label value of *replicatype=trigger* to prefer
+   the failover to. If found, it will use the first replica with that label,; if
+   not found, it will use the first replica it finds.
 
-Example of looking for the failover slave:
+Example of looking for the failover replica:
 ....
-oc get pod -l name=pg-slave-rc-dc
+oc get pod -l name=pg-replica-rc-dc
 NAME                     READY     STATUS    RESTARTS   AGE
-pg-slave-rc-dc           1/1       Running   2          16m
-pg-slave-rc-dc-1-96qs8   1/1       Running   1          16m
+pg-replica-rc-dc           1/1       Running   2          16m
+pg-replica-rc-dc-1-96qs8   1/1       Running   1          16m
 
-oc get pod -l slavetype=trigger
+oc get pod -l replicatype=trigger
 NAME             READY     STATUS    RESTARTS   AGE
-pg-slave-rc-dc   1/1       Running   2          16m
+pg-replica-rc-dc   1/1       Running   2          16m
 ....
 
 == crunchy-vacuum
@@ -598,7 +609,7 @@ utility and a failover watch script.
 
  * FAILOVER - when set, the container will look at the configured
    master database and if it can't reach it, will perform a failover
-   to a configured slave database
+   to a configured replica database
  * OSE_PROJECT - when set, indicates you are running under OSE
  * PG_MASTER_USER - the value to use for the user ID created as
    master.  The *master* user has super user privileges.
@@ -606,7 +617,7 @@ utility and a failover watch script.
  * PG_DATABASE - the database to use when checking the readiness of the master
  * PG_MASTER_PORT - the PostgreSQL port to use when checking the master
  * PG_MASTER_SERVICE - the name of the master database container
- * PG_SLAVE_SERVICE - the name of the slave database container, this is
+ * PG_SLAVE_SERVICE - the name of the replica database container, this is
    used to know which container to trigger the failover on
 
 === Features
@@ -614,7 +625,7 @@ utility and a failover watch script.
 The following features are supported by the crunchy-postgres container:
 
  * mount pgbouncer user.txt and pgbouncer.ini config files via /pgconf volume
- * ability to cause a failover on a configured slave container
+ * ability to cause a failover on a configured replica container
  * ability to rewrite the pgbouncer.ini config file and reload pgbouncer
    after a failover
 

@@ -55,8 +55,24 @@
                 }, {
                     "name": "PG_DATABASE",
                     "value": "postgres"
-                }]
-            }]
+                }, {
+					"name": "WATCH_PRE_HOOK",
+					"value": "/hooks/watch-pre-hook"
+				}, {
+					"name": "WATCH_POST_HOOK",
+					"value": "/hooks/watch-post-hook"
+				}],
+				"volumeMounts": [{
+					"name": "watch-hooks-volume",
+					"mountPath": "/hooks"
+				}]
+            }],
+			"volumes": [{
+				"name": "watch-hooks-volume",
+				"configMap": {
+					"name": "watch-hooks-configmap"
+				}
+			}]
         }
     }]
 }

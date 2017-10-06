@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/pgadmin4" \
         vendor="crunchy data" \
       	PostgresVersion="9.6" \
-      	PostgresFullVersion="9.6.3" \
+      	PostgresFullVersion="9.6.5" \
         version="7.3" \
-        release="1.5" \
+        release="1.5.1" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Crunchy Data pgAdmin4 GUI utility" \
@@ -57,8 +57,7 @@ EXPOSE 5050
 
 RUN mkdir -p /pgdata \
  && chown -R 26:26 /pgdata /opt/cpm /usr/lib/python2.7/site-packages/pgadmin4-web \
- && chmod -R g+rwx /usr/lib/python2.7/site-packages/pgadmin4-web \
- && chgrp -R root /usr/lib/python2.7/site-packages/pgadmin4-web
+ && setfacl -R -m d:u:root:rwx /usr/lib/python2.7/site-packages/pgadmin4-web
 
 VOLUME ["/pgdata"]
 

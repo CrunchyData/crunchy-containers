@@ -25,7 +25,7 @@
         },
         "spec": {
             "containers": [{
-                "name": "replica",
+                "name": "postgres",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
@@ -45,7 +45,7 @@
                     "value": "5432"
                 }, {
                     "name": "PG_MODE",
-                    "value": "slave"
+                    "value": "replica"
                 }, {
                     "name": "PG_MASTER_PASSWORD",
                     "value": "password"

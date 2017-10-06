@@ -71,6 +71,10 @@ export PATH=$PATH:/opt/cpm/bin:$PGROOT/bin
 ose_hack
 
 function failover() {
+	# Perform watch pre-hook
+	exec_pre_hook
+
+	# Perform failover
 	if [[ -v KUBE_PROJECT ]]; then
 		echo "kube failover ....."
 		kube_failover
@@ -81,6 +85,9 @@ function failover() {
 		echo "standalone failover....."
 		standalone_failover
 	fi
+
+	# Perform watch post-hook
+	exec_post_hook
 }
 
 function standalone_failover() {
@@ -113,9 +120,9 @@ function kube_failover() {
 	fi
 
 	declare -a arr=($SLAVES)
-	if [[ -v SLAVE_TO_TRIGGER_LABEL ]]; then
-		echo "trigger to specific replica..using SLAVE_TO_TRIGGER_LABEL env var"
-		targetslave=$SLAVE_TO_TRIGGER_LABEL
+	if [[ -v REPLICA_TO_TRIGGER_LABEL ]]; then
+		echo "trigger to specific replica... using REPLICA_TO_TRIGGER_LABEL environment variable"
+		targetslave=$REPLICA_TO_TRIGGER_LABEL
 	else
 		targetslave=${arr[0]}
 	fi
@@ -129,9 +136,6 @@ function kube_failover() {
 			sleep $WAIT_TIME
 			echo "changing label of slave to " $PG_MASTER_SERVICE
 			kubectl --token=$TOKEN label --overwrite=true pod $i name=$PG_MASTER_SERVICE
-		else
-			echo "deleting old slave " $i 
-			kubectl --token=$TOKEN delete pod $i
 		fi
 	done
 	echo "failover completed @ " `date`
@@ -159,9 +163,9 @@ function ose_failover() {
 	fi
 
 	declare -a arr=($SLAVES)
-	if [[ -v SLAVE_TO_TRIGGER_LABEL ]]; then
-		echo "trigger to specific replica..using SLAVE_TO_TRIGGER_LABEL env var"
-		targetslave=$SLAVE_TO_TRIGGER_LABEL
+	if [[ -v REPLICA_TO_TRIGGER_LABEL ]]; then
+		echo "trigger to specific replica... using REPLICA_TO_TRIGGER_LABEL environment variable"
+		targetslave=$REPLICA_TO_TRIGGER_LABEL
 	else
 		targetslave=${arr[0]}
 	fi
@@ -175,18 +179,30 @@ function ose_failover() {
 			sleep $WAIT_TIME
 			echo "changing label of slave to " $PG_MASTER_SERVICE
 			oc label --overwrite=true pod $i name=$PG_MASTER_SERVICE
-#			echo "recreating master service..."
-#			oc create -f /tmp/master-service.json
-		else
-			echo "deleting old slave " $i 
-			oc delete pod $i
 		fi
 	done
 	echo "failover completed @ " `date`
 }
 
+# Execute 'watch' pre-hook.
+function exec_pre_hook() {
+	echo HOOK: $WATCH_PRE_HOOK
+	if [ ! -z $WATCH_PRE_HOOK ] &&
+	   [ -e $WATCH_PRE_HOOK ]; then
+		/bin/bash $WATCH_PRE_HOOK
+	fi
+}
+
+# Execute 'watch' post-hook.
+function exec_post_hook() {
+	if [ ! -z $WATCH_POST_HOOK ] &&
+	   [ -e $WATCH_POST_HOOK ]; then
+		/bin/bash $WATCH_POST_HOOK
+	fi
+}
+
 FAILURES=0
-while true; do 
+while true; do
 	if [ "$shutdownrequested" = true ] ; then
 		echo "doing shutdown..."
 		exit 0
@@ -204,5 +220,6 @@ while true; do
 		fi
 		echo "Maximum failures reached"
 		failover
+		FAILURES=0
 	fi
 done
