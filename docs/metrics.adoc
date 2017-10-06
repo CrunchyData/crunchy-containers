@@ -1,6 +1,6 @@
 = Metrics Collection - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.6, {docdate}
+v1.5, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Description
