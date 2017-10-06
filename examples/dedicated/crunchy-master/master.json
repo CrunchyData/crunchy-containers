@@ -74,7 +74,7 @@
         "description": "The password for the PG administrator",
         "value": "password"
     }, {
-        "name": "SYNC_SLAVE",
+        "name": "SYNC_REPLICA",
         "description": "the sync replicas that will be allowed to connect if any",
         "value": ""
     }, {
@@ -195,8 +195,8 @@
                             "name": "PG_ROOT_PASSWORD",
                             "value": "${PG_ROOT_PASSWORD}"
                         }, {
-                            "name": "SYNC_SLAVE",
-                            "value": "${SYNC_SLAVE}"
+                            "name": "SYNC_REPLICA",
+                            "value": "${SYNC_REPLICA}"
                         }, {
                             "name": "TEMP_BUFFERS",
                             "value": "${TEMP_BUFFERS}"

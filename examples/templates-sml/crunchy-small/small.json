@@ -137,7 +137,7 @@
                             "name": "PG_ROOT_PASSWORD",
                             "value": "${PG_ROOT_PASSWORD}"
                         }, {
-                            "name": "SYNC_SLAVE",
+                            "name": "SYNC_REPLICA",
                             "value": ""
                         }, {
                             "name": "PGHOST",

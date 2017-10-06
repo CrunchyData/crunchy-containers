@@ -54,7 +54,7 @@ executed when the database is first created.
    initialization
  * PG_LOCALE - if set, the locale you want to create the database with, if
    not set, the default locale is used
- * SYNC_SLAVE - if set, this value is used to specify the application_name
+ * SYNC_REPLICA - if set, this value is used to specify the application_name
    of a replica that will be used for a synchronous replication
  * CHECKSUMS - if set, this value is used to enable the *--data-checksums*
    option when initdb is executed at initialization, if not set, the

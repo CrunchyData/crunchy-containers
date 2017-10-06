@@ -308,12 +308,12 @@ waitforpg
 pg_basebackup -x --no-password --pgdata $PGDATA --host=$PG_MASTER_HOST --port=$PG_MASTER_PORT -U $PG_MASTER_USER
 
 # PostgreSQL recovery configuration.
-if [[ -v SYNC_SLAVE ]]; then
-	echo "SYNC_SLAVE set"
-	APPLICATION_NAME=$SYNC_SLAVE
+if [[ -v SYNC_REPLICA ]]; then
+	echo "SYNC_REPLICA set"
+	APPLICATION_NAME=$SYNC_REPLICA
 else
 	APPLICATION_NAME=$HOSTNAME
-	echo "SYNC_SLAVE not set"
+	echo "SYNC_REPLICA not set"
 fi
 echo $APPLICATION_NAME " is the APPLICATION_NAME being used"
 
@@ -388,8 +388,8 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 
 	pg_ctl -D $PGDATA --mode=fast stop
 
-	if [[ -v SYNC_SLAVE ]]; then
-		echo "synchronous_standby_names = '"$SYNC_SLAVE"'" >> $PGDATA/postgresql.conf
+	if [[ -v SYNC_REPLICA ]]; then
+		echo "synchronous_standby_names = '"$SYNC_REPLICA"'" >> $PGDATA/postgresql.conf
 	fi
 fi
 }
