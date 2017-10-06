@@ -15,10 +15,10 @@ LABEL name="crunchydata/pgbouncer" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos10-10-1.noarch.rpm"
+ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos10-10-2.noarch.rpm"
 
 #RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/testing/10/redhat/rhel-7-x86_64/${PGDG_REPO}
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 # install docker from docker repo
 ADD conf/pgbouncer/docker-rhel.repo /etc/yum.repos.d/
