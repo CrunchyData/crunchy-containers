@@ -1,0 +1,53 @@
+FROM centos:7
+
+LABEL name="crunchydata/pgadmin4" \
+        vendor="crunchy data" \
+      	PostgresVersion="10.0" \
+      	PostgresFullVersion="10.0.0" \
+        version="7.3" \
+        release="1.5" \
+        build-date="2017-09-15" \
+        url="https://crunchydata.com" \
+        summary="Crunchy Data pgAdmin4 GUI utility" \
+        description="Provides GUI for the pgAdmin utility." \
+        io.k8s.description="pgadmin4 container" \
+        io.k8s.display-name="Crunchy pgadmin4 container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos10-10-2.noarch.rpm"
+
+#RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y update && yum -y install epel-release \
+ && yum -y install glibc-common-*2.17* \
+ && yum -y install gcc \
+	gettext \
+	hostname \
+ 	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+	pgadmin4-v1-web \
+ && yum -y install postgresql10-devel postgresql10-server \
+ && yum -y clean all
+
+ENV PGROOT="/usr/pgsql-${PGVERSION}"
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+ADD bin/pgadmin4/ /opt/cpm/bin
+ADD conf/pgadmin4/ /opt/cpm/conf
+
+# open up the pgadmin4 http port
+EXPOSE 5050
+
+RUN mkdir -p /pgdata \
+ && chown -R root:root /pgdata /opt/cpm
+
+
+VOLUME ["/pgdata"]
+
+USER root
+
+CMD ["/opt/cpm/bin/start-pgadmin4.sh"]

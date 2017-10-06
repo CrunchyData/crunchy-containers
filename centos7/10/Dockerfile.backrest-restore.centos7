@@ -1,0 +1,59 @@
+FROM centos:7
+
+LABEL name="crunchydata/postgres" \
+        vendor="crunchy data" \
+        PostgresVersion="10.0" \
+        PostgresFullVersion="10.0.0" \
+        version="7.3" \
+        release="1.5" \
+        build-date="2017-09-15" \
+        url="https://crunchydata.com" \
+        summary="Executes the pgbackrest utility, allowing FULL & DELTA restore capability." \
+        description="Executes pgbackrest utility, allowing FULL & DELTA restore capability. Capable of mounting the pgbackrest.conf config file via /pgconf volume in addition to mounting the /backrestrepo for access to pgbackrest archives." \
+        io.k8s.description="backrest restore container" \
+        io.k8s.display-name="Crunchy backrest restore container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos10-10-2.noarch.rpm"
+
+#RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y update && yum -y install epel-release \
+ && yum -y install  \
+	hostname \
+	gettext \
+	nss_wrapper \
+	openssh-clients \
+ 	procps-ng  \
+ && yum -y clean all
+
+RUN yum -y install postgresql10-server  \
+        pgbackrest \
+ && yum -y clean all
+
+ENV	PGROOT="/usr/pgsql-${PGVERSION}"
+
+# add path settings for postgres user
+ADD conf/.bash_profile /var/lib/pgsql/
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgconf /backrestrepo \
+	/var/lib/pgsql /var/log/pgbackrest
+
+RUN chown -R postgres:postgres /opt/cpm  \
+	/pgdata /pgconf /backrestrepo  \
+	/var/lib/pgsql /var/log/pgbackrest
+
+# volume pgconf to store pgbackrest.conf
+# volume backrestrepo for pgbackrest to restore from and log
+
+VOLUME /pgconf /pgdata /backrestrepo
+
+ADD bin/backrest_restore /opt/cpm/bin
+ADD conf/backrest_restore /opt/cpm/conf
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]
