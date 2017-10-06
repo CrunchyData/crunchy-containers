@@ -264,26 +264,26 @@ shown with the previous command:
 psql -h ms-master -U testuser -W userdb
 ....
 
-=== Master / Scaling Replica
+=== Primary / Scaling Replica
 
 
 ==== Kubernetes
 
-This example starts a master pod, master service, replica pod, and replica
-service.  The replica is a replica of the master.  This example uses
+This example starts a primary pod, primary service, replica pod, and replica
+service.  The replica is a replica of the primary.  This example uses
 emptyDir volumes for persistence.  This example runs the replicas in a
 Deployment.  A deployment controller lets you scale up the replicas and
 create an initial replica set.
 
 Running the example:
 ....
-cd $CCPROOT/examples/kube/master-replica-dc
+cd $CCPROOT/examples/kube/primary-replica-dc
 ./run.sh
 ....
 
-You can insert data in the master and make sure it replicates to
+You can insert data in the primary and make sure it replicates to
 the replicas using the commands from Example 2 above.  Replace
-*master* with the *master-dc* name and *replica* with *replica-dc*.
+*primary* with the *primary-dc* name and *replica* with *replica-dc*.
 
 This example creates 2 replicas when it initially starts.  To scale
 up the number of replicas, run this command:
@@ -295,30 +295,30 @@ kubectl get pod
 ....
 
 You can verify that you now have 3 replicas by running this query
-on the master:
+on the primary:
 ....
-psql -h master-dc -U postgres postgres -c 'table pg_stat_replication'
+psql -h primary-dc -U postgres postgres -c 'table pg_stat_replication'
 ....
 
 
 ==== OpenShift
 
 This example is similar to the previous examples but
-builds a master pod, and a single replica that can be scaled up
-using a replication controller.   The master is implemented as
+builds a primary pod, and a single replica that can be scaled up
+using a replication controller. The primary is implemented as
 a single pod since it can not be scaled like read-only replicas.
 
 Running the example:
 
 ....
-cd $CCPROOT/examples/openshift/master-replica-dc
+cd $CCPROOT/examples/openshift/primary-replica-dc
 ./run.sh
 ....
 
 Connect to the PostgreSQL instances with the following:
 
 ....
-psql -h master-dc.pgproject.svc.cluster.local -U testuser userdb
+psql -h primary-dc.pgproject.svc.cluster.local -U testuser userdb
 psql -h replica-dc.pgproject.svc.cluster.local -U testuser userdb
 ....
 
@@ -328,24 +328,24 @@ Here is an example of increasing or scaling up the PostgreSQL 'replica' pods to 
 oc scale rc replica-dc-1 --replicas=2
 ....
 
-To check the *master* default password, enter the following command and look for
+To check the *primary* default password, enter the following command and look for
 the *PG_MASTER_USER* and *PG_MASTER_PASSWORD* variables:
 
 ....
-oc describe pod master-dc | grep PG
+oc describe pod primary-dc | grep PG
 ....
 
 Enter the following commands to verify the PostgreSQL replication is working, using
-the password for master found with the previous command.
+the password for primary found with the previous command.
 
 ....
-psql -c 'table pg_stat_replication' -h master-dc.pgproject.svc.cluster.local -U master postgres
+psql -c 'table pg_stat_replication' -h primary-dc.pgproject.svc.cluster.local -U master postgres
 psql -h replica-dc.pgproject.svc.cluster.local -U master postgres
 ....
 
 You can see that the replica service is load balancing between
 multiple replicas by running a command as follows, run the command
-multiple times and the ip address should alternate between
+multiple times and the IP address should alternate between
 the replicas:
 
 ....
@@ -679,43 +679,43 @@ The restore only takes place if:
 An example of performing a database failover is described
 in the following steps:
 
-* create a master and replica replication
+* create a primary and replica replication
 ....
-cd $CCPROOT/examples/openshift/master-replica-dc
+cd $CCPROOT/examples/openshift/primary-replica-dc
 ./run.sh
 ....
 * scale up the number of replicas to 2
 ....
 oc scale rc replica-dc-1 --replicas=2
 ....
-* delete the master pod
+* delete the primary pod
 ....
-oc delete pod master-dc
+oc delete pod primary-dc
 ....
 * exec into a replica and create a trigger file to being
-  the recovery process, effectively turning the replica into a master
+  the recovery process, effectively turning the replica into a primary
 ....
 oc exec -it replica-dc-1-lt5a5
 touch /tmp/pg-failover-trigger
 ....
-* change the label on the replica to master-dc instead of replica-dc
+* change the label on the replica to primary-dc instead of replica-dc
 ....
 oc edit pod/replica-dc-1-lt5a5
 original line: labels/name: replica-dc
-updated line: labels/name: master-dc
+updated line: labels/name: primary-dc
 ....
 
 * or alternatively:
 
 ....
-oc label --overwrite=true pod replica-dc-1-lt5a5 name=master-dc
+oc label --overwrite=true pod replica-dc-1-lt5a5 name=primary-dc
 ....
 
-You can test the failover by creating some data on the master
+You can test the failover by creating some data on the primary
 and then test to see if the replicas have the replicated data.
 
 ....
-psql -c 'create table foo (id int)' -U master -h master-dc postgres
+psql -c 'create table foo (id int)' -U master -h primary-dc postgres
 psql -c 'table foo' -U master -h replica-dc postgres
 ....
 
@@ -1647,10 +1647,10 @@ psql -h pgbouncer -U postgres master
 This example shows how you can use the crunchy-pgbouncer container
 when running under OpenShift.
 
-The example assumes you have run the master/replica example
+The example assumes you have run the primary/replica example
 found here:
 ....
-$CCPROOT/examples/openshift/master-replica-dc
+$CCPROOT/examples/openshift/primary-replica-dc
 ./run.sh
 ....
 
@@ -1669,22 +1669,22 @@ If you mount a /pgconf volume, crunchy-postgres will look at that directory
 for postgresql.conf, pg_hba.conf, and setup.sql.  If it finds one of them it
 will use that file instead of the default files.
 
-Test the example by killing off the master database container as
+Test the example by killing off the primary database container as
 follows:
 ....
-oc delete pod master-dc
+oc delete pod primary-dc
 ....
 
 Then watch the pgbouncer log as follows to confirm it detects the loss
-of the master:
+of the primary:
 ....
 oc logs pgbouncer
 ....
 
 After the failover is completed, you should be able to access
-the new master using the master service as follows:
+the new primary using the primary service as follows:
 ....
-psql -h master-dc.openshift.svc.cluster.local -U master postgres
+psql -h primary-dc.openshift.svc.cluster.local -U master postgres
 ....
 
 and access the replica as follows:
@@ -2393,20 +2393,20 @@ kubectl describe pod replica | grep Label
 ==== OpenShift
 
 This example shows how a form of automated failover can be
-configured for a master and replica deployment.
+configured for a primary and replica deployment.
 
-First, create a master and a replica, in this case the replica lives in a
-Deployment which can scale up:
+First, create a primary and a replica. In this case, the primary lives in a
+deployment which can scale up:
 
 ....
-cd $CCPROOT/examples/openshift/master-replica-dc
+cd $CCPROOT/examples/openshift/primary-replica-dc
 ./run.sh
 ....
 
 Next, create an OpenShift service account which is used by the crunchy-watch
-container to perform the failover, also set policies that allow the
+container to perform the failover. Also, set policies that allow the
 service account the ability to edit resources within the OpenShift and
-default projects :
+default projects:
 
 ....
 cd $CCPROOT/examples/openshift/watch
@@ -2422,28 +2422,28 @@ Next, create the container that will 'watch' the PostgreSQL cluster:
 ....
 
 At this point, the watcher will sleep every 20 seconds (configurable) to
-see if the master is responding.  If the master doesn't respond, the watcher
+see if the primary is responding. If the primary doesn't respond, the watcher
 will perform the following logic:
 
  * log into OpenShift using the service account
  * set its current project
  * find the first replica pod
- * delete the master service saving off the master service definition
+ * delete the primary service saving off the primary service definition
  * create the trigger file on the first replica pod
  * wait 20 seconds for the failover to complete on the replica pod
- * edit the replica pod's label to match that of the master
- * recreate the master service using the stored service definition
+ * edit the replica pod's label to match that of the primary
+ * recreate the primary service using the stored service definition
  * loop through the other remaining replica and delete its pod
 
-At this point, clients when access the master's service will actually
-be accessing the new master.  Also, OpenShift will recreate the number
+At this point, clients when access the primary's service will actually
+be accessing the new primary.  Also, OpenShift will recreate the number
 of replicas to its original configuration which each replica pointed to the
-new master.  Replication from the master to the new replicas will be
+new primary.  Replication from the primary to the new replicas will be
 started as each new replica is started by OpenShift.
 
-To test it out, delete the master pod and view the watch pod log:
+To test it out, delete the primary pod and view the watch pod log:
 ....
-oc delete pod master-dc
+oc delete pod primary-dc
 oc logs watch
 oc get pod
 ....

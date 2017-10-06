@@ -13,13 +13,14 @@
 # limitations under the License.
 
 source $CCPROOT/examples/envvars.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-kubectl scale --replicas=0 deployment/replica-dc
-sleep 1
-kubectl delete deployment replica-dc
-sleep 3
-kubectl delete pod master-dc
-sleep 3
-kubectl delete service master-dc
-kubectl delete service replica-dc
+$DIR/cleanup.sh
+
+kubectl create -f $DIR/primary-service.json
+kubectl create -f $DIR/replica-service.json
+envsubst < $DIR/primary-pod.json | kubectl create -f -
+echo "sleeping till primary is alive..."
+sleep 30
+envsubst < $DIR/replica-dc.json | kubectl create -f -

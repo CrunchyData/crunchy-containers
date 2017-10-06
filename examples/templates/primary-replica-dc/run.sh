@@ -13,9 +13,8 @@
 # limitations under the License.
 
 source $CCPROOT/examples/envvars.sh
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-oc process -f $DIR/master-replica.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/primary-replica-dc.json 

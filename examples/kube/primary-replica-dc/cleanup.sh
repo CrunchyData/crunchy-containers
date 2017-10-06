@@ -12,10 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete dc replica-dc
-oc delete service master-dc
-oc delete service replica-dc
-oc delete pod master-dc
-oc delete pod -l name=replica-dc
-oc delete pod -l name=master-dc
-$CCPROOT/examples/waitforterm.sh master-dc oc
+source $CCPROOT/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+kubectl scale --replicas=0 deployment/replica-dc
+sleep 1
+kubectl delete deployment replica-dc
+sleep 3
+kubectl delete pod primary-dc
+sleep 3
+kubectl delete service primary-dc
+kubectl delete service replica-dc

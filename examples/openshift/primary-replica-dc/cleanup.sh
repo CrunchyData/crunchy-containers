@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-$DIR/cleanup.sh
-
-oc create -f $DIR/master-replica-dc.json 
+oc delete dc replica-dc
+oc delete service primary-dc
+oc delete service replica-dc
+oc delete pod primary-dc
+oc delete pod -l name=replica-dc
+oc delete pod -l name=primary-dc
+$CCPROOT/examples/waitforterm.sh primary-dc oc
