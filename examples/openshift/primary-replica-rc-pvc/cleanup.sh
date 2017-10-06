@@ -16,6 +16,13 @@ source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+oc delete dc m-s-rc-pvc-replica
+oc delete pod m-s-rc-pvc-primary
+oc delete pod m-s-rc-pvc-replica
+oc delete pod -l name=m-s-rc-pvc-primary
+$CCPROOT/examples/waitforterm.sh m-s-rc-pvc-primary oc
+$CCPROOT/examples/waitforterm.sh m-s-rc-pvc-replica oc
+oc delete service m-s-rc-pvc-primary
+oc delete service m-s-rc-pvc-replica
 
-oc process -f $DIR/master-replica.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+sudo rm -rf $PV_PATH/m-s-rc-pvc*

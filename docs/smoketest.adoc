@@ -56,7 +56,7 @@ For each container, a link is added below that corresponds to the link:https://g
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-2[master-replica-dc]
 
 | -
-| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-3[master-replica-rc-pvc]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-3[primary-replica-rc-pvc]
 | -
 
 | -
