@@ -12,14 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
-
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-$DIR/cleanup.sh
-
-kubectl create -f $DIR/master-service.json
-kubectl create -f $DIR/replica-service.json
-envsubst < $DIR/master-pod.json | kubectl create -f -
-envsubst < $DIR/replica-pod.json | kubectl create -f -
-envsubst < $DIR/replica-2-pod.json | kubectl create -f -
+kubectl delete service master-dc
+kubectl delete service replica-dc
+kubectl delete deploy master-dc replica-dc replica2-dc
+kubectl delete configmap postgresql-conf
+kubectl delete secret pguser-secret pgmaster-secret pgroot-secret

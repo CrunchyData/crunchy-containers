@@ -14,7 +14,7 @@
 
 source $CCPROOT/examples/envvars.sh
 
-echo "this example depends on the master-replica example being run prior"
+echo "This example depends on the primary-replica example being run prior!"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 

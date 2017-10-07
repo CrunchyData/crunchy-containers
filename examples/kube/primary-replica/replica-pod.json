@@ -2,7 +2,7 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "ms-replica-2",
+        "name": "ms-replica",
         "labels": {
             "name": "ms-replica",
             "slavetype": "trigger"
@@ -18,7 +18,7 @@
                         "/opt/cpm/bin/readiness.sh"
                     ]
                 },
-                "initialDelaySeconds": 50,
+                "initialDelaySeconds": 70,
                 "timeoutSeconds": 1
             },
             "livenessProbe": {
@@ -27,7 +27,7 @@
                         "/opt/cpm/bin/liveness.sh"
                     ]
                 },
-                "initialDelaySeconds": 50,
+                "initialDelaySeconds": 70,
                 "timeoutSeconds": 1
             },
 
@@ -40,7 +40,7 @@
                 "value": "/tmp"
             }, {
                 "name": "PG_MASTER_HOST",
-                "value": "ms-master"
+                "value": "ms-primary"
             }, {
                 "name": "PG_MASTER_USER",
                 "value": "master"

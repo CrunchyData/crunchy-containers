@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,23 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "cleaning up ..."
 
-$DIR/backup/run.sh
-$DIR/badger/run.sh
-$DIR/collect/run.sh
-$DIR/master-collect-badger/run.sh
-$DIR/primary-replica-dc/run.sh
-$DIR/primary-replica/run.sh
-$DIR/master-restore/run.sh
-$DIR/metrics/run.sh
-$DIR/pgadmin4/run.sh
-$DIR/pgbouncer/run.sh
-$DIR/pgpool/run.sh
-$DIR/replica-dc/run.sh
-$DIR/secret/run.sh
-$DIR/single-master/run.sh
-$DIR/single-replica/run.sh
-$DIR/sync/run.sh
-$DIR/watch/run.sh
+CONTAINER_NAME=primary
+VOLUME_NAME=primary-volume
+
+docker stop $CONTAINER_NAME
+docker rm -v $CONTAINER_NAME
+docker volume rm $VOLUME_NAME
+
+CONTAINER_NAME=replica
+VOLUME_NAME=replica-volume
+
+docker stop $CONTAINER_NAME
+docker rm -v $CONTAINER_NAME
+docker volume rm $VOLUME_NAME

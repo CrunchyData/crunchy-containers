@@ -12,6 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete service ms-master ms-replica
-oc delete pod ms-master ms-replica
-$CCPROOT/examples/waitforterm.sh ms-master oc
+source $CCPROOT/examples/envvars.sh
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
+
+oc process -f $DIR/primary-replica.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG  | oc create -f -
