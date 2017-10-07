@@ -41,7 +41,7 @@
         "name": "PG_MASTER_SERVICE_NAME",
         "value": "m-s-rc-pvc-primary"
     }, {
-        "name": "PG_SLAVE_SERVICE_NAME",
+        "name": "PG_REPLICA_SERVICE_NAME",
         "value": "m-s-rc-pvc-replica"
     }],
     "objects": [{
@@ -71,9 +71,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${PG_SLAVE_SERVICE_NAME}",
+            "name": "${PG_REPLICA_SERVICE_NAME}",
             "labels": {
-                "name": "${PG_SLAVE_SERVICE_NAME}"
+                "name": "${PG_REPLICA_SERVICE_NAME}"
             }
         },
         "spec": {
@@ -84,7 +84,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "${PG_SLAVE_SERVICE_NAME}"
+                "name": "${PG_REPLICA_SERVICE_NAME}"
             }
         },
         "status": {
@@ -178,7 +178,7 @@
         "kind": "DeploymentConfig",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${PG_SLAVE_SERVICE_NAME}",
+            "name": "${PG_REPLICA_SERVICE_NAME}",
             "creationTimestamp": null
         },
         "spec": {
@@ -191,13 +191,13 @@
             }],
             "replicas": 1,
             "selector": {
-                "name": "${PG_SLAVE_SERVICE_NAME}"
+                "name": "${PG_REPLICA_SERVICE_NAME}"
             },
             "template": {
                 "metadata": {
                     "creationTimestamp": null,
                     "labels": {
-                        "name": "${PG_SLAVE_SERVICE_NAME}"
+                        "name": "${PG_REPLICA_SERVICE_NAME}"
                     }
                 },
                 "spec": {

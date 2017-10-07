@@ -103,7 +103,7 @@ REPLICA{
                     "description": "The master configured in pgbouncer",
                     "value": "ms-master"
                 }, {
-                    "name": "PG_SLAVE_SERVICE",
+                    "name": "PG_REPLICA_SERVICE",
                     "description": "The replica configured in pgbouncer",
                     "value": "ms-replica"
                 }],

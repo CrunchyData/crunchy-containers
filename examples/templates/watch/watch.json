@@ -78,7 +78,7 @@
                     "name": "PG_MASTER_SERVICE",
                     "value": "${MASTER_TO_WATCH}"
                 }, {
-                    "name": "PG_SLAVE_SERVICE",
+                    "name": "PG_REPLICA_SERVICE",
                     "value": "${SLAVE_TO_WATCH}"
                 }, {
                     "name": "PG_MASTER_PORT",

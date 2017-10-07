@@ -48,7 +48,7 @@ echo "WAIT_TIME is set to " $WAIT_TIME
 echo "MAX_FAILURES is set to " $MAX_FAILURES
 
 export PG_MASTER_SERVICE=$PG_MASTER_SERVICE
-export PG_SLAVE_SERVICE=$PG_SLAVE_SERVICE
+export PG_REPLICA_SERVICE=$PG_REPLICA_SERVICE
 export PG_MASTER_PORT=$PG_MASTER_PORT
 export PG_MASTER_USER=$PG_MASTER_USER
 export PG_USER=$PG_USER
@@ -96,8 +96,8 @@ function standalone_failover() {
 	# env var is required to talk to older docker
 	# server using a more recent docker client
 	export DOCKER_API_VERSION=1.20
-	echo "creating the trigger file on " $PG_SLAVE_SERVICE
-	docker exec $PG_SLAVE_SERVICE touch /tmp/pg-failover-trigger
+	echo "creating the trigger file on " $PG_REPLICA_SERVICE
+	docker exec $PG_REPLICA_SERVICE touch /tmp/pg-failover-trigger
 	echo "exiting after the failover has been triggered..."
 	exit 0
 }
@@ -109,11 +109,11 @@ function kube_failover() {
 	#oc project $OSE_PROJECT
 	echo "performing failover..."
 
-	TRIGGERSLAVES=`kubectl --token=$TOKEN get pod --selector=name=$PG_SLAVE_SERVICE,slavetype=trigger --no-headers | cut -f1 -d' '`
+	TRIGGERSLAVES=`kubectl --token=$TOKEN get pod --selector=name=$PG_REPLICA_SERVICE,slavetype=trigger --no-headers | cut -f1 -d' '`
 	echo $TRIGGERSLAVES " is TRIGGERSLAVES"
 	if [ "$TRIGGERSLAVES" = "" ]; then
 		echo "no trigger slaves found...using any slave"
-		SLAVES=`kubectl --token=$TOKEN get pod --selector=name=$PG_SLAVE_SERVICE --no-headers | cut -f1 -d' '`
+		SLAVES=`kubectl --token=$TOKEN get pod --selector=name=$PG_REPLICA_SERVICE --no-headers | cut -f1 -d' '`
 	else
 		echo "trigger slaves found!"
 		SLAVES=$TRIGGERSLAVES
@@ -152,11 +152,11 @@ function ose_failover() {
 	echo "sleeping for 10 to give slaves chance to halt..."
 	sleep 10
 
-	TRIGGERSLAVES=`oc get pod --selector=name=$PG_SLAVE_SERVICE,slavetype=trigger --no-headers | cut -f1 -d' '`
+	TRIGGERSLAVES=`oc get pod --selector=name=$PG_REPLICA_SERVICE,slavetype=trigger --no-headers | cut -f1 -d' '`
 	echo $TRIGGERSLAVES " is TRIGGERSLAVES"
 	if [ "$TRIGGERSLAVES" = "" ]; then
 		echo "no trigger slaves found...using any slave"
-		SLAVES=`oc get pod --selector=name=$PG_SLAVE_SERVICE --no-headers | cut -f1 -d' '`
+		SLAVES=`oc get pod --selector=name=$PG_REPLICA_SERVICE --no-headers | cut -f1 -d' '`
 	else
 		echo "trigger slaves found!"
 		SLAVES=$TRIGGERSLAVES

@@ -30,7 +30,7 @@
         "description": "The master configured in pgpool",
         "value": "ms-master"
     }, {
-        "name": "PG_SLAVE_SERVICE_NAME",
+        "name": "PG_REPLICA_SERVICE_NAME",
         "description": "The replica configured in pgpool",
         "value": "ms-replica"
     }],
@@ -105,8 +105,8 @@
                             "name": "PG_MASTER_SERVICE_NAME",
                             "value": "${PG_MASTER_SERVICE_NAME}"
                         }, {
-                            "name": "PG_SLAVE_SERVICE_NAME",
-                            "value": "${PG_SLAVE_SERVICE_NAME}"
+                            "name": "PG_REPLICA_SERVICE_NAME",
+                            "value": "${PG_REPLICA_SERVICE_NAME}"
                         }],
                         "resources": {},
                         "terminationMessagePath": "/dev/termination-log",

@@ -35,7 +35,7 @@
         "description": "The database master configured in pgpool",
         "value": "pgmaster"
     }, {
-        "name": "PG_SLAVE_SERVICE_NAME",
+        "name": "PG_REPLICA_SERVICE_NAME",
         "description": "The database replica configured in pgpool",
         "value": "pgreplica"
     }],
@@ -107,8 +107,8 @@
                             "name": "PG_MASTER_SERVICE_NAME",
                             "value": "${PG_MASTER_SERVICE_NAME}"
                         }, {
-                            "name": "PG_SLAVE_SERVICE_NAME",
-                            "value": "${PG_SLAVE_SERVICE_NAME}"
+                            "name": "PG_REPLICA_SERVICE_NAME",
+                            "value": "${PG_REPLICA_SERVICE_NAME}"
                         }],
                         "resources": {},
                         "terminationMessagePath": "/dev/termination-log",

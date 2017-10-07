@@ -24,7 +24,7 @@ docker run \
 	--link master:master \
 	--link replica:replica \
 	-e PG_MASTER_SERVICE_NAME=master \
-	-e PG_SLAVE_SERVICE_NAME=replica \
+	-e PG_REPLICA_SERVICE_NAME=replica \
 	-e PG_USERNAME=testuser \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=postgres \
