@@ -35,11 +35,6 @@ wget -O $CCPROOT/node_exporter.tar.gz https://github.com/prometheus/node_exporte
 chmod +x postgres_exporter
 
 #
-# download postage source package, required to build the container
-#
-wget -O $CCPROOT/postage.tar.gz https://github.com/workflowproducts/postage/archive/eV3.2.16.tar.gz
-
-#
 # this set is required to build the docs with a2x
 #
 sudo yum -y install asciidoc ruby
