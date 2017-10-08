@@ -28,4 +28,3 @@ docker push  crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG
 docker push  crunchydata/crunchy-pgadmin4:$CCP_IMAGE_TAG
 docker push  crunchydata/crunchy-vacuum:$CCP_IMAGE_TAG
 docker push  crunchydata/crunchy-dba:$CCP_IMAGE_TAG
-docker push crunchydata/crunchy-postage:$CCP_IMAGE_TAG
