@@ -15,25 +15,29 @@
 
 set -x
 set -e
-function verify {
-  : ${CCPROOT?"ERROR: Need to set CCPROOT To the root directory for this repository."}
-}
-source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-echo "Executing with root dir = $DIR, and crunchy containers root = $CCPROOT."
+function verify {
+  : ${CCPROOT?"ERROR: Need to set CCPROOT To the root directory for this repository."}
+  echo "Executing with root dir = $DIR, and crunchy containers root = $CCPROOT."
+  ${DIR}/cleanup.sh
+}
 
-${DIR}/cleanup.sh
-kubectl create -f $DIR/master-service.json
-kubectl create -f $DIR/replica-service.json
+function create {
+  kubectl create -f $DIR/master-service.json
+  kubectl create -f $DIR/replica-service.json
+  kubectl create -f $DIR/pguser-secret.json
+  kubectl create -f $DIR/pgmaster-secret.json
+  kubectl create -f $DIR/pgroot-secret.json
+  kubectl create configmap postgresql-conf --from-file=postgresql.conf --from-file=pghba=pg_hba.conf --from-file=setup.sql
+  python envsubst.py < $DIR/master-dc.json | kubectl create -f -
+  python envsubst.py < $DIR/replica-dc.json | kubectl create -f -
+  python envsubst.py < $DIR/replica2-dc.json | kubectl create -f -
+}
 
-kubectl create -f $DIR/pguser-secret.json
-kubectl create -f $DIR/pgmaster-secret.json
-kubectl create -f $DIR/pgroot-secret.json
+verify
 
-kubectl create configmap postgresql-conf --from-file=postgresql.conf --from-file=pghba=pg_hba.conf --from-file=setup.sql
+source $CCPROOT/examples/envvars.sh
 
-python envsubst.py < $DIR/master-dc.json | kubectl create -f -
-python envsubst.py < $DIR/replica-dc.json | kubectl create -f -
-python envsubst.py < $DIR/replica2-dc.json | kubectl create -f -
+create
