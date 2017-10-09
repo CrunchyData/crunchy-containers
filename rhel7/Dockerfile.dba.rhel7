@@ -4,7 +4,7 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/dba" \
 				vendor="crunchy data" \
 				version="7.3" \
-				release="1.5" \
+				release="1.6.0" \
 				#build-date="2017-05-11" \
 				url="https://crunchydata.com" \
 				summary="Implements a cron scheduler." \
