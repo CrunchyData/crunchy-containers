@@ -1,7 +1,7 @@
 = Installation Guide - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
 :toc: left
-v1.5, {docdate}
+v1.6, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Project Setup & Docker Installation
@@ -31,8 +31,9 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
 export CCP_PGVERSION=9.6
-export CCP_VERSION=1.5
-export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PGVERSION-$CCP_VERSION
+export CCP_PG_FULLVERSION=9.6.5
+export CCP_VERSION=1.6.0
+export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 ....
 It will be necessary to log out and back in for the changes to your .bashrc
@@ -49,7 +50,7 @@ mkdir crunchydata
 cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 1.5
+git checkout 1.6.0
 godep restore
 ....
 
