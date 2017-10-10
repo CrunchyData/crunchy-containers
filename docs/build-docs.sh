@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Fail on error
+set -e 
+
 # Generate PDFs -
 
 a2x -f pdf ./examples.adoc
@@ -24,6 +27,7 @@ a2x -f pdf ./pitr.adoc
 
 # Generate XHTML files into the ./xhtml/ directory -
 
+mkdir -p xhtml
 a2x -f xhtml ./examples.adoc -D ./xhtml/
 a2x -f xhtml ./dedicated.adoc -D ./xhtml/
 a2x -f xhtml ./install.adoc -D ./xhtml/
