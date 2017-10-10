@@ -28,7 +28,7 @@
                         "name": "PG_PRIMARY_HOST",
                         "value": "master-dc"
                     }, {
-                        "name": "PG_MASTER_SERVICE_NAME",
+                        "name": "PG_PRIMARY_SERVICE_NAME",
                         "value": "master-dc"
                     }, {
                         "name": "PG_PRIMARY_PORT",

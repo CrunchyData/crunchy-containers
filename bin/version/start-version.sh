@@ -31,7 +31,7 @@ if [ ! -v SLEEP_TIME ]; then
 fi
 echo "SLEEP_TIME is set to " $SLEEP_TIME
 
-export PG_MASTER_SERVICE=$PG_MASTER_SERVICE
+export PG_PRIMARY_SERVICE=$PG_PRIMARY_SERVICE
 export GIT_USER_NAME=$GIT_USER_NAME
 export GIT_USER_EMAIL=$GIT_USER_EMAIL
 export PG_PRIMARY_PORT=$PG_PRIMARY_PORT
@@ -58,7 +58,7 @@ git config --global user.email $GIT_USER_EMAIL
 git config --global push.default simple
 
 pg_dump --schema-only --username=$PG_PRIMARY_USER --dbname=$PG_DATABASE \
-	--host=$PG_MASTER_SERVICE > /tmp/schema.sql
+	--host=$PG_PRIMARY_SERVICE > /tmp/schema.sql
 
 cd /gitrepo
 GIT_PROJECT=`ls | cut -f1 -d' '`

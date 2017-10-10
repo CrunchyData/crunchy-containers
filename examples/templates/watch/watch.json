@@ -75,7 +75,7 @@
                     "name": "REPLICA_TO_TRIGGER_LABEL",
                     "value": "${REPLICA_TO_TRIGGER}"
                 }, {
-                    "name": "PG_MASTER_SERVICE",
+                    "name": "PG_PRIMARY_SERVICE",
                     "value": "${MASTER_TO_WATCH}"
                 }, {
                     "name": "PG_REPLICA_SERVICE",

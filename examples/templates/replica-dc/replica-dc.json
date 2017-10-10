@@ -43,7 +43,7 @@
         "description": "The password for the PostgreSQL administrator",
         "value": "password"
     }, {
-        "name": "PG_MASTER_SERVICE_NAME",
+        "name": "PG_PRIMARY_SERVICE_NAME",
         "description": "The name of the PostgreSQL master ",
         "value": "pg-master-dc"
     }, {
@@ -151,10 +151,10 @@
                         }],
                         "env": [{
                             "name": "PG_PRIMARY_HOST",
-                            "value": "${PG_MASTER_SERVICE_NAME}"
+                            "value": "${PG_PRIMARY_SERVICE_NAME}"
                         }, {
-                            "name": "PG_MASTER_SERVICE_NAME",
-                            "value": "${PG_MASTER_SERVICE_NAME}"
+                            "name": "PG_PRIMARY_SERVICE_NAME",
+                            "value": "${PG_PRIMARY_SERVICE_NAME}"
                         }, {
                             "name": "PG_PRIMARY_PORT",
                             "value": "5432"

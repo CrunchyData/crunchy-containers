@@ -19,7 +19,7 @@ if [ ! -v SLEEP_TIME ]; then
 fi
 echo "SLEEP_TIME is set to " $SLEEP_TIME
 
-export PG_MASTER_SERVICE=$PG_MASTER_SERVICE
+export PG_PRIMARY_SERVICE=$PG_PRIMARY_SERVICE
 export PG_REPLICA_SERVICE=$PG_REPLICA_SERVICE
 export PG_PRIMARY_PORT=$PG_PRIMARY_PORT
 export PG_PRIMARY_USER=$PG_PRIMARY_USER
@@ -98,8 +98,8 @@ function kube_failover() {
 			kubectl exec $i touch /tmp/pg-failover-trigger
 			echo "sleeping 60 secs to give failover a chance before setting label"
 			sleep 60
-			echo "changing label of replica to " $PG_MASTER_SERVICE
-			kubectl label --overwrite=true pod $i name=$PG_MASTER_SERVICE
+			echo "changing label of replica to " $PG_PRIMARY_SERVICE
+			kubectl label --overwrite=true pod $i name=$PG_PRIMARY_SERVICE
 		else
 			echo "deleting old replica " $i
 			kubectl delete pod $i
@@ -115,8 +115,8 @@ function ose_failover() {
 	oc projects $OSE_PROJECT
 	echo "performing failover..."
 	echo "deleting master service to block replicas..."
-	oc get service $PG_MASTER_SERVICE -o json > /tmp/master-service.json
-	oc delete service $PG_MASTER_SERVICE
+	oc get service $PG_PRIMARY_SERVICE -o json > /tmp/master-service.json
+	oc delete service $PG_PRIMARY_SERVICE
 	echo "sleeping for 10 to give replicas chance to halt..."
 	sleep 10
 
@@ -141,8 +141,8 @@ function ose_failover() {
 			oc exec $i touch /tmp/pg-failover-trigger
 			echo "sleeping 60 secs to give failover a chance before setting label"
 			sleep 60
-			echo "changing label of replica to " $PG_MASTER_SERVICE
-			oc label --overwrite=true pod $i name=$PG_MASTER_SERVICE
+			echo "changing label of replica to " $PG_PRIMARY_SERVICE
+			oc label --overwrite=true pod $i name=$PG_PRIMARY_SERVICE
 			echo "recreating master service..."
 			oc create -f /tmp/master-service.json
 		else
@@ -156,7 +156,7 @@ function ose_failover() {
 
 while true; do
 	sleep $SLEEP_TIME
-	pg_isready  --dbname=$PG_DATABASE --host=$PG_MASTER_SERVICE --port=$PG_PRIMARY_PORT --username=$PG_PRIMARY_USER
+	pg_isready  --dbname=$PG_DATABASE --host=$PG_PRIMARY_SERVICE --port=$PG_PRIMARY_PORT --username=$PG_PRIMARY_USER
 	if [ $? -eq 0 ]
 	then
 		:

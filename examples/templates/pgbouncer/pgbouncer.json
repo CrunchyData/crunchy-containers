@@ -114,7 +114,7 @@
                     "description": "The master port configured in pgbouncer",
                     "value": "5432"
                 }, {
-                    "name": "PG_MASTER_SERVICE",
+                    "name": "PG_PRIMARY_SERVICE",
                     "description": "The master configured in pgbouncer",
                     "value": "pg-master-rc-dc"
                 }, {

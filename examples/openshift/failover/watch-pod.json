@@ -22,7 +22,7 @@
                 "name": "MAX_FAILURES",
                 "value": "1"
             }, {
-                "name": "PG_MASTER_SERVICE",
+                "name": "PG_PRIMARY_SERVICE",
                 "value": "master-dc"
             }, {
                 "name": "PG_REPLICA_SERVICE",

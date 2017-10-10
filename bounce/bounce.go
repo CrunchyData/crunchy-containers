@@ -106,7 +106,7 @@ func replace(instring string) string {
 	var pos = strings.Index(instring, "=")
 	var length = len(instring)
 	//var OSE_PROJECT = os.Getenv("OSE_PROJECT")
-	//var PG_MASTER_SERVICE = os.Getenv("PG_MASTER_SERVICE")
+	//var PG_PRIMARY_SERVICE = os.Getenv("PG_PRIMARY_SERVICE")
 
 	return "master " + instring[pos:length] + "\n"
 }

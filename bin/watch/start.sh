@@ -47,7 +47,7 @@ echo "SLEEP_TIME is set to " $SLEEP_TIME
 echo "WAIT_TIME is set to " $WAIT_TIME
 echo "MAX_FAILURES is set to " $MAX_FAILURES
 
-export PG_MASTER_SERVICE=$PG_MASTER_SERVICE
+export PG_PRIMARY_SERVICE=$PG_PRIMARY_SERVICE
 export PG_REPLICA_SERVICE=$PG_REPLICA_SERVICE
 export PG_PRIMARY_PORT=$PG_PRIMARY_PORT
 export PG_PRIMARY_USER=$PG_PRIMARY_USER
@@ -134,8 +134,8 @@ function kube_failover() {
 			kubectl --token=$TOKEN exec $i touch /tmp/pg-failover-trigger
 			echo "Sleeping WAIT_TIME to give failover a chance before setting label"
 			sleep $WAIT_TIME
-			echo "Changing label of replica to " $PG_MASTER_SERVICE
-			kubectl --token=$TOKEN label --overwrite=true pod $i name=$PG_MASTER_SERVICE
+			echo "Changing label of replica to " $PG_PRIMARY_SERVICE
+			kubectl --token=$TOKEN label --overwrite=true pod $i name=$PG_PRIMARY_SERVICE
 		fi
 	done
 	echo "Failover completed @ " `date`
@@ -147,8 +147,8 @@ function ose_failover() {
 	oc project $OSE_PROJECT
 	echo "Performing failover..."
 #	echo "deleting master service to block replicas..."
-#	oc get service $PG_MASTER_SERVICE -o json > /tmp/master-service.json
-#	oc delete service $PG_MASTER_SERVICE
+#	oc get service $PG_PRIMARY_SERVICE -o json > /tmp/master-service.json
+#	oc delete service $PG_PRIMARY_SERVICE
 	echo "Sleeping for 10 to give replicas chance to halt..."
 	sleep 10
 
@@ -177,8 +177,8 @@ function ose_failover() {
 			oc exec $i touch /tmp/pg-failover-trigger
 			echo "Sleeping WAIT_TIME to give failover a chance before setting label..."
 			sleep $WAIT_TIME
-			echo "Changing label of replica to " $PG_MASTER_SERVICE
-			oc label --overwrite=true pod $i name=$PG_MASTER_SERVICE
+			echo "Changing label of replica to " $PG_PRIMARY_SERVICE
+			oc label --overwrite=true pod $i name=$PG_PRIMARY_SERVICE
 		fi
 	done
 	echo "Failover completed @ " `date`
@@ -208,7 +208,7 @@ while true; do
 		exit 0
 	fi
 	sleep $SLEEP_TIME
-	pg_isready  --dbname=$PG_DATABASE --host=$PG_MASTER_SERVICE --port=$PG_PRIMARY_PORT --username=$PG_PRIMARY_USER
+	pg_isready  --dbname=$PG_DATABASE --host=$PG_PRIMARY_SERVICE --port=$PG_PRIMARY_PORT --username=$PG_PRIMARY_USER
 	if [ $? -eq 0 ]
 	then
 		echo "Successfully reached master @ " `date`

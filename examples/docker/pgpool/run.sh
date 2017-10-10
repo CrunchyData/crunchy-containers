@@ -23,7 +23,7 @@ docker run \
 	-p 12003:5432 \
 	--link master:master \
 	--link replica:replica \
-	-e PG_MASTER_SERVICE_NAME=master \
+	-e PG_PRIMARY_SERVICE_NAME=master \
 	-e PG_REPLICA_SERVICE_NAME=replica \
 	-e PG_USERNAME=testuser \
 	-e PG_PASSWORD=password \

@@ -29,7 +29,7 @@ sudo docker run \
 	-v /run/docker.sock:/run/docker.sock \
 	-e FAILOVER=true \
 	-e SLEEP_TIME=12 \
-	-e PG_MASTER_SERVICE=master \
+	-e PG_PRIMARY_SERVICE=master \
 	-e PG_REPLICA_SERVICE=replica \
 	-e PG_PRIMARY_PORT=5432 \
 	-e PG_PRIMARY_USER=masteruser \

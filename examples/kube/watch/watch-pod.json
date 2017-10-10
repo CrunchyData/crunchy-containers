@@ -25,7 +25,7 @@
                 "name": "REPLICA_TO_TRIGGER_LABEL",
                 "value": "ms-replica-2"
             }, {
-                "name": "PG_MASTER_SERVICE",
+                "name": "PG_PRIMARY_SERVICE",
                 "value": "ms-master"
             }, {
                 "name": "PG_REPLICA_SERVICE",

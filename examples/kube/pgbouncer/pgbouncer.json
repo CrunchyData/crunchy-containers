@@ -43,7 +43,7 @@
                 "name": "PG_PRIMARY_PORT",
                 "value": "5432"
             }, {
-                "name": "PG_MASTER_SERVICE",
+                "name": "PG_PRIMARY_SERVICE",
                 "value": "ms-master"
             }, {
                 "name": "PG_REPLICA_SERVICE",

@@ -41,7 +41,7 @@
                     "name": "REPLICA_TO_TRIGGER_LABEL",
                     "value": "thisone"
                 }, {
-                    "name": "PG_MASTER_SERVICE",
+                    "name": "PG_PRIMARY_SERVICE",
                     "value": "master"
                 }, {
                     "name": "PG_REPLICA_SERVICE",

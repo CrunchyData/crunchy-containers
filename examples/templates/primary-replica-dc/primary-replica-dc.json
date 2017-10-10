@@ -43,7 +43,7 @@
         "description": "The password for the PostgreSQL administrator",
         "value": "password"
     }, {
-        "name": "PG_MASTER_SERVICE_NAME",
+        "name": "PG_PRIMARY_SERVICE_NAME",
         "description": "The name of the PostgreSQL master ",
         "value": "pg-master-dc"
     }, {
@@ -75,9 +75,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${PG_MASTER_SERVICE_NAME}",
+            "name": "${PG_PRIMARY_SERVICE_NAME}",
             "labels": {
-                "name": "${PG_MASTER_SERVICE_NAME}"
+                "name": "${PG_PRIMARY_SERVICE_NAME}"
             }
         },
         "spec": {
@@ -88,7 +88,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "${PG_MASTER_SERVICE_NAME}"
+                "name": "${PG_PRIMARY_SERVICE_NAME}"
             }
         },
         "status": {
@@ -122,9 +122,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${PG_MASTER_SERVICE_NAME}",
+            "name": "${PG_PRIMARY_SERVICE_NAME}",
             "labels": {
-                "name": "${PG_MASTER_SERVICE_NAME}"
+                "name": "${PG_PRIMARY_SERVICE_NAME}"
             }
 
         },
@@ -158,7 +158,7 @@
                 }],
                 "env": [{
                     "name": "PG_PRIMARY_HOST",
-                    "value": "${PG_MASTER_SERVICE_NAME}"
+                    "value": "${PG_PRIMARY_SERVICE_NAME}"
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"
@@ -178,8 +178,8 @@
                     "name": "WORK_MEM",
                     "value": "${WORK_MEM}"
                 }, {
-                    "name": "PG_MASTER_SERVICE_NAME",
-                    "value": "${PG_MASTER_SERVICE_NAME}"
+                    "name": "PG_PRIMARY_SERVICE_NAME",
+                    "value": "${PG_PRIMARY_SERVICE_NAME}"
                 }, {
                     "name": "PG_PRIMARY_PORT",
                     "value": "5432"
@@ -279,10 +279,10 @@
                         }],
                         "env": [{
                             "name": "PG_PRIMARY_HOST",
-                            "value": "${PG_MASTER_SERVICE_NAME}"
+                            "value": "${PG_PRIMARY_SERVICE_NAME}"
                         }, {
-                            "name": "PG_MASTER_SERVICE_NAME",
-                            "value": "${PG_MASTER_SERVICE_NAME}"
+                            "name": "PG_PRIMARY_SERVICE_NAME",
+                            "value": "${PG_PRIMARY_SERVICE_NAME}"
                         }, {
                             "name": "PG_PRIMARY_PORT",
                             "value": "5432"

@@ -23,7 +23,7 @@
                 "name": "PG_PASSWORD",
                 "value": "password"
             }, {
-                "name": "PG_MASTER_SERVICE_NAME",
+                "name": "PG_PRIMARY_SERVICE_NAME",
                 "value": "ms-master"
             }, {
                 "name": "PG_REPLICA_SERVICE_NAME",
