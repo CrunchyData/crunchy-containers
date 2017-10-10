@@ -23,5 +23,5 @@ oc create -f $DIR/ceph-secret.json
 oc create -f $DIR/ceph-pv.json
 oc create -f $DIR/ceph-pvc.json
 
-oc process -f $DIR/master-ceph.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/primary-ceph.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
 

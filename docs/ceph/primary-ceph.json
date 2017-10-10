@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master-ceph-example",
+        "name": "primary-ceph-example",
         "creationTimestamp": null,
         "annotations": {
             "description": "Crunchy PostgreSQL on NFS Example",
@@ -43,9 +43,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-ceph",
+            "name": "primary-ceph",
             "labels": {
-                "name": "master-ceph"
+                "name": "primary-ceph"
             }
         },
         "spec": {
@@ -56,7 +56,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-ceph"
+                "name": "primary-ceph"
             },
             "portalIP": "None",
             "type": "ClusterIP",
@@ -69,9 +69,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-ceph",
+            "name": "primary-ceph",
             "labels": {
-                "name": "master-ceph"
+                "name": "primary-ceph"
             }
         },
         "securityContext": {
@@ -84,7 +84,7 @@
                 }
             }],
             "containers": [{
-                "name": "master-ceph",
+                "name": "primary-ceph",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
