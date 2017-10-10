@@ -25,8 +25,8 @@ import (
 var logger *log.Logger
 
 /*
-This program reads an input file, and removes the master database,
-replacing the replica database as the new master. It then writes out the file to
+This program reads an input file, and removes the primary database,
+replacing the replica database as the new primary. It then writes out the file to
 the same input filename. It is used to rewrite a pgbouncer.ini file after
 a failover has been performed.
 */
@@ -72,12 +72,12 @@ func main() {
 					outputString += lines[i] + "\n"
 				} else {
 					//logger.Println(" process this one-" + lines[i])
-					if strings.Contains(lines[i], "master") {
+					if strings.Contains(lines[i], "primary") {
 						//logger.Println("dropping this one " + lines[i])
 					} else {
 						//logger.Println("should be replica " + lines[i])
 
-						//logger.Println("master " + lines[i][pos:length])
+						//logger.Println("primary " + lines[i][pos:length])
 						if replicaflipped == false {
 							outputString += replace(lines[i])
 							replicaflipped = true
@@ -108,5 +108,5 @@ func replace(instring string) string {
 	//var OSE_PROJECT = os.Getenv("OSE_PROJECT")
 	//var PG_PRIMARY_SERVICE = os.Getenv("PG_PRIMARY_SERVICE")
 
-	return "master " + instring[pos:length] + "\n"
+	return "primary " + instring[pos:length] + "\n"
 }
