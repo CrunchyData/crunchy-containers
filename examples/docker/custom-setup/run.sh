@@ -51,7 +51,7 @@ docker run \
 	-e XLOGDIR=/pgwal \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=primary \
-	-e PG_PRIMARY_USER=masteruser \
+	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \

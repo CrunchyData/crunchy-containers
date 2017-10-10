@@ -26,7 +26,7 @@ PROJECT=jeff-project
 oc process -n $PROJECT crunchy-restore \
 	NAME=restoredb \
 	PG_PRIMARY_PORT=5432 \
-	PG_PRIMARY_USER=master \
+	PG_PRIMARY_USER=primary \
 	PGDATA_PATH_OVERRIDE=example \
 	PG_PRIMARY_PASSWORD=password \
 	PG_USER=testuser \
