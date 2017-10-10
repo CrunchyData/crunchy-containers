@@ -23,7 +23,7 @@ $DIR/create-sa.sh
 
 # create the services for the example
 oc create -f $DIR/set-service.json
-oc create -f $DIR/set-master-service.json
+oc create -f $DIR/set-primary-service.json
 oc create -f $DIR/set-replica-service.json
 
 # create the stateful set

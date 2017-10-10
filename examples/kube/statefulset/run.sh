@@ -32,7 +32,7 @@ kubectl create clusterrolebinding permissive-binding \
 
 # create the services for the example
 kubectl create -f $DIR/set-service.json
-kubectl create -f $DIR/set-master-service.json
+kubectl create -f $DIR/set-primary-service.json
 kubectl create -f $DIR/set-replica-service.json
 
 # create some sample pv to use
