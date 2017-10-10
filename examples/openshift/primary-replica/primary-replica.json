@@ -169,7 +169,7 @@
             "name": "ms-replica",
             "labels": {
                 "name": "ms-replica",
-                "slavetype": "trigger"
+                "replicatype": "trigger"
             }
         },
         "spec": {

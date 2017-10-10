@@ -242,7 +242,7 @@
                     "creationTimestamp": null,
                     "labels": {
                         "name": "${PG_REPLICA_SERVICE_NAME}",
-                        "slavetype": "trigger"
+                        "replicatype": "trigger"
                     }
                 },
                 "spec": {
