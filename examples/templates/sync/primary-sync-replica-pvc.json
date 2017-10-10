@@ -5,7 +5,7 @@
         "name": "crunchy-postgres-primary-sync-replica-pvc",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy PostgreSQL Single master and sync relica which both use a PVC",
+            "description": "Crunchy PostgreSQL Single primary and sync relica which both use a PVC",
             "iconClass": "icon-database",
             "tags": "database,postgresql,crunchy"
         }
@@ -36,15 +36,15 @@
         "value": "ReadWriteMany"
     }, {
         "name": "PRIMARY_SERVICE_NAME",
-        "description": "the name of the master",
+        "description": "the name of the primary",
         "value": "syncmaster"
     }, {
         "name": "PRIMARY_PVC_NAME",
-        "description": "the name of the master pvc",
+        "description": "the name of the primary pvc",
         "value": "syncmaster-pvc"
     }, {
         "name": "PRIMARY_PVC_SIZE",
-        "description": "the size of the master pvc",
+        "description": "the size of the primary pvc",
         "value": "500M"
     }, {
         "name": "PRIMARY_PASSWORD",

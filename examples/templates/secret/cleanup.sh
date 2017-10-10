@@ -14,4 +14,4 @@
 
 oc delete secret pguser-secret pgprimary-secret pgroot-secret
 
-oc delete template master-with-secrets-example
+oc delete template primary-with-secrets-example

@@ -2,10 +2,10 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-postgres-master-replica-deployment-emptydir",
+        "name": "crunchy-postgres-primary-replica-deployment-emptydir",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy Postgresql master with replicas using emptydir, replicas can scale up",
+            "description": "Crunchy Postgresql primary with replicas using emptydir, replicas can scale up",
             "iconClass": "icon-database",
             "tags": "database,postgresql,crunchy"
         }
@@ -44,7 +44,7 @@
         "value": "password"
     }, {
         "name": "PG_PRIMARY_SERVICE_NAME",
-        "description": "The name of the PostgreSQL master ",
+        "description": "The name of the PostgreSQL primary ",
         "value": "pg-primary-dc"
     }, {
         "name": "PG_REPLICA_SERVICE_NAME",

@@ -4,7 +4,7 @@
     "metadata": {
         "name": "crunchy-small-config",
         "annotations": {
-            "description": "Crunchy small configuration includes a single master with limited CPU and memory, suitable for development purposes.",
+            "description": "Crunchy small configuration includes a single primary with limited CPU and memory, suitable for development purposes.",
             "iconClass": "icon-postgresql",
             "tags": "crunchy,database,postgresql"
         }

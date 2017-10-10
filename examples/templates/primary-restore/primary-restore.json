@@ -37,7 +37,7 @@
     }, {
         "name": "SERVICE_NAME",
         "description": "The name for the service and pod",
-        "value": "masterrestored"
+        "value": "primaryrestored"
     }, {
         "name": "BACKUP_PVC_NAME",
         "description": "The name of the PVC that holds the backup archives",

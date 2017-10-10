@@ -4,7 +4,7 @@
     "metadata": {
         "name": "crunchy-medium-config",
         "annotations": {
-            "description": "Crunchy medium configuration includes master Deployment, master Service, dynamic storage, a single async replica, unlimited memory and CPU",
+            "description": "Crunchy medium configuration includes primary Deployment, primary Service, dynamic storage, a single async replica, unlimited memory and CPU",
             "iconClass": "icon-postgresql",
             "tags": "crunchy,database,postgresql"
         }

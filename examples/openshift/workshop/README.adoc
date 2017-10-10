@@ -11,11 +11,11 @@ part of a workshop given on occasion by Redhat and Crunchy.
 
 The example when deployed provides the following:
 
- * postgres master database container (pg-master)
+ * postgres primary database container (pg-primary)
  * postgres replica database container (pg-replica)
  * pgpool postgres load balancer (pgpool)
- * metrics collector container (container inside the pg-master pod, named collect)
- * pgbadger log analyzer container (inside the pg-master pod, named pgbadger)
+ * metrics collector container (container inside the pg-primary pod, named collect)
+ * pgbadger log analyzer container (inside the pg-primary pod, named pgbadger)
  * pgadmin4 SQL console container (pgadmin4)
  * grafana metrics dashboard container (grafana)
  * prometheus metrics database container (prometheus)
@@ -28,8 +28,8 @@ allows the replica database to scale up by using an administrative
 command.
 
 The pgpool container provides a postgres-smart load balancer
-in front of the master and replica services.  pgpool sends only
-the updates/inserts/deletes to the master database and will
+in front of the primary and replica services.  pgpool sends only
+the updates/inserts/deletes to the primary database and will
 send the select statements to the replica service.
 
 Postgres metrics are collected by the collect container and sent
@@ -75,7 +75,7 @@ oc scale --replicas=2 dc replica-dc
 ....
 
 It takes about 1 minute for the new replica to become in sync
-with the master.
+with the primary.
 
 
 ==== Openshift Console
@@ -109,7 +109,7 @@ http://pgadmin4-default.apps.10.2.2.2.xip.io
 There is a route created to the pgbadger container within the pgprimary
 pod at at the following URL:
 ....
-http://master-default.apps.10.2.2.2.xip.io/api/badgergenerate
+http://primary-default.apps.10.2.2.2.xip.io/api/badgergenerate
 ....
 
 

@@ -32,7 +32,7 @@
         "value": "jeff-project"
     }, {
         "name": "SLEEP_TIME",
-        "description": "The time to sleep for polling the master",
+        "description": "The time to sleep for polling the primary",
         "value": "20"
     }, {
         "name": "REPLICA_TO_TRIGGER",

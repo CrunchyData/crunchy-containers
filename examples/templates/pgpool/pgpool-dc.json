@@ -32,7 +32,7 @@
         "value": "pgpool-dc"
     }, {
         "name": "PG_PRIMARY_SERVICE_NAME",
-        "description": "The database master configured in pgpool",
+        "description": "The database primary configured in pgpool",
         "value": "pgprimary"
     }, {
         "name": "PG_REPLICA_SERVICE_NAME",

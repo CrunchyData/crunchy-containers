@@ -96,11 +96,11 @@ REPLICA{
                     "value": "primary"
                 }, {
                     "name": "PG_PRIMARY_PORT",
-                    "description": "The master port configured in pgbouncer",
+                    "description": "The primary port configured in pgbouncer",
                     "value": "5432"
                 }, {
                     "name": "PG_PRIMARY_SERVICE",
-                    "description": "The master configured in pgbouncer",
+                    "description": "The primary configured in pgbouncer",
                     "value": "ms-primary"
                 }, {
                     "name": "PG_REPLICA_SERVICE",
