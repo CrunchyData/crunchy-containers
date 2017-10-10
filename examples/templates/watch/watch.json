@@ -48,7 +48,7 @@
         "value": "pgreplica"
     }, {
         "name": "PRIMARY_USER",
-        "description": "The master user to watch with",
+        "description": "The primary user to watch with",
         "value": "master"
     }],
     "objects": [{

@@ -320,11 +320,11 @@ which uses a Persistent Volume Claim for persistence.
 | 5432
 
 |PG_PRIMARY_USER
-| the user name to create and use for a master user
+| the user name to create and use for a primary user
 | master
 
 |PG_PRIMARY_PASSWORD
-| the password to use for the master user
+| the password to use for the primary user
 | password
 
 |PG_USER
@@ -482,11 +482,11 @@ found in a PVC.
 | 5432
 
 |PG_PRIMARY_USER
-| the user name to create and use for a master user
+| the user name to create and use for a primary user
 | master
 
 |PG_PRIMARY_PASSWORD
-| the password to use for the master user
+| the password to use for the primary user
 | password
 
 |PG_USER
@@ -573,11 +573,11 @@ These templates create the following:
 | 5432
 
 |PG_PRIMARY_USER
-| the user name to create and use for a master user
+| the user name to create and use for a primary user
 | master
 
 |PG_PRIMARY_PASSWORD
-| the password to use for the master user
+| the password to use for the primary user
 | password
 
 |PVC_NAME

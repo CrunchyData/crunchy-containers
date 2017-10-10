@@ -48,7 +48,7 @@
         "value": "500M"
     }, {
         "name": "PRIMARY_PASSWORD",
-        "description": "the password of the master user",
+        "description": "the password of the primary user",
         "value": "password"
     }, {
         "name": "USER_PASSWORD",

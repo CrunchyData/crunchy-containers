@@ -24,11 +24,11 @@
         "value": "pgdatabase"
     }, {
         "name": "PG_PRIMARY_USER",
-        "description": "the master user name the replica will connect with",
+        "description": "the primary user name the replica will connect with",
         "value": "master"
     }, {
         "name": "PG_PRIMARY_PASSWORD",
-        "description": "the master user password the replica will connect with",
+        "description": "the primary user password the replica will connect with",
         "value": "password"
     }],
     "objects": [{

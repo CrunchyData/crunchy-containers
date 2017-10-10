@@ -92,7 +92,7 @@ REPLICA{
                     "value": "12"
                 }, {
                     "name": "PG_PRIMARY_USER",
-                    "description": "The master user configured in pgbouncer",
+                    "description": "The primary user configured in pgbouncer",
                     "value": "master"
                 }, {
                     "name": "PG_PRIMARY_PORT",
