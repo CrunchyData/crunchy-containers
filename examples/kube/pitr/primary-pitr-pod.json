@@ -23,7 +23,7 @@
                 "value": "/tmp"
             }, {
                 "name": "PG_PRIMARY_USER",
-                "value": "master"
+                "value": "primary"
             }, {
                 "name": "PG_MODE",
                 "value": "primary"

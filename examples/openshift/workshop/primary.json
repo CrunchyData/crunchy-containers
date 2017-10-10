@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master",
+        "name": "primary",
         "creationTimestamp": null,
         "annotations": {
             "description": "PostgreSQL Replication Example",
@@ -18,9 +18,9 @@
       "kind": "Service",
       "apiVersion": "v1",
       "metadata": {
-          "name": "master",
+          "name": "primary",
           "labels": {
-              "name": "master"
+              "name": "primary"
           }
       },
       "spec": {
@@ -41,7 +41,7 @@
           }
     ],
           "selector": {
-              "name": "master"
+              "name": "primary"
           },
           "type": "ClusterIP",
           "sessionAffinity": "None"
@@ -51,9 +51,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master",
+            "name": "primary",
             "labels": {
-                "name": "master"
+                "name": "primary"
             }
         },
         "spec": {
@@ -80,7 +80,7 @@
                 "image": "crunchydata/crunchy-collect:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "PG_PRIMARY_USER",
-                    "value": "master"
+                    "value": "primary"
                 }, {
                     "name": "PG_PRIMARY_PASSWORD",
                     "value": "password"
@@ -108,7 +108,7 @@
                 }],
                 "env": [{
                     "name": "PG_PRIMARY_USER",
-                    "value": "master"
+                    "value": "primary"
                 }, {
                     "name": "PG_MODE",
                     "value": "primary"

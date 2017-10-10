@@ -30,7 +30,7 @@
                         "value": "primary-dc"
                     }, {
                         "name": "PG_PRIMARY_USER",
-                        "value": "master"
+                        "value": "primary"
                     }, {
                         "name": "PG_PRIMARY_PASSWORD",
                         "value": ""

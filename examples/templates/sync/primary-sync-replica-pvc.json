@@ -180,7 +180,7 @@
                         "value": "${PRIMARY_SERVICE_NAME}"
                     }, {
                         "name": "PG_PRIMARY_USER",
-                        "value": "master"
+                        "value": "primary"
                     }, {
                         "name": "PG_PRIMARY_PORT",
                         "value": "5432"
@@ -271,7 +271,7 @@
                     }],
                     "env": [{
                         "name": "PG_PRIMARY_USER",
-                        "value": "master"
+                        "value": "primary"
                     }, {
                         "name": "PGHOST",
                         "value": "/tmp"

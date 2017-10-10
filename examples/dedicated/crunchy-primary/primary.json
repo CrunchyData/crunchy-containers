@@ -20,7 +20,7 @@
     }, {
         "name": "PG_PRIMARY_USER",
         "description": "The username used for primary / replica replication",
-        "value": "master"
+        "value": "primary"
     }, {
         "name": "PGDATA_PATH_OVERRIDE",
         "description": "override for the pgdata path",

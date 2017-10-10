@@ -50,10 +50,10 @@
                         }],
                         "env": [{
                             "name": "PG_PRIMARY_HOST",
-                            "value": "master"
+                            "value": "primary"
                         }, {
                             "name": "PG_PRIMARY_SERVICE_NAME",
-                            "value": "master"
+                            "value": "primary"
                         }, {
                             "name": "PG_PRIMARY_PORT",
                             "value": "5432"
@@ -65,7 +65,7 @@
                             "value": "replica"
                         }, {
                             "name": "PG_PRIMARY_USER",
-                            "value": "master"
+                            "value": "primary"
                         }, {
                             "name": "PG_PRIMARY_PASSWORD",
                             "value": "password"

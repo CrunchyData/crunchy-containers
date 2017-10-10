@@ -29,7 +29,7 @@
     }, {
         "name": "PG_PRIMARY_HOST",
         "description": "the primary service name the replica will connect to",
-        "value": "master"
+        "value": "primary"
     }, {
         "name": "PG_PRIMARY_PORT",
         "description": "the master database port the replica will connect to",
@@ -37,7 +37,7 @@
     }, {
         "name": "PG_PRIMARY_USER",
         "description": "the primary user name the replica will connect with",
-        "value": "master"
+        "value": "primary"
     }, {
         "name": "PG_PRIMARY_PASSWORD",
         "description": "the primary user password the replica will connect with",

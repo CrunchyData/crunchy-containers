@@ -35,7 +35,7 @@
                         "value": "basic"
                     }, {
                         "name": "BACKUP_USER",
-                        "value": "master"
+                        "value": "primary"
                     }, {
                         "name": "BACKUP_PASS",
                         "value": "password"

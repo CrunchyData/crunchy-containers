@@ -32,7 +32,7 @@
                 "value": "5432"
             }, {
                 "name": "PG_PRIMARY_USER",
-                "value": "master"
+                "value": "primary"
             }, {
                 "name": "HOME",
                 "value": "/tmp"

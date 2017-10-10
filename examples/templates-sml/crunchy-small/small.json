@@ -12,7 +12,7 @@
     "parameters": [{
         "name": "NAME",
         "description": "The name of the database and service",
-        "value": "master"
+        "value": "primary"
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use",
@@ -120,7 +120,7 @@
                             "value": "${NAME}"
                         }, {
                             "name": "PG_PRIMARY_USER",
-                            "value": "master"
+                            "value": "primary"
                         }, {
                             "name": "PG_PRIMARY_PASSWORD",
                             "value": "${PG_PRIMARY_PASSWORD}"

@@ -23,7 +23,7 @@
                 "value": "primary-dba"
             }, {
                 "name": "PG_USER",
-                "value": "master"
+                "value": "primary"
             }, {
                 "name": "PG_PASSWORD",
                 "value": "password"
@@ -46,7 +46,7 @@
             }],
             "env": [{
                 "name": "PG_PRIMARY_USER",
-                "value": "master"
+                "value": "primary"
             }, {
                 "name": "PG_MODE",
                 "value": "primary"

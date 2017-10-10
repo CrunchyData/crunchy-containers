@@ -49,7 +49,7 @@
     }, {
         "name": "PRIMARY_USER",
         "description": "The primary user to watch with",
-        "value": "master"
+        "value": "primary"
     }],
     "objects": [{
         "kind": "Pod",
