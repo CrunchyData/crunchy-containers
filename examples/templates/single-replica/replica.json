@@ -20,7 +20,7 @@
         "value": "pgreplica"
     }, {
         "name": "PG_PRIMARY_HOST",
-        "description": "the master service name the replica will connect to",
+        "description": "the primary service name the replica will connect to",
         "value": "pgdatabase"
     }, {
         "name": "PG_PRIMARY_USER",

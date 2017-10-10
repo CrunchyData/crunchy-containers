@@ -565,7 +565,7 @@ These templates create the following:
 | replica
 
 |PG_PRIMARY_HOST
-| the postgres master service name the replica will connect to
+| the postgres primary service name the replica will connect to
 | master
 
 |PG_PRIMARY_PORT

@@ -763,7 +763,7 @@ This will create the following:
 
  * PV/PVC for /pgconf and /backrestrepo volumes
  * master database pod
- * master service
+ * primary service
 
 The run.sh script copies the pgbackrest.conf configuration file
 to /nfsfileshare/pgconf which is our NFS file path.
@@ -2276,11 +2276,11 @@ docker node inspect kubernetes-node-1 | grep ID
 docker node update --label-add type=master 18yrb7m650umx738rtevojpqy
 ....
 
-In the above example, the kubernetes-node-1 node with ID 18yrb7m650umx738rtevojpqy has a user defined label of *master* added to it.  The master service
+In the above example, the kubernetes-node-1 node with ID 18yrb7m650umx738rtevojpqy has a user defined label of *master* added to it.  The primary service
 specifies *master* as a constraint when created; this tells Swarm
 to place the service on that specific node.  The replica specifies
 a constraint of *node.labels.type != master* to have the replica
-always placed on a node that is not hosting the master service.
+always placed on a node that is not hosting the primary service.
 
 
 After you set up the Swarm cluster, you can then

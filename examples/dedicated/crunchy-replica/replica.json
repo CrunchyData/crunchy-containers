@@ -28,7 +28,7 @@
         "value": "replica"
     }, {
         "name": "PG_PRIMARY_HOST",
-        "description": "the master service name the replica will connect to",
+        "description": "the primary service name the replica will connect to",
         "value": "master"
     }, {
         "name": "PG_PRIMARY_PORT",

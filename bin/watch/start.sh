@@ -146,7 +146,7 @@ function ose_failover() {
 	oc login https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true --token="$TOKEN"
 	oc project $OSE_PROJECT
 	echo "Performing failover..."
-#	echo "deleting master service to block replicas..."
+#	echo "deleting primary service to block replicas..."
 #	oc get service $PG_PRIMARY_SERVICE -o json > /tmp/master-service.json
 #	oc delete service $PG_PRIMARY_SERVICE
 	echo "Sleeping for 10 to give replicas chance to halt..."

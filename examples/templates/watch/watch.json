@@ -40,7 +40,7 @@
         "value": "thisone"
     }, {
         "name": "PRIMARY_TO_WATCH",
-        "description": "The name of a master service to watch",
+        "description": "The name of a primary service to watch",
         "value": "pgprimary"
     }, {
         "name": "REPLICA_TO_WATCH",
