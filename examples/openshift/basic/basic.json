@@ -19,7 +19,7 @@
         "description": "image tag to use"
     }, {
         "name": "PG_PRIMARY_PASSWORD",
-        "description": "The password for the PG master user",
+        "description": "The password for the PG primary user",
         "value": "password"
     }, {
         "name": "PG_USER",
@@ -27,7 +27,7 @@
         "value": "testuser"
     }, {
         "name": "PG_PASSWORD",
-        "description": "The password for the PG master user",
+        "description": "The password for the PG primary user",
         "value": "password"
     }, {
         "name": "PG_DATABASE",
