@@ -27,7 +27,7 @@
         "description": "the master user name the replica will connect with",
         "value": "master"
     }, {
-        "name": "PG_MASTER_PASSWORD",
+        "name": "PG_PRIMARY_PASSWORD",
         "description": "the master user password the replica will connect with",
         "value": "password"
     }, {
@@ -151,8 +151,8 @@
                         "name": "PGHOST",
                         "value": "/tmp"
                     }, {
-                        "name": "PG_MASTER_PASSWORD",
-                        "value": "${PG_MASTER_PASSWORD}"
+                        "name": "PG_PRIMARY_PASSWORD",
+                        "value": "${PG_PRIMARY_PASSWORD}"
                     }],
                     "volumeMounts": [{
                         "mountPath": "/pgdata",

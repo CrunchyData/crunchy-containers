@@ -194,7 +194,7 @@
                         "name": "SYNC_REPLICA",
                         "value": "${REPLICA_SERVICE_NAME}"
                     }, {
-                        "name": "PG_MASTER_PASSWORD",
+                        "name": "PG_PRIMARY_PASSWORD",
                         "value": "${MASTER_PASSWORD}"
                     }, {
                         "name": "PG_USER",
@@ -279,7 +279,7 @@
                         "name": "PG_MODE",
                         "value": "primary"
                     }, {
-                        "name": "PG_MASTER_PASSWORD",
+                        "name": "PG_PRIMARY_PASSWORD",
                         "value": "${MASTER_PASSWORD}"
                     }, {
                         "name": "SYNC_REPLICA",

@@ -41,7 +41,7 @@
                         "name": "PG_DATABASE",
                         "value": "userdb"
                     }, {
-                        "name": "PG_MASTER_PASSWORD",
+                        "name": "PG_PRIMARY_PASSWORD",
                         "value": ""
                     }, {
                         "name": "PG_ROOT_PASSWORD",

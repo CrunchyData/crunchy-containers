@@ -23,7 +23,7 @@
         "description": "The username used for primary / replica replication",
         "value": "master"
     }, {
-        "name": "PG_MASTER_PASSWORD",
+        "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PG master user",
         "value": "password"
     }, {
@@ -141,8 +141,8 @@
                     "name": "PG_MODE",
                     "value": "primary"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
-                    "value": "${PG_MASTER_PASSWORD}"
+                    "name": "PG_PRIMARY_PASSWORD",
+                    "value": "${PG_PRIMARY_PASSWORD}"
                 }, {
                     "name": "PG_USER",
                     "value": "${PG_USER}"

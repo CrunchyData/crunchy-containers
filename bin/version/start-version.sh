@@ -18,7 +18,7 @@
 function create_pgpass() {
 cd /tmp
 cat >> ".pgpass" <<-EOF
-*:*:*:*:${PG_MASTER_PASSWORD}
+*:*:*:*:${PG_PRIMARY_PASSWORD}
 EOF
 chmod 0600 .pgpass
 export PGPASSFILE=/tmp/.pgpass

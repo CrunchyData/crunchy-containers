@@ -23,7 +23,7 @@
         "value": "centos7-9.5-1.2.7",
         "description": "The image tag to pull with"
     }, {
-        "name": "PG_MASTER_PASSWORD",
+        "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PostgreSQL replication user",
         "value": "password"
     }, {
@@ -190,8 +190,8 @@
                     "name": "PG_PRIMARY_USER",
                     "value": "${PG_PRIMARY_USER}"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
-                    "value": "${PG_MASTER_PASSWORD}"
+                    "name": "PG_PRIMARY_PASSWORD",
+                    "value": "${PG_PRIMARY_PASSWORD}"
                 }, {
                     "name": "PG_USER",
                     "value": "${PG_USER}"
@@ -296,8 +296,8 @@
                             "name": "PG_PRIMARY_USER",
                             "value": "${PG_PRIMARY_USER}"
                         }, {
-                            "name": "PG_MASTER_PASSWORD",
-                            "value": "${PG_MASTER_PASSWORD}"
+                            "name": "PG_PRIMARY_PASSWORD",
+                            "value": "${PG_PRIMARY_PASSWORD}"
                         }, {
                             "name": "PG_USER",
                             "value": "${PG_USER}"

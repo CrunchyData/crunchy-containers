@@ -27,7 +27,7 @@
         "value": "crunchydata",
         "description": "The image prefix to use"
     }, {
-        "name": "PG_MASTER_PASSWORD",
+        "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PG master user",
         "value": "password"
     }, {
@@ -125,8 +125,8 @@
                     "name": "PG_MODE",
                     "value": "primary"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
-                    "value": "${PG_MASTER_PASSWORD}"
+                    "name": "PG_PRIMARY_PASSWORD",
+                    "value": "${PG_PRIMARY_PASSWORD}"
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"

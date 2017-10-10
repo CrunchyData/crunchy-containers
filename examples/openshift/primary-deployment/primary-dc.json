@@ -25,7 +25,7 @@
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use"
     }, {
-        "name": "PG_MASTER_PASSWORD",
+        "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PG master user",
         "value": ""
     }, {
@@ -102,8 +102,8 @@
                             "name": "PG_PRIMARY_USER",
                             "value": "${PG_PRIMARY_USER}"
                         }, {
-                            "name": "PG_MASTER_PASSWORD",
-                            "value": "${PG_MASTER_PASSWORD}"
+                            "name": "PG_PRIMARY_PASSWORD",
+                            "value": "${PG_PRIMARY_PASSWORD}"
                         }, {
                             "name": "PG_USER",
                             "value": "${PG_USER}"

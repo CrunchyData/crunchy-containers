@@ -31,7 +31,7 @@ oc process -n $PROJECT crunchy-replica \
 	PG_PRIMARY_HOST=example \
 	PG_MASTER_PORT=5432 \
 	PG_PRIMARY_USER=master \
-	PG_MASTER_PASSWORD=password \
+	PG_PRIMARY_PASSWORD=password \
 	PVC_NAME=replica-pvc \
 	PVC_SIZE=300M \
 	PVC_ACCESS_MODE=ReadWriteMany \

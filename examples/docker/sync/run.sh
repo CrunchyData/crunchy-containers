@@ -44,7 +44,7 @@ sudo docker run \
 	-e PG_MODE=primary \
 	-e SYNC_REPLICA=sync-replica \
 	-e PG_PRIMARY_USER=master \
-	-e PG_MASTER_PASSWORD=password \
+	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
@@ -78,7 +78,7 @@ sudo docker run \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=replica \
 	-e PG_PRIMARY_USER=master \
-	-e PG_MASTER_PASSWORD=password \
+	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_PRIMARY_HOST=sync-master \
 	-e SYNC_REPLICA=sync-replica \
 	--link sync-master:sync-master \
@@ -114,7 +114,7 @@ sudo docker run \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=replica \
 	-e PG_PRIMARY_USER=master \
-	-e PG_MASTER_PASSWORD=password \
+	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_PRIMARY_HOST=sync-master \
 	--link sync-master:sync-master \
 	-e PG_MASTER_PORT=5432 \

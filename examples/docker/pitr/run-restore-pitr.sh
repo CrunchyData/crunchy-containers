@@ -63,7 +63,7 @@ sudo docker run \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=primary \
 	-e PG_PRIMARY_USER=masteruser \
-	-e PG_MASTER_PASSWORD=password \
+	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \

@@ -11,5 +11,5 @@ fi
 if [ -d "/pgmaster" ]; then
 	echo "pgmaster does exist"
 	export PG_PRIMARY_USER=$(cat /pgmaster/username)
-	export PG_MASTER_PASSWORD=$(cat /pgmaster/password)
+	export PG_PRIMARY_PASSWORD=$(cat /pgmaster/password)
 fi

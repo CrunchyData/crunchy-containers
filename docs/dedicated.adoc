@@ -159,7 +159,7 @@ executed when the database is first created.
    in a Kubernetes cluster.
  * PG_PRIMARY_USER - the value to use for the user ID created as
    master.  The *master* user has super user privileges.
- * PG_MASTER_PASSWORD - the password for the PG_PRIMARY_USER database user
+ * PG_PRIMARY_PASSWORD - the password for the PG_PRIMARY_USER database user
  * PG_USER - the value to use for the user ID created as a normal user.
    This user is created as part of the setup.sql script upon database
    creation and allows users to predefine an application user.
@@ -323,7 +323,7 @@ which uses a Persistent Volume Claim for persistence.
 | the user name to create and use for a master user
 | master
 
-|PG_MASTER_PASSWORD
+|PG_PRIMARY_PASSWORD
 | the password to use for the master user
 | password
 
@@ -485,7 +485,7 @@ found in a PVC.
 | the user name to create and use for a master user
 | master
 
-|PG_MASTER_PASSWORD
+|PG_PRIMARY_PASSWORD
 | the password to use for the master user
 | password
 
@@ -576,7 +576,7 @@ These templates create the following:
 | the user name to create and use for a master user
 | master
 
-|PG_MASTER_PASSWORD
+|PG_PRIMARY_PASSWORD
 | the password to use for the master user
 | password
 

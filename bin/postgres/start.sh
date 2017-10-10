@@ -49,8 +49,8 @@ if [ ! -v PG_PRIMARY_USER ]; then
 	echo "PG_PRIMARY_USER environment variable is not set, aborting"
 	exit 1
 fi
-if [ ! -v PG_MASTER_PASSWORD ]; then
-	echo "PG_MASTER_PASSWORD environment variable is not set, aborting"
+if [ ! -v PG_PRIMARY_PASSWORD ]; then
+	echo "PG_PRIMARY_PASSWORD environment variable is not set, aborting"
 	exit 1
 fi
 if [ ! -v PG_USER ]; then
@@ -74,7 +74,7 @@ export PG_MODE=$PG_MODE
 export PG_PRIMARY_HOST=$PG_PRIMARY_HOST
 export PG_MASTER_PORT=$PG_MASTER_PORT
 export PG_PRIMARY_USER=$PG_PRIMARY_USER
-export PG_MASTER_PASSWORD=$PG_MASTER_PASSWORD
+export PG_PRIMARY_PASSWORD=$PG_PRIMARY_PASSWORD
 export PG_USER=$PG_USER
 export PG_PASSWORD=$PG_PASSWORD
 export PG_DATABASE=$PG_DATABASE
@@ -263,7 +263,7 @@ function fill_conf_file() {
 function create_pgpass() {
 cd /tmp
 cat >> ".pgpass" <<-EOF
-*:*:*:*:${PG_MASTER_PASSWORD}
+*:*:*:*:${PG_PRIMARY_PASSWORD}
 EOF
 chmod 0600 .pgpass
 }
@@ -369,7 +369,7 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 		cp /pgconf/setup.sql /tmp
 	fi
 	sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/setup.sql
-	sed -i "s/PG_MASTER_PASSWORD/$PG_MASTER_PASSWORD/g" /tmp/setup.sql
+	sed -i "s/PG_PRIMARY_PASSWORD/$PG_PRIMARY_PASSWORD/g" /tmp/setup.sql
 	sed -i "s/PG_USER/$PG_USER/g" /tmp/setup.sql
 	sed -i "s/PG_PASSWORD/$PG_PASSWORD/g" /tmp/setup.sql
 	sed -i "s/PG_DATABASE/$PG_DATABASE/g" /tmp/setup.sql

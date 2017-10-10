@@ -32,7 +32,7 @@
                         "name": "PG_PRIMARY_USER",
                         "value": "master"
                     }, {
-                        "name": "PG_MASTER_PASSWORD",
+                        "name": "PG_PRIMARY_PASSWORD",
                         "value": ""
                     }, {
                         "name": "PG_ROOT_PASSWORD",

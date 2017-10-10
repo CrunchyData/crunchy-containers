@@ -5,7 +5,7 @@ create extension pgaudit;
 
 alter user postgres password 'PG_ROOT_PASSWORD';
 
-create user PG_PRIMARY_USER with REPLICATION  PASSWORD 'PG_MASTER_PASSWORD';
+create user PG_PRIMARY_USER with REPLICATION  PASSWORD 'PG_PRIMARY_PASSWORD';
 create user PG_USER with password 'PG_PASSWORD';
 
 create table mastertable (key varchar(20), value varchar(20));

@@ -18,7 +18,7 @@
         "description": "The image tag to use",
         "value": "rhel7-9.6-1.5"
     }, {
-        "name": "PG_MASTER_PASSWORD",
+        "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PG master user",
         "value": "password"
     }, {
@@ -180,8 +180,8 @@
                     "name": "PGHOST",
                     "value": "/tmp"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
-                    "value": "${PG_MASTER_PASSWORD}"
+                    "name": "PG_PRIMARY_PASSWORD",
+                    "value": "${PG_PRIMARY_PASSWORD}"
                 }],
                 "volumeMounts": [{
                     "mountPath": "/pgdata",
@@ -236,8 +236,8 @@
                             "name": "PG_PRIMARY_USER",
                             "value": "master"
                         }, {
-                            "name": "PG_MASTER_PASSWORD",
-                            "value": "${PG_MASTER_PASSWORD}"
+                            "name": "PG_PRIMARY_PASSWORD",
+                            "value": "${PG_PRIMARY_PASSWORD}"
                         }, {
                             "name": "PG_PORT",
                             "value": "5432"
@@ -269,8 +269,8 @@
                             "name": "PG_PRIMARY_USER",
                             "value": "master"
                         }, {
-                            "name": "PG_MASTER_PASSWORD",
-                            "value": "${PG_MASTER_PASSWORD}"
+                            "name": "PG_PRIMARY_PASSWORD",
+                            "value": "${PG_PRIMARY_PASSWORD}"
                         }, {
                             "name": "PG_USER",
                             "value": "testuser"

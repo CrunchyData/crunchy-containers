@@ -50,7 +50,7 @@
                     "name": "SYNC_REPLICA",
                     "value": "syncreplica"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
+                    "name": "PG_PRIMARY_PASSWORD",
                     "value": "password"
                 }, {
                     "name": "PG_USER",

@@ -28,7 +28,7 @@ oc process -n $PROJECT crunchy-restore \
 	PG_MASTER_PORT=5432 \
 	PG_PRIMARY_USER=master \
 	PGDATA_PATH_OVERRIDE=example \
-	PG_MASTER_PASSWORD=password \
+	PG_PRIMARY_PASSWORD=password \
 	PG_USER=testuser \
 	PG_PASSWORD=password \
 	PG_DATABASE=userdb \

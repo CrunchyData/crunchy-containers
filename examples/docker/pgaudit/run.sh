@@ -35,7 +35,7 @@ sudo docker run \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
 	-e PG_PRIMARY_USER=master \
-	-e PG_MASTER_PASSWORD=password \
+	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_MODE=primary \
 	-e PG_USER=testuser \
 	-e PG_PASSWORD=password \

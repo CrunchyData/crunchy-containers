@@ -28,7 +28,7 @@
                 "name": "BACKUP_PATH",
                 "value": "basic-backups/2017-08-10-16-39-50"
             }, {
-                "name": "PG_MASTER_PASSWORD",
+                "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"
             }, {
                 "name": "PG_USER",
