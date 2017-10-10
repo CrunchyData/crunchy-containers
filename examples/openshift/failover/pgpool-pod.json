@@ -23,7 +23,7 @@
                 "value": "password"
             }, {
                 "name": "PG_PRIMARY_SERVICE_NAME",
-                "value": "master-dc"
+                "value": "primary-dc"
             }, {
                 "name": "PG_REPLICA_SERVICE_NAME",
                 "value": "replica-dc"

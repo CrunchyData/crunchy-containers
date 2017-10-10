@@ -2,9 +2,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-dc",
+            "name": "primary-dc",
             "labels": {
-                "name": "master-dc"
+                "name": "primary-dc"
             }
         },
         "spec": {

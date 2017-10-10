@@ -26,10 +26,10 @@
                     "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
                     "env": [{
                         "name": "PG_PRIMARY_HOST",
-                        "value": "master-dc"
+                        "value": "primary-dc"
                     }, {
                         "name": "PG_PRIMARY_SERVICE_NAME",
-                        "value": "master-dc"
+                        "value": "primary-dc"
                     }, {
                         "name": "PG_PRIMARY_PORT",
                         "value": "5432"

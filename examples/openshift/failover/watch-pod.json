@@ -23,7 +23,7 @@
                 "value": "1"
             }, {
                 "name": "PG_PRIMARY_SERVICE",
-                "value": "master-dc"
+                "value": "primary-dc"
             }, {
                 "name": "PG_REPLICA_SERVICE",
                 "value": "replica-dc"

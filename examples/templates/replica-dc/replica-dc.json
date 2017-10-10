@@ -45,7 +45,7 @@
     }, {
         "name": "PG_PRIMARY_SERVICE_NAME",
         "description": "The name of the PostgreSQL master ",
-        "value": "pg-master-dc"
+        "value": "pg-primary-dc"
     }, {
         "name": "PG_REPLICA_SERVICE_NAME",
         "description": "The name of the PostgreSQL replica",

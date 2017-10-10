@@ -19,7 +19,7 @@ kubectl scale --replicas=0 deployment/replica-dc
 sleep 1
 kubectl delete deployment replica-dc
 sleep 3
-kubectl delete pod --selector=name=master-dc
+kubectl delete pod --selector=name=primary-dc
 sleep 3
-kubectl delete service master-dc
+kubectl delete service primary-dc
 kubectl delete service replica-dc
