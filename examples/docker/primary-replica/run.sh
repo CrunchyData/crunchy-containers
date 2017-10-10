@@ -38,7 +38,7 @@ $DIR/cleanup.sh
 #sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
 VOLUME_NAME=primary-volume
-MASTER_CONTAINER_NAME=primary
+PRIMARY_CONTAINER_NAME=primary
 docker volume create --driver local --name=$VOLUME_NAME
 
 docker run \
@@ -58,8 +58,8 @@ docker run \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=$MASTER_CONTAINER_NAME \
-	--hostname=$MASTER_CONTAINER_NAME \
+	--name=$PRIMARY_CONTAINER_NAME \
+	--hostname=$PRIMARY_CONTAINER_NAME \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 
 echo "starting pg-replica container..."
@@ -83,7 +83,7 @@ docker run \
 	-e PG_MODE=replica \
 	-e PG_PRIMARY_USER=masteruser \
 	-e PG_PRIMARY_PASSWORD=password \
-	--link $MASTER_CONTAINER_NAME:$MASTER_CONTAINER_NAME \
+	--link $PRIMARY_CONTAINER_NAME:$PRIMARY_CONTAINER_NAME \
 	-e PG_PRIMARY_PORT=5432 \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
