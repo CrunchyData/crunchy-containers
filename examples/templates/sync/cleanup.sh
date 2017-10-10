@@ -16,4 +16,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete template crunchy-postgres-master-sync-replica-pvc
+oc delete template crunchy-postgres-primary-sync-replica-pvc

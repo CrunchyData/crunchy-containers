@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-postgres-master-sync-replica-pvc",
+        "name": "crunchy-postgres-primary-sync-replica-pvc",
         "creationTimestamp": null,
         "annotations": {
             "description": "Crunchy PostgreSQL Single master and sync relica which both use a PVC",
