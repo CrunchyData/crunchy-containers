@@ -20,7 +20,7 @@ $DIR/cleanup.sh
 
 oc create -f $DIR/primary-service.json
 oc create -f $DIR/replica-service.json
-envsubst < $DIR/master-pod.json | oc create -f -
+envsubst < $DIR/primary-pod.json | oc create -f -
 echo "sleeping till master is alive..."
 sleep 15
 envsubst < $DIR/replica-dc.json | oc create -f -
