@@ -106,7 +106,7 @@ http://pgadmin4-default.apps.10.2.2.2.xip.io
 
 ==== pgbadger web application
 
-There is a route created to the pgbadger container within the pgmaster
+There is a route created to the pgbadger container within the pgprimary
 pod at at the following URL:
 ....
 http://master-default.apps.10.2.2.2.xip.io/api/badgergenerate
@@ -119,7 +119,7 @@ The value of all passwords for the database is *password*, to
 access the database, you can enter the following command:
 
 ....
-psql -h pgmaster.openshift.svc.cluster.local -U postgres postgres
+psql -h pgprimary.openshift.svc.cluster.local -U postgres postgres
 ....
 
 

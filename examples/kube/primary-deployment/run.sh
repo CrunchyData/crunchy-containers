@@ -22,7 +22,7 @@ kubectl create -f $DIR/primary-service.json
 kubectl create -f $DIR/replica-service.json
 
 kubectl create -f $DIR/pguser-secret.json
-kubectl create -f $DIR/pgmaster-secret.json
+kubectl create -f $DIR/pgprimary-secret.json
 kubectl create -f $DIR/pgroot-secret.json
 
 kubectl create configmap postgresql-conf --from-file=postgresql.conf --from-file=pghba=pg_hba.conf --from-file=setup.sql

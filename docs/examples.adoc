@@ -1934,7 +1934,7 @@ cd $CCPROOT/examples/openshift/secret
 ./run.sh
 ....
 
-The secrets are mounted in the */pguser*, */pgmaster*, */pgroot* volumes within the
+The secrets are mounted in the */pguser*, */pgprimary*, */pgroot* volumes within the
 container and read during initialization.  The container
 scripts create a PostgreSQL user with those values, and sets the passwords
 for the master user and PostgreSQL superuser using the mounted secret volumes.

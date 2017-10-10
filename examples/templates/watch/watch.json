@@ -41,7 +41,7 @@
     }, {
         "name": "PRIMARY_TO_WATCH",
         "description": "The name of a master service to watch",
-        "value": "pgmaster"
+        "value": "pgprimary"
     }, {
         "name": "REPLICA_TO_WATCH",
         "description": "The name of a replica service to watch",

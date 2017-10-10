@@ -136,8 +136,8 @@
                             "mountPath": "/pguser",
                             "name": "pguser-volume"
                         }, {
-                            "mountPath": "/pgmaster",
-                            "name": "pgmaster-volume"
+                            "mountPath": "/pgprimary",
+                            "name": "pgprimary-volume"
                         }, {
                             "mountPath": "/pgroot",
                             "name": "pgroot-volume"
@@ -174,9 +174,9 @@
                                 "secretName": "pguser-secret"
                             }
                         }, {
-                            "name": "pgmaster-volume",
+                            "name": "pgprimary-volume",
                             "secret": {
-                                "secretName": "pgmaster-secret"
+                                "secretName": "pgprimary-secret"
                             }
                         }, {
                             "name": "pgroot-volume",

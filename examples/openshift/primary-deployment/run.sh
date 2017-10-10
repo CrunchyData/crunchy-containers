@@ -19,7 +19,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
 oc create -f $DIR/pguser-secret.json
-oc create -f $DIR/pgmaster-secret.json
+oc create -f $DIR/pgprimary-secret.json
 oc create -f $DIR/pgroot-secret.json
 
 oc create configmap postgresql-conf --from-file=postgresql.conf --from-file=pghba=pg_hba.conf --from-file=setup.sql
