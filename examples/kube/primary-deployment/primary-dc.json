@@ -2,9 +2,9 @@
     "kind": "Deployment",
     "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "master-dc",
+        "name": "primary-dc",
         "labels": {
-            "name": "master-dc"
+            "name": "primary-dc"
         }
     },
     "spec": {
@@ -12,7 +12,7 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "master-dc"
+                    "name": "primary-dc"
                 }
             },
             "spec": {
@@ -27,7 +27,7 @@
                         "value": "master"
                     }, {
                         "name": "PGDATA_PATH_OVERRIDE",
-                        "value": "master-dc"
+                        "value": "primary-dc"
                     }, {
                         "name": "PG_MASTER_USER",
                         "value": "master"

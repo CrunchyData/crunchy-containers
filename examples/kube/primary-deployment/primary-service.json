@@ -2,9 +2,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-dc",
+            "name": "primary-dc",
             "labels": {
-                "name": "master-dc"
+                "name": "primary-dc"
             }
         },
         "spec": {
@@ -15,7 +15,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-dc"
+                "name": "primary-dc"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"

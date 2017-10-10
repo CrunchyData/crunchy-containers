@@ -16,10 +16,15 @@ source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-sudo rm -rf $PV_PATH/master-dc
+$DIR/cleanup.sh
 
-oc delete service master-dc replica-dc
-oc delete deployments master-dc replica-dc replica2-dc
+oc create -f $DIR/pguser-secret.json
+oc create -f $DIR/pgmaster-secret.json
+oc create -f $DIR/pgroot-secret.json
 
-oc delete configmap postgresql-conf
-oc delete secret pguser-secret pgmaster-secret pgroot-secret
+oc create configmap postgresql-conf --from-file=postgresql.conf --from-file=pghba=pg_hba.conf --from-file=setup.sql
+
+
+oc process -f $DIR/primary-dc.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+#oc process -f $DIR/replica-dc.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+#oc process -f $DIR/replica2-dc.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

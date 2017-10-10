@@ -415,7 +415,7 @@ handled by the PGDATA_PATH_OVERRIDE environment variable.
 
 Start the example as follows:
 ....
-cd $CCPROOT/examples/kube/master-deployment
+cd $CCPROOT/examples/kube/primary-deployment
 ./run.sh
 ....
 
@@ -457,7 +457,7 @@ handled by the PGDATA_PATH_OVERRIDE environment variable.
 
 Start the example as follows:
 ....
-cd $CCPROOT/examples/openshift/master-deployment
+cd $CCPROOT/examples/openshift/primary-deployment
 ./run.sh
 ....
 

@@ -16,17 +16,10 @@ source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+sudo rm -rf $PV_PATH/primary-dc
 
-kubectl create -f $DIR/master-service.json
-kubectl create -f $DIR/replica-service.json
+oc delete service primary-dc replica-dc
+oc delete deployments primary-dc replica-dc replica2-dc
 
-kubectl create -f $DIR/pguser-secret.json
-kubectl create -f $DIR/pgmaster-secret.json
-kubectl create -f $DIR/pgroot-secret.json
-
-kubectl create configmap postgresql-conf --from-file=postgresql.conf --from-file=pghba=pg_hba.conf --from-file=setup.sql
-
-envsubst < $DIR/master-dc.json | kubectl create -f -
-envsubst < $DIR/replica-dc.json | kubectl create -f -
-envsubst < $DIR/replica2-dc.json | kubectl create -f -
+oc delete configmap postgresql-conf
+oc delete secret pguser-secret pgmaster-secret pgroot-secret

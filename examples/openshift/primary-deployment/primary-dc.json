@@ -2,9 +2,9 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-master-deployment-example-master",
+        "name": "crunchy-primary-deployment-example-primary",
         "annotations": {
-            "description": "master and replica deployments",
+            "description": "primary and replica deployments",
             "iconClass": "icon-database",
             "tags": "crunchy,database,postgresql"
         }
@@ -15,12 +15,12 @@
         "value": "5432"
     }, {
         "name": "PG_MASTER_USER",
-        "description": "The username used for master / replica replication",
+        "description": "The username used for primary / replica replication",
         "value": "master"
     }, {
         "name": "PGDATA_PATH_OVERRIDE",
         "description": "override for the pgdata path",
-        "value": "master-dc"
+        "value": "primary-dc"
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use"
@@ -50,9 +50,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-dc",
+            "name": "primary-dc",
             "labels": {
-                "name": "master-dc"
+                "name": "primary-dc"
             }
         },
         "spec": {
@@ -63,7 +63,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-dc"
+                "name": "primary-dc"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
@@ -72,9 +72,9 @@
         "kind": "Deployment",
         "apiVersion": "extensions/v1beta1",
         "metadata": {
-            "name": "master-dc",
+            "name": "primary-dc",
             "labels": {
-                "name": "master-dc"
+                "name": "primary-dc"
             }
         },
         "spec": {
@@ -82,7 +82,7 @@
             "template": {
                 "metadata": {
                     "labels": {
-                        "name": "master-dc"
+                        "name": "primary-dc"
                     }
                 },
                 "spec": {
