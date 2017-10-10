@@ -20,5 +20,5 @@ chmod 400 ./mypgpass
 
 for i in `seq 1 10`;
 do
-	psql -h pg-slave-rc.pgproject.svc.cluster.local -U master userdb -c 'select inet_server_addr()'
-done    
+	psql -h pg-replica-rc.pgproject.svc.cluster.local -U master userdb -c 'select inet_server_addr()'
+done
