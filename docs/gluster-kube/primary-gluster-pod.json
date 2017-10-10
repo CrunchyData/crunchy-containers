@@ -2,14 +2,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-gluster",
+            "name": "primary-gluster",
             "labels": {
-                "name": "master-gluster"
+                "name": "primary-gluster"
             }
         },
         "spec": {
             "containers": [{
-                "name": "master-gluster",
+                "name": "primary-gluster",
                 "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
                 "ports": [{
                     "containerPort": 5432,

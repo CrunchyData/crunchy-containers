@@ -22,9 +22,9 @@ envsubst < $DIR/gluster-endpoint.json | kubectl create -f -
 kubectl create -f $DIR/gluster-pv.json
 kubectl create -f $DIR/gluster-pvc.json
 
-kubectl create -f $LOC/master-gluster-service.json
+kubectl create -f $LOC/primary-gluster-service.json
 
 echo "sleeping a bit before creating the pod..."
 sleep 10
-envsubst < $LOC/master-gluster-pod.json  | kubectl create -f -
+envsubst < $LOC/primary-gluster-pod.json  | kubectl create -f -
 
