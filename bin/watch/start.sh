@@ -35,7 +35,7 @@ function ose_hack() {
 CONTAINER_FLAG=
 
 if [[ -v PG_CONTAINER_NAME ]]; then
-	CONTAINER_FLAG=-c $PG_CONTAINER_NAME
+	CONTAINER_FLAG="-c $PG_CONTAINER_NAME"
 fi
 echo "CONTAINER_FLAG is " $CONTAINER_FLAG
 
@@ -140,7 +140,7 @@ function kube_failover() {
 	do
 		if [ "$targetreplica" = $i ] ; then
 			echo "Triggering failover on replica:" $i
-			kubectl --token=$TOKEN exec $i touch /tmp/pg-failover-trigger
+			kubectl --token=$TOKEN exec $i touch /tmp/pg-failover-trigger $CONTAINER_FLAG
 			echo "Sleeping WAIT_TIME to give failover a chance before setting label"
 			sleep $WAIT_TIME
 			echo "Changing label of replica to " $PG_PRIMARY_SERVICE
@@ -183,7 +183,7 @@ function ose_failover() {
 	do
 		if [ "$targetreplica" = $i ] ; then
 			echo "Going to trigger failover on replica:" $i
-			oc exec $i touch /tmp/pg-failover-trigger
+			oc exec $i touch /tmp/pg-failover-trigger  $CONTAINER_FLAG
 			echo "Sleeping WAIT_TIME to give failover a chance before setting label..."
 			sleep $WAIT_TIME
 			echo "Changing label of replica to " $PG_PRIMARY_SERVICE
