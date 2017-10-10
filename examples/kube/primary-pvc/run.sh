@@ -15,9 +15,7 @@
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete service master-pvc
-oc delete pod master-pvc
+$DIR/cleanup.sh
 
-$CCPROOT/examples/waitforterm.sh master-pvc oc
-
-sudo rm -rf $PV_PATH/master-pvc
+envsubst < $DIR/primary-pvc-pod.json | kubectl create -f -
+kubectl create -f $DIR/primary-pvc-service.json

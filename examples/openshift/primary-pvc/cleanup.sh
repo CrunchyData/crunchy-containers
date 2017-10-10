@@ -15,6 +15,9 @@
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+oc delete service primary-pvc
+oc delete pod primary-pvc
 
-oc process -f $DIR/master-pvc.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+$CCPROOT/examples/waitforterm.sh primary-pvc oc
+
+sudo rm -rf $PV_PATH/primary-pvc

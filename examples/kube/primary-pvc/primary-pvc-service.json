@@ -2,9 +2,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-pvc",
+            "name": "primary-pvc",
             "labels": {
-                "name": "master-pvc"
+                "name": "primary-pvc"
             }
         },
         "spec": {
@@ -15,7 +15,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-pvc"
+                "name": "primary-pvc"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"

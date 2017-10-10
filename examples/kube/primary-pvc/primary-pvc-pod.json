@@ -2,9 +2,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master-pvc",
+        "name": "primary-pvc",
         "labels": {
-            "name": "master-pvc"
+            "name": "primary-pvc"
         }
     },
     "spec": {
