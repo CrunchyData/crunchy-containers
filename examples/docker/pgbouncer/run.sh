@@ -29,12 +29,12 @@ sudo docker run \
 	-v /run/docker.sock:/run/docker.sock \
 	-e FAILOVER=true \
 	-e SLEEP_TIME=12 \
-	-e PG_MASTER_SERVICE=master \
+	-e PG_PRIMARY_SERVICE=primary \
 	-e PG_REPLICA_SERVICE=replica \
-	-e PG_MASTER_PORT=5432 \
-	-e PG_MASTER_USER=masteruser \
+	-e PG_PRIMARY_PORT=5432 \
+	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_DATABASE=postgres \
-	--link master:master \
+	--link primary:primary \
 	--link replica:replica \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \

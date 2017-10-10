@@ -60,20 +60,20 @@ For each container, a link is added below that corresponds to the link:https://g
 | -
 
 | -
-| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-4[master-deployment]
-| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-3[master-deployment]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-4[primary-deployment]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-3[primary-deployment]
 
 | -
-| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-5[master-pvc]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-5[primary-pvc]
 | -
 
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-2[backup]
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-6[backup]
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-5[backup]
 
-| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-3[master-restore]
-| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-7[master-restore]
-| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-6[master-restore]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-3[primary-restore]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-7[primary-restore]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-6[primary-restore]
 
 | -
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-8[failover]

@@ -10,47 +10,47 @@ wanting to implement a *self-service* database-as-a-service.
 The templates were tested on Openshift 3.6 and Gluster Container
 Native storage.
 
-=== crunchy-small-config 
+=== crunchy-small-config
 
 The *small* configuration is a simple Master Deployment
 and related Service.  The example specifies a storage class to
 be used (e.g. Gluster Container Native Storage).  There are
 also CPU and Memory limits placed in the containers.
 
-=== crunchy-medium-config 
+=== crunchy-medium-config
 
 The *medium* configuration is a more advanced version of
 the *small* template with the addition of a single async replica
-that can act as a backup to the master in the event of a failure.
+that can act as a backup to the primary in the event of a failure.
 
 There are no memory and CPU limits set for this template.
 
-crunchy-collect has been added into the master database pod to 
+crunchy-collect has been added into the primary database pod to
 collect metrics.
 
 The replica is run as a simple Pod but persists data to the
-same storage class as the master.
+same storage class as the primary.
 
 There is only a single Master Service created so access to the
 replica is limited, the replica only serves as a backup to the
-master.
+primary.
 
-=== crunchy-large-config 
+=== crunchy-large-config
 
 The *large* configuration is an advanced configuration
 that would simulate a postgres HA environment.
 
-The master has a Service and also the replica(s) have a Service
+The primary has a Service and also the replica(s) have a Service
 so applications can access both.
 
-The master is run in a Deployment which lets Openshift relocate
+The primary is run in a Deployment which lets Openshift relocate
 the Deployment if a node fails for any reason.
 
-Pgpool is also deployed which allows applications to have a 
+Pgpool is also deployed which allows applications to have a
 SQL routing capability in front of their postgres cluster. Pgpool is
 also run in a Deployment which allows for HA of pgpool.
 
-There are no CPU or memory limits set for either master or replicas.
+There are no CPU or memory limits set for either primary or replicas.
 
 The replica(s) are run withing a StatefulSet and use dynamic storage
 provisioning.  You can therefore scale up the number of replicas
@@ -68,7 +68,7 @@ The *metrics* template allows you to deploy the entire Crunchy metrics
 containers using an Openshift template.  It is useful to show metrics
 flowing from the Small/Medium/Large deployments to the Metrics backends.
 
-The example also shows how to specify dynamic storage for the 
+The example also shows how to specify dynamic storage for the
 metrics persistence.
 
 === backup

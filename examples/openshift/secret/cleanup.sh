@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete secret pguser-secret pgmaster-secret pgroot-secret
+oc delete secret pguser-secret pgprimary-secret pgroot-secret
 oc delete pod secret-pg
 oc delete service secret-pg
 $CCPROOT/examples/waitforterm.sh secret-pg oc

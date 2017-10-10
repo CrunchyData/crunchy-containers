@@ -22,9 +22,9 @@ ExecStart=/usr/bin/docker run -m 32g --cpu-shares=512 --net=quagga --ip=10.172.4
 						        --label location="gld" \
 							        --label environment="dev" \
 								        --label service="jose" \
-									        -e PG_MODE=master \
-										        -e PG_MASTER_USER=masteruser \
-											        -e PG_MASTER_PASSWORD=masterpsw \
+									        -e PG_MODE=primary \
+										        -e PG_PRIMARY_USER=primaryuser \
+											        -e PG_PRIMARY_PASSWORD=masterpsw \
 												        -e PG_ROOT_PASSWORD=rootpsw \
 													        --name=dg_jose \
 														        -d docker.anim.dreamworks.com/dwadba/postgres:9.5

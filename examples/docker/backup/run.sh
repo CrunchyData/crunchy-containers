@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
@@ -32,7 +32,7 @@ docker run \
 	--privileged=true \
 	-v $VOLUME_NAME:/pgdata \
 	-e BACKUP_HOST=$HOST_TO_BACKUP \
-	-e BACKUP_USER=master\
+	-e BACKUP_USER=primary\
 	-e BACKUP_PASS=password \
 	-e BACKUP_PORT=5432 \
 	-e BACKUP_LABEL=mybackup \
@@ -40,4 +40,3 @@ docker run \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
 	-d crunchydata/crunchy-backup:$CCP_IMAGE_TAG
-

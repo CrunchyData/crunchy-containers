@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete job master-dba-vac
-kubectl delete job master-dba-backup
+kubectl delete job primary-dba-vac
+kubectl delete job primary-dba-backup
 kubectl delete serviceaccount dba-sa
-kubectl delete pod master-dba
-kubectl delete service master-dba
+kubectl delete pod primary-dba
+kubectl delete service primary-dba
 kubectl delete clusterrolebinding permissive-binding
 
-../../waitforterm.sh master-dba kubectl
+../../waitforterm.sh primary-dba kubectl

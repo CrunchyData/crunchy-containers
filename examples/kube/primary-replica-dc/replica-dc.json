@@ -25,22 +25,22 @@
                     "name": "postgres",
                     "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
                     "env": [{
-                        "name": "PG_MASTER_HOST",
-                        "value": "master-dc"
+                        "name": "PG_PRIMARY_HOST",
+                        "value": "primary-dc"
                     }, {
-                        "name": "PG_MASTER_SERVICE_NAME",
-                        "value": "master-dc"
+                        "name": "PG_PRIMARY_SERVICE_NAME",
+                        "value": "primary-dc"
                     }, {
-                        "name": "PG_MASTER_PORT",
+                        "name": "PG_PRIMARY_PORT",
                         "value": "5432"
                     }, {
                         "name": "PG_MODE",
                         "value": "replica"
                     }, {
-                        "name": "PG_MASTER_USER",
-                        "value": "master"
+                        "name": "PG_PRIMARY_USER",
+                        "value": "primary"
                     }, {
-                        "name": "PG_MASTER_PASSWORD",
+                        "name": "PG_PRIMARY_PASSWORD",
                         "value": "password"
                     }, {
                         "name": "PG_USER",

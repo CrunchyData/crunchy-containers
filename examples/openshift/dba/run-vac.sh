@@ -28,4 +28,4 @@ oc policy add-role-to-user view system:serviceaccount:$NAMESPACE:dba-sa
 oc process \
 	-p CCP_IMAGE_TAG=$CCP_IMAGE_TAG \
 	-p NAMESPACE=$NAMESPACE \
-	-f $DIR/master-dba-vac.json | oc create -f -
+	-f $DIR/primary-dba-vac.json | oc create -f -

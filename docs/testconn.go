@@ -14,9 +14,9 @@ func main() {
 	}
 }
 func connect() {
-	var dbHost = "pg-slave-rc.pgproject.svc.cluster.local"
+	var dbHost = "pg-replica-rc.pgproject.svc.cluster.local"
 	var dbPassword = "apXvkRvw2daW"
-	dbConn, err := sql.Open("postgres", "sslmode=disable user=master host="+dbHost+" port=5432 dbname=userdb password="+dbPassword)
+	dbConn, err := sql.Open("postgres", "sslmode=disable user=primary host="+dbHost+" port=5432 dbname=userdb password="+dbPassword)
 	if err != nil {
 		fmt.Println(err.Error())
 		panic(err)

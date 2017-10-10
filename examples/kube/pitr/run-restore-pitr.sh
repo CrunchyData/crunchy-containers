@@ -16,11 +16,11 @@ source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-kubectl delete pod master-pitr-restore
-kubectl delete pod master-pitr
-$CCPROOT/examples/waitforterm.sh master-pitr kubectl
-$CCPROOT/examples/waitforterm.sh master-pitr-restore kubectl
+kubectl delete pod primary-pitr-restore
+kubectl delete pod primary-pitr
+$CCPROOT/examples/waitforterm.sh primary-pitr kubectl
+$CCPROOT/examples/waitforterm.sh primary-pitr-restore kubectl
 
 # start up the database container
-envsubst <  $DIR/master-pitr-restore-service.json  | kubectl create -f -
-envsubst <  $DIR/master-pitr-restore-pod.json  | kubectl create -f -
+envsubst <  $DIR/primary-pitr-restore-service.json  | kubectl create -f -
+envsubst <  $DIR/primary-pitr-restore-pod.json  | kubectl create -f -

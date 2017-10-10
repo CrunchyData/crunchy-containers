@@ -128,8 +128,8 @@
         "allFormat": "glob",
         "current": {
           "tags": [],
-          "text": "master",
-          "value": "master"
+          "text": "primary",
+          "value": "primary"
         },
         "datasource": "cr",
         "includeAll": false,
@@ -139,11 +139,11 @@
         "options": [
           {
             "selected": true,
-            "text": "master",
-            "value": "master"
+            "text": "primary",
+            "value": "primary"
           }
         ],
-        "query": "master",
+        "query": "primary",
         "refresh": false,
         "regex": "",
         "type": "custom"

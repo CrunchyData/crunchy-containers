@@ -159,7 +159,7 @@ func startPrimaryReplica(
     var err error
 
     fmt.Printf("\nWaiting maximum of %d seconds for master container", timeoutSeconds)
-    masterId, err = waitForPostgresContainer(docker, "master", timeoutSeconds)
+    masterId, err = waitForPostgresContainer(docker, "primary", timeoutSeconds)
     if err != nil {
         t.Fatal("master container did not start")
     }

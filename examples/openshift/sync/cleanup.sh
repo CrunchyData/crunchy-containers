@@ -14,8 +14,8 @@
 
 oc delete pod replica
 oc delete pod syncreplica
-oc delete pod master
-$CCPROOT/examples/waitforterm.sh master oc
+oc delete pod primary
+$CCPROOT/examples/waitforterm.sh primary oc
 $CCPROOT/examples/waitforterm.sh replica oc
-oc delete service master
+oc delete service primary
 oc delete service replica

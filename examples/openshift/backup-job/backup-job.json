@@ -30,7 +30,7 @@
       "name": "DATABASE_USER",
       "displayName": "Database User",
       "description": "The database user the backup will be done with.",
-      "value": "master"
+      "value": "primary"
     },
     {
       "name": "DATABASE_PASS",

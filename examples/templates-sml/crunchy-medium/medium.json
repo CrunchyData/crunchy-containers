@@ -4,7 +4,7 @@
     "metadata": {
         "name": "crunchy-medium-config",
         "annotations": {
-            "description": "Crunchy medium configuration includes master Deployment, master Service, dynamic storage, a single async replica, unlimited memory and CPU",
+            "description": "Crunchy medium configuration includes primary Deployment, primary Service, dynamic storage, a single async replica, unlimited memory and CPU",
             "iconClass": "icon-postgresql",
             "tags": "crunchy,database,postgresql"
         }
@@ -12,14 +12,14 @@
     "parameters": [{
         "name": "NAME",
         "description": "The name of the database and service",
-        "value": "master"
+        "value": "primary"
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use",
         "value": "rhel7-9.6-1.5"
     }, {
-        "name": "PG_MASTER_PASSWORD",
-        "description": "The password for the PG master user",
+        "name": "PG_PRIMARY_PASSWORD",
+        "description": "The password for the PG primary user",
         "value": "password"
     }, {
         "name": "PG_ROOT_PASSWORD",
@@ -27,7 +27,7 @@
         "value": "password"
     }, {
         "name": "PG_PASSWORD",
-        "description": "The password for the PG master user",
+        "description": "The password for the PG primary user",
         "value": "password"
     }, {
         "name": "STORAGE_CLASS",
@@ -153,13 +153,13 @@
                     "protocol": "TCP"
                 }],
                 "env": [{
-                    "name": "PG_MASTER_HOST",
+                    "name": "PG_PRIMARY_HOST",
                     "value": "${NAME}"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "master"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "primary"
                 }, {
-                    "name": "PG_MASTER_PORT",
+                    "name": "PG_PRIMARY_PORT",
                     "value": "5432"
                 }, {
                     "name": "PG_MODE",
@@ -180,8 +180,8 @@
                     "name": "PGHOST",
                     "value": "/tmp"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
-                    "value": "${PG_MASTER_PASSWORD}"
+                    "name": "PG_PRIMARY_PASSWORD",
+                    "value": "${PG_PRIMARY_PASSWORD}"
                 }],
                 "volumeMounts": [{
                     "mountPath": "/pgdata",
@@ -233,11 +233,11 @@
                         "name": "collect",
                         "image": "crunchydata/crunchy-collect:${CCP_IMAGE_TAG}",
                         "env": [{
-                            "name": "PG_MASTER_USER",
-                            "value": "master"
+                            "name": "PG_PRIMARY_USER",
+                            "value": "primary"
                         }, {
-                            "name": "PG_MASTER_PASSWORD",
-                            "value": "${PG_MASTER_PASSWORD}"
+                            "name": "PG_PRIMARY_PASSWORD",
+                            "value": "${PG_PRIMARY_PASSWORD}"
                         }, {
                             "name": "PG_PORT",
                             "value": "5432"
@@ -257,20 +257,20 @@
                         "name": "server",
                         "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                         "env": [{
-                            "name": "PG_MASTER_PORT",
+                            "name": "PG_PRIMARY_PORT",
                             "value": "5432"
                         }, {
                             "name": "PG_MODE",
-                            "value": "master"
+                            "value": "primary"
                         }, {
                             "name": "PGDATA_PATH_OVERRIDE",
                             "value": "${NAME}"
                         }, {
-                            "name": "PG_MASTER_USER",
-                            "value": "master"
+                            "name": "PG_PRIMARY_USER",
+                            "value": "primary"
                         }, {
-                            "name": "PG_MASTER_PASSWORD",
-                            "value": "${PG_MASTER_PASSWORD}"
+                            "name": "PG_PRIMARY_PASSWORD",
+                            "value": "${PG_PRIMARY_PASSWORD}"
                         }, {
                             "name": "PG_USER",
                             "value": "testuser"

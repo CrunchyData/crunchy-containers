@@ -48,7 +48,7 @@ func TestDockerReplica(t *testing.T) {
     	t.Fatal("Cannot proceed")
     }
 
-    t.Log("Write some data to master")
+    t.Log("Write some data to primary")
     facts, err := writeSomeData(docker, masterId, userdb)
     if err != nil {
         t.Error(err)

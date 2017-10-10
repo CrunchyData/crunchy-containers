@@ -14,7 +14,7 @@
 # limitations under the License.
 
 function trap_sigterm() {
-	echo "doing trap logic..." >> $PGDATA/trap.output
+	echo "Doing trap logic..." >> $PGDATA/trap.output
 
 	# Clean shutdowns begin here (force fast mode in case of PostgreSQL < 9.5)
 	echo "Clean shut-down of postgres..."
@@ -34,47 +34,47 @@ source /opt/cpm/bin/setenv.sh
 source check-for-secrets.sh
 
 if [ ! -v PG_MODE ]; then
-	echo "PG_MODE env var is not set, aborting"
+	echo "PG_MODE environment variable is not set, aborting"
 	exit 1
 fi
 
 if [ "$PG_MODE" = "replica" ]; then
-	if [ ! -v PG_MASTER_HOST ]; then
-		echo "PG_MASTER_HOST env var is not set and required when PG_MODE is replica, aborting"
+	if [ ! -v PG_PRIMARY_HOST ]; then
+		echo "PG_PRIMARY_HOST environment variable is not set and required when PG_MODE is replica, aborting"
 		exit 1
 	fi
 fi
 
-if [ ! -v PG_MASTER_USER ]; then
-	echo "PG_MASTER_USER env var is not set, aborting"
+if [ ! -v PG_PRIMARY_USER ]; then
+	echo "PG_PRIMARY_USER environment variable is not set, aborting"
 	exit 1
 fi
-if [ ! -v PG_MASTER_PASSWORD ]; then
-	echo "PG_MASTER_PASSWORD env var is not set, aborting"
+if [ ! -v PG_PRIMARY_PASSWORD ]; then
+	echo "PG_PRIMARY_PASSWORD environment variable is not set, aborting"
 	exit 1
 fi
 if [ ! -v PG_USER ]; then
-	echo "PG_USER env var is not set, aborting"
+	echo "PG_USER environment variable is not set, aborting"
 	exit 1
 fi
 if [ ! -v PG_PASSWORD ]; then
-	echo "PG_PASSWORD env var is not set, aborting"
+	echo "PG_PASSWORD environment variable is not set, aborting"
 	exit 1
 fi
 if [ ! -v PG_DATABASE ]; then
-	echo "PG_DATABASE env var is not set, aborting"
+	echo "PG_DATABASE environment variable is not set, aborting"
 	exit 1
 fi
 if [ ! -v PG_ROOT_PASSWORD ]; then
-	echo "PG_ROOT_PASSWORD env var is not set, aborting"
+	echo "PG_ROOT_PASSWORD environment variable is not set, aborting"
 	exit 1
 fi
 
 export PG_MODE=$PG_MODE
-export PG_MASTER_HOST=$PG_MASTER_HOST
-export PG_MASTER_PORT=$PG_MASTER_PORT
-export PG_MASTER_USER=$PG_MASTER_USER
-export PG_MASTER_PASSWORD=$PG_MASTER_PASSWORD
+export PG_PRIMARY_HOST=$PG_PRIMARY_HOST
+export PG_PRIMARY_PORT=$PG_PRIMARY_PORT
+export PG_PRIMARY_USER=$PG_PRIMARY_USER
+export PG_PRIMARY_PASSWORD=$PG_PRIMARY_PASSWORD
 export PG_USER=$PG_USER
 export PG_PASSWORD=$PG_PASSWORD
 export PG_DATABASE=$PG_DATABASE
@@ -88,7 +88,7 @@ if [[ -v ARCHIVE_MODE ]]; then
 	if [ $ARCHIVE_MODE == "on" ]; then
 		mkdir -p $PGWAL
 		chmod 0700 $PGWAL
-		echo "creating wal directory at " $PGWAL
+		echo "Creating wal directory at " $PGWAL
 	fi
 fi
 
@@ -99,12 +99,12 @@ function role_discovery() {
 	ordinal=${HOSTNAME##*-}
 	echo $ordinal is ordinal
 	if [ $ordinal -eq 0 ]; then
-		kubectl label --overwrite=true pod $HOSTNAME  name=$PG_MASTER_HOST
-		oc label --overwrite=true pod $HOSTNAME  name=$PG_MASTER_HOST
-		echo "setting PG_MODE to master"
-		export PG_MODE=master
+		kubectl label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST
+		oc label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST
+		echo "Setting PG_MODE to primary."
+		export PG_MODE=primary
 	else
-		echo "setting PG_MODE to replica"
+		echo "Setting PG_MODE to replica."
 		export PG_MODE=replica
 	fi
 }
@@ -121,7 +121,7 @@ function ose_hack() {
 }
 
 function initdb_logic() {
-	echo "doing initdb...."
+	echo "Doing initdb..."
 
 #	tar xzf /opt/cpm/conf/data.tar.gz --directory=$PGDATA
 	cmd="initdb -D $PGDATA "
@@ -136,7 +136,7 @@ function initdb_logic() {
 			if [ -d "$PGWAL" ]; then
                 		cmd+=" --xlogdir="$PGWAL
 			else
-				echo "XLOGDIR not found! Using default pg_xlog"
+				echo "XLOGDIR not found! Using default pg_xlog."
 			fi
 		fi
         fi
@@ -148,10 +148,10 @@ function initdb_logic() {
 	echo $cmd
 	eval $cmd
 
-	echo "overlay pg config with your settings...."
+	echo "Overlaying postgreSQL's configuration with your settings..."
 	cp /tmp/postgresql.conf $PGDATA
 	cp /opt/cpm/conf/pg_hba.conf /tmp
-	sed -i "s/PG_MASTER_USER/$PG_MASTER_USER/g" /tmp/pg_hba.conf
+	sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pg_hba.conf
 	cp /tmp/pg_hba.conf $PGDATA
 
 }
@@ -160,11 +160,11 @@ function check_for_restore() {
 	echo "checking_for_restore"
 	ls -l /backup
 	if [ ! -f /backup/$BACKUP_PATH/postgresql.conf ]; then
-		echo "no backup file found..."
+		echo "No backup file found..."
 		initdb_logic
 	else
 		if [ ! -f /pgdata/postgresql.conf ]; then
-			echo "doing restore from backup...."
+			echo "Restoring from backup..."
 			rsync -a --progress --exclude 'pg_log/*' /backup/$BACKUP_PATH/* $PGDATA
 			chmod -R 0700 $PGDATA
 		else
@@ -173,9 +173,9 @@ function check_for_restore() {
 	fi
 }
 function check_for_pitr() {
-	echo "checking for PITR WAL files to recover with.."
+	echo "Checking for PITR WAL files to recover with..."
 	if [ "$(ls -A /recover)" ]; then
-		echo "found non-empty //recover ...assuming a PITR is requested"
+		echo "Found non-empty //recover ...assuming a PITR is requested"
 		ls -l /recover
 		rm $PGDATA/pg_xlog/*0* $PGDATA/pg_xlog/archive_status/*0*
 		cp /opt/cpm/conf/pitr-recovery.conf /tmp
@@ -206,27 +206,27 @@ function check_for_pitr() {
 
 function fill_conf_file() {
 	if [[ -v TEMP_BUFFERS ]]; then
-		echo "overriding TEMP_BUFFERS setting to " + $TEMP_BUFFERS
+		echo "Overriding TEMP_BUFFERS setting to " + $TEMP_BUFFERS
 	else
 		TEMP_BUFFERS=8MB
 	fi
 	if [[ -v MAX_CONNECTIONS ]]; then
-		echo "overriding MAX_CONNECTIONS setting to " + $MAX_CONNECTIONS
+		echo "Overriding MAX_CONNECTIONS setting to " + $MAX_CONNECTIONS
 	else
 		MAX_CONNECTIONS=100
 	fi
 	if [[ -v SHARED_BUFFERS ]]; then
-		echo "overriding SHARED_BUFFERS setting to " + $SHARED_BUFFERS
+		echo "Overriding SHARED_BUFFERS setting to " + $SHARED_BUFFERS
 	else
 		SHARED_BUFFERS=128MB
 	fi
 	if [[ -v WORK_MEM ]]; then
-		echo "overriding WORK_MEM setting to " + $WORK_MEM
+		echo "Overriding WORK_MEM setting to " + $WORK_MEM
 	else
 		WORK_MEM=4MB
 	fi
 	if [[ -v MAX_WAL_SENDERS ]]; then
-		echo "overriding MAX_WAL_SENDERS setting to " + $MAX_WAL_SENDERS
+		echo "Overriding MAX_WAL_SENDERS setting to " + $MAX_WAL_SENDERS
 	else
 		MAX_WAL_SENDERS=6
 	fi
@@ -234,19 +234,19 @@ function fill_conf_file() {
 	cp /opt/cpm/conf/postgresql.conf.template /tmp/postgresql.conf
 
 	if [[ -v ARCHIVE_MODE ]]; then
-		echo "overriding ARCHIVE_MODE setting to " + $ARCHIVE_MODE
+		echo "Overriding ARCHIVE_MODE setting to " + $ARCHIVE_MODE
 		cat /opt/cpm/conf/archive-command >> /tmp/postgresql.conf
 	else
 		ARCHIVE_MODE=off
 	fi
 	if [[ -v ARCHIVE_TIMEOUT ]]; then
-		echo "overriding ARCHIVE_TIMEOUT setting to " + $ARCHIVE_TIMEOUT
+		echo "Overriding ARCHIVE_TIMEOUT setting to " + $ARCHIVE_TIMEOUT
 	else
 		ARCHIVE_TIMEOUT=0
 	fi
 
 	if [ -f /pgconf/pgbackrest.conf ]; then
-		echo "using pgbackrest archive command"
+		echo "Using pgbackrest archive command."
 		ARCHIVE_MODE=on
 		cat /opt/cpm/conf/backrest-archive-command >> /tmp/postgresql.conf
 	fi
@@ -263,7 +263,7 @@ function fill_conf_file() {
 function create_pgpass() {
 cd /tmp
 cat >> ".pgpass" <<-EOF
-*:*:*:*:${PG_MASTER_PASSWORD}
+*:*:*:*:${PG_PRIMARY_PASSWORD}
 EOF
 chmod 0600 .pgpass
 }
@@ -272,25 +272,25 @@ function waitforpg() {
 	export PGPASSFILE=/tmp/.pgpass
 	CONNECTED=false
 	while true; do
-		pg_isready --dbname=$PG_DATABASE --host=$PG_MASTER_HOST \
-		--port=$PG_MASTER_PORT \
-		--username=$PG_MASTER_USER --timeout=2
+		pg_isready --dbname=$PG_DATABASE --host=$PG_PRIMARY_HOST \
+		--port=$PG_PRIMARY_PORT \
+		--username=$PG_PRIMARY_USER --timeout=2
 		if [ $? -eq 0 ]; then
-			echo "database is ready"
+			echo "The database is ready."
 			break
 		fi
 		sleep 2
 	done
 
 	while true; do
-		psql -h $PG_MASTER_HOST -p $PG_MASTER_PORT -U $PG_MASTER_USER $PG_DATABASE -f /opt/cpm/bin/readiness.sql
+		psql -h $PG_PRIMARY_HOST -p $PG_PRIMARY_PORT -U $PG_PRIMARY_USER $PG_DATABASE -f /opt/cpm/bin/readiness.sql
 		if [ $? -eq 0 ]; then
-			echo "database is ready"
+			echo "The database is ready."
 			CONNECTED=true
 			break
 		fi
 
-		echo "trying pg_isready on master " $i
+		echo "Attempting pg_isready on primary " $i
 		sleep 2
 	done
 
@@ -301,11 +301,11 @@ echo "initialize_replica"
 rm -rf $PGDATA/*
 chmod 0700 $PGDATA
 
-echo "waiting to give the master time to start up and register its hostname with docker before performing the initial backup...."
+echo "Waiting to give the primary time to start up and register its hostname with Docker before performing the initial backup..."
 
 waitforpg
 
-pg_basebackup -x --no-password --pgdata $PGDATA --host=$PG_MASTER_HOST --port=$PG_MASTER_PORT -U $PG_MASTER_USER
+pg_basebackup -x --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST --port=$PG_PRIMARY_PORT -U $PG_PRIMARY_USER
 
 # PostgreSQL recovery configuration.
 if [[ -v SYNC_REPLICA ]]; then
@@ -318,9 +318,9 @@ fi
 echo $APPLICATION_NAME " is the APPLICATION_NAME being used"
 
 cp /opt/cpm/conf/pgrepl-recovery.conf /tmp
-sed -i "s/PG_MASTER_USER/$PG_MASTER_USER/g" /tmp/pgrepl-recovery.conf
-sed -i "s/PG_MASTER_HOST/$PG_MASTER_HOST/g" /tmp/pgrepl-recovery.conf
-sed -i "s/PG_MASTER_PORT/$PG_MASTER_PORT/g" /tmp/pgrepl-recovery.conf
+sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pgrepl-recovery.conf
+sed -i "s/PG_PRIMARY_HOST/$PG_PRIMARY_HOST/g" /tmp/pgrepl-recovery.conf
+sed -i "s/PG_PRIMARY_PORT/$PG_PRIMARY_PORT/g" /tmp/pgrepl-recovery.conf
 sed -i "s/APPLICATION_NAME/$APPLICATION_NAME/g" /tmp/pgrepl-recovery.conf
 cp /tmp/pgrepl-recovery.conf $PGDATA/recovery.conf
 }
@@ -328,8 +328,8 @@ cp /tmp/pgrepl-recovery.conf $PGDATA/recovery.conf
 #
 # the initial start of postgres will create the database
 #
-function initialize_master() {
-echo "initialize_master"
+function initialize_primary() {
+echo "initialize_primary"
 if [ ! -f $PGDATA/postgresql.conf ]; then
         echo "pgdata is empty and id is..."
 	id
@@ -338,38 +338,38 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	check_for_restore
 	check_for_pitr
 
-        echo "starting db" >> /tmp/start-db.log
+        echo "Starting database..." >> /tmp/start-db.log
 
-	echo "temporarily starting db to run setup.sql"
+	echo "Temporarily starting database to run setup.sql..."
 	pg_ctl -D $PGDATA start
 
-	echo "waiting for pg to start up..."
+	echo "Waiting for postgreSQL to start..."
 	while true; do
                 pg_isready \
-                --port=$PG_MASTER_PORT \
+                --port=$PG_PRIMARY_PORT \
 		--host=$HOSTNAME \
-		--username=$PG_MASTER_USER \
+		--username=$PG_PRIMARY_USER \
                 --timeout=2
                 if [ $? -eq 0 ]; then
-                        echo "database is ready for setup.sql"
+                        echo "The database is ready for setup.sql."
                         break
                 fi
                 sleep 2
         done
 
 	if [ -f /pgconf/pgbackrest.conf ]; then
-		echo "creating stanza..."
+		echo "Creating stanza..."
 		pgbackrest --log-path=/backrestrepo --config=/pgconf/pgbackrest.conf --stanza=db stanza-create
 	fi
 
-        echo "loading setup.sql" >> /tmp/start-db.log
+        echo "Loading setup.sql" >> /tmp/start-db.log
 	cp /opt/cpm/bin/setup.sql /tmp
 	if [ -f /pgconf/setup.sql ]; then
-		echo "using setup.sql from /pgconf"
+		echo "Using setup.sql from /pgconf"
 		cp /pgconf/setup.sql /tmp
 	fi
-	sed -i "s/PG_MASTER_USER/$PG_MASTER_USER/g" /tmp/setup.sql
-	sed -i "s/PG_MASTER_PASSWORD/$PG_MASTER_PASSWORD/g" /tmp/setup.sql
+	sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/setup.sql
+	sed -i "s/PG_PRIMARY_PASSWORD/$PG_PRIMARY_PASSWORD/g" /tmp/setup.sql
 	sed -i "s/PG_USER/$PG_USER/g" /tmp/setup.sql
 	sed -i "s/PG_PASSWORD/$PG_PASSWORD/g" /tmp/setup.sql
 	sed -i "s/PG_DATABASE/$PG_DATABASE/g" /tmp/setup.sql
@@ -380,16 +380,16 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	export PGHOST=/tmp
         psql -U postgres < /tmp/setup.sql
 	if [ -f /pgconf/audit.sql ]; then
-		echo "using pgaudit_analyze audit.sql from /pgconf"
+		echo "Using pgaudit_analyze audit.sql from /pgconf"
 		psql -U postgres < /pgconf/audit.sql
 	fi
 
-	echo "stopping database after master initialization..."
+	echo "Stopping database after primary initialization..."
 
 	pg_ctl -D $PGDATA --mode=fast stop
 
 	if [[ -v SYNC_REPLICA ]]; then
-		echo "synchronous_standby_names = '"$SYNC_REPLICA"'" >> $PGDATA/postgresql.conf
+		echo "Synchronous_standby_names = '"$SYNC_REPLICA"'" >> $PGDATA/postgresql.conf
 	fi
 fi
 }
@@ -406,7 +406,7 @@ rm $PGDATA/postmaster.pid
 #cp /opt/cpm/conf/passwd /tmp
 #sed -i "s/USERID/$USER_ID/g" /tmp/passwd
 #export LD_PRELOAD=libnss_wrapper.so NSS_WRAPPER_PASSWD=/tmp/passwd  NSS_WRAPPER_GROUP=/etc/group
-echo "user id is..."
+echo "User id is..."
 id
 
 # for stateful set support
@@ -422,19 +422,19 @@ fill_conf_file
 
 case "$PG_MODE" in
 	"replica")
-	echo "working on replica"
+	echo "Working on replica..."
 	create_pgpass
 	export PGPASSFILE=/tmp/.pgpass
 	if [ ! -f $PGDATA/postgresql.conf ]; then
 		initialize_replica
 	fi
 	;;
-	"master")
-	echo "working on master..."
-	initialize_master
+	"primary")
+	echo "Working on primary..."
+	initialize_primary
 	;;
 	*)
-	echo "FATAL:  PG_MODE is not an accepted value...check your PG_MODE env var"
+	echo "FATAL:  PG_MODE is not an accepted value...check your PG_MODE environment variable"
 	;;
 esac
 
@@ -456,4 +456,4 @@ fi
 # When that happens, we route to the "trap_sigterm" function above
 wait
 
-echo "exiting...at end"
+echo "Exiting...at end"

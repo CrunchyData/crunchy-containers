@@ -38,13 +38,13 @@ executed when the database is first created.
 
 === Environment Variables
 
- * PG_MODE - either *master*, *replica* or *set*, this value determines whether
-   the database is set up as a master or replica instance, in the
+ * PG_MODE - either *primary*, *replica* or *set*, this value determines whether
+   the database is set up as a primary or replica instance. In the
    case of *set*, it means the container is started within a StatefulSet
    in a Kubernetes cluster.
- * PG_MASTER_USER - the value to use for the user ID created as
-   master.  The *master* user has super user privileges.
- * PG_MASTER_PASSWORD - the password for the PG_MASTER_USER database user
+ * PG_PRIMARY_USER - the value to use for the user ID created as
+   primary.  The *primary* user has super user privileges.
+ * PG_PRIMARY_PASSWORD - the password for the PG_PRIMARY_USER database user
  * PG_USER - the value to use for the user ID created as a normal user.
    This user is created as part of the setup.sql script upon database
    creation and allows users to predefine an application user.
@@ -70,7 +70,7 @@ executed when the database is first created.
    pgaudit_analyze program in the background
  * PGDATA_PATH_OVERRIDE - if set, will cause the container to use a /pgdata path
    name of your choosing rather than the hostname of the container which
-   is the default...this is useful for a master in a deployment.
+   is the default. This is useful for a primary in a deployment.
  * XLOGDIR - if set to true, will cause initdb to include --xlogdir=$PGWAL, this
    will cause a symlink to be created from /pgdata/containername/pg_xlog to /pgwal/containername-wal
 
@@ -275,17 +275,17 @@ The following features are supported by the crunchy-pgbadger container:
 
 The crunchy-pgpool container executes the pgpool utility.  Pgpool can
 be used to provide a smart PostgreSQL-aware proxy to a PostgreSQL cluster,
-both master and replica, so that applications can only have to work
+both primary and replica, so that applications can only have to work
 with a single database connection.
 
-Postgres replicas are read-only whereas a master is both read and write
+Postgres replicas are read-only whereas a primary is both read and write
 capable.
 
 === Environment Variables
 
  * PG_USERNAME - user to connect to PostgreSQL
  * PG_PASSWORD - user password to connect to PostgreSQL
- * PG_MASTER_SERVICE_NAME - database host to connect to for the master node
+ * PG_PRIMARY_SERVICE_NAME - database host to connect to for the primary node
  * PG_REPLICA_SERVICE_NAME - database host to connect to for the replica node
 
 === Features
@@ -298,8 +298,8 @@ The following features are supported by the crunchy-pgpool container:
 
 We create a container, crunchy-watch, that runs as a pod unto itself
 typically.  The watch container essentially does a health check
-on a master database container and performs a failover sequence
-if the master is not reached.
+on a primary database container and performs a failover sequence
+if the primary is not reached.
 
 The watch container has access to a service account that is used
 inside the container to issue commands to OpenShift.
@@ -350,28 +350,28 @@ the watch logic to interact with the replica containers.
 
 === Environment Variables
 
- * SLEEP_TIME - the time to sleep in seconds between checking on the master
+ * SLEEP_TIME - the time to sleep in seconds between checking on the primary
  * WAIT_TIME - the time to sleep in seconds between triggering the failover and updating its label (default is 40 secs)
- * PG_MASTER_SERVICE -  the master service name
+ * PG_PRIMARY_SERVICE -  the primary service name
  * PG_REPLICA_SERVICE - the replica service name
- * PG_MASTER_PORT - database port to use when checking the database
- * PG_MASTER_USER -  database user account to use when checking the database
+ * PG_PRIMARY_PORT - database port to use when checking the database
+ * PG_PRIMARY_USER -  database user account to use when checking the database
    using pg_isready utility
  * PG_DATABASE - database to use when checking the database using pg_isready
  * REPLICA_TO_TRIGGER_LABEL - the pod name of a replica that you
-   want to choose as the new master in a failover; this will override
+   want to choose as the new primary in a failover; this will override
    the normal replica selection
  * WATCH_PRE_HOOK - path to an executable file to run before failover is processed.
  * WATCH_POST_HOOK - path to an executable file to run after failover is processed.
 
 === Logic
 
-The watch container will watch the master, if the master dies, then
+The watch container will watch the primary, if the primary dies, then
 the watcher will:
 
- * create the trigger file on the replica that will become the new master
- * change the labels on the replica to be those of the master
- * start watching the new master in case that falls over next
+ * create the trigger file on the replica that will become the new primary
+ * change the labels on the replica to be those of the primary
+ * start watching the new primary in case that falls over next
  * look for replicas that have the metadata label value of *replicatype=trigger* to prefer
    the failover to. If found, it will use the first replica with that label,; if
    not found, it will use the first replica it finds.
@@ -396,7 +396,7 @@ The crunchy-vacuum container allows you to perform a SQL VACUUM job against a Po
 You specify a database to vacuum using various environment variables which are listed below. It is possible
 to run different vacuum operations either manually or automatically through scheduling.
 
-The crunchy-vacuum image is executed, passed in the Postgres connection parameters to the single-master
+The crunchy-vacuum image is executed, passed in the Postgres connection parameters to the single-primary
 PostgreSQL container. The type of vacuum performed is dictated by the environment variables passed into the job.
 
 === Environment Variables
@@ -608,15 +608,15 @@ utility and a failover watch script.
 === Environment Variables
 
  * FAILOVER - when set, the container will look at the configured
-   master database and if it can't reach it, will perform a failover
+   primary database and if it can't reach it, will perform a failover
    to a configured replica database
  * OSE_PROJECT - when set, indicates you are running under OSE
- * PG_MASTER_USER - the value to use for the user ID created as
-   master.  The *master* user has super user privileges.
- * SLEEP_TIME - time in seconds to sleep when polling the master
- * PG_DATABASE - the database to use when checking the readiness of the master
- * PG_MASTER_PORT - the PostgreSQL port to use when checking the master
- * PG_MASTER_SERVICE - the name of the master database container
+ * PG_PRIMARY_USER - the value to use for the user ID created as
+   primary.  The *primary* user has super user privileges.
+ * SLEEP_TIME - time in seconds to sleep when polling the primary
+ * PG_DATABASE - the database to use when checking the readiness of the primary
+ * PG_PRIMARY_PORT - the PostgreSQL port to use when checking the primary
+ * PG_PRIMARY_SERVICE - the name of the primary database container
  * PG_REPLICA_SERVICE - the name of the replica database container, this is
    used to know which container to trigger the failover on
 
@@ -631,8 +631,8 @@ The following features are supported by the crunchy-postgres container:
 
 === Restrictions
 
- * the name of the master database in the pgbouncer.ini file is required
-   to be *master*
+ * the name of the primary database in the pgbouncer.ini file is required
+   to be *primary*
  * for configuration, has to have users.txt and pgbouncer.ini files mounted in /pgconf
 
 == crunchy-backrest-restore

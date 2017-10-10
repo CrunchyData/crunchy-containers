@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete pod master-collect
-kubectl delete service master-collect
+kubectl delete pod primary-collect
+kubectl delete service primary-collect

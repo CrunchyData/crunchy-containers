@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # this is an example of creating a postgres database using
-# the crunchy-master template from the CLI
+# the crunchy-primary template from the CLI
 
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -25,10 +25,10 @@ PROJECT=jeff-project
 
 oc process -n $PROJECT crunchy-restore \
 	NAME=restoredb \
-	PG_MASTER_PORT=5432 \
-	PG_MASTER_USER=master \
+	PG_PRIMARY_PORT=5432 \
+	PG_PRIMARY_USER=primary \
 	PGDATA_PATH_OVERRIDE=example \
-	PG_MASTER_PASSWORD=password \
+	PG_PRIMARY_PASSWORD=password \
 	PG_USER=testuser \
 	PG_PASSWORD=password \
 	PG_DATABASE=userdb \

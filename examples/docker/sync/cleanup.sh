@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
 
 echo "cleaning up example..."
 
-CONTAINER_NAME=sync-master
+CONTAINER_NAME=sync-primary
 
 docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME

@@ -16,7 +16,7 @@
 oc delete secret ceph-secret
 oc delete pvc ceph-pvc
 oc delete pv ceph-pv
-oc delete service master-ceph
-oc delete pod master-ceph
+oc delete service primary-ceph
+oc delete pod primary-ceph
 
-$CCPROOT/examples/waitforterm.sh master-ceph oc
+$CCPROOT/examples/waitforterm.sh primary-ceph oc

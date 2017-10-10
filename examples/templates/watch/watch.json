@@ -32,24 +32,24 @@
         "value": "jeff-project"
     }, {
         "name": "SLEEP_TIME",
-        "description": "The time to sleep for polling the master",
+        "description": "The time to sleep for polling the primary",
         "value": "20"
     }, {
         "name": "REPLICA_TO_TRIGGER",
         "description": "The name of a replica to trigger a failover upon",
         "value": "thisone"
     }, {
-        "name": "MASTER_TO_WATCH",
-        "description": "The name of a master service to watch",
-        "value": "pgmaster"
+        "name": "PRIMARY_TO_WATCH",
+        "description": "The name of a primary service to watch",
+        "value": "pgprimary"
     }, {
-        "name": "SLAVE_TO_WATCH",
+        "name": "REPLICA_TO_WATCH",
         "description": "The name of a replica service to watch",
         "value": "pgreplica"
     }, {
-        "name": "MASTER_USER",
-        "description": "The master user to watch with",
-        "value": "master"
+        "name": "PRIMARY_USER",
+        "description": "The primary user to watch with",
+        "value": "primary"
     }],
     "objects": [{
         "kind": "Pod",
@@ -75,17 +75,17 @@
                     "name": "REPLICA_TO_TRIGGER_LABEL",
                     "value": "${REPLICA_TO_TRIGGER}"
                 }, {
-                    "name": "PG_MASTER_SERVICE",
-                    "value": "${MASTER_TO_WATCH}"
+                    "name": "PG_PRIMARY_SERVICE",
+                    "value": "${PRIMARY_TO_WATCH}"
                 }, {
                     "name": "PG_REPLICA_SERVICE",
-                    "value": "${SLAVE_TO_WATCH}"
+                    "value": "${REPLICA_TO_WATCH}"
                 }, {
-                    "name": "PG_MASTER_PORT",
+                    "name": "PG_PRIMARY_PORT",
                     "value": "5432"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "${MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PRIMARY_USER}"
                 }, {
                     "name": "HOME",
                     "value": "/tmp"

@@ -91,17 +91,17 @@ REPLICA{
                     "description": "time in secs to sleep between polls",
                     "value": "12"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "description": "The master user configured in pgbouncer",
-                    "value": "master"
+                    "name": "PG_PRIMARY_USER",
+                    "description": "The primary user configured in pgbouncer",
+                    "value": "primary"
                 }, {
-                    "name": "PG_MASTER_PORT",
-                    "description": "The master port configured in pgbouncer",
+                    "name": "PG_PRIMARY_PORT",
+                    "description": "The primary port configured in pgbouncer",
                     "value": "5432"
                 }, {
-                    "name": "PG_MASTER_SERVICE",
-                    "description": "The master configured in pgbouncer",
-                    "value": "ms-master"
+                    "name": "PG_PRIMARY_SERVICE",
+                    "description": "The primary configured in pgbouncer",
+                    "value": "ms-primary"
                 }, {
                     "name": "PG_REPLICA_SERVICE",
                     "description": "The replica configured in pgbouncer",

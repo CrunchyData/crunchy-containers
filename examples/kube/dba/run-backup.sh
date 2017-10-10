@@ -28,5 +28,5 @@ kubectl create clusterrolebinding permissive-binding \
   --user=kubelet \
   --group=system:serviceaccounts
 
-kubectl create -f $DIR/master-dba-service.json
-envsubst < $DIR/master-dba-backup-pod.json | kubectl create -f -
+kubectl create -f $DIR/primary-dba-service.json
+envsubst < $DIR/primary-dba-backup-pod.json | kubectl create -f -

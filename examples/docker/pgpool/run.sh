@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,9 +21,9 @@ $DIR/cleanup.sh
 
 docker run \
 	-p 12003:5432 \
-	--link master:master \
+	--link primary:primary \
 	--link replica:replica \
-	-e PG_MASTER_SERVICE_NAME=master \
+	-e PG_PRIMARY_SERVICE_NAME=primary \
 	-e PG_REPLICA_SERVICE_NAME=replica \
 	-e PG_USERNAME=testuser \
 	-e PG_PASSWORD=password \
@@ -31,4 +31,3 @@ docker run \
 	--name=pgpool \
 	--hostname=pgpool \
 	-d crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG
-

@@ -20,5 +20,5 @@ $DIR/cleanup.sh
 
 sudo DIR=$DIR PV_PATH=$PV_PATH cp $DIR/pgbackrest.conf $PV_PATH
 
-oc process -f $DIR/master-pod.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/primary-pod.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
 

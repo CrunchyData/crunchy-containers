@@ -11,15 +11,15 @@
         }
     },
     "parameters": [{
-        "name": "PG_MASTER_USER",
-        "description": "The username used for primary-replica replication",
-        "value": "master"
+        "name": "PG_PRIMARY_USER",
+        "description": "The username used for primary / replica replication",
+        "value": "primary"
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use"
     }, {
-        "name": "PG_MASTER_PASSWORD",
-        "description": "The password for the PG master user",
+        "name": "PG_PRIMARY_PASSWORD",
+        "description": "The password for the PG primary user",
         "value": "password"
     }, {
         "name": "PG_USER",
@@ -27,7 +27,7 @@
         "value": "testuser"
     }, {
         "name": "PG_PASSWORD",
-        "description": "The password for the PG master user",
+        "description": "The password for the PG primary user",
         "value": "password"
     }, {
         "name": "PG_DATABASE",
@@ -122,17 +122,17 @@
                     "protocol": "TCP"
                 }],
                 "env": [{
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"
                 }, {
                     "name": "PG_MODE",
-                    "value": "master"
+                    "value": "primary"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
-                    "value": "${PG_MASTER_PASSWORD}"
+                    "name": "PG_PRIMARY_PASSWORD",
+                    "value": "${PG_PRIMARY_PASSWORD}"
                 }, {
                     "name": "PG_USER",
                     "value": "${PG_USER}"
@@ -169,7 +169,7 @@
             "name": "ms-replica",
             "labels": {
                 "name": "ms-replica",
-                "slavetype": "trigger"
+                "replicatype": "trigger"
             }
         },
         "spec": {
@@ -208,22 +208,22 @@
                     "name": "PG_PASSWORD",
                     "value": "${PG_PASSWORD}"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
                     "name": "PG_MODE",
                     "value": "replica"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
-                    "value": "${PG_MASTER_PASSWORD}"
+                    "name": "PG_PRIMARY_PASSWORD",
+                    "value": "${PG_PRIMARY_PASSWORD}"
                 }, {
                     "name": "PG_ROOT_PASSWORD",
                     "value": "${PG_ROOT_PASSWORD}"
                 }, {
-                    "name": "PG_MASTER_HOST",
-                    "value": "ms-master"
+                    "name": "PG_PRIMARY_HOST",
+                    "value": "ms-primary"
                 }, {
-                    "name": "PG_MASTER_PORT",
+                    "name": "PG_PRIMARY_PORT",
                     "value": "5432"
                 }, {
                     "name": "PG_DATABASE",

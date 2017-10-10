@@ -16,7 +16,7 @@
     }, {
         "name": "DATABASE_NAME",
         "description": "The name of the database to connect to",
-        "value": "master"
+        "value": "primary"
     }],
     "objects": [{
         "kind": "Service",

@@ -17,7 +17,7 @@ kubectl delete endpoints glusterfs-cluster
 kubectl delete pvc gluster-pvc
 kubectl delete pv gluster-pv
 kubectl delete service glusterfs-cluster
-kubectl delete service master-gluster
-kubectl delete pod master-gluster
+kubectl delete service primary-gluster
+kubectl delete pod primary-gluster
 
-$CCPROOT/examples/waitforterm.sh master-gluster kubectl
+$CCPROOT/examples/waitforterm.sh primary-gluster kubectl

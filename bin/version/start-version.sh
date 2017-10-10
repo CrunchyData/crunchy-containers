@@ -18,7 +18,7 @@
 function create_pgpass() {
 cd /tmp
 cat >> ".pgpass" <<-EOF
-*:*:*:*:${PG_MASTER_PASSWORD}
+*:*:*:*:${PG_PRIMARY_PASSWORD}
 EOF
 chmod 0600 .pgpass
 export PGPASSFILE=/tmp/.pgpass
@@ -31,11 +31,11 @@ if [ ! -v SLEEP_TIME ]; then
 fi
 echo "SLEEP_TIME is set to " $SLEEP_TIME
 
-export PG_MASTER_SERVICE=$PG_MASTER_SERVICE
+export PG_PRIMARY_SERVICE=$PG_PRIMARY_SERVICE
 export GIT_USER_NAME=$GIT_USER_NAME
 export GIT_USER_EMAIL=$GIT_USER_EMAIL
-export PG_MASTER_PORT=$PG_MASTER_PORT
-export PG_MASTER_USER=$PG_MASTER_USER
+export PG_PRIMARY_PORT=$PG_PRIMARY_PORT
+export PG_PRIMARY_USER=$PG_PRIMARY_USER
 export PG_DATABASE=$PG_DATABASE
 
 if [ -d /usr/pgsql-9.6 ]; then
@@ -57,8 +57,8 @@ git config --global user.name $GIT_USER_NAME
 git config --global user.email $GIT_USER_EMAIL
 git config --global push.default simple
 
-pg_dump --schema-only --username=$PG_MASTER_USER --dbname=$PG_DATABASE \
-	--host=$PG_MASTER_SERVICE > /tmp/schema.sql
+pg_dump --schema-only --username=$PG_PRIMARY_USER --dbname=$PG_DATABASE \
+	--host=$PG_PRIMARY_SERVICE > /tmp/schema.sql
 
 cd /gitrepo
 GIT_PROJECT=`ls | cut -f1 -d' '`

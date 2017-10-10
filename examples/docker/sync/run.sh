@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting master container..."
+echo "starting primary container..."
 
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
@@ -23,14 +23,14 @@ echo "starting master container..."
 #sudo chcon -Rt svirt_sandbox_file_t $PGCONF
 # add this next line to the docker run to override pg config files
 
-DATA_DIR=/tmp/sync-master-data
+DATA_DIR=/tmp/sync-primary-data
 sudo rm -rf $DATA_DIR
 sudo mkdir -p $DATA_DIR
 sudo chown postgres:postgres $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-sudo docker stop sync-master
-sudo docker rm sync-master
+sudo docker stop sync-primary
+sudo docker rm sync-primary
 
 sudo docker run \
 	-p 12010:5432 \
@@ -41,19 +41,19 @@ sudo docker run \
 	-e SHARED_BUFFERS=129MB \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
-	-e PG_MODE=master \
+	-e PG_MODE=primary \
 	-e SYNC_REPLICA=sync-replica \
-	-e PG_MASTER_USER=master \
-	-e PG_MASTER_PASSWORD=password \
+	-e PG_PRIMARY_USER=primary \
+	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=sync-master \
-	--hostname=sync-master \
+	--name=sync-primary \
+	--hostname=sync-primary \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 
-echo "sleep a bit to let the master startup..."
+echo "sleep a bit to let the primary startup..."
 sleep 20
 
 echo "starting sync replica..."
@@ -77,12 +77,12 @@ sudo docker run \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=replica \
-	-e PG_MASTER_USER=master \
-	-e PG_MASTER_PASSWORD=password \
-	-e PG_MASTER_HOST=sync-master \
+	-e PG_PRIMARY_USER=primary \
+	-e PG_PRIMARY_PASSWORD=password \
+	-e PG_PRIMARY_HOST=sync-primary \
 	-e SYNC_REPLICA=sync-replica \
-	--link sync-master:sync-master \
-	-e PG_MASTER_PORT=5432 \
+	--link sync-primary:sync-primary \
+	-e PG_PRIMARY_PORT=5432 \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
@@ -113,11 +113,11 @@ sudo docker run \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=replica \
-	-e PG_MASTER_USER=master \
-	-e PG_MASTER_PASSWORD=password \
-	-e PG_MASTER_HOST=sync-master \
-	--link sync-master:sync-master \
-	-e PG_MASTER_PORT=5432 \
+	-e PG_PRIMARY_USER=primary \
+	-e PG_PRIMARY_PASSWORD=password \
+	-e PG_PRIMARY_HOST=sync-primary \
+	--link sync-primary:sync-primary \
+	-e PG_PRIMARY_PORT=5432 \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \

@@ -5,9 +5,9 @@ server:
     hostport: 0.0.0.0:10000
 
 nodes:
-  master:
-    hostport: master:5432
-    role: master
+  primary:
+    hostport: primary:5432
+    role: primary
     metadata: {}
   replica1:
     hostport: replica:5432

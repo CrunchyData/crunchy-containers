@@ -5,7 +5,7 @@
         "name": "ms-replica-2",
         "labels": {
             "name": "ms-replica",
-            "slavetype": "trigger"
+            "replicatype": "trigger"
         }
     },
     "spec": {
@@ -39,19 +39,19 @@
                 "name": "PGHOST",
                 "value": "/tmp"
             }, {
-                "name": "PG_MASTER_HOST",
+                "name": "PG_PRIMARY_HOST",
                 "value": "ms-primary"
             }, {
-                "name": "PG_MASTER_USER",
-                "value": "master"
+                "name": "PG_PRIMARY_USER",
+                "value": "primary"
             }, {
-                "name": "PG_MASTER_PORT",
+                "name": "PG_PRIMARY_PORT",
                 "value": "5432"
             }, {
                 "name": "PG_MODE",
                 "value": "replica"
             }, {
-                "name": "PG_MASTER_PASSWORD",
+                "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"
             }, {
                 "name": "PG_USER",

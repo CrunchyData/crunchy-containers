@@ -46,10 +46,10 @@
 ],
                     "env": [{
                         "name": "OLD_DATABASE_NAME",
-                        "value": "master-pvc"
+                        "value": "primary-pvc"
                     }, {
                         "name": "NEW_DATABASE_NAME",
-                        "value": "master-upgrade"
+                        "value": "primary-upgrade"
                     }, {
                         "name": "OLD_VERSION",
                         "value": "9.5"

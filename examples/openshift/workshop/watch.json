@@ -41,17 +41,17 @@
                     "name": "REPLICA_TO_TRIGGER_LABEL",
                     "value": "thisone"
                 }, {
-                    "name": "PG_MASTER_SERVICE",
-                    "value": "master"
+                    "name": "PG_PRIMARY_SERVICE",
+                    "value": "primary"
                 }, {
                     "name": "PG_REPLICA_SERVICE",
                     "value": "replica"
                 }, {
-                    "name": "PG_MASTER_PORT",
+                    "name": "PG_PRIMARY_PORT",
                     "value": "5432"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "master"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "primary"
                 }, {
                     "name": "PG_DATABASE",
                     "value": "postgres"

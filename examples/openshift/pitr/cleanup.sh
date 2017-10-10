@@ -16,9 +16,9 @@ source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete service master-pitr master-pitr-restore
-oc delete pod master-pitr master-pitr-restore
-oc delete job backup-master-pitr-pvc
+oc delete service primary-pitr primary-pitr-restore
+oc delete pod primary-pitr primary-pitr-restore
+oc delete job backup-primary-pitr-pvc
 
-sudo rm -rf $PV_PATH/WAL/master-pitr
-sudo rm -rf $PV_PATH/master-pitr
+sudo rm -rf $PV_PATH/WAL/primary-pitr
+sudo rm -rf $PV_PATH/primary-pitr

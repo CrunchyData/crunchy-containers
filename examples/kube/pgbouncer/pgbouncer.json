@@ -37,14 +37,14 @@
                 "name": "SLEEP_TIME",
                 "value": "12"
             }, {
-                "name": "PG_MASTER_USER",
-                "value": "master"
+                "name": "PG_PRIMARY_USER",
+                "value": "primary"
             }, {
-                "name": "PG_MASTER_PORT",
+                "name": "PG_PRIMARY_PORT",
                 "value": "5432"
             }, {
-                "name": "PG_MASTER_SERVICE",
-                "value": "ms-master"
+                "name": "PG_PRIMARY_SERVICE",
+                "value": "ms-primary"
             }, {
                 "name": "PG_REPLICA_SERVICE",
                 "value": "ms-replica"

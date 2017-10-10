@@ -15,6 +15,6 @@
 
 echo "cleaning up example..."
 
-CONTAINER_NAME=master-collect
+CONTAINER_NAME=primary-collect
 docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME

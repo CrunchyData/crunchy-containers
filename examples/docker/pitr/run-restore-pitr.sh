@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting master-restore-pitr container..."
+echo "starting primary-restore-pitr container..."
 
-sudo docker stop master-restore-pitr
-sudo docker rm master-restore-pitr
+sudo docker stop primary-restore-pitr
+sudo docker rm primary-restore-pitr
 
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
@@ -28,17 +28,17 @@ sudo docker rm master-restore-pitr
 
 # the following path is where the base backup files
 # are located for doing the database restore
-BACKUP=/tmp/backups/master-pitr-backups/2016-12-21-21-08-57
+BACKUP=/tmp/backups/primary-pitr-backups/2016-12-21-21-08-57
 
 # WAL_DIR contains the WAL files generated from
 # this database after recovery and ongoing afterwards
-WAL_DIR=/tmp/master-pitr-restore-wal
+WAL_DIR=/tmp/primary-pitr-restore-wal
 
 # RECOVER_DIR contains the WAL files from where we
 # want to recover from
-RECOVER_DIR=/tmp/master-pitr-wal/master-pitr
+RECOVER_DIR=/tmp/primary-pitr-wal/primary-pitr
 
-DATA_DIR=/tmp/master-pitr-restore
+DATA_DIR=/tmp/primary-pitr-restore
 sudo rm -rf $DATA_DIR $WAL_DIR
 sudo mkdir -p $DATA_DIR $WAL_DIR
 sudo chown postgres:postgres $DATA_DIR $WAL_DIR
@@ -61,13 +61,13 @@ sudo docker run \
 	-e SHARED_BUFFERS=129MB \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
-	-e PG_MODE=master \
-	-e PG_MASTER_USER=masteruser \
-	-e PG_MASTER_PASSWORD=password \
+	-e PG_MODE=primary \
+	-e PG_PRIMARY_USER=primaryuser \
+	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=master-restore-pitr \
-	--hostname=master-restore-pitr \
+	--name=primary-restore-pitr \
+	--hostname=primary-restore-pitr \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG

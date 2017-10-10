@@ -135,13 +135,13 @@ firewall-cmd --reload
 
 You can view the collect container logs using this command:
 ....
-kubectl logs -c collect master-collect
+kubectl logs -c collect primary-collect
 ....
 
 You can access the database or drive load against it using
 this command:
 ....
-psql -h master-collect -U postgres postgres
+psql -h primary-collect -U postgres postgres
 ....
 
 ==== OpenShift
@@ -287,7 +287,7 @@ The following are some general metrics it collects:
 [format="csv", options="header"]
 |===
 Name, Description, Usage, Query
-pg_replication, Replication lag behind master in seconds, GAUGE, `SELECT EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp()))::INT as lag`
+pg_replication, Replication lag behind primary in seconds, GAUGE, `SELECT EXTRACT(EPOCH FROM (now() - pg_last_xact_replay_timestamp()))::INT as lag`
 pg_postmaster, Time at which postmaster started, GAUGE, `SELECT pg_postmaster_start_time as start_time_seconds from pg_postmaster_start_time()`
 |===
 

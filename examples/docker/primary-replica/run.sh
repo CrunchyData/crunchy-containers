@@ -26,7 +26,7 @@ $DIR/cleanup.sh
 #sudo chmod 0700 $PGCONF
 #sudo chcon -Rt svirt_sandbox_file_t $PGCONF
 # add this next line to the docker run to override pg config files
-#DATA_DIR=/tmp/master-data
+#DATA_DIR=/tmp/primary-data
 #sudo rm -rf $DATA_DIR
 #sudo mkdir -p $DATA_DIR
 #sudo chown postgres:postgres $DATA_DIR
@@ -38,7 +38,7 @@ $DIR/cleanup.sh
 #sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
 VOLUME_NAME=primary-volume
-MASTER_CONTAINER_NAME=primary
+PRIMARY_CONTAINER_NAME=primary
 docker volume create --driver local --name=$VOLUME_NAME
 
 docker run \
@@ -51,15 +51,15 @@ docker run \
 	-e SHARED_BUFFERS=129MB \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
-	-e PG_MODE=master \
-	-e PG_MASTER_USER=masteruser \
-	-e PG_MASTER_PASSWORD=password \
+	-e PG_MODE=primary \
+	-e PG_PRIMARY_USER=primaryuser \
+	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=$MASTER_CONTAINER_NAME \
-	--hostname=$MASTER_CONTAINER_NAME \
+	--name=$PRIMARY_CONTAINER_NAME \
+	--hostname=$PRIMARY_CONTAINER_NAME \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
 
 echo "starting pg-replica container..."
@@ -74,17 +74,17 @@ docker run \
 	--privileged=true \
 	-v $VOLUME_NAME:/pgdata \
 	-e TEMP_BUFFERS=9MB \
-	-e PG_MASTER_HOST=master \
+	-e PG_PRIMARY_HOST=primary \
 	-e PGHOST=/tmp \
 	-e MAX_CONNECTIONS=101 \
 	-e SHARED_BUFFERS=129MB \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=replica \
-	-e PG_MASTER_USER=masteruser \
-	-e PG_MASTER_PASSWORD=password \
-	--link $MASTER_CONTAINER_NAME:$MASTER_CONTAINER_NAME \
-	-e PG_MASTER_PORT=5432 \
+	-e PG_PRIMARY_USER=primaryuser \
+	-e PG_PRIMARY_PASSWORD=password \
+	--link $PRIMARY_CONTAINER_NAME:$PRIMARY_CONTAINER_NAME \
+	-e PG_PRIMARY_PORT=5432 \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \

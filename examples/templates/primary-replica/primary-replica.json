@@ -11,11 +11,11 @@
         }
     },
     "parameters": [{
-        "name": "MASTER_SERVICE_NAME",
+        "name": "PRIMARY_SERVICE_NAME",
         "description": "The name for the primary service and container",
         "value": "pgprimary"
     }, {
-        "name": "SLAVE_SERVICE_NAME",
+        "name": "REPLICA_SERVICE_NAME",
         "description": "The name for the replica service and container",
         "value": "pgreplica"
     }, {
@@ -27,12 +27,12 @@
         "value": "crunchydata",
         "description": "The image prefix to pull with"
     }, {
-        "name": "PG_MASTER_USER",
+        "name": "PG_PRIMARY_USER",
         "description": "The username used for primary / replica replication",
-        "value": "master"
+        "value": "primary"
     }, {
-        "name": "PG_MASTER_PASSWORD",
-        "description": "The password for the PG master user",
+        "name": "PG_PRIMARY_PASSWORD",
+        "description": "The password for the PG primary user",
         "value": "password"
     }, {
         "name": "PG_USER",
@@ -40,7 +40,7 @@
         "value": "testuser"
     }, {
         "name": "PG_PASSWORD",
-        "description": "The password for the PG master user",
+        "description": "The password for the PG primary user",
         "value": "password"
     }, {
         "name": "PG_DATABASE",
@@ -56,9 +56,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${MASTER_SERVICE_NAME}",
+            "name": "${PRIMARY_SERVICE_NAME}",
             "labels": {
-                "name": "${MASTER_SERVICE_NAME}"
+                "name": "${PRIMARY_SERVICE_NAME}"
             }
         },
         "spec": {
@@ -69,7 +69,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "${MASTER_SERVICE_NAME}"
+                "name": "${PRIMARY_SERVICE_NAME}"
             },
             "portalIP": "None",
             "type": "ClusterIP",
@@ -82,9 +82,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${SLAVE_SERVICE_NAME}",
+            "name": "${REPLICA_SERVICE_NAME}",
             "labels": {
-                "name": "${SLAVE_SERVICE_NAME}"
+                "name": "${REPLICA_SERVICE_NAME}"
             }
         },
         "spec": {
@@ -95,7 +95,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "${SLAVE_SERVICE_NAME}"
+                "name": "${REPLICA_SERVICE_NAME}"
             },
             "portalIP": "None",
             "type": "ClusterIP",
@@ -108,14 +108,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${MASTER_SERVICE_NAME}",
+            "name": "${PRIMARY_SERVICE_NAME}",
             "labels": {
-                "name": "${MASTER_SERVICE_NAME}"
+                "name": "${PRIMARY_SERVICE_NAME}"
             }
         },
         "spec": {
             "containers": [{
-                "name": "${MASTER_SERVICE_NAME}",
+                "name": "${PRIMARY_SERVICE_NAME}",
                 "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
@@ -142,13 +142,13 @@
                     "protocol": "TCP"
                 }],
                 "env": [{
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
                     "name": "PG_MODE",
-                    "value": "master"
+                    "value": "primary"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
+                    "name": "PG_PRIMARY_PASSWORD",
                     "value": "password"
                 }, {
                     "name": "PG_USER",
@@ -191,14 +191,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${SLAVE_SERVICE_NAME}",
+            "name": "${REPLICA_SERVICE_NAME}",
             "labels": {
-                "name": "${SLAVE_SERVICE_NAME}"
+                "name": "${REPLICA_SERVICE_NAME}"
             }
         },
         "spec": {
             "containers": [{
-                "name": "${SLAVE_SERVICE_NAME}",
+                "name": "${REPLICA_SERVICE_NAME}",
                 "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
@@ -231,16 +231,16 @@
                     "name": "PG_MODE",
                     "value": "replica"
                 }, {
-                    "name": "PG_MASTER_HOST",
-                    "value": "${MASTER_SERVICE_NAME}"
+                    "name": "PG_PRIMARY_HOST",
+                    "value": "${PRIMARY_SERVICE_NAME}"
                 }, {
-                    "name": "PG_MASTER_PORT",
+                    "name": "PG_PRIMARY_PORT",
                     "value": "5432"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
+                    "name": "PG_PRIMARY_PASSWORD",
                     "value": "password"
                 }, {
                     "name": "PG_USER",

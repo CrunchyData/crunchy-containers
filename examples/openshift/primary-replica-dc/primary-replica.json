@@ -11,14 +11,14 @@
         }
     },
     "parameters": [{
-        "name": "PG_MASTER_USER",
-        "description": "The username used for primary-replica replication",
-        "value": "master"
+        "name": "PG_PRIMARY_USER",
+        "description": "The username used for primary / replica replication",
+        "value": "primary"
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use"
     }, {
-        "name": "PG_MASTER_PASSWORD",
+        "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PostgreSQL replication user",
         "value": "password"
     }, {
@@ -27,7 +27,7 @@
         "value": "testuser"
     }, {
         "name": "PG_PASSWORD",
-        "description": "The password for the PostgreSQL master user",
+        "description": "The password for the PostgreSQL primary user",
         "value": "password"
     }, {
         "name": "PG_DATABASE",
@@ -38,7 +38,7 @@
         "description": "The password for the PostgreSQL administrator",
         "value": "password"
     }, {
-        "name": "PG_MASTER_SERVICE_NAME",
+        "name": "PG_PRIMARY_SERVICE_NAME",
         "value": "primary-dc"
     }, {
         "name": "PG_REPLICA_SERVICE_NAME",
@@ -48,9 +48,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${PG_MASTER_SERVICE_NAME}",
+            "name": "${PG_PRIMARY_SERVICE_NAME}",
             "labels": {
-                "name": "${PG_MASTER_SERVICE_NAME}"
+                "name": "${PG_PRIMARY_SERVICE_NAME}"
             }
         },
         "spec": {
@@ -61,7 +61,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "${PG_MASTER_SERVICE_NAME}"
+                "name": "${PG_PRIMARY_SERVICE_NAME}"
             }
         },
         "status": {
@@ -95,9 +95,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${PG_MASTER_SERVICE_NAME}",
+            "name": "${PG_PRIMARY_SERVICE_NAME}",
             "labels": {
-                "name": "${PG_MASTER_SERVICE_NAME}"
+                "name": "${PG_PRIMARY_SERVICE_NAME}"
             }
 
         },
@@ -106,11 +106,11 @@
                 "name": "collect",
                 "image": "crunchydata/crunchy-collect:${CCP_IMAGE_TAG}",
                 "env": [{
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
-                    "value": "${PG_MASTER_PASSWORD}"
+                    "name": "PG_PRIMARY_PASSWORD",
+                    "value": "${PG_PRIMARY_PASSWORD}"
                 }, {
                     "name": "PG_PORT",
                     "value": "5432"
@@ -152,8 +152,8 @@
                     "protocol": "TCP"
                 }],
                 "env": [{
-                    "name": "PG_MASTER_HOST",
-                    "value": "${PG_MASTER_SERVICE_NAME}"
+                    "name": "PG_PRIMARY_HOST",
+                    "value": "${PG_PRIMARY_SERVICE_NAME}"
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"
@@ -173,20 +173,20 @@
                     "name": "WORK_MEM",
                     "value": "5MB"
                 }, {
-                    "name": "PG_MASTER_SERVICE_NAME",
-                    "value": "${PG_MASTER_SERVICE_NAME}"
+                    "name": "PG_PRIMARY_SERVICE_NAME",
+                    "value": "${PG_PRIMARY_SERVICE_NAME}"
                 }, {
-                    "name": "PG_MASTER_PORT",
+                    "name": "PG_PRIMARY_PORT",
                     "value": "5432"
                 }, {
                     "name": "PG_MODE",
-                    "value": "master"
+                    "value": "primary"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
-                    "value": "${PG_MASTER_PASSWORD}"
+                    "name": "PG_PRIMARY_PASSWORD",
+                    "value": "${PG_PRIMARY_PASSWORD}"
                 }, {
                     "name": "PG_USER",
                     "value": "${PG_USER}"
@@ -242,7 +242,7 @@
                     "creationTimestamp": null,
                     "labels": {
                         "name": "${PG_REPLICA_SERVICE_NAME}",
-                        "slavetype": "trigger"
+                        "replicatype": "trigger"
                     }
                 },
                 "spec": {
@@ -272,13 +272,13 @@
                             "protocol": "TCP"
                         }],
                         "env": [{
-                            "name": "PG_MASTER_HOST",
-                            "value": "${PG_MASTER_SERVICE_NAME}"
+                            "name": "PG_PRIMARY_HOST",
+                            "value": "${PG_PRIMARY_SERVICE_NAME}"
                         }, {
-                            "name": "PG_MASTER_SERVICE_NAME",
-                            "value": "${PG_MASTER_SERVICE_NAME}"
+                            "name": "PG_PRIMARY_SERVICE_NAME",
+                            "value": "${PG_PRIMARY_SERVICE_NAME}"
                         }, {
-                            "name": "PG_MASTER_PORT",
+                            "name": "PG_PRIMARY_PORT",
                             "value": "5432"
                         }, {
                             "name": "PGHOST",
@@ -287,11 +287,11 @@
                             "name": "PG_MODE",
                             "value": "replica"
                         }, {
-                            "name": "PG_MASTER_USER",
-                            "value": "${PG_MASTER_USER}"
+                            "name": "PG_PRIMARY_USER",
+                            "value": "${PG_PRIMARY_USER}"
                         }, {
-                            "name": "PG_MASTER_PASSWORD",
-                            "value": "${PG_MASTER_PASSWORD}"
+                            "name": "PG_PRIMARY_PASSWORD",
+                            "value": "${PG_PRIMARY_PASSWORD}"
                         }, {
                             "name": "PG_USER",
                             "value": "${PG_USER}"

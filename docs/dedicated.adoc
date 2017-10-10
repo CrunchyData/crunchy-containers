@@ -12,7 +12,7 @@ the creation of Crunchy Container Suite containers.
 
 A defined set of templates are supported including:
 
- * master database
+ * primary database
  * replica database
  * full database backup
  * database restore
@@ -153,13 +153,13 @@ executed when the database is first created.
 
 *Environment Variables*
 
- * PG_MODE - either *master*, *replica* or *set*, this value determines whether
-   the database is set up as a master or replica instance, in the
+ * PG_MODE - either *primary*, *replica* or *set*, this value determines whether
+   the database is set up as a primary or replica instance. In the
    case of *set*, it means the container is started within a StatefulSet
    in a Kubernetes cluster.
- * PG_MASTER_USER - the value to use for the user ID created as
-   master.  The *master* user has super user privileges.
- * PG_MASTER_PASSWORD - the password for the PG_MASTER_USER database user
+ * PG_PRIMARY_USER - the value to use for the user ID created as
+   primary.  The *primary* user has super user privileges.
+ * PG_PRIMARY_PASSWORD - the password for the PG_PRIMARY_USER database user
  * PG_USER - the value to use for the user ID created as a normal user.
    This user is created as part of the setup.sql script upon database
    creation and allows users to predefine an application user.
@@ -170,7 +170,7 @@ executed when the database is first created.
  * PG_LOCALE - if set, the locale you want to create the database with, if
    not set, the default locale is used
  * SYNC_REPLICA - if set, this value is used to specify the application_name
-   of a slave that will be used for a synchronous replication
+   of a replica that will be used for a synchronous replication
  * CHECKSUMS - if set, this value is used to enable the *--data-checksums*
    option when initdb is executed at initialization, if not set, the
    default is to *not* enable data checksums
@@ -185,7 +185,7 @@ executed when the database is first created.
    pgaudit_analyze program in the background
  * PGDATA_PATH_OVERRIDE - if set, will cause the container to use a /pgdata path
    name of your choosing rather than the hostname of the container which
-   is the default...this is useful for a master in a deployment.
+   is the default. This is useful for a primary in a deployment.
 
 *Features*
 
@@ -288,19 +288,19 @@ user *admin@admin.org* and password of *password*
 
 === Master Database Template
 
-Template Name is *crunchy-master*
+Template Name is *crunchy-primary*
 
 Example is found here:
 ....
-examples/dedicated/crunchy-master
+examples/dedicated/crunchy-primary
 ....
 
 This template will create the following:
 
- * database container crunchy-postgres as the master running within a Deployment
- * database service for the master
+ * database container crunchy-postgres as the primary running within a Deployment
+ * database service for the primary
 
-This example deploys a master database configuration
+This example deploys a primary database configuration
 which uses a Persistent Volume Claim for persistence.
 
 .Table Template Parameters
@@ -315,16 +315,16 @@ which uses a Persistent Volume Claim for persistence.
 | should match the name of the NAME parameter in most cases
 | example
 
-|PG_MASTER_PORT
+|PG_PRIMARY_PORT
 | the postgres port to use
 | 5432
 
-|PG_MASTER_USER
-| the user name to create and use for a master user
-| master
+|PG_PRIMARY_USER
+| the user name to create and use for a primary user
+| primary
 
-|PG_MASTER_PASSWORD
-| the password to use for the master user
+|PG_PRIMARY_PASSWORD
+| the password to use for the primary user
 | password
 
 |PG_USER
@@ -421,7 +421,7 @@ files in a PVC.
 
 |DB_NAME
 | the service name of the database to backup
-| master
+| primary
 
 |PVC_NAME
 | the PVC name to use to store the backup files
@@ -437,11 +437,11 @@ files in a PVC.
 
 |BACKUP_USER
 | the postgres user to use when performing the backup
-| master
+| primary
 
 |BACKUP_PASS
 | the postgres user password to use when performing the backup
-| master
+| primary
 
 |CCP_IMAGE_PREFIX
 | the container image prefix to use, typically the registy IP address and namespace
@@ -477,16 +477,16 @@ found in a PVC.
 | the job name
 | restoredb
 
-|PG_MASTER_PORT
+|PG_PRIMARY_PORT
 | the postgres port to use
 | 5432
 
-|PG_MASTER_USER
-| the user name to create and use for a master user
-| master
+|PG_PRIMARY_USER
+| the user name to create and use for a primary user
+| primary
 
-|PG_MASTER_PASSWORD
-| the password to use for the master user
+|PG_PRIMARY_PASSWORD
+| the password to use for the primary user
 | password
 
 |PG_USER
@@ -523,7 +523,7 @@ found in a PVC.
 
 |BACKUP_PATH
 | the backup archive path to restore from
-| master7-backups/2017-04-04-09-42-53
+| primary7-backups/2017-04-04-09-42-53
 
 |BACKUP_PVC
 | the backup archive PVC to restore from
@@ -564,20 +564,20 @@ These templates create the following:
 | the name to use for the database service
 | replica
 
-|PG_MASTER_HOST
-| the postgres master service name the replica will connect to
-| master
+|PG_PRIMARY_HOST
+| the postgres primary service name the replica will connect to
+| primary
 
-|PG_MASTER_PORT
+|PG_PRIMARY_PORT
 | the postgres port to use
 | 5432
 
-|PG_MASTER_USER
-| the user name to create and use for a master user
-| master
+|PG_PRIMARY_USER
+| the user name to create and use for a primary user
+| primary
 
-|PG_MASTER_PASSWORD
-| the password to use for the master user
+|PG_PRIMARY_PASSWORD
+| the password to use for the primary user
 | password
 
 |PVC_NAME

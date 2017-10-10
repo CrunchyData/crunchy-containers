@@ -32,13 +32,13 @@
                     "protocol": "TCP"
                 }],
                 "env": [{
-                    "name": "PG_MASTER_HOST",
-                    "value": "csmaster"
+                    "name": "PG_PRIMARY_HOST",
+                    "value": "csprimary"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "master"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "primary"
                 }, {
-                    "name": "PG_MASTER_PORT",
+                    "name": "PG_PRIMARY_PORT",
                     "value": "5432"
                 }, {
                     "name": "PGHOST",
@@ -50,7 +50,7 @@
                     "name": "SYNC_REPLICA",
                     "value": "cssyncreplica"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
+                    "name": "PG_PRIMARY_PASSWORD",
                     "value": "password"
                 }, {
                     "name": "PG_USER",
