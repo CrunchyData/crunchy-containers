@@ -32,7 +32,7 @@ RUN yum -y update && yum -y install epel-release \
 	R-core libRmath plr95 \
 	pgaudit_95 \
 	pgbackrest \
-	postgis2_95 postgis2_95-client  \
+	postgis22_95 postgis22_95-client  \
  && yum -y clean all
 
 ENV	PGROOT="/usr/pgsql-${PGVERSION}"
