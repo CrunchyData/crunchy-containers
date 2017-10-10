@@ -18,7 +18,7 @@ services:
     - MAX_WAL_SENDERS=7
     - WORK_MEM=5MB
     - TEMP_BUFFERS=9MB
-    - PG_PRIMARY_USER=primary
+    - PG_PRIMARY_USER=primaryuser
     - PG_PRIMARY_HOST=db-primary
     - PG_PRIMARY_PASSWORD=password
     - PG_PRIMARY_PORT=5432
@@ -42,7 +42,7 @@ services:
     - MAX_WAL_SENDERS=7
     - WORK_MEM=5MB
     - TEMP_BUFFERS=9MB
-    - PG_PRIMARY_USER=primary
+    - PG_PRIMARY_USER=primaryuser
     - PG_PRIMARY_HOST=db-primary
     - PG_PRIMARY_PORT=5432
     - PG_PRIMARY_PASSWORD=password

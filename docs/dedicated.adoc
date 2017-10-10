@@ -158,7 +158,7 @@ executed when the database is first created.
    case of *set*, it means the container is started within a StatefulSet
    in a Kubernetes cluster.
  * PG_PRIMARY_USER - the value to use for the user ID created as
-   primary.  The *primary* user has super user privileges.
+   primaryuser.  The *primaryuser* has super user privileges.
  * PG_PRIMARY_PASSWORD - the password for the PG_PRIMARY_USER database user
  * PG_USER - the value to use for the user ID created as a normal user.
    This user is created as part of the setup.sql script upon database
@@ -321,7 +321,7 @@ which uses a Persistent Volume Claim for persistence.
 
 |PG_PRIMARY_USER
 | the user name to create and use for a primary user
-| primary
+| primaryuser
 
 |PG_PRIMARY_PASSWORD
 | the password to use for the primary user
@@ -483,7 +483,7 @@ found in a PVC.
 
 |PG_PRIMARY_USER
 | the user name to create and use for a primary user
-| primary
+| primaryuser
 
 |PG_PRIMARY_PASSWORD
 | the password to use for the primary user
@@ -574,7 +574,7 @@ These templates create the following:
 
 |PG_PRIMARY_USER
 | the user name to create and use for a primary user
-| primary
+| primaryuser
 
 |PG_PRIMARY_PASSWORD
 | the password to use for the primary user

@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 set -u
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
@@ -52,7 +52,7 @@ docker run \
 	-e SHARED_BUFFERS=129MB \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
-	-e PG_PRIMARY_USER=primary \
+	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_PRIMARY_HOST=$CONTAINER_NAME \
 	-e PG_PRIMARY_PORT=5432 \
 	-e PG_PRIMARY_PASSWORD=password \
@@ -64,4 +64,3 @@ docker run \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
-

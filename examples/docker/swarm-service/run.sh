@@ -29,7 +29,7 @@ docker service create \
  --env PGHOST=/tmp \
  --env PG_USER=testuser \
  --env PG_MODE=primary \
- --env PG_PRIMARY_USER=primary \
+ --env PG_PRIMARY_USER=primaryuser \
  --env PG_ROOT_PASSWORD=password \
  --env PG_PASSWORD=password \
  --env PG_DATABASE=userdb \
@@ -53,7 +53,7 @@ docker service create \
  --env PGHOST=/tmp \
  --env PG_USER=testuser \
  --env PG_MODE=replica \
- --env PG_PRIMARY_USER=primary \
+ --env PG_PRIMARY_USER=primaryuser \
  --env PG_ROOT_PASSWORD=password \
  --env PG_PASSWORD=password \
  --env PG_DATABASE=userdb \

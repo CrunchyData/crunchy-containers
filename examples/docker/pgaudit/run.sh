@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ sudo docker run \
 	-e SHARED_BUFFERS=129MB \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
-	-e PG_PRIMARY_USER=primary \
+	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_MODE=primary \
 	-e PG_USER=testuser \
@@ -44,4 +44,3 @@ sudo docker run \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
-

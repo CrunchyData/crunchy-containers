@@ -108,7 +108,7 @@
                 }, {
                     "name": "PG_PRIMARY_USER",
                     "description": "The primary user configured in pgbouncer",
-                    "value": "primary"
+                    "value": "primaryuser"
                 }, {
                     "name": "PG_PRIMARY_PORT",
                     "description": "The primary port configured in pgbouncer",

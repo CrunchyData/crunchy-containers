@@ -23,7 +23,7 @@
                     }],
                     "env": [{
                         "name": "PG_PRIMARY_USER",
-                        "value": "primary"
+                        "value": "primaryuser"
                     }, {
                         "name": "PGHOST",
                         "value": "/tmp"

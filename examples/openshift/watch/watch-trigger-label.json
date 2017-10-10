@@ -51,7 +51,7 @@
                     "value": "5432"
                 }, {
                     "name": "PG_PRIMARY_USER",
-                    "value": "primary"
+                    "value": "primaryuser"
                 }, {
                     "name": "PG_DATABASE",
                     "value": "postgres"

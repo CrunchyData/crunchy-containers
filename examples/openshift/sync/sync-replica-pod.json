@@ -36,7 +36,7 @@
                     "value": "primary"
                 }, {
                     "name": "PG_PRIMARY_USER",
-                    "value": "primary"
+                    "value": "primaryuser"
                 }, {
                     "name": "PG_PRIMARY_PORT",
                     "value": "5432"

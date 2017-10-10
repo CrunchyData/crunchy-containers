@@ -328,7 +328,7 @@ Here is an example of increasing or scaling up the PostgreSQL 'replica' pods to 
 oc scale rc replica-dc-1 --replicas=2
 ....
 
-To check the *primary* default password, enter the following command and look for
+To check the *primaryuser* default password, enter the following command and look for
 the *PG_PRIMARY_USER* and *PG_PRIMARY_PASSWORD* variables:
 
 ....
