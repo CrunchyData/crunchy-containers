@@ -43,7 +43,7 @@ sudo docker run \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=primary \
 	-e SYNC_REPLICA=sync-replica \
-	-e PG_PRIMARY_USER=primary \
+	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
@@ -77,7 +77,7 @@ sudo docker run \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=replica \
-	-e PG_PRIMARY_USER=primary \
+	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_PRIMARY_HOST=sync-primary \
 	-e SYNC_REPLICA=sync-replica \
@@ -113,7 +113,7 @@ sudo docker run \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=replica \
-	-e PG_PRIMARY_USER=primary \
+	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_PRIMARY_HOST=sync-primary \
 	--link sync-primary:sync-primary \

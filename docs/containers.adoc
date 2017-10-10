@@ -43,7 +43,7 @@ executed when the database is first created.
    case of *set*, it means the container is started within a StatefulSet
    in a Kubernetes cluster.
  * PG_PRIMARY_USER - the value to use for the user ID created as
-   primary.  The *primary* user has super user privileges.
+   primaryuser.  The *primaryuser* has super user privileges.
  * PG_PRIMARY_PASSWORD - the password for the PG_PRIMARY_USER database user
  * PG_USER - the value to use for the user ID created as a normal user.
    This user is created as part of the setup.sql script upon database
@@ -612,7 +612,7 @@ utility and a failover watch script.
    to a configured replica database
  * OSE_PROJECT - when set, indicates you are running under OSE
  * PG_PRIMARY_USER - the value to use for the user ID created as
-   primary.  The *primary* user has super user privileges.
+   primaryuser.  The *primaryuser* has super user privileges.
  * SLEEP_TIME - time in seconds to sleep when polling the primary
  * PG_DATABASE - the database to use when checking the readiness of the primary
  * PG_PRIMARY_PORT - the PostgreSQL port to use when checking the primary

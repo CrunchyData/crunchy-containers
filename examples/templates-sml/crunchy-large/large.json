@@ -186,7 +186,7 @@
                             }],
                             "env": [{
                                 "name": "PG_PRIMARY_USER",
-                                "value": "primary"
+                                "value": "primaryuser"
                             }, {
                                 "name": "PG_PRIMARY_HOST",
                                 "value": "${NAME}"
@@ -338,7 +338,7 @@
                             "imagePullPolicy": "IfNotPresent",
                             "env": [{
                                 "name": "PG_PRIMARY_USER",
-                                "value": "primary"
+                                "value": "primaryuser"
                             }, {
                                 "name": "PG_PRIMARY_PASSWORD",
                                 "value": "${PG_PRIMARY_PASSWORD}"
@@ -371,7 +371,7 @@
                                 "value": "${NAME}"
                             }, {
                                 "name": "PG_PRIMARY_USER",
-                                "value": "primary"
+                                "value": "primaryuser"
                             }, {
                                 "name": "PG_PRIMARY_PASSWORD",
                                 "value": "${PG_PRIMARY_PASSWORD}"
