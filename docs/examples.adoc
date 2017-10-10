@@ -2240,7 +2240,7 @@ the pg_log log file created by the database container.
 
 ==== Docker
 
-This example shows how to run a master and replica database
+This example shows how to run a primary and replica database
 container on a Docker Swarm (v.1.12) cluster.
 
 First, set up a cluster. The Kubernetes libvirt coreos cluster
@@ -2268,18 +2268,18 @@ create.  Create the network like this:
 docker network create --driver overlay crunchynet
 ....
 
-We want to have the master database always placed on
+We want to have the primary database always placed on
 a specific node. This is accomplished using node constraints
 as follows:
 ....
 docker node inspect kubernetes-node-1 | grep ID
-docker node update --label-add type=master 18yrb7m650umx738rtevojpqy
+docker node update --label-add type=primary 18yrb7m650umx738rtevojpqy
 ....
 
-In the above example, the kubernetes-node-1 node with ID 18yrb7m650umx738rtevojpqy has a user defined label of *master* added to it.  The primary service
-specifies *master* as a constraint when created; this tells Swarm
+In the above example, the kubernetes-node-1 node with ID 18yrb7m650umx738rtevojpqy has a user defined label of *primary* added to it.  The primary service
+specifies *primary* as a constraint when created; this tells Swarm
 to place the service on that specific node.  The replica specifies
-a constraint of *node.labels.type != master* to have the replica
+a constraint of *node.labels.type != primary* to have the replica
 always placed on a node that is not hosting the primary service.
 
 
@@ -2292,10 +2292,10 @@ cd $CCPROOT/examples/docker/swarm-service
 ./run.sh
 ....
 
-You can then find the nodes that are running the master and replica containers
+You can then find the nodes that are running the primary and replica containers
 by:
 ....
-docker service ps master
+docker service ps primary
 docker service ps replica
 ....
 
