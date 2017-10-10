@@ -2668,7 +2668,7 @@ passwords:
 controller in use. Currently, only the replicas have a deployment controller in
 order to avoid the possibility of creating multiple masters.
 ....
-oc env dc/pg-master-rc PG_PRIMARY_PASSWORD=foo PG_MASTER=user1
+oc env dc/pg-master-rc PG_PRIMARY_PASSWORD=foo PG_PRIMARY=user1
 ....
 
 === Examine Backup Logs

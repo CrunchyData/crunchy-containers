@@ -39,7 +39,7 @@
         "description": "The name of a replica to trigger a failover upon",
         "value": "thisone"
     }, {
-        "name": "MASTER_TO_WATCH",
+        "name": "PRIMARY_TO_WATCH",
         "description": "The name of a master service to watch",
         "value": "pgmaster"
     }, {
@@ -47,7 +47,7 @@
         "description": "The name of a replica service to watch",
         "value": "pgreplica"
     }, {
-        "name": "MASTER_USER",
+        "name": "PRIMARY_USER",
         "description": "The master user to watch with",
         "value": "master"
     }],
@@ -76,7 +76,7 @@
                     "value": "${REPLICA_TO_TRIGGER}"
                 }, {
                     "name": "PG_PRIMARY_SERVICE",
-                    "value": "${MASTER_TO_WATCH}"
+                    "value": "${PRIMARY_TO_WATCH}"
                 }, {
                     "name": "PG_REPLICA_SERVICE",
                     "value": "${REPLICA_TO_WATCH}"
@@ -85,7 +85,7 @@
                     "value": "5432"
                 }, {
                     "name": "PG_PRIMARY_USER",
-                    "value": "${MASTER_USER}"
+                    "value": "${PRIMARY_USER}"
                 }, {
                     "name": "HOME",
                     "value": "/tmp"

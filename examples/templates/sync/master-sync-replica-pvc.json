@@ -39,15 +39,15 @@
         "description": "the name of the master",
         "value": "syncmaster"
     }, {
-        "name": "MASTER_PVC_NAME",
+        "name": "PRIMARY_PVC_NAME",
         "description": "the name of the master pvc",
         "value": "syncmaster-pvc"
     }, {
-        "name": "MASTER_PVC_SIZE",
+        "name": "PRIMARY_PVC_SIZE",
         "description": "the size of the master pvc",
         "value": "500M"
     }, {
-        "name": "MASTER_PASSWORD",
+        "name": "PRIMARY_PASSWORD",
         "description": "the password of the master user",
         "value": "password"
     }, {
@@ -75,7 +75,7 @@
             "kind": "PersistentVolumeClaim",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${MASTER_PVC_NAME}"
+                "name": "${PRIMARY_PVC_NAME}"
             },
             "spec": {
                 "accessModes": [
@@ -83,7 +83,7 @@
                 ],
                 "resources": {
                     "requests": {
-                        "storage": "${MASTER_PVC_SIZE}"
+                        "storage": "${PRIMARY_PVC_SIZE}"
                     }
                 }
             }
@@ -195,7 +195,7 @@
                         "value": "${REPLICA_SERVICE_NAME}"
                     }, {
                         "name": "PG_PRIMARY_PASSWORD",
-                        "value": "${MASTER_PASSWORD}"
+                        "value": "${PRIMARY_PASSWORD}"
                     }, {
                         "name": "PG_USER",
                         "value": "testuser"
@@ -222,7 +222,7 @@
                 "volumes": [{
                     "name": "pgdata",
                     "persistentVolumeClaim": {
-                        "claimName": "${MASTER_PVC_NAME}"
+                        "claimName": "${PRIMARY_PVC_NAME}"
                     }
                 }, {
                     "name": "backup",
@@ -280,7 +280,7 @@
                         "value": "primary"
                     }, {
                         "name": "PG_PRIMARY_PASSWORD",
-                        "value": "${MASTER_PASSWORD}"
+                        "value": "${PRIMARY_PASSWORD}"
                     }, {
                         "name": "SYNC_REPLICA",
                         "value": "${REPLICA_SERVICE_NAME}"
