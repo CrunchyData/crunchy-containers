@@ -2,9 +2,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master-pitr-restore",
+        "name": "primary-pitr-restore",
         "labels": {
-            "name": "master-pitr-restore"
+            "name": "primary-pitr-restore"
         }
     },
     "spec": {
@@ -48,7 +48,7 @@
                 "value": "primary"
             }, {
                 "name": "WAL_DIR",
-                "value": "master-pitr-wal"
+                "value": "primary-pitr-wal"
             }, {
                 "name": "ARCHIVE_MODE",
                 "value": "on"
@@ -63,7 +63,7 @@
                 "value": "password"
             }, {
                 "name": "BACKUP_PATH",
-                "value": "master-pitr-backups/2017-02-09-18-21-02"
+                "value": "primary-pitr-backups/2017-02-09-18-21-02"
             }, {
                 "name": "RECOVERY_TARGET_NAME",
                 "value": "afterchanges"

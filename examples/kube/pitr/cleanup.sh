@@ -13,13 +13,13 @@
 # limitations under the License.
 # remove any existing components of this example 
 
-kubectl delete pod master-pitr-restore
-kubectl delete service master-pitr-restore
-sudo rm -rf $PV_PATH/master-pitr-restore
+kubectl delete pod primary-pitr-restore
+kubectl delete service primary-pitr-restore
+sudo rm -rf $PV_PATH/primary-pitr-restore
 
-kubectl delete service master-pitr master-pitr-restore
-kubectl delete pod master-pitr
-kubectl delete job master-pitr-backup-job
+kubectl delete service primary-pitr primary-pitr-restore
+kubectl delete pod primary-pitr
+kubectl delete job primary-pitr-backup-job
 
-sudo rm -rf $PV_PATH/WAL/master-pitr
-sudo rm -rf $PV_PATH/master-pitr
+sudo rm -rf $PV_PATH/WAL/primary-pitr
+sudo rm -rf $PV_PATH/primary-pitr

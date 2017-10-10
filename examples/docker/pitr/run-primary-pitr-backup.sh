@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting master-pitr-backup container..."
+echo "starting primary-pitr-backup container..."
 
 PGDATA=/tmp/backups
 
@@ -26,18 +26,18 @@ fi
 sudo chown postgres:postgres $PGDATA
 sudo chcon -Rt svirt_sandbox_file_t $PGDATA
 
-docker stop master-pitr-backup
-docker rm master-pitr-backup
+docker stop primary-pitr-backup
+docker rm primary-pitr-backup
 
 docker run \
 	-v $PGDATA:/pgdata \
-	-e BACKUP_HOST=master-pitr \
+	-e BACKUP_HOST=primary-pitr \
 	-e BACKUP_USER=masteruser \
 	-e BACKUP_PASS=password \
 	-e BACKUP_PORT=5432 \
 	-e BACKUP_LABEL=mybackup1 \
-	--link master-pitr:master-pitr\
-	--name=master-pitr-backup \
-	--hostname=master-pitr-backup \
+	--link primary-pitr:primary-pitr\
+	--name=primary-pitr-backup \
+	--hostname=primary-pitr-backup \
 	-d crunchydata/crunchy-backup:$CCP_IMAGE_TAG
 

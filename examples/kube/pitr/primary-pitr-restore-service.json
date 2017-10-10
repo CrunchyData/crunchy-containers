@@ -2,9 +2,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master-pitr",
+        "name": "primary-pitr-restore",
         "labels": {
-            "name": "master-pitr"
+            "name": "primary-pitr-restore"
         }
     },
     "spec": {
@@ -15,7 +15,7 @@
             "nodePort": 0
         }],
         "selector": {
-            "name": "master-pitr"
+            "name": "primary-pitr-restore"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"

@@ -43,9 +43,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-pitr",
+            "name": "primary-pitr",
             "labels": {
-                "name": "master-pitr"
+                "name": "primary-pitr"
             }
         },
         "spec": {
@@ -56,7 +56,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-pitr"
+                "name": "primary-pitr"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
@@ -68,9 +68,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-pitr",
+            "name": "primary-pitr",
             "labels": {
-                "name": "master-pitr"
+                "name": "primary-pitr"
             }
         },
         "spec": {

@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master-pitr-restore-example",
+        "name": "primary-pitr-restore-example",
         "creationTimestamp": null,
         "annotations": {
             "description": "Crunchy PostgreSQL Replication Example",
@@ -43,9 +43,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-pitr-restore",
+            "name": "primary-pitr-restore",
             "labels": {
-                "name": "master-pitr-restore"
+                "name": "primary-pitr-restore"
             }
         },
         "spec": {
@@ -56,7 +56,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-pitr-restore"
+                "name": "primary-pitr-restore"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
@@ -68,9 +68,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-pitr-restore",
+            "name": "primary-pitr-restore",
             "labels": {
-                "name": "master-pitr-restore"
+                "name": "primary-pitr-restore"
             }
         },
         "spec": {
@@ -121,7 +121,7 @@
                     "value": "password"
                 }, {
                     "name": "BACKUP_PATH",
-                    "value": "master-pitr-backups/2017-08-03-20-25-12"
+                    "value": "primary-pitr-backups/2017-08-03-20-25-12"
                 }, {
                     "name": "RECOVERY_TARGET_NAME",
                     "value": "beforechanges"

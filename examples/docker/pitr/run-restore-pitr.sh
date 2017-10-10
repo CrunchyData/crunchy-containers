@@ -28,17 +28,17 @@ sudo docker rm primary-restore-pitr
 
 # the following path is where the base backup files
 # are located for doing the database restore
-BACKUP=/tmp/backups/master-pitr-backups/2016-12-21-21-08-57
+BACKUP=/tmp/backups/primary-pitr-backups/2016-12-21-21-08-57
 
 # WAL_DIR contains the WAL files generated from
 # this database after recovery and ongoing afterwards
-WAL_DIR=/tmp/master-pitr-restore-wal
+WAL_DIR=/tmp/primary-pitr-restore-wal
 
 # RECOVER_DIR contains the WAL files from where we
 # want to recover from
-RECOVER_DIR=/tmp/master-pitr-wal/master-pitr
+RECOVER_DIR=/tmp/primary-pitr-wal/primary-pitr
 
-DATA_DIR=/tmp/master-pitr-restore
+DATA_DIR=/tmp/primary-pitr-restore
 sudo rm -rf $DATA_DIR $WAL_DIR
 sudo mkdir -p $DATA_DIR $WAL_DIR
 sudo chown postgres:postgres $DATA_DIR $WAL_DIR

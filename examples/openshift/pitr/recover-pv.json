@@ -13,7 +13,7 @@
         },
         "accessModes": ["ReadOnlyMany"],
         "nfs": {
-            "path": "$PV_PATH/master-pitr-wal",
+            "path": "$PV_PATH/primary-pitr-wal",
             "server": "$NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"

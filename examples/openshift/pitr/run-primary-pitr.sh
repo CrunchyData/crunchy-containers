@@ -16,6 +16,7 @@ source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-kubectl delete job backup-master-pitr-pvc
+$DIR/cleanup.sh
 
-envsubst < $DIR/backup-master-pitr-job.json  | kubectl create -f -
+# start up the database container
+oc process -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/primary-pitr.json | oc create -f -

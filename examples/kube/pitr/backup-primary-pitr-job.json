@@ -2,19 +2,19 @@
     "kind": "Job",
     "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "backup-master-pitr-pvc"
+        "name": "backup-primary-pitr-pvc"
     },
     "spec": {
         "selector": {
             "matchLabels": {
-                "app": "backup-master-pitr-pvc"
+                "app": "backup-primary-pitr-pvc"
             }
         },
         "template": {
             "metadata": {
-                "name": "backup-master-pitr-pvc",
+                "name": "backup-primary-pitr-pvc",
                 "labels": {
-                    "app": "backup-master-pitr-pvc"
+                    "app": "backup-primary-pitr-pvc"
                 }
             },
             "spec": {
@@ -25,7 +25,7 @@
                     }
                 }],
                 "containers": [{
-                    "name": "backup-master-pitr-pvc",
+                    "name": "backup-primary-pitr-pvc",
                     "image": "crunchydata/crunchy-backup:$CCP_IMAGE_TAG",
                     "volumeMounts": [{
                         "mountPath": "/pgdata",
@@ -34,7 +34,7 @@
                     }],
                     "env": [{
                         "name": "BACKUP_HOST",
-                        "value": "master-pitr"
+                        "value": "primary-pitr"
                     }, {
                         "name": "BACKUP_LABEL",
                         "value": "somebackup"
