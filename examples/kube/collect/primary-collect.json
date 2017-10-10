@@ -2,9 +2,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master-collect",
+        "name": "primary-collect",
         "labels": {
-            "name": "master-collect"
+            "name": "primary-collect"
         }
     },
     "spec": {
@@ -23,7 +23,7 @@
                 "value": "http://crunchy-metrics:9091"
             }, {
 				"name": "DATA_SOURCE_NAME",
-				"value": "postgresql://master:password@master-collect:5432/postgres?sslmode=disable"
+				"value": "postgresql://master:password@primary-collect:5432/postgres?sslmode=disable"
             }, {
 				"name": "POSTGRES_EXPORTER_URL",
 				"value": "http://localhost:9187/metrics"

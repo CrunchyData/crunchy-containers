@@ -32,7 +32,7 @@ docker run \
 	-e NODE_EXPORTER_URL="http://localhost:9100/metrics" \
 	--link basic:basic \
 	--link crunchy-promgateway:crunchy-promgateway \
-	--name=master-collect \
-	--hostname=master-collect \
+	--name=primary-collect \
+	--hostname=primary-collect \
 	-p 9187:9187 \
 	-d crunchydata/crunchy-collect:$CCP_IMAGE_TAG

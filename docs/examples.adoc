@@ -1336,13 +1336,13 @@ firewall-cmd --reload
 
 You can view the collect container logs using this command:
 ....
-kubectl logs -c collect master-collect
+kubectl logs -c collect primary-collect
 ....
 
 You can access the database or drive load against it using
 this command:
 ....
-psql -h master-collect -U postgres postgres
+psql -h primary-collect -U postgres postgres
 ....
 
 ==== OpenShift

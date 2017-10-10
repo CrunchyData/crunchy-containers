@@ -17,5 +17,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-oc create -f $DIR/master-collect.json 
+oc create -f $DIR/primary-collect.json 
 
