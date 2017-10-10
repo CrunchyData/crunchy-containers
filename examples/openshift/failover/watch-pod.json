@@ -31,7 +31,7 @@
                 "name": "PG_MASTER_PORT",
                 "value": "5432"
             }, {
-                "name": "PG_MASTER_USER",
+                "name": "PG_PRIMARY_USER",
                 "value": "master"
             }, {
                 "name": "HOME",

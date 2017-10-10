@@ -17,7 +17,7 @@
         "name": "NAMESPACE",
         "description": "The project namespace to use"
     }, {
-        "name": "PG_MASTER_USER",
+        "name": "PG_PRIMARY_USER",
         "description": "The username used for primary / replica replication",
         "value": "master"
     }, {
@@ -95,7 +95,7 @@
                     "value": "master-dba"
                 }, {
                     "name": "PG_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
                     "name": "PG_PASSWORD",
                     "value": "${PG_MASTER_PASSWORD}"
@@ -120,8 +120,8 @@
                     "protocol": "TCP"
                 }],
                 "env": [{
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
                     "name": "PG_MODE",
                     "value": "primary"

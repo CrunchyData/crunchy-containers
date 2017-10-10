@@ -119,7 +119,7 @@
                             "name": "PGDATA_PATH_OVERRIDE",
                             "value": "${NAME}"
                         }, {
-                            "name": "PG_MASTER_USER",
+                            "name": "PG_PRIMARY_USER",
                             "value": "master"
                         }, {
                             "name": "PG_MASTER_PASSWORD",

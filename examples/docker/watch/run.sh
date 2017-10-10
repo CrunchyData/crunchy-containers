@@ -32,7 +32,7 @@ sudo docker run \
 	-e PG_MASTER_SERVICE=master \
 	-e PG_REPLICA_SERVICE=replica \
 	-e PG_MASTER_PORT=5432 \
-	-e PG_MASTER_USER=masteruser \
+	-e PG_PRIMARY_USER=masteruser \
 	-e PG_DATABASE=postgres \
 	-e SLEEP_TIME=20 \
 	-e WATCH_PRE_HOOK="/hooks/watch-pre-hook" \

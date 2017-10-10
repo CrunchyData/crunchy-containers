@@ -35,7 +35,7 @@ export PG_MASTER_SERVICE=$PG_MASTER_SERVICE
 export GIT_USER_NAME=$GIT_USER_NAME
 export GIT_USER_EMAIL=$GIT_USER_EMAIL
 export PG_MASTER_PORT=$PG_MASTER_PORT
-export PG_MASTER_USER=$PG_MASTER_USER
+export PG_PRIMARY_USER=$PG_PRIMARY_USER
 export PG_DATABASE=$PG_DATABASE
 
 if [ -d /usr/pgsql-9.6 ]; then
@@ -57,7 +57,7 @@ git config --global user.name $GIT_USER_NAME
 git config --global user.email $GIT_USER_EMAIL
 git config --global push.default simple
 
-pg_dump --schema-only --username=$PG_MASTER_USER --dbname=$PG_DATABASE \
+pg_dump --schema-only --username=$PG_PRIMARY_USER --dbname=$PG_DATABASE \
 	--host=$PG_MASTER_SERVICE > /tmp/schema.sql
 
 cd /gitrepo

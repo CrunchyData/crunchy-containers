@@ -11,7 +11,7 @@
         }
     },
     "parameters": [{
-        "name": "PG_MASTER_USER",
+        "name": "PG_PRIMARY_USER",
         "description": "The username used for primary / replica replication",
         "value": "master"
     }, {
@@ -89,8 +89,8 @@
                     "name": "PGHOST",
                     "value": "/tmp"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
                     "name": "PG_MODE",
                     "value": "primary"

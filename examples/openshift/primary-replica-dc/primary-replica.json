@@ -11,7 +11,7 @@
         }
     },
     "parameters": [{
-        "name": "PG_MASTER_USER",
+        "name": "PG_PRIMARY_USER",
         "description": "The username used for primary / replica replication",
         "value": "master"
     }, {
@@ -106,8 +106,8 @@
                 "name": "collect",
                 "image": "crunchydata/crunchy-collect:${CCP_IMAGE_TAG}",
                 "env": [{
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
                     "name": "PG_MASTER_PASSWORD",
                     "value": "${PG_MASTER_PASSWORD}"
@@ -182,8 +182,8 @@
                     "name": "PG_MODE",
                     "value": "primary"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
                     "name": "PG_MASTER_PASSWORD",
                     "value": "${PG_MASTER_PASSWORD}"
@@ -287,8 +287,8 @@
                             "name": "PG_MODE",
                             "value": "replica"
                         }, {
-                            "name": "PG_MASTER_USER",
-                            "value": "${PG_MASTER_USER}"
+                            "name": "PG_PRIMARY_USER",
+                            "value": "${PG_PRIMARY_USER}"
                         }, {
                             "name": "PG_MASTER_PASSWORD",
                             "value": "${PG_MASTER_PASSWORD}"

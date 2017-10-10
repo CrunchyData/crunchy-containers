@@ -52,7 +52,7 @@ docker run \
 	-e SHARED_BUFFERS=129MB \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
-	-e PG_MASTER_USER=master \
+	-e PG_PRIMARY_USER=master \
 	-e PG_PRIMARY_HOST=$CONTAINER_NAME \
 	-e PG_MASTER_PORT=5432 \
 	-e PG_MASTER_PASSWORD=password \

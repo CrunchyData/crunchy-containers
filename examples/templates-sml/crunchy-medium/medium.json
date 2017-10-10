@@ -156,7 +156,7 @@
                     "name": "PG_PRIMARY_HOST",
                     "value": "${NAME}"
                 }, {
-                    "name": "PG_MASTER_USER",
+                    "name": "PG_PRIMARY_USER",
                     "value": "master"
                 }, {
                     "name": "PG_MASTER_PORT",
@@ -233,7 +233,7 @@
                         "name": "collect",
                         "image": "crunchydata/crunchy-collect:${CCP_IMAGE_TAG}",
                         "env": [{
-                            "name": "PG_MASTER_USER",
+                            "name": "PG_PRIMARY_USER",
                             "value": "master"
                         }, {
                             "name": "PG_MASTER_PASSWORD",
@@ -266,7 +266,7 @@
                             "name": "PGDATA_PATH_OVERRIDE",
                             "value": "${NAME}"
                         }, {
-                            "name": "PG_MASTER_USER",
+                            "name": "PG_PRIMARY_USER",
                             "value": "master"
                         }, {
                             "name": "PG_MASTER_PASSWORD",

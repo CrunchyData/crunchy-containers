@@ -185,7 +185,7 @@
                                 "name": "postgres"
                             }],
                             "env": [{
-                                "name": "PG_MASTER_USER",
+                                "name": "PG_PRIMARY_USER",
                                 "value": "master"
                             }, {
                                 "name": "PG_PRIMARY_HOST",
@@ -337,7 +337,7 @@
                             "image": "crunchydata/crunchy-collect:${CCP_IMAGE_TAG}",
                             "imagePullPolicy": "IfNotPresent",
                             "env": [{
-                                "name": "PG_MASTER_USER",
+                                "name": "PG_PRIMARY_USER",
                                 "value": "master"
                             }, {
                                 "name": "PG_MASTER_PASSWORD",
@@ -370,7 +370,7 @@
                                 "name": "PGDATA_PATH_OVERRIDE",
                                 "value": "${NAME}"
                             }, {
-                                "name": "PG_MASTER_USER",
+                                "name": "PG_PRIMARY_USER",
                                 "value": "master"
                             }, {
                                 "name": "PG_MASTER_PASSWORD",

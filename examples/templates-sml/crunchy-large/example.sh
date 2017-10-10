@@ -27,7 +27,7 @@ oc process -n $PROJECT crunchy-master \
 	NAME=example \
 	PGDATA_PATH_OVERRIDE=example \
 	PG_MASTER_PORT=5432 \
-	PG_MASTER_USER=master \
+	PG_PRIMARY_USER=master \
 	PG_MASTER_PASSWORD=password \
 	PG_USER=testuser \
 	PG_PASSWORD=password \

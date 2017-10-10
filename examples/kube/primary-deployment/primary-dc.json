@@ -29,7 +29,7 @@
                         "name": "PGDATA_PATH_OVERRIDE",
                         "value": "primary-dc"
                     }, {
-                        "name": "PG_MASTER_USER",
+                        "name": "PG_PRIMARY_USER",
                         "value": "master"
                     }, {
                         "name": "PG_MASTER_PASSWORD",

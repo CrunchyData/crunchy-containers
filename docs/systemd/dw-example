@@ -23,7 +23,7 @@ ExecStart=/usr/bin/docker run -m 32g --cpu-shares=512 --net=quagga --ip=10.172.4
 							        --label environment="dev" \
 								        --label service="jose" \
 									        -e PG_MODE=primary \
-										        -e PG_MASTER_USER=masteruser \
+										        -e PG_PRIMARY_USER=masteruser \
 											        -e PG_MASTER_PASSWORD=masterpsw \
 												        -e PG_ROOT_PASSWORD=rootpsw \
 													        --name=dg_jose \

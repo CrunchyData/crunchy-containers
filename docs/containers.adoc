@@ -42,9 +42,9 @@ executed when the database is first created.
    the database is set up as a primary or replica instance. In the
    case of *set*, it means the container is started within a StatefulSet
    in a Kubernetes cluster.
- * PG_MASTER_USER - the value to use for the user ID created as
+ * PG_PRIMARY_USER - the value to use for the user ID created as
    master.  The *master* user has super user privileges.
- * PG_MASTER_PASSWORD - the password for the PG_MASTER_USER database user
+ * PG_MASTER_PASSWORD - the password for the PG_PRIMARY_USER database user
  * PG_USER - the value to use for the user ID created as a normal user.
    This user is created as part of the setup.sql script upon database
    creation and allows users to predefine an application user.
@@ -355,7 +355,7 @@ the watch logic to interact with the replica containers.
  * PG_MASTER_SERVICE -  the master service name
  * PG_REPLICA_SERVICE - the replica service name
  * PG_MASTER_PORT - database port to use when checking the database
- * PG_MASTER_USER -  database user account to use when checking the database
+ * PG_PRIMARY_USER -  database user account to use when checking the database
    using pg_isready utility
  * PG_DATABASE - database to use when checking the database using pg_isready
  * REPLICA_TO_TRIGGER_LABEL - the pod name of a replica that you
@@ -611,7 +611,7 @@ utility and a failover watch script.
    master database and if it can't reach it, will perform a failover
    to a configured replica database
  * OSE_PROJECT - when set, indicates you are running under OSE
- * PG_MASTER_USER - the value to use for the user ID created as
+ * PG_PRIMARY_USER - the value to use for the user ID created as
    master.  The *master* user has super user privileges.
  * SLEEP_TIME - time in seconds to sleep when polling the master
  * PG_DATABASE - the database to use when checking the readiness of the master

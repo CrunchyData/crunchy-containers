@@ -27,7 +27,7 @@
         "value": "crunchydata",
         "description": "The image prefix to pull with"
     }, {
-        "name": "PG_MASTER_USER",
+        "name": "PG_PRIMARY_USER",
         "description": "The username used for primary / replica replication",
         "value": "master"
     }, {
@@ -142,8 +142,8 @@
                     "protocol": "TCP"
                 }],
                 "env": [{
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
                     "name": "PG_MODE",
                     "value": "primary"
@@ -237,8 +237,8 @@
                     "name": "PG_MASTER_PORT",
                     "value": "5432"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
                     "name": "PG_MASTER_PASSWORD",
                     "value": "password"

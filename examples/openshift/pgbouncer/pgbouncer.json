@@ -91,7 +91,7 @@ REPLICA{
                     "description": "time in secs to sleep between polls",
                     "value": "12"
                 }, {
-                    "name": "PG_MASTER_USER",
+                    "name": "PG_PRIMARY_USER",
                     "description": "The master user configured in pgbouncer",
                     "value": "master"
                 }, {

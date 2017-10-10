@@ -15,7 +15,7 @@
         "description": "The name to use for the service and pod",
         "value": "pgdbcollect"
     }, {
-        "name": "PG_MASTER_USER",
+        "name": "PG_PRIMARY_USER",
         "description": "The username used for primary / replica replication",
         "value": "master"
     }, {
@@ -113,8 +113,8 @@
                 "image": "${CCP_IMAGE_PREFIX}/crunchy-collect:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "Always",
                 "env": [{
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
                     "name": "PG_MASTER_PASSWORD",
                     "value": "${PG_MASTER_PASSWORD}"
@@ -142,8 +142,8 @@
                     "protocol": "TCP"
                 }],
                 "env": [{
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
                 }, {
                     "name": "PG_MODE",
                     "value": "primary"

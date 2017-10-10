@@ -51,7 +51,7 @@
                 "protocol": "TCP"
             }],
             "env": [{
-                "name": "PG_MASTER_USER",
+                "name": "PG_PRIMARY_USER",
                 "value": "master"
             }, {
                 "name": "PG_MODE",

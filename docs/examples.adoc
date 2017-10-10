@@ -329,7 +329,7 @@ oc scale rc replica-dc-1 --replicas=2
 ....
 
 To check the *primary* default password, enter the following command and look for
-the *PG_MASTER_USER* and *PG_MASTER_PASSWORD* variables:
+the *PG_PRIMARY_USER* and *PG_MASTER_PASSWORD* variables:
 
 ....
 oc describe pod primary-dc | grep PG
@@ -1945,7 +1945,7 @@ environment variables if you specify all three secrets volumes:
  * PG_USER
  * PG_PASSWORD
  * PG_ROOT_PASSWORD
- * PG_MASTER_USER
+ * PG_PRIMARY_USER
  * PG_MASTER_PASSWORD
 
 You can test the container as follows, in all cases, the password is *password*:

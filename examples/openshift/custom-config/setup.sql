@@ -8,11 +8,11 @@ create extension postgis_tiger_geocoder;
 /* the following are required for other container operations */
 alter user postgres password 'PG_ROOT_PASSWORD';
 
-create user PG_MASTER_USER with REPLICATION  PASSWORD 'PG_MASTER_PASSWORD';
+create user PG_PRIMARY_USER with REPLICATION  PASSWORD 'PG_MASTER_PASSWORD';
 create user PG_USER with password 'PG_PASSWORD';
 
 create table mastertable (key varchar(20), value varchar(20));
-grant all on mastertable to PG_MASTER_USER;
+grant all on mastertable to PG_PRIMARY_USER;
 
 create database PG_DATABASE;
 
@@ -32,4 +32,4 @@ create table customtable (
 
 insert into customtable (key, value, updatedt) values ('CPU', '256', now());
 
-grant all on customtable to PG_MASTER_USER;
+grant all on customtable to PG_PRIMARY_USER;

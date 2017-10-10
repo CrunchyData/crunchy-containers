@@ -50,7 +50,7 @@ echo "MAX_FAILURES is set to " $MAX_FAILURES
 export PG_MASTER_SERVICE=$PG_MASTER_SERVICE
 export PG_REPLICA_SERVICE=$PG_REPLICA_SERVICE
 export PG_MASTER_PORT=$PG_MASTER_PORT
-export PG_MASTER_USER=$PG_MASTER_USER
+export PG_PRIMARY_USER=$PG_PRIMARY_USER
 export PG_USER=$PG_USER
 export PG_DATABASE=$PG_DATABASE
 
@@ -208,7 +208,7 @@ while true; do
 		exit 0
 	fi
 	sleep $SLEEP_TIME
-	pg_isready  --dbname=$PG_DATABASE --host=$PG_MASTER_SERVICE --port=$PG_MASTER_PORT --username=$PG_MASTER_USER
+	pg_isready  --dbname=$PG_DATABASE --host=$PG_MASTER_SERVICE --port=$PG_MASTER_PORT --username=$PG_PRIMARY_USER
 	if [ $? -eq 0 ]
 	then
 		echo "Successfully reached master @ " `date`

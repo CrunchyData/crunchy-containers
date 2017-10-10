@@ -52,7 +52,7 @@ docker run \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=primary \
-	-e PG_MASTER_USER=masteruser \
+	-e PG_PRIMARY_USER=masteruser \
 	-e PG_MASTER_PASSWORD=password \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
@@ -81,7 +81,7 @@ docker run \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=replica \
-	-e PG_MASTER_USER=masteruser \
+	-e PG_PRIMARY_USER=masteruser \
 	-e PG_MASTER_PASSWORD=password \
 	--link $MASTER_CONTAINER_NAME:$MASTER_CONTAINER_NAME \
 	-e PG_MASTER_PORT=5432 \

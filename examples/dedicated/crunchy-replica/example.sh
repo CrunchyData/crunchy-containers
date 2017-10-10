@@ -30,7 +30,7 @@ oc process -n $PROJECT crunchy-replica \
 	SERVICE_NAME=replica \
 	PG_PRIMARY_HOST=example \
 	PG_MASTER_PORT=5432 \
-	PG_MASTER_USER=master \
+	PG_PRIMARY_USER=master \
 	PG_MASTER_PASSWORD=password \
 	PVC_NAME=replica-pvc \
 	PVC_SIZE=300M \

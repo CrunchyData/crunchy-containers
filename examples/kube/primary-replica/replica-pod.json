@@ -42,7 +42,7 @@
                 "name": "PG_PRIMARY_HOST",
                 "value": "ms-primary"
             }, {
-                "name": "PG_MASTER_USER",
+                "name": "PG_PRIMARY_USER",
                 "value": "master"
             }, {
                 "name": "PG_MASTER_PORT",

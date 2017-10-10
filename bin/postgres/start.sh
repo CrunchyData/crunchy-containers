@@ -45,8 +45,8 @@ if [ "$PG_MODE" = "replica" ]; then
 	fi
 fi
 
-if [ ! -v PG_MASTER_USER ]; then
-	echo "PG_MASTER_USER environment variable is not set, aborting"
+if [ ! -v PG_PRIMARY_USER ]; then
+	echo "PG_PRIMARY_USER environment variable is not set, aborting"
 	exit 1
 fi
 if [ ! -v PG_MASTER_PASSWORD ]; then
@@ -73,7 +73,7 @@ fi
 export PG_MODE=$PG_MODE
 export PG_PRIMARY_HOST=$PG_PRIMARY_HOST
 export PG_MASTER_PORT=$PG_MASTER_PORT
-export PG_MASTER_USER=$PG_MASTER_USER
+export PG_PRIMARY_USER=$PG_PRIMARY_USER
 export PG_MASTER_PASSWORD=$PG_MASTER_PASSWORD
 export PG_USER=$PG_USER
 export PG_PASSWORD=$PG_PASSWORD
@@ -151,7 +151,7 @@ function initdb_logic() {
 	echo "Overlaying postgreSQL's configuration with your settings..."
 	cp /tmp/postgresql.conf $PGDATA
 	cp /opt/cpm/conf/pg_hba.conf /tmp
-	sed -i "s/PG_MASTER_USER/$PG_MASTER_USER/g" /tmp/pg_hba.conf
+	sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pg_hba.conf
 	cp /tmp/pg_hba.conf $PGDATA
 
 }
@@ -274,7 +274,7 @@ function waitforpg() {
 	while true; do
 		pg_isready --dbname=$PG_DATABASE --host=$PG_PRIMARY_HOST \
 		--port=$PG_MASTER_PORT \
-		--username=$PG_MASTER_USER --timeout=2
+		--username=$PG_PRIMARY_USER --timeout=2
 		if [ $? -eq 0 ]; then
 			echo "The database is ready."
 			break
@@ -283,7 +283,7 @@ function waitforpg() {
 	done
 
 	while true; do
-		psql -h $PG_PRIMARY_HOST -p $PG_MASTER_PORT -U $PG_MASTER_USER $PG_DATABASE -f /opt/cpm/bin/readiness.sql
+		psql -h $PG_PRIMARY_HOST -p $PG_MASTER_PORT -U $PG_PRIMARY_USER $PG_DATABASE -f /opt/cpm/bin/readiness.sql
 		if [ $? -eq 0 ]; then
 			echo "The database is ready."
 			CONNECTED=true
@@ -305,7 +305,7 @@ echo "Waiting to give the primary time to start up and register its hostname wit
 
 waitforpg
 
-pg_basebackup -x --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST --port=$PG_MASTER_PORT -U $PG_MASTER_USER
+pg_basebackup -x --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST --port=$PG_MASTER_PORT -U $PG_PRIMARY_USER
 
 # PostgreSQL recovery configuration.
 if [[ -v SYNC_REPLICA ]]; then
@@ -318,7 +318,7 @@ fi
 echo $APPLICATION_NAME " is the APPLICATION_NAME being used"
 
 cp /opt/cpm/conf/pgrepl-recovery.conf /tmp
-sed -i "s/PG_MASTER_USER/$PG_MASTER_USER/g" /tmp/pgrepl-recovery.conf
+sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pgrepl-recovery.conf
 sed -i "s/PG_PRIMARY_HOST/$PG_PRIMARY_HOST/g" /tmp/pgrepl-recovery.conf
 sed -i "s/PG_MASTER_PORT/$PG_MASTER_PORT/g" /tmp/pgrepl-recovery.conf
 sed -i "s/APPLICATION_NAME/$APPLICATION_NAME/g" /tmp/pgrepl-recovery.conf
@@ -348,7 +348,7 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
                 pg_isready \
                 --port=$PG_MASTER_PORT \
 		--host=$HOSTNAME \
-		--username=$PG_MASTER_USER \
+		--username=$PG_PRIMARY_USER \
                 --timeout=2
                 if [ $? -eq 0 ]; then
                         echo "The database is ready for setup.sql."
@@ -368,7 +368,7 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 		echo "Using setup.sql from /pgconf"
 		cp /pgconf/setup.sql /tmp
 	fi
-	sed -i "s/PG_MASTER_USER/$PG_MASTER_USER/g" /tmp/setup.sql
+	sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/setup.sql
 	sed -i "s/PG_MASTER_PASSWORD/$PG_MASTER_PASSWORD/g" /tmp/setup.sql
 	sed -i "s/PG_USER/$PG_USER/g" /tmp/setup.sql
 	sed -i "s/PG_PASSWORD/$PG_PASSWORD/g" /tmp/setup.sql

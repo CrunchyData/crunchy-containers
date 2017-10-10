@@ -157,9 +157,9 @@ executed when the database is first created.
    the database is set up as a primary or replica instance. In the
    case of *set*, it means the container is started within a StatefulSet
    in a Kubernetes cluster.
- * PG_MASTER_USER - the value to use for the user ID created as
+ * PG_PRIMARY_USER - the value to use for the user ID created as
    master.  The *master* user has super user privileges.
- * PG_MASTER_PASSWORD - the password for the PG_MASTER_USER database user
+ * PG_MASTER_PASSWORD - the password for the PG_PRIMARY_USER database user
  * PG_USER - the value to use for the user ID created as a normal user.
    This user is created as part of the setup.sql script upon database
    creation and allows users to predefine an application user.
@@ -319,7 +319,7 @@ which uses a Persistent Volume Claim for persistence.
 | the postgres port to use
 | 5432
 
-|PG_MASTER_USER
+|PG_PRIMARY_USER
 | the user name to create and use for a master user
 | master
 
@@ -481,7 +481,7 @@ found in a PVC.
 | the postgres port to use
 | 5432
 
-|PG_MASTER_USER
+|PG_PRIMARY_USER
 | the user name to create and use for a master user
 | master
 
@@ -572,7 +572,7 @@ These templates create the following:
 | the postgres port to use
 | 5432
 
-|PG_MASTER_USER
+|PG_PRIMARY_USER
 | the user name to create and use for a master user
 | master
 
