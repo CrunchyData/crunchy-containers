@@ -2,9 +2,9 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-master",
+        "name": "crunchy-primary",
         "annotations": {
-            "description": "Crunchy master postgres database using dynamic storage",
+            "description": "Crunchy primary postgres database using dynamic storage",
             "iconClass": "icon-database",
             "tags": "crunchy,database,postgresql"
         }
@@ -12,7 +12,7 @@
     "parameters": [{
         "name": "NAME",
         "description": "The name of the database and service",
-        "value": "master"
+        "value": "primary"
     }, {
         "name": "PG_PRIMARY_PORT",
         "description": "The postgresql port",
@@ -24,7 +24,7 @@
     }, {
         "name": "PGDATA_PATH_OVERRIDE",
         "description": "override for the pgdata path",
-        "value": "master"
+        "value": "primary"
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use",
@@ -60,7 +60,7 @@
     }, {
         "name": "PVC_NAME",
         "description": "The name for the PVC",
-        "value": "master-pvc"
+        "value": "primary-pvc"
     }, {
         "name": "PVC_SIZE",
         "description": "The size for the PVC",

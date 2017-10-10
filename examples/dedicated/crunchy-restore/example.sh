@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # this is an example of creating a postgres database using
-# the crunchy-master template from the CLI
+# the crunchy-primary template from the CLI
 
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

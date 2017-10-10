@@ -16,7 +16,7 @@ source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/crunchy-backup/run.sh
-$DIR/crunchy-master/run.sh
+$DIR/crunchy-primary/run.sh
 $DIR/crunchy-replica/run.sh
 $DIR/crunchy-restore/run.sh
 $DIR/crunchy-pgadmin4/run.sh

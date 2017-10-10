@@ -288,11 +288,11 @@ user *admin@admin.org* and password of *password*
 
 === Master Database Template
 
-Template Name is *crunchy-master*
+Template Name is *crunchy-primary*
 
 Example is found here:
 ....
-examples/dedicated/crunchy-master
+examples/dedicated/crunchy-primary
 ....
 
 This template will create the following:
