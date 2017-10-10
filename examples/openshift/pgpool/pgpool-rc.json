@@ -28,7 +28,7 @@
     }, {
         "name": "PG_PRIMARY_SERVICE_NAME",
         "description": "The master configured in pgpool",
-        "value": "ms-master"
+        "value": "ms-primary"
     }, {
         "name": "PG_REPLICA_SERVICE_NAME",
         "description": "The replica configured in pgpool",

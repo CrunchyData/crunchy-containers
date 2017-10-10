@@ -22,7 +22,7 @@
             }],
             "env": [{
                 "name": "PG_PRIMARY_SERVICE_NAME",
-                "value": "ms-master"
+                "value": "ms-primary"
             }, {
                 "name": "PG_REPLICA_SERVICE_NAME",
                 "value": "ms-replica"

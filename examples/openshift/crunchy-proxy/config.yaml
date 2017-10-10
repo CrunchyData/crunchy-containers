@@ -6,7 +6,7 @@ server:
 
 nodes:
   master:
-    hostport: ms-master:5432
+    hostport: ms-primary:5432
     role: master
     metadata: {}
   replica1:

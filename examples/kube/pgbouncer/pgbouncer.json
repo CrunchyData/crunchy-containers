@@ -44,7 +44,7 @@
                 "value": "5432"
             }, {
                 "name": "PG_PRIMARY_SERVICE",
-                "value": "ms-master"
+                "value": "ms-primary"
             }, {
                 "name": "PG_REPLICA_SERVICE",
                 "value": "ms-replica"

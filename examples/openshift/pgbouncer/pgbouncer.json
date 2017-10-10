@@ -101,7 +101,7 @@ REPLICA{
                 }, {
                     "name": "PG_PRIMARY_SERVICE",
                     "description": "The master configured in pgbouncer",
-                    "value": "ms-master"
+                    "value": "ms-primary"
                 }, {
                     "name": "PG_REPLICA_SERVICE",
                     "description": "The replica configured in pgbouncer",
