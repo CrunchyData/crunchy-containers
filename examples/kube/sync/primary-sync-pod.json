@@ -2,9 +2,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "mastersync",
+            "name": "primarysync",
             "labels": {
-                "name": "mastersync"
+                "name": "primarysync"
             }
         },
         "spec": {

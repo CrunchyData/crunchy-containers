@@ -23,7 +23,7 @@ echo "starting master container..."
 #sudo chcon -Rt svirt_sandbox_file_t $PGCONF
 # add this next line to the docker run to override pg config files
 
-DATA_DIR=/tmp/sync-master-data
+DATA_DIR=/tmp/sync-primary-data
 sudo rm -rf $DATA_DIR
 sudo mkdir -p $DATA_DIR
 sudo chown postgres:postgres $DATA_DIR

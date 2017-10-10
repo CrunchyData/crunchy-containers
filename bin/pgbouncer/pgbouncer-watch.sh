@@ -161,7 +161,7 @@ while true; do
 	then
 		:
 	else
-		echo "Could not reach master @ " `date`
+		echo "Could not reach primary @ " `date`
 		failover
 	fi
 done
