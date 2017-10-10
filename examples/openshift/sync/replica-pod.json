@@ -36,7 +36,7 @@
                     "value": "/tmp"
                 }, {
                     "name": "PG_PRIMARY_HOST",
-                    "value": "master"
+                    "value": "primary"
                 }, {
                     "name": "PG_PRIMARY_USER",
                     "value": "master"
