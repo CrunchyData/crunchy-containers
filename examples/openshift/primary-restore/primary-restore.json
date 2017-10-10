@@ -43,9 +43,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-restore",
+            "name": "primary-restore",
             "labels": {
-                "name": "master-restore"
+                "name": "primary-restore"
             }
         },
         "spec": {
@@ -56,7 +56,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-restore"
+                "name": "primary-restore"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
@@ -68,9 +68,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-restore",
+            "name": "primary-restore",
             "labels": {
-                "name": "master-restore"
+                "name": "primary-restore"
             }
         },
         "spec": {

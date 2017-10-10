@@ -608,7 +608,7 @@ cd $CCPROOT/examples/docker/restore
 
 This script will do the following:
 
- * start up a container named master-restore
+ * start up a container named primary-restore
  * copy the backup files from the previous backup example into /pgdata
  * start up the container using the backup files
  * maps the PostgreSQL port of 5432 in the container to your local host port of 12001 as to not conflict with the master running in the previous example.
@@ -621,7 +621,7 @@ to this example!
 
 You will need to find a backup you want to
 use for running this example, you will need the timestamped directory
-path under /nfsfileshare/basic/.  Edit the master-restore.json
+path under /nfsfileshare/basic/.  Edit the primary-restore.json
 file and update the BACKUP_PATH setting to specify the
 NFS backup path you want to restore with, example:
 ....
@@ -636,7 +636,7 @@ backup data to startup with.
 
 Running the example:
 ....
-cd $CCPROOT/examples/kube/master-restore
+cd $CCPROOT/examples/kube/primary-restore
 ./run.sh
 ....
 
@@ -658,7 +658,7 @@ First, locate the database backup you want to restore, for example:
 
 Then create the pod:
 ....
-cd $CCPROOT/examples/openshift/master-restore
+cd $CCPROOT/examples/openshift/primary-restore
 ./run.sh
 ....
 

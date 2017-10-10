@@ -12,11 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-source $CCPROOT/examples/envvars.sh
-
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-$DIR/cleanup.sh
-
-oc process -f $DIR/master-restore-pvc -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc delete pod primary-restore
+oc delete service primary-restore
+$CCPROOT/examples/waitforterm.sh primary-restore oc

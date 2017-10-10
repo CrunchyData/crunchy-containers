@@ -20,7 +20,7 @@
                 "value": "postgres"
             }, {
                 "name": "database_url",
-                "value": "Host=master-restore;Database=userdb;Username=testuser;Password=password"
+                "value": "Host=primary-restore;Database=userdb;Username=testuser;Password=password"
             }],
             "volumeMounts": [ ]
         }],

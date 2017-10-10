@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting master-restore-pitr container..."
+echo "starting primary-restore-pitr container..."
 
-sudo docker stop master-restore-pitr
-sudo docker rm master-restore-pitr
+sudo docker stop primary-restore-pitr
+sudo docker rm primary-restore-pitr
 
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
@@ -68,6 +68,6 @@ sudo docker run \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=master-restore-pitr \
-	--hostname=master-restore-pitr \
+	--name=primary-restore-pitr \
+	--hostname=primary-restore-pitr \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG

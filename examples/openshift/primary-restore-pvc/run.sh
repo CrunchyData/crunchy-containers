@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 source $CCPROOT/examples/envvars.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-echo PV_PATH is $PV_PATH
-sudo rm -rf $PV_PATH/master-restore-pvc
+$DIR/cleanup.sh
 
-oc delete pod master-restore-pvc
-oc delete service master-restore-pvc
-
+oc process -f $DIR/primary-restore-pvc -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

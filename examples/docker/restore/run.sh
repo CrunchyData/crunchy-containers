@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting master-restore container..."
+echo "starting primary-restore container..."
 
 # $1=date-named directory, e.g. 2017-01-12-17-43-08
 export BACKUP_PATH=basic-backups/$1
 
-export CONTAINER_NAME=master-restore
+export CONTAINER_NAME=primary-restore
 export CONTAINER_VOLUME=$CONTAINER_NAME-volume
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh

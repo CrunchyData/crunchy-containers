@@ -12,5 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete pod master-restore
-kubectl delete service master-restore
+source $CCPROOT/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
+
+oc process -f $DIR/primary-restore.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

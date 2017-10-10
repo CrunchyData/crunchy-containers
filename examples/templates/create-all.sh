@@ -21,7 +21,7 @@ $DIR/collect/run.sh
 $DIR/master-collect-badger/run.sh
 $DIR/primary-replica-dc/run.sh
 $DIR/primary-replica/run.sh
-$DIR/master-restore/run.sh
+$DIR/primary-restore/run.sh
 $DIR/metrics/run.sh
 $DIR/pgadmin4/run.sh
 $DIR/pgbouncer/run.sh

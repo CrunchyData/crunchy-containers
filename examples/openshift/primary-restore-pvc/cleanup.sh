@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pod master-restore
-oc delete service master-restore
-$CCPROOT/examples/waitforterm.sh master-restore oc
+source $CCPROOT/examples/envvars.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+echo PV_PATH is $PV_PATH
+sudo rm -rf $PV_PATH/primary-restore-pvc
+
+oc delete pod primary-restore-pvc
+oc delete service primary-restore-pvc
+

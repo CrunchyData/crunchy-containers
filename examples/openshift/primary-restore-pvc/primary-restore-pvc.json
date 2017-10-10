@@ -43,9 +43,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-restore-pvc",
+            "name": "primary-restore-pvc",
             "labels": {
-                "name": "master-restore-pvc"
+                "name": "primary-restore-pvc"
             }
         },
         "spec": {
@@ -56,7 +56,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-restore-pvc"
+                "name": "primary-restore-pvc"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
@@ -68,9 +68,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-restore-pvc",
+            "name": "primary-restore-pvc",
             "labels": {
-                "name": "master-restore-pvc"
+                "name": "primary-restore-pvc"
             }
         },
         "spec": {

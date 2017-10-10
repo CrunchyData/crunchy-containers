@@ -12,12 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
-
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-$DIR/cleanup.sh
-
-kubectl create -f $DIR/master-restore-service.json
-
-envsubst <  $DIR/master-restore.json  | kubectl create -f -
+kubectl delete pod primary-restore
+kubectl delete service primary-restore
