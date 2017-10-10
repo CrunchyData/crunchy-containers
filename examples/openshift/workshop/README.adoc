@@ -60,7 +60,7 @@ Running the example:
 ....
 git clone https://github.com/crunchydata/crunchy-containers.git
 cd crunchy-containers/examples/workshop
-oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f master.json
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f primary.json
 oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f replicas.json
 oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f pgadmin4.json
 oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f metrics.json
@@ -115,7 +115,7 @@ http://master-default.apps.10.2.2.2.xip.io/api/badgergenerate
 
 === Postgres access from your host
 
-The value of all passwords for the database is *password*, to 
+The value of all passwords for the database is *password*, to
 access the database, you can enter the following command:
 
 ....
@@ -130,4 +130,3 @@ Copyright © 2017 Crunchy Data Solutions, Inc.
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
-
