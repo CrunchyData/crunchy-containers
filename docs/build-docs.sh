@@ -24,12 +24,12 @@ a2x -f pdf ./pitr.adoc
 
 # Generate XHTML files into the ./xhtml/ directory -
 
-a2x -f xhtml ./examples.adoc -D ./xhtml/
-a2x -f xhtml ./dedicated.adoc -D ./xhtml/
-a2x -f xhtml ./install.adoc -D ./xhtml/
-a2x -f xhtml ./metrics.adoc -D ./xhtml/
-a2x -f xhtml ./containers.adoc -D ./xhtml/
-a2x -f xhtml ./pitr.adoc -D ./xhtml/
+#a2x -f xhtml ./examples.adoc -D ./xhtml/
+#a2x -f xhtml ./dedicated.adoc -D ./xhtml/
+#a2x -f xhtml ./install.adoc -D ./xhtml/
+#a2x -f xhtml ./metrics.adoc -D ./xhtml/
+#a2x -f xhtml ./containers.adoc -D ./xhtml/
+#a2x -f xhtml ./pitr.adoc -D ./xhtml/
 
 # Generate manpages -
 
