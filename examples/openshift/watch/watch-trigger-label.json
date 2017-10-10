@@ -47,7 +47,7 @@
                     "name": "REPLICA_TO_TRIGGER_LABEL",
                     "value": "ms-replica"
                 }, {
-                    "name": "PG_MASTER_PORT",
+                    "name": "PG_PRIMARY_PORT",
                     "value": "5432"
                 }, {
                     "name": "PG_PRIMARY_USER",

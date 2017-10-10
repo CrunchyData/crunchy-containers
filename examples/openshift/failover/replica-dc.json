@@ -31,7 +31,7 @@
                         "name": "PG_MASTER_SERVICE_NAME",
                         "value": "master-dc"
                     }, {
-                        "name": "PG_MASTER_PORT",
+                        "name": "PG_PRIMARY_PORT",
                         "value": "5432"
                     }, {
                         "name": "PG_MODE",

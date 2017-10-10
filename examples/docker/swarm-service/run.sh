@@ -33,7 +33,7 @@ docker service create \
  --env PG_ROOT_PASSWORD=password \
  --env PG_PASSWORD=password \
  --env PG_DATABASE=userdb \
- --env PG_MASTER_PORT=5432 \
+ --env PG_PRIMARY_PORT=5432 \
  --env PG_PRIMARY_PASSWORD=password \
  crunchydata/crunchy-postgres:centos7-9.5-1.2.8
 
@@ -57,7 +57,7 @@ docker service create \
  --env PG_ROOT_PASSWORD=password \
  --env PG_PASSWORD=password \
  --env PG_DATABASE=userdb \
- --env PG_MASTER_PORT=5432 \
+ --env PG_PRIMARY_PORT=5432 \
  --env PG_PRIMARY_PASSWORD=password \
  --env PG_PRIMARY_HOST=$MASTER_SERVICE_NAME \
  crunchydata/crunchy-postgres:centos7-9.5-1.2.8

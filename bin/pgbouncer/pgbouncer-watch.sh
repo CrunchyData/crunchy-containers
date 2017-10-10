@@ -21,7 +21,7 @@ echo "SLEEP_TIME is set to " $SLEEP_TIME
 
 export PG_MASTER_SERVICE=$PG_MASTER_SERVICE
 export PG_REPLICA_SERVICE=$PG_REPLICA_SERVICE
-export PG_MASTER_PORT=$PG_MASTER_PORT
+export PG_PRIMARY_PORT=$PG_PRIMARY_PORT
 export PG_PRIMARY_USER=$PG_PRIMARY_USER
 export PG_DATABASE=$PG_DATABASE
 
@@ -156,7 +156,7 @@ function ose_failover() {
 
 while true; do
 	sleep $SLEEP_TIME
-	pg_isready  --dbname=$PG_DATABASE --host=$PG_MASTER_SERVICE --port=$PG_MASTER_PORT --username=$PG_PRIMARY_USER
+	pg_isready  --dbname=$PG_DATABASE --host=$PG_MASTER_SERVICE --port=$PG_PRIMARY_PORT --username=$PG_PRIMARY_USER
 	if [ $? -eq 0 ]
 	then
 		:

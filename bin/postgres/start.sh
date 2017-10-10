@@ -72,7 +72,7 @@ fi
 
 export PG_MODE=$PG_MODE
 export PG_PRIMARY_HOST=$PG_PRIMARY_HOST
-export PG_MASTER_PORT=$PG_MASTER_PORT
+export PG_PRIMARY_PORT=$PG_PRIMARY_PORT
 export PG_PRIMARY_USER=$PG_PRIMARY_USER
 export PG_PRIMARY_PASSWORD=$PG_PRIMARY_PASSWORD
 export PG_USER=$PG_USER
@@ -273,7 +273,7 @@ function waitforpg() {
 	CONNECTED=false
 	while true; do
 		pg_isready --dbname=$PG_DATABASE --host=$PG_PRIMARY_HOST \
-		--port=$PG_MASTER_PORT \
+		--port=$PG_PRIMARY_PORT \
 		--username=$PG_PRIMARY_USER --timeout=2
 		if [ $? -eq 0 ]; then
 			echo "The database is ready."
@@ -283,7 +283,7 @@ function waitforpg() {
 	done
 
 	while true; do
-		psql -h $PG_PRIMARY_HOST -p $PG_MASTER_PORT -U $PG_PRIMARY_USER $PG_DATABASE -f /opt/cpm/bin/readiness.sql
+		psql -h $PG_PRIMARY_HOST -p $PG_PRIMARY_PORT -U $PG_PRIMARY_USER $PG_DATABASE -f /opt/cpm/bin/readiness.sql
 		if [ $? -eq 0 ]; then
 			echo "The database is ready."
 			CONNECTED=true
@@ -305,7 +305,7 @@ echo "Waiting to give the primary time to start up and register its hostname wit
 
 waitforpg
 
-pg_basebackup -x --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST --port=$PG_MASTER_PORT -U $PG_PRIMARY_USER
+pg_basebackup -x --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST --port=$PG_PRIMARY_PORT -U $PG_PRIMARY_USER
 
 # PostgreSQL recovery configuration.
 if [[ -v SYNC_REPLICA ]]; then
@@ -320,7 +320,7 @@ echo $APPLICATION_NAME " is the APPLICATION_NAME being used"
 cp /opt/cpm/conf/pgrepl-recovery.conf /tmp
 sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pgrepl-recovery.conf
 sed -i "s/PG_PRIMARY_HOST/$PG_PRIMARY_HOST/g" /tmp/pgrepl-recovery.conf
-sed -i "s/PG_MASTER_PORT/$PG_MASTER_PORT/g" /tmp/pgrepl-recovery.conf
+sed -i "s/PG_PRIMARY_PORT/$PG_PRIMARY_PORT/g" /tmp/pgrepl-recovery.conf
 sed -i "s/APPLICATION_NAME/$APPLICATION_NAME/g" /tmp/pgrepl-recovery.conf
 cp /tmp/pgrepl-recovery.conf $PGDATA/recovery.conf
 }
@@ -346,7 +346,7 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 	echo "Waiting for postgreSQL to start..."
 	while true; do
                 pg_isready \
-                --port=$PG_MASTER_PORT \
+                --port=$PG_PRIMARY_PORT \
 		--host=$HOSTNAME \
 		--username=$PG_PRIMARY_USER \
                 --timeout=2

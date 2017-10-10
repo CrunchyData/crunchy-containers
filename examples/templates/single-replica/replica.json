@@ -100,7 +100,7 @@
                         "name": "PG_PRIMARY_USER",
                         "value": "${PG_PRIMARY_USER}"
                     }, {
-                        "name": "PG_MASTER_PORT",
+                        "name": "PG_PRIMARY_PORT",
                         "value": "5432"
                     }, {
                         "name": "PG_MODE",

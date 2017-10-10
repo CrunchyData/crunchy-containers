@@ -81,7 +81,7 @@
                     "name": "PG_REPLICA_SERVICE",
                     "value": "${REPLICA_TO_WATCH}"
                 }, {
-                    "name": "PG_MASTER_PORT",
+                    "name": "PG_PRIMARY_PORT",
                     "value": "5432"
                 }, {
                     "name": "PG_PRIMARY_USER",

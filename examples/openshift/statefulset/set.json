@@ -36,7 +36,7 @@
                         "name": "PG_PRIMARY_HOST",
                         "value": "pgset-master"
                     }, {
-                        "name": "PG_MASTER_PORT",
+                        "name": "PG_PRIMARY_PORT",
                         "value": "5432"
                     }, {
                         "name": "PG_PRIMARY_PASSWORD",

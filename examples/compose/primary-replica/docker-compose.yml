@@ -21,7 +21,7 @@ services:
     - PG_PRIMARY_USER=master
     - PG_PRIMARY_HOST=db-primary
     - PG_PRIMARY_PASSWORD=password
-    - PG_MASTER_PORT=5432
+    - PG_PRIMARY_PORT=5432
     - PG_MODE=primary
     - PG_USER=testuser
     - PG_PASSWORD=password
@@ -44,7 +44,7 @@ services:
     - TEMP_BUFFERS=9MB
     - PG_PRIMARY_USER=master
     - PG_PRIMARY_HOST=db-primary
-    - PG_MASTER_PORT=5432
+    - PG_PRIMARY_PORT=5432
     - PG_PRIMARY_PASSWORD=password
     - PG_MODE=replica
     - PG_USER=testuser

@@ -10,7 +10,7 @@
         }
     },
     "parameters": [{
-        "name": "PG_MASTER_PORT",
+        "name": "PG_PRIMARY_PORT",
         "description": "The postgresql port",
         "value": "5432"
     }, {
@@ -66,8 +66,8 @@
                         "name": "postgres",
                         "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                         "env": [{
-                            "name": "PG_MASTER_PORT",
-                            "value": "${PG_MASTER_PORT}"
+                            "name": "PG_PRIMARY_PORT",
+                            "value": "${PG_PRIMARY_PORT}"
                         }, {
                             "name": "PG_PRIMARY_HOST",
                             "value": "${PG_PRIMARY_HOST}"

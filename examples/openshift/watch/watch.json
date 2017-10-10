@@ -44,7 +44,7 @@
                     "name": "PG_REPLICA_SERVICE",
                     "value": "replica-dc"
                 }, {
-                    "name": "PG_MASTER_PORT",
+                    "name": "PG_PRIMARY_PORT",
                     "value": "5432"
                 }, {
                     "name": "HOME",

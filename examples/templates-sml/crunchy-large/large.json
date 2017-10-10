@@ -212,7 +212,7 @@
                                 "name": "PG_ROOT_PASSWORD",
                                 "value": "${PG_ROOT_PASSWORD}"
                             }, {
-                                "name": "PG_MASTER_PORT",
+                                "name": "PG_PRIMARY_PORT",
                                 "value": "5432"
                             }],
                             "volumeMounts": [{
@@ -361,7 +361,7 @@
                             "name": "server",
                             "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                             "env": [{
-                                "name": "PG_MASTER_PORT",
+                                "name": "PG_PRIMARY_PORT",
                                 "value": "5432"
                             }, {
                                 "name": "PG_MODE",

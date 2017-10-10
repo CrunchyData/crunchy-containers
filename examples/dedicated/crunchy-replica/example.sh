@@ -29,7 +29,7 @@ oc process -n $PROJECT crunchy-replica \
 	CCP_IMAGE_NAME=crunchy-postgres \
 	SERVICE_NAME=replica \
 	PG_PRIMARY_HOST=example \
-	PG_MASTER_PORT=5432 \
+	PG_PRIMARY_PORT=5432 \
 	PG_PRIMARY_USER=master \
 	PG_PRIMARY_PASSWORD=password \
 	PVC_NAME=replica-pvc \

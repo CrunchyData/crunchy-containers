@@ -31,7 +31,7 @@
         "description": "the master service name the replica will connect to",
         "value": "master"
     }, {
-        "name": "PG_MASTER_PORT",
+        "name": "PG_PRIMARY_PORT",
         "description": "the master database port the replica will connect to",
         "value": "5432"
     }, {
@@ -141,8 +141,8 @@
                         "name": "PG_PRIMARY_USER",
                         "value": "${PG_PRIMARY_USER}"
                     }, {
-                        "name": "PG_MASTER_PORT",
-                        "value": "${PG_MASTER_PORT}"
+                        "name": "PG_PRIMARY_PORT",
+                        "value": "${PG_PRIMARY_PORT}"
                     }, {
                         "name": "PG_MODE",
                         "value": "replica"

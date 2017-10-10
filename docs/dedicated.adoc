@@ -315,7 +315,7 @@ which uses a Persistent Volume Claim for persistence.
 | should match the name of the NAME parameter in most cases
 | example
 
-|PG_MASTER_PORT
+|PG_PRIMARY_PORT
 | the postgres port to use
 | 5432
 
@@ -477,7 +477,7 @@ found in a PVC.
 | the job name
 | restoredb
 
-|PG_MASTER_PORT
+|PG_PRIMARY_PORT
 | the postgres port to use
 | 5432
 
@@ -568,7 +568,7 @@ These templates create the following:
 | the postgres master service name the replica will connect to
 | master
 
-|PG_MASTER_PORT
+|PG_PRIMARY_PORT
 | the postgres port to use
 | 5432
 
