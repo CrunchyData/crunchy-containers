@@ -13,8 +13,8 @@ alter user postgres password 'PG_ROOT_PASSWORD';
 create user PG_PRIMARY_USER with REPLICATION  PASSWORD 'PG_PRIMARY_PASSWORD';
 create user PG_USER with password 'PG_PASSWORD';
 
-create table mastertable (key varchar(20), value varchar(20));
-grant all on mastertable to PG_PRIMARY_USER;
+create table primarytable (key varchar(20), value varchar(20));
+grant all on primarytable to PG_PRIMARY_USER;
 
 create database PG_DATABASE;
 

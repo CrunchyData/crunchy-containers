@@ -110,7 +110,7 @@
                     "value": "true"
                 }, {
                     "name": "VAC_TABLE",
-                    "value": "mastertable"
+                    "value": "primarytable"
                 }, {
                     "name": "JOB_HOST",
                     "value": "master-dba"
