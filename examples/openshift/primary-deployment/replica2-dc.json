@@ -18,7 +18,7 @@
         "description": "The username used for primary / replica replication",
         "value": "master"
     }, {
-        "name": "PG_MASTER_HOST",
+        "name": "PG_PRIMARY_HOST",
         "description": "The primary host",
         "value": "primary-dc"
     }, {
@@ -69,8 +69,8 @@
                             "name": "PG_MASTER_PORT",
                             "value": "${PG_MASTER_PORT}"
                         }, {
-                            "name": "PG_MASTER_HOST",
-                            "value": "${PG_MASTER_HOST}"
+                            "name": "PG_PRIMARY_HOST",
+                            "value": "${PG_PRIMARY_HOST}"
                         }, {
                             "name": "PGDATA_PATH_OVERRIDE",
                             "value": "${PGDATA_PATH_OVERRIDE}"

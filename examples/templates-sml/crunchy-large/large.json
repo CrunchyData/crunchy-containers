@@ -188,7 +188,7 @@
                                 "name": "PG_MASTER_USER",
                                 "value": "master"
                             }, {
-                                "name": "PG_MASTER_HOST",
+                                "name": "PG_PRIMARY_HOST",
                                 "value": "${NAME}"
                             }, {
                                 "name": "PGHOST",

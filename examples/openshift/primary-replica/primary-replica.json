@@ -220,7 +220,7 @@
                     "name": "PG_ROOT_PASSWORD",
                     "value": "${PG_ROOT_PASSWORD}"
                 }, {
-                    "name": "PG_MASTER_HOST",
+                    "name": "PG_PRIMARY_HOST",
                     "value": "ms-master"
                 }, {
                     "name": "PG_MASTER_PORT",

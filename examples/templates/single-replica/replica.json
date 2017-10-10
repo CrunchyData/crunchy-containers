@@ -19,7 +19,7 @@
         "description": "the name to use for the replica service and pod",
         "value": "pgreplica"
     }, {
-        "name": "PG_MASTER_HOST",
+        "name": "PG_PRIMARY_HOST",
         "description": "the master service name the replica will connect to",
         "value": "pgdatabase"
     }, {
@@ -94,8 +94,8 @@
                         "protocol": "TCP"
                     }],
                     "env": [{
-                        "name": "PG_MASTER_HOST",
-                        "value": "${PG_MASTER_HOST}"
+                        "name": "PG_PRIMARY_HOST",
+                        "value": "${PG_PRIMARY_HOST}"
                     }, {
                         "name": "PG_MASTER_USER",
                         "value": "${PG_MASTER_USER}"

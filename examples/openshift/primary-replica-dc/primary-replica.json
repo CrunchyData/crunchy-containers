@@ -152,7 +152,7 @@
                     "protocol": "TCP"
                 }],
                 "env": [{
-                    "name": "PG_MASTER_HOST",
+                    "name": "PG_PRIMARY_HOST",
                     "value": "${PG_MASTER_SERVICE_NAME}"
                 }, {
                     "name": "PGHOST",
@@ -272,7 +272,7 @@
                             "protocol": "TCP"
                         }],
                         "env": [{
-                            "name": "PG_MASTER_HOST",
+                            "name": "PG_PRIMARY_HOST",
                             "value": "${PG_MASTER_SERVICE_NAME}"
                         }, {
                             "name": "PG_MASTER_SERVICE_NAME",

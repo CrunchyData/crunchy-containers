@@ -25,7 +25,7 @@
                     "name": "postgres",
                     "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
                     "env": [{
-                        "name": "PG_MASTER_HOST",
+                        "name": "PG_PRIMARY_HOST",
                         "value": "master-dc"
                     }, {
                         "name": "PG_MASTER_SERVICE_NAME",

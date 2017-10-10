@@ -1802,10 +1802,10 @@ by Kube to the pod.  This is an ordinal value starting with *0*.
 If a container sees that it has an ordinal value of *0*, it will
 update the container labels to add a new label of:
 ....
-name=$PG_MASTER_HOST
+name=$PG_PRIMARY_HOST
 ....
 
-In this example, PG_MASTER_HOST is specified as *pgset-master*.
+In this example, PG_PRIMARY_HOST is specified as *pgset-master*.
 
 By default, the containers specify a value of *name=pgset-replica*
 

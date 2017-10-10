@@ -39,8 +39,8 @@ if [ ! -v PG_MODE ]; then
 fi
 
 if [ "$PG_MODE" = "replica" ]; then
-	if [ ! -v PG_MASTER_HOST ]; then
-		echo "PG_MASTER_HOST environment variable is not set and required when PG_MODE is replica, aborting"
+	if [ ! -v PG_PRIMARY_HOST ]; then
+		echo "PG_PRIMARY_HOST environment variable is not set and required when PG_MODE is replica, aborting"
 		exit 1
 	fi
 fi
@@ -71,7 +71,7 @@ if [ ! -v PG_ROOT_PASSWORD ]; then
 fi
 
 export PG_MODE=$PG_MODE
-export PG_MASTER_HOST=$PG_MASTER_HOST
+export PG_PRIMARY_HOST=$PG_PRIMARY_HOST
 export PG_MASTER_PORT=$PG_MASTER_PORT
 export PG_MASTER_USER=$PG_MASTER_USER
 export PG_MASTER_PASSWORD=$PG_MASTER_PASSWORD
@@ -99,8 +99,8 @@ function role_discovery() {
 	ordinal=${HOSTNAME##*-}
 	echo $ordinal is ordinal
 	if [ $ordinal -eq 0 ]; then
-		kubectl label --overwrite=true pod $HOSTNAME  name=$PG_MASTER_HOST
-		oc label --overwrite=true pod $HOSTNAME  name=$PG_MASTER_HOST
+		kubectl label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST
+		oc label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST
 		echo "Setting PG_MODE to primary."
 		export PG_MODE=primary
 	else
@@ -272,7 +272,7 @@ function waitforpg() {
 	export PGPASSFILE=/tmp/.pgpass
 	CONNECTED=false
 	while true; do
-		pg_isready --dbname=$PG_DATABASE --host=$PG_MASTER_HOST \
+		pg_isready --dbname=$PG_DATABASE --host=$PG_PRIMARY_HOST \
 		--port=$PG_MASTER_PORT \
 		--username=$PG_MASTER_USER --timeout=2
 		if [ $? -eq 0 ]; then
@@ -283,7 +283,7 @@ function waitforpg() {
 	done
 
 	while true; do
-		psql -h $PG_MASTER_HOST -p $PG_MASTER_PORT -U $PG_MASTER_USER $PG_DATABASE -f /opt/cpm/bin/readiness.sql
+		psql -h $PG_PRIMARY_HOST -p $PG_MASTER_PORT -U $PG_MASTER_USER $PG_DATABASE -f /opt/cpm/bin/readiness.sql
 		if [ $? -eq 0 ]; then
 			echo "The database is ready."
 			CONNECTED=true
@@ -305,7 +305,7 @@ echo "Waiting to give the primary time to start up and register its hostname wit
 
 waitforpg
 
-pg_basebackup -x --no-password --pgdata $PGDATA --host=$PG_MASTER_HOST --port=$PG_MASTER_PORT -U $PG_MASTER_USER
+pg_basebackup -x --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST --port=$PG_MASTER_PORT -U $PG_MASTER_USER
 
 # PostgreSQL recovery configuration.
 if [[ -v SYNC_REPLICA ]]; then
@@ -319,7 +319,7 @@ echo $APPLICATION_NAME " is the APPLICATION_NAME being used"
 
 cp /opt/cpm/conf/pgrepl-recovery.conf /tmp
 sed -i "s/PG_MASTER_USER/$PG_MASTER_USER/g" /tmp/pgrepl-recovery.conf
-sed -i "s/PG_MASTER_HOST/$PG_MASTER_HOST/g" /tmp/pgrepl-recovery.conf
+sed -i "s/PG_PRIMARY_HOST/$PG_PRIMARY_HOST/g" /tmp/pgrepl-recovery.conf
 sed -i "s/PG_MASTER_PORT/$PG_MASTER_PORT/g" /tmp/pgrepl-recovery.conf
 sed -i "s/APPLICATION_NAME/$APPLICATION_NAME/g" /tmp/pgrepl-recovery.conf
 cp /tmp/pgrepl-recovery.conf $PGDATA/recovery.conf

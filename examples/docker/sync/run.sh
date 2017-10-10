@@ -79,7 +79,7 @@ sudo docker run \
 	-e PG_MODE=replica \
 	-e PG_MASTER_USER=master \
 	-e PG_MASTER_PASSWORD=password \
-	-e PG_MASTER_HOST=sync-master \
+	-e PG_PRIMARY_HOST=sync-master \
 	-e SYNC_REPLICA=sync-replica \
 	--link sync-master:sync-master \
 	-e PG_MASTER_PORT=5432 \
@@ -115,7 +115,7 @@ sudo docker run \
 	-e PG_MODE=replica \
 	-e PG_MASTER_USER=master \
 	-e PG_MASTER_PASSWORD=password \
-	-e PG_MASTER_HOST=sync-master \
+	-e PG_PRIMARY_HOST=sync-master \
 	--link sync-master:sync-master \
 	-e PG_MASTER_PORT=5432 \
 	-e PG_USER=testuser \

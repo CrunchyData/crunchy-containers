@@ -39,7 +39,7 @@
                 "name": "PGHOST",
                 "value": "/tmp"
             }, {
-                "name": "PG_MASTER_HOST",
+                "name": "PG_PRIMARY_HOST",
                 "value": "ms-primary"
             }, {
                 "name": "PG_MASTER_USER",

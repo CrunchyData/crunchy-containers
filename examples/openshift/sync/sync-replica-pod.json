@@ -32,7 +32,7 @@
                     "protocol": "TCP"
                 }],
                 "env": [{
-                    "name": "PG_MASTER_HOST",
+                    "name": "PG_PRIMARY_HOST",
                     "value": "master"
                 }, {
                     "name": "PG_MASTER_USER",

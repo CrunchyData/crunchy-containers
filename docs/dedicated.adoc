@@ -564,7 +564,7 @@ These templates create the following:
 | the name to use for the database service
 | replica
 
-|PG_MASTER_HOST
+|PG_PRIMARY_HOST
 | the postgres master service name the replica will connect to
 | master
 

@@ -231,7 +231,7 @@
                     "name": "PG_MODE",
                     "value": "replica"
                 }, {
-                    "name": "PG_MASTER_HOST",
+                    "name": "PG_PRIMARY_HOST",
                     "value": "${MASTER_SERVICE_NAME}"
                 }, {
                     "name": "PG_MASTER_PORT",

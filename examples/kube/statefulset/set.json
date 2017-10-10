@@ -36,7 +36,7 @@
                         "name": "PG_MODE",
                         "value": "set"
                     }, {
-                        "name": "PG_MASTER_HOST",
+                        "name": "PG_PRIMARY_HOST",
                         "value": "pgset-master"
                     }, {
                         "name": "PG_MASTER_PORT",

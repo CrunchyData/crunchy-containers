@@ -28,7 +28,7 @@ oc process -n $PROJECT crunchy-replica \
 	CCP_IMAGE_PREFIX=172.30.240.45:5000/$PROJECT \
 	CCP_IMAGE_NAME=crunchy-postgres \
 	SERVICE_NAME=replica \
-	PG_MASTER_HOST=example \
+	PG_PRIMARY_HOST=example \
 	PG_MASTER_PORT=5432 \
 	PG_MASTER_USER=master \
 	PG_MASTER_PASSWORD=password \
