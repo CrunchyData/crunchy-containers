@@ -37,11 +37,11 @@
     }, {
         "name": "PRIMARY_SERVICE_NAME",
         "description": "the name of the primary",
-        "value": "syncmaster"
+        "value": "syncprimary"
     }, {
         "name": "PRIMARY_PVC_NAME",
         "description": "the name of the primary pvc",
-        "value": "syncmaster-pvc"
+        "value": "syncprimary-pvc"
     }, {
         "name": "PRIMARY_PVC_SIZE",
         "description": "the size of the primary pvc",
