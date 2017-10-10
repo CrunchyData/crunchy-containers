@@ -23,7 +23,7 @@
                 "value": "master"
             }, {
                 "name": "PG_MODE",
-                "value": "master"
+                "value": "primary"
             }, {
                 "name": "BACKUP_PATH",
                 "value": "basic-backups/2017-08-10-16-39-50"

@@ -56,7 +56,7 @@ docker run \
 	-e PG_MASTER_HOST=$CONTAINER_NAME \
 	-e PG_MASTER_PORT=5432 \
 	-e PG_MASTER_PASSWORD=password \
-	-e PG_MODE=master \
+	-e PG_MODE=primary \
 	-e PG_USER=testuser \
 	-e PG_PASSWORD=password \
 	-e PG_ROOT_PASSWORD=password \

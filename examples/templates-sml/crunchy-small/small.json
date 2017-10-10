@@ -114,7 +114,7 @@
                             "value": "5432"
                         }, {
                             "name": "PG_MODE",
-                            "value": "master"
+                            "value": "primary"
                         }, {
                             "name": "PGDATA_PATH_OVERRIDE",
                             "value": "${NAME}"

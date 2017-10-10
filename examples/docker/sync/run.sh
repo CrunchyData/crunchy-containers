@@ -41,7 +41,7 @@ sudo docker run \
 	-e SHARED_BUFFERS=129MB \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
-	-e PG_MODE=master \
+	-e PG_MODE=primary \
 	-e SYNC_REPLICA=sync-replica \
 	-e PG_MASTER_USER=master \
 	-e PG_MASTER_PASSWORD=password \

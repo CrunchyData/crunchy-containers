@@ -180,7 +180,7 @@
                     "value": "5432"
                 }, {
                     "name": "PG_MODE",
-                    "value": "master"
+                    "value": "primary"
                 }, {
                     "name": "PG_MASTER_USER",
                     "value": "${PG_MASTER_USER}"

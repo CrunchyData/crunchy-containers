@@ -277,7 +277,7 @@
                         "value": "/tmp"
                     }, {
                         "name": "PG_MODE",
-                        "value": "master"
+                        "value": "primary"
                     }, {
                         "name": "PG_MASTER_PASSWORD",
                         "value": "${MASTER_PASSWORD}"

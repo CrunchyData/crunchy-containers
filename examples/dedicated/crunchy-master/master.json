@@ -172,7 +172,7 @@
                             "value": "${PG_MASTER_PORT}"
                         }, {
                             "name": "PG_MODE",
-                            "value": "master"
+                            "value": "primary"
                         }, {
                             "name": "PGDATA_PATH_OVERRIDE",
                             "value": "${PGDATA_PATH_OVERRIDE}"

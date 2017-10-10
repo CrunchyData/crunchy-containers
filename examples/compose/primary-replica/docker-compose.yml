@@ -22,7 +22,7 @@ services:
     - PG_MASTER_HOST=db-primary
     - PG_MASTER_PASSWORD=password
     - PG_MASTER_PORT=5432
-    - PG_MODE=master
+    - PG_MODE=primary
     - PG_USER=testuser
     - PG_PASSWORD=password
     - PG_ROOT_PASSWORD=password

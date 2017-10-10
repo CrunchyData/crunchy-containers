@@ -124,7 +124,7 @@
                     "value": "${PG_MASTER_USER}"
                 }, {
                     "name": "PG_MODE",
-                    "value": "master"
+                    "value": "primary"
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"

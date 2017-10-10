@@ -28,7 +28,7 @@ docker service create \
  --constraint 'node.labels.type == master' \
  --env PGHOST=/tmp \
  --env PG_USER=testuser \
- --env PG_MODE=master \
+ --env PG_MODE=primary \
  --env PG_MASTER_USER=master \
  --env PG_ROOT_PASSWORD=password \
  --env PG_PASSWORD=password \

@@ -42,10 +42,10 @@
                 "value": "master"
             }, {
                 "name": "PG_MODE",
-                "value": "master"
+                "value": "primary"
             }, {
                 "name": "PG_MODE",
-                "value": "master"
+                "value": "primary"
             }, {
                 "name": "WAL_DIR",
                 "value": "master-pitr-wal"

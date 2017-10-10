@@ -139,7 +139,7 @@
                     "value": "${PG_MASTER_PASSWORD}"
                 }, {
                     "name": "PG_MODE",
-                    "value": "master"
+                    "value": "primary"
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"

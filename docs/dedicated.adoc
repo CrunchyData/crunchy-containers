@@ -153,8 +153,8 @@ executed when the database is first created.
 
 *Environment Variables*
 
- * PG_MODE - either *master*, *replica* or *set*, this value determines whether
-   the database is set up as a master or replica instance, in the
+ * PG_MODE - either *primary*, *replica* or *set*, this value determines whether
+   the database is set up as a primary or replica instance. In the
    case of *set*, it means the container is started within a StatefulSet
    in a Kubernetes cluster.
  * PG_MASTER_USER - the value to use for the user ID created as
