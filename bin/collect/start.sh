@@ -6,7 +6,9 @@ COLLECTSERVER_PIDFILE=/tmp/collectserver.pid
 
 export PATH=$PATH:/opt/cpm/bin
 
-if [ -d /usr/pgsql-9.6 ]; then
+if [ -d /usr/pgsql-10 ]; then
+    PGROOT=/usr/pgsql-10
+elif [ -d /usr/pgsql-9.6 ]; then
     PGROOT=/usr/pgsql-9.6
 elif [ -d /usr/pgsql-9.5 ]; then
 	PGROOT=/usr/pgsql-9.5

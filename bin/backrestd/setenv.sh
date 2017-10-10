@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if [ -d /usr/pgsql-9.6 ]; then
+if [ -d /usr/pgsql-10 ]; then
+	export PGROOT=/usr/pgsql-10
+elif [ -d /usr/pgsql-9.6 ]; then
 	export PGROOT=/usr/pgsql-9.6
 elif [ -d /usr/pgsql-9.5 ]; then
 	export PGROOT=/usr/pgsql-9.5

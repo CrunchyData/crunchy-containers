@@ -38,7 +38,9 @@ export PG_PRIMARY_PORT=$PG_PRIMARY_PORT
 export PG_PRIMARY_USER=$PG_PRIMARY_USER
 export PG_DATABASE=$PG_DATABASE
 
-if [ -d /usr/pgsql-9.6 ]; then
+if [ -d /usr/pgsql-10 ]; then
+        export PGROOT=/usr/pgsql-10
+elif [ -d /usr/pgsql-9.6 ]; then
         export PGROOT=/usr/pgsql-9.6
 elif [ -d /usr/pgsql-9.5 ]; then
         export PGROOT=/usr/pgsql-9.5
