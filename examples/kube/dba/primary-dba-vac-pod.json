@@ -2,9 +2,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master-dba",
+        "name": "primary-dba",
         "labels": {
-            "name": "master-dba"
+            "name": "primary-dba"
         }
     },
     "spec": {
@@ -16,26 +16,32 @@
                 "name": "KUBE_PROJECT",
                 "value": "$NAMESPACE"
             }, {
-                "name": "CCP_IMAGE_TAG",
-                "value": "$CCP_IMAGE_TAG"
-            }, {
-                "name": "JOB_HOST",
-                "value": "master-dba"
-            }, {
                 "name": "PG_USER",
-                "value": "master"
+                "value": "testuser"
             }, {
                 "name": "PG_PASSWORD",
                 "value": "password"
             }, {
+                "name": "PG_DATABASE",
+                "value": "userdb"
+            }, {
                 "name": "PG_PORT",
                 "value": "5432"
             }, {
-                "name": "BACKUP_SCHEDULE",
-                "value": "0 5,10,15,20,25,30,35,40,45,50,55 * * * *"
+                "name": "VAC_SCHEDULE",
+                "value": "0 0,5,10,15,20,25,30,35,40,45,50,55 * * * *"
             }, {
-                "name": "BACKUP_PVC_STORAGE",
-                "value": "75M"
+                "name": "VAC_ANALYZE",
+                "value": "true"
+            }, {
+                "name": "VAC_TABLE",
+                "value": "testtable"
+            }, {
+                "name": "CCP_IMAGE_TAG",
+                "value": "$CCP_IMAGE_TAG"
+            }, {
+                "name": "JOB_HOST",
+                "value": "primary-dba"
             }]
         }, {
             "name": "postgres",

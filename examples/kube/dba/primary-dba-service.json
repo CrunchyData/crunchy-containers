@@ -2,9 +2,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master-dba",
+        "name": "primary-dba",
         "labels": {
-            "name": "master-dba"
+            "name": "primary-dba"
         }
     },
     "spec": {
@@ -15,7 +15,7 @@
             "nodePort": 0
         }],
         "selector": {
-            "name": "master-dba"
+            "name": "primary-dba"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"

@@ -46,9 +46,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-dba",
+            "name": "primary-dba",
             "labels": {
-                "name": "master-dba"
+                "name": "primary-dba"
             }
         },
         "spec": {
@@ -59,7 +59,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-dba"
+                "name": "primary-dba"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
@@ -71,9 +71,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-dba",
+            "name": "primary-dba",
             "labels": {
-                "name": "master-dba"
+                "name": "primary-dba"
             }
         },
         "spec": {
@@ -113,7 +113,7 @@
                     "value": "primarytable"
                 }, {
                     "name": "JOB_HOST",
-                    "value": "master-dba"
+                    "value": "primary-dba"
                 }]
             }, {
                 "name": "server",

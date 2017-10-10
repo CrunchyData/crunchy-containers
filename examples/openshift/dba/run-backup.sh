@@ -34,4 +34,4 @@ oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:$NAMESP
 oc process \
 	-p CCP_IMAGE_TAG=$CCP_IMAGE_TAG \
 	-p NAMESPACE=$NAMESPACE \
-	-f $DIR/master-dba-backup.json | oc create -f -
+	-f $DIR/primary-dba-backup.json | oc create -f -
