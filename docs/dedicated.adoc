@@ -12,7 +12,7 @@ the creation of Crunchy Container Suite containers.
 
 A defined set of templates are supported including:
 
- * master database
+ * primary database
  * replica database
  * full database backup
  * database restore
@@ -185,7 +185,7 @@ executed when the database is first created.
    pgaudit_analyze program in the background
  * PGDATA_PATH_OVERRIDE - if set, will cause the container to use a /pgdata path
    name of your choosing rather than the hostname of the container which
-   is the default...this is useful for a master in a deployment.
+   is the default. This is useful for a primary in a deployment.
 
 *Features*
 
@@ -297,10 +297,10 @@ examples/dedicated/crunchy-primary
 
 This template will create the following:
 
- * database container crunchy-postgres as the master running within a Deployment
- * database service for the master
+ * database container crunchy-postgres as the primary running within a Deployment
+ * database service for the primary
 
-This example deploys a master database configuration
+This example deploys a primary database configuration
 which uses a Persistent Volume Claim for persistence.
 
 .Table Template Parameters
@@ -421,7 +421,7 @@ files in a PVC.
 
 |DB_NAME
 | the service name of the database to backup
-| master
+| primary
 
 |PVC_NAME
 | the PVC name to use to store the backup files
@@ -437,7 +437,7 @@ files in a PVC.
 
 |BACKUP_USER
 | the postgres user to use when performing the backup
-| master
+| primary
 
 |BACKUP_PASS
 | the postgres user password to use when performing the backup
@@ -523,7 +523,7 @@ found in a PVC.
 
 |BACKUP_PATH
 | the backup archive path to restore from
-| master7-backups/2017-04-04-09-42-53
+| primary7-backups/2017-04-04-09-42-53
 
 |BACKUP_PVC
 | the backup archive PVC to restore from
@@ -566,7 +566,7 @@ These templates create the following:
 
 |PG_PRIMARY_HOST
 | the postgres primary service name the replica will connect to
-| master
+| primary
 
 |PG_PRIMARY_PORT
 | the postgres port to use

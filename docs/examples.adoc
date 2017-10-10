@@ -1400,7 +1400,7 @@ cd $CCPROOT/examples/docker/vacuum
 
 This example performs a vacuum on a single table in the master PostgreSQL
 database. The crunchy-vacuum image is executed, passed in
-the PostgreSQL connection parameters to the single-master PostgreSQL
+the PostgreSQL connection parameters to the single-primary PostgreSQL
 container.  The type of vacuum performed is dictated by the
 environment variables passed into the job. Vacuum is controlled via the following
 environment variables:
@@ -1442,7 +1442,7 @@ docker logs $(docker ps -a | grep crunchy-vacuum | cut -f 1 -d' ')
 
 This example performs a vacuum on a single table in the master PostgreSQL
 database. The crunchy-vacuum image is executed, passed in
-the PostgreSQL connection parameters to the single-master PostgreSQL
+the PostgreSQL connection parameters to the single-primary PostgreSQL
 container.  The type of vacuum performed is dictated by the
 environment variables passed into the job. Vacuum is controlled via the following
 environment variables:
@@ -1480,7 +1480,7 @@ cd ../vacuum-job
 
 This example performs a vacuum on a single table in the master PostgreSQL
 database. The crunchy-vacuum image is executed, passed in
-the PostgreSQL connection parameters to the single-master PostgreSQL
+the PostgreSQL connection parameters to the single-primary PostgreSQL
 container.  The type of vacuum performed is dictated by the
 environment variables passed into the job. Vacuum is controlled via the following
 environment variables:

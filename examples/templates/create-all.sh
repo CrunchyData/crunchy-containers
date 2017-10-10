@@ -28,7 +28,7 @@ $DIR/pgbouncer/run.sh
 $DIR/pgpool/run.sh
 $DIR/replica-dc/run.sh
 $DIR/secret/run.sh
-$DIR/single-master/run.sh
+$DIR/single-primary/run.sh
 $DIR/single-replica/run.sh
 $DIR/sync/run.sh
 $DIR/watch/run.sh

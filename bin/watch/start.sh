@@ -211,9 +211,9 @@ while true; do
 	pg_isready  --dbname=$PG_DATABASE --host=$PG_PRIMARY_SERVICE --port=$PG_PRIMARY_PORT --username=$PG_PRIMARY_USER
 	if [ $? -eq 0 ]
 	then
-		echo "Successfully reached master @ " `date`
+		echo "Successfully reached primary @ " `date`
 	else
-		echo "Could not reach master @ " `date`
+		echo "Could not reach primary @ " `date`
 		FAILURES=$[$FAILURES+1]
 		if [[ $FAILURES -lt $MAX_FAILURES ]]; then
 			continue
