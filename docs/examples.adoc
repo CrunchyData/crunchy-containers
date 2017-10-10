@@ -2564,10 +2564,10 @@ cd $CCPROOT/examples/kube/upgrade
 This will create the following in your Kubernetes environment:
 
  * a Kube Job running the *crunchy-upgrade* container
- * a new data directory name *master-upgrade* found in the *pgnewdata*
+ * a new data directory name *primary-upgrade* found in the *pgnewdata*
  PVC
 
-If successful, the Job will end with a Successful status, verify
+If successful, the Job will end with a Successful status. Verify
 the results of the Job by examining the Job's pod log:
 ....
 kubectl get pod -a -l job-name=upgrade-job
@@ -2575,10 +2575,9 @@ kubectl logs -l job-name=upgrade-job
 ....
 
 You can verify the upgraded database by running the
-*examples/kube/master-upgrade*
-example, this example will mount the newly created and upgraded
-database files.  Database tables and data that were in the *master-pvc*
-test database should be found in the *master-upgrade* database.
+*examples/kube/primary-upgrade* example. This example will mount the newly created
+and upgraded database files. Database tables and data that were in the *master-pvc*
+test database should be found in the *primary-upgrade* database.
 
 === Kubernetes Google Cloud Environment
 

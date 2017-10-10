@@ -2,9 +2,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master-upgrade",
+        "name": "primary-upgrade",
         "labels": {
-            "name": "master-upgrade"
+            "name": "primary-upgrade"
         }
     },
     "spec": {

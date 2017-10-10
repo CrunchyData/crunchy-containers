@@ -2,9 +2,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-upgrade",
+            "name": "primary-upgrade",
             "labels": {
-                "name": "master-upgrade"
+                "name": "primary-upgrade"
             }
         },
         "spec": {
@@ -15,7 +15,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-upgrade"
+                "name": "primary-upgrade"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"

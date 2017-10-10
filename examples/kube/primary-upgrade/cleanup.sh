@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete service master-upgrade
-kubectl delete pod master-upgrade
+kubectl delete service primary-upgrade
+kubectl delete pod primary-upgrade
