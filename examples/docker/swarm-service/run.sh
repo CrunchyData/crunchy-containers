@@ -19,11 +19,11 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-MASTER_SERVICE_NAME=master
+PRIMARY_SERVICE_NAME=master
 
 docker service create \
- --mount type=volume,src=$MASTER_SERVICE_NAME-volume,dst=/pgdata,volume-driver=local \
- --name $MASTER_SERVICE_NAME \
+ --mount type=volume,src=$PRIMARY_SERVICE_NAME-volume,dst=/pgdata,volume-driver=local \
+ --name $PRIMARY_SERVICE_NAME \
  --network crunchynet \
  --constraint 'node.labels.type == master' \
  --env PGHOST=/tmp \
@@ -59,5 +59,5 @@ docker service create \
  --env PG_DATABASE=userdb \
  --env PG_PRIMARY_PORT=5432 \
  --env PG_PRIMARY_PASSWORD=password \
- --env PG_PRIMARY_HOST=$MASTER_SERVICE_NAME \
+ --env PG_PRIMARY_HOST=$PRIMARY_SERVICE_NAME \
  crunchydata/crunchy-postgres:centos7-9.5-1.2.8

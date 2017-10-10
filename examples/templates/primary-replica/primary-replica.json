@@ -11,7 +11,7 @@
         }
     },
     "parameters": [{
-        "name": "MASTER_SERVICE_NAME",
+        "name": "PRIMARY_SERVICE_NAME",
         "description": "The name for the primary service and container",
         "value": "pgprimary"
     }, {
@@ -56,9 +56,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${MASTER_SERVICE_NAME}",
+            "name": "${PRIMARY_SERVICE_NAME}",
             "labels": {
-                "name": "${MASTER_SERVICE_NAME}"
+                "name": "${PRIMARY_SERVICE_NAME}"
             }
         },
         "spec": {
@@ -69,7 +69,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "${MASTER_SERVICE_NAME}"
+                "name": "${PRIMARY_SERVICE_NAME}"
             },
             "portalIP": "None",
             "type": "ClusterIP",
@@ -108,14 +108,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${MASTER_SERVICE_NAME}",
+            "name": "${PRIMARY_SERVICE_NAME}",
             "labels": {
-                "name": "${MASTER_SERVICE_NAME}"
+                "name": "${PRIMARY_SERVICE_NAME}"
             }
         },
         "spec": {
             "containers": [{
-                "name": "${MASTER_SERVICE_NAME}",
+                "name": "${PRIMARY_SERVICE_NAME}",
                 "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
@@ -232,7 +232,7 @@
                     "value": "replica"
                 }, {
                     "name": "PG_PRIMARY_HOST",
-                    "value": "${MASTER_SERVICE_NAME}"
+                    "value": "${PRIMARY_SERVICE_NAME}"
                 }, {
                     "name": "PG_PRIMARY_PORT",
                     "value": "5432"

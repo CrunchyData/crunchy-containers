@@ -35,7 +35,7 @@
         "description": "the accessmode of the PVCs",
         "value": "ReadWriteMany"
     }, {
-        "name": "MASTER_SERVICE_NAME",
+        "name": "PRIMARY_SERVICE_NAME",
         "description": "the name of the master",
         "value": "syncmaster"
     }, {
@@ -115,9 +115,9 @@
             "kind": "Service",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${MASTER_SERVICE_NAME}",
+                "name": "${PRIMARY_SERVICE_NAME}",
                 "labels": {
-                    "name": "${MASTER_SERVICE_NAME}"
+                    "name": "${PRIMARY_SERVICE_NAME}"
                 }
             },
             "spec": {
@@ -128,7 +128,7 @@
                     "nodePort": 0
                 }],
                 "selector": {
-                    "name": "${MASTER_SERVICE_NAME}"
+                    "name": "${PRIMARY_SERVICE_NAME}"
                 },
                 "type": "ClusterIP",
                 "sessionAffinity": "None"
@@ -177,7 +177,7 @@
                     }],
                     "env": [{
                         "name": "PG_PRIMARY_HOST",
-                        "value": "${MASTER_SERVICE_NAME}"
+                        "value": "${PRIMARY_SERVICE_NAME}"
                     }, {
                         "name": "PG_PRIMARY_USER",
                         "value": "master"
@@ -233,9 +233,9 @@
             "kind": "Pod",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${MASTER_SERVICE_NAME}",
+                "name": "${PRIMARY_SERVICE_NAME}",
                 "labels": {
-                    "name": "${MASTER_SERVICE_NAME}"
+                    "name": "${PRIMARY_SERVICE_NAME}"
                 }
             },
             "spec": {
