@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,9 +49,8 @@ docker run \
 	-p 12432:5432 \
 	-p 13001:10000 \
 	-v $CONF_VOLUME:/config \
-	--link master:master \
+	--link primary:primary \
 	--link replica:replica \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
 	-d crunchydata/crunchy-proxy:$PROXY_IMAGE_TAG
-

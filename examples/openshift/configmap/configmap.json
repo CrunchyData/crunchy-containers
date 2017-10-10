@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "simple-master-example",
+        "name": "simple-primary-example",
         "creationTimestamp": null,
         "annotations": {
             "description": "Crunchy PostgreSQL Master Example",

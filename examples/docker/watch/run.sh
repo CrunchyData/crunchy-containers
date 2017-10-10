@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,9 +27,9 @@ $DIR/cleanup.sh
 sudo docker run \
 	--privileged \
 	-v /run/docker.sock:/run/docker.sock \
-	--link master:master \
+	--link primary:primary \
 	--link replica:replica \
-	-e PG_PRIMARY_SERVICE=master \
+	-e PG_PRIMARY_SERVICE=primary \
 	-e PG_REPLICA_SERVICE=replica \
 	-e PG_PRIMARY_PORT=5432 \
 	-e PG_PRIMARY_USER=primaryuser \
@@ -41,4 +41,3 @@ sudo docker run \
 	--hostname=$CONTAINER_NAME \
 	-v $PWD/hooks:/hooks \
 	-d crunchydata/crunchy-watch:$CCP_IMAGE_TAG
-

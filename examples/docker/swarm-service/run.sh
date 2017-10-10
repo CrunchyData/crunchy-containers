@@ -13,19 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting master container..."
+echo "starting primary container..."
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-PRIMARY_SERVICE_NAME=master
+PRIMARY_SERVICE_NAME=primary
 
 docker service create \
  --mount type=volume,src=$PRIMARY_SERVICE_NAME-volume,dst=/pgdata,volume-driver=local \
  --name $PRIMARY_SERVICE_NAME \
  --network crunchynet \
- --constraint 'node.labels.type == master' \
+ --constraint 'node.labels.type == primary' \
  --env PGHOST=/tmp \
  --env PG_USER=testuser \
  --env PG_MODE=primary \
@@ -49,7 +49,7 @@ docker service create \
  --mount type=volume,src=$VOLUME_NAME,dst=/pgdata,volume-driver=local \
  --name $SERVICE_NAME \
  --network crunchynet \
- --constraint 'node.labels.type != master' \
+ --constraint 'node.labels.type != primary' \
  --env PGHOST=/tmp \
  --env PG_USER=testuser \
  --env PG_MODE=replica \

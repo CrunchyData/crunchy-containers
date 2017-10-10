@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting master container..."
+echo "starting primary container..."
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -69,4 +69,3 @@ docker run \
 	--name=$CONTAINER \
 	--hostname=$CONTAINER \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
-

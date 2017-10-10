@@ -2,9 +2,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-backrest",
+            "name": "primary-backrest",
             "labels": {
-                "name": "master-backrest"
+                "name": "primary-backrest"
             }
         },
         "spec": {
@@ -15,7 +15,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-backrest"
+                "name": "primary-backrest"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"

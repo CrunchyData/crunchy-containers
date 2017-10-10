@@ -18,7 +18,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-sudo rm -rf $PV_PATH/csmaster
+sudo rm -rf $PV_PATH/csprimary
 
 # copy the custom config file to the PVC path
 sudo cp $DIR/postgresql.conf $PV_PATH

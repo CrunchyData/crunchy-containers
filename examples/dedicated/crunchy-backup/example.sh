@@ -26,7 +26,7 @@ PROJECT=jeff-project
 oc process -n $PROJECT crunchy-backup \
 	JOB_NAME=backupjob \
 	DB_NAME=example \
-	BACKUP_USER=master \
+	BACKUP_USER=primary \
 	BACKUP_PASS=password \
 	CCP_IMAGE_TAG=rhel7-9.6-1.4.0 \
 	CCP_IMAGE_PREFIX=172.30.240.45:5000/$PROJECT \

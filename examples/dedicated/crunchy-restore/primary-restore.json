@@ -56,7 +56,7 @@
     }, {
         "name": "BACKUP_PATH",
         "description": "The backup archive path to restore from",
-        "value": "master7-backups/2017-04-04-09-42-53"
+        "value": "primary7-backups/2017-04-04-09-42-53"
     }, {
         "name": "BACKUP_PVC",
         "description": "The backup archive PVC to restore from",

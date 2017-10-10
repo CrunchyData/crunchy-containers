@@ -6,7 +6,7 @@ watch - watch container image
 
 == DESCRIPTION
 The watch image provides a means of watching the health of a postgres
-master and performing a failover if the master is not responding.
+primary and performing a failover if the primary is not responding.
 
 The container itself consists of:
     - RHEL7 base image

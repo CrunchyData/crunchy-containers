@@ -16,11 +16,11 @@ source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete service csmaster
+oc delete service csprimary
 oc delete service csreplica
-oc delete pod csmaster
+oc delete pod csprimary
 oc delete pod cssyncreplica
 sudo rm $PV_PATH/postgresql.conf $PV_PATH/setup.sql $PV_PATH/pg_hba.conf
 
-$CCPROOT/examples/waitforterm.sh csmaster oc
+$CCPROOT/examples/waitforterm.sh csprimary oc
 $CCPROOT/examples/waitforterm.sh cssyncreplica oc

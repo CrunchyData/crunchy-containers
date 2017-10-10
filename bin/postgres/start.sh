@@ -328,8 +328,8 @@ cp /tmp/pgrepl-recovery.conf $PGDATA/recovery.conf
 #
 # the initial start of postgres will create the database
 #
-function initialize_master() {
-echo "initialize_master"
+function initialize_primary() {
+echo "initialize_primary"
 if [ ! -f $PGDATA/postgresql.conf ]; then
         echo "pgdata is empty and id is..."
 	id
@@ -431,7 +431,7 @@ case "$PG_MODE" in
 	;;
 	"primary")
 	echo "Working on primary..."
-	initialize_master
+	initialize_primary
 	;;
 	*)
 	echo "FATAL:  PG_MODE is not an accepted value...check your PG_MODE environment variable"

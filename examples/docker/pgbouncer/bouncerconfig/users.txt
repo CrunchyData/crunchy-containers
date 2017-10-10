@@ -1,4 +1,4 @@
-"masteruser" "password"
+"primaryuser" "password"
 "testuser" "password"
 "postgres" "password"
 "admin" "password"

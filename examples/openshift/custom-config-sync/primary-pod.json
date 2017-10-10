@@ -18,9 +18,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "csmaster",
+            "name": "csprimary",
             "labels": {
-                "name": "csmaster"
+                "name": "csprimary"
             }
         },
         "spec": {

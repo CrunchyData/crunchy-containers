@@ -74,7 +74,7 @@ docker run \
 	--privileged=true \
 	-v $VOLUME_NAME:/pgdata \
 	-e TEMP_BUFFERS=9MB \
-	-e PG_PRIMARY_HOST=master \
+	-e PG_PRIMARY_HOST=primary \
 	-e PGHOST=/tmp \
 	-e MAX_CONNECTIONS=101 \
 	-e SHARED_BUFFERS=129MB \

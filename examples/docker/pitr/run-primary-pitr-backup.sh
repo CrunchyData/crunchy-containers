@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
@@ -32,7 +32,7 @@ docker rm primary-pitr-backup
 docker run \
 	-v $PGDATA:/pgdata \
 	-e BACKUP_HOST=primary-pitr \
-	-e BACKUP_USER=masteruser \
+	-e BACKUP_USER=primaryuser \
 	-e BACKUP_PASS=password \
 	-e BACKUP_PORT=5432 \
 	-e BACKUP_LABEL=mybackup1 \
@@ -40,4 +40,3 @@ docker run \
 	--name=primary-pitr-backup \
 	--hostname=primary-pitr-backup \
 	-d crunchydata/crunchy-backup:$CCP_IMAGE_TAG
-

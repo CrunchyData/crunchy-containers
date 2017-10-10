@@ -32,7 +32,7 @@
         "value": "primary"
     }, {
         "name": "PG_PRIMARY_PORT",
-        "description": "the master database port the replica will connect to",
+        "description": "the primary database port the replica will connect to",
         "value": "5432"
     }, {
         "name": "PG_PRIMARY_USER",

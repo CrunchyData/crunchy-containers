@@ -33,7 +33,7 @@
                 }],
                 "env": [{
                     "name": "PG_PRIMARY_HOST",
-                    "value": "csmaster"
+                    "value": "csprimary"
                 }, {
                     "name": "PG_PRIMARY_USER",
                     "value": "primary"

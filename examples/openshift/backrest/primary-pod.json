@@ -2,7 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master-backrest-pgbackrest-example",
+        "name": "primary-backrest-pgbackrest-example",
         "creationTimestamp": null,
         "annotations": {
             "description": "Crunchy PostgreSQL on NFS Example with pgbackrest enabled",
@@ -43,9 +43,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-backrest",
+            "name": "primary-backrest",
             "labels": {
-                "name": "master-backrest"
+                "name": "primary-backrest"
             }
         },
         "spec": {
@@ -56,7 +56,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "master-backrest"
+                "name": "primary-backrest"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
@@ -68,9 +68,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "master-backrest",
+            "name": "primary-backrest",
             "labels": {
-                "name": "master-backrest"
+                "name": "primary-backrest"
             }
         },
         "spec": {

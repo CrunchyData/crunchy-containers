@@ -16,10 +16,9 @@
 source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-kubectl delete service master-backrest
-kubectl delete pod master-backrest
+kubectl delete service primary-backrest
+kubectl delete pod primary-backrest
 kubectl delete configmap backrestconf
 kubectl delete job backrest-job-nfs
 
 sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/archive $PV_PATH/backup
-

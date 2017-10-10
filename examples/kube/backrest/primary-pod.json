@@ -2,16 +2,16 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master-backrest",
+        "name": "primary-backrest",
         "labels": {
-            "name": "master-backrest"
+            "name": "primary-backrest"
         }
     },
     "spec": {
         "securityContext": {
         },
         "containers": [{
-            "name": "master-backrest",
+            "name": "primary-backrest",
             "securityContext": {
                 "privileged": false
             },
