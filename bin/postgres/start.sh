@@ -429,7 +429,7 @@ case "$PG_MODE" in
 		initialize_replica
 	fi
 	;;
-	"master")
+	"primary")
 	echo "Working on primary..."
 	initialize_master
 	;;
