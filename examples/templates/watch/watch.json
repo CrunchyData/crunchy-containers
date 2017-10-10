@@ -43,7 +43,7 @@
         "description": "The name of a master service to watch",
         "value": "pgmaster"
     }, {
-        "name": "SLAVE_TO_WATCH",
+        "name": "REPLICA_TO_WATCH",
         "description": "The name of a replica service to watch",
         "value": "pgreplica"
     }, {
@@ -79,7 +79,7 @@
                     "value": "${MASTER_TO_WATCH}"
                 }, {
                     "name": "PG_REPLICA_SERVICE",
-                    "value": "${SLAVE_TO_WATCH}"
+                    "value": "${REPLICA_TO_WATCH}"
                 }, {
                     "name": "PG_MASTER_PORT",
                     "value": "5432"

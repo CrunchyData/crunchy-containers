@@ -15,7 +15,7 @@
         "description": "The name for the primary service and container",
         "value": "pgprimary"
     }, {
-        "name": "SLAVE_SERVICE_NAME",
+        "name": "REPLICA_SERVICE_NAME",
         "description": "The name for the replica service and container",
         "value": "pgreplica"
     }, {
@@ -82,9 +82,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${SLAVE_SERVICE_NAME}",
+            "name": "${REPLICA_SERVICE_NAME}",
             "labels": {
-                "name": "${SLAVE_SERVICE_NAME}"
+                "name": "${REPLICA_SERVICE_NAME}"
             }
         },
         "spec": {
@@ -95,7 +95,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "${SLAVE_SERVICE_NAME}"
+                "name": "${REPLICA_SERVICE_NAME}"
             },
             "portalIP": "None",
             "type": "ClusterIP",
@@ -191,14 +191,14 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${SLAVE_SERVICE_NAME}",
+            "name": "${REPLICA_SERVICE_NAME}",
             "labels": {
-                "name": "${SLAVE_SERVICE_NAME}"
+                "name": "${REPLICA_SERVICE_NAME}"
             }
         },
         "spec": {
             "containers": [{
-                "name": "${SLAVE_SERVICE_NAME}",
+                "name": "${REPLICA_SERVICE_NAME}",
                 "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
