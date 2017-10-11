@@ -21,4 +21,4 @@ $DIR/cleanup.sh
 oc create -f $DIR/pguser-secret.json
 oc create -f $DIR/pgprimary-secret.json
 oc create -f $DIR/pgroot-secret.json
-oc process -f $DIR/secret-pg.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/secret-pg.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
