@@ -339,7 +339,7 @@ echo "Waiting to give the primary time to start up and register its hostname wit
 
 waitforpg
 
-pg_basebackup -x --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST --port=$PG_PRIMARY_PORT -U $PG_PRIMARY_USER
+pg_basebackup -X fetch --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST --port=$PG_PRIMARY_PORT -U $PG_PRIMARY_USER
 
 # PostgreSQL recovery configuration.
 if [[ -v SYNC_REPLICA ]]; then
