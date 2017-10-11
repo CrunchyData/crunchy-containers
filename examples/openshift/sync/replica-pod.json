@@ -10,23 +10,26 @@
             "tags": "database,postgresql,replication"
         }
     },
-    "parameters": [{
+    "parameters": [ {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "the image prefix to use"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
-    }],
+    } ],
     "objects": [{
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "replica",
+            "name": "replicaasync",
             "labels": {
-                "name": "replica"
+                "name": "replicaasync"
             }
         },
         "spec": {
             "containers": [{
                 "name": "postgres",
-                "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
@@ -36,7 +39,7 @@
                     "value": "/tmp"
                 }, {
                     "name": "PG_PRIMARY_HOST",
-                    "value": "primary"
+                    "value": "primarysync"
                 }, {
                     "name": "PG_PRIMARY_USER",
                     "value": "primaryuser"

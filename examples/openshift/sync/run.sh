@@ -20,6 +20,6 @@ $DIR/cleanup.sh
 
 oc create -f $DIR/primary-service.json
 oc create -f $DIR/replica-service.json
-oc process -f $DIR/primary-pod.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-oc process -f $DIR/replica-pod.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-oc process -f $DIR/sync-replica-pod.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/primary-pod.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/replica-pod.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/sync-replica-pod.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
