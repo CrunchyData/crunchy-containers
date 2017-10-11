@@ -31,18 +31,17 @@
                 "value": "true"
             }],
             "volumeMounts": [{
-                "mountPath": "/config",
                 "name": "config",
-                "readOnly": true
+                "mountPath": "/config"
             }]
 
         }],
 
         "volumes": [{
             "name": "config",
-            "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc"
-            }
+			"configMap": {
+				"name": "crunchy-proxy-configmap"
+			}
         }]
     }
 }

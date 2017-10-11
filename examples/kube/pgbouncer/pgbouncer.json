@@ -13,9 +13,9 @@
         },
         "volumes": [{
             "name": "pgconf",
-            "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc"
-            }
+			"configMap": {
+				"name": "pgbouncer-configmap"
+			}
         }],
         "containers": [{
             "name": "pgbouncer",
@@ -50,9 +50,8 @@
                 "value": "ms-replica"
             }],
             "volumeMounts": [{
-                "mountPath": "/pgconf",
                 "name": "pgconf",
-                "readOnly": true
+                "mountPath": "/pgconf"
             }]
         }]
     }

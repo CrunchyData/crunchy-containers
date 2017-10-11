@@ -20,7 +20,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-sudo cp $DIR/config.yaml $PV_PATH/config.yaml
+kubectl create configmap crunchy-proxy-configmap --from-file=./config.yaml
 
 export PROXY_IMAGE_TAG=centos7-1.0.0-beta
 
