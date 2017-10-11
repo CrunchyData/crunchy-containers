@@ -29,4 +29,4 @@ if [ ! -d "$DATADIR" ]; then
 	sudo chown -R 26:26 $DATADIR
 fi
 
-oc process -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/pgadmin4.json | oc create -f -
+oc process -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/pgadmin4.json | oc create -f -

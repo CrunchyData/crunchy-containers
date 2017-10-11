@@ -10,10 +10,13 @@
             "tags": "database,postgresql,replication"
         }
     },
-    "parameters": [{
+    "parameters": [ {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "image tag prefix to use"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use"
-    }],
+    } ],
 
     "objects": [{
         "kind": "Service",
@@ -56,7 +59,7 @@
 
             "containers": [{
                 "name": "pgadmin4",
-                "image": "crunchydata/crunchy-pgadmin4:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-pgadmin4:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5050,
                     "protocol": "TCP"
