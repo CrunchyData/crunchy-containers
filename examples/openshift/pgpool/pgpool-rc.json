@@ -15,6 +15,9 @@
         "description": "The username configured in pgpool for client access",
         "value": "testuser"
     }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "The image prefix to use"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use"
     }, {
@@ -90,7 +93,7 @@
 
                     "containers": [{
                         "name": "pgpool",
-                        "image": "crunchydata/crunchy-pgpool:${CCP_IMAGE_TAG}",
+                        "image": "${CCP_IMAGE_PREFIX}/crunchy-pgpool:${CCP_IMAGE_TAG}",
                         "ports": [{
                             "containerPort": 5432,
                             "protocol": "TCP"

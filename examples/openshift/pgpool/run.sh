@@ -23,4 +23,4 @@ $DIR/cleanup.sh
 sudo mkdir $PV_PATH/pgpoolconfigdir
 sudo chown 7778 $PV_PATH/pgpoolconfigdir
 
-oc process -f $DIR/pgpool-rc.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/pgpool-rc.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

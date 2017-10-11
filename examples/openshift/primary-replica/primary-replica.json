@@ -188,7 +188,7 @@
                             "/opt/cpm/bin/readiness.sh"
                         ]
                     },
-                    "initialDelaySeconds": 120,
+                    "initialDelaySeconds": 20,
                     "timeoutSeconds": 2
                 },
                 "livenessProbe": {
@@ -197,7 +197,7 @@
                             "/opt/cpm/bin/liveness.sh"
                         ]
                     },
-                    "initialDelaySeconds": 120,
+                    "initialDelaySeconds": 60,
                     "timeoutSeconds": 2
                 },
                 "ports": [{
