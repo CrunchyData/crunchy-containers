@@ -12,8 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete service primary-dc
-kubectl delete service replica-dc
 kubectl delete deploy primary-dc replica-dc replica2-dc
 kubectl delete configmap postgresql-conf
 kubectl delete secret pguser-secret pgprimary-secret pgroot-secret
+sleep 10
+kubectl delete service primary-dc
+kubectl delete service replica-dc
