@@ -22,11 +22,14 @@
                 "name": "PG_PRIMARY_USER",
                 "value": "primaryuser"
             }, {
+                "name": "PG_PRIMARY_PORT",
+                "value": "5432"
+            }, {
                 "name": "PG_MODE",
                 "value": "primary"
             }, {
                 "name": "BACKUP_PATH",
-                "value": "basic-backups/2017-08-10-16-39-50"
+                "value": "basic-backups/2017-10-11-06-06-36"
             }, {
                 "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"

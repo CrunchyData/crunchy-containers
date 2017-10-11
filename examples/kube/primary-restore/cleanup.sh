@@ -14,3 +14,5 @@
 
 kubectl delete pod primary-restore
 kubectl delete service primary-restore
+
+$CCPROOT/examples/waitforterm.sh primary-restore kubectl
