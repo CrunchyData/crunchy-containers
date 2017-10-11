@@ -352,6 +352,7 @@ the watch logic to interact with the replica containers.
 
  * SLEEP_TIME - the time to sleep in seconds between checking on the primary
  * WAIT_TIME - the time to sleep in seconds between triggering the failover and updating its label (default is 40 secs)
+ * PG_CONTAINER_NAME -  if set, the name of the container to refer to when doing an *exec*, this is required if you have more than 1 container in your database pod
  * PG_PRIMARY_SERVICE -  the primary service name
  * PG_REPLICA_SERVICE - the replica service name
  * PG_PRIMARY_PORT - database port to use when checking the database
