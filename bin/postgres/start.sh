@@ -38,6 +38,31 @@ if [ ! -v PG_MODE ]; then
 	exit 1
 fi
 
+if [ "$PG_MODE" = "master" ]; then
+	echo "WARNING:  PG_MODE value of master is deprecated and will be removed in a future release, use PG_MODE value of primary instead."
+	export PG_MODE=primary
+fi
+if [ "$PG_MODE" = "slave" ]; then
+	echo "WARNING:  PG_MODE value of slave is deprecated and will be removed in a future release, use PG_MODE value of replica instead."
+	export PG_MODE=replica
+fi
+if [ -v PG_MASTER_HOST ]; then
+	echo "WARNING:  PG_MASTER_HOST is deprecated and will be removed in a future release, replace with PG_PRIMARY_HOST"
+	export PG_PRIMARY_HOST=$PG_MASTER_HOST
+fi
+if [ -v PG_MASTER_USER ]; then
+	echo "WARNING:  PG_MASTER_USER is deprecated and will be removed in a future release, replace with PG_PRIMARY_USER"
+	export PG_PRIMARY_USER=$PG_MASTER_USER
+fi
+if [ -v PG_MASTER_PASSWORD ]; then
+	echo "WARNING:  PG_MASTER_PASSWORD is deprecated and will be removed in a future release, replace with PG_PRIMARY_PASSWORD"
+	export PG_PRIMARY_PASSWORD=$PG_MASTER_PASSWORD
+fi
+if [ -v PG_MASTER_PORT ]; then
+	echo "WARNING:  PG_MASTER_PORT is deprecated and will be removed in a future release, replace with PG_PRIMARY_PORT"
+	export PG_PRIMARY_PORT=$PG_MASTER_PORT
+fi
+
 if [ "$PG_MODE" = "replica" ]; then
 	if [ ! -v PG_PRIMARY_HOST ]; then
 		echo "PG_PRIMARY_HOST environment variable is not set and required when PG_MODE is replica, aborting"
@@ -45,14 +70,18 @@ if [ "$PG_MODE" = "replica" ]; then
 	fi
 fi
 
-if [ ! -v PG_PRIMARY_USER ]; then
-	echo "PG_PRIMARY_USER environment variable is not set, aborting"
+if [[ ( ! -v PG_PRIMARY_USER ) && ( ! -v PG_MASTER_USER ) ]]; then
+	echo "PG_PRIMARY_USER or PG_MASTER_USER environment variable is not set, aborting"
 	exit 1
 fi
-if [ ! -v PG_PRIMARY_PASSWORD ]; then
-	echo "PG_PRIMARY_PASSWORD environment variable is not set, aborting"
+
+
+if [[ ( ! -v PG_PRIMARY_PASSWORD ) && ( ! -v PG_MASTER_PASSWORD ) ]]; then
+	echo "PG_PRIMARY_PASSWORD or PG_MASTER_PASSWORD environment variable is not set, aborting"
 	exit 1
 fi
+
+
 if [ ! -v PG_USER ]; then
 	echo "PG_USER environment variable is not set, aborting"
 	exit 1
@@ -67,6 +96,11 @@ if [ ! -v PG_DATABASE ]; then
 fi
 if [ ! -v PG_ROOT_PASSWORD ]; then
 	echo "PG_ROOT_PASSWORD environment variable is not set, aborting"
+	exit 1
+fi
+
+if [[ ( ! -v PG_PRIMARY_PORT ) && ( ! -v PG_MASTER_PORT ) ]]; then
+	echo "PG_PRIMARY_PORT or PG_MASTER_PORT environment variable is not set, aborting"
 	exit 1
 fi
 
@@ -421,7 +455,7 @@ ose_hack
 fill_conf_file
 
 case "$PG_MODE" in
-	"replica")
+	"replica"|"slave")
 	echo "Working on replica..."
 	create_pgpass
 	export PGPASSFILE=/tmp/.pgpass
@@ -429,12 +463,12 @@ case "$PG_MODE" in
 		initialize_replica
 	fi
 	;;
-	"primary")
+	"primary"|"master")
 	echo "Working on primary..."
 	initialize_primary
 	;;
 	*)
-	echo "FATAL:  PG_MODE is not an accepted value...check your PG_MODE environment variable"
+	echo "FATAL:  PG_MODE is not an accepted value...check your PG_MODE environment variable valid values are (primary, replica)"
 	;;
 esac
 
