@@ -23,13 +23,13 @@
                 "value": "2"
             }, {
                 "name": "REPLICA_TO_TRIGGER_LABEL",
-                "value": "xms-replica-2"
+                "value": "ms-replica-2"
             }, {
                 "name": "PG_PRIMARY_SERVICE",
-                "value": "xms-primary"
+                "value": "ms-primary"
             }, {
                 "name": "PG_REPLICA_SERVICE",
-                "value": "xms-replica"
+                "value": "ms-replica"
             }, {
                 "name": "PG_PRIMARY_PORT",
                 "value": "5432"
@@ -40,7 +40,7 @@
                 "name": "PG_CONTAINER_NAME",
                 "value": "postgres"
             }, {
-                "name": "HOME",
+                "name": "PGHOST",
                 "value": "/tmp"
             }, {
                 "name": "PG_DATABASE",

@@ -11,6 +11,9 @@
         }
     },
     "parameters": [{
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "the image prefix to use"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
     }, {
@@ -30,7 +33,7 @@
             "serviceAccount": "pg-watcher",
             "containers": [{
                 "name": "watch",
-                "image": "crunchydata/crunchy-watch:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
                     "value": "${NAMESPACE}"
@@ -39,15 +42,15 @@
                     "value": "20"
                 }, {
                     "name": "PG_PRIMARY_SERVICE",
-                    "value": "primary-dc"
+                    "value": "ms-primary"
                 }, {
                     "name": "PG_REPLICA_SERVICE",
-                    "value": "replica-dc"
+                    "value": "ms-replica"
                 }, {
                     "name": "PG_PRIMARY_PORT",
                     "value": "5432"
                 }, {
-                    "name": "HOME",
+                    "name": "PGHOST",
                     "value": "/tmp"
                 }, {
                     "name": "PG_PRIMARY_USER",
