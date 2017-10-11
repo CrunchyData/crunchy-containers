@@ -19,7 +19,7 @@
 
 export CCP_CLI=oc
 #export CCP_CLI=kubectl
-export NAMESPACE=default
+export NAMESPACE=demo-project
 export PV_PATH=/nfsfileshare
 #export PV_PATH=/data
 export GCE_DISK_ZONE=us-central1-a
@@ -37,6 +37,6 @@ fi
 # for PVC templates - NFS uses ReadWriteMany - EBS uses ReadWriteOnce
 
 # for templates - allow for override of Image Path Prefix
-#export CCP_IMAGE_PREFIX=172.30.170.83:5000/demo-project
+export CCP_IMAGE_PREFIX=172.30.170.83:5000/demo-project
 export REPLACE_CCP_IMAGE_PREFIX=crunchydata
-export CCP_IMAGE_PREFIX=crunchydata
+#export CCP_IMAGE_PREFIX=crunchydata

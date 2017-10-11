@@ -34,4 +34,5 @@ sudo cp $DIR/users.txt $CONFIGDIR
 
 oc process -f $DIR/pgbouncer.json \
 	-p NAMESPACE=$NAMESPACE  \
+	-p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX  \
 	-p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
