@@ -14,4 +14,5 @@
 
 kubectl delete service crunchy-proxy
 kubectl delete pod crunchy-proxy
+kubectl delete configmap crunchy-proxy-configmap
 $CCPROOT/examples/waitforterm.sh crunchy-proxy kubectl
