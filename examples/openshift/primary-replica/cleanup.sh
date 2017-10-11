@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete service ms-primary ms-replica
 oc delete pod ms-primary ms-replica
+oc delete service ms-primary ms-replica
 $CCPROOT/examples/waitforterm.sh ms-primary oc
+$CCPROOT/examples/waitforterm.sh ms-replica oc
