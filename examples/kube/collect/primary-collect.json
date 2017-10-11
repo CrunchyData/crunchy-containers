@@ -23,7 +23,7 @@
                 "value": "http://crunchy-metrics:9091"
             }, {
 				"name": "DATA_SOURCE_NAME",
-				"value": "postgresql://primary:password@primary-collect:5432/postgres?sslmode=disable"
+				"value": "postgresql://primaryuser:password@primary-collect:5432/postgres?sslmode=disable"
             }, {
 				"name": "POSTGRES_EXPORTER_URL",
 				"value": "http://localhost:9187/metrics"
@@ -47,6 +47,9 @@
             }, {
                 "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"
+            }, {
+                "name": "PG_PRIMARY_PORT",
+                "value": "5432"
             }, {
                 "name": "PG_USER",
                 "value": "testuser"

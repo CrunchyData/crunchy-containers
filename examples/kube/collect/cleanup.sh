@@ -13,4 +13,5 @@
 # limitations under the License.
 
 kubectl delete pod primary-collect
+$CCPROOT/examples/waitforterm.sh primary-collect kubectl
 kubectl delete service primary-collect

@@ -13,4 +13,5 @@
 # limitations under the License.
 
 kubectl delete service crunchy-proxy
+kubectl delete pod crunchy-proxy
 $CCPROOT/examples/waitforterm.sh crunchy-proxy kubectl
