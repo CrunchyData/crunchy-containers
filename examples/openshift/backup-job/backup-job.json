@@ -11,28 +11,27 @@
         }
     },
     "parameters": [{
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "image prefix to use"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use"
-    },
-    {
+    }, {
       "name": "DATABASE_HOST",
       "displayName": "Database Host",
       "description": "This is the database the backup will be done for.",
       "value": "basic"
-    },
-    {
+    }, {
       "name": "DATABASE_PORT",
       "displayName": "Database Port",
       "description": "The database port of the database the backup will be done for.",
       "value": "5432"
-    },
-    {
+    }, {
       "name": "DATABASE_USER",
       "displayName": "Database User",
       "description": "The database user the backup will be done with.",
-      "value": "primary"
-    },
-    {
+      "value": "primaryuser"
+    }, {
       "name": "DATABASE_PASS",
       "displayName": "Database User Password",
       "description": "Password of the database backup user.",
@@ -65,7 +64,7 @@
                     }],
                     "containers": [{
                         "name": "backup-job",
-                        "image": "crunchydata/crunchy-backup:${CCP_IMAGE_TAG}",
+                        "image": "${CCP_IMAGE_PREFIX}/crunchy-backup:${CCP_IMAGE_TAG}",
                         "volumeMounts": [{
                             "mountPath": "/pgdata",
                             "name": "pgdata",
