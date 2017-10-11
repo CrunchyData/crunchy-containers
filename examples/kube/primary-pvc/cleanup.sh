@@ -12,5 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete service master-pvc
-kubectl delete pod master-pvc
+kubectl delete service primary-pvc
+kubectl delete pod primary-pvc
+$CCPROOT/examples/waitforterm.sh primary-pvc kubectl

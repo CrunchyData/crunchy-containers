@@ -24,6 +24,9 @@
                 "name": "PG_PRIMARY_USER",
                 "value": "primaryuser"
             }, {
+                "name": "PG_PRIMARY_PORT",
+                "value": "5432"
+            }, {
                 "name": "PG_MODE",
                 "value": "primary"
             }, {
