@@ -16,7 +16,7 @@
                 "volumes": [ ],
                 "containers": [{
                     "name": "{{.JOB_HOST}}-vac",
-                    "image": "crunchydata/crunchy-vacuum:{{.CCP_IMAGE_TAG}}",
+                    "image": "{{.CCP_IMAGE_PREFIX}}/crunchy-vacuum:{{.CCP_IMAGE_TAG}}",
                     "volumeMounts": [ ],
                     "env": [{
                         "name": "VAC_FULL",

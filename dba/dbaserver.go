@@ -50,11 +50,13 @@ func LoadSchedules(cron *cron.Cron) {
 	var VAC_SCHEDULE = os.Getenv("VAC_SCHEDULE")
 	var JOB_HOST = os.Getenv("JOB_HOST")
 	var CCP_IMAGE_TAG = os.Getenv("CCP_IMAGE_TAG")
+	var CCP_IMAGE_PREFIX = os.Getenv("CCP_IMAGE_PREFIX")
 	var CMD = os.Getenv("CMD")
 	logger.Println("BACKUP_SCHEDULE=" + BACKUP_SCHEDULE)
 	logger.Println("VAC_SCHEDULE=" + VAC_SCHEDULE)
 	logger.Println("JOB_HOST=" + JOB_HOST)
 	logger.Println("CCP_IMAGE_TAG=" + CCP_IMAGE_TAG)
+	logger.Println("CCP_IMAGE_PREFIX=" + CCP_IMAGE_PREFIX)
 	logger.Println("CMD=" + CMD)
 
 	if VAC_SCHEDULE != "" {
@@ -62,6 +64,7 @@ func LoadSchedules(cron *cron.Cron) {
 		job := dbaapi.VacJob{}
 		job.Host = JOB_HOST
 		job.CCP_IMAGE_TAG = CCP_IMAGE_TAG
+		job.CCP_IMAGE_PREFIX = CCP_IMAGE_PREFIX
 		job.Cmd = CMD
 		job.Logger = logger
 		cron.AddJob(VAC_SCHEDULE, job)
@@ -71,6 +74,7 @@ func LoadSchedules(cron *cron.Cron) {
 		job := dbaapi.BackupJob{}
 		job.Host = JOB_HOST
 		job.CCP_IMAGE_TAG = CCP_IMAGE_TAG
+		job.CCP_IMAGE_PREFIX = CCP_IMAGE_PREFIX
 		job.Cmd = CMD
 		job.Logger = logger
 		cron.AddJob(BACKUP_SCHEDULE, job)

@@ -30,6 +30,7 @@ type Parms struct {
 	VAC_FREEZE    bool
 	VAC_TABLE     string
 	CCP_IMAGE_TAG string
+	CCP_IMAGE_PREFIX string
 	PG_USER       string
 	PG_PORT       string
 	PG_DATABASE   string
