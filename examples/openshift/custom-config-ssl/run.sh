@@ -29,6 +29,6 @@ sudo cp $DIR/ca.crt $PV_PATH
 sudo cp $DIR/server.key $PV_PATH
 sudo cat server.crt server-intermediate.crt ca.crt > $PV_PATH/server.crt
 sudo chown postgres:postgres $PV_PATH/ca.crt $PV_PATH/server.key $PV_PATH/server.crt
-sudo chmod 600 $PV_PATH/ca.crt $PV_PATH/server.key $PV_PATH/server.crt
+sudo chmod 640 $PV_PATH/ca.crt $PV_PATH/server.key $PV_PATH/server.crt
 
-oc process -f $DIR/custom-config-ssl.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/custom-config-ssl.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
