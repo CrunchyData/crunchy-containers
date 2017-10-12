@@ -15,6 +15,9 @@
         "description": "The username used for primary / replica replication",
         "value": "primaryuser"
     }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "The image prefix to use"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use"
     }, {
@@ -107,7 +110,7 @@
             },
             "containers": [{
                 "name": "${PG_PRIMARY_SERVICE_NAME}",
-                "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
                         "command": [
@@ -137,6 +140,9 @@
                 }, {
                     "name": "PG_PRIMARY_PASSWORD",
                     "value": "${PG_PRIMARY_PASSWORD}"
+                }, {
+                    "name": "PG_PRIMARY_PORT",
+                    "value": "5432"
                 }, {
                     "name": "PG_MODE",
                     "value": "primary"
@@ -203,7 +209,7 @@
                 "spec": {
                     "containers": [{
                         "name": "server",
-                        "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                        "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                         "readinessProbe": {
                             "exec": {
                                 "command": [
