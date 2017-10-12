@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,16 +24,16 @@ echo "starting primary-pitr container with PITR enabled..."
 # add this next line to the docker run to override pg config files
 
 DATA_DIR=/tmp/primary-pitr
-sudo rm -rf $DATA_DIR 
-sudo mkdir -p $DATA_DIR 
-sudo chown postgres:postgres $DATA_DIR 
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR 
+sudo rm -rf $DATA_DIR
+sudo mkdir -p $DATA_DIR
+sudo chown postgres:postgres $DATA_DIR
+sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
 WAL_DIR=/tmp/primary-pitr-wal
-sudo rm -rf $WAL_DIR 
-sudo mkdir -p $WAL_DIR 
-sudo chown postgres:postgres $WAL_DIR 
-sudo chcon -Rt svirt_sandbox_file_t $WAL_DIR 
+sudo rm -rf $WAL_DIR
+sudo mkdir -p $WAL_DIR
+sudo chown postgres:postgres $WAL_DIR
+sudo chcon -Rt svirt_sandbox_file_t $WAL_DIR
 
 sudo docker stop primary-pitr
 sudo docker rm primary-pitr
@@ -51,6 +51,7 @@ sudo docker run \
 	-e PG_MODE=primary \
 	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_PRIMARY_PASSWORD=password \
+	-e PG_PRIMARY_PORT=5432 \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
@@ -60,4 +61,3 @@ sudo docker run \
 	--name=primary-pitr \
 	--hostname=primary-pitr \
 	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
-

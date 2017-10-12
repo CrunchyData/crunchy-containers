@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,8 +28,8 @@ docker run \
 	--volume-driver=local \
 	-v $VOLUME_NAME:/pgdata:ro \
 	-e BADGER_TARGET=$DATABASE_CONTAINER \
+	-e PG_PRIMARY_PORT=5432 \
 	--link $DATABASE_CONTAINER:$DATABASE_CONTAINER \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
 	-d crunchydata/crunchy-pgbadger:$CCP_IMAGE_TAG
-
