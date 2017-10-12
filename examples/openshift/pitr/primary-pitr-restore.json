@@ -15,6 +15,9 @@
         "description": "The username used for primary / replica replication",
         "value": "primaryuser"
     }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "The image tag to use"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use"
     }, {
@@ -99,7 +102,7 @@
             }],
             "containers": [{
                 "name": "postgres",
-                "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
@@ -111,6 +114,9 @@
                     "name": "PG_MODE",
                     "value": "primary"
                 }, {
+                    "name": "PG_PRIMARY_PORT",
+                    "value": "5432"
+                }, {
                     "name": "PG_PRIMARY_PASSWORD",
                     "value": "password"
                 }, {
@@ -121,7 +127,7 @@
                     "value": "password"
                 }, {
                     "name": "BACKUP_PATH",
-                    "value": "primary-pitr-backups/2017-08-03-20-25-12"
+                    "value": "primary-pitr-backups/2017-10-12-19-28-14"
                 }, {
                     "name": "RECOVERY_TARGET_NAME",
                     "value": "beforechanges"

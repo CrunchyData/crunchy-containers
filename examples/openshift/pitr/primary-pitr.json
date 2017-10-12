@@ -15,6 +15,9 @@
         "description": "The username used for primary / replica replication",
         "value": "primaryuser"
     }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "image prefix to use"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use"
     }, {
@@ -80,7 +83,7 @@
 
             "containers": [{
                 "name": "postgres",
-                "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
@@ -91,6 +94,9 @@
                 }, {
                     "name": "PG_PRIMARY_USER",
                     "value": "${PG_PRIMARY_USER}"
+                }, {
+                    "name": "PG_PRIMARY_PORT",
+                    "value": "5432"
                 }, {
                     "name": "PG_MODE",
                     "value": "primary"

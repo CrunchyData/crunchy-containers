@@ -79,6 +79,11 @@ sql command:
 select pg_xlog_replay_resume();
 ....
 
+This command changed for PG10 to:
+....
+postgres=# select pg_wal_replay_resume();
+....
+
 === Examples
 
 Examples for PITR have been created within the standalone, openshift,

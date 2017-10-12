@@ -25,4 +25,4 @@ envsubst < $DIR/recover-pv.json | oc create -f -
 oc create -f $DIR/recover-pvc.json
 
 # start up the database container
-oc process -f $DIR/primary-pitr-restore.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/primary-pitr-restore.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

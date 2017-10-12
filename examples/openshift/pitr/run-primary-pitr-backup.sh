@@ -18,4 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete job backup-primary-pitr-pvc
 
-oc process -f $DIR/backup-primary-pitr-job.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/backup-primary-pitr-job.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
