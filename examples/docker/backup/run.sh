@@ -32,7 +32,7 @@ docker run \
 	--privileged=true \
 	-v $VOLUME_NAME:/pgdata \
 	-e BACKUP_HOST=$HOST_TO_BACKUP \
-	-e BACKUP_USER=primary\
+	-e BACKUP_USER=primaryuser\
 	-e BACKUP_PASS=password \
 	-e BACKUP_PORT=5432 \
 	-e BACKUP_LABEL=mybackup \

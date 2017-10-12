@@ -23,7 +23,7 @@
                 "value": "primary-dba"
             }, {
                 "name": "PG_USER",
-                "value": "primary"
+                "value": "primaryuser"
             }, {
                 "name": "PG_PASSWORD",
                 "value": "password"
