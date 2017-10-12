@@ -168,7 +168,7 @@ function initdb_logic() {
 			mkdir $PGWAL
 			chown postgres:postgres $PGWAL
 			if [ -d "$PGWAL" ]; then
-                		cmd+=" --xlogdir="$PGWAL
+                		cmd+=" -X "$PGWAL
 			else
 				echo "XLOGDIR not found! Using default pg_xlog."
 			fi
