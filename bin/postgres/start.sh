@@ -396,6 +396,7 @@ if [ ! -f $PGDATA/postgresql.conf ]; then
 		pgbackrest --log-path=/backrestrepo --config=/pgconf/pgbackrest.conf --stanza=db stanza-create
 	fi
 
+
         echo "Loading setup.sql" >> /tmp/start-db.log
 	cp /opt/cpm/bin/setup.sql /tmp
 	if [ -f /pgconf/setup.sql ]; then
@@ -471,6 +472,7 @@ case "$PG_MODE" in
 	echo "FATAL:  PG_MODE is not an accepted value...check your PG_MODE environment variable valid values are (primary, replica)"
 	;;
 esac
+
 
 if [ -f /pgconf/postgresql.conf ]; then
        	echo "pgconf postgresql.conf is being used"

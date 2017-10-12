@@ -18,17 +18,22 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-sudo cp $DIR/setup.sql $PV_PATH
-sudo cp $DIR/pg_hba.conf $PV_PATH
-sudo cp $DIR/postgresql.conf $PV_PATH
-sudo chown nfsnobody:nfsnobody $PV_PATH/setup.sql $PV_PATH/postgresql.conf \
-$PV_PATH/pg_hba.conf
-sudo chmod g+r $PV_PATH/setup.sql $PV_PATH/postgresql.conf $PV_PATH/pg_hba.conf
+CONFDIR=$PV_PATH/custom-config-ssl-pgconf
+sudo mkdir $CONFDIR
+sudo chown nfsnobody:nfsnobody $CONFIDIR
+sudo cp $DIR/setup.sql $CONFDIR
+sudo cp $DIR/pg_hba.conf $CONFDIR
+sudo cp $DIR/postgresql.conf $CONFDIR
+sudo chown nfsnobody:nfsnobody $CONFDIR/setup.sql $CONFDIR/postgresql.conf \
+$CONFDIR/pg_hba.conf
+sudo chmod g+r $CONFDIR/setup.sql $CONFDIR/postgresql.conf $CONFDIR/pg_hba.conf
 
-sudo cp $DIR/ca.crt $PV_PATH
-sudo cp $DIR/server.key $PV_PATH
-sudo cat server.crt server-intermediate.crt ca.crt > $PV_PATH/server.crt
-sudo chown postgres:postgres $PV_PATH/ca.crt $PV_PATH/server.key $PV_PATH/server.crt
-sudo chmod 640 $PV_PATH/ca.crt $PV_PATH/server.key $PV_PATH/server.crt
+sudo cp $DIR/ca.crt $CONFDIR
+sudo cp $DIR/server.key $CONFDIR
+sudo cat server.crt server-intermediate.crt ca.crt > $CONFDIR/server.crt
+
+sudo chown nfsnobody:nfsnobody $CONFDIR/ca.crt $CONFDIR/server.key $CONFDIR/server.crt
+sudo chmod 640 $CONFDIR/ca.crt $CONFDIR/server.key $CONFDIR/server.crt
+sudo chmod 400 $CONFDIR/server.key
 
 oc process -f $DIR/custom-config-ssl.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

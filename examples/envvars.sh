@@ -19,7 +19,8 @@
 
 #export CCP_CLI=oc
 export CCP_CLI=kubectl
-export NAMESPACE=demo-project
+#export NAMESPACE=demo-project
+export NAMESPACE=default
 #export PV_PATH=/nfsfileshare
 export PV_PATH=/data
 export GCE_DISK_ZONE=us-central1-a

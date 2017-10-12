@@ -77,9 +77,6 @@
             }
         },
         "spec": {
-            "securityContext": {
-                "supplementalGroups": [65534]
-            },
             "volumes": [{
                 "name": "pgconf",
                 "persistentVolumeClaim": {
@@ -130,7 +127,7 @@
 
 
                 "volumeMounts": [{
-                    "mountPath": "/pgconf",
+                    "mountPath": "/pgconf/custom-config-ssl-pgconf",
                     "name": "pgconf",
                     "readOnly": true
                 }, {

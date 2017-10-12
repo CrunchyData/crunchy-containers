@@ -17,14 +17,11 @@ source $CCPROOT/examples/envvars.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-CONTAINER=custom-config-ssl
-oc delete service $CONTAINER
-oc delete pod $CONTAINER
+CONFDIR=$PV_PATH/custom-config-ssl-pgconf
 
-sudo rm $PV_PATH/setup.sql
-sudo rm $PV_PATH/pg_hba.conf
-sudo rm $PV_PATH/postgresql.conf
-sudo rm -rf $PV_PATH/$CONTAINER
-sudo rm $PV_PATH/ca.crt $PV_PATH/server.key $PV_PATH/server.crt
+oc delete service custom-config-ssl
+oc delete pod custom-config-ssl
 
-$CCPROOT/examples/waitforterm.sh $CONTAINER oc
+sudo rm -rf $CONFDIR
+
+$CCPROOT/examples/waitforterm.sh custom-config-ssl oc
