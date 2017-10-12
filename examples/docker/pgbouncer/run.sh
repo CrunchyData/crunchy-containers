@@ -38,4 +38,4 @@ sudo docker run \
 	--link replica:replica \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
-	-d crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG
+	-d ${CCP_IMAGE_PREFIX}/crunchy-pgbouncer:$CCP_IMAGE_TAG

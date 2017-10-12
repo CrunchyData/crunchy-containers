@@ -1154,6 +1154,8 @@ To run the example, modify the run-badger.sh script to refer to the
 Docker container that you want to run pgbadger against, also referring
 to the container's data directory, then run the example as follows:
 ....
+cd $CCPROOT/examples/docker/basic
+./run.sh
 cd $CCPROOT/examples/docker/badger
 ./run.sh
 ....
@@ -1394,6 +1396,8 @@ container.  You specify a database to vacuum using environment variables.
 An example is shown in the $CCPROOT/examples/docker/vacuum/run.sh script
 and can be run as follows:
 ....
+cd $CCPROOT/examples/docker/basic
+./run.sh
 cd $CCPROOT/examples/docker/vacuum
 ./run.sh
 ....
