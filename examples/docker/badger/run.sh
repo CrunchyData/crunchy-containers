@@ -28,7 +28,6 @@ docker run \
 	--volume-driver=local \
 	-v $VOLUME_NAME:/pgdata:ro \
 	-e BADGER_TARGET=$DATABASE_CONTAINER \
-	-e PG_PRIMARY_PORT=5432 \
 	--link $DATABASE_CONTAINER:$DATABASE_CONTAINER \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \

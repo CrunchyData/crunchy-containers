@@ -28,7 +28,6 @@ docker run \
 	-e VAC_VERBOSE="true" \
 	-e VAC_FREEZE="true" \
 	-e VAC_TABLE="testtable" \
-	-e PG_PRIMARY_PORT=5432 \
 	-e PG_USER="testuser" \
 	-e PG_PORT="5432" \
 	-e PG_PASSWORD="password" \
