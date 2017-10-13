@@ -66,9 +66,9 @@
             },
             "volumes": [{
                 "name": "pgconf",
-                "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc"
-                }
+				"configMap": {
+					"name": "pgbouncer-configmap"
+				}
             }],
             "containers": [{
                 "name": "pgbouncer",
