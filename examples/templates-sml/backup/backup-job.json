@@ -28,7 +28,7 @@
         "description": "the size to give the backup PVC "
     }, {
         "name": "BACKUP_USER",
-        "value": "primary",
+        "value": "primaryuser",
         "description": "the name of the database user to perform the backup"
     }, {
         "name": "BACKUP_PASS",
