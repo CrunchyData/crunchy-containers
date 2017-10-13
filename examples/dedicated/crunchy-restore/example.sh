@@ -33,7 +33,7 @@ oc process -n $PROJECT crunchy-restore \
 	PG_PASSWORD=password \
 	PG_DATABASE=userdb \
 	PG_ROOT_PASSWORD=password \
-	CCP_IMAGE_TAG=rhel7-9.6-1.4.0 \
+	CCP_IMAGE_TAG=rhel7-9.6-1.6.0 \
 	CCP_IMAGE_PREFIX=172.30.240.45:5000/$PROJECT \
 	CCP_IMAGE_NAME=crunchy-postgres \
 	BACKUP_PATH=example-backups/2017-04-05-13-25-51 \

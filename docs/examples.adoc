@@ -2564,13 +2564,13 @@ you perform a pg_upgrade on a 9.5 database converting its data
 to a 9.6 version.
 
 This example assumes you have run *primary-pvc* using a PG 9.5 image
-such as *centos7-9.5-1.5* prior to running this upgrade.
+such as *centos7-9.5-1.6.0* prior to running this upgrade.
 
 Prior to starting this example, shut down the *primary-pvc* database
 using the *examples/kube/primary-pvc/cleanup.sh* script.
 
 Prior to running this example, make sure your CCP_IMAGE_TAG
-environment variable is using a PG 9.6 image such as *centos7-9.6-1.5*.
+environment variable is using a PG 9.6 image such as *centos7-9.6-1.6.0*.
 
 Start the upgrade as follows:
 ....
