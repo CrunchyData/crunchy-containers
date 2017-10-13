@@ -104,10 +104,10 @@
 
                     "volumes": [{
                         "name": "config",
-                        "persistentVolumeClaim": {
-                            "claimName": "crunchy-pvc"
-                        }
-                    }],
+                    "configMap": {
+                        "name": "crunchy-proxy-configmap"
+                    }
+            }],
                     "restartPolicy": "Always",
                     "dnsPolicy": "ClusterFirst"
                 }

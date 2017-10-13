@@ -24,13 +24,9 @@ $DIR/cleanup.sh
 
 echo "This example depends upon the primary-replica example being run prior!"
 
-CONFIGDIR=$PV_PATH/bouncerconfig
-sudo rm -rf $CONFIGDIR
-sudo mkdir $CONFIGDIR
-sudo chmod 777 $CONFIGDIR
-
-sudo cp $DIR/pgbouncer.ini $CONFIGDIR
-sudo cp $DIR/users.txt $CONFIGDIR
+oc create configmap pgbouncer-configmap \
+		--from-file=./pgbouncer.ini \
+		--from-file=./users.txt
 
 oc process -f $DIR/pgbouncer.json \
 	-p NAMESPACE=$NAMESPACE  \

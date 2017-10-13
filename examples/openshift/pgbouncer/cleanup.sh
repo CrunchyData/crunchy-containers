@@ -15,5 +15,6 @@
 
 oc delete pod pgbouncer
 oc delete service pgbouncer
+oc delete configmap pgbouncer-configmap
 
 $CCPROOT/examples/waitforterm.sh pgbouncer oc
