@@ -64,6 +64,9 @@ ADD bin/postgres /opt/cpm/bin
 ADD bin/postgres-gis /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
 
+# temp hack because PGDG pgaudit is not available at release time
+ADD conf/postgres/postgresql.conf.template.nopgaudit /opt/cpm/conf/postgresql.conf.template
+
 USER 26
 
 CMD ["/opt/cpm/bin/start.sh"]
