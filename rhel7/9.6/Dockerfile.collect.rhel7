@@ -47,10 +47,18 @@ Run yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/libstatgrab-
 # set up cpm directory
 RUN mkdir -p /opt/cpm/bin
 
+ADD postgres_exporter /opt/cpm/bin
+ADD node_exporter.tar.gz /opt/cpm/bin
 ADD bin/collect /opt/cpm/bin
 
 RUN chown -R postgres:postgres /opt/cpm/bin
 
 USER postgres
 
-ENTRYPOINT ["/opt/cpm/bin/collectserver"]
+# postgres_exporter
+EXPOSE 9187
+# node_exporter
+EXPOSE 9100
+
+ENTRYPOINT ["/opt/cpm/bin/start.sh"]
+
