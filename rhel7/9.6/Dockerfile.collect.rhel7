@@ -31,9 +31,11 @@ ADD conf/CRUNCHY-GPG-KEY.public  /
 ADD conf/crunchypg96.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
-RUN yum -y update && yum -y install gettext \
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+ && yum -y update && yum -y install gettext \
 	hostname  \
 	openssh-clients \
+	nss_wrapper \
 	libxslt \
 	libxml2 \
 	procps-ng \
@@ -50,8 +52,9 @@ RUN mkdir -p /opt/cpm/bin
 ADD postgres_exporter /opt/cpm/bin
 ADD node_exporter.tar.gz /opt/cpm/bin
 ADD bin/collect /opt/cpm/bin
+ADD conf/collect /opt/cpm/conf
 
-RUN chown -R postgres:postgres /opt/cpm/bin
+RUN chown -R postgres:postgres /opt/cpm/bin /opt/cpm/conf
 
 USER postgres
 
