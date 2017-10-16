@@ -21,7 +21,7 @@ ENV PGVERSION="9.6" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 # Install postgres client tools and libraries
-RUN yum install -y postgresql96 postgresql96-libs epel-release && yum -y install nss_wrapper && yum -y clean
+RUN yum -y update && yum install -y epel-release && yum -y install postgresql96 postgresql96-libs nss_wrapper && yum -y clean all
 
 # Create postgres user and group
 RUN groupadd -r -g 26 postgres
