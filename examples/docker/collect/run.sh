@@ -34,5 +34,4 @@ docker run \
 	--link crunchy-promgateway:crunchy-promgateway \
 	--name=primary-collect \
 	--hostname=primary-collect \
-	-p 9187:9187 \
 	-d crunchydata/crunchy-collect:$CCP_IMAGE_TAG
