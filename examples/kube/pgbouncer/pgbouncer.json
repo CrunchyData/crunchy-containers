@@ -51,7 +51,7 @@
             }],
             "volumeMounts": [{
                 "name": "pgconf",
-                "mountPath": "/pgconf"
+                "mountPath": "/pgconf/bouncerconfig"
             }]
         }]
     }
