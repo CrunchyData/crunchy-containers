@@ -36,6 +36,12 @@ export CCP_VERSION=1.6.0
 export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
+export CCP_CLI=kubectl
+export NAMESPACE=default
+export PV_PATH=/nfsfileshare
+export LOCAL_IP=hostname --ip-address
+export CCP_IMAGE_PREFIX=crunchydata
+export REPLACE_CCP_IMAGE_PREFIX=crunchydata
 ....
 It will be necessary to log out and back in for the changes to your .bashrc
 file to take effect.
@@ -381,8 +387,8 @@ See the following links for installation instructions:
 
 === Examples
 
-The namespace is set for the examples within the *examples/envvars.sh* script
-and defaults to *default*.  Set this variable according to your
+The namespace is set for the examples within your *bashrc* file; if you followed the
+installation instructions exactly, this will be set to *default*. Set this variable according to your
 project configuration.
 
 Note, some of the examples assume an NFS file system for creating
@@ -420,8 +426,8 @@ chmod 777 /mnt/sda1/data
 
 The NAMESPACE environment variable is set to indicate which OpenShift
 project you want various example objects to use.  This variable
-is set to *default* within the *examples/envvars.sh* script.  Set this
-to match your project configuration.
+is set to *default* within your *bashrc* file if you followed the installation
+instructions exactly. Set this to match your project configuration.
 
 See link:examples.adoc[here] to view the documentation showing various
 examples.

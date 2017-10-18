@@ -18,7 +18,7 @@
 # for storing their data
 #
 
-source $CCPROOT/examples/envvars.sh
+
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
