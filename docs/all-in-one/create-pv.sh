@@ -12,7 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 kubectl delete pv nfs-pv-01 nfs-pv-02 nfs-pv-03 nfs-pv-04 nfs-pv-05

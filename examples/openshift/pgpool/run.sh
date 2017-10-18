@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
+
 
 echo "This example depends on the primary-replica example being run prior!"
 

@@ -2606,8 +2606,15 @@ Here is a link to set up a Kube cluster on GCE:
 https://kubernetes.io/docs/getting-started-guides/gce
 
 Setup the persistent disks using GCE disks by first editing
-*examples/envvars.sh* and set the GCE settings to match your
+your *bashrc* file and export the GCE settings to match your
 GCE environment.
+
+....
+export GCE_DISK_ZONE=us-central1-a
+export GCE_DISK_NAME=gce-disk-crunchy
+export GCE_DISK_SIZE=4
+export GCE_FS_FORMAT=ext4
+....
 
 Then create the PVs used by the examples, passing in the *gce*
 value as a parameter. This will cause the GCE disks to be created:

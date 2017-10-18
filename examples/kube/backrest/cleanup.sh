@@ -13,7 +13,7 @@
 # limitations under the License.
 
 
-source $CCPROOT/examples/envvars.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 kubectl delete service primary-backrest

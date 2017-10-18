@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
+
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -27,4 +27,3 @@ kubectl create -f $LOC/primary-gluster-service.json
 echo "sleeping a bit before creating the pod..."
 sleep 10
 envsubst < $LOC/primary-gluster-pod.json  | kubectl create -f -
-
