@@ -17,16 +17,16 @@ if [ -z "$CCP_IMAGE_TAG" ]; then
 	echo "CCP_IMAGE_TAG not set"
 	exit 1
 fi
-docker pull registry-dev.crunchydata.com/crunchydata/crunchy-prometheus:$CCP_IMAGE_TAG
-docker pull registry-dev.crunchydata.com/crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG
-docker pull registry-dev.crunchydata.com/crunchydata/crunchy-grafana:$CCP_IMAGE_TAG
-docker pull registry-dev.crunchydata.com/crunchydata/crunchy-collect:$CCP_IMAGE_TAG
-docker pull registry-dev.crunchydata.com/crunchydata/crunchy-pgbadger:$CCP_IMAGE_TAG
-docker pull registry-dev.crunchydata.com/crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG
-docker pull registry-dev.crunchydata.com/crunchydata/crunchy-watch:$CCP_IMAGE_TAG
-docker pull registry-dev.crunchydata.com/crunchydata/crunchy-backup:$CCP_IMAGE_TAG
-docker pull registry-dev.crunchydata.com/crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
-docker pull registry-dev.crunchydata.com/crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG
-docker pull registry-dev.crunchydata.com/crunchydata/crunchy-pgadmin4:$CCP_IMAGE_TAG
-#docker pull registry-dev.crunchydata.com/crunchydata/crunchy-dba:$CCP_IMAGE_TAG
-#docker pull registry-dev.crunchydata.com/crunchydata/crunchy-vacuum:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-prometheus:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-grafana:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-collect:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-pgbadger:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-watch:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-backup:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG
+docker pull crunchydata/crunchy-pgadmin4:$CCP_IMAGE_TAG
+#docker pull crunchydata/crunchy-dba:$CCP_IMAGE_TAG
+#docker pull crunchydata/crunchy-vacuum:$CCP_IMAGE_TAG
