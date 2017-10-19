@@ -1,6 +1,6 @@
-Name: crunchy-postgres-primary
-PrimaryName: crunchy-primary
-ReplicaName: crunchy-replica
+Name: crunchy
+PrimaryName: primary
+ReplicaName: replica
 PrimaryPassword: password
 RootPassword: password
 UserPassword: password

@@ -251,30 +251,30 @@ Kubernetes cluster, you can execute the following:
 
 ....
 cd $CCPROOT/examples/kube/primary-replica
-helm install primary-replica --name crunchydata
+helm install primary-replica --name crunchy
 ....
 
 To verify everything is up and running correctly, you can view the created pods
 as follows:
 
 ....
-kubectl get pod | grep crunchydata
+kubectl get pod | grep crunchy
 ....
 
 For more in-depth troubleshooting, you can view the logs or describe the state of the
 pod:
 
 ....
-kubectl logs crunchydata-crunchy-primary
-kubectl describe pod crunchydata-crunchy-primary
+kubectl logs crunchy-primary
+kubectl describe pod crunchy-primary
 ....
 
 After installing the Helm chart, you will see the following services:
 ....
 $ kubectl get services
 NAME                          TYPE        CLUSTER-IP   EXTERNAL-IP      PORT(S)    AGE
-crunchydata-crunchy-primary   ClusterIP   10.0.0.99    <none>           5432/TCP   22m
-crunchydata-crunchy-replica   ClusterIP   10.0.0.253   <none>           5432/TCP   22m
+crunchy-primary   ClusterIP   10.0.0.99    <none>           5432/TCP   22m
+crunchy-replica   ClusterIP   10.0.0.253   <none>           5432/TCP   22m
 kubernetes                    ClusterIP   10.0.0.1     <none>           443/TCP    7h
 ....
 
@@ -282,15 +282,15 @@ It takes about a minute for the replica to begin replicating with the
 primary.  To test out replication, see if replication is underway
 with this command, enter *password* for the password when prompted:
 ....
-psql -h crunchydata-crunchy-primary -U postgres postgres -c 'table pg_stat_replication'
+psql -h crunchy-primary -U postgres postgres -c 'table pg_stat_replication'
 ....
 
 If you see a line returned from that query it means the primary is replicating
 to the replica.  Try creating some data on the primary:
 
 ....
-psql -h crunchydata-crunchy-primary -U postgres postgres -c 'create table foo (id int)'
-psql -h crunchydata-crunchy-primary -U postgres postgres -c 'insert into foo values (1)'
+psql -h crunchy-primary -U postgres postgres -c 'create table foo (id int)'
+psql -h crunchy-primary -U postgres postgres -c 'insert into foo values (1)'
 ....
 
 Then verify that the data is replicated to the replica:
