@@ -1,0 +1,48 @@
+=== Testing
+
+After installing the Helm chart, you will see the following services:
+....
+kubectl get services
+NAME              CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+crunchy-master    10.0.0.171   <none>        5432/TCP   1h
+crunchy-replica   10.0.0.31    <none>        5432/TCP   1h
+kubernetes        10.0.0.1     <none>        443/TCP    1h
+....
+
+It takes about a minute for the replica to begin replicating with the
+master.  To test out replication, see if replication is underway
+with this command, enter *password* for the password when prompted:
+....
+psql -h crunchy-master -U postgres postgres -c 'table pg_stat_replication'
+....
+
+If you see a line returned from that query it means the master is replicating
+to the slave.  Try creating some data on the master:
+
+....
+psql -h crunchy-master -U postgres postgres -c 'create table foo (id int)'
+psql -h crunchy-master -U postgres postgres -c 'insert into foo values (1)'
+....
+
+Then verify that the data is replicated to the slave:
+....
+psql -h crunchy-replica -U postgres postgres -c 'table foo'
+....
+
+You can scale up the number of read-only replicas by running
+the following kubernetes command:
+....
+kubectl scale deployment crunchy-replica --replicas=2
+....
+
+It takes 60 seconds for the replica to start and begin replicating
+from the master.
+
+
+== Legal Notices
+
+Copyright © 2017 Crunchy Data Solutions, Inc.
+
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.

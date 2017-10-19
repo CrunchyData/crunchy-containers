@@ -1,0 +1,6 @@
+name: primary-replica
+description: Deploy a basic crunchy primary and replica cluster
+version: 1.6.0
+home: https://k8s.io/helm
+sources:
+  - https://github.com/kubernetes/helm
