@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{.Release.Name}}-{{.Values.PrimaryName}}"
+  labels:
+    name: "{{.Release.Name}}-{{.Values.PrimaryName}}"
+    # The "heritage" label is used to track which tool deployed a given chart.
+    # It is useful for admins who want to see what releases a particular tool
+    # is responsible for.
+    heritage: {{.Release.Service | quote }}
+    # The "release" convention makes it easy to tie a release to all of the
+    # Kubernetes resources that were created as part of that release.
+    release: {{.Release.Name | quote }}
+    # This makes it easy to audit chart usage.
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+  annotations:
+    "helm.sh/created": {{.Release.Time.Seconds | quote }}
+spec:
+  # This shows how to use a simple value. This will look for a passed-in value
+  # called restartPolicy. If it is not found, it will use the default value.
+  # {{default "Never" .restartPolicy}} is a slightly optimized version of the
+  # more conventional syntax: {{.restartPolicy | default "Never"}}
+  restartPolicy: {{default "Never" .Values.restartPolicy}}
+  containers:
+  - name: {{.Values.ContainerName}}
+    image: "{{.Values.PostgresImage}}"
+    ports:
+    - containerPort: 5432
+    resources:
+      requests:
+        cpu: {{default "100m" .Values.Cpu}}
+        memory: {{default "100M" .Values.Memory}}
+    env:
+    - name: PGHOST
+      value: /tmp
+    - name: PG_PRIMARY_USER
+      value: primaryuser
+    - name: PG_MODE
+      value: primary
+    - name: PG_PRIMARY_PORT
+      value: "5432"
+    - name: PG_PRIMARY_PASSWORD
+      value: "{{.Values.PrimaryPassword}}"
+    - name: PG_USER
+      value: testuser
+    - name: PG_PASSWORD
+      value: "{{.Values.UserPassword}}"
+    - name: PG_DATABASE
+      value: userdb
+    - name: PG_ROOT_PASSWORD
+      value: "{{.Values.RootPassword}}"

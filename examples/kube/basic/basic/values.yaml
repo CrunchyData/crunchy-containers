@@ -1,0 +1,13 @@
+Name: crunchy
+PrimaryName: basic
+PrimaryPassword: password
+RootPassword: password
+UserPassword: password
+ServiceType: ClusterIP
+ContainerName: server
+PostgresImage: crunchydata/crunchy-postgres:centos7-9.6.5-1.6.0
+NFSServerIP: 10.0.1.4
+NFSPath: /mnt/nfsfileshare
+PVStorage: 400M
+PVName: crunchy-helmex-pv
+PVCName: crunchy-helmex-pvc
