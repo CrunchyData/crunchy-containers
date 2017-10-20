@@ -85,6 +85,33 @@ After the database starts up you can connect to it as follows:
 psql -h basic -U postgres postgres
 ....
 
+==== Helm
+
+This Helm chart simply starts up a single PostgreSQL service and container.
+
+To create the example:
+....
+cd $CCPROOT/examples/kube/basic
+helm install basic --name crunchy
+....
+
+This script will do the following:
+
+ * Create a persistent volume claim
+ * Create a pod named *crunchy-basic*
+ * Initialize the database using the predefined environment variables
+
+Verify that everything is running successfully by running the following:
+....
+kubectl get pod basic
+kubectl get service basic
+kubectl logs basic
+....
+
+After the database starts up you can connect to it as follows:
+....
+psql -h crunchy-basic -U postgres postgres
+....
 
 ==== OpenShift
 
