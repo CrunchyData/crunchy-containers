@@ -5,7 +5,7 @@
         "name": "pitr-example",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy PostgreSQL Master Example",
+            "description": "Crunchy PostgreSQL Primary Example",
             "iconClass": "icon-database",
             "tags": "database,postgresql,replication"
         }

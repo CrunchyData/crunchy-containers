@@ -1,6 +1,6 @@
 OPTIONS='--selinux-enabled --log-opt labels=application,location,environment,cluster_name,service --log-opt max-size=100m --log-opt max-file=1 --exec-opt native.cgroupdriver=cgroupfs'
 
-Use this for master
+Use this for primary
 
 vi /usr/lib/systemd/system/dg_jose.service
 [Unit]
@@ -24,7 +24,7 @@ ExecStart=/usr/bin/docker run -m 32g --cpu-shares=512 --net=quagga --ip=10.172.4
 								        --label service="jose" \
 									        -e PG_MODE=primary \
 										        -e PG_PRIMARY_USER=primaryuser \
-											        -e PG_PRIMARY_PASSWORD=masterpsw \
+											        -e PG_PRIMARY_PASSWORD=primarypsw \
 												        -e PG_ROOT_PASSWORD=rootpsw \
 													        --name=dg_jose \
 														        -d docker.anim.dreamworks.com/dwadba/postgres:9.5
