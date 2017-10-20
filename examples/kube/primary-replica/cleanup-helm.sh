@@ -12,12 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-oc delete service primary-backrest
-oc delete pod primary-backrest
-
-sudo PV_PATH=$PV_PATH  rm  -rf $PV_PATH/archive $PV_PATH/backup
-sudo rm $PV_PATH/pgbackrest.conf
+kubectl delete pod crunchy-replica
+sleep  2
+kubectl delete service crunchy-replica
+kubectl delete service crunchy-primary
+kubectl delete pod crunchy-primary
+$CCPROOT/examples/waitforterm.sh crunchy-primary kubectl
+$CCPROOT/examples/waitforterm.sh crunchy-replica kubectl

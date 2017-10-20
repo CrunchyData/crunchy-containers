@@ -293,7 +293,7 @@ user *admin@admin.org* and password of *password*
 
 == OpenShift Dedicated Template Examples
 
-=== Master Database Template
+=== Primary Database Template
 
 Template Name is *crunchy-primary*
 
