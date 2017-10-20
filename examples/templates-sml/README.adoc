@@ -12,7 +12,7 @@ Native storage.
 
 === crunchy-small-config
 
-The *small* configuration is a simple Master Deployment
+The *small* configuration is a simple Primary Deployment
 and related Service.  The example specifies a storage class to
 be used (e.g. Gluster Container Native Storage).  There are
 also CPU and Memory limits placed in the containers.
@@ -31,7 +31,7 @@ collect metrics.
 The replica is run as a simple Pod but persists data to the
 same storage class as the primary.
 
-There is only a single Master Service created so access to the
+There is only a single Primary Service created so access to the
 replica is limited, the replica only serves as a backup to the
 primary.
 
