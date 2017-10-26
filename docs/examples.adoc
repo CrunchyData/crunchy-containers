@@ -91,7 +91,7 @@ This Helm chart simply starts up a single PostgreSQL service and container.
 
 To create the example:
 ....
-cd $CCPROOT/examples/kube/basic
+cd $CCPROOT/examples/helm/
 helm install basic --name crunchy
 ....
 
@@ -277,7 +277,7 @@ To deploy a primary and replica database cluster using a Helm chart within your
 Kubernetes cluster, you can execute the following:
 
 ....
-cd $CCPROOT/examples/kube/primary-replica
+cd $CCPROOT/examples/helm/
 helm install primary-replica --name crunchy
 ....
 
