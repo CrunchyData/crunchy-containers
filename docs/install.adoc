@@ -40,8 +40,7 @@ export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 export CCP_CLI=kubectl
 export NAMESPACE=default
 export PV_PATH=/nfsfileshare
-export LOCAL_IP=hostname --ip-address
-export CCP_IMAGE_PREFIX=crunchydata
+export LOCAL_IP="hostname --ip-address"
 export REPLACE_CCP_IMAGE_PREFIX=crunchydata
 ....
 It will be necessary to log out and back in for the changes to your .bashrc
@@ -51,7 +50,7 @@ Next, set up a project directory structure and pull down the project:
 ....
 mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
 cd $GOPATH
-sudo yum -y install golang git docker postgresql
+sudo yum -y install golang git docker postgresql-server
 go get github.com/tools/godep
 cd src/github.com
 mkdir crunchydata
