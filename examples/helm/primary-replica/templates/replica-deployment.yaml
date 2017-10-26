@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: "{{.Release.Name}}-{{.Values.ReplicaName}}"
+  name: "{{.Values.ReplicaName}}"
   labels:
-    name: "{{.Release.Name}}-{{.Values.ReplicaName}}"
+    name: "{{.Values.ReplicaName}}"
     heritage: {{.Release.Service | quote }}
     release: {{.Release.Name | quote }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
@@ -25,7 +25,7 @@ spec:
         - name: PGHOST
           value: /tmp
         - name: PG_PRIMARY_HOST
-          value: "{{.Release.Name}}-{{.Values.PrimaryName}}"
+          value: "{{.Values.PrimaryName}}"
         - name: PG_PRIMARY_PORT
           value: "5432"
         - name: PG_MODE
@@ -44,7 +44,7 @@ spec:
           value: "{{.Values.RootPassword}}"
         image: "{{.Values.PostgresImage}}"
         imagePullPolicy: IfNotPresent
-        name: "{{.Release.Name}}-{{.Values.ReplicaName}}"
+        name: "{{.Values.ReplicaName}}"
         ports:
         - containerPort: 5432
           protocol: TCP

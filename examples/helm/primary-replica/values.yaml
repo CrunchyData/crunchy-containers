@@ -1,6 +1,6 @@
-Name: crunchy
-PrimaryName: primary
-ReplicaName: replica
+Name: crunchy-primary-replica
+PrimaryName: crunchy-primary
+ReplicaName: crunchy-replica
 PrimaryPassword: password
 RootPassword: password
 UserPassword: password
@@ -10,5 +10,5 @@ PostgresImage: crunchydata/crunchy-postgres:centos7-9.6.5-1.6.0
 NFSServerIP: 10.0.1.4
 NFSPath: /mnt/nfsfileshare
 PVStorage: 400M
-PVName: crunchy-helmex-pv
-PVCName: crunchy-helmex-pvc
+PVName: crunchy-primary-pv
+PVCName: crunchy-primary-pvc

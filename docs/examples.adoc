@@ -92,25 +92,39 @@ This Helm chart simply starts up a single PostgreSQL service and container.
 To create the example:
 ....
 cd $CCPROOT/examples/helm/
-helm install basic --name crunchy
+helm install basic --name crunchy-basic
 ....
 
 This script will do the following:
 
- * Create a persistent volume claim
  * Create a pod named *crunchy-basic*
+ * Create a service named *crunchy-basic*
+ * Create a release named *crunchy-basic*
  * Initialize the database using the predefined environment variables
 
 Verify that everything is running successfully by running the following:
 ....
-kubectl get pod basic
-kubectl get service basic
-kubectl logs basic
+kubectl get pod crunchy-basic
+kubectl get service crunchy-basic
+kubectl logs crunchy-basic
 ....
 
 After the database starts up you can connect to it as follows:
 ....
 psql -h crunchy-basic -U postgres postgres
+....
+
+To view all existing Helm Crunchy releases:
+
+....
+helm list
+helm ls -all crunchy
+....
+
+To clean up the example and delete the release from the store and make its name free for later use:
+
+....
+helm del --purge crunchy-basic
 ....
 
 ==== OpenShift
@@ -273,12 +287,22 @@ This example creates a simple Postgres streaming replication deployment with a
 primary (read-write), and a single asynchronous replica (read-only). You can
 scale up the number of replicas dynamically.
 
+This script will do the following:
+
+ * Create a service named *crunchy-primary*
+ * Create a service named *crunchy-replica*
+ * Create a pod named *crunchy-primary*
+ * Create a deployment named *crunchy-replica*
+ * Create a persistent volume named *crunchy-primary-pv* and a persistent volume claim of *crunchy-primary-pvc*
+ * Initialize the database using the predefined environment variables
+ * Map the PostgreSQL port 5432 within the container to the localhost port 12000
+
 To deploy a primary and replica database cluster using a Helm chart within your
 Kubernetes cluster, you can execute the following:
 
 ....
 cd $CCPROOT/examples/helm/
-helm install primary-replica --name crunchy
+helm install primary-replica --name crunchy-primary-replica
 ....
 
 To verify everything is up and running correctly, you can view the created pods
@@ -334,6 +358,18 @@ kubectl scale deployment crunchy-replica --replicas=2
 It takes 60 seconds for the replica to start and begin replicating
 from the primary.
 
+To view all existing Helm Crunchy releases:
+
+....
+helm list
+helm ls -all crunchy
+....
+
+To clean up the example and delete the release from the store and make its name free for later use:
+
+....
+helm del --purge crunchy-primary-replica
+....
 
 ==== OpenShift
 
