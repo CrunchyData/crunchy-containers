@@ -117,7 +117,7 @@ http://primary-default.apps.10.2.2.2.xip.io/api/badgergenerate
 ....
 
 
-=== Passwords
+=== Passwords & Permissions
 
 The value of all passwords for the database is *password*, to
 access the database, you can enter the following command:
@@ -126,6 +126,14 @@ access the database, you can enter the following command:
 psql -h primary.myproject.svc -U postgres postgres
 ....
 
+If you have issues with running the *watch* example, you may need
+to do something similar to the following to grant the correct permissions
+as the system:admin account:
+
+....
+oc create sa pg-watcher
+oc policy add-role-to-group edit system:serviceaccounts -n myproject
+....
 
 == Legal Notices
 
