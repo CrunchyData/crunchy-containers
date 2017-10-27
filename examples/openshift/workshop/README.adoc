@@ -59,7 +59,7 @@ Running the example:
 
 ....
 git clone https://github.com/crunchydata/crunchy-containers.git
-cd crunchy-containers/examples/workshop
+cd crunchy-containers/examples/openshift/workshop
 oc new-app -p CCP_IMAGE_TAG=centos7-10.0-1.6.0 -f primary.json
 oc new-app -p CCP_IMAGE_TAG=centos7-10.0-1.6.0 -f replicas.json
 oc new-app -p CCP_IMAGE_TAG=centos7-10.0-1.6.0 -f pgadmin4.json
@@ -81,11 +81,14 @@ with the primary.
 
 ==== OpenShift Console
 
-You can browse to the OpenShift console at this URL:
+You can browse to the OpenShift console at this default URL:
 
 ....
-https://10.2.2.2:8443/console/
+https://127.0.0.1:8443/console/
 ....
+
+If the URL is incorrect for you, please make a note of what URL
+is suggested by OpenShift the next time you run *oc cluster up*.
 
 ==== Metrics
 
@@ -120,7 +123,7 @@ The value of all passwords for the database is *password*, to
 access the database, you can enter the following command:
 
 ....
-psql -h pgprimary.openshift.svc.cluster.local -U postgres postgres
+psql -h primary.myproject.svc -U postgres postgres
 ....
 
 
