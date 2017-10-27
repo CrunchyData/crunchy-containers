@@ -10,7 +10,7 @@
     "spec": {
         "containers": [{
             "name": "proxy",
-            "image": "crunchydata/crunchy-proxy:$PROXY_IMAGE_TAG",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-proxy:$PROXY_IMAGE_TAG",
             "ports": [{
                 "name": "proxy",
                 "containerPort": 5432,

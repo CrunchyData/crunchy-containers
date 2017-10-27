@@ -10,7 +10,7 @@
     "spec": {
         "containers": [{
             "name": "postgres",
-            "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5432,
                 "protocol": "TCP"
@@ -49,7 +49,7 @@
             }]
         }, {
             "name": "badger",
-            "image": "crunchydata/crunchy-pgbadger:$CCP_IMAGE_TAG",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-pgbadger:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 10000,
                 "protocol": "TCP"

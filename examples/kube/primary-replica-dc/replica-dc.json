@@ -23,7 +23,7 @@
             "spec": {
                 "containers": [{
                     "name": "postgres",
-                    "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
+                    "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
                     "env": [{
                         "name": "PG_PRIMARY_HOST",
                         "value": "primary-dc"
