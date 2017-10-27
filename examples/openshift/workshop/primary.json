@@ -88,6 +88,9 @@
                     "name": "PG_PORT",
                     "value": "5432"
                 }, {
+                    "name": "PG_PRIMARY_PORT",
+                    "value": "5432"
+                }, {
                     "name": "PROM_GATEWAY",
                     "value": "http://crunchy-promgateway:9091"
                 }, {

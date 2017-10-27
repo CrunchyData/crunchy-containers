@@ -15,6 +15,9 @@
         "description": "The username used for primary / replica replication",
         "value": "primaryuser"
     }, {
+        "name": "PG_PRIMARY_PORT",
+        "value": "5432"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use"
     }, {
