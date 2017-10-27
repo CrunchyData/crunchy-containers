@@ -12,6 +12,7 @@ The crunchy-containers can run on different environments including:
  * OpenShift Enterprise
  * OpenShift Origin
  * Kubernetes 1.2+
+ * Helm
 
 In this document we list the basic installation steps required for these
 environments.
@@ -39,8 +40,7 @@ export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 export CCP_CLI=kubectl
 export NAMESPACE=default
 export PV_PATH=/nfsfileshare
-export LOCAL_IP=hostname --ip-address
-export CCP_IMAGE_PREFIX=crunchydata
+export LOCAL_IP="hostname --ip-address"
 export REPLACE_CCP_IMAGE_PREFIX=crunchydata
 ....
 It will be necessary to log out and back in for the changes to your .bashrc
@@ -50,7 +50,7 @@ Next, set up a project directory structure and pull down the project:
 ....
 mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
 cd $GOPATH
-sudo yum -y install golang git docker postgresql
+sudo yum -y install golang git docker postgresql-server
 go get github.com/tools/godep
 cd src/github.com
 mkdir crunchydata
@@ -431,6 +431,31 @@ instructions exactly. Set this to match your project configuration.
 
 See link:examples.adoc[here] to view the documentation showing various
 examples.
+
+=== Helm
+
+*Installation*
+
+Once you have your Kubernetes environment configured, it is simple to get
+Helm up and running. Please refer to link:https://docs.bitnami.com/kubernetes/get-started-kubernetes/#step-4-install-helm-and-tiller[this document]
+to get Helm installed and configured properly.
+
+=== Permissions
+
+As of Kubernetes 1.6, RBAC security is enabled on most Kubernetes
+installations.  With RBAC, the *postgres-operator* needs permissions
+granted to it to enable ThirdPartyResources viewing.  You can grant the
+*default* Service Account a cluster role as one way to enable
+permissions for the operator. This coarse level of granting permissions
+is not recommended for production. This command will enable
+the *default* Service Account to have the *cluster-admin* role:
+....
+kubectl create clusterrolebinding permissive-binding \
+	--clusterrole=cluster-admin \
+	--user=admin \
+	--user=kubelet \
+       	--group=system:serviceaccounts:default
+....
 
 === DNS
 
