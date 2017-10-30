@@ -42,6 +42,7 @@ export NAMESPACE=default
 export PV_PATH=/nfsfileshare
 export LOCAL_IP="hostname --ip-address"
 export REPLACE_CCP_IMAGE_PREFIX=crunchydata
+export PG_DATABASE=postgres
 ....
 It will be necessary to log out and back in for the changes to your .bashrc
 file to take effect.
