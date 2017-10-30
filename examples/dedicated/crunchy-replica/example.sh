@@ -25,7 +25,7 @@ PROJECT=jeff-project
 
 oc process -n $PROJECT crunchy-replica \
 	CCP_IMAGE_TAG=rhel7-9.6-1.6.0 \
-	CCP_IMAGE_PREFIX=172.30.240.45:5000/$PROJECT \
+	CCP_IMAGE_PREFIX=crunchydata \
 	CCP_IMAGE_NAME=crunchy-postgres \
 	SERVICE_NAME=replica \
 	PG_PRIMARY_HOST=example \
