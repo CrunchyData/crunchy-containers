@@ -16,7 +16,7 @@
             "securityContext": {
                 "privileged": false
             },
-            "image": "crunchydata/crunchy-pgadmin4:$CCP_IMAGE_TAG",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-pgadmin4:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5050,
                 "protocol": "TCP"

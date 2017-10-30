@@ -15,7 +15,7 @@
         "spec": {
             "containers": [{
                 "name": "backrest-restore",
-                "image": "crunchydata/crunchy-backrest-restore:$CCP_IMAGE_TAG",
+                "image": "$CCP_IMAGE_PREFIX/crunchy-backrest-restore:$CCP_IMAGE_TAG",
                 "env": [{
                     "name": "STANZA",
                     "value": "db"

@@ -11,7 +11,7 @@
         "serviceAccount": "dba-sa",
         "containers": [{
             "name": "dba",
-            "image": "crunchydata/crunchy-dba:$CCP_IMAGE_TAG",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-dba:$CCP_IMAGE_TAG",
             "env": [{
                 "name": "KUBE_PROJECT",
                 "value": "$NAMESPACE"
@@ -39,7 +39,7 @@
             }]
         }, {
             "name": "postgres",
-            "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5432,
                 "protocol": "TCP"

@@ -19,7 +19,7 @@
         }],
         "containers": [{
             "name": "pgbouncer",
-            "image": "crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-pgbouncer:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5432,
                 "protocol": "TCP"
