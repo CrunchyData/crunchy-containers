@@ -26,4 +26,4 @@ function ose_hack() {
 
 ose_hack
 
-$PGROOT/bin/pg_isready --dbname=postgres --username=$PG_USER
+$PGROOT/bin/pg_isready --dbname=$PG_DATABASE --username=$PG_USER
