@@ -29,7 +29,7 @@ oc process -n $PROJECT crunchy-backup \
 	BACKUP_USER=primaryuser \
 	BACKUP_PASS=password \
 	CCP_IMAGE_TAG=rhel7-9.6-1.6.0 \
-	CCP_IMAGE_PREFIX=172.30.240.45:5000/$PROJECT \
+	CCP_IMAGE_PREFIX=crunchydata \
 	PVC_NAME=backup-pvc \
 	PVC_SIZE=300M \
 	PVC_ACCESS_MODE=ReadWriteMany  \
