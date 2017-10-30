@@ -440,6 +440,14 @@ Once you have your Kubernetes environment configured, it is simple to get
 Helm up and running. Please refer to link:https://docs.bitnami.com/kubernetes/get-started-kubernetes/#step-4-install-helm-and-tiller[this document]
 to get Helm installed and configured properly.
 
+Note: A common error that you might come across is:
+
+....
+[storage/driver] 2017/07/14 18:12:20 list: failed to list: User "system:serviceaccount:default:default" cannot list configmaps in the namespace "default". (get configmaps)
+....
+
+Please see link:http://jayunit100.blogspot.com/2017/07/helm-on.html[this blogpost] for the best method for fixing this.
+
 === Permissions
 
 As of Kubernetes 1.6, RBAC security is enabled on most Kubernetes
