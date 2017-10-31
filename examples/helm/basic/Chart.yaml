@@ -1,0 +1,6 @@
+name: crunchy-basic
+description: Deploys a basic single PostgreSQL primary database
+version: 1.6.0
+home: https://k8s.io/helm
+sources:
+  - https://github.com/kubernetes/helm
