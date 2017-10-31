@@ -225,6 +225,29 @@ command when the initial data files are created, for example:
 
 By default, no locale is specified when the initdb command is executed.
 
+== crunchy-postgres-gis
+
+This container is the same as the crunchy-postgres container except
+that it includes the following PostgreSQL extensions:
+
+ * postgis
+ * pl/r
+
+You can test the pl/r extension by running the following commands
+for example:
+....
+create extension plr;
+SELECT * FROM plr_environ();
+SELECT load_r_typenames();
+SELECT * FROM r_typenames();
+SELECT plr_array_accum('{23,35}', 42);
+CREATE OR REPLACE FUNCTION plr_array (text, text)
+RETURNS text[]
+AS '$libdir/plr','plr_array'
+LANGUAGE 'c' WITH (isstrict);
+select plr_array('hello','world');
+....
+
 === crunchy-backup
 
 The crunchy-backup container executes a pg_basebackup against another
