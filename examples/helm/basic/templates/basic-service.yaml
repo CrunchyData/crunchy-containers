@@ -10,9 +10,12 @@ metadata:
 spec:
   type: "{{.Values.ServiceType}}"
   ports:
-  - port: 5432
+  - protocol: TCP
+    port: 5432
     targetPort: 5432
-    protocol: TCP
+    nodePort: 0
     name: postgres
   selector:
     name: "{{.Values.PrimaryName}}"
+  type: ClusterIP
+  sessionAffinity: None

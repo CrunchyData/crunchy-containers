@@ -24,8 +24,21 @@ spec:
   containers:
   - name: {{.Values.ContainerName}}
     image: "{{.Values.PostgresImage}}"
+    readinessProbe:
+      exec:
+        command:
+        - "/opt/cpm/bin/readiness.sh"
+      initialDelaySeconds: 10
+      timeoutSeconds: 1
+    livenessProbe:
+      exec:
+        command:
+        - "/opt/cpm/bin/liveness.sh"
+      initialDelaySeconds: 120
+      timeoutSeconds: 1
     ports:
     - containerPort: 5432
+      protocol: TCP
     resources:
       requests:
         cpu: {{default "100m" .Values.Cpu}}
@@ -49,3 +62,15 @@ spec:
       value: userdb
     - name: PG_ROOT_PASSWORD
       value: "{{.Values.RootPassword}}"
+    volumeMounts:
+    - mountPath: "/pgdata"
+      name: pgdata
+      readOnly: false
+    - mountPath: "/backup"
+      name: backup
+      readOnly: true
+  volumes:
+  - name: pgdata
+    emptyDir: {}
+  - name: backup
+    emptyDir: {}
