@@ -33,7 +33,7 @@ oc process -n $PROJECT crunchy-primary \
 	PG_PASSWORD=password \
 	PG_DATABASE=userdb \
 	PG_ROOT_PASSWORD=password \
-	CCP_IMAGE_TAG=rhel7-9.6-1.6.0 \
+	CCP_IMAGE_TAG=rhel7-9.6.5-1.6.0 \
 	CCP_IMAGE_PREFIX=crunchydata \
 	CCP_IMAGE_NAME=crunchy-postgres \
 	PVC_NAME=example-pvc \

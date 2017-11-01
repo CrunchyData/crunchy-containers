@@ -25,7 +25,7 @@ PROJECT=jeff-project
 
 oc process -n $PROJECT crunchy-pgadmin4 \
 	NAME=pgadmin4 \
-	CCP_IMAGE_TAG=rhel7-9.6-1.6.0 \
+	CCP_IMAGE_TAG=rhel7-9.6.5-1.6.0 \
 	CCP_IMAGE_PREFIX=crunchydata \
 	PVC_NAME=pgadmin4-pvc \
 	PVC_SIZE=300M \
