@@ -1,1 +1,1 @@
-export CCP_IMAGE_TAG=centos7-9.6-1.6.0
+export CCP_IMAGE_TAG=centos7-9.6.5-1.6.0

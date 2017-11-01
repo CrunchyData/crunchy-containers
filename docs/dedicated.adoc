@@ -5,22 +5,22 @@ v1.6, {docdate}
 
 == OpenShift Dedicated Environment
 
-Here are instructions for running examples on an OpenShift 3.4 Dedicated
+Here are instructions for running examples on an OpenShift 3.5.5 Dedicated
 environment.  For Dedicated, we have built a set of templates
 that can be installed into a Dedicated instance to help automate
 the creation of Crunchy Container Suite containers.
 
-A defined set of templates are supported including:
+A defined set of templates are supported for various purposes, including:
 
- * primary database
- * replica database
- * full database backup
- * database restore
- * pgadmin4
+ * A primary database
+ * A replica database
+ * A full database backup
+ * A full database restore
+ * PGAdmin4
 
 Each template is described below.
 
-There are some limitations presented by OpenShift 3.4 in the way
+There are some limitations presented by OpenShift 3.5.5 in the way
 in which we can scale up the replica databases.  Without support
 for dynamic volume provisioning and stateful sets, the replica
 databases can be scaled in a more manual way by creating a new
@@ -52,11 +52,15 @@ export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 export CCP_CLI=kubectl
-export NAMESPACE=default
 export PV_PATH=/nfsfileshare
-export LOCAL_IP=hostname --ip-address
+export LOCAL_IP='hostname --ip-address'
 export CCP_IMAGE_PREFIX=crunchydata
 export REPLACE_CCP_IMAGE_PREFIX=crunchydata
+export TOKEN=yourtokengoeshere
+export REG=docker-registry-default.router.default.svc.cluster.local
+export REG=172.30.240.45:5000
+export REG=registry.crunchydata.openshift.com
+export NAMESPACE=default
 ....
 You will then need to log out and back in for the changes to your .bashrc
 file to take effect.
@@ -115,11 +119,16 @@ cd $CCPROOT/examples/dedicated
 ./push-images.sh
 ....
 
-You will first need to login to the OpenShift registry to perform
-this script.
-
 The script will create the appropriate image tag and push the image to the
 remote registry.
+
+You can verify the existence of the images on your external Dedicated server
+through the following commands:
+
+....
+oc get is
+oc get templates
+....
 
 *If you are a Crunchy enterprise customer, you will need to change the $TOKEN and $REG
 values in the push-images.sh script to the ones that correspond to your company's registries
@@ -216,7 +225,7 @@ running 'yum reinstall glibc_common' within the container, this
 increases the size of the container image and can be removed if you
 do not require specific locale support.
 
-You can specify the PG_LOCALE env var which is passed to the initdb
+You can specify the PG_LOCALE environment variable which is passed to the initdb
 command when the initial data files are created, for example:
 ....
 "name": "PG_LOCALE",
@@ -225,6 +234,28 @@ command when the initial data files are created, for example:
 
 By default, no locale is specified when the initdb command is executed.
 
+== crunchy-postgres-gis
+
+This container is the same as the crunchy-postgres container except
+that it includes the following PostgreSQL extensions:
+
+ * postgis
+ * pl/r
+
+You can test the pl/r extension by running the following commands
+for example:
+....
+create extension plr;
+SELECT * FROM plr_environ();
+SELECT load_r_typenames();
+SELECT * FROM r_typenames();
+SELECT plr_array_accum('{23,35}', 42);
+CREATE OR REPLACE FUNCTION plr_array (text, text)
+RETURNS text[]
+AS '$libdir/plr','plr_array'
+LANGUAGE 'c' WITH (isstrict);
+select plr_array('hello','world');
+....
 
 === crunchy-backup
 
@@ -304,8 +335,8 @@ examples/dedicated/crunchy-primary
 
 This template will create the following:
 
- * database container crunchy-postgres as the primary running within a Deployment
- * database service for the primary
+ * A database container crunchy-postgres as the primary running within a Deployment
+ * A database service for the primary
 
 This example deploys a primary database configuration
 which uses a Persistent Volume Claim for persistence.
@@ -356,7 +387,7 @@ which uses a Persistent Volume Claim for persistence.
 
 |CCP_IMAGE_TAG
 | the image version to use for the container
-| rhel7-9.6-1.5
+| rhel7-9.6.5-1.6.0
 
 |CCP_IMAGE_PREFIX
 | the image prefix to use, typically the image stream prefix of your registry
@@ -456,7 +487,7 @@ files in a PVC.
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6-1.5
+| rhel7-9.6.5-1.6.0
 |===
 
 === Restore Database Template
@@ -470,8 +501,8 @@ examples/dedicated/crunchy-restore
 
 This template will create the following:
 
- * database container crunchy-postgres
- * database service
+ * A database container named crunchy-postgres
+ * A database service
 
 This example performs a database restore using a backup archive
 found in a PVC.
@@ -546,7 +577,7 @@ found in a PVC.
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6-1.5
+| rhel7-9.6.5-1.6.0
 |===
 
 === Replica Database Template
@@ -609,7 +640,7 @@ These templates create the following:
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6-1.5
+| rhel7-9.6.5-1.6.0
 |===
 
 === pgadmin4 Web User Interface Template
@@ -653,7 +684,7 @@ This template will create the following:
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6-1.5
+| rhel7-9.6.5-1.6.0
 |===
 
 
