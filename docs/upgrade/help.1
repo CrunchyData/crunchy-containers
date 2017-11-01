@@ -1,0 +1,53 @@
+.TH "postgres upgrade " "1" " Container Image Pages" "Jeff McCormick" "April 13, 2017"
+.nh
+.ad l
+
+
+.SH NAME
+.PP
+upgrade \- postgres upgrade container image
+
+
+.SH DESCRIPTION
+.PP
+The postgres upgrade image provides pg\_upgrade
+
+.PP
+The container itself consists of:
+    \- RHEL7 base image
+    \- bash script that performs the upgrade
+    \- postgres binary packages for 9.5 and 9.6 postgres
+
+.PP
+Files added to the container during docker build include: /help.1.
+
+
+.SH USAGE
+.PP
+See the crunchy docs.
+
+
+.SH LABELS
+.PP
+The starter container includes the following LABEL settings:
+
+.PP
+That atomic command runs the docker command set in this label:
+
+.PP
+\fB\fCName=\fR
+
+.PP
+The registry location and name of the image. For example, Name="crunchydata/upgrade".
+
+.PP
+\fB\fCVersion=\fR
+
+.PP
+The Red Hat Enterprise Linux version from which the container was built. For example, Version="7.3".
+
+.PP
+\fB\fCRelease=\fR
+
+.PP
+The specific release number of the container. For example, Release="1.6.0"

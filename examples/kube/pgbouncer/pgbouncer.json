@@ -1,0 +1,58 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pgbouncer",
+        "labels": {
+            "name": "pgbouncer"
+        }
+    },
+    "spec": {
+        "securityContext": {
+            "supplementalGroups": [65534]
+        },
+        "volumes": [{
+            "name": "pgconf",
+			"configMap": {
+				"name": "pgbouncer-configmap"
+			}
+        }],
+        "containers": [{
+            "name": "pgbouncer",
+            "image": "crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG",
+            "ports": [{
+                "containerPort": 5432,
+                "protocol": "TCP"
+            }],
+            "env": [{
+                "name": "PG_DATABASE",
+                "value": "postgres"
+            }, {
+                "name": "FAILOVER",
+                "value": "yes"
+            }, {
+                "name": "KUBE_PROJECT",
+                "value": "$NAMESPACE"
+            }, {
+                "name": "SLEEP_TIME",
+                "value": "12"
+            }, {
+                "name": "PG_PRIMARY_USER",
+                "value": "primaryuser"
+            }, {
+                "name": "PG_PRIMARY_PORT",
+                "value": "5432"
+            }, {
+                "name": "PG_PRIMARY_SERVICE",
+                "value": "ms-primary"
+            }, {
+                "name": "PG_REPLICA_SERVICE",
+                "value": "ms-replica"
+            }],
+            "volumeMounts": [{
+                "name": "pgconf",
+                "mountPath": "/pgconf"
+            }]
+        }]
+    }
+}

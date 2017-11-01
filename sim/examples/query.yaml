@@ -1,0 +1,8 @@
+foo: "select 1;"
+bar: "select now();"
+baz: >
+  INSERT INTO FOO VALUES
+  (1,2,3),
+  (3,4,5);
+return_rows: "select * from foo where (a % 1 = 0);"
+delete_rows: "delete from foo where (a = 1);"

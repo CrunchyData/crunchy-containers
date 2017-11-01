@@ -1,0 +1,28 @@
+FROM centos:7
+
+LABEL name="crunchydata/dba" \
+				vendor="crunchy data" \
+				version="7.3" \
+				release="1.6.0" \
+				build-date="2017-09-01" \
+				url="https://crunchydata.com" \
+				summary="Implements a cron scheduler." \
+				description="Offers a way to perform simple DBA tasks that occur on some form of schedule such as backup jobs or running a vacuum on a single Postgres database container. You can either run the crunchy-dba container as a single pod or include the container within a database pod. The crunchy-dba container makes use of a Service Account to perform the startup of scheduled jobs. The Kube Job type is used to execute the scheduled jobs with a Restart policy of Never." \
+				io.k8s.description="DBA container" \
+				io.k8s.display-name="Crunchy DBA container" \
+				io.openshift.expose-services="" \
+				io.openshift.tags="crunchy,database"
+
+RUN yum -y update && yum -y install psmisc procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
+
+# set up cpm directory
+#
+RUN mkdir -p /opt/cpm/bin
+RUN mkdir -p /opt/cpm/conf
+
+ADD bin/dba /opt/cpm/bin
+ADD conf/dba /opt/cpm/conf
+
+USER root
+
+CMD ["/opt/cpm/bin/start-dba.sh"]

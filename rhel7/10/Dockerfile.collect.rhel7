@@ -1,0 +1,56 @@
+FROM registry.access.redhat.com/rhel
+
+MAINTAINER Crunchy Data <support@crunchydata.com>
+
+LABEL name="crunchydata/collect" \
+        vendor="crunchy data" \
+      	PostgresVersion="10.0" \
+      	PostgresFullVersion="10.0.0" \
+        version="7.3" \
+        release="1.6.0" \
+        #build-date="2017-05-11" \
+        url="https://crunchydata.com" \
+        summary="Provides metrics for crunchy-postgres" \
+        description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus, crunchy-grafana, crunchy-promgateway." \
+        run="" \
+        start="" \
+        stop="" \
+        io.k8s.description="collect container" \
+        io.k8s.display-name="Crunchy collect container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY docs/collect/help.1 /help.1
+COPY docs/collect/help.md /help.md
+COPY docs/licenses /licenses
+
+ENV PGVERSION="10.0"
+
+# Crunchy Postgres repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg10.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN yum -y update && yum -y install gettext \
+	hostname  \
+	openssh-clients \
+	libxslt \
+	libxml2 \
+	procps-ng \
+ && yum -y install postgresql10-server \
+ && yum clean all -y
+
+# Install libstatgrab and dependencies
+RUN yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/log4cplus-1.1.3-0.4.rc3.el7.x86_64.rpm
+Run yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/libstatgrab-0.91-4.el7.x86_64.rpm
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin
+
+ADD bin/collect /opt/cpm/bin
+
+RUN chown -R postgres:postgres /opt/cpm/bin
+
+USER postgres
+
+ENTRYPOINT ["/opt/cpm/bin/collectserver"]

@@ -1,0 +1,50 @@
+FROM centos:7
+
+LABEL name="crunchydata/watch" \
+        vendor="crunchy data" \
+        version="7.3" \
+      	PostgresVersion="9.6" \
+      	PostgresFullVersion="9.6.5" \
+        release="1.6.0" \
+        build-date="2017-10-13" \
+        url="https://crunchydata.com" \
+        summary="Watches the primary in a primary / replica deployment, triggering a failover when the primary can't be reached" \
+        description="Time between connection attempts to the primary is configurable. When multiple replicas are available, you can set a preferred replica to be promoted to primary." \
+        io.k8s.description="watch container" \
+        io.k8s.display-name="Crunchy watch container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+ENV PGVERSION="9.6" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+# install docker from docker repo
+ADD conf/watch/docker-rhel.repo /etc/yum.repos.d/
+
+RUN yum -y update && yum -y install epel-release \
+ && yum -y update glibc-common \
+ && yum -y install  bind-utils \
+	curl \
+	docker-engine \
+	gettext \
+	hostname \
+	libxslt \
+	libxml2 \
+	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+	rsync \
+ && yum -y install postgresql96-server atomic-openshift-clients \
+ && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+ADD bin/watch /opt/cpm/bin
+ADD conf/watch /opt/cpm/conf
+
+RUN chown -R postgres:postgres /opt/cpm
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]

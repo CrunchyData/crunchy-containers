@@ -1,0 +1,30 @@
+FROM centos:7
+
+LABEL name="crunchydata/prometheus" \
+        vendor="crunchy data" \
+        version="7.3" \
+        release="1.6.0" \
+        build-date="2017-09-01" \
+        url="https://crunchydata.com" \
+        summary="Prometheus server that stores metrics for crunchy-postgres" \
+        description="PostgreSQL collected metrics are stored here as defined by the Crunchy Container Suite. Prometheus will scrape metrics from a Prometheus push gateway (crunchy-promgateway) using the supplied config file. Works in conjunction with crunchy-collect, crunchy-grafana, crunchy-promgateway." \
+        io.k8s.description="prometheus container" \
+        io.k8s.display-name="Crunchy prometheus container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+RUN yum -y update && yum -y install procps-ng openssh-clients hostname  && yum clean all -y
+
+RUN mkdir -p /data /opt/cpm/bin /opt/cpm/conf
+
+EXPOSE 9090
+
+ADD prometheus.tar.gz /opt/cpm/bin
+ADD bin/prometheus /opt/cpm/bin
+ADD conf/prometheus /opt/cpm/conf
+
+RUN chown -R daemon:daemon /opt/cpm /data
+USER daemon
+VOLUME ["/data"]
+
+CMD ["/opt/cpm/bin/start-prometheus.sh"]

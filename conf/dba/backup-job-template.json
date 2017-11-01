@@ -1,0 +1,51 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "name": "{{.JOB_HOST}}-backup"
+    },
+    "spec": {
+        "template": {
+            "metadata": {
+                "name": "{{.JOB_HOST}}-backup",
+                "labels": {
+                    "app": "{{.JOB_HOST}}-backup"
+                }
+            },
+            "spec": {
+	       "securityContext": {
+	       		"supplementalGroups": [65534]
+		},
+                "volumes": [{
+                    "name": "pgdata",
+                    "persistentVolumeClaim": {
+                        "claimName": "{{.JOB_HOST}}-backup-pvc"
+                    }
+                }],
+                "containers": [{
+                    "name": "{{.JOB_HOST}}-backup",
+                    "image": "crunchydata/crunchy-backup:{{.CCP_IMAGE_TAG}}",
+                    "volumeMounts": [{
+                        "mountPath": "/pgdata",
+                        "name": "pgdata",
+                        "readOnly": false
+                    }],
+                    "env": [{
+                        "name": "BACKUP_HOST",
+                        "value": "{{.JOB_HOST}}"
+                    }, {
+                        "name": "BACKUP_USER",
+                        "value": "{{.PG_USER}}"
+                    }, {
+                        "name": "BACKUP_PASS",
+                        "value": "{{.PG_PASSWORD}}"
+                    }, {
+                        "name": "BACKUP_PORT",
+                        "value": "{{.PG_PORT}}"
+                    }]
+                }],
+                "restartPolicy": "Never"
+            }
+        }
+    }
+}

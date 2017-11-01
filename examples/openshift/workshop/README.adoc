@@ -1,0 +1,132 @@
+
+= Openshift Tutorial - Crunchy Containers
+Crunchy Data Solutions, Inc.
+v1.4.0, {docdate}
+:title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
+
+== Openshift Tutorial
+The examples/openshift/workshop directory contains an example as
+part of a workshop given on occasion by Redhat and Crunchy.
+
+
+The example when deployed provides the following:
+
+ * postgres primary database container (pg-primary)
+ * postgres replica database container (pg-replica)
+ * pgpool postgres load balancer (pgpool)
+ * metrics collector container (container inside the pg-primary pod, named collect)
+ * pgbadger log analyzer container (inside the pg-primary pod, named pgbadger)
+ * pgadmin4 SQL console container (pgadmin4)
+ * grafana metrics dashboard container (grafana)
+ * prometheus metrics database container (prometheus)
+ * prometheus push gateway container (promgateway)
+ * backups can be performed using the backup container using the
+   crunchy-backup container when executed as a Job
+
+The replica database container is deployed in a replica set, this
+allows the replica database to scale up by using an administrative
+command.
+
+The pgpool container provides a postgres-smart load balancer
+in front of the primary and replica services.  pgpool sends only
+the updates/inserts/deletes to the primary database and will
+send the select statements to the replica service.
+
+Postgres metrics are collected by the collect container and sent
+to the prometheus database which allows for custom dashboard graphs
+to be created in the grafana container.
+
+The pgadmin4 container provides a web console where SQL queries can
+be entered for configured databases.
+
+To execute the examples, pull down the container images
+from Dockerhub onto the VM host:
+....
+docker pull crunchydata/crunchy-postgres:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-postgres-gis:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-backup:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-collect:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-pgbadger:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-pgadmin4:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-prometheus:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-promgateway:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-grafana:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-watch:centos7-9.5-1.4.0
+....
+
+
+Running the example:
+
+....
+git clone https://github.com/crunchydata/crunchy-containers.git
+cd crunchy-containers/examples/workshop
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f primary.json
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f replicas.json
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f pgadmin4.json
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f metrics.json
+oc policy add-role-to-group edit system:serviceaccounts -n default
+oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f watch.json
+oc create -f jeff-route.json
+....
+
+You can scale up the replicas using this command:
+....
+oc scale --replicas=2 dc replica-dc
+....
+
+It takes about 1 minute for the new replica to become in sync
+with the primary.
+
+
+==== Openshift Console
+
+You can browse to the openshift console at this URL:
+
+....
+https://10.2.2.2:8443/console/
+....
+
+==== Metrics
+
+Routes have been exposed to allow access to the metrics
+web applications.  You can point your browser to
+the following URLs after starting the containers:
+....
+http://grafana-default.apps.10.2.2.2.xip.io
+http://prometheus-default.apps.10.2.2.2.xip.io
+....
+
+==== postgres web console
+
+There is a route created to the pgadmin4 web application at the
+following URL:
+....
+http://pgadmin4-default.apps.10.2.2.2.xip.io
+....
+
+==== pgbadger web application
+
+There is a route created to the pgbadger container within the pgprimary
+pod at at the following URL:
+....
+http://primary-default.apps.10.2.2.2.xip.io/api/badgergenerate
+....
+
+
+=== Postgres access from your host
+
+The value of all passwords for the database is *password*, to
+access the database, you can enter the following command:
+
+....
+psql -h pgprimary.openshift.svc.cluster.local -U postgres postgres
+....
+
+
+== Legal Notices
+
+Copyright © 2017 Crunchy Data Solutions, Inc.
+
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.

@@ -1,0 +1,67 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "watch",
+        "labels": {
+            "name": "watch"
+        }
+    },
+    "spec": {
+        "serviceAccount": "pg-watcher",
+        "containers": [{
+            "name": "watch",
+            "image": "crunchydata/crunchy-watch:$CCP_IMAGE_TAG",
+            "env": [{
+                "name": "KUBE_PROJECT",
+                "value": "default"
+            }, {
+                "name": "SLEEP_TIME",
+                "value": "10"
+            }, {
+                "name": "MAX_FAILURES",
+                "value": "2"
+            }, {
+                "name": "REPLICA_TO_TRIGGER_LABEL",
+                "value": "ms-replica-2"
+            }, {
+                "name": "PG_PRIMARY_SERVICE",
+                "value": "ms-primary"
+            }, {
+                "name": "PG_REPLICA_SERVICE",
+                "value": "ms-replica"
+            }, {
+                "name": "PG_PRIMARY_PORT",
+                "value": "5432"
+            }, {
+                "name": "PG_PRIMARY_USER",
+                "value": "primaryuser"
+            }, {
+                "name": "PG_CONTAINER_NAME",
+                "value": "postgres"
+            }, {
+                "name": "PGHOST",
+                "value": "/tmp"
+            }, {
+                "name": "PG_DATABASE",
+                "value": "postgres"
+            }, {
+				"name": "WATCH_PRE_HOOK",
+				"value": "/hooks/watch-pre-hook"
+			}, {
+				"name": "WATCH_POST_HOOK",
+				"value": "/hooks/watch-post-hook"
+			}],
+			"volumeMounts": [{
+				"name": "watch-hooks-volume",
+				"mountPath": "/hooks"
+			}]
+        }],
+		"volumes": [{
+			"name": "watch-hooks-volume",
+			"configMap": {
+				"name": "watch-hooks-configmap"
+			}
+		}]
+    }
+}

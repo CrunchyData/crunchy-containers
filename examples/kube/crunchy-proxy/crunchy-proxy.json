@@ -1,0 +1,47 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "crunchy-proxy",
+        "labels": {
+            "name": "crunchy-proxy"
+        }
+    },
+    "spec": {
+        "containers": [{
+            "name": "proxy",
+            "image": "crunchydata/crunchy-proxy:$PROXY_IMAGE_TAG",
+            "ports": [{
+                "name": "proxy",
+                "containerPort": 5432,
+                "protocol": "TCP"
+            }, {
+                "name": "admin",
+                "containerPort": 10000,
+                "protocol": "TCP"
+            }],
+            "env": [{
+                "name": "PG_PRIMARY_SERVICE_NAME",
+                "value": "ms-primary"
+            }, {
+                "name": "PG_REPLICA_SERVICE_NAME",
+                "value": "ms-replica"
+            }, {
+                "name": "DEBUG",
+                "value": "true"
+            }],
+            "volumeMounts": [{
+                "name": "config",
+                "mountPath": "/config"
+            }]
+
+        }],
+
+        "volumes": [{
+            "name": "config",
+			"configMap": {
+				"name": "crunchy-proxy-configmap"
+			}
+        }]
+    }
+}

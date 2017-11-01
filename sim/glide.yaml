@@ -1,0 +1,6 @@
+package: github.com/abrightwell/pgsim
+import:
+- package: github.com/lib/pq
+- package: github.com/spf13/cobra
+- package: github.com/spf13/viper
+- package: gopkg.in/yaml.v2

@@ -1,0 +1,171 @@
+
+=== *watch* - Automated Failover
+
+
+
+=== *workshop* - workshop
+
+
+
+
+== OpenShift Tips
+
+=== Tip 1: Finding the Postgresql Passwords
+
+
+
+=== Tip 2: Examining a backup job log
+
+
+
+=== Tip 3: Password Management
+
+
+
+=== Tip 4: Log Aggregation
+
+
+
+=== Tip 5: nss_wrapper
+
+
+
+=== Tip 7: DNS configuration for OpenShift development
+
+
+
+=== Tip 8: system policies for pv creation and listing
+
+
+
+=== Tip 9: anyuid permissions
+
+
+
+
+=== Tip 10: NFS Setup
+
+To control the permissions of the NFS file system
+certain examples make use of the *supplementalGroups* security context
+setting for pods.  In these examples, we specify the GID of the *nfsnobody*
+group (65534).  If you want to use a different GID for the supplementalGroup
+then you will need to alter the NFS examples accordingly.
+
+When the pod runs, the pod user is UID *26* which is the postgres
+user ID.  By specifying the *supplementalGroup* the pod will also
+be added to the *nfsnobody* group.  So, when you set up your NFS
+mount, you can specify the permissions to be as follows:
+....
+drwxrwx---.   3 nfsnobody nfsnobody   23 Dec 16 11:28 nfsfileshare
+....
+
+This restricts *other* users from writing to the NFS share, but will
+allow the *nfsnobody* group to have write access.  This way, the
+NFS mount permissions can be managed to only allow certain pods
+write access.
+
+Also, remember that on systems with SELinux set to enforcing mode
+that you will need to allow NFS write permissions by running
+this command:
+....
+sudo setsebool -P virt_use_nfs 1
+....
+
+Note that supplementalGroup settings are required for NFS but you
+would use the fsGroup setting for the AWS file system.  Check out
+this link for details:
+https://docs.openshift.org/latest/install_config/persistent_storage/pod_security_context.html
+
+=== Tip 11: Backup Lifecycle
+
+Backups require the use of network storage like NFS in OpenShift.
+There is a required order of using NFS volumes in the manner
+we do database backups.
+
+So, first off, there is a one-to-one relationship between
+a PV (persistent volume) and a PVC (persistence volume claim).  You
+can NOT have a one-to-many relationship between PV and PVC(s).
+
+So, to do a database backup repeatably, you will need to following
+this general pattern:
+
+ * as OpenShift admin user, create a unique PV (e.g. backup-pv-mydatabase)
+ * as a project user, create a unique PVC (e.g. backup-pvc-mydatabase)
+ * reference the unique PVC within the backup-job template
+ * execute the backup job template
+ * as a project user, delete the job
+ * as a project user, delete the pvc
+ * as OpenShift admin user, delete the unique PV
+
+This procedure will need to be scripted and executed by the devops team when
+performing a database backup.
+
+
+=== Tip 12: Restore Lifecycle
+
+To perform a database restore, we do the following:
+
+ * locate the NFS path to the database backup we want to restore with
+ * edit a PV to use that NFS path
+ * edit a PV to specify a unique label
+ * create the PV
+ * edit a PVC to use the previously created PV, specifying the same label
+   used in the PV
+ * edit a database template, specifying the PVC to be used for mounting
+   to the /backup directory in the database pod
+ * create the database pod
+
+If the /pgdata directory is blank AND the /backup directory contains
+a valid postgres backup, it is assumed the user wants to perform a
+database restore.
+
+The restore logic will copy /backup files to /pgdata before starting
+the database.  It will take time for the copying of the files to
+occur since this might be a large amount of data and the volumes
+might be on slow networks. You can view the logs of the database pod
+to measure the copy progress.
+
+=== Tip 13: Persistent Volume Matching
+
+Restoring a database from an NFS backup requires the building
+of a PV which maps to the NFS backup archive path.  For example,
+if you have a backup at /backups/pg-foo/2016-01-29:22:34:20
+then we create a PV that maps to that NFS path.  We also use
+a "label" on the PV so that the specific backup PV can be identified.
+
+We use the pod name in the label value to make the PV unique.  This
+way, the related PVC can find the right PV to map to and not some other
+PV.  In the PVC, we specify the same "label" which lets Kubernetes
+match to the correct PV.
+
+=== Tip 14: DNS host entry and DeploymentConfig
+
+If your OpenShift environment can not resolve your hostname via
+a DNS server (external to OpenShift!), you will get errors when trying
+to create a DeploymentConfig.  So, you can either install dnsmasq
+and reconfigure OpenShift for that, or, you can run a DNS server
+on another host and add the OpenShift host entry to that DNS server.  I
+use the skybridge2 Docker container for this purpose.  You have
+to remember to adjust your /etc/resolv.conf to specify this new DNS
+server.
+
+=== Tip 15: Setting up Docker storage
+
+I typically set up Docker storage this way:
+
+ * add an extra IDE drive to my VM
+ * fdisk /dev/sd? to format the drive
+ * vgcreate /dev/sd?1 to create a volume group on the new drive partition
+ * add VG=docker-vg to /etc/sysconfig/docker-storage-setup
+ * run docker-storage-setup to use that new volume group
+
+Follow the instructions available link:https://docs.openshift.com/container-platform/3.4/install_config/install/host_preparation.html#configuring-docker-storage[on the main OpenShift documentation page]
+to better understand how to customize Docker storage according to your needs.
+
+== Legal Notices
+
+Copyright © 2017 Crunchy Data Solutions, Inc.
+
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.

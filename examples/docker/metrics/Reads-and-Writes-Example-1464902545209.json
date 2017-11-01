@@ -1,0 +1,159 @@
+{
+  "id": 2,
+  "title": "Reads-and-Writes-Example",
+  "originalTitle": "Reads-and-Writes-Example",
+  "tags": [],
+  "style": "dark",
+  "timezone": "browser",
+  "editable": true,
+  "hideControls": false,
+  "sharedCrosshair": false,
+  "rows": [
+    {
+      "collapse": false,
+      "editable": true,
+      "height": "250px",
+      "panels": [
+        {
+          "aliasColors": {},
+          "bars": false,
+          "datasource": "cr",
+          "editable": true,
+          "error": false,
+          "fill": 1,
+          "grid": {
+            "leftLogBase": 1,
+            "leftMax": null,
+            "leftMin": null,
+            "rightLogBase": 1,
+            "rightMax": null,
+            "rightMin": null,
+            "threshold1": null,
+            "threshold1Color": "rgba(216, 200, 27, 0.27)",
+            "threshold2": null,
+            "threshold2Color": "rgba(234, 112, 112, 0.22)"
+          },
+          "id": 1,
+          "isNew": true,
+          "legend": {
+            "avg": false,
+            "current": false,
+            "max": false,
+            "min": false,
+            "show": true,
+            "total": false,
+            "values": false
+          },
+          "lines": true,
+          "linewidth": 2,
+          "links": [],
+          "nullPointMode": "connected",
+          "percentage": false,
+          "pointradius": 5,
+          "points": false,
+          "renderer": "flot",
+          "seriesOverrides": [],
+          "span": 12,
+          "stack": false,
+          "steppedLine": false,
+          "targets": [
+            {
+              "expr": "crunchy_tup_fetched{exported_instance=\"$jeff\"}",
+              "intervalFactor": 2,
+              "legendFormat": "{{exported_instance}} - {{DatabaseName}} (reads)",
+              "metric": "crunchy_tup_fetched",
+              "refId": "A",
+              "step": 21
+            },
+            {
+              "expr": "crunchy_tup_inserted{exported_instance=\"$jeff\"}",
+              "intervalFactor": 2,
+              "legendFormat": "{{exported_instance}} - {{DatabaseName}} (inserts)",
+              "metric": "crunchy_tup_inserted",
+              "refId": "B",
+              "step": 21
+            }
+          ],
+          "timeFrom": null,
+          "timeShift": null,
+          "title": "Reads and Writes for $jeff",
+          "tooltip": {
+            "shared": true,
+            "value_type": "cumulative"
+          },
+          "type": "graph",
+          "x-axis": true,
+          "y-axis": true,
+          "y_formats": [
+            "short",
+            "short"
+          ]
+        }
+      ],
+      "title": "Row"
+    }
+  ],
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ],
+    "time_options": [
+      "5m",
+      "15m",
+      "1h",
+      "6h",
+      "12h",
+      "24h",
+      "2d",
+      "7d",
+      "30d"
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "allFormat": "glob",
+        "current": {
+          "tags": [],
+          "text": "primary",
+          "value": "primary"
+        },
+        "datasource": "cr",
+        "includeAll": false,
+        "multi": false,
+        "multiFormat": "glob",
+        "name": "jeff",
+        "options": [
+          {
+            "selected": true,
+            "text": "primary",
+            "value": "primary"
+          }
+        ],
+        "query": "primary",
+        "refresh": false,
+        "regex": "",
+        "type": "custom"
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "schemaVersion": 8,
+  "version": 0,
+  "links": []
+}

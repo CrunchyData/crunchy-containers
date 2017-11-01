@@ -1,0 +1,41 @@
+FROM centos:7
+
+LABEL name="crunchydata/pgbadger" \
+        vendor="crunchy data" \
+      	PostgresVersion="10.0" \
+      	PostgresFullVersion="10.0" \
+        version="7.3" \
+        release="1.6.0" \
+        build-date="2017-10-13" \
+        url="https://crunchydata.com" \
+        summary="HTTP wrapper around the PGBadger PostgreSQL utility" \
+        description="Has an HTTP REST interface. You GET http://host:10000/api/badgergenerate, and it will generate a pgbadger report on a database container's log files." \
+        io.k8s.description="pgbadger container" \
+        io.k8s.display-name="Crunchy pgbadger container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos10-10-2.noarch.rpm"
+
+#RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y update && yum -y install hostname \
+	pgbadger \
+ && yum clean all -y \
+ && groupadd -g 26 postgres && useradd -g 26 -u 26 postgres
+
+RUN mkdir -p /opt/cpm/bin
+
+# open up the badger port
+EXPOSE 10000
+
+ADD bin/pgbadger /opt/cpm/bin
+
+RUN chown -R postgres:postgres /opt/cpm/bin
+
+USER postgres
+
+VOLUME ["/pgdata"]
+
+CMD ["/opt/cpm/bin/start-pgbadger.sh"]

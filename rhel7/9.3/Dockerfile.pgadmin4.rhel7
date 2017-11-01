@@ -1,0 +1,39 @@
+FROM registry.access.redhat.com/rhel7.3
+
+LABEL Release="1.2.8" Vendor="Crunchy Data Solutions" PostgresVersion="9.3"
+
+# PGDG Postgres repo
+#RUN rpm -Uvh http://yum.postgresql.org/9.3/redhat/rhel-7-x86_64/pgdg-centos95-9.3-1.noarch.rpm
+
+# Crunchy repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg93.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN rpm -i https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+RUN yum -y install epel-release \
+ && yum -y install gcc python-devel python-pip  procps-ng openssh-clients hostname  \
+ && yum -y install postgresql93-devel postgresql93-server \
+ && yum clean all -y
+
+# set up cpm directory
+#
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+RUN chown -R root:root /opt/cpm
+RUN export PATH=$PATH:/usr/pgsql-9.3/bin
+RUN pip install --upgrade pip
+RUN pip install --upgrade setuptools
+
+# open up the pgadmin4 http port
+EXPOSE 5050
+
+ADD bin/pgadmin4/ /opt/cpm/bin
+ADD conf/pgadmin4/ /opt/cpm/conf
+ADD pgadmin4*.whl /tmp
+RUN export PATH=$PATH:/usr/pgsql-9.3/bin && pip install /tmp/pgadmin4*.whl
+
+USER root
+
+CMD ["/opt/cpm/bin/start-pgadmin4.sh"]
+

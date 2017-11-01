@@ -1,0 +1,38 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pgpool",
+        "labels": {
+            "name": "pgpool"
+        }
+    },
+    "spec": {
+
+        "containers": [{
+            "name": "pgpool",
+            "image": "crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG",
+            "ports": [{
+                "containerPort": 5432,
+                "protocol": "TCP"
+            }],
+            "env": [{
+                "name": "PG_USERNAME",
+                "value": "testuser"
+            }, {
+                "name": "PG_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_PRIMARY_SERVICE_NAME",
+                "value": "ms-primary"
+            }, {
+                "name": "PG_REPLICA_SERVICE_NAME",
+                "value": "ms-replica"
+            }],
+            "volumeMounts": [
+	    ]
+        }],
+        "volumes": [
+	]
+    }
+}

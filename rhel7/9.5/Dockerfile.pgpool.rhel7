@@ -1,0 +1,62 @@
+FROM registry.access.redhat.com/rhel
+
+MAINTAINER Crunchy Data <support@crunchydata.com>
+
+LABEL name="crunchydata/pgpool" \
+	PostgresVersion="9.5" \
+	PostgresFullVersion="9.5.9" \
+        vendor="crunchy data" \
+        version="7.3" \
+        release="1.6.0" \
+        #build-date="2017-05-11" \
+        url="https://crunchydata.com" \
+        summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
+        description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the primary and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \
+        run="" \
+        start="" \
+        stop="" \
+        io.k8s.description="pgpool container" \
+        io.k8s.display-name="Crunchy pgpool container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY docs/pgpool/help.1 /help.1
+COPY docs/pgpool/help.md /help.md
+COPY docs/licenses /licenses
+
+# PGDG Postgres repo
+#RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
+
+# set up Crunchy repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg95.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN yum -y update && yum -y install gettext libxslt libxml2 procps-ng \
+pgpool-II-95 pgpool-II-95-extensions \
+postgresql95 \
+openssh-clients \
+hostname  \
+ && yum clean all -y
+
+# set up cpm directory
+#
+RUN mkdir -p /opt/cpm/bin
+RUN mkdir -p /opt/cpm/conf
+
+# add volumes to allow override of pgpool config files
+VOLUME ["/pgconf"]
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin/pgpool /opt/cpm/bin
+ADD conf/pgpool /opt/cpm/conf/pgpool
+ADD conf/pgpool/pool_hba.conf  /etc/pgpool-II-95/pool_hba.conf
+ADD conf/pgpool/pool_passwd /etc/pgpool-II-95/pool_passwd
+
+RUN chown -R daemon:daemon /opt/cpm/bin
+
+USER daemon
+
+CMD ["/opt/cpm/bin/startpgpool.sh"]

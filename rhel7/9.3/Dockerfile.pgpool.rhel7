@@ -1,0 +1,37 @@
+FROM registry.access.redhat.com/rhel7.3
+
+LABEL Release="1.2.8" Vendor="Crunchy Data Solutions" PostgresVersion="9.3"
+
+# PGDG Postgres repo
+#RUN rpm -Uvh http://yum.postgresql.org/9.3/redhat/rhel-7-x86_64/pgdg-redhat93-9.3-1.noarch.rpm
+
+# Crunchy Postgres repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg93.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN yum -y install gettext libxslt libxml2 procps-ng \
+pgpool-II* postgresql93  openssh-clients hostname && yum clean all -y
+
+# set up cpm directory
+#
+RUN mkdir -p /opt/cpm/bin
+RUN mkdir -p /opt/cpm/conf
+
+# add volumes to allow override of pgpool config files
+VOLUME ["/pgconf"]
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin/pgpool /opt/cpm/bin
+ADD conf/pgpool /opt/cpm/conf/pgpool
+ADD conf/pgpool/pool_hba.conf  /etc/pgpool-II-93/pool_hba.conf
+ADD conf/pgpool/pool_passwd /etc/pgpool-II-93/pool_passwd
+
+RUN chown -R daemon:daemon /opt/cpm/bin
+
+USER daemon
+
+CMD ["/opt/cpm/bin/startpgpool.sh"]
+

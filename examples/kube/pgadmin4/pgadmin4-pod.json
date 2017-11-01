@@ -1,0 +1,38 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pgadmin4",
+        "labels": {
+            "name": "pgadmin4"
+        }
+    },
+    "spec": {
+        "securityContext": {
+            "supplementalGroups": [65534]
+        },
+        "containers": [{
+            "name": "pgadmin4",
+            "securityContext": {
+                "privileged": false
+            },
+            "image": "crunchydata/crunchy-pgadmin4:$CCP_IMAGE_TAG",
+            "ports": [{
+                "containerPort": 5050,
+                "protocol": "TCP"
+            }],
+            "env": [],
+            "volumeMounts": [{
+                "mountPath": "/pgdata",
+                "name": "rootdata",
+                "readOnly": false
+            }]
+        }],
+        "volumes": [{
+            "name": "rootdata",
+            "persistentVolumeClaim": {
+                "claimName": "crunchy-pvc"
+            }
+        }]
+    }
+}
