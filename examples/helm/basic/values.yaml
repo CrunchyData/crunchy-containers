@@ -1,5 +1,5 @@
-Name: crunchy-basic
-PrimaryName: crunchy-basic
+Name: basic
+PrimaryName: basic
 PrimaryPassword: password
 RootPassword: password
 UserPassword: password
@@ -9,5 +9,5 @@ PostgresImage: crunchydata/crunchy-postgres:centos7-9.6.5-1.6.0
 NFSServerIP: 10.0.1.4
 NFSPath: /mnt/nfsfileshare
 PVStorage: 400M
-PVName: crunchy-basic-pv
-PVCName: crunchy-basic-pvc
+PVName: basic-pv
+PVCName: basic-pvc
