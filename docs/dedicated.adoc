@@ -52,11 +52,15 @@ export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 export CCP_CLI=kubectl
-export NAMESPACE=default
 export PV_PATH=/nfsfileshare
-export LOCAL_IP=hostname --ip-address
+export LOCAL_IP='hostname --ip-address'
 export CCP_IMAGE_PREFIX=crunchydata
 export REPLACE_CCP_IMAGE_PREFIX=crunchydata
+export TOKEN=yourtokengoeshere
+export REG=docker-registry-default.router.default.svc.cluster.local
+export REG=172.30.240.45:5000
+export REG=registry.crunchydata.openshift.com
+export NAMESPACE=default
 ....
 You will then need to log out and back in for the changes to your .bashrc
 file to take effect.
