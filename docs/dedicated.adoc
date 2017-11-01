@@ -119,11 +119,16 @@ cd $CCPROOT/examples/dedicated
 ./push-images.sh
 ....
 
-You will first need to login to the OpenShift registry to perform
-this script.
-
 The script will create the appropriate image tag and push the image to the
 remote registry.
+
+You can verify the existence of the images on your external Dedicated server
+through the following commands:
+
+....
+oc get is
+oc get templates
+....
 
 *If you are a Crunchy enterprise customer, you will need to change the $TOKEN and $REG
 values in the push-images.sh script to the ones that correspond to your company's registries
