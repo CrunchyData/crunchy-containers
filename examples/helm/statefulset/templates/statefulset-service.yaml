@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{.Values.PrimaryName}}"
+  name: "{{.Values.ContainerName}}"
   labels:
-    name: "{{.Values.PrimaryName}}"
+    name: "{{.Values.ContainerName}}"
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
@@ -13,4 +13,4 @@ spec:
     name: web
   clusterIP: None
   selector:
-    app: "{{.Values.PrimaryName}}"
+    app: "{{.Values.ContainerName}}"

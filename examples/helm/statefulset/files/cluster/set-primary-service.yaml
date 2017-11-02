@@ -1,10 +1,9 @@
----
 kind: Service
 apiVersion: v1
 metadata:
-  name: "{{.Values.PrimaryName}}-primary"
+  name: "{{.Values.PrimaryName}}"
   labels:
-    name: "{{.Values.PrimaryName}}"
+    name: "{{.Values.ContainerName}}"
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
@@ -15,6 +14,6 @@ spec:
     targetPort: 5432
     nodePort: 0
   selector:
-    name: "{{.Values.PrimaryName}}-primary"
+    name: "{{.Values.PrimaryName}}"
   type: ClusterIP
   sessionAffinity: None
