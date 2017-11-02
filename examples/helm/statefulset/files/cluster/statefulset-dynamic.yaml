@@ -17,10 +17,6 @@ metadata:
   annotations:
     "helm.sh/created": {{.Release.Time.Seconds | quote }}
 spec:
-  # This shows how to use a simple value. This will look for a passed-in value
-  # called restartPolicy. If it is not found, it will use the default value.
-  # {{default "Never" .restartPolicy}} is a slightly optimized version of the
-  # more conventional syntax: {{.restartPolicy | default "Never"}}
   containers:
   - name: {{.Values.ContainerName}}
     image: "{{.Values.PostgresImage}}"
