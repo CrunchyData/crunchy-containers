@@ -68,8 +68,8 @@ fi
 # Install libstatgrab dependencies for collectapi container
 #
 
-sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/log4cplus-1.1.3-0.4.rc3.el7.x86_64.rpm
-sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/log4cplus-devel-1.1.3-0.4.rc3.el7.x86_64.rpm
-sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/libstatgrab-0.91-4.el7.x86_64.rpm
-sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/l/libstatgrab-devel-0.91-4.el7.x86_64.rpm
+sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/l/log4cplus-1.1.3-0.4.rc3.el7.x86_64.rpm
+sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/l/log4cplus-devel-1.1.3-0.4.rc3.el7.x86_64.rpm
+sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/l/libstatgrab-0.91-4.el7.x86_64.rpm
+sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/l/libstatgrab-devel-0.91-4.el7.x86_64.rpm
 sudo yum -y install gcc
