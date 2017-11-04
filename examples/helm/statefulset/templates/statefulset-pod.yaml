@@ -20,8 +20,6 @@ spec:
         app: "{{.Values.ContainerName}}"
     spec:
       serviceAccount: "{{.Values.ContainerServiceAccount}}"
-      securityContext:
-        fsGroup: 26
       terminationGracePeriodSeconds: 10
       containers:
       - name: {{.Values.ContainerName}}

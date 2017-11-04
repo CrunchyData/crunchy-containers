@@ -1,0 +1,22 @@
+{
+  "apiVersion": "v1",
+  "kind": "PersistentVolume",
+  "metadata": {
+ "labels": {
+          "app": "pgset"
+        },
+
+    "name": "pv3"
+  },
+  "spec": {
+    "capacity": {
+        "storage": "150M"
+    },
+    "accessModes": [ "ReadWriteMany" ],
+    "nfs": {
+        "path": "$PV_PATH",
+        "server": "$LOCAL_IP"
+    },
+    "persistentVolumeReclaimPolicy": "Retain"
+  }
+}
