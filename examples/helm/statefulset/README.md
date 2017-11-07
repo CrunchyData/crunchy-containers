@@ -29,9 +29,10 @@ by Kube to the pod.  This is an ordinal value starting with *0*.
 
 If a container sees that it has an ordinal value of *0*, it will
 update the container labels to add a new label of:
-....
+
+```console
 name=$PG_PRIMARY_HOST
-....
+```
 
 In this example, PG_PRIMARY_HOST is specified as *pgset-primary*.
 
@@ -41,14 +42,14 @@ There are 2 services that end user applications will use to
 access the PostgreSQL cluster, one service (pgset-primary) routes to the primary
 container and the other (pgset-replica) to the replica containers.
 
-....
+```console
 $ kubectl get service
 NAME            CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
 kubernetes      10.96.0.1       <none>        443/TCP    22h
 pgset           None            <none>        5432/TCP   1h
 pgset-primary    10.97.168.138   <none>        5432/TCP   1h
 pgset-replica   10.97.218.221   <none>        5432/TCP   1h
-....
+```
 
 Installing the Chart
 --------------------
@@ -67,20 +68,23 @@ Using the Chart
 ----------------------
 
 You can access the primary database as follows:
-....
-psql -h pgset-primary -U postgres postgres
-....
+
+```console
+$ psql -h pgset-primary -U postgres postgres
+```
 
 You can access the replica databases as follows:
-....
-psql -h pgset-replica -U postgres postgres
-....
+
+```console
+$ psql -h pgset-replica -U postgres postgres
+```
 
 You can scale the number of containers using this command, this will
-essentially create an additional replica databse:
-....
-kubectl scale pgset --replica=3
-....
+essentially create an additional replica database:
+
+```console
+$ kubectl scale pgset --replica=3
+```
 
 Uninstalling the Chart
 ----------------------

@@ -42,9 +42,10 @@ Using the Chart
 ----------------------
 
 After the database starts up you can connect to it as follows:
-....
-psql -h crunchy-basic -U postgres postgres
-....
+
+```console
+$ psql -h crunchy-basic -U postgres postgres
+```
 
 Uninstalling the Chart
 ----------------------

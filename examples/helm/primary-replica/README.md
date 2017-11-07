@@ -44,39 +44,42 @@ Using the Chart
 ----------------------
 
 After installing the Helm chart, you will see the following services:
-....
+```console
 $ kubectl get services
 NAME                          TYPE        CLUSTER-IP   EXTERNAL-IP      PORT(S)    AGE
 crunchy-primary   ClusterIP   10.0.0.99    <none>           5432/TCP   22m
 crunchy-replica   ClusterIP   10.0.0.253   <none>           5432/TCP   22m
 kubernetes                    ClusterIP   10.0.0.1     <none>           443/TCP    7h
-....
+```
 
 It takes about a minute for the replica to begin replicating with the
 primary.  To test out replication, see if replication is underway
 with this command, enter *password* for the password when prompted:
-....
-psql -h crunchy-primary -U postgres postgres -c 'table pg_stat_replication'
-....
+
+```console
+$ psql -h crunchy-primary -U postgres postgres -c 'table pg_stat_replication'
+```
 
 If you see a line returned from that query it means the primary is replicating
 to the replica.  Try creating some data on the primary:
 
-....
-psql -h crunchy-primary -U postgres postgres -c 'create table foo (id int)'
-psql -h crunchy-primary -U postgres postgres -c 'insert into foo values (1)'
-....
+```console
+$ psql -h crunchy-primary -U postgres postgres -c 'create table foo (id int)'
+$ psql -h crunchy-primary -U postgres postgres -c 'insert into foo values (1)'
+```
 
 Then verify that the data is replicated to the replica:
-....
-psql -h crunchy-replica -U postgres postgres -c 'table foo'
-....
+
+```console
+$ psql -h crunchy-replica -U postgres postgres -c 'table foo'
+```
 
 You can scale up the number of read-only replicas by running
-the following kubernetes command:
-....
-kubectl scale deployment crunchy-replica --replicas=2
-....
+the following Kubernetes command:
+
+```console
+$ kubectl scale deployment crunchy-replica --replicas=2
+```
 
 It takes 60 seconds for the replica to start and begin replicating
 from the primary.
