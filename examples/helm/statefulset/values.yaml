@@ -1,15 +1,20 @@
 Name: pgset
-ContainerName: pgset
-ReplicaName: pgset-replica
-PrimaryName: pgset-primary
-ContainerServiceAccount: pgset-sa
-PrimaryPassword: password
-RootPassword: password
-UserPassword: password
+Container:
+  Name:
+    Primary: pgset-primary
+    Replica: pgset-replica
+  ServiceAccount: pgset-sa
+Credentials:
+  Primary: password
+  Root: password
+  User: password
 ServiceType: ClusterIP
-PostgresImage: crunchydata/crunchy-postgres:centos7-9.6.5-1.6.0
-NFSServerIP: 10.0.1.4
-NFSPath: /mnt/nfsfileshare
-PVStorage: 400M
-PVName: pgset-pv
-PVCName: pgset-pvc
+Image:
+  Repository: crunchydata
+  Container: crunchy-postgres
+  Tag: centos7-9.6.5-1.6.0
+PV:
+  Storage: 400M
+  Name: pgset-pv
+PVC:
+  Name: pgset-pvc

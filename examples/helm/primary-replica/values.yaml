@@ -1,14 +1,22 @@
 Name: primary-replica
-PrimaryName: primary
-ReplicaName: replica
-PrimaryPassword: password
-RootPassword: password
-UserPassword: password
+Container:
+  Name:
+    Primary: primary
+    Replica: replica
+Credentials:
+  Primary: password
+  Root: password
+  User: password
 ServiceType: ClusterIP
-ContainerName: server
-PostgresImage: crunchydata/crunchy-postgres:centos7-9.6.5-1.6.0
-NFSServerIP: 10.0.1.4
-NFSPath: /mnt/nfsfileshare
-PVStorage: 400M
-PVName: primary-pv
-PVCName: primary-pvc
+Image:
+  Repository: crunchydata
+  Container: crunchy-postgres
+  Tag: centos7-9.6.5-1.6.0
+NFS:
+  ServerIP: 10.0.1.4
+  Path: /mnt/nfsfileshare
+PV:
+  Storage: 400M
+  Name: primary-pv
+PVC:
+  Name: primary-pvc

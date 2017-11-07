@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{.Values.PrimaryName}}"
+  name: "{{.Values.Container.Name}}"
   labels:
-    name: "{{.Values.PrimaryName}}"
+    name: "{{.Values.Container.Name}}"
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
@@ -16,6 +16,5 @@ spec:
     nodePort: 0
     name: postgres
   selector:
-    name: "{{.Values.PrimaryName}}"
-  type: ClusterIP
+    name: "{{.Values.Container.Name}}"
   sessionAffinity: None

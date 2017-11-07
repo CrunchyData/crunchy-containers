@@ -1,7 +1,7 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: {{.Values.PVCName}}
+  name: {{.Values.PVC.Name}}
 spec:
   accessModes:
   - ReadWriteMany

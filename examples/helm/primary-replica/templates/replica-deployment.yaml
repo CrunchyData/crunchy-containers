@@ -1,9 +1,9 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: "{{.Values.ReplicaName}}"
+  name: "{{.Values.Containers.Name.Replica}}"
   labels:
-    name: "{{.Values.ReplicaName}}"
+    name: "{{.Values.Containers.Name.Replica}}"
     heritage: {{.Release.Service | quote }}
     release: {{.Release.Name | quote }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
@@ -13,45 +13,41 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      name: "{{.Values.ReplicaName}}"
+      name: "{{.Values.Containers.Name.Replica}}"
   template:
     metadata:
       labels:
-        name: "{{.Values.ReplicaName}}"
-      name: "{{.Values.ReplicaName}}"
+        name: "{{.Values.Containers.Name.Replica}}"
+      name: "{{.Values.Containers.Name.Replica}}"
     spec:
       containers:
       - env:
         - name: PGHOST
           value: /tmp
         - name: PG_PRIMARY_HOST
-          value: "{{.Values.PrimaryName}}"
+          value: "{{.Values.Container.Name.Primary}}"
+        - name: PG_PRIMARY_USER
+          value: primaryuser
+        - name: PG_MODE
+          value: replica
         - name: PG_PRIMARY_PORT
           value: "5432"
-        - name: PG_MODE
-          value: slave
-        - name: PG_PRIMARY_USER
-          value: primary
         - name: PG_PRIMARY_PASSWORD
-          value: "{{.Values.PrimaryPassword}}"
+          value: "{{.Values.Credentials.Primary}}"
         - name: PG_USER
           value: testuser
         - name: PG_PASSWORD
-          value: "{{.Values.UserPassword}}"
+          value: "{{.Values.Credentials.User}}"
         - name: PG_DATABASE
           value: userdb
         - name: PG_ROOT_PASSWORD
-          value: "{{.Values.RootPassword}}"
-        image: "{{.Values.PostgresImage}}"
+          value: "{{.Values.Credentials.Root}}"
+        image: image: "{{.Values.Image.Repository}}/{{.Values.Image.Container}}:{{.Values.Image.Tag}}"
         imagePullPolicy: IfNotPresent
-        name: "{{.Values.ReplicaName}}"
+        name: "{{.Values.Containers.Name.Replica}}"
         ports:
         - containerPort: 5432
           protocol: TCP
-        resources:
-          requests:
-            cpu: {{default "100m" .Values.Cpu}}
-            memory: {{default "100M" .Values.Memory}}
         terminationMessagePath: /dev/termination-log
         volumeMounts:
         - mountPath: /pgdata

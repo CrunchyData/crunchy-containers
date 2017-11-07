@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{.Values.PrimaryName}}"
+  name: "{{.Values.Container.Name}}"
   labels:
-    name: "{{.Values.PrimaryName}}"
+    name: "{{.Values.Container.Name}}"
     # The "heritage" label is used to track which tool deployed a given chart.
     # It is useful for admins who want to see what releases a particular tool
     # is responsible for.
@@ -22,14 +22,10 @@ spec:
   # more conventional syntax: {{.restartPolicy | default "Never"}}
   restartPolicy: {{default "Never" .Values.restartPolicy}}
   containers:
-  - name: {{.Values.ContainerName}}
-    image: "{{.Values.PostgresImage}}"
+  - name: {{.Values.Container.Name.Primary}}
+    image: "{{.Values.Image.Repository}}/{{.Values.Image.Container}}:{{.Values.Image.Tag}}"
     ports:
     - containerPort: 5432
-    resources:
-      requests:
-        cpu: {{default "100m" .Values.Cpu}}
-        memory: {{default "100M" .Values.Memory}}
     env:
     - name: PGHOST
       value: /tmp
@@ -40,15 +36,15 @@ spec:
     - name: PG_PRIMARY_PORT
       value: "5432"
     - name: PG_PRIMARY_PASSWORD
-      value: "{{.Values.PrimaryPassword}}"
+      value: "{{.Values.Credentials.Primary}}"
     - name: PG_USER
       value: testuser
     - name: PG_PASSWORD
-      value: "{{.Values.UserPassword}}"
+      value: "{{.Values.Credentials.User}}"
     - name: PG_DATABASE
       value: userdb
     - name: PG_ROOT_PASSWORD
-      value: "{{.Values.RootPassword}}"
+      value: "{{.Values.Credentials.Root}}"
     volumeMounts:
     - mountPath: /pgdata
       name: pgdata
@@ -67,7 +63,7 @@ spec:
   volumes:
   - name: pgdata
     persistentVolumeClaim:
-     claimName: {{.Values.PVCName}}
+     claimName: {{.Values.PVC.Name}}
   - emptyDir: {}
     name: backup
   - name: pguser-volume

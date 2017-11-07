@@ -101,11 +101,31 @@ Configuration
 See `values.yaml` for configuration notes. Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```console
-$ helm install primary-replica --name primary-replica \
-  --set env.debug=false
+$ helm install basic --name basic \
+  --set Image.Tag=centos7-10.0-1.6.0
 ```
 
-The above command disables the debugging.
+The above command changes the image tag of the container from the default of `centos7-9.6.5-1.6.0` to `centos7-10.0-1.6.0`.
+
+> **Tip**: You can use the default [values.yaml](values.yaml)
+
+| Parameter                  | Description                        | Default                                                    |
+| -----------------------    | ---------------------------------- | ---------------------------------------------------------- |
+| `.Name`                 | Name of release.                 | `primary-replica`                                        |
+| `.Container.Name.Primary`        | Name for the primary container      | `primary`                                                      |
+| `.Container.Name.Replica`        | Name for the replica container      | `replica`                                                      |
+| `.Credentials.Primary`                | Password for the primary user    | `password`                                                      |
+| `.Credentials.Root`            | Password for the root user        | `password`                                                      |
+| `.Credentials.User`            | Password for the standard user   | `password`                                                      |
+| `.ServiceType`      | The type of service      | `ClusterIP`               
+| `.Image.Repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
+| `.Image.Container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
+| `.Image.Tag` | The image tag to be used.    | `centos7-9.6.5-1.6.0`                                                    |
+| `.NFS.ServerIP` | The IP address of the NFS server     | 10.0.1.4                                                    |
+| `.NFS.Path` | The path of the mounted NFS drive    | `/mnt/nfsfileshare`                                                    |
+| `.PV.Storage` | Size of persistent volume     | 400M                                                    |
+| `.PV.Name` | Name of persistent volume    | `primary-pv`                                                    |
+| `.PVC.Name` | Name of persistent volume    | `primary-pvc`                                                    |
 
 Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
 
@@ -113,8 +133,6 @@ Alternatively, a YAML file that specifies the values for the above parameters ca
 $ helm install primary-replica --name primary-replica  \
   -f values.yaml
 ```
-
-> **Tip**: You can use the default [values.yaml](values.yaml)
 
 Legal Notices
 -------------

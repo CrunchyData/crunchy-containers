@@ -1,13 +1,12 @@
 Name: basic
-PrimaryName: basic
-PrimaryPassword: password
-RootPassword: password
-UserPassword: password
+Container:
+  Name: basic
+Credentials:
+  Primary: password
+  Root: password
+  User: password
 ServiceType: ClusterIP
-ContainerName: server
-PostgresImage: crunchydata/crunchy-postgres:centos7-9.6.5-1.6.0
-NFSServerIP: 10.0.1.4
-NFSPath: /mnt/nfsfileshare
-PVStorage: 400M
-PVName: basic-pv
-PVCName: basic-pvc
+Image:
+  Repository: crunchydata
+  Container: crunchy-postgres
+  Tag: centos7-9.6.5-1.6.0

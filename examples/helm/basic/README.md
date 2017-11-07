@@ -65,10 +65,24 @@ See `values.yaml` for configuration notes. Specify each parameter using the `--s
 
 ```console
 $ helm install basic --name basic \
-  --set env.debug=false
+  --set Image.Tag=centos7-10.0-1.6.0
 ```
 
-The above command disables the debugging.
+The above command changes the image tag of the container from the default of `centos7-9.6.5-1.6.0` to `centos7-10.0-1.6.0`.
+
+> **Tip**: You can use the default [values.yaml](values.yaml)
+
+| Parameter                  | Description                        | Default                                                    |
+| -----------------------    | ---------------------------------- | ---------------------------------------------------------- |
+| `.Name`                 | Name of release.                 | `basic`                                        |
+| `.Container.Name`        | Name for the primary container      | `basic`                                                      |
+| `.Credentials.Primary`                | Password for the primary user    | `password`                                                      |
+| `.Credentials.Root`            | Password for the root user        | `password`                                                      |
+| `.Credentials.User`            | Password for the standard user   | `password`                                                      |
+| `.ServiceType`      | The type of service      | `ClusterIP`               
+| `.Image.Repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
+| `.Image.Container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
+| `.Image.Tag` | The image tag to be used.    | `centos7-9.6.5-1.6.0`                                                    |
 
 Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
 
@@ -76,8 +90,6 @@ Alternatively, a YAML file that specifies the values for the above parameters ca
 $ helm install basic --name basic  \
   -f values.yaml
 ```
-
-> **Tip**: You can use the default [values.yaml](values.yaml)
 
 Legal Notices
 -------------

@@ -1,19 +1,19 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: "{{.Values.PrimaryName}}"
+  name: "{{.Values.Container.Name.Primary}}"
   labels:
-    name: "{{.Values.ContainerName}}"
+    name: "{{.Values.Container.Name.Primary}}"
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
 spec:
+  type: "{{.Values.ServiceType}}"
   ports:
   - protocol: TCP
     port: 5432
     targetPort: 5432
     nodePort: 0
   selector:
-    name: "{{.Values.PrimaryName}}"
-  type: ClusterIP
+    name: "{{.Values.Container.Name.Primary}}"
   sessionAffinity: None

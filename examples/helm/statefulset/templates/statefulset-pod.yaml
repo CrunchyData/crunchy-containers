@@ -1,36 +1,32 @@
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
-  name: "{{.Values.ContainerName}}"
+  name: "{{.Values.Container.Name.Primary}}"
   labels:
-    name: "{{.Values.ReplicaName}}"
-    app: "{{.Values.ContainerName}}"
+    name: "{{.Values.Container.Name.Replica}}"
+    app: "{{.Values.Container.Name.Primary}}"
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
   annotations:
     "helm.sh/created": {{.Release.Time.Seconds | quote }}
 spec:
   selector:
     matchLabels:
-      app: "{{.Values.ContainerName}}"
-  serviceName: "{{.Values.ContainerName}}"
+      app: "{{.Values.Container.Name.Primary}}"
+  serviceName: "{{.Values.Container.Name.Primary}}"
   replicas: 2
   template:
     metadata:
       labels:
-        app: "{{.Values.ContainerName}}"
+        app: "{{.Values.Container.Name.Primary}}"
     spec:
-      serviceAccount: "{{.Values.ContainerServiceAccount}}"
+      serviceAccount: "{{.Values.Container.ServiceAccount}}"
       terminationGracePeriodSeconds: 10
       containers:
-      - name: {{.Values.ContainerName}}
-        image: "{{.Values.PostgresImage}}"
+      - name: {{.Values.Container.Name.Primary}}
+        image: "{{.Values.Image.Repository}}/{{.Values.Image.Container}}:{{.Values.Image.Tag}}"
         ports:
         - containerPort: 5432
           name: postgres
-        resources:
-          requests:
-            cpu: {{default "100m" .Values.Cpu}}
-            memory: {{default "100M" .Values.Memory}}
         env:
         - name: PGHOST
           value: /tmp
@@ -39,19 +35,19 @@ spec:
         - name: PG_MODE
           value: set
         - name: PG_PRIMARY_HOST
-          value: "{{.Values.PrimaryName}}"
+          value: "{{.Values.Container.Name.Primary}}"
         - name: PG_PRIMARY_PORT
           value: "5432"
         - name: PG_PRIMARY_PASSWORD
-          value: "{{.Values.PrimaryPassword}}"
+          value: "{{.Values.Credentials.Primary}}"
         - name: PG_USER
           value: testuser
         - name: PG_PASSWORD
-          value: "{{.Values.UserPassword}}"
+          value: "{{.Values.Credentials.User}}"
         - name: PG_DATABASE
           value: userdb
         - name: PG_ROOT_PASSWORD
-          value: "{{.Values.RootPassword}}"
+          value: "{{.Values.Credentials.Root}}"
         volumeMounts:
         - name: pgdata
           mountPath: "/pgdata"
@@ -59,4 +55,4 @@ spec:
       volumes:
       - name: pgdata
         persistentVolumeClaim:
-          claimName: {{.Values.PVCName}}
+          claimName: {{.Values.PVC.Name}}
