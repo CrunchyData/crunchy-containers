@@ -24,7 +24,7 @@
                 },
                 "containers": [{
                     "name": "backup-job",
-                    "image": "crunchydata/crunchy-backup:$CCP_IMAGE_TAG",
+                    "image": "$CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG",
                     "volumeMounts": [{
                         "mountPath": "/pgdata",
                         "name": "pgdata",
@@ -35,7 +35,7 @@
                         "value": "basic"
                     }, {
                         "name": "BACKUP_USER",
-                        "value": "master"
+                        "value": "primaryuser"
                     }, {
                         "name": "BACKUP_PASS",
                         "value": "password"

@@ -51,8 +51,8 @@ func TestDockerRestore(t *testing.T) {
     restoreCleanup := startDockerExampleForTest(t, buildBase, "restore", backupName)
     defer restoreCleanup(skipCleanup)
 
-    fmt.Printf("Waiting maximum %d seconds for master-restore container to start", timeoutSeconds)
-    restoreId, err := waitForPostgresContainer(docker, "master-restore", timeoutSeconds)
+    fmt.Printf("Waiting maximum %d seconds for primary-restore container to start", timeoutSeconds)
+    restoreId, err := waitForPostgresContainer(docker, "primary-restore", timeoutSeconds)
     if err != nil {
         t.Error(err)
     }

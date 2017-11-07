@@ -15,3 +15,4 @@
 oc delete dc crunchy-proxy
 oc delete service crunchy-proxy
 oc delete pod -l name=crunchy-proxy
+oc delete configmap crunchy-proxy-configmap

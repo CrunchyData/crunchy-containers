@@ -29,6 +29,7 @@ type VacJob struct {
 	Logger        *log.Logger
 	Host          string
 	CCP_IMAGE_TAG string
+	CCP_IMAGE_PREFIX string
 	Cmd           string
 }
 
@@ -42,6 +43,7 @@ func (t VacJob) Run() {
 		panic(err)
 	}
 	parms.CCP_IMAGE_TAG = t.CCP_IMAGE_TAG
+	parms.CCP_IMAGE_PREFIX = t.CCP_IMAGE_PREFIX
 
 	tmpl, err := template.New("jobtemplate").Parse(s)
 	if err != nil {

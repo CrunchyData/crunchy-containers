@@ -12,11 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
+
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-envsubst < $DIR/pgpool-pod.json  | kubectl create -f -
+kubectl create configmap pgpool-conf --from-file=pgpool.conf --from-file=hba=pool_hba.conf --from-file=psw=pool_passwd
+
+envsubst < $DIR/pgpool-pod-configmap.json  | kubectl create -f -
 kubectl create -f $DIR/pgpool-service.json 

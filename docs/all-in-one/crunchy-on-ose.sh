@@ -86,7 +86,7 @@ function clone {
 	mkdir -p $HOME/cdev/bin $HOME/cdev/src $HOME/cdev/pkg
 	export GOPATH=$HOME/cdev
 	export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
-	export CCP_IMAGE_TAG=centos7-9.6-1.4.0
+	export CCP_IMAGE_TAG=centos7-9.6.5-1.6.0
 	export GOBIN=$GOPATH/bin
 	cd $HOME/cdev/src
 	mkdir -p github.com/crunchydata
@@ -108,4 +108,3 @@ echo "starting vm setup...."
 #install-crunchy
 #install-ose
 #configure-ose
-

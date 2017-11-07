@@ -12,12 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
 kubectl create -f $DIR/dba-sa.json
 
-kubectl create -f $DIR/master-dba-service.json 
-envsubst < $DIR/master-dba-vac-pod.json  | kubectl create -f -
+kubectl create clusterrolebinding permissive-binding \
+  --clusterrole=cluster-admin \
+  --user=admin \
+  --user=kubelet \
+  --group=system:serviceaccounts
+
+kubectl create -f $DIR/primary-dba-service.json 
+envsubst < $DIR/primary-dba-vac-pod.json  | kubectl create -f -

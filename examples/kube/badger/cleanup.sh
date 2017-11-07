@@ -14,3 +14,4 @@
 
 kubectl delete pod badger
 kubectl delete service badger
+$CCPROOT/examples/waitforterm.sh badger kubectl

@@ -41,8 +41,8 @@ if [ -f /pgconf/pgpoolconfigdir/pgpool.conf ]; then
 fi
 
 # populate template with env vars
-sed -i "s/PG_MASTER_SERVICE_NAME/$PG_MASTER_SERVICE_NAME/g" $CONFIGS/pgpool.conf
-sed -i "s/PG_SLAVE_SERVICE_NAME/$PG_SLAVE_SERVICE_NAME/g" $CONFIGS/pgpool.conf
+sed -i "s/PG_PRIMARY_SERVICE_NAME/$PG_PRIMARY_SERVICE_NAME/g" $CONFIGS/pgpool.conf
+sed -i "s/PG_REPLICA_SERVICE_NAME/$PG_REPLICA_SERVICE_NAME/g" $CONFIGS/pgpool.conf
 sed -i "s/PG_USERNAME/$PG_USERNAME/g" $CONFIGS/pgpool.conf
 sed -i "s/PG_PASSWORD/$PG_PASSWORD/g" $CONFIGS/pgpool.conf
 

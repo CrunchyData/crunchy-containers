@@ -25,11 +25,11 @@ APP_ICON = 'icon-postgres-alt'
 
 # Application version number components
 APP_RELEASE = 1
-APP_REVISION = 0
+APP_REVISION = 6
 
 # Application version suffix, e.g. 'beta1', 'dev'. Usually an empty string
 # for GA releases.
-APP_SUFFIX = 'beta3'
+APP_SUFFIX = 'prod'
 
 # Copyright string for display in the app
 APP_COPYRIGHT = 'Copyright 2013 - 2016, The pgAdmin Development Team'
@@ -224,7 +224,7 @@ SECURITY_EMAIL_SUBJECT_PASSWORD_CHANGE_NOTICE = \
 ##########################################################################
 
 # Check for new versions of the application?
-UPGRADE_CHECK_ENABLED = True
+UPGRADE_CHECK_ENABLED = False
 
 # Where should we get the data from?
 UPGRADE_CHECK_URL = 'https://www.pgadmin.org/versions.json'

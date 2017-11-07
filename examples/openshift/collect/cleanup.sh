@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pod master-collect
-oc delete service master-collect
-$CCPROOT/examples/waitforterm.sh master-collect oc
+oc delete pod primary-collect
+oc delete service primary-collect
+$CCPROOT/examples/waitforterm.sh primary-collect oc

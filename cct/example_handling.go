@@ -146,20 +146,20 @@ func startBasic(
     return
 }
 
-// Starts the master-replica example, and wait for both servers to start
-func startMasterReplica(
+// Starts the primary-replica example, and wait for both servers to start
+func startPrimaryReplica(
     t *testing.T,
     docker *client.Client,
     basePath string,
     timeoutSeconds int64) (masterId, replicaId string, cleanup func(skip bool)) {
 
-    fmt.Println("Starting master-replica example, and pausing while example sleeps for 20 seconds")
-    cleanup = startDockerExampleForTest(t, basePath, "master-replica")
+    fmt.Println("Starting primary-replica example, and pausing while example sleeps for 20 seconds")
+    cleanup = startDockerExampleForTest(t, basePath, "primary-replica")
 
     var err error
 
     fmt.Printf("\nWaiting maximum of %d seconds for master container", timeoutSeconds)
-    masterId, err = waitForPostgresContainer(docker, "master", timeoutSeconds)
+    masterId, err = waitForPostgresContainer(docker, "primary", timeoutSeconds)
     if err != nil {
         t.Fatal("master container did not start")
     }

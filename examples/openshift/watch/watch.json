@@ -11,6 +11,9 @@
         }
     },
     "parameters": [{
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "the image prefix to use"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
     }, {
@@ -30,7 +33,7 @@
             "serviceAccount": "pg-watcher",
             "containers": [{
                 "name": "watch",
-                "image": "crunchydata/crunchy-watch:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
                     "value": "${NAMESPACE}"
@@ -38,25 +41,41 @@
                     "name": "SLEEP_TIME",
                     "value": "20"
                 }, {
-                    "name": "PG_MASTER_SERVICE",
-                    "value": "master-dc"
+                    "name": "PG_PRIMARY_SERVICE",
+                    "value": "ms-primary"
                 }, {
-                    "name": "PG_SLAVE_SERVICE",
-                    "value": "replica-dc"
+                    "name": "PG_REPLICA_SERVICE",
+                    "value": "ms-replica"
                 }, {
-                    "name": "PG_MASTER_PORT",
+                    "name": "PG_PRIMARY_PORT",
                     "value": "5432"
                 }, {
-                    "name": "HOME",
+                    "name": "PGHOST",
                     "value": "/tmp"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "master"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "primaryuser"
                 }, {
                     "name": "PG_DATABASE",
                     "value": "postgres"
-                }]
-            }]
+                }, {
+					"name": "WATCH_PRE_HOOK",
+					"value": "/hooks/watch-pre-hook"
+				}, {
+					"name": "WATCH_POST_HOOK",
+					"value": "/hooks/watch-post-hook"
+				}],
+				"volumeMounts": [{
+					"name": "watch-hooks-volume",
+					"mountPath": "/hooks"
+				}]
+            }],
+			"volumes": [{
+				"name": "watch-hooks-volume",
+				"configMap": {
+					"name": "watch-hooks-configmap"
+				}
+			}]
         }
     }]
 }

@@ -20,6 +20,10 @@
 			"Rev": "61e43dc76f7ee59a82bdf3d71033dc12bea4c77d"
 		},
 		{
+			"ImportPath": "github.com/akhenakh/statgo",
+			"Rev": "0b405e70c35657f503841e5f7791446d74075c86"
+		},
+		{
 			"ImportPath": "github.com/ant0ine/go-json-rest/rest",
 			"Comment": "v3.3.1",
 			"Rev": "37ad7dc626602a8355801da6acd85155655520f8"
@@ -178,8 +182,8 @@
 		},
 		{
 			"ImportPath": "github.com/prometheus/client_golang/prometheus",
-			"Comment": "0.7.0-74-g90c15b5",
-			"Rev": "90c15b5efa0dc32a7d259234e02ac9a99e6d3b82"
+			"Comment": "v0.8.0",
+			"Rev": "c5b7fccd204277076155f10851dad72b76a49317"
 		},
 		{
 			"ImportPath": "github.com/prometheus/client_model/go",

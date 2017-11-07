@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
 
-echo "this example depends on the master-replica example being run prior"
+
+echo "This example depends on the primary-replica example being run prior!"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -23,4 +23,4 @@ $DIR/cleanup.sh
 sudo mkdir $PV_PATH/pgpoolconfigdir
 sudo chown 7778 $PV_PATH/pgpoolconfigdir
 
-oc process -f $DIR/pgpool-rc.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/pgpool-rc.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

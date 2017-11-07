@@ -32,7 +32,7 @@
         "description": "the accessmode to give the backup PVC "
     }, {
         "name": "BACKUP_USER",
-        "value": "master",
+        "value": "primaryuser",
         "description": "the name of the database user to perform the backup"
     }, {
         "name": "BACKUP_PASS",

@@ -17,7 +17,7 @@
     }, {
         "name": "DB_NAME",
         "description": "the service name of the database to backup",
-        "value": "master"
+        "value": "primary"
     }, {
         "name": "PVC_NAME",
         "description": "the name to give the backup PVC ",
@@ -32,7 +32,7 @@
         "description": "the accessmode to give the backup PVC "
     }, {
         "name": "BACKUP_USER",
-        "value": "master",
+        "value": "primaryuser",
         "description": "the name of the database user to perform the backup"
     }, {
         "name": "BACKUP_PASS",
@@ -45,7 +45,7 @@
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use",
-        "value": "rhel7-9.6-1.4.1"
+        "value": "rhel7-9.6.5-1.6.0"
     }],
 
     "objects": [{

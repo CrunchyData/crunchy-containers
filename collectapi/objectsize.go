@@ -27,20 +27,17 @@ func ObjectSizeMetrics(logger *log.Logger, dbs []string, HOSTNAME string, dbConn
 	var metrics = make([]Metric, 0)
 
 	for i := 0; i < len(dbs); i++ {
-		metric := Metric{}
 
-		var dbSize int64
+		var dbSize float64
 		err := dbConn.QueryRow("select pg_database_size(d.datname)/1024/1024 from pg_database d where d.datname = '" + dbs[i] + "'").Scan(&dbSize)
 		if err != nil {
 			logger.Println("error: " + err.Error())
 			return metrics
 		}
 
-		metric.Hostname = HOSTNAME
-		metric.MetricName = "database_size"
-		metric.Units = "megabytes"
-		metric.Value = dbSize
-		metric.DatabaseName = dbs[i]
+		metric := NewMetric(HOSTNAME, "database_size", dbSize)
+		metric.AddLabel("Units", "megabytes")
+		metric.AddLabel("DatabaseName", dbs[i])
 		metrics = append(metrics, metric)
 	}
 
@@ -63,7 +60,7 @@ func TableSizesMetrics(logger *log.Logger, dbs []string, HOSTNAME string, USER s
 		defer d.Close()
 
 		var tableName string
-		var tableSize, indexSize, totalSize int64
+		var tableSize, indexSize, totalSize float64
 		err = d.QueryRow("SELECT tablename, "+
 			"(table_size/1024/1024) AS table_size, "+
 			"(indexes_size/1024/1024) AS indexes_size, "+
@@ -86,32 +83,23 @@ func TableSizesMetrics(logger *log.Logger, dbs []string, HOSTNAME string, USER s
 		}
 
 		if tableSize > 0 {
-			metric := Metric{}
-			metric.Hostname = HOSTNAME
-			metric.MetricName = "table_size"
-			metric.Units = "megabytes"
-			metric.Value = tableSize
-			metric.DatabaseName = dbs[i]
-			metric.TableName = tableName
+			metric := NewMetric(HOSTNAME, "table_size", tableSize)
+			metric.AddLabel("Units", "megabytes")
+			metric.AddLabel("DatabaseName", dbs[i])
+			metric.AddLabel("TableName", tableName)
 			metrics = append(metrics, metric)
 
-			metric2 := Metric{}
-			metric2.Hostname = HOSTNAME
-			metric2.MetricName = "index_size"
-			metric2.Units = "megabytes"
-			metric2.Value = indexSize
-			metric2.DatabaseName = dbs[i]
-			metric2.TableName = tableName
-			metrics = append(metrics, metric2)
+			metric = NewMetric(HOSTNAME, "index_size", float64(indexSize))
+			metric.AddLabel("Units", "megabytes")
+			metric.AddLabel("DatabaseName", dbs[i])
+			metric.AddLabel("TableName", tableName)
+			metrics = append(metrics, metric)
 
-			metric3 := Metric{}
-			metric3.Hostname = HOSTNAME
-			metric3.MetricName = "total_size"
-			metric3.Units = "megabytes"
-			metric3.Value = totalSize
-			metric3.DatabaseName = dbs[i]
-			metric3.TableName = tableName
-			metrics = append(metrics, metric3)
+			metric = NewMetric(HOSTNAME, "total_size", float64(totalSize))
+			metric.AddLabel("Units", "megabytes")
+			metric.AddLabel("DatabaseName", dbs[i])
+			metric.AddLabel("TableName", tableName)
+			metrics = append(metrics, metric)
 		}
 	}
 

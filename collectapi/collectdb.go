@@ -17,8 +17,11 @@ package collectapi
 
 import (
 	"database/sql"
-	_ "github.com/lib/pq"
+	"fmt"
 	"log"
+
+	"github.com/akhenakh/statgo"
+	_ "github.com/lib/pq"
 )
 
 func GetMetrics(logger *log.Logger, HOSTNAME string, USER string, PORT string, PASS string, conn *sql.DB) ([]Metric, error) {
@@ -26,7 +29,7 @@ func GetMetrics(logger *log.Logger, HOSTNAME string, USER string, PORT string, P
 	dbs := GetDatabases(logger, conn)
 	metrics := GetConnectionMetrics(logger, HOSTNAME, conn)
 	metric := GetConnectionUtilMetrics(logger, HOSTNAME, conn)
-	metrics = append(metrics, *metric)
+	metrics = append(metrics, metric)
 	sizeMetrics := GetDatabaseSizeMetrics(logger, dbs, HOSTNAME, conn)
 	for i := 0; i < len(sizeMetrics); i++ {
 		metrics = append(metrics, sizeMetrics[i])
@@ -55,6 +58,21 @@ func GetMetrics(logger *log.Logger, HOSTNAME string, USER string, PORT string, P
 	for i := 0; i < len(xlogMetrics); i++ {
 		metrics = append(metrics, xlogMetrics[i])
 	}
+
+	s := statgo.NewStat()
+
+	cpuMetrics := GetCPUMetrics(HOSTNAME, s)
+	metrics = append(metrics, cpuMetrics...)
+
+	memMetrics := GetMemoryMetrics(HOSTNAME, s)
+	metrics = append(metrics, memMetrics...)
+
+	netMetrics := GetNetworkIOMetrics(HOSTNAME, s)
+	metrics = append(metrics, netMetrics...)
+
+	storageMetrics := GetStorageMetrics(HOSTNAME, s)
+	metrics = append(metrics, storageMetrics...)
+
 	return metrics, err
 }
 
@@ -62,7 +80,7 @@ func PrintMetrics(logger *log.Logger, metrics []Metric) error {
 	var err error
 	logger.Println("writing metrics")
 	for i := 0; i < len(metrics); i++ {
-		metrics[i].Print()
+		fmt.Println(metrics[i])
 	}
 	return err
 }

@@ -75,6 +75,11 @@ ose_hack
 # set the postgres binary to match the NEW_VERSION
 
 case $NEW_VERSION in
+"10")
+	echo "setting PGBINNEW to " $NEW_VERSION
+	export PGBINNEW=/usr/pgsql-10/bin
+	export LD_LIBRARY_PATH=/usr/pgsql-10/lib
+	;;
 "9.6")
 	echo "setting PGBINNEW to " $NEW_VERSION
 	export PGBINNEW=/usr/pgsql-9.6/bin
@@ -117,7 +122,7 @@ if [[ -v PG_LOCALE ]]; then
 fi
 if [[ -v XLOGDIR ]]; then
 	if [ -d "$XLOGDIR" ]; then
-		options+=" --xlogdir="$XLOGDIR
+		options+=" --X "$XLOGDIR
 	else
 		echo "XLOGDIR not found! Using default pg_xlog"
 	fi

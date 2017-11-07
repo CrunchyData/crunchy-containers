@@ -20,7 +20,6 @@ fi
 docker pull crunchydata/crunchy-prometheus:$CCP_IMAGE_TAG
 docker pull crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG
 docker pull crunchydata/crunchy-grafana:$CCP_IMAGE_TAG
-#docker pull crunchydata/crunchy-dns:$CCP_IMAGE_TAG
 docker pull crunchydata/crunchy-collect:$CCP_IMAGE_TAG
 docker pull crunchydata/crunchy-pgbadger:$CCP_IMAGE_TAG
 docker pull crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG

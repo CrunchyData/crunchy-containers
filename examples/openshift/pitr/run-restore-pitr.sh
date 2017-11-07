@@ -12,17 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
+
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete pod master-pitr-restore
-oc delete service master-pitr-restore
-sudo rm -rf $PV_PATH/master-pitr-restore
+oc delete pod primary-pitr-restore
+oc delete service primary-pitr-restore
+sudo rm -rf $PV_PATH/primary-pitr-restore
 
 # create the recover pv and pvc
 envsubst < $DIR/recover-pv.json | oc create -f -
 oc create -f $DIR/recover-pvc.json
 
 # start up the database container
-oc process -f $DIR/master-pitr-restore.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/primary-pitr-restore.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

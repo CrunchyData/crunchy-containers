@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete job master-dba-vac
-oc delete job master-dba-backup
+oc delete job primary-dba-vac
+oc delete job primary-dba-backup
 oc delete sa dba-sa
-oc delete pod master-dba
-oc delete service master-dba
-oc delete pvc master-dba-backup-pvc
+oc delete pod primary-dba
+oc delete service primary-dba
+oc delete pvc primary-dba-backup-pvc
 
-../../waitforterm.sh master-dba oc
+../../waitforterm.sh primary-dba oc

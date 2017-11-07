@@ -1,27 +1,26 @@
 = Installation Guide - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
 :toc: left
-v1.4.1, {docdate}
+v1.6, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Project Setup & Docker Installation
 
 The crunchy-containers can run on different environments including:
 
- * Standalone Docker
+ * Docker
  * OpenShift Enterprise
- * Kubernetes 1.2.X
+ * OpenShift Origin
+ * Kubernetes 1.2+
+ * Helm
 
 In this document we list the basic installation steps required for these
 environments.
 
-=== Assumptions
+These installation instructions are developed and tested for the following operating systems:
 
-The install assumes the following about your host configuration:
-
- * Centos 7 or RHEL 7 VM
- * user called *someuser* has been created
- * *someuser* has sudo privileges with no password
+ * *CentOS 7*
+ * *RHEL 7*
 
 === Step 1 - Project Directory Structure
 
@@ -32,26 +31,33 @@ export GOPATH=$HOME/cdev
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
-export CCP_PGVERSION=9.6
-export CCP_VERSION=1.4.1
-export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PGVERSION-$CCP_VERSION
+export CCP_PGVERSION=10
+export CCP_PG_FULLVERSION=10.0
+export CCP_VERSION=1.6.0
+export CCP_IMAGE_PREFIX=crunchydata
+export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
+export CCP_CLI=kubectl
+export NAMESPACE=default
+export PV_PATH=/nfsfileshare
+export LOCAL_IP="hostname --ip-address"
+export REPLACE_CCP_IMAGE_PREFIX=crunchydata
 ....
-You will then need to log out and back in for the changes to your .bashrc
+It will be necessary to log out and back in for the changes to your .bashrc
 file to take effect.
 
 Next, set up a project directory structure and pull down the project:
 ....
 mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
 cd $GOPATH
-sudo yum -y install golang git docker postgresql
+sudo yum -y install golang git docker postgresql-server
 go get github.com/tools/godep
 cd src/github.com
 mkdir crunchydata
 cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 1.4.1
+git checkout 1.6.0
 godep restore
 ....
 
@@ -62,9 +68,14 @@ page.*
 
 === Step 2 - Install the Host Dependencies
 
-Next, install system dependencies:
+As good practice, at this point you'll update your system.
 ....
 sudo yum -y update
+....
+
+After that, it's necessary to add the *docker* group and give your user access
+to that group (here referenced as *someuser*):
+....
 sudo groupadd docker
 sudo usermod -a -G docker someuser
 ....
@@ -91,13 +102,30 @@ man docker-storage-setup
 Follow the instructions available link:https://docs.openshift.com/container-platform/3.4/install_config/install/host_preparation.html#configuring-docker-storage[on the main OpenShift documentation page]
 to configure Docker storage appropriately.
 
-My typical process for setting up Docker storage is as follows:
+These steps are illustrative of a typical process for setting up Docker storage. You will need to run these commands as root.
 
- * add an extra IDE drive to my VM
- * fdisk /dev/sd? to format the drive
- * vgcreate /dev/sd?1 to create a volume group on the new drive partition
- * add VG=docker-vg to /etc/sysconfig/docker-storage-setup
- * run docker-storage-setup to use that new volume group
+First, add an extra virtual hard disk to your virtual machine (see link:http://catlingmindswipe.blogspot.com/2012/02/how-to-create-new-virtual-disks-in.html[this blog post] for tips on how to do so).
+
+Run this command to format the drive, where /dev/sd? is the new hard drive that was added:
+
+....
+fdisk /dev/sd?
+....
+
+Next, create a volume group on the new drive partition within the fdisk utility:
+
+....
+vgcreate docker-vg /dev/sd?
+....
+
+Then, you'll need to edit the docker-storage-setup configuration file in order to override default options. Add these two lines to **/etc/sysconfig/docker-storage-setup**:
+
+....
+DEVS=/dev/sd?
+VG=docker-vg
+....
+
+Finally, run the command **docker-storage-setup** to use that new volume group. The results should state that the physical volume /dev/sd? and the volume group docker-vg have both been successfully created.
 
 Next, we enable and start up Docker:
 ....
@@ -130,35 +158,26 @@ make all
 After this, you will have all the Crunchy containers built and are ready
 for use in a *standalone Docker* environment.
 
-== OpenShift Environment
+=== Step 4 - Configure NFS for Persistence
 
-=== Installation
+NFS is required for some of the examples, including the backup and restore
+containers.
 
-See the OSE installation guide for details on how to install
-OSE on your host.  The main instructions are here:
-
-https://docs.openshift.com/enterprise/3.2/install_config/install/index.html
-
-*Or*, if you'd prefer to install OpenShift Origin, the easiest way to get
-OpenShift Origin up and running is found here:
-https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md
-
-For examples and tips on how to run OpenShift Enterprise & Origin, please look
-at the examples.adoc documentation.
-
-=== Configure NFS for Persistence
-
-NFS is required for some of the OpenShift examples, those dealing with
-backups and restores will require a working NFS for example.
-
-First, if you are running your NFS system with SELinux
-in enforcing mode, you will need to run the following command
+First, if you are running your NFS system with SELinux in enforcing mode, you will need to run the following command
 to allow NFS write permissions:
 ....
 sudo setsebool -P virt_use_nfs 1
 ....
 
-Next, you will need to set the permissions of your NFS
+The necessary dependencies will need to be installed and started next:
+....
+sudo setsebool -P virt_use_nfs 1
+sudo yum -y install nfs-utils libnfsidmap
+sudo systemctl enable rpcbind nfs-server
+sudo systemctl start rpcbind nfs-server rpc-statd nfs-idmapd
+....
+
+You will then need to set the permissions of your NFS
 path so that your pods can have write access.  For the
 Crunchy examples, the *nfsnobody* GUI was chosen as
 an example.  Pods will reference the *nfsnobody* GID (65534)
@@ -168,7 +187,8 @@ and therefore be able to write to the NFS persistent volumes.
 
 The permissions on the NFS path are set as follows:
 ....
-drwxrwx---.   3 nfsnobody nfsnobody   23 Dec 16 11:28 nfsfileshare
+sudo mkdir /nfsfileshare
+sudo chmod 777 /nfsfileshare
 ....
 
 Most of the Crunchy containers run as the postgres UID (26), but you
@@ -179,7 +199,22 @@ The case of Amazon file systems is different, for that you use the
 *fsGroup* security context setting but the idea for allowing
 write permissions is the same.
 
-Here are the instructions I use when setting up NFS:
+You will then need to modify the /etc/exports file.
+....
+sudo vi /etc/exports
+....
+
+The /etc/exports file should contain a line similar to this one except with the applicable IP address specified:
+....
+/nfsfileshare 192.168.122.9(rw,sync)
+....
+
+After saving and closing the file, you will need to re-export all directories:
+....
+sudo exportfs -r
+....
+
+Detailed instructions that you can use for setting up a NFS server on Centos 7 are provided in the following link.
 
 http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html
 
@@ -190,7 +225,6 @@ https://github.com/openshift/origin/tree/master/examples/wordpress/nfs
 The examples specify a test NFS server running at IP address 192.168.0.103.
 
 On that server, the /etc/exports file looks like this:
-
 ....
 /nfsfileshare *(rw,sync)
 ....
@@ -204,12 +238,26 @@ if you are running your client on a VM, you will need to
 add 'insecure' to the exportfs file on the NFS server, this is because
 of the way port translation is done between the VM host and the VM instance.
 
-see this for more details:
+For more details on this bug, please see the following link.
 
 http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting
 
-=== Examples
+A suggested best practice for tuning NFS for PostgreSQL is to configure the PostgreSQL fstab
+mount options like so:
 
+....
+proto=tcp,suid,rw,vers=3,proto=tcp,timeo=600,retrans=2,hard,fg,rsize=8192,wsize=8192
+....
+
+Network options:
+....
+MTU=9000
+....
+
+If interested in mounting the same NFS share multiple times on the same mount point,
+look into the link:https://www.novell.com/support/kb/doc.php?id=7010210[noac mount option].
+
+=== Step 5 - Persistent Volume Claims
 
 For running the examples that require persistent volumes, you
 will need to run the following script:
@@ -218,6 +266,139 @@ cd $CCPROOT/examples/pv
 ./create-pv.sh
 ./create-pvc.sh
 ....
+
+View the README.txt for command-line usage.
+
+== OpenShift Environment
+
+=== Installation
+
+See the OpenShift installation guide for details on how to install
+OpenShift Enterprise on your host.  The main instructions are here:
+
+https://docs.openshift.com/container-platform/3.6/install_config/install/quick_install.html
+
+For testing purposes, OpenShift Origin is the simplest to install and configure. The
+easiest way to get OpenShift Origin up and running is through the link:https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md[oc cluster up] cluster configuration.
+
+For examples and tips on how to run OpenShift Enterprise & Origin, please look
+at the link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc[Examples Documentation].
+
+==== System policies for PVC creation/listing
+
+In order to allow the *system* user to be able to create and list
+persistent volumes using *OpenShift version 3.3+*, you have to enter
+these commands as the *root* user after installation in order to
+modify the policies.
+....
+oadm policy add-role-to-user cluster-reader system
+oc describe clusterPolicyBindings :default
+oadm policy add-cluster-role-to-user cluster-reader system
+oc describe clusterPolicyBindings :default
+oc describe clusterPolicyBindings :default
+oadm policy add-cluster-role-to-user cluster-admin system
+....
+
+==== Persistent volume matching
+
+Restoring a database from an NFS backup requires the building
+of a PV which maps to the NFS backup archive path.  For example,
+if you have a backup at /backups/pg-foo/2016-01-29:22:34:20
+then we create a PV that maps to that NFS path.  We also use
+a "label" on the PV so that the specific backup PV can be identified.
+
+We use the pod name in the label value to make the PV unique.  This
+way, the related PVC can find the right PV to map to and not some other
+PV.  In the PVC, we specify the same "label" which lets Kubernetes
+match to the correct PV.
+
+=== anyuid permissions
+
+One suggested method to use in order to grant a user permission to use the *anyuid* SCC:
+....
+oc adm policy add-scc-to-group anyuid system:authenticated
+....
+
+This says that any authenticated user can run with the anyuid SCC which lets
+them create PVCs and use the *fsGroup* setting for the PostgreSQL containers to
+work using NFS.
+
+=== DNS Configuration
+
+==== DNS host entry
+
+If your OpenShift environment can not resolve your hostname via
+a DNS server (external to OpenShift!), you will get errors when trying
+to create a DeploymentConfig.
+
+Because of this, it is advisable to either install dnsmasq
+and reconfigure OpenShift, or run a DNS server on another host and add
+the OpenShift host entry to that DNS server. The *skybridge2* Docker
+container is sufficient for this purpose.
+
+*Note*: Remember to adjust your /etc/resolv.conf to specify the new DNS
+server.
+
+==== OpenShift v3
+
+The following DNS modifications are necessary for versions prior to OpenShift Enterprise 3.3.
+
+Luke Meyer from Redhat wrote an excellent blog on how to configure dnsmasq and OpenShift;
+this is available link:http://developers.redhat.com/blog/2015/11/19/dns-your-openshift-v3-cluster/[here].
+
+Key things included in this blog are how to:
+
+ * Configure DHCP to include the local IP address in /etc/resolv.conf upon boot
+ * Configure dnsmasq
+ * Configure OpenShift DNS to listen on another port
+
+A sample setup would typically have the following IP addresses/ports configured:
+
+ * OpenShift DNS listening on 127.0.0.1:8053
+ * dnsmasq listening on the local IP address 192.168.0.109:53
+
+Therefore in /etc/dhcp/dhclient.conf it is necessary to append the following line in
+this sample setup:
+
+....
+prepend domain-name-servers 192.168.0.109;
+....
+
+If you don't have your DNS configured correctly, replication controllers
+and deployment configurations will not work as expected.
+
+==== OpenShift Origin
+
+The official instructions for configuring DNS on your OpenShift Origin cluster can be
+found link:https://docs.openshift.org/latest/install_config/install/prerequisites.html#prereq-dns[here].
+
+== Kubernetes Environment
+
+=== Installation
+
+link:https://kubernetes.io/docs/setup/independent/install-kubeadm/[kubeadm] or link:https://kubernetes.io/docs/tasks/tools/install-minikube/[minikube] are simple methods
+for setting up a test environment of Kubernetes.
+
+See the following links for installation instructions:
+
+ * https://github.com/Kubernetes/minikube
+ * http://linoxide.com/containers/setup-kubernetes-kubeadm-centos/
+ * https://kubernetes.io/docs/getting-started-guides/kubeadm/
+
+=== Examples
+
+The namespace is set for the examples within your *bashrc* file; if you followed the
+installation instructions exactly, this will be set to *default*. Set this variable according to your
+project configuration.
+
+Note, some of the examples assume an NFS file system for creating
+persistent volumes.  See above for details on setting NFS permissions and
+the use of *supplementalGroups* within pod specs.
+
+Visit the link:examples.adoc[examples documentation] for different use cases
+and examples.
+
+=== Minishift Configuration
 
 If you are wanting to run the examples on a Minishift instance
 you will need to create the PVs using hostPath as follows:
@@ -229,7 +410,7 @@ oc login -u developer
 ....
 
 Additional steps are required to allow persistence to work
-on minishift including:
+on Minishift including:
 ....
 oc login -u system:admin
 oc edit scc restricted
@@ -243,39 +424,43 @@ to set the host path permissions as follows:
 chmod 777 /mnt/sda1/data
 ....
 
-
 The NAMESPACE environment variable is set to indicate which OpenShift
 project you want various example objects to use.  This variable
-is set to *default* within the *examples/envvars.sh* script.  Set this
-to match your project configuration.
+is set to *default* within your *bashrc* file if you followed the installation
+instructions exactly. Set this to match your project configuration.
 
 See link:examples.adoc[here] to view the documentation showing various
 examples.
 
-== Kubernetes Environment
+=== Helm
 
-=== Installation
+*Installation*
 
-I recommend using kubeadm or minikube to try the examples out.
+Once you have your Kubernetes environment configured, it is simple to get
+Helm up and running. Please refer to link:https://docs.bitnami.com/kubernetes/get-started-kubernetes/#step-4-install-helm-and-tiller[this document]
+to get Helm installed and configured properly.
 
-See the following links for installation instructions:
+=== Permissions
 
- * https://github.com/Kubernetes/minikube
- * http://linoxide.com/containers/setup-kubernetes-kubeadm-centos/
- * https://kubernetes.io/docs/getting-started-guides/kubeadm/
+As of Kubernetes 1.6, RBAC security is enabled on most Kubernetes
+installations.  With RBAC, the *postgres-operator* needs permissions
+granted to it to enable ThirdPartyResources viewing.  You can grant the
+*default* Service Account a cluster role as one way to enable
+permissions for the operator. This coarse level of granting permissions
+is not recommended for production. This command will enable
+the *default* Service Account to have the *cluster-admin* role:
+....
+kubectl create clusterrolebinding permissive-binding \
+	--clusterrole=cluster-admin \
+	--user=admin \
+	--user=kubelet \
+       	--group=system:serviceaccounts:default
+....
 
-=== Examples
+=== DNS
 
-The namespace is set for the examples within the *examples/envvars.sh* script
-and defaults to *default*.  Set this variable according to your
-project configuration.
-
-Note, some of the examples assume an NFS file system for creating
-persistent volumes.  See above for details on setting NFS permissions and
-the use of *supplementalGroups* within pod specs.
-
-Visit the link:examples.adoc[examples documentation] for different use cases
-and examples.
+Please see link:https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/[here]
+to view the official documentation regarding configuring DNS for your Kubernetes cluster.
 
 ===  Tips
 

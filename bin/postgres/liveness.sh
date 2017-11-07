@@ -15,4 +15,15 @@
 
 source /opt/cpm/bin/setenv.sh
 
-$PGROOT/bin/pg_isready --dbname=postgres --username=$PG_USER
+function ose_hack() {
+        export USER_ID=$(id -u)
+        export GROUP_ID=$(id -g)
+        envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
+        export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
+        export NSS_WRAPPER_PASSWD=/tmp/passwd
+        export NSS_WRAPPER_GROUP=/etc/group
+}
+
+ose_hack
+
+$PGROOT/bin/pg_isready -h $HOSTNAME --dbname=postgres --username=$PG_USER

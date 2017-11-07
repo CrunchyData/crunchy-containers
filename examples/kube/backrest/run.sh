@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
 kubectl create configmap backrestconf --from-file pgbackrest.conf
 
-envsubst < $DIR/master-pod.json | kubectl create -f -
-kubectl create -f $DIR/master-service.json 
+envsubst < $DIR/primary-pod.json | kubectl create -f -
+kubectl create -f $DIR/primary-service.json 

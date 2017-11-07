@@ -15,7 +15,7 @@
 
 echo "cleaning up example..."
 
-CONTAINER_NAME=master-restore
+CONTAINER_NAME=primary-restore
 CONTAINER_VOLUME=$CONTAINER_NAME-volume
 
 docker stop $CONTAINER_NAME

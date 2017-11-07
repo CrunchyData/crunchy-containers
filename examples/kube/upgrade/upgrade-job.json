@@ -31,7 +31,7 @@
                 },
                 "containers": [{
                     "name": "upgrade-job",
-                    "image": "crunchydata/crunchy-upgrade:$CCP_IMAGE_TAG",
+                    "image": "$CCP_IMAGE_PREFIX/crunchy-upgrade:$CCP_IMAGE_TAG",
                     "volumeMounts": [
 {
                         "mountPath": "/pgolddata",
@@ -46,10 +46,10 @@
 ],
                     "env": [{
                         "name": "OLD_DATABASE_NAME",
-                        "value": "master-pvc"
+                        "value": "primary-pvc"
                     }, {
                         "name": "NEW_DATABASE_NAME",
-                        "value": "master-upgrade"
+                        "value": "primary-upgrade"
                     }, {
                         "name": "OLD_VERSION",
                         "value": "9.5"

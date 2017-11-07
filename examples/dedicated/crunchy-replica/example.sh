@@ -14,9 +14,9 @@
 # limitations under the License.
 
 # this is an example of creating a postgres database using
-# the crunchy-master template from the CLI
+# the crunchy-primary template from the CLI
 
-source $CCPROOT/examples/envvars.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 PROJECT=jeff-project
@@ -24,14 +24,14 @@ PROJECT=jeff-project
 #oc process --parameters -n $PROJECT crunchy-replica
 
 oc process -n $PROJECT crunchy-replica \
-	CCP_IMAGE_TAG=rhel7-9.6-1.4.0 \
+	CCP_IMAGE_TAG=rhel7-9.6.5-1.6.0 \
 	CCP_IMAGE_PREFIX=172.30.240.45:5000/$PROJECT \
 	CCP_IMAGE_NAME=crunchy-postgres \
 	SERVICE_NAME=replica \
-	PG_MASTER_HOST=example \
-	PG_MASTER_PORT=5432 \
-	PG_MASTER_USER=master \
-	PG_MASTER_PASSWORD=password \
+	PG_PRIMARY_HOST=example \
+	PG_PRIMARY_PORT=5432 \
+	PG_PRIMARY_USER=primaryuser \
+	PG_PRIMARY_PASSWORD=password \
 	PVC_NAME=replica-pvc \
 	PVC_SIZE=300M \
 	PVC_ACCESS_MODE=ReadWriteMany \

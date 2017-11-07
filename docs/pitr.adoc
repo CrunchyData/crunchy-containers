@@ -1,6 +1,6 @@
 = PITR (Point in Time Recovery) Support in Crunchy Container Suite
 Crunchy Data Solutions, Inc.
-v1.4.1, {docdate}
+v1.6, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Description
@@ -77,6 +77,11 @@ make the database resume as a writable database, run the following
 sql command:
 ....
 select pg_xlog_replay_resume();
+....
+
+This command changed for PG10 to:
+....
+postgres=# select pg_wal_replay_resume();
 ....
 
 === Examples

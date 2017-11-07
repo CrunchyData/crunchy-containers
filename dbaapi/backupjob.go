@@ -27,6 +27,7 @@ import (
 
 type BackupJobParms struct {
 	JOB_HOST           string
+	CCP_IMAGE_PREFIX      string
 	CCP_IMAGE_TAG      string
 	CMD                string
 	PG_USER            string
@@ -41,6 +42,7 @@ type BackupJobParms struct {
 type BackupJob struct {
 	Logger        *log.Logger
 	Host          string
+	CCP_IMAGE_PREFIX string
 	CCP_IMAGE_TAG string
 	Cmd           string
 }
@@ -53,6 +55,7 @@ func (t BackupJob) Run() {
 		panic(err)
 	}
 	parms.CCP_IMAGE_TAG = t.CCP_IMAGE_TAG
+	parms.CCP_IMAGE_PREFIX = t.CCP_IMAGE_PREFIX
 
 	var s = getBackupJobTemplate(t.Logger)
 	var pvc = getBackupJobPVCTemplate(t.Logger)
@@ -132,7 +135,7 @@ func createBackupJob(parms *BackupJobParms, templateFile string,
 
 	var cmd *exec.Cmd
 	cmd = exec.Command("create-backup-job.sh", templateFile,
-		templatePVCFile, parms.JOB_HOST, environ, parms.CCP_IMAGE_TAG)
+		templatePVCFile, parms.JOB_HOST, environ, parms.CCP_IMAGE_TAG, parms.CCP_IMAGE_PREFIX)
 
 	var out bytes.Buffer
 	var stderr bytes.Buffer
@@ -157,6 +160,10 @@ func GetBackupJobParms(logger *log.Logger) (*BackupJobParms, error) {
 	parms.CCP_IMAGE_TAG = os.Getenv("CCP_IMAGE_TAG")
 	if parms.CCP_IMAGE_TAG == "" {
 		return parms, errors.New("CCP_IMAGE_TAG env var not found")
+	}
+	parms.CCP_IMAGE_PREFIX = os.Getenv("CCP_IMAGE_PREFIX")
+	if parms.CCP_IMAGE_PREFIX == "" {
+		return parms, errors.New("CCP_IMAGE_PREFIX env var not found")
 	}
 	parms.PG_USER = os.Getenv("PG_USER")
 	if parms.PG_USER == "" {

@@ -12,14 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
+
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+# Create 'watch-hooks-configmap'.
+oc create configmap watch-hooks-configmap \
+	--from-file=./hooks/watch-pre-hook \
+	--from-file=./hooks/watch-post-hook
+
 oc create -f $DIR/watch-sa.json
 oc policy add-role-to-group edit system:serviceaccounts -n $NAMESPACE
 oc process -f $DIR/watch.json \
 	-p NAMESPACE=$NAMESPACE \
+	-p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX \
 	-p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

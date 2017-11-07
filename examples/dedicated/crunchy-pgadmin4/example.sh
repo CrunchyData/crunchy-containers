@@ -14,9 +14,9 @@
 # limitations under the License.
 
 # this is an example of creating a postgres database using
-# the crunchy-master template from the CLI
+# the crunchy-primary template from the CLI
 
-source $CCPROOT/examples/envvars.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 PROJECT=jeff-project
@@ -25,7 +25,7 @@ PROJECT=jeff-project
 
 oc process -n $PROJECT crunchy-pgadmin4 \
 	NAME=pgadmin4 \
-	CCP_IMAGE_TAG=rhel7-9.6-1.4.0 \
+	CCP_IMAGE_TAG=rhel7-9.6.5-1.6.0 \
 	CCP_IMAGE_PREFIX=172.30.240.45:5000/$PROJECT \
 	PVC_NAME=pgadmin4-pvc \
 	PVC_SIZE=300M \

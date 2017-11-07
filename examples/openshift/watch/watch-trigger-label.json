@@ -38,20 +38,20 @@
                     "name": "SLEEP_TIME",
                     "value": "20"
                 }, {
-                    "name": "PG_MASTER_SERVICE",
-                    "value": "ms-master"
+                    "name": "PG_PRIMARY_SERVICE",
+                    "value": "ms-primary"
                 }, {
-                    "name": "PG_SLAVE_SERVICE",
+                    "name": "PG_REPLICA_SERVICE",
                     "value": "ms-replica"
                 }, {
-                    "name": "SLAVE_TO_TRIGGER_LABEL",
+                    "name": "REPLICA_TO_TRIGGER_LABEL",
                     "value": "ms-replica"
                 }, {
-                    "name": "PG_MASTER_PORT",
+                    "name": "PG_PRIMARY_PORT",
                     "value": "5432"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "master"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "primaryuser"
                 }, {
                     "name": "PG_DATABASE",
                     "value": "postgres"

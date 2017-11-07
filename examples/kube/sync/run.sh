@@ -12,15 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
+
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create -f $DIR/master-sync-service.json
+kubectl create -f $DIR/primary-sync-service.json
 kubectl create -f $DIR/replica-sync-service.json
 
-envsubst < $DIR/master-sync-pod.json | kubectl create -f -
+envsubst < $DIR/primary-sync-pod.json | kubectl create -f -
 envsubst < $DIR/replica-async-pod.json | kubectl create -f -
 envsubst < $DIR/replica-sync-pod.json | kubectl create -f -

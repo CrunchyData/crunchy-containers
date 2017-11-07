@@ -13,13 +13,13 @@
         },
         "volumes": [{
             "name": "pgconf",
-            "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc"
-            }
+			"configMap": {
+				"name": "pgbouncer-configmap"
+			}
         }],
         "containers": [{
-            "name": "server",
-            "image": "crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG",
+            "name": "pgbouncer",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-pgbouncer:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5432,
                 "protocol": "TCP"
@@ -37,22 +37,21 @@
                 "name": "SLEEP_TIME",
                 "value": "12"
             }, {
-                "name": "PG_MASTER_USER",
-                "value": "master"
+                "name": "PG_PRIMARY_USER",
+                "value": "primaryuser"
             }, {
-                "name": "PG_MASTER_PORT",
+                "name": "PG_PRIMARY_PORT",
                 "value": "5432"
             }, {
-                "name": "PG_MASTER_SERVICE",
-                "value": "ms-master"
+                "name": "PG_PRIMARY_SERVICE",
+                "value": "ms-primary"
             }, {
-                "name": "PG_SLAVE_SERVICE",
+                "name": "PG_REPLICA_SERVICE",
                 "value": "ms-replica"
             }],
             "volumeMounts": [{
-                "mountPath": "/pgconf",
                 "name": "pgconf",
-                "readOnly": true
+                "mountPath": "/pgconf/bouncerconfig"
             }]
         }]
     }

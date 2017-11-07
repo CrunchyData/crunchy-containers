@@ -12,13 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
+
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-sudo rm -rf $PV_PATH/csmaster
+sudo rm -rf $PV_PATH/csprimary
 
 # copy the custom config file to the PVC path
 sudo cp $DIR/postgresql.conf $PV_PATH
@@ -27,7 +27,7 @@ sudo cp $DIR/setup.sql $PV_PATH
 sudo chown nfsnobody:nfsnobody $PV_PATH/postgresql.conf $PV_PATH/pg_hba.conf $PV_PATH/setup.sql
 sudo chmod g+r $PV_PATH/postgresql.conf $PV_PATH/pg_hba.conf $PV_PATH/setup.sql
 
-oc create -f $DIR/master-service.json
+oc create -f $DIR/primary-service.json
 oc create -f $DIR/replica-service.json
-oc process -f $DIR/master-pod.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-oc process -f $DIR/sync-replica-pod.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/primary-pod.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/sync-replica-pod.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

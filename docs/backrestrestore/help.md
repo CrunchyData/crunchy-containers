@@ -1,11 +1,10 @@
-% backrest restore (1) Container Image Pages
-% Chris Fort
-% April 23, 2017
+= backrest restore (1)
+Chris Fort
+April 23, 2017
+== NAME
+backrest-restore - backrest-restore container image
 
-# NAME
-backrest-restore \- backrest-restore container image
-
-# DESCRIPTION
+== DESCRIPTION
 The backrest-restore image provides a means of performing a backrest restore
 
 The container itself consists of:
@@ -16,11 +15,11 @@ The container itself consists of:
 
 Files added to the container during docker build include: /help.1.
 
-# USAGE
+== USAGE
 See the crunchy docs.
 
 
-# LABELS
+== LABELS
 The starter container includes the following LABEL settings:
 
 That atomic command runs the docker command set in this label:
@@ -31,10 +30,8 @@ The registry location and name of the image. For example, Name="crunchydata/back
 
 `Version=`
 
-The Red Hat Enterprise Linux version from which the container was built. For example, Version="7.2".
+The Red Hat Enterprise Linux version from which the container was built. For example, Version="7.3".
 
 `Release=`
 
-The specific release number of the container. For example, Release="1.4.0"
-
-
+The specific release number of the container. For example, Release="1.6.0"

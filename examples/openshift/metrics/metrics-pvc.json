@@ -10,10 +10,16 @@
             "tags": "database,postgresql,replication"
         }
     },
-    "parameters": [{
+    "parameters": [
+{
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use"
-    }],
+    },
+{
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "The image prefix to use"
+    }
+],
     "objects": [{
         "kind": "Service",
         "apiVersion": "v1",
@@ -67,7 +73,7 @@
 
             "containers": [{
                 "name": "crunchy-prometheus",
-                "image": "crunchydata/crunchy-prometheus:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-prometheus:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 9090,
                     "protocol": "TCP"
@@ -80,7 +86,7 @@
                 }]
             }, {
                 "name": "crunchy-promgateway",
-                "image": "crunchydata/crunchy-promgateway:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-promgateway:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 9091,
                     "protocol": "TCP"
@@ -89,7 +95,7 @@
                 "volumeMounts": []
             }, {
                 "name": "crunchy-grafana",
-                "image": "crunchydata/crunchy-grafana:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-grafana:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 3000,
                     "protocol": "TCP"

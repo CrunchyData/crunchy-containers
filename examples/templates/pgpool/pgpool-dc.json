@@ -31,13 +31,13 @@
         "description": "The name of the pgpool Service",
         "value": "pgpool-dc"
     }, {
-        "name": "PG_MASTER_SERVICE_NAME",
-        "description": "The database master configured in pgpool",
-        "value": "pgmaster"
+        "name": "PG_PRIMARY_SERVICE_NAME",
+        "description": "The database primary configured in pgpool",
+        "value": "pgprimary"
     }, {
-        "name": "PG_SLAVE_SERVICE_NAME",
-        "description": "The database slave configured in pgpool",
-        "value": "pgslave"
+        "name": "PG_REPLICA_SERVICE_NAME",
+        "description": "The database replica configured in pgpool",
+        "value": "pgreplica"
     }],
     "objects": [{
         "kind": "Service",
@@ -104,11 +104,11 @@
                             "name": "PG_PASSWORD",
                             "value": "${PG_PASSWORD}"
                         }, {
-                            "name": "PG_MASTER_SERVICE_NAME",
-                            "value": "${PG_MASTER_SERVICE_NAME}"
+                            "name": "PG_PRIMARY_SERVICE_NAME",
+                            "value": "${PG_PRIMARY_SERVICE_NAME}"
                         }, {
-                            "name": "PG_SLAVE_SERVICE_NAME",
-                            "value": "${PG_SLAVE_SERVICE_NAME}"
+                            "name": "PG_REPLICA_SERVICE_NAME",
+                            "value": "${PG_REPLICA_SERVICE_NAME}"
                         }],
                         "resources": {},
                         "terminationMessagePath": "/dev/termination-log",

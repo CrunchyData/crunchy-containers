@@ -14,4 +14,5 @@
 
 kubectl delete service pgpool
 kubectl delete pod pgpool
+kubectl delete configmap pgpool-conf
 $CCPROOT/examples/waitforterm.sh pgpool kubectl

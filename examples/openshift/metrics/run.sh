@@ -16,10 +16,10 @@
 #
 # this example creates the metrics backends using emptyDir volumes
 #
-source $CCPROOT/examples/envvars.sh
+
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-oc process -f $DIR/metrics.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/metrics.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX | oc create -f -

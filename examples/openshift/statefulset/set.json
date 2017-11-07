@@ -18,14 +18,14 @@
         	"serviceAccount": "pgset-sa",
                 "containers": [{
                     "name": "pgset",
-                    "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
+                    "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
                     "ports": [{
                         "containerPort": 5432,
                         "name": "postgres"
                     }],
                     "env": [{
-                        "name": "PG_MASTER_USER",
-                        "value": "master"
+                        "name": "PG_PRIMARY_USER",
+                        "value": "primaryuser"
                     }, {
                         "name": "PGHOST",
                         "value": "/tmp"
@@ -33,13 +33,13 @@
                         "name": "PG_MODE",
                         "value": "set"
                     }, {
-                        "name": "PG_MASTER_HOST",
-                        "value": "pgset-master"
+                        "name": "PG_PRIMARY_HOST",
+                        "value": "pgset-primary"
                     }, {
-                        "name": "PG_MASTER_PORT",
+                        "name": "PG_PRIMARY_PORT",
                         "value": "5432"
                     }, {
-                        "name": "PG_MASTER_PASSWORD",
+                        "name": "PG_PRIMARY_PASSWORD",
                         "value": "password"
                     }, {
                         "name": "PG_USER",

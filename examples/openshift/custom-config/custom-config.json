@@ -11,15 +11,15 @@
         }
     },
     "parameters": [{
-        "name": "PG_MASTER_USER",
-        "description": "The username used for master-slave replication",
-        "value": "master"
+        "name": "PG_PRIMARY_USER",
+        "description": "The username used for primary / replica replication",
+        "value": "primaryuser"
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use"
     }, {
-        "name": "PG_MASTER_PASSWORD",
-        "description": "The password for the PG master user",
+        "name": "PG_PRIMARY_PASSWORD",
+        "description": "The password for the PG primary user",
         "value": "password"
     }, {
         "name": "PG_USER",
@@ -27,7 +27,7 @@
         "value": "testuser"
     }, {
         "name": "PG_PASSWORD",
-        "description": "The password for the PG master user",
+        "description": "The password for the PG primary user",
         "value": "password"
     }, {
         "name": "PG_DATABASE",
@@ -35,7 +35,7 @@
         "value": "userdb"
     }, {
         "name": "PG_ROOT_PASSWORD",
-        "description": "The password for the PG adminitrator",
+        "description": "The password for the PG administrator",
         "value": "password"
     }],
 
@@ -87,7 +87,7 @@
                 "emptyDir": {}
             }],
             "containers": [{
-                "name": "custom-config",
+                "name": "postgres",
                 "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
@@ -97,14 +97,17 @@
                     "name": "PGHOST",
                     "value": "/tmp"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
+                }, {
+                    "name": "PG_PRIMARY_PORT",
+                    "value": "5432"
                 }, {
                     "name": "PG_MODE",
-                    "value": "master"
+                    "value": "primary"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
-                    "value": "${PG_MASTER_PASSWORD}"
+                    "name": "PG_PRIMARY_PASSWORD",
+                    "value": "${PG_PRIMARY_PASSWORD}"
                 }, {
                     "name": "PG_USER",
                     "value": "${PG_USER}"

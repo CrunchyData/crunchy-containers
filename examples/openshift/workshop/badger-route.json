@@ -2,15 +2,15 @@
     "kind": "Route",
     "apiVersion": "v1",
     "metadata": {
-        "name": "master",
+        "name": "primary",
         "labels": {
-            "name": "master"
+            "name": "primary"
         }
     },
     "spec": {
         "to": {
             "kind": "Service",
-            "name": "master"
+            "name": "primary"
         },
         "port": {
             "targetPort": "pgbadger"

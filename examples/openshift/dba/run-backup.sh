@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
+
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -32,6 +32,7 @@ oc policy add-role-to-user view system:serviceaccount:$NAMESPACE:dba-sa
 oadm policy add-cluster-role-to-user cluster-admin system:serviceaccount:$NAMESPACE:dba-sa
 
 oc process \
+	-p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX \
 	-p CCP_IMAGE_TAG=$CCP_IMAGE_TAG \
 	-p NAMESPACE=$NAMESPACE \
-	-f $DIR/master-dba-backup.json | oc create -f -
+	-f $DIR/primary-dba-backup.json | oc create -f -

@@ -2,24 +2,27 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "simple-master-example",
+        "name": "simple-primary-example",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy PostgreSQL Master Example",
+            "description": "Crunchy PostgreSQL Primary Example",
             "iconClass": "icon-database",
             "tags": "database,postgresql,replication"
         }
     },
     "parameters": [{
-        "name": "PG_MASTER_USER",
-        "description": "The username used for master-slave replication",
-        "value": "master"
+        "name": "PG_PRIMARY_USER",
+        "description": "The username used for primary / replica replication",
+        "value": "primaryuser"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "image prefix to use"
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use"
     }, {
-        "name": "PG_MASTER_PASSWORD",
-        "description": "The password for the PG master user",
+        "name": "PG_PRIMARY_PASSWORD",
+        "description": "The password for the PG primary user",
         "value": "password"
     }, {
         "name": "PG_USER",
@@ -27,7 +30,7 @@
         "value": "testuser"
     }, {
         "name": "PG_PASSWORD",
-        "description": "The password for the PG master user",
+        "description": "The password for the PG primary user",
         "value": "password"
     }, {
         "name": "PG_DATABASE",
@@ -35,7 +38,7 @@
         "value": "userdb"
     }, {
         "name": "PG_ROOT_PASSWORD",
-        "description": "The password for the PG adminitrator",
+        "description": "The password for the PG administrator",
         "value": "password"
     }],
 
@@ -75,8 +78,8 @@
         },
         "spec": {
             "containers": [{
-                "name": "configmap",
-                "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "name": "postgres",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
                         "command": [
@@ -103,13 +106,16 @@
                     "name": "PGHOST",
                     "value": "/tmp"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "${PG_MASTER_USER}"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "${PG_PRIMARY_USER}"
+                }, {
+                    "name": "PG_PRIMARY_PORT",
+                    "value": "5432"
                 }, {
                     "name": "PG_MODE",
-                    "value": "master"
+                    "value": "primary"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
+                    "name": "PG_PRIMARY_PASSWORD",
                     "value": "password"
                 }, {
                     "name": "PG_USER",

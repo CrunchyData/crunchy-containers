@@ -53,7 +53,7 @@ else
 fi
 
 if [ -v FAILOVER ]; then
-	echo "FAILOVER is set and a watch will be started on the master"
+	echo "FAILOVER is set and a watch will be started on the primary"
 	/opt/cpm/bin/pgbouncer-watch.sh &
 	export PGBOUNCER_WATCH_PID=$!
 fi

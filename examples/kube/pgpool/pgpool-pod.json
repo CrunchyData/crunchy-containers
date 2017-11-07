@@ -8,9 +8,10 @@
         }
     },
     "spec": {
+
         "containers": [{
             "name": "pgpool",
-            "image": "crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-pgpool:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5432,
                 "protocol": "TCP"
@@ -22,14 +23,16 @@
                 "name": "PG_PASSWORD",
                 "value": "password"
             }, {
-                "name": "PG_MASTER_SERVICE_NAME",
-                "value": "ms-master"
+                "name": "PG_PRIMARY_SERVICE_NAME",
+                "value": "ms-primary"
             }, {
-                "name": "PG_SLAVE_SERVICE_NAME",
+                "name": "PG_REPLICA_SERVICE_NAME",
                 "value": "ms-replica"
             }],
-            "volumeMounts": []
+            "volumeMounts": [
+	    ]
         }],
-        "volumes": []
+        "volumes": [
+	]
     }
 }

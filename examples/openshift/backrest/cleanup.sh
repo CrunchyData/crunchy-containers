@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
+
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete service master-backrest
-oc delete pod master-backrest
+oc delete service primary-backrest
+oc delete pod primary-backrest
 
 sudo PV_PATH=$PV_PATH  rm  -rf $PV_PATH/archive $PV_PATH/backup
 sudo rm $PV_PATH/pgbackrest.conf

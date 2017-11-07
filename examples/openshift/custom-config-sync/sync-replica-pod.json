@@ -10,10 +10,13 @@
             "tags": "database,postgresql,replication"
         }
     },
-    "parameters": [{
+    "parameters": [ {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "the image prefix to use"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
-    }],
+    } ],
     "objects": [{
         "kind": "Pod",
         "apiVersion": "v1",
@@ -25,32 +28,32 @@
         },
         "spec": {
             "containers": [{
-                "name": "cssyncreplica",
-                "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "name": "postgres",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
                 }],
                 "env": [{
-                    "name": "PG_MASTER_HOST",
-                    "value": "csmaster"
+                    "name": "PG_PRIMARY_HOST",
+                    "value": "csprimary"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "value": "master"
+                    "name": "PG_PRIMARY_USER",
+                    "value": "primaryuser"
                 }, {
-                    "name": "PG_MASTER_PORT",
+                    "name": "PG_PRIMARY_PORT",
                     "value": "5432"
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"
                 }, {
                     "name": "PG_MODE",
-                    "value": "slave"
+                    "value": "replica"
                 }, {
-                    "name": "SYNC_SLAVE",
+                    "name": "SYNC_REPLICA",
                     "value": "cssyncreplica"
                 }, {
-                    "name": "PG_MASTER_PASSWORD",
+                    "name": "PG_PRIMARY_PASSWORD",
                     "value": "password"
                 }, {
                     "name": "PG_USER",

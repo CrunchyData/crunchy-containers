@@ -13,18 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-CONFIGDIR=$PV_PATH/bouncerconfig
-sudo rm -rf $CONFIGDIR
-sudo mkdir $CONFIGDIR
-sudo chmod 777 $CONFIGDIR
-
-sudo cp $DIR/pgbouncer.ini $CONFIGDIR
-sudo cp $DIR/users.txt $CONFIGDIR
+# Create 'pgbouncer-configmap'
+kubectl create configmap pgbouncer-configmap \
+		--from-file=./pgbouncer.ini \
+		--from-file=./users.txt
 
 kubectl create -f $DIR/pgbouncer-service.json
 envsubst < $DIR/pgbouncer.json | kubectl create -f -

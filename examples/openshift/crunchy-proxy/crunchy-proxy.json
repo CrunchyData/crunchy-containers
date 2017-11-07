@@ -80,10 +80,10 @@
                             "protocol": "TCP"
                         }],
                         "env": [{
-                            "name": "PG_MASTER_SERVICE_NAME",
-                            "value": "ms-master"
+                            "name": "PG_PRIMARY_SERVICE_NAME",
+                            "value": "ms-primary"
                         }, {
-                            "name": "PG_SLAVE_SERVICE_NAME",
+                            "name": "PG_REPLICA_SERVICE_NAME",
                             "value": "ms-replica"
                         }, {
                             "name": "DEBUG",
@@ -104,10 +104,10 @@
 
                     "volumes": [{
                         "name": "config",
-                        "persistentVolumeClaim": {
-                            "claimName": "crunchy-pvc"
-                        }
-                    }],
+                    "configMap": {
+                        "name": "crunchy-proxy-configmap"
+                    }
+            }],
                     "restartPolicy": "Always",
                     "dnsPolicy": "ClusterFirst"
                 }

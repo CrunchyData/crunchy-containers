@@ -1,21 +1,21 @@
 
-= Openshift Tutorial - Crunchy Containers
+= OpenShift Tutorial - Crunchy Containers
 Crunchy Data Solutions, Inc.
-v1.4.0, {docdate}
+v1.6.0, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
-== Openshift Tutorial
+== OpenShift Tutorial
 The examples/openshift/workshop directory contains an example as
 part of a workshop given on occasion by Redhat and Crunchy.
 
 
 The example when deployed provides the following:
 
- * postgres master database container (pg-master)
+ * postgres primary database container (pg-primary)
  * postgres replica database container (pg-replica)
  * pgpool postgres load balancer (pgpool)
- * metrics collector container (container inside the pg-master pod, named collect)
- * pgbadger log analyzer container (inside the pg-master pod, named pgbadger)
+ * metrics collector container (container inside the pg-primary pod, named collect)
+ * pgbadger log analyzer container (inside the pg-primary pod, named pgbadger)
  * pgadmin4 SQL console container (pgadmin4)
  * grafana metrics dashboard container (grafana)
  * prometheus metrics database container (prometheus)
@@ -28,13 +28,13 @@ allows the replica database to scale up by using an administrative
 command.
 
 The pgpool container provides a postgres-smart load balancer
-in front of the master and replica services.  pgpool sends only
-the updates/inserts/deletes to the master database and will
+in front of the primary and replica services.  pgpool sends only
+the updates/inserts/deletes to the primary database and will
 send the select statements to the replica service.
 
 Postgres metrics are collected by the collect container and sent
-to the prometheus database which allows for custom dashboard graphs
-to be created in the grafana container.
+to the Prometheus database which allows for custom dashboard graphs
+to be created in the Grafana container.
 
 The pgadmin4 container provides a web console where SQL queries can
 be entered for configured databases.
@@ -42,16 +42,16 @@ be entered for configured databases.
 To execute the examples, pull down the container images
 from Dockerhub onto the VM host:
 ....
-docker pull crunchydata/crunchy-postgres:centos7-9.5-1.4.0
-docker pull crunchydata/crunchy-postgres-gis:centos7-9.5-1.4.0
-docker pull crunchydata/crunchy-backup:centos7-9.5-1.4.0
-docker pull crunchydata/crunchy-collect:centos7-9.5-1.4.0
-docker pull crunchydata/crunchy-pgbadger:centos7-9.5-1.4.0
-docker pull crunchydata/crunchy-pgadmin4:centos7-9.5-1.4.0
-docker pull crunchydata/crunchy-prometheus:centos7-9.5-1.4.0
-docker pull crunchydata/crunchy-promgateway:centos7-9.5-1.4.0
-docker pull crunchydata/crunchy-grafana:centos7-9.5-1.4.0
-docker pull crunchydata/crunchy-watch:centos7-9.5-1.4.0
+docker pull crunchydata/crunchy-postgres:centos7-10.0-1.6.0
+docker pull crunchydata/crunchy-postgres-gis:centos7-10.0-1.6.0
+docker pull crunchydata/crunchy-backup:centos7-10.0-1.6.0
+docker pull crunchydata/crunchy-collect:centos7-10.0-1.6.0
+docker pull crunchydata/crunchy-pgbadger:centos7-10.0-1.6.0
+docker pull crunchydata/crunchy-pgadmin4:centos7-10.0-1.6.0
+docker pull crunchydata/crunchy-prometheus:centos7-10.0-1.6.0
+docker pull crunchydata/crunchy-promgateway:centos7-10.0-1.6.0
+docker pull crunchydata/crunchy-grafana:centos7-10.0-1.6.0
+docker pull crunchydata/crunchy-watch:centos7-10.0-1.6.0
 ....
 
 
@@ -59,14 +59,15 @@ Running the example:
 
 ....
 git clone https://github.com/crunchydata/crunchy-containers.git
-cd crunchy-containers/examples/workshop
-oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f master.json
-oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f replicas.json
-oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f pgadmin4.json
-oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f metrics.json
+cd crunchy-containers/examples/openshift/workshop
+oc new-app -p CCP_IMAGE_TAG=centos7-10.0-1.6.0 -f primary.json
+oc new-app -p CCP_IMAGE_TAG=centos7-10.0-1.6.0 -f replicas.json
+oc new-app -p CCP_IMAGE_TAG=centos7-10.0-1.6.0 -f pgadmin4.json
+oc new-app -p CCP_IMAGE_TAG=centos7-10.0-1.6.0 -f metrics.json
 oc policy add-role-to-group edit system:serviceaccounts -n default
-oc new-app -p CCP_IMAGE_TAG=centos7-9.5-1.4.0 -f watch.json
-oc create -f jeff-route.json
+oc new-app -p CCP_IMAGE_TAG=centos7-10.0-1.6.0 -f watch.json
+oc create -f badger-route.json
+oc create -f pgbadger-route.json
 ....
 
 You can scale up the replicas using this command:
@@ -75,16 +76,19 @@ oc scale --replicas=2 dc replica-dc
 ....
 
 It takes about 1 minute for the new replica to become in sync
-with the master.
+with the primary.
 
 
-==== Openshift Console
+==== OpenShift Console
 
-You can browse to the openshift console at this URL:
+You can browse to the OpenShift console at this default URL:
 
 ....
-https://10.2.2.2:8443/console/
+https://127.0.0.1:8443/console/
 ....
+
+If the URL is incorrect for you, please make a note of what URL
+is suggested by OpenShift the next time you run *oc cluster up*.
 
 ==== Metrics
 
@@ -96,7 +100,7 @@ http://grafana-default.apps.10.2.2.2.xip.io
 http://prometheus-default.apps.10.2.2.2.xip.io
 ....
 
-==== postgres web console
+==== PGAdmin4 Web Application
 
 There is a route created to the pgadmin4 web application at the
 following URL:
@@ -104,24 +108,32 @@ following URL:
 http://pgadmin4-default.apps.10.2.2.2.xip.io
 ....
 
-==== pgbadger web application
+==== pgBadger Web Application
 
-There is a route created to the pgbadger container within the pgmaster
+There is a route created to the pgbadger container within the pgprimary
 pod at at the following URL:
 ....
-http://master-default.apps.10.2.2.2.xip.io/api/badgergenerate
+http://primary-default.apps.10.2.2.2.xip.io/api/badgergenerate
 ....
 
 
-=== Postgres access from your host
+=== Passwords & Permissions
 
-The value of all passwords for the database is *password*, to 
+The value of all passwords for the database is *password*, to
 access the database, you can enter the following command:
 
 ....
-psql -h pgmaster.openshift.svc.cluster.local -U postgres postgres
+psql -h primary.myproject.svc -U postgres postgres
 ....
 
+If you have issues with running the *watch* example, you may need
+to do something similar to the following to grant the correct permissions
+as the system:admin account:
+
+....
+oc create sa pg-watcher
+oc policy add-role-to-group edit system:serviceaccounts -n myproject
+....
 
 == Legal Notices
 
@@ -130,4 +142,3 @@ Copyright © 2017 Crunchy Data Solutions, Inc.
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
-

@@ -13,8 +13,8 @@
 # limitations under the License.
 
 kubectl delete pod replicasync replicaasync
-kubectl delete pod mastersync
-kubectl delete service mastersync
+kubectl delete pod primarysync
+kubectl delete service primarysync
 kubectl delete service replicasync replicaasync
-$CCPROOT/examples/waitforterm.sh mastersync kubectl
+$CCPROOT/examples/waitforterm.sh primarysync kubectl
 $CCPROOT/examples/waitforterm.sh replicasync kubectl

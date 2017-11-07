@@ -14,6 +14,9 @@
         "name": "PGBOUNCER_SERVICE_NAME",
         "value": "pgbouncer"
     }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "the image prefix to use"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
     }, {
@@ -56,20 +59,15 @@
             "securityContext": {
                 "supplementalGroups": [65534]
             },
-            "metadata": {
-                "annotations": {
-                    "openshift.io/scc": "privileged"
-                }
-            },
             "volumes": [{
                 "name": "pgconf",
-                "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc"
-                }
+				"configMap": {
+					"name": "pgbouncer-configmap"
+				}
             }],
             "containers": [{
-                "name": "server",
-                "image": "crunchydata/crunchy-pgbouncer:${CCP_IMAGE_TAG}",
+                "name": "pgbouncer",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-pgbouncer:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
@@ -91,24 +89,24 @@
                     "description": "time in secs to sleep between polls",
                     "value": "12"
                 }, {
-                    "name": "PG_MASTER_USER",
-                    "description": "The master user configured in pgbouncer",
-                    "value": "master"
+                    "name": "PG_PRIMARY_USER",
+                    "description": "The primary user configured in pgbouncer",
+                    "value": "primaryuser"
                 }, {
-                    "name": "PG_MASTER_PORT",
-                    "description": "The master port configured in pgbouncer",
+                    "name": "PG_PRIMARY_PORT",
+                    "description": "The primary port configured in pgbouncer",
                     "value": "5432"
                 }, {
-                    "name": "PG_MASTER_SERVICE",
-                    "description": "The master configured in pgbouncer",
-                    "value": "ms-master"
+                    "name": "PG_PRIMARY_SERVICE",
+                    "description": "The primary configured in pgbouncer",
+                    "value": "ms-primary"
                 }, {
-                    "name": "PG_SLAVE_SERVICE",
+                    "name": "PG_REPLICA_SERVICE",
                     "description": "The replica configured in pgbouncer",
                     "value": "ms-replica"
                 }],
                 "volumeMounts": [{
-                    "mountPath": "/pgconf",
+                    "mountPath": "/pgconf/bouncerconfig",
                     "name": "pgconf",
                     "readOnly": true
                 }]

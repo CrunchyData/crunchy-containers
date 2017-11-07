@@ -1,0 +1,66 @@
+FROM registry.access.redhat.com/rhel
+
+MAINTAINER Crunchy Data <support@crunchydata.com>
+
+LABEL name="crunchydata/pgadmin4" \
+        vendor="crunchy data" \
+      	PostgresVersion="10.0" \
+      	PostgresFullVersion="10.0.0" \
+        version="7.3" \
+        release="1.6.0" \
+        #build-date="2017-05-11" \
+        url="https://crunchydata.com" \
+        summary="Crunchy Data pgAdmin4 GUI utility" \
+        description="Provides GUI for the pgAdmin utility." \
+        run="" \
+        start="" \
+        stop="" \
+        io.k8s.description="pgadmin4 container" \
+        io.k8s.display-name="Crunchy pgadmin4 container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY docs/pgadmin4/help.1 /help.1
+COPY docs/pgadmin4/help.md /help.md
+COPY docs/licenses /licenses
+
+ENV PGVERSION="10.0"
+
+# Crunchy Postgres repo
+ADD conf/CRUNCHY-GPG-KEY.public  /
+ADD conf/crunchypg10.repo /etc/yum.repos.d/
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+ && yum -y update && yum -y install epel-release \
+ && yum -y install python-crypto python-passlib glibc-common \
+ && yum -y install gcc \
+	gettext \
+	hostname \
+ 	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+ && yum --enablerepo rhel-7-server-extras-rpms -y install pgadmin4-v1-web \
+ && yum -y install postgresql10-devel postgresql10-server \
+ && yum -y clean all
+
+ENV PGROOT="/usr/pgsql-${PGVERSION}"
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+ADD bin/pgadmin4/ /opt/cpm/bin
+ADD conf/pgadmin4/ /opt/cpm/conf
+
+# open up the pgadmin4 http port
+EXPOSE 5050
+
+RUN mkdir -p /pgdata \
+ && chown -R 26:26 /pgdata /opt/cpm /usr/lib/python2.7/site-packages/pgadmin4-web \
+ && chgrp -R root /usr/lib/python2.7/site-packages/pgadmin4-web
+
+VOLUME ["/pgdata"]
+
+USER 26
+
+CMD ["/opt/cpm/bin/start-pgadmin4.sh"]

@@ -1,26 +1,26 @@
 = OpenShift Dedicated Examples - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.4.1, {docdate}
+v1.6, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == OpenShift Dedicated Environment
 
-Here are instructions for running examples on an OpenShift 3.4 Dedicated
+Here are instructions for running examples on an OpenShift 3.5.5 Dedicated
 environment.  For Dedicated, we have built a set of templates
 that can be installed into a Dedicated instance to help automate
 the creation of Crunchy Container Suite containers.
 
-A defined set of templates are supported including:
+A defined set of templates are supported for various purposes, including:
 
- * master database
- * replica database
- * full database backup
- * database restore
- * pgadmin4
+ * A primary database
+ * A replica database
+ * A full database backup
+ * A full database restore
+ * PGAdmin4
 
 Each template is described below.
 
-There are some limitations presented by OpenShift 3.4 in the way
+There are some limitations presented by OpenShift 3.5.5 in the way
 in which we can scale up the replica databases.  Without support
 for dynamic volume provisioning and stateful sets, the replica
 databases can be scaled in a more manual way by creating a new
@@ -45,10 +45,22 @@ export GOPATH=$HOME/cdev
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
-export CCP_PGVERSION=9.6
-export CCP_VERSION=1.4.1
-export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PGVERSION-$CCP_VERSION
+export CCP_PGVERSION=10
+export CCP_PG_FULLVERSION=10.0
+export CCP_VERSION=1.6.0
+export CCP_IMAGE_PREFIX=crunchydata
+export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
+export CCP_CLI=kubectl
+export PV_PATH=/nfsfileshare
+export LOCAL_IP='hostname --ip-address'
+export CCP_IMAGE_PREFIX=crunchydata
+export REPLACE_CCP_IMAGE_PREFIX=crunchydata
+export TOKEN=yourtokengoeshere
+export REG=docker-registry-default.router.default.svc.cluster.local
+export REG=172.30.240.45:5000
+export REG=registry.crunchydata.openshift.com
+export NAMESPACE=default
 ....
 You will then need to log out and back in for the changes to your .bashrc
 file to take effect.
@@ -64,7 +76,7 @@ mkdir crunchydata
 cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 1.4.1
+git checkout 1.6.0
 godep restore
 ....
 
@@ -107,11 +119,16 @@ cd $CCPROOT/examples/dedicated
 ./push-images.sh
 ....
 
-You will first need to login to the OpenShift registry to perform
-this script.
-
 The script will create the appropriate image tag and push the image to the
 remote registry.
+
+You can verify the existence of the images on your external Dedicated server
+through the following commands:
+
+....
+oc get is
+oc get templates
+....
 
 *If you are a Crunchy enterprise customer, you will need to change the $TOKEN and $REG
 values in the push-images.sh script to the ones that correspond to your company's registries
@@ -152,13 +169,13 @@ executed when the database is first created.
 
 *Environment Variables*
 
- * PG_MODE - either *master*, *slave* or *set*, this value determines whether
-   the database is set up as a master or slave instance, in the
+ * PG_MODE - either *primary*, *replica* or *set*, this value determines whether
+   the database is set up as a primary or replica instance. In the
    case of *set*, it means the container is started within a StatefulSet
    in a Kubernetes cluster.
- * PG_MASTER_USER - the value to use for the user ID created as
-   master.  The *master* user has super user privileges.
- * PG_MASTER_PASSWORD - the password for the PG_MASTER_USER database user
+ * PG_PRIMARY_USER - the value to use for the user ID created as
+   primaryuser.  The *primaryuser* has super user privileges.
+ * PG_PRIMARY_PASSWORD - the password for the PG_PRIMARY_USER database user
  * PG_USER - the value to use for the user ID created as a normal user.
    This user is created as part of the setup.sql script upon database
    creation and allows users to predefine an application user.
@@ -168,8 +185,8 @@ executed when the database is first created.
    initialization
  * PG_LOCALE - if set, the locale you want to create the database with, if
    not set, the default locale is used
- * SYNC_SLAVE - if set, this value is used to specify the application_name
-   of a slave that will be used for a synchronous replication
+ * SYNC_REPLICA - if set, this value is used to specify the application_name
+   of a replica that will be used for a synchronous replication
  * CHECKSUMS - if set, this value is used to enable the *--data-checksums*
    option when initdb is executed at initialization, if not set, the
    default is to *not* enable data checksums
@@ -184,7 +201,7 @@ executed when the database is first created.
    pgaudit_analyze program in the background
  * PGDATA_PATH_OVERRIDE - if set, will cause the container to use a /pgdata path
    name of your choosing rather than the hostname of the container which
-   is the default...this is useful for a master in a deployment.
+   is the default. This is useful for a primary in a deployment.
 
 *Features*
 
@@ -196,7 +213,7 @@ The following features are supported by the crunchy-postgres container:
  * ability to override postgresql.conf configuration parameters
  * ability to override the default setup.sql script
  * ability to set the database locale
- * ability to specify a synchronous slave application_name
+ * ability to specify a synchronous replica application_name
  * ability to specify a recovery using PITR and WAL files, see
    pitr.adoc for a detailed design explanation of how PITR
    is implemented within the container suite
@@ -208,7 +225,7 @@ running 'yum reinstall glibc_common' within the container, this
 increases the size of the container image and can be removed if you
 do not require specific locale support.
 
-You can specify the PG_LOCALE env var which is passed to the initdb
+You can specify the PG_LOCALE environment variable which is passed to the initdb
 command when the initial data files are created, for example:
 ....
 "name": "PG_LOCALE",
@@ -217,6 +234,28 @@ command when the initial data files are created, for example:
 
 By default, no locale is specified when the initdb command is executed.
 
+== crunchy-postgres-gis
+
+This container is the same as the crunchy-postgres container except
+that it includes the following PostgreSQL extensions:
+
+ * postgis
+ * pl/r
+
+You can test the pl/r extension by running the following commands
+for example:
+....
+create extension plr;
+SELECT * FROM plr_environ();
+SELECT load_r_typenames();
+SELECT * FROM r_typenames();
+SELECT plr_array_accum('{23,35}', 42);
+CREATE OR REPLACE FUNCTION plr_array (text, text)
+RETURNS text[]
+AS '$libdir/plr','plr_array'
+LANGUAGE 'c' WITH (isstrict);
+select plr_array('hello','world');
+....
 
 === crunchy-backup
 
@@ -285,21 +324,21 @@ user *admin@admin.org* and password of *password*
 
 == OpenShift Dedicated Template Examples
 
-=== Master Database Template
+=== Primary Database Template
 
-Template Name is *crunchy-master*
+Template Name is *crunchy-primary*
 
 Example is found here:
 ....
-examples/dedicated/crunchy-master
+examples/dedicated/crunchy-primary
 ....
 
 This template will create the following:
 
- * database container crunchy-postgres as the master running within a Deployment
- * database service for the master
+ * A database container crunchy-postgres as the primary running within a Deployment
+ * A database service for the primary
 
-This example deploys a master database configuration
+This example deploys a primary database configuration
 which uses a Persistent Volume Claim for persistence.
 
 .Table Template Parameters
@@ -314,16 +353,16 @@ which uses a Persistent Volume Claim for persistence.
 | should match the name of the NAME parameter in most cases
 | example
 
-|PG_MASTER_PORT
+|PG_PRIMARY_PORT
 | the postgres port to use
 | 5432
 
-|PG_MASTER_USER
-| the user name to create and use for a master user
-| master
+|PG_PRIMARY_USER
+| the user name to create and use for a primary user
+| primaryuser
 
-|PG_MASTER_PASSWORD
-| the password to use for the master user
+|PG_PRIMARY_PASSWORD
+| the password to use for the primary user
 | password
 
 |PG_USER
@@ -342,13 +381,13 @@ which uses a Persistent Volume Claim for persistence.
 | the password of the postgres user
 | password
 
-|SYNC_SLAVE
+|SYNC_REPLICA
 | the name of a sync replica that will be allowed to connect if any
 |
 
 |CCP_IMAGE_TAG
 | the image version to use for the container
-| rhel7-9.6-1.4.1
+| rhel7-9.6.5-1.6.0
 
 |CCP_IMAGE_PREFIX
 | the image prefix to use, typically the image stream prefix of your registry
@@ -420,7 +459,7 @@ files in a PVC.
 
 |DB_NAME
 | the service name of the database to backup
-| master
+| primary
 
 |PVC_NAME
 | the PVC name to use to store the backup files
@@ -436,11 +475,11 @@ files in a PVC.
 
 |BACKUP_USER
 | the postgres user to use when performing the backup
-| master
+| primary
 
 |BACKUP_PASS
 | the postgres user password to use when performing the backup
-| master
+| primary
 
 |CCP_IMAGE_PREFIX
 | the container image prefix to use, typically the registy IP address and namespace
@@ -448,7 +487,7 @@ files in a PVC.
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6-1.4.1
+| rhel7-9.6.5-1.6.0
 |===
 
 === Restore Database Template
@@ -462,8 +501,8 @@ examples/dedicated/crunchy-restore
 
 This template will create the following:
 
- * database container crunchy-postgres
- * database service
+ * A database container named crunchy-postgres
+ * A database service
 
 This example performs a database restore using a backup archive
 found in a PVC.
@@ -476,16 +515,16 @@ found in a PVC.
 | the job name
 | restoredb
 
-|PG_MASTER_PORT
+|PG_PRIMARY_PORT
 | the postgres port to use
 | 5432
 
-|PG_MASTER_USER
-| the user name to create and use for a master user
-| master
+|PG_PRIMARY_USER
+| the user name to create and use for a primary user
+| primaryuser
 
-|PG_MASTER_PASSWORD
-| the password to use for the master user
+|PG_PRIMARY_PASSWORD
+| the password to use for the primary user
 | password
 
 |PG_USER
@@ -522,7 +561,7 @@ found in a PVC.
 
 |BACKUP_PATH
 | the backup archive path to restore from
-| master7-backups/2017-04-04-09-42-53
+| primary7-backups/2017-04-04-09-42-53
 
 |BACKUP_PVC
 | the backup archive PVC to restore from
@@ -538,7 +577,7 @@ found in a PVC.
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6-1.4.1
+| rhel7-9.6.5-1.6.0
 |===
 
 === Replica Database Template
@@ -563,20 +602,20 @@ These templates create the following:
 | the name to use for the database service
 | replica
 
-|PG_MASTER_HOST
-| the postgres master service name the replica will connect to
-| master
+|PG_PRIMARY_HOST
+| the postgres primary service name the replica will connect to
+| primary
 
-|PG_MASTER_PORT
+|PG_PRIMARY_PORT
 | the postgres port to use
 | 5432
 
-|PG_MASTER_USER
-| the user name to create and use for a master user
-| master
+|PG_PRIMARY_USER
+| the user name to create and use for a primary user
+| primaryuser
 
-|PG_MASTER_PASSWORD
-| the password to use for the master user
+|PG_PRIMARY_PASSWORD
+| the password to use for the primary user
 | password
 
 |PVC_NAME
@@ -601,7 +640,7 @@ These templates create the following:
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6-1.4.1
+| rhel7-9.6.5-1.6.0
 |===
 
 === pgadmin4 Web User Interface Template
@@ -645,7 +684,7 @@ This template will create the following:
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6-1.4.1
+| rhel7-9.6.5-1.6.0
 |===
 
 

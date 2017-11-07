@@ -1,6 +1,6 @@
 = Crunchy Container Overview
 Crunchy Data Solutions, Inc.
-v1.4.1, {docdate}
+v1.6, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Introduction
@@ -23,7 +23,7 @@ The crunchy-postgres container executes the Postgres database.
 The container image is built using either the Crunchy Postgres release
 or the community version based upon a flag in the Makefile.
 
-The Crunchy postgres RPMs are available to Crunchy customers only.  The
+The crunchy-postgres RPMs are available to Crunchy customers only.  The
 Crunchy release is meant for customers that require enterprise level
 support.
 
@@ -38,24 +38,24 @@ executed when the database is first created.
 
 === Environment Variables
 
- * PG_MODE - either *master*, *slave* or *set*, this value determines whether
-   the database is set up as a master or slave instance, in the
+ * PG_MODE - either *primary*, *replica* or *set*, this value determines whether
+   the database is set up as a primary or replica instance. In the
    case of *set*, it means the container is started within a StatefulSet
    in a Kubernetes cluster.
- * PG_MASTER_USER - the value to use for the user ID created as
-   master.  The *master* user has super user privileges.
- * PG_MASTER_PASSWORD - the password for the PG_MASTER_USER database user
+ * PG_PRIMARY_USER - the value to use for the user ID created as
+   primaryuser.  The *primaryuser* has super user privileges.
+ * PG_PRIMARY_PASSWORD - the password for the PG_PRIMARY_USER database user
  * PG_USER - the value to use for the user ID created as a normal user.
    This user is created as part of the setup.sql script upon database
    creation and allows users to predefine an application user.
  * PG_PASSWORD - the password for the PG_USER database user that is created
  * PG_DATABASE - a database that is created upon database initialization
- * PG_ROOT_PASSWORD - the postgres user password set up upon database
+ * PG_ROOT_PASSWORD - the PostgreSQL user password set up upon database
    initialization
  * PG_LOCALE - if set, the locale you want to create the database with, if
    not set, the default locale is used
- * SYNC_SLAVE - if set, this value is used to specify the application_name
-   of a slave that will be used for a synchronous replication
+ * SYNC_REPLICA - if set, this value is used to specify the application_name
+   of a replica that will be used for a synchronous replication
  * CHECKSUMS - if set, this value is used to enable the *--data-checksums*
    option when initdb is executed at initialization, if not set, the
    default is to *not* enable data checksums
@@ -70,19 +70,21 @@ executed when the database is first created.
    pgaudit_analyze program in the background
  * PGDATA_PATH_OVERRIDE - if set, will cause the container to use a /pgdata path
    name of your choosing rather than the hostname of the container which
-   is the default...this is useful for a master in a deployment.
+   is the default. This is useful for a primary in a deployment.
+ * XLOGDIR - if set to true, will cause initdb to include --xlogdir=$PGWAL, this
+   will cause a symlink to be created from /pgdata/containername/pg_xlog to /pgwal/containername-wal
 
 === Features
 
 The following features are supported by the crunchy-postgres container:
 
- * use of openshift secrets
+ * use of OpenShift secrets
  * ability to restore from a database backup
  * use of custom pg_hba.conf and postgresql.conf files
  * ability to override postgresql.conf configuration parameters
  * ability to override the default setup.sql script
  * ability to set the database locale
- * ability to specify a synchronous slave application_name
+ * ability to specify a synchronous replica application_name
  * ability to specify a recovery using PITR and WAL files, see
    pitr.adoc for a detailed design explanation of how PITR
    is implemented within the container suite
@@ -103,12 +105,34 @@ command when the initial data files are created, for example:
 
 By default, no locale is specified when the initdb command is executed.
 
+== crunchy-postgres-gis
+
+This container is the same as the crunchy-postgres container except
+that it includes the following PostgreSQL extensions:
+
+ * postgis
+ * pl/r
+
+You can test the pl/r extension by running the following commands
+for example:
+....
+create extension plr;
+SELECT * FROM plr_environ();
+SELECT load_r_typenames();
+SELECT * FROM r_typenames();
+SELECT plr_array_accum('{23,35}', 42);
+CREATE OR REPLACE FUNCTION plr_array (text, text)
+RETURNS text[]
+AS '$libdir/plr','plr_array'
+LANGUAGE 'c' WITH (isstrict);
+select plr_array('hello','world');
+....
 
 == crunchy-backup
 
 The crunchy-backup container executes a pg_basebackup against another
 database container.  The backup is a full backup using the standard
-utility included with postgres, pg_basebackup.
+utility included with PostgreSQL, pg_basebackup.
 
 === Backup Location
 
@@ -141,38 +165,89 @@ to persist database backups.
 
 === Description
 
-Postgresql metrics are collected by the crunchy-collect container.  To
-start collection of metrics on a Postgres database, you add the
-crunchy-collect container into the pod that holds the crunchy-pg container.
+70 different PostgreSQL metrics are collected by the crunchy-collect container,
+which executes both the postgres_exporter and node_exporter. Written in Go, these
+are both metrics exporters that work with Prometheus to provide PostgreSQL server
+metrics in addition to hardware and OS metrics. The crunchy-collect container gathers
+different metrics from the crunchy-postgres PostgreSQL database container and
+pushes these to the Prometheus Promgateway (crunchy-promgateway).
+
+A full description with examples of the metrics collection containers is available
+link:https://github.com/CrunchyData/crunchy-containers/blob/master/docs/metrics.adoc[here].
 
 === Requirements
-Metrics are stored in the crunchy-prometheus container.  crunchy-prometheus runs
-the prometheus time series database. Metrics are pushed from
-crunchy-collect to the prometheus promgateway found in the crunchy-promgateway
-container.  Metrics dashboards are created using the grafana web application
+
+Metrics are stored in the crunchy-prometheus container, which is the container that runs
+the Prometheus time series database. Metrics are pushed from
+crunchy-collect to the Prometheus promgateway found in the crunchy-promgateway
+container.  Metrics dashboards are created using the Grafana web application
 which is found in the crunchy-grafana container.
 
-To start the metrics containers, run one of the following scripts:
-....
-examples/standalone/metrics/run-metrics.sh
-examples/kube/metrics/run.sh
-examples/openshift/metrics/run.sh
-....
+=== Environment Variables
+
+ * PROM_GATEWAY - The HTTP URL of the Prometheus Pushgateway into which the metrics will be pushed
+ * NODE_EXPORTER_URL - The HTTP URL of the node_exporter utility which collects host and OS level system metrics.
+ * POSTGRES_EXPORTER_URL - The HTTP URL of the postgres_exporter utility which collects PostgreSQL server metrics.
+ * DATA_SOURCE_NAME - The URL for the PostgreSQL server's data source name. This is *required* to be in the form of *postgresql://*.
+
+== crunchy-prometheus
+
+=== Description
+
+The container crunchy-collect collects PostgreSQL metrics from the crunchy-postgres database container
+and pushes them to a Prometheus time series data store, which is located in this crunchy-prometheus container.
+Prometheus is a flexible, highly dimensional time series data model that stores data efficiently,
+where time series are defined through a metric name and set of key-value pairs.
+
+Prometheus is a multi-dimensional time series data model with an elastic query language. It is used in collaboration
+with Grafana in this metrics suite. Overall, it’s reliable, manageable, and operationally simple for efficiently
+storing and analyzing data for large-scale environments. It targets the Promgateway as an endpoint for scraping metrics.
+
+A full description with examples of the metrics collection containers is available
+link:https://github.com/CrunchyData/crunchy-containers/blob/master/docs/metrics.adoc[here].
+
+The following port is exposed by the crunchy-prometheus container:
+
+ * crunchy-prometheus:9090 - the Prometheus web user interface
+
+=== Requirements
 
 The crunchy-prometheus data in this example is stored in emptyDir volume types.
-To persist the data and grafana templates long term, you will want to
-use a pvc based  volume types as specified in *examples/openshift/metrics/run-pvc.json*.
+To persist the data and Grafana templates in the long term, you will want to
+use a pvc based volume type as specified in *examples/openshift/metrics/run-pvc.json*.
 
-When running the metrics containers, the following ports are available:
+== crunchy-promgateway
 
- * crunchy-prometheus:9090 - the prometheus web user interface
- * crunchy-promgateway:9091 - the prometheus promgateway REST API
- * crunchy-grafana:3000 - the grafana web user interface
+=== Description
 
-=== crunchy-collect Environment Variables
+crunchy-promgateway is the Prometheus gateway into which the metrics will be pushed from
+crunchy-prometheus. The types of collected metrics as well as their status are viewable
+from the REST API on port 9091.
 
- * POLL_INT - number of minutes to sleep until metrics are collected.  defaults to 15 minutes
- * PROM_GATEWAY - the http URL of the prometheus promgateway into which the metrics will be pushed.  defaults to http://crunchy-promgateway:9091
+A full description with examples of the metrics collection containers is available
+link:https://github.com/CrunchyData/crunchy-containers/blob/master/docs/metrics.adoc[here].
+
+The following port is exposed by the crunchy-promgateway container:
+
+* crunchy-promgateway:9091 - the Prometheus promgateway REST API
+
+== crunchy-grafana
+
+=== Description
+
+Visual dashboards are created from the collected and stored data that crunchy-collect and crunchy-prometheus
+provides with the crunchy-grafana container, which hosts a web-based graphing dashboard called Grafana.
+
+Grafana is an open-source platform which can then apply the defined metrics and visualize information through
+various tools. It is extremely flexible with a powerful query and transformation language, producing beautiful
+and easily understandable graphics to analyze and monitor your data.
+
+A full description with examples of the metrics collection containers is available
+link:https://github.com/CrunchyData/crunchy-containers/blob/master/docs/metrics.adoc[here].
+
+The following port is exposed by the crunchy-grafana container:
+
+* crunchy-grafana:3000 - the Grafana web user interface
 
 == crunchy-pgbadger
 
@@ -199,19 +274,19 @@ The following features are supported by the crunchy-pgbadger container:
 == crunchy-pgpool
 
 The crunchy-pgpool container executes the pgpool utility.  Pgpool can
-be used to provide a smart postgres-aware proxy to a postgres cluster,
-both master and slave, so that applications can only have to work
+be used to provide a smart PostgreSQL-aware proxy to a PostgreSQL cluster,
+both primary and replica, so that applications can only have to work
 with a single database connection.
 
-Postgres slaves are read-only whereas a master is both read and write
+Postgres replicas are read-only whereas a primary is both read and write
 capable.
 
 === Environment Variables
 
- * PG_USERNAME - user to connect to postgres
- * PG_PASSWORD - user password to connect to postgres
- * PG_MASTER_SERVICE_NAME - database host to connect to for the master node
- * PG_SLAVE_SERVICE_NAME - database host to connect to for the slave node
+ * PG_USERNAME - user to connect to PostgreSQL
+ * PG_PASSWORD - user password to connect to PostgreSQL
+ * PG_PRIMARY_SERVICE_NAME - database host to connect to for the primary node
+ * PG_REPLICA_SERVICE_NAME - database host to connect to for the replica node
 
 === Features
 
@@ -223,17 +298,17 @@ The following features are supported by the crunchy-pgpool container:
 
 We create a container, crunchy-watch, that runs as a pod unto itself
 typically.  The watch container essentially does a health check
-on a master database container and performs a failover sequence
-if the master is not reached.
+on a primary database container and performs a failover sequence
+if the primary is not reached.
 
 The watch container has access to a service account that is used
-inside the container to issue commands to openshift.
+inside the container to issue commands to OpenShift.
 
 You set up the SA using this:
 
 oc create -f watch-sa.json
 
-You then set up permissions for the SA to edit stuff in the openshift project,
+You then set up permissions for the SA to edit the OpenShift project,
 this example allows all service accounts to edit resources in the *default*
 project:
 
@@ -247,7 +322,7 @@ the pg-watcher service account access to the Kube API as mentioned
 here: https://kubernetes.io/docs/admin/authorization/abac/#a-quick-note-on-service-accounts
 
 In Kube 1.6, an equivalent RBAC policy is also possibly required depending
-on your authorization/authentication configuration.  See this 
+on your authorization/authentication configuration.  See this
 link for details on the new RBAC policy mechanism:
 https://kubernetes.io/docs/admin/authorization/rbac/
 
@@ -263,7 +338,7 @@ kubectl create rolebinding my-sa-binding --clusterrole=admin --serviceaccount=de
 ....
 
 NOTE:  this kubectl command is only available in Kube 1.6, for prior
-Kube release such as 1.5 and the alpha RBAC, you will need to 
+Kube release such as 1.5 and the alpha RBAC, you will need to
 specify the role binding in a JSON/YAML file instead of using
 this command syntax above.
 
@@ -275,41 +350,70 @@ the watch logic to interact with the replica containers.
 
 === Environment Variables
 
- * SLEEP_TIME - the time to sleep in seconds between checking on the master
+ * SLEEP_TIME - the time to sleep in seconds between checking on the primary
  * WAIT_TIME - the time to sleep in seconds between triggering the failover and updating its label (default is 40 secs)
- * PG_MASTER_SERVICE -  the master service name
- * PG_SLAVE_SERVICE - the slave service name
- * PG_MASTER_PORT - database port to use when checking the database
- * PG_MASTER_USER -  database user account to use when checking the database
+ * PG_CONTAINER_NAME -  if set, the name of the container to refer to when doing an *exec*, this is required if you have more than 1 container in your database pod
+ * PG_PRIMARY_SERVICE -  the primary service name
+ * PG_REPLICA_SERVICE - the replica service name
+ * PG_PRIMARY_PORT - database port to use when checking the database
+ * PG_PRIMARY_USER -  database user account to use when checking the database
    using pg_isready utility
  * PG_DATABASE - database to use when checking the database using pg_isready
- * SLAVE_TO_TRIGGER_LABEL - this is the pod name of a replica that you
-   want to choose as the new master in a failover, this will override
+ * REPLICA_TO_TRIGGER_LABEL - the pod name of a replica that you
+   want to choose as the new primary in a failover; this will override
    the normal replica selection
+ * WATCH_PRE_HOOK - path to an executable file to run before failover is processed.
+ * WATCH_POST_HOOK - path to an executable file to run after failover is processed.
 
 === Logic
 
-The watch container will watch the master, if the master dies, then
+The watch container will watch the primary, if the primary dies, then
 the watcher will:
 
- * create the trigger file on the slave that will become the new master
- * change the labels on the slave to be those of the master
- * will start watching the new master in case that falls over next
- * will look for slaves that have the metadata label value of *slavetype=trigger* to prefer
-   the failover to, if found it will use the first slave with that label, if
-   not found, it will use the first slave it finds
+ * create the trigger file on the replica that will become the new primary
+ * change the labels on the replica to be those of the primary
+ * start watching the new primary in case that falls over next
+ * look for replicas that have the metadata label value of *replicatype=trigger* to prefer
+   the failover to. If found, it will use the first replica with that label,; if
+   not found, it will use the first replica it finds.
 
-Example of looking for the failover slave:
+Example of looking for the failover replica:
 ....
-oc get pod -l name=pg-slave-rc-dc
+oc get pod -l name=pg-replica-rc-dc
 NAME                     READY     STATUS    RESTARTS   AGE
-pg-slave-rc-dc           1/1       Running   2          16m
-pg-slave-rc-dc-1-96qs8   1/1       Running   1          16m
+pg-replica-rc-dc           1/1       Running   2          16m
+pg-replica-rc-dc-1-96qs8   1/1       Running   1          16m
 
-oc get pod -l slavetype=trigger
+oc get pod -l replicatype=trigger
 NAME             READY     STATUS    RESTARTS   AGE
-pg-slave-rc-dc   1/1       Running   2          16m
+pg-replica-rc-dc   1/1       Running   2          16m
 ....
+
+== crunchy-vacuum
+
+=== Description
+
+The crunchy-vacuum container allows you to perform a SQL VACUUM job against a PostgreSQL database container.
+You specify a database to vacuum using various environment variables which are listed below. It is possible
+to run different vacuum operations either manually or automatically through scheduling.
+
+The crunchy-vacuum image is executed, passed in the Postgres connection parameters to the single-primary
+PostgreSQL container. The type of vacuum performed is dictated by the environment variables passed into the job.
+
+=== Environment Variables
+
+The complete set of environment variables read by the crunchy-vacuum job include:
+
+    * VAC_FULL - when set to true adds the FULL parameter to the VACUUM command
+    * VAC_TABLE - when set, allows you to specify a single table to vacuum, when not specified, the entire database tables are vacuumed
+    * JOB_HOST - required variable is the postgres host we connect to
+    * PG_USER - required variable is the postgres user we connect with
+    * PG_DATABASE - required variable is the postgres database we connect to
+    * PG_PASSWORD - required variable is the postgres user password we connect with
+    * PG_PORT - allows you to override the default value of 5432
+    * VAC_ANALYZE - when set to true adds the ANALYZE parameter to the VACUUM command
+    * VAC_VERBOSE - when set to true adds the VERBOSE parameter to the VACUUM command
+    * VAC_FREEZE - when set to true adds the FREEZE parameter to the VACUUM command
 
 == crunchy-dba
 
@@ -331,7 +435,7 @@ The following environment variables control the actions
 of crunchy-dba:
 
  * OSE_PROJECT - required, the OSE project name to log into
- * JOB_HOST - required, the postgres container name the action will be taken against
+ * JOB_HOST - required, the PostgreSQL container name the action will be taken against
  * VAC_SCHEDULE - if set, this will start a vacuum job container.  The
  setting value must be a valid cron expression as described below.
  * BACKUP_SCHEDULE - if set, this will start a backup job container.  The
@@ -505,16 +609,16 @@ utility and a failover watch script.
 === Environment Variables
 
  * FAILOVER - when set, the container will look at the configured
-   master database and if it can't reach it, will perform a failover
-   to a configured slave database
+   primary database and if it can't reach it, will perform a failover
+   to a configured replica database
  * OSE_PROJECT - when set, indicates you are running under OSE
- * PG_MASTER_USER - the value to use for the user ID created as
-   master.  The *master* user has super user privileges.
- * SLEEP_TIME - time in seconds to sleep when polling the master
- * PG_DATABASE - the database to use when checking the readiness of the master
- * PG_MASTER_PORT - the postgres port to use when checking the master
- * PG_MASTER_SERVICE - the name of the master database container
- * PG_SLAVE_SERVICE - the name of the slave database container, this is
+ * PG_PRIMARY_USER - the value to use for the user ID created as
+   primaryuser.  The *primaryuser* has super user privileges.
+ * SLEEP_TIME - time in seconds to sleep when polling the primary
+ * PG_DATABASE - the database to use when checking the readiness of the primary
+ * PG_PRIMARY_PORT - the PostgreSQL port to use when checking the primary
+ * PG_PRIMARY_SERVICE - the name of the primary database container
+ * PG_REPLICA_SERVICE - the name of the replica database container, this is
    used to know which container to trigger the failover on
 
 === Features
@@ -522,14 +626,14 @@ utility and a failover watch script.
 The following features are supported by the crunchy-postgres container:
 
  * mount pgbouncer user.txt and pgbouncer.ini config files via /pgconf volume
- * ability to cause a failover on a configured slave container
+ * ability to cause a failover on a configured replica container
  * ability to rewrite the pgbouncer.ini config file and reload pgbouncer
    after a failover
 
 === Restrictions
 
- * the name of the master database in the pgbouncer.ini file is required
-   to be *master*
+ * the name of the primary database in the pgbouncer.ini file is required
+   to be *primary*
  * for configuration, has to have users.txt and pgbouncer.ini files mounted in /pgconf
 
 == crunchy-backrest-restore
@@ -560,7 +664,7 @@ The crunchy-ppgadmin4 container executes the pgadmin4 web application.
 The pgadmin4 project is found at the following location:
 https://www.pgadmin.org/
 
-pgadmin4 provides a web user interface to postgresql databases.  A
+pgadmin4 provides a web user interface to PostgreSQL databases.  A
 sample screenshot is below:
 
 image:pgadmin4-screenshot.png["pgadmin screenshot",align="center",scaledwidth="80%"]
@@ -568,7 +672,7 @@ image:pgadmin4-screenshot.png["pgadmin screenshot",align="center",scaledwidth="8
 
 === Environment Variables
 
- * none
+ * N/A
 
 === Features
 
@@ -583,7 +687,7 @@ The following features are supported by the crunchy-pgadmin4 container:
 
 === Restrictions
 
- * na
+ * N/A
 
 == crunchy-upgrade
 
@@ -620,6 +724,39 @@ The following features are supported by the crunchy-upgrade container:
  * all environment variables are required
  * only supports a 9.5 to 9.6 upgrade
 
+== crunchy-sim
+
+The crunchy-sim container is a simple traffic simulator for PostgreSQL
+
+== Environment Variables
+
+* PGSIM_HOST - required, the PostgreSQL host address
+* PGSIM_PORT - required, the PostgreSQL host port
+* PGSIM_USERNAME - required, the PostgreSQL username
+* PGSIM_PASSWORD - required, the PostgreSQL password
+* PGSIM_DATABASE - required, the database to connect
+* PGSIM_INTERVAL - required, The units of the simulation interval
+* PGSIM_MININTERVAL - required, the minimum interval value
+* PGSIM_MAXINTERVAL - requited, the maximum interval value
+
+Valid values for PGSIM_INTERVAL are as follows:
+
+* millisecond
+* second
+* minute
+
+== Features
+
+* Creates a single connection to PostgreSQL and will execute
+queries over a specified interval range.
+* Queries are specified through a simple YAML file. Each query is a name-value
+  pair and can span multiple lines by utilizing scalar notation ("|" or ">") as
+  defined by the YAML spec.
+* Queries are randomly chosen for execution.
+
+== Restrictions
+
+* Only one connection is created for all queries.
 
 == Legal Notices
 

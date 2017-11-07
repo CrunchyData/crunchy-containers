@@ -11,9 +11,9 @@
         }
     },
     "parameters": [{
-        "name": "PG_MASTER_USER",
-        "description": "The username used for master-slave replication",
-        "value": "master"
+        "name": "PG_PRIMARY_USER",
+        "description": "The username used for primary / replica replication",
+        "value": "primaryuser"
     }, {
         "name": "CCP_IMAGE_TAG",
         "value": "centos7-9.5-1.2.7",
@@ -23,7 +23,7 @@
         "value": "crunchydata",
         "description": "The image prefix to pull with"
     }, {
-        "name": "PG_MASTER_PASSWORD",
+        "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PostgreSQL replication user",
         "value": "password"
     }, {
@@ -32,7 +32,7 @@
         "value": "testuser"
     }, {
         "name": "PG_PASSWORD",
-        "description": "The password for the PostgreSQL master user",
+        "description": "The password for the PostgreSQL primary user",
         "value": "password"
     }, {
         "name": "PG_DATABASE",
@@ -43,13 +43,13 @@
         "description": "The password for the PostgreSQL administrator",
         "value": "password"
     }, {
-        "name": "PG_MASTER_SERVICE_NAME",
-        "description": "The name of the PostgreSQL master ",
-        "value": "pg-master-dc"
+        "name": "PG_PRIMARY_SERVICE_NAME",
+        "description": "The name of the PostgreSQL primary ",
+        "value": "pg-primary-dc"
     }, {
-        "name": "PG_SLAVE_SERVICE_NAME",
-        "description": "The name of the PostgreSQL replica ",
-        "value": "pg-slave-dc"
+        "name": "PG_REPLICA_SERVICE_NAME",
+        "description": "The name of the PostgreSQL replica",
+        "value": "pg-replica-dc"
     }, {
         "name": "TEMP_BUFFERS",
         "description": "postgres temp_buffers memory size",
@@ -75,9 +75,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${PG_SLAVE_SERVICE_NAME}",
+            "name": "${PG_REPLICA_SERVICE_NAME}",
             "labels": {
-                "name": "${PG_SLAVE_SERVICE_NAME}"
+                "name": "${PG_REPLICA_SERVICE_NAME}"
             }
         },
         "spec": {
@@ -88,7 +88,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "${PG_SLAVE_SERVICE_NAME}"
+                "name": "${PG_REPLICA_SERVICE_NAME}"
             }
         },
         "status": {
@@ -99,7 +99,7 @@
         "kind": "DeploymentConfig",
         "apiVersion": "v1",
         "metadata": {
-            "name": "${PG_SLAVE_SERVICE_NAME}",
+            "name": "${PG_REPLICA_SERVICE_NAME}",
             "creationTimestamp": null
         },
         "spec": {
@@ -112,13 +112,13 @@
             }],
             "replicas": 1,
             "selector": {
-                "name": "${PG_SLAVE_SERVICE_NAME}"
+                "name": "${PG_REPLICA_SERVICE_NAME}"
             },
             "template": {
                 "metadata": {
                     "creationTimestamp": null,
                     "labels": {
-                        "name": "${PG_SLAVE_SERVICE_NAME}"
+                        "name": "${PG_REPLICA_SERVICE_NAME}"
                     }
                 },
                 "spec": {
@@ -150,26 +150,26 @@
                             "protocol": "TCP"
                         }],
                         "env": [{
-                            "name": "PG_MASTER_HOST",
-                            "value": "${PG_MASTER_SERVICE_NAME}"
+                            "name": "PG_PRIMARY_HOST",
+                            "value": "${PG_PRIMARY_SERVICE_NAME}"
                         }, {
-                            "name": "PG_MASTER_SERVICE_NAME",
-                            "value": "${PG_MASTER_SERVICE_NAME}"
+                            "name": "PG_PRIMARY_SERVICE_NAME",
+                            "value": "${PG_PRIMARY_SERVICE_NAME}"
                         }, {
-                            "name": "PG_MASTER_PORT",
+                            "name": "PG_PRIMARY_PORT",
                             "value": "5432"
                         }, {
                             "name": "PGHOST",
                             "value": "/tmp"
                         }, {
                             "name": "PG_MODE",
-                            "value": "slave"
+                            "value": "replica"
                         }, {
-                            "name": "PG_MASTER_USER",
-                            "value": "${PG_MASTER_USER}"
+                            "name": "PG_PRIMARY_USER",
+                            "value": "${PG_PRIMARY_USER}"
                         }, {
-                            "name": "PG_MASTER_PASSWORD",
-                            "value": "${PG_MASTER_PASSWORD}"
+                            "name": "PG_PRIMARY_PASSWORD",
+                            "value": "${PG_PRIMARY_PASSWORD}"
                         }, {
                             "name": "PG_USER",
                             "value": "${PG_USER}"

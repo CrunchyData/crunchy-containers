@@ -19,16 +19,16 @@
         "description": "the name to use for the replica service and pod",
         "value": "pgreplica"
     }, {
-        "name": "PG_MASTER_HOST",
-        "description": "the master service name the replica will connect to",
+        "name": "PG_PRIMARY_HOST",
+        "description": "the primary service name the replica will connect to",
         "value": "pgdatabase"
     }, {
-        "name": "PG_MASTER_USER",
-        "description": "the master user name the replica will connect with",
-        "value": "master"
+        "name": "PG_PRIMARY_USER",
+        "description": "the primary user name the replica will connect with",
+        "value": "primaryuser"
     }, {
-        "name": "PG_MASTER_PASSWORD",
-        "description": "the master user password the replica will connect with",
+        "name": "PG_PRIMARY_PASSWORD",
+        "description": "the primary user password the replica will connect with",
         "value": "password"
     }],
     "objects": [{
@@ -94,17 +94,17 @@
                         "protocol": "TCP"
                     }],
                     "env": [{
-                        "name": "PG_MASTER_HOST",
-                        "value": "${PG_MASTER_HOST}"
+                        "name": "PG_PRIMARY_HOST",
+                        "value": "${PG_PRIMARY_HOST}"
                     }, {
-                        "name": "PG_MASTER_USER",
-                        "value": "${PG_MASTER_USER}"
+                        "name": "PG_PRIMARY_USER",
+                        "value": "${PG_PRIMARY_USER}"
                     }, {
-                        "name": "PG_MASTER_PORT",
+                        "name": "PG_PRIMARY_PORT",
                         "value": "5432"
                     }, {
                         "name": "PG_MODE",
-                        "value": "slave"
+                        "value": "replica"
                     }, {
                         "name": "PG_USER",
                         "value": "testuser"
@@ -121,8 +121,8 @@
                         "name": "PGHOST",
                         "value": "/tmp"
                     }, {
-                        "name": "PG_MASTER_PASSWORD",
-                        "value": "${PG_MASTER_PASSWORD}"
+                        "name": "PG_PRIMARY_PASSWORD",
+                        "value": "${PG_PRIMARY_PASSWORD}"
                     }],
                     "volumeMounts": [{
                         "mountPath": "/pgdata",

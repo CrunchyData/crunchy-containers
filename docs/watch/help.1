@@ -1,4 +1,4 @@
-.TH "watch " "1" " Container Image Pages" "Jeff McCormick" "April 13, 2017" 
+.TH "watch " "1" " Container Image Pages" "Jeff McCormick" "April 13, 2017"
 .nh
 .ad l
 
@@ -11,7 +11,7 @@ watch \- watch container image
 .SH DESCRIPTION
 .PP
 The watch image provides a means of watching the health of a postgres
-master and performing a failover if the master is not responding.
+primary and performing a failover if the primary is not responding.
 
 .PP
 The container itself consists of:
@@ -45,10 +45,10 @@ The registry location and name of the image. For example, Name="crunchydata/watc
 \fB\fCVersion=\fR
 
 .PP
-The Red Hat Enterprise Linux version from which the container was built. For example, Version="7.2".
+The Red Hat Enterprise Linux version from which the container was built. For example, Version="7.3".
 
 .PP
 \fB\fCRelease=\fR
 
 .PP
-The specific release number of the container. For example, Release="1.4.0"
+The specific release number of the container. For example, Release="1.6.0"

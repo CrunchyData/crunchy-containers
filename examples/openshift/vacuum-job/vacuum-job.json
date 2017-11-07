@@ -10,23 +10,21 @@
             "tags": "database,postgresql,replication"
         }
     },
-    "parameters": [{
+    "parameters": [ {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "image prefix to use"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use"
-    }],
+    } ],
 
     "objects": [{
-        "apiVersion": "extensions/v1beta1",
+        "apiVersion": "batch/v1",
         "kind": "Job",
         "metadata": {
             "name": "vacuum-job"
         },
         "spec": {
-            "selector": {
-                "matchLabels": {
-                    "app": "vacuum-job"
-                }
-            },
             "template": {
                 "metadata": {
                     "name": "vacuum-job",
@@ -38,7 +36,7 @@
                     "volumes": [],
                     "containers": [{
                         "name": "vacuum-job",
-                        "image": "crunchydata/crunchy-vacuum:${CCP_IMAGE_TAG}",
+                        "image": "${CCP_IMAGE_PREFIX}/crunchy-vacuum:${CCP_IMAGE_TAG}",
                         "volumeMounts": [],
                         "env": [{
                             "name": "VAC_FULL",
@@ -49,9 +47,6 @@
                         }, {
                             "name": "JOB_HOST",
                             "value": "basic"
-                        }, {
-                            "name": "CCP_IMAGE_TAG",
-                            "value": "${CCP_IMAGE_TAG}"
                         }, {
                             "name": "PG_USER",
                             "value": "testuser"

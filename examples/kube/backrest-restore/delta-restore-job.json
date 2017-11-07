@@ -1,0 +1,60 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "name": "backrest-job-nfs"
+    },
+    "spec": {
+        "template": {
+            "metadata": {
+                "name": "backrest-job-nfs",
+                "labels": {
+                    "app": "backrest-job-nfs"
+                }
+            },
+        "spec": {
+            "containers": [{
+                "name": "backrest-restore",
+                "image": "$CCP_IMAGE_PREFIX/crunchy-backrest-restore:$CCP_IMAGE_TAG",
+                "env": [{
+                    "name": "STANZA",
+                    "value": "db"
+                }, {
+		    "name": "DELTA"
+		}],
+                "volumeMounts": [{
+                    "mountPath": "/pgdata",
+                    "name": "pgdata",
+                    "readOnly": false
+                }, {
+                    "mountPath": "/pgconf",
+                    "name": "pgconf",
+                    "readOnly": true
+                }, {
+                    "mountPath": "/backrestrepo",
+                    "name": "backrestrepo",
+                    "readOnly": false
+                }]
+            }],
+            "volumes": [{
+                "name": "pgconf",
+                "configMap": {
+                    "name": "backrestconf"
+                }
+            }, {
+                "name": "backrestrepo",
+                "persistentVolumeClaim": {
+                    "claimName": "crunchy-pvc2"
+                }
+            }, {
+                "name": "pgdata",
+           	     "persistentVolumeClaim": {
+                    "claimName": "crunchy-pvc"
+          	     }
+            }],
+                "restartPolicy": "Never"
+    	}
+
+        }
+    }
+}

@@ -16,126 +16,109 @@
 package main
 
 import (
-	"database/sql"
-	"errors"
-	"github.com/crunchydata/crunchy-containers/collectapi"
-	"log"
+	"flag"
+	"fmt"
+	"io"
+	"net/http"
 	"os"
-	"os/signal"
-	"strconv"
-	"syscall"
 	"time"
+
+	"github.com/prometheus/client_golang/prometheus/push"
+	dto "github.com/prometheus/client_model/go"
+	"github.com/prometheus/common/expfmt"
 )
 
-var POLL_INT = int64(3)
-var PG_ROOT_PASSWORD string
-var PG_PORT = "5432"
-var HOSTNAME string
-var PROM_GATEWAY = "http://crunchy-scope:9091"
+type flagStringArray []string
 
-var logger *log.Logger
+func (f *flagStringArray) String() string {
+	return ""
+}
+
+func (f *flagStringArray) Set(value string) error {
+	*f = append(*f, value)
+	return nil
+}
+
+var (
+	exporterUrls flagStringArray
+
+	gateway = flag.String(
+		"gateway", "",
+		"Prometheus pushgateway address",
+	)
+
+	interval = flag.Int(
+		"interval", 3,
+		"Polling interval (minutes)",
+	)
+)
+
+func init() {
+	flag.Var(
+		&exporterUrls,
+		"exporter",
+		"List of exporter addresses (comma separated)",
+	)
+}
+
+type MetricGatherer struct {
+	url string
+}
+
+func NewMetricGatherer(url string) *MetricGatherer {
+	return &MetricGatherer{
+		url: url,
+	}
+}
+
+func (m *MetricGatherer) Gather() ([]*dto.MetricFamily, error) {
+	tmp := new(dto.MetricFamily)
+	metrics := make([]*dto.MetricFamily, 0)
+
+	res, err := http.Get(m.url)
+
+	if err != nil {
+		fmt.Println(err.Error())
+		return metrics, err
+	}
+
+	format := expfmt.Negotiate(res.Header)
+	decoder := expfmt.NewDecoder(res.Body, format)
+
+	for decoder.Decode(tmp) != io.EOF {
+		metric := new(dto.MetricFamily)
+		*metric = *tmp
+		metrics = append(metrics, metric)
+	}
+
+	return metrics, nil
+}
 
 func main() {
-	logger = log.New(os.Stdout, "logger: ", log.Lshortfile|log.Ldate|log.Ltime)
-	//set up signal catcher logic
-	sigs := make(chan os.Signal, 1)
-	done := make(chan bool, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-	go func() {
-		sig := <-sigs
-		logger.Println(sig)
-		done <- true
-		logger.Println("collectserver caught signal, exiting...")
-		os.Exit(0)
-	}()
+	flag.Parse()
 
-	var VERSION = os.Getenv("CCP_VERSION")
-
-	logger.Println("collectserver " + VERSION + ": starting")
-
-	getEnvVars()
-
-	logger.Printf("collectserver: POLL_INT %d\n", POLL_INT)
-	logger.Printf("collectserver: HOSTNAME %s\n", HOSTNAME)
-	logger.Printf("collectserver: PG_PORT %s\n", PG_PORT)
-	logger.Printf("collectserver: PROM_GATEWAY %s\n", PROM_GATEWAY)
-
-	for true {
-		time.Sleep(time.Duration(POLL_INT) * time.Minute)
-		process()
+	if len(*gateway) == 0 {
+		fmt.Println("A push gateway was not specified.")
+		fmt.Println("A gateway URL can be provided using the -gateway option.")
+		os.Exit(1)
 	}
 
-}
+	duration := time.Duration(*interval) * time.Minute
 
-func process() {
-	var err error
-	var metrics []collectapi.Metric
+	gatherers := make([]*MetricGatherer, 0)
 
-	var conn *sql.DB
-	var host = HOSTNAME
-	var user = "postgres"
-	var port = PG_PORT
-	var database = "postgres"
-	var password = PG_ROOT_PASSWORD
-
-	conn, err = collectapi.GetMonitoringConnection(logger, host, user, port, database, password)
-	if err != nil {
-		logger.Println("could not connect to " + host)
-		logger.Println(err.Error())
-		return
-	}
-	defer conn.Close()
-
-	metrics, err = collectapi.GetMetrics(logger, HOSTNAME, user, PG_PORT, PG_ROOT_PASSWORD, conn)
-	if err != nil {
-		logger.Println("error getting metrics from " + host)
-		logger.Println(err.Error())
-		return
+	for _, url := range exporterUrls {
+		gatherers = append(gatherers, NewMetricGatherer(url))
 	}
 
-	//write metrics to Prometheus
-	err = collectapi.WritePrometheusMetrics(logger, PROM_GATEWAY, HOSTNAME, metrics)
-	if err != nil {
-		logger.Println("error writing metrics from " + host)
-		logger.Println(err.Error())
-		return
-	}
-}
-
-func getEnvVars() error {
-	//get the polling interval (in minutes, 3 minutes is the default)
-	var err error
-	var tempval = os.Getenv("POLL_INT")
-	if tempval != "" {
-		POLL_INT, err = strconv.ParseInt(tempval, 10, 64)
-		if err != nil {
-			logger.Println(err.Error())
-			logger.Println("error in POLL_INT env var format")
-			return err
+	for {
+		for _, g := range gatherers {
+			if err := push.AddFromGatherer("crunchy-collect",
+				push.HostnameGroupingKey(), *gateway, g,
+			); err != nil {
+				fmt.Println(err.Error())
+			}
 		}
-
+		time.Sleep(duration)
 	}
-	HOSTNAME = os.Getenv("HOSTNAME")
-	if HOSTNAME == "" {
-		logger.Println("error in HOSTNAME env var, not set")
-		return errors.New("HOSTNAME env var not set")
-	}
-	PROM_GATEWAY = os.Getenv("PROM_GATEWAY")
-	if PROM_GATEWAY == "" {
-		logger.Println("error in PROM_GATEWAY env var, not set")
-		return errors.New("PROM_GATEWAY env var not set, using default")
-	}
-	PG_ROOT_PASSWORD = os.Getenv("PG_ROOT_PASSWORD")
-	if PG_ROOT_PASSWORD == "" {
-		logger.Println("error in PG_ROOT_PASSWORD env var, not set")
-		return errors.New("PG_ROOT_PASSWORD env var not set")
-	}
-	PG_PORT = os.Getenv("PG_PORT")
-	if PG_ROOT_PASSWORD == "" {
-		logger.Println("possible error in PG_PORT env var, not set, using default value")
-		return nil
-	}
-
-	return err
-
 }

@@ -15,5 +15,6 @@
 
 kubectl delete pod pgbouncer
 kubectl delete service pgbouncer
+kubectl delete configmap pgbouncer-configmap
 $CCPROOT/examples/waitforterm.sh pgbouncer kubectl
 

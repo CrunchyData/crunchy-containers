@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
+
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -32,7 +32,7 @@ kubectl create clusterrolebinding permissive-binding \
 
 # create the services for the example
 kubectl create -f $DIR/set-service.json
-kubectl create -f $DIR/set-master-service.json
+kubectl create -f $DIR/set-primary-service.json
 kubectl create -f $DIR/set-replica-service.json
 
 # create some sample pv to use

@@ -12,16 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
 
-echo "this example depends on the master-replica example being run prior"
+
+echo "This example depends on the primary-replica example being run prior!"
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-sudo cp $DIR/crunchy-proxy-config.json $PV_PATH/config.json
+kubectl create configmap crunchy-proxy-configmap --from-file=./config.yaml
 
-export PROXY_IMAGE_TAG=centos7-0.0.1-alpha
+export PROXY_IMAGE_TAG=centos7-1.0.0-beta
+
 envsubst < $DIR/crunchy-proxy.json | kubectl create -f -
 kubectl create -f $DIR/crunchy-proxy-service.json

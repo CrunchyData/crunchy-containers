@@ -25,16 +25,16 @@
               }
             ],
             "env": [{
-                "name": "PG_MASTER_USER",
-                "value": "master"
+                "name": "PG_PRIMARY_USER",
+                "value": "primaryuser"
             }, {
                 "name": "PGHOST",
                 "value": "/tmp"
             }, {
                 "name": "PG_MODE",
-                "value": "master"
+                "value": "primary"
             }, {
-                "name": "PG_MASTER_PASSWORD",
+                "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"
             }, {
                 "name": "PG_USER",

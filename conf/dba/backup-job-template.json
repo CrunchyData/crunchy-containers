@@ -1,15 +1,10 @@
 {
-    "apiVersion": "extensions/v1beta1",
+    "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {
         "name": "{{.JOB_HOST}}-backup"
     },
     "spec": {
-        "selector": {
-            "matchLabels": {
-                "app": "{{.JOB_HOST}}-backup"
-            }
-        },
         "template": {
             "metadata": {
                 "name": "{{.JOB_HOST}}-backup",
@@ -29,7 +24,7 @@
                 }],
                 "containers": [{
                     "name": "{{.JOB_HOST}}-backup",
-                    "image": "crunchydata/crunchy-backup:{{.CCP_IMAGE_TAG}}",
+                    "image": "{{.CCP_IMAGE_PREFIX}}/crunchy-backup:{{.CCP_IMAGE_TAG}}",
                     "volumeMounts": [{
                         "mountPath": "/pgdata",
                         "name": "pgdata",

@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -29,13 +29,13 @@ sudo docker run \
 	-v /run/docker.sock:/run/docker.sock \
 	-e FAILOVER=true \
 	-e SLEEP_TIME=12 \
-	-e PG_MASTER_SERVICE=master \
-	-e PG_SLAVE_SERVICE=replica \
-	-e PG_MASTER_PORT=5432 \
-	-e PG_MASTER_USER=masteruser \
+	-e PG_PRIMARY_SERVICE=primary \
+	-e PG_REPLICA_SERVICE=replica \
+	-e PG_PRIMARY_PORT=5432 \
+	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_DATABASE=postgres \
-	--link master:master \
+	--link primary:primary \
 	--link replica:replica \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
-	-d crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG
+	-d ${CCP_IMAGE_PREFIX}/crunchy-pgbouncer:$CCP_IMAGE_TAG

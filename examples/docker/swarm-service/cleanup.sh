@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
 
 echo "cleaning up ..."
 
-SERVICE_NAME=master
+SERVICE_NAME=primary
 VOLUME_NAME=$SERVICE_NAME-volume
 
 docker service rm $SERVICE_NAME
@@ -24,5 +24,3 @@ SERVICE_NAME=replica
 VOLUME_NAME=$SERVICE_NAME-volume
 
 docker service rm $SERVICE_NAME
-
-

@@ -9,20 +9,23 @@
     },
     "spec": {
         "containers": [{
-            "name": "server",
-            "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
+            "name": "postgres",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 5432,
                 "protocol": "TCP"
             }],
             "env": [{
-                "name": "PG_MASTER_USER",
-                "value": "master"
+                "name": "PG_PRIMARY_USER",
+                "value": "primaryuser"
+            }, {
+                "name": "PG_PRIMARY_PORT",
+                "value": "5432"
             }, {
                 "name": "PG_MODE",
-                "value": "master"
+                "value": "primary"
             }, {
-                "name": "PG_MASTER_PASSWORD",
+                "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"
             }, {
                 "name": "PG_USER",
@@ -46,7 +49,7 @@
             }]
         }, {
             "name": "badger",
-            "image": "crunchydata/crunchy-pgbadger:$CCP_IMAGE_TAG",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-pgbadger:$CCP_IMAGE_TAG",
             "ports": [{
                 "containerPort": 10000,
                 "protocol": "TCP"

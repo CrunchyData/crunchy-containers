@@ -10,7 +10,7 @@
     "spec": {
         "containers": [{
             "name": "proxy",
-            "image": "crunchydata/crunchy-proxy:$PROXY_IMAGE_TAG",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-proxy:$PROXY_IMAGE_TAG",
             "ports": [{
                 "name": "proxy",
                 "containerPort": 5432,
@@ -21,28 +21,27 @@
                 "protocol": "TCP"
             }],
             "env": [{
-                "name": "PG_MASTER_SERVICE_NAME",
-                "value": "ms-master"
+                "name": "PG_PRIMARY_SERVICE_NAME",
+                "value": "ms-primary"
             }, {
-                "name": "PG_SLAVE_SERVICE_NAME",
+                "name": "PG_REPLICA_SERVICE_NAME",
                 "value": "ms-replica"
             }, {
                 "name": "DEBUG",
                 "value": "true"
             }],
             "volumeMounts": [{
-                "mountPath": "/config",
                 "name": "config",
-                "readOnly": true
+                "mountPath": "/config"
             }]
 
         }],
 
         "volumes": [{
             "name": "config",
-            "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc"
-            }
+			"configMap": {
+				"name": "crunchy-proxy-configmap"
+			}
         }]
     }
 }

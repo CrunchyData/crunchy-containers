@@ -12,18 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source $CCPROOT/examples/envvars.sh
+
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
 # create the service account used in the containers
-oc create -f $DIR/set-sa.json
+$DIR/create-sa.sh
 
 # create the services for the example
 oc create -f $DIR/set-service.json
-oc create -f $DIR/set-master-service.json
+oc create -f $DIR/set-primary-service.json
 oc create -f $DIR/set-replica-service.json
 
 # create the stateful set
