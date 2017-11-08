@@ -83,7 +83,7 @@ You can scale the number of containers using this command, this will
 essentially create an additional replica database:
 
 ```console
-$ kubectl scale pgset --replica=3
+$ kubectl scale statefulset pgset-primary --replicas=3
 ```
 
 Uninstalling the Chart
@@ -114,7 +114,7 @@ The above command changes the image tag of the container from the default of `ce
 | Parameter                  | Description                        | Default                                                    |
 | -----------------------    | ---------------------------------- | ---------------------------------------------------------- |
 | `Name`                 | Name of release.                 | `pgset`                                        |
-| `.container.port`        | The port used for the primary container      | `pgset-primary`                                                      |
+| `.container.port`        | The port used for the primary container      | `5432`                                                      |
 | `.container.name.primary`        | Name for the primary container      | `pgset-primary`                                                      |
 | `.container.name.replica`        | Name for the replica container      | `pgset-replica`                                                      |
 | `.container.serviceAccount`        | Name for the service account to be used      | `pgset-sa`                                                      |

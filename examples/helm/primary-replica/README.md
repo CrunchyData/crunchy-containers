@@ -18,11 +18,11 @@ This is an example of running the Crunchy PostgreSQL containers using the Helm p
 
 This example will create the following in your Kubernetes cluster:
 
- * Create a service named *crunchy-primary*
- * Create a service named *crunchy-replica*
- * Create a pod named *crunchy-primary*
- * Create a deployment named *crunchy-replica*
- * Create a persistent volume named *crunchy-primary-pv* and a persistent volume claim of *crunchy-primary-pvc*
+ * Create a service named *primary*
+ * Create a service named *replica*
+ * Create a pod named *primary*
+ * Create a deployment named *replica*
+ * Create a persistent volume named *primary-pv* and a persistent volume claim of *primary-pvc*
  * Initialize the database using the predefined environment variables
 
 This example creates a simple PostgreSQL streaming replication deployment with a primary (read-write), and a single asynchronous replica (read-only). You can scale up the number of replicas dynamically.
@@ -47,8 +47,8 @@ After installing the Helm chart, you will see the following services:
 ```console
 $ kubectl get services
 NAME                          TYPE        CLUSTER-IP   EXTERNAL-IP      PORT(S)    AGE
-crunchy-primary   ClusterIP   10.0.0.99    <none>           5432/TCP   22m
-crunchy-replica   ClusterIP   10.0.0.253   <none>           5432/TCP   22m
+primary   ClusterIP   10.0.0.99    <none>           5432/TCP   22m
+replica   ClusterIP   10.0.0.253   <none>           5432/TCP   22m
 kubernetes                    ClusterIP   10.0.0.1     <none>           443/TCP    7h
 ```
 
@@ -57,28 +57,28 @@ primary.  To test out replication, see if replication is underway
 with this command, enter *password* for the password when prompted:
 
 ```console
-$ psql -h crunchy-primary -U postgres postgres -c 'table pg_stat_replication'
+$ psql -h primary -U postgres postgres -c 'table pg_stat_replication'
 ```
 
 If you see a line returned from that query it means the primary is replicating
 to the replica.  Try creating some data on the primary:
 
 ```console
-$ psql -h crunchy-primary -U postgres postgres -c 'create table foo (id int)'
-$ psql -h crunchy-primary -U postgres postgres -c 'insert into foo values (1)'
+$ psql -h primary -U postgres postgres -c 'create table foo (id int)'
+$ psql -h primary -U postgres postgres -c 'insert into foo values (1)'
 ```
 
 Then verify that the data is replicated to the replica:
 
 ```console
-$ psql -h crunchy-replica -U postgres postgres -c 'table foo'
+$ psql -h replica -U postgres postgres -c 'table foo'
 ```
 
 You can scale up the number of read-only replicas by running
 the following Kubernetes command:
 
 ```console
-$ kubectl scale deployment crunchy-replica --replicas=2
+$ kubectl scale deployment replica --replicas=2
 ```
 
 It takes 60 seconds for the replica to start and begin replicating
@@ -112,7 +112,7 @@ The above command changes the image tag of the container from the default of `ce
 | Parameter                  | Description                        | Default                                                    |
 | -----------------------    | ---------------------------------- | ---------------------------------------------------------- |
 | `.name`                 | Name of release.                 | `primary-replica`                                        |
-| `.container.port`        | The port used for the primary container      | `pgset-primary`                                                      |
+| `.container.port`        | The port used for the primary container      | `5432`                                                      |
 | `.container.name.primary`        | Name for the primary container      | `primary`                                                      |
 | `.container.name.replica`        | Name for the replica container      | `replica`                                                      |
 | `.credentials.primary`                | Password for the primary user    | `password`                                                      |

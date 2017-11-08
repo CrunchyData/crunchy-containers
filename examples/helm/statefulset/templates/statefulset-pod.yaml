@@ -53,20 +53,13 @@ spec:
             cpu: {{ .Values.resources.cpu }}
             memory: {{ .Values.resources.memory }}
         volumeMounts:
-        - name: pgdata
-          mountPath: "/pgdata"
-          readOnly: false
+        - mountPath: /pgdata
+          name: pgdata
+        - mountPath: /backup
+          name: backup
+          readOnly: true
       volumes:
-      - name: pgdata
-        persistentVolumeClaim:
-          claimName: {{.Values.pvc.name}}
-  volumeClaimTemplates:
-  - metadata:
-      name: pgdata
-      annotations:
-        volume.beta.kubernetes.io/storage-class: {{ .Values.resources.persistence.storageClass }}
-    spec:
-      accessModes: {{ .Values.resources.persistence.accessModes }}
-      resources:
-        requests:
-          storage: {{ .Values.resources.persistence.size }}
+      - emptyDir: {}
+        name: pgdata
+      - emptyDir: {}
+        name: backup

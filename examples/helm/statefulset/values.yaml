@@ -24,8 +24,8 @@ resources:
   cpu: 200m
   memory: 512Mi
   persistence:
-    storageClass: default
-    storageClassType: default
+    storageClass: standard
+    storageClassType: standard
     accessModes:
     - ReadWriteMany
     size: 100m

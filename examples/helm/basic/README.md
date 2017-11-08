@@ -18,9 +18,9 @@ This is an example of running the Crunchy PostgreSQL containers using the Helm p
 
 This example will create the following in your Kubernetes cluster:
 
- * Create a pod named *crunchy-basic*
- * Create a service named *crunchy-basic*
- * Create a release named *crunchy-basic*
+ * Create a pod named *basic*
+ * Create a service named *basic*
+ * Create a release named *basic*
  * Initialize the database using the predefined environment variables
 
 This example creates a simple PostgreSQL streaming replication deployment with a single primary (read-write).
@@ -44,7 +44,7 @@ Using the Chart
 After the database starts up you can connect to it as follows:
 
 ```console
-$ psql -h crunchy-basic -U postgres postgres
+$ psql -h basic -U postgres postgres
 ```
 
 Uninstalling the Chart
@@ -75,7 +75,7 @@ The above command changes the image tag of the container from the default of `ce
 | Parameter                  | Description                        | Default                                                    |
 | -----------------------    | ---------------------------------- | ---------------------------------------------------------- |
 | `.name`                 | Name of release.                 | `basic`                                        |
-| `.container.port`        | The port used for the primary container      | `pgset-primary`                                                      |
+| `.container.port`        | The port used for the primary container      | `5432`                                                      |
 | `.container.name`        | Name for the primary container      | `basic`                                                      |
 | `.credentials.primary`                | Password for the primary user    | `password`                                                      |
 | `.credentials.root`            | Password for the root user        | `password`                                                      |

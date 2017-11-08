@@ -57,17 +57,13 @@ spec:
       readOnly: true
     - mountPath: /pguser
       name: pguser-volume
-      readOnly: true
     - mountPath: /pgprimary
       name: pgprimary-volume
-      readOnly: true
     - mountPath: /pgroot
       name: pgroot-volume
-      readOnly: true
   volumes:
-  - name: pgdata
-    persistentVolumeClaim:
-     claimName: {{.Values.pvc.name}}
+  - emptyDir: {}
+    name: pgdata
   - emptyDir: {}
     name: backup
   - name: pguser-volume
