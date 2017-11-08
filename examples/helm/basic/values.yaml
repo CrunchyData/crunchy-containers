@@ -1,13 +1,16 @@
-Name: crunchy-basic
-PrimaryName: crunchy-basic
-PrimaryPassword: password
-RootPassword: password
-UserPassword: password
-ServiceType: ClusterIP
-ContainerName: server
-PostgresImage: crunchydata/crunchy-postgres:centos7-9.6.5-1.6.0
-NFSServerIP: 10.0.1.4
-NFSPath: /mnt/nfsfileshare
-PVStorage: 400M
-PVName: crunchy-basic-pv
-PVCName: crunchy-basic-pvc
+name: basic
+container:
+  port: 5432
+  name: basic
+credentials:
+  primary: password
+  root: password
+  user: password
+serviceType: ClusterIP
+image:
+  repository: crunchydata
+  container: crunchy-postgres
+  tag: centos7-9.6.5-1.6.0
+resources:
+  cpu: 200m
+  memory: 512Mi

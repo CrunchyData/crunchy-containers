@@ -1,6 +1,14 @@
-name: crunchy-primary-replica
+apiVersion: v1
+name: primary-replica
 description: Deploy a basic crunchy primary and replica cluster
-version: 1.6.0
-home: https://k8s.io/helm
+version: 1
+appVersion: 1.6.0
+keywords:
+- postgresql
+- postgres
+- database
+- sql
+home: https://www.crunchydata.com/
+icon: https://www.crunchydata.com/images/logo.svg
 sources:
-  - https://github.com/kubernetes/helm
+- https://github.com/CrunchyData/crunchy-containers

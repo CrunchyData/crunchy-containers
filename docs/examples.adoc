@@ -1979,6 +1979,27 @@ essentially create an additional replica databse:
 kubectl scale pgset --replica=3
 ....
 
+==== Helm
+
+Please see the above section under "Kubernetes" for details on how this example works.
+The example can be executed like such:
+
+....
+cd $CCPROOT/examples/helm/permissions
+./statefulset.sh
+cd $CCPROOT/examples/helm/
+helm install statefulset --name crunchy-statefulset
+....
+
+You can view characteristics of the example through some of the following commands:
+
+....
+helm get manifest crunchy-statefulset
+kubectl get statefulset
+kubectl get pod
+kubectl get svc
+....
+
 ==== OpenShift
 
 This example shows how to use a StatefulSet (available

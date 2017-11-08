@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{.Values.PrimaryName}}"
+  name: "{{.Values.container.name.primary}}"
   labels:
-    name: "{{.Values.PrimaryName}}"
+    name: "{{.Values.container.name.primary}}"
     # The "heritage" label is used to track which tool deployed a given chart.
     # It is useful for admins who want to see what releases a particular tool
     # is responsible for.
@@ -22,14 +22,10 @@ spec:
   # more conventional syntax: {{.restartPolicy | default "Never"}}
   restartPolicy: {{default "Never" .Values.restartPolicy}}
   containers:
-  - name: {{.Values.ContainerName}}
-    image: "{{.Values.PostgresImage}}"
+  - name: {{.Values.container.name.primary}}
+    image: "{{.Values.image.repository}}/{{.Values.image.container}}:{{.Values.image.tag}}"
     ports:
-    - containerPort: 5432
-    resources:
-      requests:
-        cpu: {{default "100m" .Values.Cpu}}
-        memory: {{default "100M" .Values.Memory}}
+    - containerPort: {{.Values.container.port}}
     env:
     - name: PGHOST
       value: /tmp
@@ -38,17 +34,21 @@ spec:
     - name: PG_MODE
       value: primary
     - name: PG_PRIMARY_PORT
-      value: "5432"
+      value: "{{.Values.container.port}}"
     - name: PG_PRIMARY_PASSWORD
-      value: "{{.Values.PrimaryPassword}}"
+      value: "{{.Values.credentials.primary}}"
     - name: PG_USER
       value: testuser
     - name: PG_PASSWORD
-      value: "{{.Values.UserPassword}}"
+      value: "{{.Values.credentials.user}}"
     - name: PG_DATABASE
       value: userdb
     - name: PG_ROOT_PASSWORD
-      value: "{{.Values.RootPassword}}"
+      value: "{{.Values.credentials.root}}"
+    resources:
+      requests:
+        cpu: {{ .Values.resources.cpu }}
+        memory: {{ .Values.resources.memory }}
     volumeMounts:
     - mountPath: /pgdata
       name: pgdata
@@ -57,17 +57,13 @@ spec:
       readOnly: true
     - mountPath: /pguser
       name: pguser-volume
-      readOnly: true
     - mountPath: /pgprimary
       name: pgprimary-volume
-      readOnly: true
     - mountPath: /pgroot
       name: pgroot-volume
-      readOnly: true
   volumes:
-  - name: pgdata
-    persistentVolumeClaim:
-     claimName: {{.Values.PVCName}}
+  - emptyDir: {}
+    name: pgdata
   - emptyDir: {}
     name: backup
   - name: pguser-volume
