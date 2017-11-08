@@ -5,7 +5,7 @@ metadata:
   labels:
     name: "{{.Values.container.name.replica}}"
     heritage: {{.Release.Service | quote }}
-    release: {{.Release.name | quote }}
+    release: {{.Release.Name | quote }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
   annotations:
     "helm.sh/created": {{.Release.Time.Seconds | quote }}
