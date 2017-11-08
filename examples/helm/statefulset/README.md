@@ -116,7 +116,7 @@ The above command changes the image tag of the container from the default of `ce
 | `Name`                 | Name of release.                 | `pgset`                                        |
 | `.container.port`        | The port used for the primary container      | `pgset-primary`                                                      |
 | `.container.name.primary`        | Name for the primary container      | `pgset-primary`                                                      |
-| `.container.name.Replica`        | Name for the replica container      | `pgset-replica`                                                      |
+| `.container.name.replica`        | Name for the replica container      | `pgset-replica`                                                      |
 | `.container.serviceAccount`        | Name for the service account to be used      | `pgset-sa`                                                      |
 | `.credentials.primary`                | Password for the primary user    | `password`                                                      |
 | `.credentials.root`            | Password for the root user        | `password`                                                      |

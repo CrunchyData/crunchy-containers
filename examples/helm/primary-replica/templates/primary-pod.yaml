@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{.Values.container.name}}"
+  name: "{{.Values.container.name.primary}}"
   labels:
-    name: "{{.Values.container.name}}"
+    name: "{{.Values.container.name.primary}}"
     # The "heritage" label is used to track which tool deployed a given chart.
     # It is useful for admins who want to see what releases a particular tool
     # is responsible for.
@@ -12,7 +12,7 @@ metadata:
     # Kubernetes resources that were created as part of that release.
     release: {{.Release.name | quote }}
     # This makes it easy to audit chart usage.
-    chart: "{{.Chart.name}}-{{.Chart.Version}}"
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
   annotations:
     "helm.sh/created": {{.Release.Time.Seconds | quote }}
 spec:

@@ -12,7 +12,7 @@ metadata:
     # Kubernetes resources that were created as part of that release.
     release: {{.Release.name | quote }}
     # This makes it easy to audit chart usage.
-    chart: "{{.Chart.name}}-{{.Chart.Version}}"
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
   annotations:
     "helm.sh/created": {{.Release.Time.Seconds | quote }}
 spec:

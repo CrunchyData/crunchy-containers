@@ -3,9 +3,9 @@ kind: StatefulSet
 metadata:
   name: "{{.Values.container.name.primary}}"
   labels:
-    name: "{{.Values.container.name.Replica}}"
+    name: "{{.Values.container.name.replica}}"
     app: "{{.Values.container.name.primary}}"
-    chart: "{{.Chart.name}}-{{.Chart.Version}}"
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
   annotations:
     "helm.sh/created": {{.Release.Time.Seconds | quote }}
 spec:

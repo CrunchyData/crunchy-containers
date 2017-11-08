@@ -1,24 +1,24 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: "{{.Values.container.name.Replica}}"
+  name: "{{.Values.container.name.replica}}"
   labels:
-    name: "{{.Values.container.name.Replica}}"
+    name: "{{.Values.container.name.replica}}"
     heritage: {{.Release.Service | quote }}
     release: {{.Release.name | quote }}
-    chart: "{{.Chart.name}}-{{.Chart.Version}}"
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
   annotations:
     "helm.sh/created": {{.Release.Time.Seconds | quote }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: "{{.Values.container.name.Replica}}"
+      name: "{{.Values.container.name.replica}}"
   template:
     metadata:
       labels:
-        name: "{{.Values.container.name.Replica}}"
-      name: "{{.Values.container.name.Replica}}"
+        name: "{{.Values.container.name.replica}}"
+      name: "{{.Values.container.name.replica}}"
     spec:
       containers:
       - env:
@@ -44,7 +44,7 @@ spec:
           value: "{{.Values.credentials.root}}"
         image: "{{.Values.image.repository}}/{{.Values.image.container}}:{{.Values.image.tag}}"
         imagePullPolicy: IfNotPresent
-        name: "{{.Values.container.name.Replica}}"
+        name: "{{.Values.container.name.replica}}"
         ports:
         - containerPort: {{.Values.container.port}}
           protocol: TCP

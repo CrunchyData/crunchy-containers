@@ -3,12 +3,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: "{{.Values.container.name.Replica}}"
+  name: "{{.Values.container.name.replica}}"
   labels:
-    name: "{{.Values.container.name.Replica}}"
+    name: "{{.Values.container.name.replica}}"
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.name | quote }}
-    chart: "{{.Chart.name}}-{{.Chart.Version}}"
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
 spec:
   type: "{{.Values.serviceType}}"
   ports:
@@ -17,4 +17,4 @@ spec:
     protocol: TCP
     name: postgres
   selector:
-    name: "{{.Values.container.name.Replica}}"
+    name: "{{.Values.container.name.replica}}"

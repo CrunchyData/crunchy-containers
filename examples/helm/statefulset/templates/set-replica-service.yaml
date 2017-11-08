@@ -1,12 +1,12 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: "{{.Values.container.name.Replica}}"
+  name: "{{.Values.container.name.replica}}"
   labels:
     name: "{{.Values.container.name.primary}}"
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.name | quote }}
-    chart: "{{.Chart.name}}-{{.Chart.Version}}"
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
 spec:
   type: "{{.Values.serviceType}}"
   ports:
@@ -15,5 +15,5 @@ spec:
     targetPort: {{.Values.container.port}}
     nodePort: 0
   selector:
-    name: "{{.Values.container.name.Replica}}"
+    name: "{{.Values.container.name.replica}}"
   sessionAffinity: None

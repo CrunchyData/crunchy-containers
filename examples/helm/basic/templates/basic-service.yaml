@@ -6,7 +6,7 @@ metadata:
     name: "{{.Values.container.name}}"
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.name | quote }}
-    chart: "{{.Chart.name}}-{{.Chart.Version}}"
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
 spec:
   type: "{{.Values.serviceType}}"
   ports:
