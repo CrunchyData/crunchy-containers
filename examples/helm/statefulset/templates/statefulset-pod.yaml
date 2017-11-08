@@ -1,31 +1,31 @@
 apiVersion: apps/v1beta1
 kind: StatefulSet
 metadata:
-  name: "{{.Values.Container.Name.Primary}}"
+  name: "{{.Values.container.name.primary}}"
   labels:
-    name: "{{.Values.Container.Name.Replica}}"
-    app: "{{.Values.Container.Name.Primary}}"
-    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    name: "{{.Values.container.name.Replica}}"
+    app: "{{.Values.container.name.primary}}"
+    chart: "{{.Chart.name}}-{{.Chart.Version}}"
   annotations:
     "helm.sh/created": {{.Release.Time.Seconds | quote }}
 spec:
   selector:
     matchLabels:
-      app: "{{.Values.Container.Name.Primary}}"
-  serviceName: "{{.Values.Container.Name.Primary}}"
+      app: "{{.Values.container.name.primary}}"
+  serviceName: "{{.Values.container.name.primary}}"
   replicas: 2
   template:
     metadata:
       labels:
-        app: "{{.Values.Container.Name.Primary}}"
+        app: "{{.Values.container.name.primary}}"
     spec:
-      serviceAccount: "{{.Values.Container.ServiceAccount}}"
+      serviceAccount: "{{.Values.container.serviceAccount}}"
       terminationGracePeriodSeconds: 10
       containers:
-      - name: {{.Values.Container.Name.Primary}}
-        image: "{{.Values.Image.Repository}}/{{.Values.Image.Container}}:{{.Values.Image.Tag}}"
+      - name: {{.Values.container.name.primary}}
+        image: "{{.Values.image.repository}}/{{.Values.image.container}}:{{.Values.image.tag}}"
         ports:
-        - containerPort: 5432
+        - containerPort: {{.Values.container.port}}
           name: postgres
         env:
         - name: PGHOST
@@ -35,19 +35,23 @@ spec:
         - name: PG_MODE
           value: set
         - name: PG_PRIMARY_HOST
-          value: "{{.Values.Container.Name.Primary}}"
+          value: "{{.Values.container.name.primary}}"
         - name: PG_PRIMARY_PORT
-          value: "5432"
+          value: "{{.Values.container.port}}"
         - name: PG_PRIMARY_PASSWORD
-          value: "{{.Values.Credentials.Primary}}"
+          value: "{{.Values.credentials.primary}}"
         - name: PG_USER
           value: testuser
         - name: PG_PASSWORD
-          value: "{{.Values.Credentials.User}}"
+          value: "{{.Values.credentials.user}}"
         - name: PG_DATABASE
           value: userdb
         - name: PG_ROOT_PASSWORD
-          value: "{{.Values.Credentials.Root}}"
+          value: "{{.Values.credentials.root}}"
+        resources:
+          requests:
+            cpu: {{ .Values.resources.cpu }}
+            memory: {{ .Values.resources.memory }}
         volumeMounts:
         - name: pgdata
           mountPath: "/pgdata"
@@ -55,4 +59,14 @@ spec:
       volumes:
       - name: pgdata
         persistentVolumeClaim:
-          claimName: {{.Values.PVC.Name}}
+          claimName: {{.Values.pvc.name}}
+  volumeClaimTemplates:
+  - metadata:
+      name: pgdata
+      annotations:
+        volume.beta.kubernetes.io/storage-class: {{ .Values.resources.persistence.storageClass }}
+    spec:
+      accessModes: {{ .Values.resources.persistence.accessModes }}
+      resources:
+        requests:
+          storage: {{ .Values.resources.persistence.size }}

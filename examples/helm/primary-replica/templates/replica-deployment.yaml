@@ -1,52 +1,52 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: "{{.Values.Containers.Name.Replica}}"
+  name: "{{.Values.container.name.Replica}}"
   labels:
-    name: "{{.Values.Containers.Name.Replica}}"
+    name: "{{.Values.container.name.Replica}}"
     heritage: {{.Release.Service | quote }}
-    release: {{.Release.Name | quote }}
-    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    release: {{.Release.name | quote }}
+    chart: "{{.Chart.name}}-{{.Chart.Version}}"
   annotations:
     "helm.sh/created": {{.Release.Time.Seconds | quote }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      name: "{{.Values.Containers.Name.Replica}}"
+      name: "{{.Values.container.name.Replica}}"
   template:
     metadata:
       labels:
-        name: "{{.Values.Containers.Name.Replica}}"
-      name: "{{.Values.Containers.Name.Replica}}"
+        name: "{{.Values.container.name.Replica}}"
+      name: "{{.Values.container.name.Replica}}"
     spec:
       containers:
       - env:
         - name: PGHOST
           value: /tmp
         - name: PG_PRIMARY_HOST
-          value: "{{.Values.Container.Name.Primary}}"
+          value: "{{.Values.container.name.primary}}"
         - name: PG_PRIMARY_USER
           value: primaryuser
         - name: PG_MODE
           value: replica
         - name: PG_PRIMARY_PORT
-          value: "5432"
+          value: "{{.Values.container.port}}"
         - name: PG_PRIMARY_PASSWORD
-          value: "{{.Values.Credentials.Primary}}"
+          value: "{{.Values.credentials.primary}}"
         - name: PG_USER
           value: testuser
         - name: PG_PASSWORD
-          value: "{{.Values.Credentials.User}}"
+          value: "{{.Values.credentials.user}}"
         - name: PG_DATABASE
           value: userdb
         - name: PG_ROOT_PASSWORD
-          value: "{{.Values.Credentials.Root}}"
-        image: image: "{{.Values.Image.Repository}}/{{.Values.Image.Container}}:{{.Values.Image.Tag}}"
+          value: "{{.Values.credentials.root}}"
+        image: "{{.Values.image.repository}}/{{.Values.image.container}}:{{.Values.image.tag}}"
         imagePullPolicy: IfNotPresent
-        name: "{{.Values.Containers.Name.Replica}}"
+        name: "{{.Values.container.name.Replica}}"
         ports:
-        - containerPort: 5432
+        - containerPort: {{.Values.container.port}}
           protocol: TCP
         terminationMessagePath: /dev/termination-log
         volumeMounts:

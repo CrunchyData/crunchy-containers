@@ -1,19 +1,19 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: "{{.Values.Container.Name.Replica}}"
+  name: "{{.Values.container.name.Replica}}"
   labels:
-    name: "{{.Values.Container.Name.Primary}}"
+    name: "{{.Values.container.name.primary}}"
     heritage: {{ .Release.Service | quote }}
-    release: {{ .Release.Name | quote }}
-    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    release: {{ .Release.name | quote }}
+    chart: "{{.Chart.name}}-{{.Chart.Version}}"
 spec:
-  type: "{{.Values.ServiceType}}"
+  type: "{{.Values.serviceType}}"
   ports:
   - protocol: TCP
-    port: 5432
-    targetPort: 5432
+    port: {{.Values.container.port}}
+    targetPort: {{.Values.container.port}}
     nodePort: 0
   selector:
-    name: "{{.Values.Container.Name.Replica}}"
+    name: "{{.Values.container.name.Replica}}"
   sessionAffinity: None

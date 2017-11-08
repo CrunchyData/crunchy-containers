@@ -1,22 +1,26 @@
-Name: primary-replica
-Container:
-  Name:
-    Primary: primary
-    Replica: replica
-Credentials:
-  Primary: password
-  Root: password
-  User: password
-ServiceType: ClusterIP
-Image:
-  Repository: crunchydata
-  Container: crunchy-postgres
-  Tag: centos7-9.6.5-1.6.0
-NFS:
-  ServerIP: 10.0.1.4
-  Path: /mnt/nfsfileshare
-PV:
-  Storage: 400M
-  Name: primary-pv
-PVC:
-  Name: primary-pvc
+name: primary-replica
+container:
+  port: 5432
+  name:
+    primary: primary
+    replica: replica
+credentials:
+  primary: password
+  root: password
+  user: password
+serviceType: ClusterIP
+image:
+  repository: crunchydata
+  container: crunchy-postgres
+  tag: centos7-9.6.5-1.6.0
+nfs:
+  serverIP: 10.0.1.4
+  path: /mnt/nfsfileshare
+pv:
+  storage: 400M
+  name: primary-pv
+pvc:
+  name: primary-pvc
+resources:
+  cpu: 200m
+  memory: 512Mi

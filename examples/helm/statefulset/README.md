@@ -104,7 +104,7 @@ See `values.yaml` for configuration notes. Specify each parameter using the `--s
 
 ```console
 $ helm install basic --name basic \
-  --set Image.Tag=centos7-10.0-1.6.0
+  --set Image.tag=centos7-10.0-1.6.0
 ```
 
 The above command changes the image tag of the container from the default of `centos7-9.6.5-1.6.0` to `centos7-10.0-1.6.0`.
@@ -114,19 +114,22 @@ The above command changes the image tag of the container from the default of `ce
 | Parameter                  | Description                        | Default                                                    |
 | -----------------------    | ---------------------------------- | ---------------------------------------------------------- |
 | `Name`                 | Name of release.                 | `pgset`                                        |
-| `.Container.Name.Primary`        | Name for the primary container      | `pgset-primary`                                                      |
-| `.Container.Name.Replica`        | Name for the replica container      | `pgset-replica`                                                      |
-| `.Container.ServiceAccount`        | Name for the service account to be used      | `pgset-sa`                                                      |
-| `.Credentials.Primary`                | Password for the primary user    | `password`                                                      |
-| `.Credentials.Root`            | Password for the root user        | `password`                                                      |
-| `.Credentials.User`            | Password for the standard user   | `password`                                                      |
-| `ServiceType`      | The type of service      | `ClusterIP`               
-| `Image.Repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
-| `Image.Container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
-| `Image.Tag` | The image tag to be used.    | `centos7-9.6.5-1.6.0`                                                    |
-| `PV.Storage` | Size of persistent volume     | 400M                                                    |
-| `PV.Name` | Name of persistent volume    | `pgset-pv`                                                    |
-| `PVC.Name` | Name of persistent volume    | `pgset-pvc`                                                    |
+| `.container.port`        | The port used for the primary container      | `pgset-primary`                                                      |
+| `.container.name.primary`        | Name for the primary container      | `pgset-primary`                                                      |
+| `.container.name.Replica`        | Name for the replica container      | `pgset-replica`                                                      |
+| `.container.serviceAccount`        | Name for the service account to be used      | `pgset-sa`                                                      |
+| `.credentials.primary`                | Password for the primary user    | `password`                                                      |
+| `.credentials.root`            | Password for the root user        | `password`                                                      |
+| `.credentials.user`            | Password for the standard user   | `password`                                                      |
+| `.serviceType`      | The type of service      | `ClusterIP`               
+| `.image.repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
+| `.image.container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
+| `.image.tag` | The image tag to be used.    | `centos7-9.6.5-1.6.0`                                                    |
+| `.pv.storage` | Size of persistent volume     | 400M                                                    |
+| `.pv.name` | Name of persistent volume    | `pgset-pv`                                                    |
+| `.pvc.name` | Name of persistent volume    | `pgset-pvc`                                                    |
+| `.resources.cpu` | Defines a limit for CPU    | `200m`                                                    |
+| `.resources.memory` | Defines a limit for memory    | `512Mi`                                                    |
 
 Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
 
