@@ -1977,9 +1977,9 @@ you remove the *RECOVERY_TARGET_NAME* environment variable completely.
 The NFS portions of this example depend upon an NFS file
 system with the following path configurations be present:
 ....
-/nfsfileshare
-/nfsfileshare/backups
-/nfsfileshare/WAL
+/mnt/nfsfileshare
+/mnt/nfsfileshare/backups
+/mnt/nfsfileshare/WAL
 ....
 
 Once you recover a database using PITR, it will be in read-only mode.  To

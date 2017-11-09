@@ -10,7 +10,7 @@
     },
     "accessModes": [ "ReadWriteMany" ],
     "nfs": {
-        "path": "/nfsfileshare/bouncerconfig",
+        "path": "/mnt/nfsfileshare/bouncerconfig",
         "server": "REPLACE_LOCAL_IP"
     },
     "persistentVolumeReclaimPolicy": "Retain"

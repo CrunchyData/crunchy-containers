@@ -39,7 +39,7 @@ This user has sudo privileges.
 OpenShift 3.3 is installed and running when you start the VM.
 
 There are 10 small PVs already created and each is hosted on
-a local NFS /nfsfileshare.
+a local NFS /mnt/nfsfileshare.
 
 OpenShift is configured to allow any user to log in.  The *crunchy*
 user is already created, a password of *crunchy* is also specified.  An
