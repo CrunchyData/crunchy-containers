@@ -407,6 +407,49 @@ kubectl create clusterrolebinding permissive-binding \
 Please see link:https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/[here]
 to view the official documentation regarding configuring DNS for your Kubernetes cluster.
 
+=== Google Cloud Environment
+
+The PostgreSQL Container Suite was tested on Google Container Engine.
+
+Here is a link to set up a Kube cluster on GCE:
+https://kubernetes.io/docs/getting-started-guides/gce
+
+Setup the persistent disks using GCE disks by first editing
+your *bashrc* file and export the GCE settings to match your
+GCE environment.
+
+....
+export GCE_DISK_ZONE=us-central1-a
+export GCE_DISK_NAME=gce-disk-crunchy
+export GCE_DISK_SIZE=4
+export GCE_FS_FORMAT=ext4
+....
+
+Then create the PVs used by the examples, passing in the *gce*
+value as a parameter. This will cause the GCE disks to be created:
+....
+cd $CCPROOT/examples/pv
+./create-pv.sh gce
+cd $CCPROOT/examples/pv
+./create-pvc.sh
+....
+
+Here is a link that describes more information on GCE persistent disk:
+https://cloud.google.com/container-engine/docs/tutorials/persistent-disk/
+
+
+To have the persistent disk examples work, you will need to specify
+a *fsGroup* setting in the *SecurityContext* of each pod script
+as follows:
+....
+       "securityContext": {
+        "fsGroup": 26
+        },
+....
+
+For our PostgreSQL container, a UID of 26 is specified as the user
+which corresponds to the *fsGroup* value.
+
 ===  Tips
 
 Make sure your hostname resolves to a single IP address in your
