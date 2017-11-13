@@ -18,7 +18,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-CONFIGDIR=/nfsfileshare/bouncerconfig
+CONFIGDIR=/mnt/nfsfileshare/bouncerconfig
 
 sudo rm -rf $CONFIGDIR
 sudo mkdir -p $CONFIGDIR

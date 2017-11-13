@@ -58,7 +58,7 @@ function install-crunchy {
 
 function install-nfs {
 	sudo setsebool -P virt_use_nfs 1
-	sudo mkdir /nfsfileshare
+	sudo mkdir /mnt/nfsfileshare
 	sudo yum -y install nfs-utils libnfsidmap
 	sudo systemctl enable rpcbind
 	sudo systemctl enable nfs-server
@@ -66,12 +66,12 @@ function install-nfs {
 	sudo systemctl start nfs-server
 	sudo systemctl start rpc-statd
 	sudo systemctl start nfs-idmapd
-	sudo chmod 777 /nfsfileshare/
+	sudo chmod 777 /mnt/nfsfileshare/
 	sudo cp exports /etc
 	sudo exportfs -r
 	sudo mkdir /mnt/nfsfileshare
 	sudo mount 10.0.2.15:/nfsfileshare /mnt/nfsfileshare
-	sudo chown root:nfsnobody /nfsfileshare
+	sudo chown root:nfsnobody /mnt/nfsfileshare
 }
 
 # this needs to run after you have openshift up and running

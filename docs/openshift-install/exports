@@ -1,2 +1,2 @@
 /exports/registry *(rw,root_squash)
-/nfsfileshare *(rw,sync)
+/mnt/nfsfileshare *(rw,sync)

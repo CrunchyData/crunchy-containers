@@ -17,7 +17,7 @@ Installation instructions are located link:https://github.com/crunchydata/crunch
 supported installation document for the containers suite. In the document, you will find instructions on prerequisites for the environment, setting
 up your machines, and external links for installing Docker, OpenShift and Kubernetes.
 
-If you wanted a more automated way of setting these up, a bash script has been provided in the /docs directory, link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/setup-env.sh[setup-env.sh]. Ensure the script has the proper version numbers for what you are testing before running the script. This will set up an environment with all the necessary prerequisites, including Docker, Git, and Golang. After running these, you will only need to install OpenShift and/or Kubernetes, respectively.
+If you wanted a more automated way of setting these up, a bash script has been provided in the /docs directory, link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/setup-env.sh[setup-env.sh]. Ensure the script has the proper version numbers for what you are testing before running the script. This will set up an environment with all the necessary prerequisites, including Docker, Git, and Golang. After running these, you will only need to install OpenShift and/or Kubernetes, respectively.
 
  * Build a clean Docker CentOS 7 host (VM)
  * Build a clean OpenShift CentOS 7 host (VM)
@@ -96,15 +96,15 @@ For each container, a link is added below that corresponds to the link:https://g
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-9[proxy]
 
 | -
-| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-12[custom-config]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-12[custom-config]
 | -
 
 | -
-| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-13[custom-config-sync]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-13[custom-config-sync]
 | -
 
 | -
-| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-14[configmap]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-14[configmap]
 | -
 
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-6[pgpool]
@@ -125,9 +125,9 @@ For each container, a link is added below that corresponds to the link:https://g
 
 | -
 | -
-| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-13[dba]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-13[dba]
 
-| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#docker-10[custom-setup]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-10[custom-setup]
 | -
 | -
 
@@ -145,10 +145,10 @@ For each container, a link is added below that corresponds to the link:https://g
 
 | -
 | -
-| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-17[statefulsets using dynamic provisioning]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-17[statefulsets using dynamic provisioning]
 
 | -
-| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-22[secrets]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-22[secrets]
 | -
 
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-13[pitr]
@@ -159,7 +159,7 @@ For each container, a link is added below that corresponds to the link:https://g
 | -
 | -
 
-| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#docker-15[swarm]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#docker-15[swarm]
 | -
 | -
 
@@ -168,11 +168,11 @@ For each container, a link is added below that corresponds to the link:https://g
 | link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-20[watch]
 
 | -
-| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-25[ssl]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-25[ssl]
 | -
 
 | -
-| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#openshift-26[workshop]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#openshift-26[workshop]
 | -
 
 | -
@@ -181,7 +181,7 @@ For each container, a link is added below that corresponds to the link:https://g
 
 | -
 | -
-| link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-21[Google Cloud Environment]
+| link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc#kubernetes-21[Google Cloud Environment]
 |===
 
 == Legal Notices

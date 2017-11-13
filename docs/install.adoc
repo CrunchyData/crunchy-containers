@@ -39,8 +39,8 @@ export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 export CCP_CLI=kubectl
 export NAMESPACE=default
-export PV_PATH=/nfsfileshare
-export LOCAL_IP="hostname --ip-address"
+export PV_PATH=/mnt/nfsfileshare
+export LOCAL_IP=$(hostname --ip-address)
 export REPLACE_CCP_IMAGE_PREFIX=crunchydata
 ....
 It will be necessary to log out and back in for the changes to your .bashrc
@@ -163,35 +163,16 @@ for use in a *standalone Docker* environment.
 NFS is required for some of the examples, including the backup and restore
 containers.
 
-First, if you are running your NFS system with SELinux in enforcing mode, you will need to run the following command
-to allow NFS write permissions:
+First, if you are running your NFS system with SELinux in enforcing mode, you will need to run the following command to allow NFS write permissions:
 ....
 sudo setsebool -P virt_use_nfs 1
 ....
 
-The necessary dependencies will need to be installed and started next:
-....
-sudo setsebool -P virt_use_nfs 1
-sudo yum -y install nfs-utils libnfsidmap
-sudo systemctl enable rpcbind nfs-server
-sudo systemctl start rpcbind nfs-server rpc-statd nfs-idmapd
-....
+Detailed instructions that you can use for setting up a NFS server on Centos 7 are provided in the following link.
 
-You will then need to set the permissions of your NFS
-path so that your pods can have write access.  For the
-Crunchy examples, the *nfsnobody* GUI was chosen as
-an example.  Pods will reference the *nfsnobody* GID (65534)
-as a security context *supplementalGroup* attribute.  This
-setting will allow the pod to have group permissions of 65534
-and therefore be able to write to the NFS persistent volumes.
+http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html
 
-The permissions on the NFS path are set as follows:
-....
-sudo mkdir /nfsfileshare
-sudo chmod 777 /nfsfileshare
-....
-
-Most of the Crunchy containers run as the postgres UID (26), but you
+*Note*: Most of the Crunchy containers run as the postgres UID (26), but you
 will notice that when *supplementalGroups* are specified, the pod
 will include the nfsnobody group in the list of groups for the pod user.
 
@@ -199,44 +180,9 @@ The case of Amazon file systems is different, for that you use the
 *fsGroup* security context setting but the idea for allowing
 write permissions is the same.
 
-You will then need to modify the /etc/exports file.
-....
-sudo vi /etc/exports
-....
-
-The /etc/exports file should contain a line similar to this one except with the applicable IP address specified:
-....
-/nfsfileshare 192.168.122.9(rw,sync)
-....
-
-After saving and closing the file, you will need to re-export all directories:
-....
-sudo exportfs -r
-....
-
-Detailed instructions that you can use for setting up a NFS server on Centos 7 are provided in the following link.
-
-http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html
-
-OpenShift NFS examples can be found here:
-
-https://github.com/openshift/origin/tree/master/examples/wordpress/nfs
-
-The examples specify a test NFS server running at IP address 192.168.0.103.
-
-On that server, the /etc/exports file looks like this:
-....
-/nfsfileshare *(rw,sync)
-....
-
-Test your NFS configuration out by mounting a local directory:
-....
-mount 192.168.0.114:/nfsfileshare /mnt/nfsfileshare
-....
-
 if you are running your client on a VM, you will need to
-add 'insecure' to the exportfs file on the NFS server, this is because
-of the way port translation is done between the VM host and the VM instance.
+add 'insecure' to the exportfs file on the NFS server due to the way port
+translation is done between the VM host and the VM instance.
 
 For more details on this bug, please see the following link.
 
@@ -257,17 +203,16 @@ MTU=9000
 If interested in mounting the same NFS share multiple times on the same mount point,
 look into the link:https://www.novell.com/support/kb/doc.php?id=7010210[noac mount option].
 
-=== Step 5 - Persistent Volume Claims
-
-For running the examples that require persistent volumes, you
+Next, assuming that you are setting up NFS as your storage option, you
 will need to run the following script:
 ....
 cd $CCPROOT/examples/pv
-./create-pv.sh
+./create-pv.sh nfs
 ./create-pvc.sh
 ....
 
-View the README.txt for command-line usage.
+*Note*: If you elect to configure HostPath or GCE as your storage option, please view
+README.txt for command-line usage for the ./create-pv.sh command.
 
 == OpenShift Environment
 
@@ -282,7 +227,7 @@ For testing purposes, OpenShift Origin is the simplest to install and configure.
 easiest way to get OpenShift Origin up and running is through the link:https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md[oc cluster up] cluster configuration.
 
 For examples and tips on how to run OpenShift Enterprise & Origin, please look
-at the link:https://github.com/xenophenes/crunchy-containers/blob/master/docs/examples.adoc[Examples Documentation].
+at the link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc[Examples Documentation].
 
 ==== System policies for PVC creation/listing
 
@@ -461,6 +406,49 @@ kubectl create clusterrolebinding permissive-binding \
 
 Please see link:https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/[here]
 to view the official documentation regarding configuring DNS for your Kubernetes cluster.
+
+=== Google Cloud Environment
+
+The PostgreSQL Container Suite was tested on Google Container Engine.
+
+Here is a link to set up a Kube cluster on GCE:
+https://kubernetes.io/docs/getting-started-guides/gce
+
+Setup the persistent disks using GCE disks by first editing
+your *bashrc* file and export the GCE settings to match your
+GCE environment.
+
+....
+export GCE_DISK_ZONE=us-central1-a
+export GCE_DISK_NAME=gce-disk-crunchy
+export GCE_DISK_SIZE=4
+export GCE_FS_FORMAT=ext4
+....
+
+Then create the PVs used by the examples, passing in the *gce*
+value as a parameter. This will cause the GCE disks to be created:
+....
+cd $CCPROOT/examples/pv
+./create-pv.sh gce
+cd $CCPROOT/examples/pv
+./create-pvc.sh
+....
+
+Here is a link that describes more information on GCE persistent disk:
+https://cloud.google.com/container-engine/docs/tutorials/persistent-disk/
+
+
+To have the persistent disk examples work, you will need to specify
+a *fsGroup* setting in the *SecurityContext* of each pod script
+as follows:
+....
+       "securityContext": {
+        "fsGroup": 26
+        },
+....
+
+For our PostgreSQL container, a UID of 26 is specified as the user
+which corresponds to the *fsGroup* value.
 
 ===  Tips
 

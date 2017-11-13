@@ -6,14 +6,17 @@ v1.6, {docdate}
 == Description
 
 pgbackrest is a utility that performs a backup, restore, archive
-function for a PostgreSQL database.  pgbackrest is written and
+function for a PostgreSQL database. pgbackrest is written and
 maintained by David Steele, a fellow Crunchy Data colleague!
 
 pgbackrest is described here:
 
 http://www.pgbackrest.org/
 
-New functionality for pgbackrest was added into the Crunchy Container Suite as of version 1.3.1.  Backups are currently performed by manually executing pgbackrest commands against the desired pod. Restores can now be performed via a new crunchy-backrest-restore container, which offers FULL or DELTA restore capability.
+New functionality for pgbackrest was added into the Crunchy Container Suite as of version 1.3.1.
+Backups are currently performed by manually executing pgbackrest commands against the desired pod.
+Restores can now be performed via a new crunchy-backrest-restore container, which offers FULL or
+DELTA restore capability.
 
 This document will discuss the design and usage of the pgbackrest features
 as implemented so far.
@@ -59,6 +62,58 @@ docker exec -it primary-backrest bash
 
 Examine the contents of the mounted /backrestrepo directory to
 see the archive files and also the backup files.
+
+=== Running the Examples
+
+==== Kubernetes
+
+Start the example as follows:
+....
+cd $CCPROOT/examples/kube/backrest
+./run.sh
+....
+
+This will create the following in your Kubernetes environment:
+
+ * A configMap named backrestconf which contains the pgbackrest.conf file
+ * primary-backrest pod with pgbackrest archive enabled. An initial stanza db will be created on initialization
+ * primary-backrest service
+
+The crunchy-pvc will be used for /pgdata, and crunchy-pvc2 for the /backrestrepo. Examine the /backrestrepo location
+to view the archive directory and ensure WAL archiving is working.
+
+==== OpenShift
+
+Start by running the example database container:
+....
+cd $CCPROOT/examples/openshift/backrest
+./run.sh
+....
+
+This will create the following:
+
+ * PV/PVC for /pgconf and /backrestrepo volumes
+ * primary database pod
+ * primary service
+
+The run.sh script copies the pgbackrest.conf configuration file
+to /mnt/nfsfileshare/pgconf which is our NFS file path.
+
+The archive files are written to the NFS path of /mnt/nfsfileshare/backrestrepo.
+
+The presence of /pgconf/pgbackrest.conf is what is used to
+determine whether pgbackrest will be used as the archive command or not.
+You will need to specify the ARCHIVE_TIMEOUT environment variable
+as well to use this.
+
+After you run the example, you should see archive files
+being written to the /backrestrepo volume (/mnt/nfsfileshare/backrestrepo).
+
+You can create a backup using backrest using this command within
+the container:
+....
+pgbackrest --stanza=db backup --db-path=/pgdata/primary-backrest/ --log-path=/tmp --repo-path=/backrestrepo -conf=/pgconf/pgbackrest.conf
+....
 
 === Performing a Restore
 
