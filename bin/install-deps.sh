@@ -73,3 +73,6 @@ sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/l/lo
 sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/l/libstatgrab-0.91-4.el7.x86_64.rpm
 sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/l/libstatgrab-devel-0.91-4.el7.x86_64.rpm
 sudo yum -y install gcc
+
+# install expenv binary for running examples
+go get github.com/blang/expenv
