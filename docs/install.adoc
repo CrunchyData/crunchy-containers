@@ -54,7 +54,8 @@ mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
 At this point, if you are installing crunchy-containers on a CentOS 7 machine,
 you may continue with the following instructions. If you are doing an installation
 on RHEL 7, please view the instructions located
-link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/install.adoc#rhel-7[here].
+link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/install.adoc#rhel-7[below]
+that are specific to RHEL environments.
 
 ==== CentOS 7
 ....
@@ -70,8 +71,8 @@ git checkout 1.6.0
 godep restore
 ....
 
-*If you are a Crunchy enterprise customer, you will place the CRUNCHY repo
-key and yum repo file into the $CCPROOT/conf directory at this point. These
+*If you are a Crunchy enterprise customer, you will place the Crunchy repository
+key and yum repository file into the $CCPROOT/conf directory at this point. These
 files can be obtained through https://access.crunchydata.com/ on the downloads
 page.*
 
@@ -94,6 +95,11 @@ cd crunchy-containers
 git checkout 1.6.0
 godep restore
 ....
+
+*If you are a Crunchy enterprise customer, you will place the Crunchy repository
+key and yum repository file into the $CCPROOT/conf directory at this point. These
+files can be obtained through https://access.crunchydata.com/ on the downloads
+page.*
 
 === Installing PostgreSQL
 
@@ -128,11 +134,6 @@ Then, go ahead and install the PostgreSQL server package.
 ....
 sudo yum -y install postgresql10-server.x86_64
 ....
-
-*If you are a Crunchy enterprise customer, you will place the CRUNCHY repo
-key and yum repo file into the $CCPROOT/conf directory at this point. These
-files can be obtained through https://access.crunchydata.com/ on the downloads
-page.*
 
 === Installing Docker
 
