@@ -453,24 +453,11 @@ which corresponds to the *fsGroup* value.
 ===  Tips
 
 Make sure your hostname resolves to a single IP address in your
-/etc/hosts file!  If not, the NFS examples will not work.
+/etc/hosts file. The NFS examples will not work otherwise.
 
 You should see a single IP address returned from this command:
 ....
 hostname --ip-address
-....
-
-....
-sudo PATH=$PATH ALLOW_PRIVILEGED=true ./hack/local-up-cluster.sh
-....
-
-Note:  specifying ALLOW_PRIVILEGED=true is required if you are running
-in SELinux enforcing mode. This allows you to specify the following
-in your pod spec to run the container as privileged:
-....
-"securityContext": {
-	"privileged": true
-},
 ....
 
 == Legal Notices
