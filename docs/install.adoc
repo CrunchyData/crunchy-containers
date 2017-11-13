@@ -22,7 +22,7 @@ These installation instructions are developed and tested for the following opera
  * *CentOS 7*
  * *RHEL 7*
 
-=== Step 1 - Project Directory Structure
+=== Project Directory Structure
 
 First add the following lines to your .bashrc file to set
 the project paths:
@@ -49,6 +49,15 @@ file to take effect.
 Next, set up a project directory structure and pull down the project:
 ....
 mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
+....
+
+At this point, if you are installing crunchy-containers on a CentOS 7 machine,
+you may continue with the following instructions. If you are doing an installation
+on RHEL 7, please view the instructions located
+link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/install.adoc#rhel-7[here].
+
+==== CentOS 7
+....
 cd $GOPATH
 sudo yum -y install golang git docker postgresql-server
 go get github.com/tools/godep
@@ -66,7 +75,66 @@ key and yum repo file into the $CCPROOT/conf directory at this point. These
 files can be obtained through https://access.crunchydata.com/ on the downloads
 page.*
 
-=== Step 2 - Install the Host Dependencies
+==== RHEL 7
+
+When setting up the environment on RHEL 7, there are slightly different steps that
+need to be taken.
+
+....
+cd $GOPATH
+subscription-manager repos --enable=rhel-7-server-optional-rpms
+sudo yum-config-manager --enable rhel-7-server-extras-rpms
+sudo yum -y install git golang docker
+go get github.com/tools/godep
+cd src/github.com
+mkdir crunchydata
+cd crunchydata
+git clone https://github.com/crunchydata/crunchy-containers
+cd crunchy-containers
+git checkout 1.6.0
+godep restore
+....
+
+=== Installing PostgreSQL
+
+These installation instructions assume the installation of PostgreSQL 10
+through the official PGDG repository. View the documentation located
+link:https://wiki.postgresql.org/wiki/YUM_Installation[here] in
+order to view more detailed notes or install a different version of PostgreSQL.
+
+Locate and edit your distributions .repo file, located:
+
+ * On CentOS: /etc/yum.repos.d/CentOS-Base.repo, [base] and [updates] sections
+ * On Red Hat: /etc/yum/pluginconf.d/rhnplugin.conf [main] section
+
+To the section(s) identified above, you need to append a line (otherwise
+dependencies might resolve to the PostgreSQL supplied by the base repository):
+
+....
+exclude=postgresql*
+....
+
+Next, install the RPM relating to the base operating system and PostgreSQL version
+you wish to install. The RPMs can be found link:https://yum.postgresql.org/repopackages.php[here].
+
+For example, to install PostgreSQL 10 on a RHEL 7 system:
+
+....
+sudo yum -y install https://download.postgresql.org/pub/repos/yum/testing/10/redhat/rhel-7-x86_64/pgdg-redhat10-10-2.noarch.rpm
+....
+
+Then, go ahead and install the PostgreSQL server package.
+
+....
+sudo yum -y install postgresql10-server.x86_64
+....
+
+*If you are a Crunchy enterprise customer, you will place the CRUNCHY repo
+key and yum repo file into the $CCPROOT/conf directory at this point. These
+files can be obtained through https://access.crunchydata.com/ on the downloads
+page.*
+
+=== Installing Docker
 
 As good practice, at this point you'll update your system.
 ....
@@ -133,7 +201,14 @@ sudo systemctl enable docker.service
 sudo systemctl start docker.service
 ....
 
-=== Step 3 - Build the Containers
+Verify that Docker version 1.12.6 was installed, as per the OpenShift 3.6
+link:https://docs.openshift.com/container-platform/3.6/install_config/install/host_preparation.html#installing-docker[requirements.]
+
+....
+docker version
+....
+
+=== Build the Containers
 
 At this point, you have a decision to make - either download prebuilt
 containers from link:https://hub.docker.com/[Dockerhub], *or* build the containers on your local host.
@@ -158,7 +233,7 @@ make all
 After this, you will have all the Crunchy containers built and are ready
 for use in a *standalone Docker* environment.
 
-=== Step 4 - Configure NFS for Persistence
+=== Configure NFS for Persistence
 
 NFS is required for some of the examples, including the backup and restore
 containers.
