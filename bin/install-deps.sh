@@ -20,7 +20,7 @@ GRAFANA_VERSION=4.5.1
 POSTGRES_EXPORTER_VERSION=0.2.3
 NODE_EXPORTER_VERSION=0.14.0
 
-sudo yum -y install net-tools bind-utils wget unzip git postgresql
+sudo yum -y install net-tools bind-utils wget unzip git
 
 #
 # download the metrics products, only required to build the containers
