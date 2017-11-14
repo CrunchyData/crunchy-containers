@@ -20,5 +20,5 @@ $DIR/cleanup.sh
 
 kubectl create configmap pgpool-conf --from-file=pgpool.conf --from-file=hba=pool_hba.conf --from-file=psw=pool_passwd
 
-envsubst < $DIR/pgpool-pod-configmap.json  | kubectl create -f -
-kubectl create -f $DIR/pgpool-service.json 
+$DIR/pgpool-pod-configmap.json | expenv | kubectl create -f -
+kubectl create -f $DIR/pgpool-service.json

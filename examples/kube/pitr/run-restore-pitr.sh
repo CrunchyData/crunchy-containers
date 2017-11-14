@@ -22,5 +22,5 @@ $CCPROOT/examples/waitforterm.sh primary-pitr kubectl
 $CCPROOT/examples/waitforterm.sh primary-pitr-restore kubectl
 
 # start up the database container
-envsubst <  $DIR/primary-pitr-restore-service.json  | kubectl create -f -
-envsubst <  $DIR/primary-pitr-restore-pod.json  | kubectl create -f -
+ $DIR/primary-pitr-restore-service.json | expenv | kubectl create -f -
+ $DIR/primary-pitr-restore-pod.json | expenv | kubectl create -f -

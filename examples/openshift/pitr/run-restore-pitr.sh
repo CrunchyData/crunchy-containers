@@ -21,7 +21,7 @@ oc delete service primary-pitr-restore
 sudo rm -rf $PV_PATH/primary-pitr-restore
 
 # create the recover pv and pvc
-envsubst < $DIR/recover-pv.json | oc create -f -
+$DIR/recover-pv.json | expenv | oc create -f -
 oc create -f $DIR/recover-pvc.json
 
 # start up the database container

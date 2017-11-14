@@ -42,4 +42,4 @@ kubectl create -f $DIR/set-primary-service.json
 kubectl create -f $DIR/set-replica-service.json
 
 # create the stateful set
-envsubst < $DIR/set.json | kubectl create -f -
+$DIR/set.json | expenv | kubectl create -f -

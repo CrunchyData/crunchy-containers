@@ -19,4 +19,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
 kubectl create -f $DIR/dotnet-service.json
-envsubst < $DIR/dotnet.json | kubectl create -f -
+$DIR/dotnet.json | expenv | kubectl create -f -

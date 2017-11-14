@@ -24,4 +24,4 @@ kubectl create configmap pgbouncer-configmap \
 		--from-file=./users.txt
 
 kubectl create -f $DIR/pgbouncer-service.json
-envsubst < $DIR/pgbouncer.json | kubectl create -f -
+$DIR/pgbouncer.json | expenv | kubectl create -f -

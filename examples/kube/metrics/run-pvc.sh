@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# 
+#
 # this example creates the metrics backends with NFS volumes
 # for storing their data
 #
@@ -24,4 +24,4 @@ $DIR/cleanup.sh
 
 kubectl create -f $DIR/metrics-service.json
 
-envsubst < $DIR/metrics-pvc.json | kubectl create -f -
+$DIR/metrics-pvc.json | expenv | kubectl create -f -
