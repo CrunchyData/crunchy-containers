@@ -260,7 +260,7 @@ tcpstat, Exposes TCP connection status information from `/proc/net/tcp` and `/pr
 
 These metrics will be deprecated and (re)moved in future releases of node_exporter.
 
-[%autowidth.spread]
+[width="100%"]
 |===
 | Name | Description
 
