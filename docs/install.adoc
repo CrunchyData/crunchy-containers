@@ -60,7 +60,7 @@ that are specific to RHEL environments.
 ==== CentOS 7
 ....
 cd $GOPATH
-sudo yum -y install golang git docker postgresql-server
+sudo yum -y install golang git docker
 go get github.com/tools/godep
 cd src/github.com
 mkdir crunchydata
