@@ -2,11 +2,11 @@ FROM centos:7
 
 LABEL name="crunchydata/watch" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.9" \
+	PostgresFullVersion="9.5.10" \
         vendor="crunchy data" \
         version="7.3" \
-        release="1.6.0" \
-        build-date="2017-10-13" \
+        release="1.7.0" \
+        build-date="2017-11-15" \
         url="https://crunchydata.com" \
         summary="Watches the primary in a primary / replica deployment, triggering a failover when the primary can't be reached" \
         description="Time between connection attempts to the primary is configurable. When multiple replicas are available, you can set a preferred replica to be promoted to primary." \

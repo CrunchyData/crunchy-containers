@@ -2,11 +2,11 @@ FROM centos:7
 
 LABEL name="crunchydata/pgadmin4" \
         vendor="crunchy data" \
-      	PostgresVersion="10.0" \
-      	PostgresFullVersion="10.0" \
+      	PostgresVersion="10" \
+      	PostgresFullVersion="10.1" \
         version="7.3" \
-        release="1.6.0" \
-        build-date="2017-10-13" \
+        release="1.7.0" \
+        build-date="2017-11-15" \
         url="https://crunchydata.com" \
         summary="Crunchy Data pgAdmin4 GUI utility" \
         description="Provides GUI for the pgAdmin utility." \
@@ -15,9 +15,8 @@ LABEL name="crunchydata/pgadmin4" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="10.0" PGDG_REPO="pgdg-centos10-10-2.noarch.rpm"
+ENV PGVERSION="10" PGDG_REPO="pgdg-centos10-10-2.noarch.rpm"
 
-#RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 RUN yum -y update && yum -y install epel-release \
