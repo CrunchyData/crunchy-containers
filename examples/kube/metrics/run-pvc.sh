@@ -24,4 +24,4 @@ $DIR/cleanup.sh
 
 kubectl create -f $DIR/metrics-service.json
 
-$DIR/metrics-pvc.json | expenv | kubectl create -f -
+expenv -f $DIR/metrics-pvc.json | kubectl create -f -

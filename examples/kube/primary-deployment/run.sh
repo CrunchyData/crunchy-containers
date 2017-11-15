@@ -27,6 +27,6 @@ kubectl create -f $DIR/pgroot-secret.json
 
 kubectl create configmap postgresql-conf --from-file=postgresql.conf --from-file=pghba=pg_hba.conf --from-file=setup.sql
 
-$DIR/primary-dc.json | expenv | kubectl create -f -
-$DIR/replica-dc.json | expenv | kubectl create -f -
-$DIR/replica2-dc.json | expenv | kubectl create -f -
+expenv -f $DIR/primary-dc.json | kubectl create -f -
+expenv -f $DIR/replica-dc.json | kubectl create -f -
+expenv -f $DIR/replica2-dc.json | kubectl create -f -

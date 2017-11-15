@@ -30,7 +30,7 @@ if [ "$1" == "hostpath" ]; then
 	do
 		echo "creating PV crunchy-pv$i"
 		export COUNTER=$i
-		$DIR/hostpath/crunchy-pv.json | expenv | $CCP_CLI create -f -
+		expenv -f $DIR/hostpath/crunchy-pv.json | $CCP_CLI create -f -
 	done
 elif [ "$1" == "nfs" ]; then
 	cleanup
@@ -39,7 +39,7 @@ elif [ "$1" == "nfs" ]; then
 	do
 		echo "creating PV crunchy-pv$i"
 		export COUNTER=$i
-		$DIR/nfs/crunchy-pv.json | expenv | $CCP_CLI create -f -
+		expenv -f $DIR/nfs/crunchy-pv.json | $CCP_CLI create -f -
 	done
 elif [ "$1" == "gce" ]; then
 	cleanup
@@ -59,7 +59,7 @@ EOF
 		echo "creating PV crunchy-pv$i"
 		export COUNTER=$i
 		gcloud compute disks create "$GCE_DISK_NAME-$COUNTER" --size=$GCE_DISK_SIZE"GB" --zone=$GCE_DISK_ZONE
-		$DIR/gce/crunchy-pv.json | expenv | $CCP_CLI create -f -
+		expenv -f $DIR/gce/crunchy-pv.json | $CCP_CLI create -f -
 	done
 else
 	echo "Command Line Arguments:"

@@ -19,4 +19,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
 kubectl create -f $DIR/basic-service.json
-$DIR/basic.json | expenv | kubectl create -f -
+expenv -f $DIR/basic.json | kubectl create -f -
