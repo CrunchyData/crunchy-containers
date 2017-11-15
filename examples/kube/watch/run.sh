@@ -30,4 +30,4 @@ kubectl create rolebinding pg-watcher-sa-edit \
   --serviceaccount=default:pg-watcher \
   --namespace=default
 
-envsubst < $DIR/watch-pod.json | kubectl create -f -
+$DIR/watch-pod.json | expenv | kubectl create -f -

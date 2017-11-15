@@ -26,5 +26,5 @@ sudo cp pgpool.conf $POOLDIR
 sudo cp pool_passwd $POOLDIR
 sudo cp pool_hba.conf $POOLDIR
 
-envsubst < $DIR/pgpool-pod.json  | oc create -f -
-oc create -f $DIR/pgpool-service.json 
+$DIR/pgpool-pod.json | expenv | oc create -f -
+oc create -f $DIR/pgpool-service.json

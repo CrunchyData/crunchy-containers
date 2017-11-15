@@ -20,7 +20,7 @@ $DIR/cleanup.sh
 
 kubectl create -f $DIR/primary-service.json
 kubectl create -f $DIR/replica-service.json
-envsubst < $DIR/primary-pod.json | kubectl create -f -
-echo "sleeping till primary is alive..."
+$DIR/primary-pod.json | expenv | kubectl create -f -
+echo "Sleeping until the primary is alive..."
 sleep 30
-envsubst < $DIR/replica-dc.json | kubectl create -f -
+$DIR/replica-dc.json | expenv | kubectl create -f -

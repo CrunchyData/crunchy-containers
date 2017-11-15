@@ -23,4 +23,4 @@ oc create -f $DIR/watch-sa.json
 #kubectl.sh policy add-role-to-group edit system:serviceaccounts -n default
 oc policy add-role-to-group edit system:serviceaccounts -n demo
 
-envsubst < $DIR/watch-pod.json | oc create -f -
+$DIR/watch-pod.json | expenv | oc create -f -

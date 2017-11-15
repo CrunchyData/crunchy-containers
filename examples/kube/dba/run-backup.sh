@@ -18,7 +18,7 @@ $DIR/cleanup.sh
 
 kubectl create -f $DIR/dba-sa.json
 
-# as of kube 1.6, we need to 
+# as of kube 1.6, we need to
 # grant permissions to service account to create PVCs, comment
 # out if you are running kube 1.5
 
@@ -29,4 +29,4 @@ kubectl create clusterrolebinding permissive-binding \
   --group=system:serviceaccounts
 
 kubectl create -f $DIR/primary-dba-service.json
-envsubst < $DIR/primary-dba-backup-pod.json | kubectl create -f -
+$DIR/primary-dba-backup-pod.json | expenv | kubectl create -f -

@@ -19,5 +19,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
 # start up the database container
-envsubst < $DIR/primary-pitr-service.json |  kubectl create -f -
-envsubst < $DIR/primary-pitr-pod.json |  kubectl create -f -
+$DIR/primary-pitr-service.json | expenv | kubectl create -f -
+$DIR/primary-pitr-pod.json | expenv | kubectl create -f -

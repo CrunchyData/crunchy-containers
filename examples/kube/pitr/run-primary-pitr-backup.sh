@@ -18,4 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 kubectl delete job backup-primary-pitr-pvc
 
-envsubst < $DIR/backup-primary-pitr-job.json  | kubectl create -f -
+$DIR/backup-primary-pitr-job.json | expenv | kubectl create -f -
