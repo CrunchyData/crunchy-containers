@@ -36,12 +36,12 @@ kubectl create -f $DIR/set-primary-service.json
 kubectl create -f $DIR/set-replica-service.json
 
 # create some sample pv to use
-#$DIR/pv1.json | expenv | kubectl create -f -
-#$DIR/pv2.json | expenv | kubectl create -f -
-#$DIR/pv3.json | expenv | kubectl create -f -
+#expenv -f $DIR/pv1.json | kubectl create -f -
+#expenv -f $DIR/pv2.json | kubectl create -f -
+#expenv -f $DIR/pv3.json | kubectl create -f -
 
 # create the pvc we will use for all pods in the set
 kubectl create -f $DIR/pvc.json
 
 # create the stateful set
-$DIR/set.json | expenv | kubectl create -f -
+expenv -f $DIR/set.json | kubectl create -f -

@@ -26,4 +26,4 @@ kubectl create clusterrolebinding permissive-binding \
   --group=system:serviceaccounts
 
 kubectl create -f $DIR/primary-dba-service.json
-$DIR/primary-dba-vac-pod.json | expenv | kubectl create -f -
+expenv -f $DIR/primary-dba-vac-pod.json | kubectl create -f -

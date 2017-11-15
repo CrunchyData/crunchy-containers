@@ -18,4 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete job backrest-job-nfs
 
-$DIR/delta-restore-job.json | expenv | oc create -f -
+expenv -f $DIR/delta-restore-job.json | oc create -f -

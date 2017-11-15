@@ -20,4 +20,4 @@ $DIR/cleanup.sh
 
 kubectl create -f $DIR/primary-restore-service.json
 
-$DIR/primary-restore.json | expenv | kubectl create -f -
+expenv -f $DIR/primary-restore.json | kubectl create -f -

@@ -24,5 +24,5 @@ kubectl create configmap crunchy-proxy-configmap --from-file=./config.yaml
 
 export PROXY_IMAGE_TAG=centos7-1.0.0-beta
 
-$DIR/crunchy-proxy.json | expenv | kubectl create -f -
+expenv -f $DIR/crunchy-proxy.json | kubectl create -f -
 kubectl create -f $DIR/crunchy-proxy-service.json

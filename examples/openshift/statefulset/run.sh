@@ -27,4 +27,4 @@ oc create -f $DIR/set-primary-service.json
 oc create -f $DIR/set-replica-service.json
 
 # create the stateful set
-$DIR/set.json | expenv | oc create -f -
+expenv -f $DIR/set.json | oc create -f -

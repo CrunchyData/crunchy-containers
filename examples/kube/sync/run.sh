@@ -21,6 +21,6 @@ $DIR/cleanup.sh
 kubectl create -f $DIR/primary-sync-service.json
 kubectl create -f $DIR/replica-sync-service.json
 
-$DIR/primary-sync-pod.json | expenv | kubectl create -f -
-$DIR/replica-async-pod.json | expenv | kubectl create -f -
-$DIR/replica-sync-pod.json | expenv | kubectl create -f -
+expenv -f $DIR/primary-sync-pod.json | kubectl create -f -
+expenv -f $DIR/replica-async-pod.json | kubectl create -f -
+expenv -f $DIR/replica-sync-pod.json | kubectl create -f -
