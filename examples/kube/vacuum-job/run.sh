@@ -16,4 +16,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-$DIR/vacuum-job.json | expenv | kubectl create -f -
+expenv -f $DIR/vacuum-job.json | kubectl create -f -

@@ -19,5 +19,5 @@ $DIR/cleanup.sh
 
 kubectl create configmap backrestconf --from-file pgbackrest.conf
 
-$DIR/primary-pod.json | expenv | kubectl create -f -
+expenv -f $DIR/primary-pod.json | kubectl create -f -
 kubectl create -f $DIR/primary-service.json

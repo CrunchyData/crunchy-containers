@@ -18,7 +18,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-$DIR/gluster-endpoint.json | expenv | kubectl create -f -
+expenv -f $DIR/gluster-endpoint.json | kubectl create -f -
 kubectl create -f $DIR/gluster-pv.json
 kubectl create -f $DIR/gluster-pvc.json
 
@@ -26,4 +26,4 @@ kubectl create -f $LOC/primary-gluster-service.json
 
 echo "sleeping a bit before creating the pod..."
 sleep 10
-$LOC/primary-gluster-pod.json | expenv | kubectl create -f -
+expenv -f $LOC/primary-gluster-pod.json | kubectl create -f -

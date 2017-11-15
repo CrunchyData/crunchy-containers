@@ -28,4 +28,4 @@ if [ ! -d "$DATADIR" ]; then
 fi
 
 kubectl create -f $DIR/pgadmin4-service.json
-$DIR/pgadmin4-pod.json | expenv | kubectl create -f -
+expenv -f $DIR/pgadmin4-pod.json | kubectl create -f -

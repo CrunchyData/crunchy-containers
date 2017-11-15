@@ -20,6 +20,6 @@ $DIR/cleanup.sh
 
 kubectl create -f $DIR/primary-service.json
 kubectl create -f $DIR/replica-service.json
-$DIR/primary-pod.json | expenv | kubectl create -f -
-$DIR/replica-pod.json | expenv | kubectl create -f -
-$DIR/replica-2-pod.json | expenv | kubectl create -f -
+expenv -f $DIR/primary-pod.json | kubectl create -f -
+expenv -f $DIR/replica-pod.json | kubectl create -f -
+expenv -f $DIR/replica-2-pod.json | kubectl create -f -

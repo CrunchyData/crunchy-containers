@@ -17,5 +17,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-$DIR/primary-pvc-pod.json | expenv | kubectl create -f -
+expenv -f $DIR/primary-pvc-pod.json | kubectl create -f -
 kubectl create -f $DIR/primary-pvc-service.json
