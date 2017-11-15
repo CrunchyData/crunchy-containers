@@ -123,14 +123,22 @@ exclude=postgresql*
 Next, install the RPM relating to the base operating system and PostgreSQL version
 you wish to install. The RPMs can be found link:https://yum.postgresql.org/repopackages.php[here].
 
-For example, to install PostgreSQL 10 on a RHEL 7 system:
+For example, to install PostgreSQL 10 on a CentOS 7 system:
+....
+sudo yum -y install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
+....
 
+Or to install PostgreSQL 10 on a RHEL 7 system:
 ....
 sudo yum -y install https://download.postgresql.org/pub/repos/yum/testing/10/redhat/rhel-7-x86_64/pgdg-redhat10-10-2.noarch.rpm
 ....
 
-Then, go ahead and install the PostgreSQL server package.
+You'll need to update your system:
+....
+sudo yum -y update
+....
 
+Then, go ahead and install the PostgreSQL server package.
 ....
 sudo yum -y install postgresql10-server.x86_64
 ....
@@ -312,12 +320,9 @@ persistent volumes using *OpenShift version 3.3+*, you have to enter
 these commands as the *root* user after installation in order to
 modify the policies.
 ....
-oadm policy add-role-to-user cluster-reader system
-oc describe clusterPolicyBindings :default
-oadm policy add-cluster-role-to-user cluster-reader system
-oc describe clusterPolicyBindings :default
-oc describe clusterPolicyBindings :default
-oadm policy add-cluster-role-to-user cluster-admin system
+oc adm policy add-role-to-user cluster-reader system
+oc adm policy add-cluster-role-to-user cluster-reader system
+oc adm policy add-cluster-role-to-user cluster-admin system
 ....
 
 ==== Persistent volume matching
