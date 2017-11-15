@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/watch" \
         vendor="crunchy data" \
         version="7.3" \
-      	PostgresVersion="10.0" \
-      	PostgresFullVersion="10.0.0" \
-        release="1.6.0" \
+      	PostgresVersion="10" \
+      	PostgresFullVersion="10.1" \
+        release="1.7.0" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Watches the primary in a primary / replica deployment, triggering a failover when the primary can't be reached" \
@@ -24,7 +24,7 @@ COPY docs/watch/help.1 /help.1
 COPY docs/watch/help.md /help.md
 COPY docs/licenses /licenses
 
-ENV PGVERSION="10.0"
+ENV PGVERSION="10"
 
 # Crunchy Postgres repo
 ADD conf/CRUNCHY-GPG-KEY.public  /
