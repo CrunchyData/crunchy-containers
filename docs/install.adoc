@@ -397,12 +397,11 @@ found link:https://docs.openshift.org/latest/install_config/install/prerequisite
 
 === Installation
 
-link:https://kubernetes.io/docs/setup/independent/install-kubeadm/[kubeadm] or link:https://kubernetes.io/docs/tasks/tools/install-minikube/[minikube] are simple methods
+see link:https://kubernetes.io/docs/setup/independent/install-kubeadm/[kubeadm] 
 for setting up a test environment of Kubernetes.
 
 See the following links for installation instructions:
 
- * https://github.com/Kubernetes/minikube
  * http://linoxide.com/containers/setup-kubernetes-kubeadm-centos/
  * https://kubernetes.io/docs/getting-started-guides/kubeadm/
 
