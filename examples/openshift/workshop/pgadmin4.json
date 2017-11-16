@@ -66,14 +66,14 @@
                 "volumeMounts": [
 		{
                     "mountPath": "/root/.pgadmin",
-                    "name": "rootdata",
+                    "name": "pgdata",
                     "readOnly": false
                 }
 		]
             }],
             "volumes": [
 	    {
-                "name": "rootdata",
+                "name": "pgdata",
                 "emptyDir": {}
             }
 	    ]

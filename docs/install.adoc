@@ -402,7 +402,7 @@ found link:https://docs.openshift.org/latest/install_config/install/prerequisite
 
 === Installation
 
-see link:https://kubernetes.io/docs/setup/independent/install-kubeadm/[kubeadm] 
+See link:https://kubernetes.io/docs/setup/independent/install-kubeadm/[kubeadm]
 for setting up a test environment of Kubernetes.
 
 See the following links for installation instructions:

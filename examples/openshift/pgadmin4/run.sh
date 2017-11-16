@@ -21,7 +21,7 @@ $DIR/cleanup.sh
 DATADIR=$PV_PATH/pgadmin4
 
 if [ ! -d "$DATADIR" ]; then
-	echo "setting up pg4admin data directory...."
+	echo "Setting up pgadmin4 data directory..."
 	sudo mkdir $DATADIR
 	sudo cp $CCPROOT/conf/pgadmin4/config_local.py $DATADIR
 	sudo cp $CCPROOT/conf/pgadmin4/pgadmin4.db $DATADIR

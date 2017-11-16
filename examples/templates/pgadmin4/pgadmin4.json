@@ -100,12 +100,12 @@
 
                 "volumeMounts": [{
                     "mountPath": "/.pgadmin",
-                    "name": "rootdata",
+                    "name": "pgdata",
                     "readOnly": false
                 }]
             }],
             "volumes": [{
-                "name": "rootdata",
+                "name": "pgdata",
                 "persistentVolumeClaim": {
                     "claimName": "${PVC_NAME}"
                 }

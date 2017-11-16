@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2015 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export PATH=$PATH:/usr/pgsql-9.*/bin
+export PATH=$PATH:/usr/pgsql-*/bin
 
 function trap_sigterm() {
-	echo "doing trap logic..."
+	echo "Doing trap logic..."
 	kill -SIGINT $PGADMIN_PID
 }
 
@@ -41,7 +41,7 @@ id
 echo $PATH is the path
 export THISDIR=/pgdata
 if [ ! -f "$THISDIR/config_local.py" ]; then
-	echo "WARNING: could not find mounted config files...using defaults as starting point"
+	echo "WARNING: Could not find the mounted configuration files. Using defaults as starting point."
 	mkdir $THISDIR
 	cp /opt/cpm/conf/config_local.py $THISDIR/
 	cp /opt/cpm/conf/pgadmin4.db $THISDIR/
@@ -57,12 +57,11 @@ if [ -d "/usr/lib/python2.7/site-packages/pgadmin4" ]; then
 fi
 
 export PGADMIN_PID=$!
-echo "waiting till docker stop or signal is sent to kill pgadmin4..."
+echo "Waiting till docker stop or signal is sent to kill pgadmin4..."
 
 wait
 
 while true; do
-	echo "debug sleeping..."
+	echo "Debug sleeping..."
 	sleep 1000
 done
-
