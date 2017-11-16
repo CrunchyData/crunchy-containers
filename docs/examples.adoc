@@ -1,7 +1,7 @@
 = Examples & Use Cases - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
 :toc: left
-v1.6, {docdate}
+v1.7, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Introduction to Docker, Kubernetes, & Openshift
@@ -2240,13 +2240,13 @@ you perform a pg_upgrade on a 9.5 database converting its data
 to a 9.6 version.
 
 This example assumes you have run *primary-pvc* using a PG 9.5 image
-such as *centos7-9.5.9-1.6.0* prior to running this upgrade.
+such as *centos7-9.5.10-1.7.0* prior to running this upgrade.
 
 Prior to starting this example, shut down the *primary-pvc* database
 using the *examples/kube/primary-pvc/cleanup.sh* script.
 
 Prior to running this example, make sure your CCP_IMAGE_TAG
-environment variable is using a PG 9.6 image such as *centos7-9.6.5-1.6.0*.
+environment variable is using a PG 9.6 image such as *centos7-9.6.6-1.7.0*.
 
 This will create the following in your Kubernetes environment:
 

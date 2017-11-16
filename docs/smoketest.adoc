@@ -1,7 +1,7 @@
 = Smoke Test Guide - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
 :toc:
-v1.6, {docdate}
+v1.7, {docdate}
 
 
 == Prerequisites
@@ -31,11 +31,11 @@ RHEL 7:
  * Build a clean OpenShift RHEL 7 host (VM)
  * Build a clean Kubernetes RHEL 7 host (VM)
 
-At this point, you can build the 9.5, 9.6 and 10.0 images on all three hosts. (Or if you're testing a new PostgreSQL release, you can build those at this point also.)
+At this point, you can build the 9.5, 9.6 and 10 images on all three hosts. (Or if you're testing a new PostgreSQL release, you can build those at this point also.)
 
- * Build the 9.5, 9.6, and 10.0 images on the new Docker host
- * Build the 9.5, 9.6, and 10.0 images on the new OpenShift host
- * Build the 9.5, 9.6, and 10.0 images on the new Kubernetes host
+ * Build the 9.5, 9.6, and 10 images on the new Docker host
+ * Build the 9.5, 9.6, and 10 images on the new OpenShift host
+ * Build the 9.5, 9.6, and 10 images on the new Kubernetes host
 
 There are three other environments that we offer: Helm, Mesos, and Docker-Compose. The following containers need to be tested in those environments:
 

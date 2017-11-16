@@ -8,8 +8,8 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
 export CCP_PGVERSION=10
-export CCP_PG_FULLVERSION=10.0
-export CCP_VERSION=1.6.0
+export CCP_PG_FULLVERSION=10.1
+export CCP_VERSION=1.7.0
 export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
@@ -35,7 +35,7 @@ cd crunchy-containers
 
 # Replace variable here with current container version!
 
-git checkout 1.6.0
+git checkout 1.7.0
 godep restore
 
 sudo yum -y update
