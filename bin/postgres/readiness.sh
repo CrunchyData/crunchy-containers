@@ -26,4 +26,4 @@ function ose_hack() {
 
 ose_hack
 
-$PGROOT/bin/psql -h $HOSTNAME -f /opt/cpm/bin/readiness.sql -U $PG_USER postgres
+$PGROOT/bin/psql -f /opt/cpm/bin/readiness.sql -U $PG_USER postgres
