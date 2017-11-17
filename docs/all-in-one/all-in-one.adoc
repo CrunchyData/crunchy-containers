@@ -1,6 +1,6 @@
 = all-in-one explained
 Crunchy Data Solutions, Inc.
-v1.6.0, {docdate}
+v1.7.0, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == All-In-One Crunchy OSE Image
@@ -58,7 +58,7 @@ Firefox is installed and the OpenShift console is available at https://10.0.2.15
 
 === Crunchy Images
 
-The crunchy version 1.6.0 container images are preinstalled
+The crunchy version 1.7.0 container images are preinstalled
 in the VM instance.
 
 === Crunchy Examples
