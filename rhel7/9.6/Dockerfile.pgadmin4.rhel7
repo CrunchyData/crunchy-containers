@@ -31,8 +31,9 @@ ADD conf/CRUNCHY-GPG-KEY.public  /
 ADD conf/crunchypg96.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
-RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
- && yum -y update && yum -y install epel-release \
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+RUN yum -y update \
+ && yum -y install epel-release \
  && yum -y install python-crypto python-passlib glibc-common \
  && yum -y install gcc \
 	gettext \

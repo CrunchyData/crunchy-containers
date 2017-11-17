@@ -24,12 +24,12 @@
             "env": [],
             "volumeMounts": [{
                 "mountPath": "/pgdata",
-                "name": "rootdata",
+                "name": "pgdata",
                 "readOnly": false
             }]
         }],
         "volumes": [{
-            "name": "rootdata",
+            "name": "pgdata",
             "persistentVolumeClaim": {
                 "claimName": "crunchy-pvc"
             }
