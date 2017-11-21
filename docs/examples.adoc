@@ -1568,7 +1568,7 @@ To run the script for scheduled backups, run the following in the same directory
 ....
 
 Individual parameters for both can be modified within their respective JSON files;
-please see link:containers.adoc for a full list of what can be modified.
+please see link:https://github.com/CrunchyData/crunchy-containers/blob/master/docs/containers.adoc[containers.adoc] for a full list of what can be modified.
 
 === pgbouncer
 
