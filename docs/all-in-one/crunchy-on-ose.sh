@@ -52,7 +52,7 @@ function install-crunchy {
 	git clone https://github.com/CrunchyData/crunchy-containers.git
 
 	# Get Crunchy images
-	export CCP_IMAGE_TAG=centos7-9.5-1.2.5
+	export CCP_IMAGE_TAG=centos7-10.1-1.7.0
 	./crunchy-containers/bin/pull-from-dockerhub.sh
 }
 
