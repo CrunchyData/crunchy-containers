@@ -38,9 +38,15 @@ EOF'
 }
 
 function misc {
-	echo "Disabling firewalld..."
+	echo "Disabling firewalld and configuring firewall-cmd..."
 	sudo systemctl disable firewalld.service
 	sudo systemctl stop firewalld.service
+	sudo firewall-cmd --permanent --new-zone dockerc
+	sudo firewall-cmd --permanent --zone dockerc --add-source 172.17.0.0/16
+	sudo firewall-cmd --permanent --zone dockerc --add-port 8443/tcp
+	sudo firewall-cmd --permanent --zone dockerc --add-port 53/udp
+	sudo firewall-cmd --permanent --zone dockerc --add-port 8053/udp
+	sudo firewall-cmd --reload
 	su -c 'cat hosts >> /etc/hosts'
 }
 
@@ -48,6 +54,7 @@ function misc {
 function install-ose {
 # Install OpenShift
   echo "Installing OpenShift..."
+	sudo systemctl restart docker
 	curl -LO https://github.com/openshift/origin/releases/download/v3.7.0-rc.0/openshift-origin-client-tools-v3.7.0-rc.0-e92d5c5-linux-64bit.tar.gz
 	tar -xvf openshift-origin-client-tools-v3.7.0-rc.0-e92d5c5-linux-64bit.tar.gz
 	chmod +x openshift-origin-client-tools-v3.7.0-rc.0-e92d5c5-linux-64bit/oc
