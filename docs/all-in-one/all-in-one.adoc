@@ -3,7 +3,7 @@ Crunchy Data Solutions, Inc.
 v1.7.0, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
-To allow users to take a look at crunchy on OpenShift,
+To allow users to take a look at Crunchy on OpenShift,
 we have created an all-in-one Virtual Machine that you
 can run which will include OpenShift and the Crunchy
 containers.
