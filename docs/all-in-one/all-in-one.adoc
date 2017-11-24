@@ -1,9 +1,7 @@
-= all-in-one explained
+= All-In-One Crunchy OSE Image
 Crunchy Data Solutions, Inc.
 v1.7.0, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
-
-== All-In-One Crunchy OSE Image
 
 To allow users to take a look at crunchy on OpenShift,
 we have created an all-in-one Virtual Machine that you
@@ -12,19 +10,17 @@ containers.
 
 The image can be imported as an appliance in VirtualBox.
 
-=== configuration
-
+=== Configuration
 
 The image uses a NAT interface and Host Only Interface for networking.
-The Host Only interface lets us set a static IP of 192.168.56.6, this
-address is related to the host's vboxnet0 ip address which by default
-is 192.168.56.1 on VirtualBox.
+The Host Only interface sets a static IP of 192.168.56.6, which is related
+to the host's vboxnet0 IP address. By default, this is 192.168.56.1 on VirtualBox.
 
 The NAT interface allows the VM access to the internet and allows
-for ssh access from the host.
+for SSH access from the host.
 
 The VM has an entry in /etc/dhcp/dhclient.conf that prepends
-the 192.168.56.6 address as a nameserver.  This allows us to
+the 192.168.56.6 address as a nameserver. This allows us to
 do DNS discovery using the OpenShift DNS container which
 binds to 192.168.56.6:53.
 
@@ -46,8 +42,8 @@ user is already created, a password of *crunchy* is also specified.  An
 OpenShift project named *crunchy* is already created as well.
 
 The *crunchy* OpenShift user has been granted OpenShift cluster-admin
-privileges which allows it to do pretty much anything including
-creating PVs.
+privileges which gives the account extensive privileges, including the ability
+to create persistent volumes.
 
 You can start Gnome by logging in and typing:
 ....
@@ -58,24 +54,25 @@ Firefox is installed and the OpenShift console is available at https://10.0.2.15
 
 === Crunchy Images
 
-The crunchy version 1.7.0 container images are preinstalled
+The Crunchy version 1.7.0 container images are preinstalled
 in the VM instance.
 
 === Crunchy Examples
 
-The crunchy container examples for OpenShift are installed
-here:
+The Crunchy Container examples for OpenShift are explained in further depth in
+the link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc[examples.adoc]
+documentation. Each example in the VM can be found under the following directories:
 
-==== $CCPROOT/examples/openshift
+*$CCPROOT/examples/openshift*
+
 This directory contains all sorts of examples that create pods
 and services when you run the run.sh script in each subdirectory.
 
-==== $CCPROOT/examples/dedicated
+*$CCPROOT/examples/dedicated*
+
 This directory contains OpenShift templates that are pre-installed
-into the OpenShift environment, with these you can click on Add To Project
+into the OpenShift environment. With these, you can click on Add To Project
 in the web console to deploy containers.
-
-
 
 == Legal Notices
 

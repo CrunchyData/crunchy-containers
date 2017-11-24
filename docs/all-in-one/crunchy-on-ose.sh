@@ -1,5 +1,5 @@
 #!/bin/bash
-# prepare for OSE install
+# Prepare for OSE install
 function setup-repos {
 	sudo subscription-manager repos --disable="*"
 	sudo subscription-manager repos \
@@ -37,8 +37,8 @@ function misc {
 
 
 function install-ose {
-# install OSE as crunchy user
-	# as the crunchy user set up no password ssh
+# Install OSE as Crunchy user
+	# As the Crunchy user, set up no password ssh
 	ssh-keygen
 	ssh-copy-id root@crunchy
 	atomic-openshift-installer install
@@ -47,11 +47,11 @@ function install-ose {
 
 function install-crunchy {
 	cat bashrc >> $HOME/.bashrc
-	# get crunchy examples
+	# Get Crunchy examples
 	cd $HOME
 	git clone https://github.com/CrunchyData/crunchy-containers.git
 
-	# get crunchy images
+	# Get Crunchy images
 	export CCP_IMAGE_TAG=centos7-9.5-1.2.5
 	./crunchy-containers/bin/pull-from-dockerhub.sh
 }
@@ -74,10 +74,11 @@ function install-nfs {
 	sudo chown root:nfsnobody /mnt/nfsfileshare
 }
 
-# this needs to run after you have openshift up and running
-# and the crunchy user account created
-# this command allows the crunchy user to create PVs and other
-# cluster admin functions...it is VERY wide...don't do this in production
+# This needs to run after you have openshift up and running
+# and the crunchy user account created.
+# It allows the Crunchy user to create persistent volumes and
+# perform other cluster admin functions. This is VERY permissive,
+# so it is strongly discouraged to use it in production.
 function configure-ose {
 	sudo oadm policy add-cluster-role-to-user cluster-admin crunchy
 }
@@ -86,7 +87,7 @@ function clone {
 	mkdir -p $HOME/cdev/bin $HOME/cdev/src $HOME/cdev/pkg
 	export GOPATH=$HOME/cdev
 	export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
-	export CCP_IMAGE_TAG=centos7-9.6.6-1.7.0
+	export CCP_IMAGE_TAG=centos7-10.1-1.7.0
 	export GOBIN=$GOPATH/bin
 	cd $HOME/cdev/src
 	mkdir -p github.com/crunchydata
@@ -99,12 +100,12 @@ function clone {
 }
 
 
-echo "starting vm setup...."
-#clone
-#install-nfs
-#install-reqs
-#config-docker
-#misc
-#install-crunchy
-#install-ose
-#configure-ose
+echo "Starting VM setup..."
+clone
+install-nfs
+install-reqs
+config-docker
+misc
+install-crunchy
+install-ose
+configure-ose
