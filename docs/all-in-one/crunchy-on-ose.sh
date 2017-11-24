@@ -15,6 +15,12 @@ function install-reqs {
 	sudo yum -y install wget git golang net-tools bind-utils iptables-services bridge-utils bash-completion
 }
 
+function config-bashrc {
+	echo "Replacing bashrc environment variables..."
+	cat bashrc >> $HOME/.bashrc
+	. $HOME/.bashrc
+}
+
 function config-docker {
 	echo "Installing and configuring Docker..."
 	sudo yum -y install docker
@@ -58,10 +64,6 @@ function install-kubectl {
 }
 
 function install-crunchy {
-	echo "Replacing bashrc environment variables..."
-	cat bashrc >> $HOME/.bashrc
-	. $HOME/.bashrc
-
 	# Get Crunchy examples
 	echo "Getting the Crunchy examples..."
 	cd $HOME
@@ -121,6 +123,7 @@ function clone {
 
 
 echo "Starting VM setup..."
+config-bashrc
 install-reqs
 clone
 install-nfs
