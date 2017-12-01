@@ -43,8 +43,12 @@ export PV_PATH=/mnt/nfsfileshare
 export LOCAL_IP=$(hostname --ip-address)
 export REPLACE_CCP_IMAGE_PREFIX=crunchydata
 ....
-It will be necessary to log out and back in for the changes to your .bashrc
-file to take effect.
+It will be necessary to refresh your bashrc file in order for the changes to take
+effect.
+
+....
+. ~/.bashrc
+....
 
 Next, set up a project directory structure and pull down the project:
 ....
@@ -83,7 +87,7 @@ need to be taken.
 
 ....
 cd $GOPATH
-subscription-manager repos --enable=rhel-7-server-optional-rpms
+sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
 sudo yum-config-manager --enable rhel-7-server-extras-rpms
 sudo yum -y install git golang docker
 go get github.com/tools/godep
