@@ -17,7 +17,7 @@ Installation instructions are located link:https://github.com/crunchydata/crunch
 supported installation document for the containers suite. In the document, you will find instructions on prerequisites for the environment, setting
 up your machines, and external links for installing Docker, OpenShift and Kubernetes.
 
-If you wanted a more automated way of setting these up, a bash script has been provided in the /docs directory, link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/setup-env.sh[setup-env.sh]. Ensure the script has the proper version numbers for what you are testing before running the script. This will set up an environment with all the necessary prerequisites, including Docker, Git, and Golang. After running these, you will only need to install OpenShift and/or Kubernetes, respectively.
+If you wanted a more automated way of setting these up, a bash script has been provided in the /docs directory, link:https://github.com/CrunchyData/crunchy-containers/blob/master/docs/all-in-one/all-in-one.adoc[all-in-one]. Ensure the script has the proper version numbers for what you are testing before running the script. This will set up an environment with all the necessary prerequisites.
 
 CentOS 7:
 
