@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting metrics example.."
+echo "Starting metrics example..."
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
@@ -29,9 +29,9 @@ docker run \
 	-p $HOSTIP:19091:9091/tcp \
 	--name=crunchy-promgateway \
 	--hostname=crunchy-promgateway \
-	-d crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-promgateway:$CCP_IMAGE_TAG
 
-echo "sleep a bit since we are linking to crunchy-promgateway..."
+echo "Sleep a bit in order to link to crunchy-promgateway..."
 sleep 10
 
 docker run \
@@ -42,9 +42,9 @@ docker run \
 	--name=crunchy-prometheus \
 	--hostname=crunchy-prometheus \
 	--link crunchy-promgateway:crunchy-metrics \
-	-d crunchydata/crunchy-prometheus:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-prometheus:$CCP_IMAGE_TAG
 
-echo "sleep a bit since we are linking to crunchy-prometheus..."
+echo "Sleep a bit in order to link to crunchy-prometheus..."
 sleep 10
 
 docker run \
@@ -55,4 +55,4 @@ docker run \
 	--link crunchy-prometheus:crunchy-prometheus \
 	--name=crunchy-grafana \
 	--hostname=crunchy-grafana \
-	-d crunchydata/crunchy-grafana:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-grafana:$CCP_IMAGE_TAG

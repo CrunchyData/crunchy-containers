@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,10 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "cleaning up example..."
+echo "Cleaning up..."
 CONTAINER_NAME=audittest
 VOLUME=$CONTAINER_NAME-volume
 
 docker rm -f $CONTAINER_NAME
 docker volume rm $VOLUME
-

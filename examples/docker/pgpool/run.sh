@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting pgpool container...."
+echo "Starting pgpool container..."
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -30,4 +30,4 @@ docker run \
 	-e PG_DATABASE=postgres \
 	--name=pgpool \
 	--hostname=pgpool \
-	-d crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-pgpool:$CCP_IMAGE_TAG

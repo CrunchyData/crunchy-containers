@@ -29,13 +29,13 @@ docker run -it --privileged=true \
 	-v $DIR:/fromdir \
 	-v $PGCONF_VOLUME_NAME:/pgconf:z \
 	--name=backrest-setup \
-	crunchydata/crunchy-postgres:$CCP_IMAGE_TAG cp /fromdir/pgbackrest.conf /pgconf
+	$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG cp /fromdir/pgbackrest.conf /pgconf
 
 docker run -it --privileged=true \
 	--volume-driver=local \
 	-v $PGCONF_VOLUME_NAME:/pgconf:z \
 	--name=backrest-ls \
-	crunchydata/crunchy-postgres:$CCP_IMAGE_TAG ls /pgconf
+	$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG ls /pgconf
 
 # the backrest repo that backrest will write to
 REPO_VOLUME_NAME=$CONTAINER-backrestrepo
@@ -69,4 +69,4 @@ docker run \
 	-e PG_DATABASE=userdb \
 	--name=$CONTAINER \
 	--hostname=$CONTAINER \
-	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

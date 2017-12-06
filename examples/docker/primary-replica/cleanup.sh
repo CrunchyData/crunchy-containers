@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "cleaning up ..."
+echo "Cleaning up..."
 
 CONTAINER_NAME=primary
 VOLUME_NAME=primary-volume
