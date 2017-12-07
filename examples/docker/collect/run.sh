@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +17,6 @@ echo "make sure basic example is running....starting collect containers..."
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
-
-export HOSTIP=`hostname --ip-address`
 
 BASIC_VOLUME=basic-example-volume
 

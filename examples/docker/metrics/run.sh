@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,15 +18,14 @@ echo "starting metrics example.."
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
-#export HOSTIP=`hostname --ip-address`
-export HOSTIP=127.0.0.1
-echo $HOSTIP
+#LOCAL_IP defined in .bashrc as `hostname --ip-address`
+echo $LOCAL_IP
 
 VOLUME_NAME=metrics-volume
 docker volume create --driver local --name=$VOLUME_NAME
 
 docker run \
-	-p $HOSTIP:19091:9091/tcp \
+	-p $LOCAL_IP:19091:9091/tcp \
 	--name=crunchy-promgateway \
 	--hostname=crunchy-promgateway \
 	-d crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG
@@ -35,7 +34,7 @@ echo "sleep a bit since we are linking to crunchy-promgateway..."
 sleep 10
 
 docker run \
-	-p $HOSTIP:19090:9090/tcp \
+	-p $LOCAL_IP:19090:9090/tcp \
 	--privileged=true \
 	--volume-driver=local \
 	-v $VOLUME_NAME:/data:z \
@@ -48,7 +47,7 @@ echo "sleep a bit since we are linking to crunchy-prometheus..."
 sleep 10
 
 docker run \
-	-p $HOSTIP:13000:3000/tcp \
+	-p $LOCAL_IP:13000:3000/tcp \
 	--privileged=true \
 	--volume-driver=local \
 	-v $VOLUME_NAME:/data:z \
