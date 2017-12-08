@@ -1366,6 +1366,67 @@ OpenShift would normally configure a router in such a manner where you could
 The official documentation for installing OpenShift on a router can be found
 link:https://docs.openshift.com/container-platform/3.6/install_config/router/index.html[here].
 
+=== postgres-gis
+
+An example is provided that will run a postgres-gis pod/service in Kubernetes/OpenShift and a container in Docker.
+
+The container creates a default database called *userdb*, a default user called
+*testuser* and a default password of *password*.
+
+To shutdown the instance and remove the pod/container for each example, run the following:
+....
+./cleanup.sh
+....
+
+==== Docker
+
+Create the container as follows:
+....
+cd $CCPROOT/examples/docker/postgres-gis
+./run.sh
+....
+
+Enter the following command to connect to the postgres-gis container that is
+mapped to your local port 12000:
+....
+psql -h localhost -U testuser -p 12000 userdb
+....
+
+==== Kubernetes
+
+Running the example:
+....
+cd $CCPROOT/examples/kube/postgres-gis
+./run.sh
+....
+
+The example is configured to allow the *testuser* to connect
+to the *userdb* database as follows:
+....
+psql -h postgres-gis -U testuser userdb
+....
+
+==== OpenShift
+
+Run the following command to deploy the postgres-gis pod and service:
+....
+cd $CCPROOT/examples/openshift/postgres-gis
+./run.sh
+....
+
+Next, you can access the postgres-gis pod via the postgres-gis
+service by entering the following command:
+
+....
+psql -h postgres-gis -U testuser userdb
+psql -h postgres-gis -U testuser postgres
+....
+
+You can view the extensions that postgres-gis has enabled by running:
+....
+psql -h postgres-gis -U testuser userdb -c '\dx'
+....
+
 === Metrics Collection
 
 You can collect various PostgreSQL metrics from your database
