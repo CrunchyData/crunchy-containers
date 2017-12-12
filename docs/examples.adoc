@@ -455,7 +455,7 @@ To perform a database restore, we do the following:
  * create the database pod
 
 If the /pgdata directory is blank AND the /backup directory contains
-a valid PostgreSQL backup, it is assumed the user wants to perform a
+a ate PostgreSQL backup, it is assumed the user wants to perform a
 database restore.
 
 The restore logic will copy /backup files to /pgdata before starting
@@ -1435,7 +1435,8 @@ psql -U postgres -c "SELECT postgis_full_version();"
 
 You should expect to see output similar to:
 
-....                                                                                  postgis_full_version
+....                                                                                  
+postgis_full_version
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  POSTGIS="2.4.2 r16113" PGSQL="100" GEOS="3.5.0-CAPI-1.9.0 r4084" PROJ="Rel. 4.8.0, 6 March 2012" GDAL="GDAL 1.11.4, released 2016/01/25" LIBXML="2.9.1" LIBJSON="0.11" TOPOLOGY RASTER
 (1 row)
