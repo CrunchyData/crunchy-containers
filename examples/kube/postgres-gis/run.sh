@@ -18,5 +18,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create -f $DIR/postgres-gis.json
+expenv -f $DIR/postgres-gis.json | kubectl create -f -
 kubectl create -f $DIR/postgres-gis-service.json
