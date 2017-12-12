@@ -56,7 +56,7 @@
                },
                {
                   "name":"PG_PRIMARY_HOST",
-                  "value":"postgis"
+                  "value":"postgres-gis"
                },
                {
                   "name":"PG_PRIMARY_PORT",
@@ -89,6 +89,18 @@
                {
                   "name":"CONTAINER_NAME",
                   "value":"postgres-gis"
+               }
+            ],
+            "volumeMounts":[
+               {
+                  "mountPath":"/pgdata",
+                  "name":"pgdata",
+                  "readOnly":false
+               },
+               {
+                  "mountPath":"/backup",
+                  "name":"backup",
+                  "readOnly":true
                }
             ]
          }

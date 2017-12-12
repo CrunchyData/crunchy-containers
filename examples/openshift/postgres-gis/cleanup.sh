@@ -14,4 +14,4 @@
 
 oc delete deployments,pods,service -l name=postgres-gis
 
-$CCPROOT/examples/waitforterm.sh postgres-gis kubectl
+$CCPROOT/examples/waitforterm.sh postgres-gis oc
