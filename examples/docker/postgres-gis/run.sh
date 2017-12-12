@@ -14,7 +14,7 @@ set -u
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting crunchy-container..."
+echo "starting postgres-gis container..."
 
 # if you want to use local host directories for persistence
 # then uncomment out these lines below and use them instead
