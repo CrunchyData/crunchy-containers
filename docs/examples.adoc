@@ -1373,11 +1373,6 @@ An example is provided that will run a postgres-gis pod/service in Kubernetes/Op
 The container creates a default database called *userdb*, a default user called
 *testuser* and a default password of *password*.
 
-To shutdown the instance and remove the pod/container for each example, run the following:
-....
-./cleanup.sh
-....
-
 ==== Docker
 
 Create the container as follows:
@@ -1422,7 +1417,9 @@ psql -h postgres-gis -U testuser userdb
 psql -h postgres-gis -U testuser postgres
 ....
 
-You can view the extensions that postgres-gis has enabled by running:
+==== PostGIS validation steps (all platforms)
+
+You can view the extensions that postgres-gis has enabled by running the following command (postgis should be listed):
 ....
 psql -h postgres-gis -U testuser userdb -c '\dx'
 ....
@@ -1430,7 +1427,7 @@ psql -h postgres-gis -U testuser userdb -c '\dx'
 To validate that PostGIS is installed and which version is running, run the command:
 
 ....
-psql -U postgres -c "SELECT postgis_full_version();"
+psql -h postgres-gis -U testuser -c "SELECT postgis_full_version();"
 ....
 
 You should expect to see output similar to:
@@ -1445,7 +1442,7 @@ postgis_full_version
 To exercise some of the basic PostGIS functionality for validation (in this case defining 2D geometry point for everyone's favorite place - Walt Disney World!), run the command:
 
 ....
-postgres=# select ST_MakePoint(28.385200,-81.563900);
+psql -h postgres-gis -U testuser -c "select ST_MakePoint(28.385200,-81.563900);"
 ....
 
 You should expect to see output similar to:
@@ -1455,6 +1452,11 @@ You should expect to see output similar to:
 --------------------------------------------
  0101000000516B9A779C623C40B98D06F0166454C0
 (1 row)
+....
+
+To shutdown the instance and remove the pod/container for each example, run the following:
+....
+./cleanup.sh
 ....
 
 === Metrics Collection
