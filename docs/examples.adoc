@@ -455,7 +455,7 @@ To perform a database restore, we do the following:
  * create the database pod
 
 If the /pgdata directory is blank AND the /backup directory contains
-a ate PostgreSQL backup, it is assumed the user wants to perform a
+a valid PostgreSQL backup, it is assumed the user wants to perform a
 database restore.
 
 The restore logic will copy /backup files to /pgdata before starting
