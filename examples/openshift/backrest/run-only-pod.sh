@@ -16,8 +16,5 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete service primary-backrest
-oc delete pod primary-backrest
-oc delete configmap backrestconf
+oc process -f $DIR/primary-pod.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
 
-sudo PV_PATH=$PV_PATH  rm  -rf $PV_PATH/archive $PV_PATH/backup

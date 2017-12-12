@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -e
+
 echo STANZA $STANZA set
 if [ ! -v STANZA ]; then
 	echo "STANZA env var is not set, required value"
@@ -26,9 +28,10 @@ echo "Starting restore. Examine restore log in /backrestrepo for results" `date`
 export USER_ID=$(id -u)
 export GROUP_ID=$(id -g)
 envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
+envsubst < /opt/cpm/conf/group.template > /tmp/group
 export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
 export NSS_WRAPPER_PASSWD=/tmp/passwd
-export NSS_WRAPPER_GROUP=/etc/group
+export NSS_WRAPPER_GROUP=/tmp/group
 
 
 if [ -v DELTA ]; then

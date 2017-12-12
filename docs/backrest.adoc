@@ -95,9 +95,7 @@ This will create the following:
  * PV/PVC for /pgconf and /backrestrepo volumes
  * primary database pod
  * primary service
-
-The run.sh script copies the pgbackrest.conf configuration file
-to /mnt/nfsfileshare/pgconf which is our NFS file path.
+ * configmap holding the pgbackrest.conf config file
 
 The archive files are written to the NFS path of /mnt/nfsfileshare/backrestrepo.
 
@@ -112,7 +110,7 @@ being written to the /backrestrepo volume (/mnt/nfsfileshare/backrestrepo).
 You can create a backup using backrest using this command within
 the container:
 ....
-pgbackrest --stanza=db backup --db-path=/pgdata/primary-backrest/ --log-path=/tmp --repo-path=/backrestrepo -conf=/pgconf/pgbackrest.conf
+/opt/cpm/bin/backup.sh
 ....
 
 === Performing a Restore
@@ -121,7 +119,7 @@ There are two options to choose from when performing a restore, DELTA and FULL. 
 
 Steps for FULL restore
 
- * Delete the primary-backrest pod, if still running
+ * Delete the primary-backrest pod, if still running using
  * Empty the PGDATA directory (remove all files)
  * Navigate to the backrest-restore examples directory. Execute the full-restore.sh script.
  * Check the restore logs (db-restore.log) in the /backrestrepo mountpointfor success. You can also view the logs of the completed job pod with kubectl get pod -a

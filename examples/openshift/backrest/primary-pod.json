@@ -79,12 +79,14 @@
             },
             "volumes": [{
                 "name": "pgdata",
-                "emptyDir": {}
+		"persistentVolumeClaim": {
+		"claimName": "crunchy-pvc"
+		}
             }, {
                 "name": "pgconf",
-                "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc"
-                }
+		"configMap": {
+			"name": "backrestconf"
+		}
             }, {
                 "name": "backrestrepo",
                 "persistentVolumeClaim": {
