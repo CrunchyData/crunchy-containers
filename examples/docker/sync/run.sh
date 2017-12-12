@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting primary container..."
+echo "Starting primary container..."
 
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
@@ -52,12 +52,12 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=sync-primary \
 	--hostname=sync-primary \
-	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
 
-echo "sleep a bit to let the primary startup..."
+echo "Sleeping in order to let the primary start..."
 sleep 20
 
-echo "starting sync replica..."
+echo "Starting synchronous replica..."
 
 DATA_DIR=/tmp/sync-replica
 sudo rm -rf $DATA_DIR
@@ -90,10 +90,10 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=sync-replica \
 	--hostname=sync-replica \
-	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
 
 
-echo "start async replica..."
+echo "Starting asynchronous replica..."
 
 DATA_DIR=/tmp/async-replica
 sudo rm -rf $DATA_DIR
@@ -125,4 +125,4 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=async-replica \
 	--hostname=async-replica \
-	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

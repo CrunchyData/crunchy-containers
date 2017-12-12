@@ -14,12 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting primary-pitr-backup container..."
+echo "Starting primary-pitr-backup container..."
 
 PGDATA=/tmp/backups
 
 if [ ! -d "$PGDATA" ]; then
-	echo "creating pgdata directory..."
+	echo "Creating pgdata directory..."
 	mkdir -p $PGDATA
 fi
 
@@ -39,4 +39,4 @@ docker run \
 	--link primary-pitr:primary-pitr\
 	--name=primary-pitr-backup \
 	--hostname=primary-pitr-backup \
-	-d crunchydata/crunchy-backup:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG

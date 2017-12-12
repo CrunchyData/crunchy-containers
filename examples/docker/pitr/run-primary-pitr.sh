@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting primary-pitr container with PITR enabled..."
+echo "Starting primary-pitr container with PITR enabled..."
 
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
@@ -60,4 +60,4 @@ sudo docker run \
 	-e ARCHIVE_TIMEOUT=60 \
 	--name=primary-pitr \
 	--hostname=primary-pitr \
-	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

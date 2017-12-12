@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting crunchy-watch container"
+echo "Starting crunchy-watch container..."
 
 export CONTAINER_NAME=watch
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -40,4 +40,4 @@ sudo docker run \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
 	-v $PWD/hooks:/hooks \
-	-d crunchydata/crunchy-watch:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-watch:$CCP_IMAGE_TAG

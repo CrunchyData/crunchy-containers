@@ -53,4 +53,4 @@ docker run \
 	--link replica:replica \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
-	-d crunchydata/crunchy-proxy:$PROXY_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-proxy:$PROXY_IMAGE_TAG
