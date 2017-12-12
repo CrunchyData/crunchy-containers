@@ -1427,7 +1427,7 @@ psql -h postgres-gis -U testuser userdb -c '\dx'
 To validate that PostGIS is installed and which version is running, run the command:
 
 ....
-psql -h postgres-gis -U testuser -c "SELECT postgis_full_version();"
+psql -h postgres-gis -U testuser userdb -c "SELECT postgis_full_version();"
 ....
 
 You should expect to see output similar to:
@@ -1442,7 +1442,7 @@ postgis_full_version
 To exercise some of the basic PostGIS functionality for validation (in this case defining 2D geometry point for everyone's favorite place - Walt Disney World!), run the command:
 
 ....
-psql -h postgres-gis -U testuser -c "select ST_MakePoint(28.385200,-81.563900);"
+psql -h postgres-gis -U testuser userdb -c "select ST_MakePoint(28.385200,-81.563900);"
 ....
 
 You should expect to see output similar to:
