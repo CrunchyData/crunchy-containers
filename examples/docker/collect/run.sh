@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "make sure basic example is running....starting collect containers..."
+echo "Please ensure the basic example is running. Starting collect containers..."
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
-
-export HOSTIP=`hostname --ip-address`
 
 BASIC_VOLUME=basic-example-volume
 
@@ -34,4 +32,4 @@ docker run \
 	--link crunchy-promgateway:crunchy-promgateway \
 	--name=primary-collect \
 	--hostname=primary-collect \
-	-d crunchydata/crunchy-collect:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-collect:$CCP_IMAGE_TAG

@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting badger..."
+echo "Starting badger..."
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
@@ -31,4 +31,4 @@ docker run \
 	--link $DATABASE_CONTAINER:$DATABASE_CONTAINER \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
-	-d crunchydata/crunchy-pgbadger:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-pgbadger:$CCP_IMAGE_TAG

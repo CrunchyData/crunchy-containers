@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting vacuum container..."
+echo "Starting vacuum container..."
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
@@ -35,4 +35,4 @@ docker run \
 	--link basic:basic \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
-	-d crunchydata/crunchy-vacuum:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-vacuum:$CCP_IMAGE_TAG

@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting primary-restore-pitr container..."
+echo "Starting primary-restore-pitr container..."
 
 sudo docker stop primary-restore-pitr
 sudo docker rm primary-restore-pitr
@@ -71,4 +71,4 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	--name=primary-restore-pitr \
 	--hostname=primary-restore-pitr \
-	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
