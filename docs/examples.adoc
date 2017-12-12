@@ -1427,6 +1427,35 @@ You can view the extensions that postgres-gis has enabled by running:
 psql -h postgres-gis -U testuser userdb -c '\dx'
 ....
 
+To validate that PostGIS is installed and which version is running, run the command:
+
+....
+psql -U postgres -c "SELECT postgis_full_version();"
+....
+
+You should expect to see output similar to:
+
+....                                                                                  postgis_full_version
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ POSTGIS="2.4.2 r16113" PGSQL="100" GEOS="3.5.0-CAPI-1.9.0 r4084" PROJ="Rel. 4.8.0, 6 March 2012" GDAL="GDAL 1.11.4, released 2016/01/25" LIBXML="2.9.1" LIBJSON="0.11" TOPOLOGY RASTER
+(1 row)
+....
+
+To exercise some of the basic PostGIS functionality for validation (in this case defining 2D geometry point for everyone's favorite place - Walt Disney World!), run the command:
+
+....
+postgres=# select ST_MakePoint(28.385200,-81.563900);
+....
+
+You should expect to see output similar to:
+
+....
+                st_makepoint
+--------------------------------------------
+ 0101000000516B9A779C623C40B98D06F0166454C0
+(1 row)
+....
+
 === Metrics Collection
 
 You can collect various PostgreSQL metrics from your database
