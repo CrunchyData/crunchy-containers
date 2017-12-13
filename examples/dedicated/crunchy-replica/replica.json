@@ -5,7 +5,7 @@
         "name": "crunchy-replica",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy PostgreSQL Replica",
+            "description": "Crunchy PostgreSQL database replica",
             "iconClass": "icon-database",
             "tags": "database,postgresql,crunchy"
         }
@@ -17,7 +17,7 @@
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use",
-        "value": "rhel7-9.6.6-1.7.0"
+        "value": "rhel7-10.1-1.7.0"
     }, {
         "name": "CCP_IMAGE_NAME",
         "description": "The image name to use",
@@ -49,7 +49,7 @@
     }, {
         "name": "PVC_ACCESS_MODE",
         "description": "the accessmode of the PVC to use",
-        "value": "ReadWriteMany"
+        "value": "ReadWriteOnce"
     }, {
         "name": "PVC_SIZE",
         "description": "the size of the PVC to use",

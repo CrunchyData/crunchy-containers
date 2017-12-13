@@ -12,40 +12,40 @@
     },
     "parameters": [{
         "name": "JOB_NAME",
-        "description": "the name to give the backup job",
+        "description": "The name to give the backup job",
         "value": "somebackupjob"
     }, {
         "name": "DB_NAME",
-        "description": "the service name of the database to backup",
+        "description": "The service name of the database to backup",
         "value": "somedatabase"
     }, {
         "name": "PVC_NAME",
-        "description": "the name to give the backup PVC ",
+        "description": "The name to give the backup PVC",
         "value": "somepvc"
     }, {
         "name": "PVC_SIZE",
         "value": "500M",
-        "description": "the size to give the backup PVC "
+        "description": "The size to give the backup PVC"
     }, {
         "name": "PVC_ACCESS_MODE",
-        "value": "ReadWriteMany",
-        "description": "the accessmode to give the backup PVC "
+        "value": "ReadWriteOnce",
+        "description": "The accessmode to give the backup PVC"
     }, {
         "name": "BACKUP_USER",
         "value": "primaryuser",
-        "description": "the name of the database user to perform the backup"
+        "description": "The name of the database user to perform the backup"
     }, {
         "name": "BACKUP_PASS",
         "value": "password",
-        "description": "the password of the database user to perform the backup"
+        "description": "The password of the database user to perform the backup"
     }, {
         "name": "CCP_IMAGE_PREFIX",
         "value": "crunchydata",
-        "description": "the image prefix to use"
+        "description": "The image prefix to use"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "description": "image tag to use",
-        "value": "centos7-9.5-1.2.7"
+        "description": "The image tag to use",
+        "value": "centos7-10.1-1.7.0"
     }],
 
     "objects": [{

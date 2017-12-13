@@ -19,15 +19,13 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-PROJECT=jeff-project
-
 #oc process --parameters -n $PROJECT crunchy-pgadmin4
 
 oc process -n $PROJECT crunchy-pgadmin4 \
 	NAME=pgadmin4 \
-	CCP_IMAGE_TAG=rhel7-9.6.6-1.7.0 \
+	CCP_IMAGE_TAG=rhel7-10.1-1.7.0 \
 	CCP_IMAGE_PREFIX=172.30.240.45:5000/$PROJECT \
 	PVC_NAME=pgadmin4-pvc \
 	PVC_SIZE=300M \
-	PVC_ACCESS_MODE=ReadWriteMany \
+	PVC_ACCESS_MODE=ReadWriteOnce \
 	| oc create -f -

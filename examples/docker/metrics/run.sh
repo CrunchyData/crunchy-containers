@@ -18,7 +18,7 @@ echo "Starting metrics example..."
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
-#LOCAL_IP defined in .bashrc as `hostname --ip-address`
+#LOCAL_IP is defined in .bashrc as `hostname --ip-address`
 echo $LOCAL_IP
 
 VOLUME_NAME=metrics-volume

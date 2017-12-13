@@ -19,8 +19,6 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-PROJECT=jeff-project
-
 #oc process --parameters -n $PROJECT crunchy-restore
 
 oc process -n $PROJECT crunchy-restore \
@@ -33,12 +31,12 @@ oc process -n $PROJECT crunchy-restore \
 	PG_PASSWORD=password \
 	PG_DATABASE=userdb \
 	PG_ROOT_PASSWORD=password \
-	CCP_IMAGE_TAG=rhel7-9.6.6-1.7.0 \
+	CCP_IMAGE_TAG=rhel7-10.1-1.7.0 \
 	CCP_IMAGE_PREFIX=172.30.240.45:5000/$PROJECT \
 	CCP_IMAGE_NAME=crunchy-postgres \
 	BACKUP_PATH=example-backups/2017-04-05-13-25-51 \
 	BACKUP_PVC=backup-pvc \
 	PVC_NAME=restoredb-pvc \
 	PVC_SIZE=300M \
-	PVC_ACCESS_MODE=ReadWriteMany \
+	PVC_ACCESS_MODE=ReadWriteOnce \
 	| oc create -f -
