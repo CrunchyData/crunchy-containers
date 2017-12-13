@@ -1393,7 +1393,7 @@ postgis_full_version
 (1 row)
 ....
 
-To exercise some of the basic PostGIS functionality for validation (in this case defining 2D geometry point for everyone's favorite place - Walt Disney World!), run the command:
+To exercise some of the basic PostGIS functionality for validation (in this case defining 2D geometry point - given inputs of longitude and latitude), run the command:
 
 ....
 psql -h postgres-gis -U testuser userdb -c "select ST_MakePoint(28.385200,-81.563900);"
