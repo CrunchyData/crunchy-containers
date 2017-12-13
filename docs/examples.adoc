@@ -1366,6 +1366,97 @@ OpenShift would normally configure a router in such a manner where you could
 The official documentation for installing OpenShift on a router can be found
 link:https://docs.openshift.com/container-platform/3.6/install_config/router/index.html[here].
 
+=== postgres-gis
+
+An example is provided that will run a postgres-gis pod/service in Kubernetes/OpenShift and a container in Docker.
+
+The container creates a default database called *userdb*, a default user called
+*testuser* and a default password of *password*.
+
+You can view the extensions that postgres-gis has enabled by running the following command (postgis should be listed):
+....
+psql -h postgres-gis -U testuser userdb -c '\dx'
+....
+
+To validate that PostGIS is installed and which version is running, run the command:
+
+....
+psql -h postgres-gis -U testuser userdb -c "SELECT postgis_full_version();"
+....
+
+You should expect to see output similar to:
+
+....                                                                                  
+postgis_full_version
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ POSTGIS="2.4.2 r16113" PGSQL="100" GEOS="3.5.0-CAPI-1.9.0 r4084" PROJ="Rel. 4.8.0, 6 March 2012" GDAL="GDAL 1.11.4, released 2016/01/25" LIBXML="2.9.1" LIBJSON="0.11" TOPOLOGY RASTER
+(1 row)
+....
+
+To exercise some of the basic PostGIS functionality for validation (in this case defining 2D geometry point - given inputs of longitude and latitude), run the command:
+
+....
+psql -h postgres-gis -U testuser userdb -c "select ST_MakePoint(28.385200,-81.563900);"
+....
+
+You should expect to see output similar to:
+
+....
+                st_makepoint
+--------------------------------------------
+ 0101000000516B9A779C623C40B98D06F0166454C0
+(1 row)
+....
+
+To shutdown the instance and remove the pod/container for each example, run the following:
+....
+./cleanup.sh
+....
+
+==== Docker
+
+Create the container as follows:
+....
+cd $CCPROOT/examples/docker/postgres-gis
+./run.sh
+....
+
+Enter the following command to connect to the postgres-gis container that is
+mapped to your local port 12000:
+....
+psql -h localhost -U testuser -p 12000 userdb
+....
+
+==== Kubernetes
+
+Running the example:
+....
+cd $CCPROOT/examples/kube/postgres-gis
+./run.sh
+....
+
+The example is configured to allow the *testuser* to connect
+to the *userdb* database as follows:
+....
+psql -h postgres-gis -U testuser userdb
+....
+
+==== OpenShift
+
+Run the following command to deploy the postgres-gis pod and service:
+....
+cd $CCPROOT/examples/openshift/postgres-gis
+./run.sh
+....
+
+Next, you can access the postgres-gis pod via the postgres-gis
+service by entering the following command:
+
+....
+psql -h postgres-gis -U testuser userdb
+psql -h postgres-gis -U testuser postgres
+....
+
 === Metrics Collection
 
 You can collect various PostgreSQL metrics from your database
