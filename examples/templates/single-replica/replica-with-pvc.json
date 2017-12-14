@@ -13,7 +13,7 @@
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use",
-        "value": "REPLACE_CCP_IMAGE_TAG"
+        "value": "centos7-10.1-1.7.0"
     }, {
         "name": "SERVICE_NAME",
         "description": "the name to use for the replica service and pod",
@@ -37,7 +37,7 @@
     }, {
         "name": "PVC_ACCESS_MODE",
         "description": "the accessmode of the PVC to use",
-        "value": "ReadWriteMany"
+        "value": "ReadWriteOnce"
     }, {
         "name": "PVC_SIZE",
         "description": "the size of the PVC to use",
@@ -98,7 +98,7 @@
                 },
                 "containers": [{
                     "name": "postgres",
-                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
+                    "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
                         "command": [
