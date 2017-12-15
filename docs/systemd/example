@@ -2,34 +2,34 @@ OPTIONS='--selinux-enabled --log-opt labels=application,location,environment,clu
 
 Use this for primary
 
-vi /usr/lib/systemd/system/dg_jose.service
+vi /usr/lib/systemd/system/dg_foo.service
 [Unit]
-Description=Postgres Instance for Jose
+Description=Postgres Instance 
 Wants=docker.service
 After=docker.service
 
 [Service]
 Restart=always
 Type=forking
-ExecStartPre=-/usr/bin/docker rm -f dg_jose
+ExecStartPre=-/usr/bin/docker rm -f dg_foo
 ExecStart=/usr/bin/docker run -m 32g --cpu-shares=512 --net=quagga --ip=10.172.44.4 \
-        --cgroup-parent=/system.slice/dg_jose.service \
-	        -v /srv/postgres/jose/data:/pgdata \
-		        -v /srv/postgres/jose/conf:/pgconf \
+        --cgroup-parent=/system.slice/dg_foo.service \
+	        -v /srv/postgres/foo/data:/pgdata \
+		        -v /srv/postgres/foo/conf:/pgconf \
 			        -v /backups:/backup \
-				        --label cluster_name="dg_jose" \
+				        --label cluster_name="dg_foo" \
 					        --label application="postgres" \
 						        --label location="gld" \
 							        --label environment="dev" \
-								        --label service="jose" \
+								        --label service="foo" \
 									        -e PG_MODE=primary \
 										        -e PG_PRIMARY_USER=primaryuser \
 											        -e PG_PRIMARY_PASSWORD=primarypsw \
 												        -e PG_ROOT_PASSWORD=rootpsw \
-													        --name=dg_jose \
-														        -d docker.anim.dreamworks.com/dwadba/postgres:9.5
+													        --name=dg_foo \
+														        -d docker.anim.example.com/dwadba/postgres:9.5
 															KillMode=control-group
-															ExecStop=/usr/bin/docker stop -t 10 dg_jose
+															ExecStop=/usr/bin/docker stop -t 10 dg_foo
 
 															[Install]
 															WantedBy=multi-user.target
