@@ -14,6 +14,10 @@
         }
       },
       "spec": {
+      "serviceAccount": "pgset-sa",
+      "securityContext": {
+      	"fsGroup": 26
+      },
         "containers": [
           {
             "name": "pgset",
@@ -57,13 +61,49 @@
             }],
             "volumeMounts": [
               {
-                "name": "pgdata",
-                "mountPath": "/pgdata",
-		"readOnly": false
+                "name": "pgconf",
+                "mountPath": "/pgconf",
+		"readOnly": true
+              },
+              {
+                "name": "pgwal",
+                "mountPath": "/pgwal",
+		"readOnly": true
+              },
+              {
+                "name": "backup",
+                "mountPath": "/backup",
+		"readOnly": true
+              },
+              {
+                "name": "recover",
+                "mountPath": "/recover",
+		"readOnly": true
+              },
+              {
+                "name": "backrestrepo",
+                "mountPath": "/backrestrepo",
+		"readOnly": true
               }
             ]
           }
-        ]
+        ],
+    "volumes": [ {
+                "name": "backrestrepo",
+		"emptyDir": {}
+		}, {
+                "name": "pgconf",
+		"emptyDir": {}
+		}, {
+                "name": "pgwal",
+		"emptyDir": {}
+		}, {
+                "name": "recover",
+		"emptyDir": {}
+		}, {
+		"name": "backup",
+		"emptyDir": {}
+		}]
       }
     },
     "volumeClaimTemplates": [
