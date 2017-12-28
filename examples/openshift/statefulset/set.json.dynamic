@@ -14,10 +14,14 @@
         }
       },
       "spec": {
+      "serviceAccount": "pgset-sa",
+      "securityContext": {
+      	"fsGroup": 26
+      },
         "containers": [
           {
             "name": "pgset",
-            "image": "crunchydata/crunchy-postgres:$CCP_IMAGE_TAG",
+            "image": "crunchydata/crunchy-postgres-gis:$CCP_IMAGE_TAG",
             "ports": [
               {
                 "containerPort": 5432,
@@ -32,10 +36,16 @@
                 "value": "/tmp"
             }, {
                 "name": "PG_MODE",
-                "value": "primary"
+                "value": "set"
             }, {
                 "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"
+            }, {
+                "name": "PG_PRIMARY_PORT",
+                "value": "5432"
+            }, {
+                "name": "PG_PRIMARY_HOST",
+                "value": "pgset-primary"
             }, {
                 "name": "PG_USER",
                 "value": "testuser"
@@ -51,13 +61,49 @@
             }],
             "volumeMounts": [
               {
-                "name": "pgdata",
-                "mountPath": "/pgdata",
-		"readOnly": false
+                "name": "pgconf",
+                "mountPath": "/pgconf",
+		"readOnly": true
+              },
+              {
+                "name": "pgwal",
+                "mountPath": "/pgwal",
+		"readOnly": true
+              },
+              {
+                "name": "backup",
+                "mountPath": "/backup",
+		"readOnly": true
+              },
+              {
+                "name": "recover",
+                "mountPath": "/recover",
+		"readOnly": true
+              },
+              {
+                "name": "backrestrepo",
+                "mountPath": "/backrestrepo",
+		"readOnly": true
               }
             ]
           }
-        ]
+        ],
+    "volumes": [ {
+                "name": "backrestrepo",
+		"emptyDir": {}
+		}, {
+                "name": "pgconf",
+		"emptyDir": {}
+		}, {
+                "name": "pgwal",
+		"emptyDir": {}
+		}, {
+                "name": "recover",
+		"emptyDir": {}
+		}, {
+		"name": "backup",
+		"emptyDir": {}
+		}]
       }
     },
     "volumeClaimTemplates": [
@@ -65,12 +111,12 @@
         "metadata": {
           "name": "pgdata",
           "annotations": {
-          	"volume.alpha.kubernetes.io/storage-class": "default"
+          	"volume.alpha.kubernetes.io/storage-class": "gp2"
           }
         },
         "spec": {
           "accessModes": [
-            "ReadWriteMany"
+            "ReadWriteOnce"
           ],
           "resources": {
             "requests": {

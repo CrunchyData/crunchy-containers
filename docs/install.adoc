@@ -8,11 +8,9 @@ v1.7, {docdate}
 
 The crunchy-containers can run on different environments including:
 
- * Docker
- * OpenShift Enterprise
- * OpenShift Origin
- * Kubernetes 1.2+
- * Helm
+ * Docker 1.12
+ * OpenShift Container Platform
+ * Kubernetes 1.5+
 
 In this document we list the basic installation steps required for these
 environments.
@@ -311,11 +309,14 @@ OpenShift Enterprise on your host.  The main instructions are here:
 
 https://docs.openshift.com/container-platform/3.6/install_config/install/quick_install.html
 
-For testing purposes, OpenShift Origin is the simplest to install and configure. The
-easiest way to get OpenShift Origin up and running is through the link:https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md[oc cluster up] cluster configuration.
+*Note:* If you install OpenShift Enterprise on a server with less than `16GB` memory and `40GB` 
+of disk, the following Ansible variables need to be added to `~/.config/openshift/installer.cfg.yml`
+prior to installation:
 
-For examples and tips on how to run OpenShift Enterprise & Origin, please look
-at the link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc[Examples Documentation].
+```
+openshift_check_min_host_disk_gb: '10' # min 10gb disk
+openshift_check_min_host_memory_gb: '3' # min 3gb memory 
+```
 
 ==== System policies for PVC creation/listing
 
@@ -329,19 +330,6 @@ oc adm policy add-cluster-role-to-user cluster-reader system
 oc adm policy add-cluster-role-to-user cluster-admin system
 ....
 
-==== Persistent volume matching
-
-Restoring a database from an NFS backup requires the building
-of a PV which maps to the NFS backup archive path.  For example,
-if you have a backup at /backups/pg-foo/2016-01-29:22:34:20
-then we create a PV that maps to that NFS path.  We also use
-a "label" on the PV so that the specific backup PV can be identified.
-
-We use the pod name in the label value to make the PV unique.  This
-way, the related PVC can find the right PV to map to and not some other
-PV.  In the PVC, we specify the same "label" which lets Kubernetes
-match to the correct PV.
-
 === anyuid permissions
 
 One suggested method to use in order to grant a user permission to use the *anyuid* SCC:
@@ -353,113 +341,12 @@ This says that any authenticated user can run with the anyuid SCC which lets
 them create PVCs and use the *fsGroup* setting for the PostgreSQL containers to
 work using NFS.
 
-=== DNS Configuration
-
-==== DNS host entry
-
-If your OpenShift environment can not resolve your hostname via
-a DNS server (external to OpenShift!), you will get errors when trying
-to create a DeploymentConfig.
-
-Because of this, it is advisable to either install dnsmasq
-and reconfigure OpenShift, or run a DNS server on another host and add
-the OpenShift host entry to that DNS server. The *skybridge2* Docker
-container is sufficient for this purpose.
-
-*Note*: Remember to adjust your /etc/resolv.conf to specify the new DNS
-server.
-
-==== OpenShift v3
-
-The following DNS modifications are necessary for versions prior to OpenShift Enterprise 3.3.
-
-Luke Meyer from Redhat wrote an excellent blog on how to configure dnsmasq and OpenShift;
-this is available link:http://developers.redhat.com/blog/2015/11/19/dns-your-openshift-v3-cluster/[here].
-
-Key things included in this blog are how to:
-
- * Configure DHCP to include the local IP address in /etc/resolv.conf upon boot
- * Configure dnsmasq
- * Configure OpenShift DNS to listen on another port
-
-A sample setup would typically have the following IP addresses/ports configured:
-
- * OpenShift DNS listening on 127.0.0.1:8053
- * dnsmasq listening on the local IP address 192.168.0.109:53
-
-Therefore in /etc/dhcp/dhclient.conf it is necessary to append the following line in
-this sample setup:
-
-....
-prepend domain-name-servers 192.168.0.109;
-....
-
-If you don't have your DNS configured correctly, replication controllers
-and deployment configurations will not work as expected.
-
-==== OpenShift Origin
-
-The official instructions for configuring DNS on your OpenShift Origin cluster can be
-found link:https://docs.openshift.org/latest/install_config/install/prerequisites.html#prereq-dns[here].
-
 == Kubernetes Environment
 
 === Installation
 
 See link:https://kubernetes.io/docs/setup/independent/install-kubeadm/[kubeadm]
 for setting up a test environment of Kubernetes.
-
-See the following links for installation instructions:
-
- * http://linoxide.com/containers/setup-kubernetes-kubeadm-centos/
- * https://kubernetes.io/docs/getting-started-guides/kubeadm/
-
-=== Examples
-
-The namespace is set for the examples within your *bashrc* file; if you followed the
-installation instructions exactly, this will be set to *default*. Set this variable according to your
-project configuration.
-
-Note, some of the examples assume an NFS file system for creating
-persistent volumes.  See above for details on setting NFS permissions and
-the use of *supplementalGroups* within pod specs.
-
-Visit the link:examples.adoc[examples documentation] for different use cases
-and examples.
-
-=== Minishift Configuration
-
-If you are wanting to run the examples on a Minishift instance
-you will need to create the PVs using hostPath as follows:
-....
-oc login -u system:admin
-./create-pv.sh hostpath
-oc login -u developer
-./create-pvc.sh
-....
-
-Additional steps are required to allow persistence to work
-on Minishift including:
-....
-oc login -u system:admin
-oc edit scc restricted
-....
-
-Above, you will change runAsUser.Type strategy to RunAsAny.
-
-On the boot2docker instance running Minishift, you will need
-to set the host path permissions as follows:
-....
-chmod 777 /mnt/sda1/data
-....
-
-The NAMESPACE environment variable is set to indicate which OpenShift
-project you want various example objects to use.  This variable
-is set to *default* within your *bashrc* file if you followed the installation
-instructions exactly. Set this to match your project configuration.
-
-See link:examples.adoc[here] to view the documentation showing various
-examples.
 
 === Helm
 
@@ -537,7 +424,8 @@ which corresponds to the *fsGroup* value.
 ===  Tips
 
 Make sure your hostname resolves to a single IP address in your
-/etc/hosts file. The NFS examples will not work otherwise.
+/etc/hosts file. The NFS examples will not work otherwise and other problems
+with installation can occur unless you have a resolving hostname.
 
 You should see a single IP address returned from this command:
 ....

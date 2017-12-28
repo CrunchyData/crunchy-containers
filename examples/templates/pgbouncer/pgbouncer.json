@@ -15,11 +15,11 @@
         "value": "pgbouncer"
     }, {
         "name": "PVC_ACCESS_MODE",
-        "value": "ReadWriteMany",
+        "value": "ReadWriteOnce",
         "description": "The accessmode of the pvc"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "centos7-9.5-1.2.7",
+        "value": "centos7-10.1-1.7.0",
         "description": "The image tag to pull images with"
     }, {
         "name": "CCP_IMAGE_PREFIX",

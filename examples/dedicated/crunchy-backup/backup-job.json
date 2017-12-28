@@ -28,7 +28,7 @@
         "description": "the size to give the backup PVC "
     }, {
         "name": "PVC_ACCESS_MODE",
-        "value": "ReadWriteMany",
+        "value": "ReadWriteOnce",
         "description": "the accessmode to give the backup PVC "
     }, {
         "name": "BACKUP_USER",
@@ -45,7 +45,7 @@
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use",
-        "value": "rhel7-9.6.6-1.7.0"
+        "value": "rhel7-10.1-1.7.0"
     }],
 
     "objects": [{

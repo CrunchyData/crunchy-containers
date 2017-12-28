@@ -5,7 +5,7 @@
         "name": "crunchy-postgres-database-pvc",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy PostgreSQL Single Database using PVC",
+            "description": "Crunchy PostgreSQL single database using a PVC",
             "iconClass": "icon-database",
             "tags": "database,postgresql,crunchy"
         }
@@ -20,12 +20,16 @@
         "value": "primaryuser"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "centos7-9.5-1.2.7",
+        "value": "centos7-10.1-1.7.0",
         "description": "The image tag to pull with"
     }, {
         "name": "CCP_IMAGE_PREFIX",
         "value": "crunchydata",
         "description": "The image prefix to pull with"
+    }, {
+        "name": "PG_PRIMARY_PORT",
+        "description": "The postgresql port",
+        "value": "5432"
     }, {
         "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PG primary user",
@@ -53,7 +57,7 @@
     }, {
         "name": "PVC_ACCESS_MODE",
         "description": "The access mode for the PVC",
-        "value": "ReadWriteMany"
+        "value": "ReadWriteOnce"
     }, {
         "name": "PG_ROOT_PASSWORD",
         "description": "The password for the PG administrator",

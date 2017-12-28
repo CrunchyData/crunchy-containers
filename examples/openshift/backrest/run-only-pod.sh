@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,12 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+oc process -f $DIR/primary-pod.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
 
-oc create -f $DIR/ceph-secret.json
-oc create -f $DIR/ceph-pv.json
-oc create -f $DIR/ceph-pvc.json
-
-oc process -f $DIR/primary-ceph.json -v CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

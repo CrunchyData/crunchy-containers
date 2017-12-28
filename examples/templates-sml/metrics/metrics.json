@@ -16,7 +16,7 @@
         "description": "The image tag to use"
     }, {
         "name": "STORAGE_CLASS",
-        "description": "The storage class to use ",
+        "description": "The name for the storage class",
         "value": "gluster-container"
     }, {
         "name": "PVC_SIZE",
@@ -29,9 +29,8 @@
         "metadata": {
             "name": "crunchy-metrics-pvc",
             "annotations": {
-                "volume.beta.kubernetes.io/storage-class": "${STORAGE_CLASS}"
+              "volume.beta.kubernetes.io/storage-class": "${STORAGE_CLASS}"
             }
-
         },
         "spec": {
             "accessModes": [
@@ -138,7 +137,7 @@
             "volumes": [{
                 "name": "data",
                 "persistentVolumeClaim": {
-                    "claimName": "crunchy-metrics-pvc"
+                    "claimName": "crunchy-metrics-pvc",
                 }
             }]
         }

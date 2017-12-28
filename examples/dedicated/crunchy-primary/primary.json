@@ -4,7 +4,7 @@
     "metadata": {
         "name": "crunchy-primary",
         "annotations": {
-            "description": "Crunchy primary postgres database using dynamic storage",
+            "description": "Crunchy primary PostgreSQL database using dynamic storage",
             "iconClass": "icon-database",
             "tags": "crunchy,database,postgresql"
         }
@@ -28,7 +28,7 @@
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use",
-        "value": "rhel7-9.6.6-1.7.0"
+        "value": "rhel7-10.1-1.7.0"
     }, {
         "name": "CCP_IMAGE_PREFIX",
         "description": "The image prefix to use",
@@ -106,7 +106,7 @@
         "metadata": {
             "name": "${PVC_NAME}",
             "annotations": {
-                "volume.beta.kubernetes.io/storage-class": "${STORAGE_CLASS}"
+                 "volume.beta.kubernetes.io/storage-class": "${STORAGE_CLASS}"
             }
         },
         "spec": {

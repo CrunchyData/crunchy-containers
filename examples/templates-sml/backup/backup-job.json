@@ -46,7 +46,7 @@
         "metadata": {
             "name": "${DB_NAME}-backup-pvc",
             "annotations": {
-                "volume.beta.kubernetes.io/storage-class": "${STORAGE_CLASS}"
+              "volume.beta.kubernetes.io/storage-class": "${STORAGE_CLASS}"
             }
         },
         "spec": {

@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting primary container..."
+echo "Starting primary container..."
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -61,9 +61,9 @@ docker run \
 	-e PG_DATABASE=userdb \
 	--name=$PRIMARY_CONTAINER_NAME \
 	--hostname=$PRIMARY_CONTAINER_NAME \
-	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
 
-echo "starting pg-replica container..."
+echo "Starting pg-replica container..."
 sleep 20
 
 VOLUME_NAME=replica-volume
@@ -92,4 +92,4 @@ docker run \
 	-e PG_DATABASE=userdb \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
-	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
