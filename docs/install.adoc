@@ -4,13 +4,13 @@ Crunchy Data Solutions, Inc.
 v1.7, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
-== Project Setup & Docker Installation
+== Project Setup
 
 The crunchy-containers can run on different environments including:
 
- * Docker 1.12
- * OpenShift Container Platform
- * Kubernetes 1.5+
+ * *Docker 1.12*
+ * *OpenShift Container Platform 3.6*
+ * *Kubernetes 1.8+*
 
 In this document we list the basic installation steps required for these
 environments.
@@ -145,7 +145,7 @@ Then, go ahead and install the PostgreSQL server package.
 sudo yum -y install postgresql10-server.x86_64
 ....
 
-=== Installing Docker
+=== Docker Environment
 
 As good practice, at this point you'll update your system.
 ....
@@ -305,18 +305,21 @@ README.txt for command-line usage for the ./create-pv.sh command.
 === Installation
 
 See the OpenShift installation guide for details on how to install
-OpenShift Enterprise on your host.  The main instructions are here:
+OpenShift Enterprise on your host. The main instructions are here:
 
 https://docs.openshift.com/container-platform/3.6/install_config/install/quick_install.html
 
-*Note:* If you install OpenShift Enterprise on a server with less than `16GB` memory and `40GB` 
+*Note:* If you install OpenShift Enterprise on a server with less than `16GB` memory and `40GB`
 of disk, the following Ansible variables need to be added to `~/.config/openshift/installer.cfg.yml`
 prior to installation:
 
 ```
 openshift_check_min_host_disk_gb: '10' # min 10gb disk
-openshift_check_min_host_memory_gb: '3' # min 3gb memory 
+openshift_check_min_host_memory_gb: '3' # min 3gb memory
 ```
+
+If you are using OpenShift Origin, the installation instructions for *oc cluster up*
+can be found link:https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md[here].
 
 ==== System policies for PVC creation/listing
 
