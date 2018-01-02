@@ -13,14 +13,9 @@
 # limitations under the License.
 
 
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-sudo DIR=$DIR PV_PATH=$PV_PATH cp $DIR/pgbackrest.conf $PV_PATH
-
 oc create configmap backrestconf --from-file pgbackrest.conf
-
-oc process -f $DIR/primary-pod.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-
+oc process -f $DIR/primary-pod.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

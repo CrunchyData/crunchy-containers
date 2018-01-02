@@ -13,9 +13,7 @@
 # limitations under the License.
 
 
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete job backrest-job-nfs
-
-expenv -f $DIR/full-restore-job.json | oc create -f -
+oc process -f $DIR/full-restore-job.json CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

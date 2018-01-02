@@ -13,11 +13,10 @@
 # limitations under the License.
 
 
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete service primary-backrest
 oc delete pod primary-backrest
 oc delete configmap backrestconf
 
-sudo PV_PATH=$PV_PATH  rm  -rf $PV_PATH/archive $PV_PATH/backup
+sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/archive $PV_PATH/backup
