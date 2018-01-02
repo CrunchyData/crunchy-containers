@@ -313,10 +313,10 @@ https://docs.openshift.com/container-platform/3.6/install_config/install/quick_i
 of disk, the following Ansible variables need to be added to `~/.config/openshift/installer.cfg.yml`
 prior to installation:
 
-```
+....
 openshift_check_min_host_disk_gb: '10' # min 10gb disk
 openshift_check_min_host_memory_gb: '3' # min 3gb memory
-```
+....
 
 If you are using OpenShift Origin, the installation instructions for *oc cluster up*
 can be found link:https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md[here].
