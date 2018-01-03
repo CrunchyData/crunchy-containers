@@ -87,7 +87,7 @@ need to be taken.
 cd $GOPATH
 sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
 sudo yum-config-manager --enable rhel-7-server-extras-rpms
-sudo yum -y install git golang docker
+sudo yum -y install git golang
 go get github.com/tools/godep
 cd src/github.com
 mkdir crunchydata
@@ -150,6 +150,11 @@ sudo yum -y install postgresql10-server.x86_64
 As good practice, at this point you'll update your system.
 ....
 sudo yum -y update
+....
+
+Now we'll install Docker.
+....
+sudo yum -y install docker
 ....
 
 After that, it's necessary to add the *docker* group and give your user access
@@ -302,8 +307,6 @@ README.txt for command-line usage for the ./create-pv.sh command.
 
 == OpenShift Environment
 
-=== Installation
-
 See the OpenShift installation guide for details on how to install
 OpenShift Enterprise on your host. The main instructions are here:
 
@@ -321,7 +324,7 @@ openshift_check_min_host_memory_gb: '3' # min 3gb memory
 If you are using OpenShift Origin, the installation instructions for *oc cluster up*
 can be found link:https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md[here].
 
-==== System policies for PVC creation/listing
+=== Permissions
 
 In order to allow the *system* user to be able to create and list
 persistent volumes using *OpenShift version 3.3+*, you have to enter
@@ -333,9 +336,8 @@ oc adm policy add-cluster-role-to-user cluster-reader system
 oc adm policy add-cluster-role-to-user cluster-admin system
 ....
 
-=== anyuid permissions
-
-One suggested method to use in order to grant a user permission to use the *anyuid* SCC:
+One suggested method to use in order to grant a user permission to use the *anyuid* SCC
+would be the following:
 ....
 oc adm policy add-scc-to-group anyuid system:authenticated
 ....
@@ -346,14 +348,10 @@ work using NFS.
 
 == Kubernetes Environment
 
-=== Installation
-
 See link:https://kubernetes.io/docs/setup/independent/install-kubeadm/[kubeadm]
-for setting up a test environment of Kubernetes.
+for installing the latest version of Kubernetes.
 
 === Helm
-
-*Installation*
 
 Once you have your Kubernetes environment configured, it is simple to get
 Helm up and running. Please refer to link:https://docs.bitnami.com/kubernetes/get-started-kubernetes/#step-4-install-helm-and-tiller[this document]
