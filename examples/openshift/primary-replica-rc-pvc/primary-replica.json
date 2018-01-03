@@ -42,10 +42,10 @@
         "value": "userdb"
     }, {
         "name": "PG_PRIMARY_SERVICE_NAME",
-        "value": "m-s-rc-pvc-primary"
+        "value": "p-r-rc-pvc-primary"
     }, {
         "name": "PG_REPLICA_SERVICE_NAME",
-        "value": "m-s-rc-pvc-replica"
+        "value": "p-r-rc-pvc-replica"
     }],
     "objects": [{
         "kind": "Service",

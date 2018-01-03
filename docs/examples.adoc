@@ -371,7 +371,7 @@ by the OpenShift 'process' command.  To inspect what value was
 supplied, you can inspect the primary pod as follows:
 
 ....
-oc get pod ms-primary -o json | grep PG
+oc get pod pr-primary -o json | grep PG
 ....
 
 Look for the values of the environment variables:
@@ -651,19 +651,19 @@ It takes about a minute for the replica to begin replicating with the
 primary.  To test out replication, see if replication is underway
 with this command:
 ....
-psql -h ms-primary -U postgres postgres -c 'table pg_stat_replication'
+psql -h pr-primary -U postgres postgres -c 'table pg_stat_replication'
 ....
 
 If you see a line returned from that query it means the primary is replicating
 to the replica.  Try creating some data on the primary:
 ....
-psql -h ms-primary -U postgres postgres -c 'create table foo (id int)'
-psql -h ms-primary -U postgres postgres -c 'insert into foo values (1)'
+psql -h pr-primary -U postgres postgres -c 'create table foo (id int)'
+psql -h pr-primary -U postgres postgres -c 'insert into foo values (1)'
 ....
 
 Then verify that the data is replicated to the replica:
 ....
-psql -h ms-replica -U postgres postgres -c 'table foo'
+psql -h pr-replica -U postgres postgres -c 'table foo'
 ....
 
 *primary-replica-dc*
@@ -706,7 +706,7 @@ cd $CCPROOT/examples/openshift/primary-replica
 
 You can then connect to the database instance as follows:
 ....
-psql -h ms-primary -U testuser -W userdb
+psql -h pr-primary -U testuser -W userdb
 ....
 
 *primary-replica-dc*
