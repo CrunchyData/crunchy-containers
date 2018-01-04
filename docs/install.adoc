@@ -353,6 +353,13 @@ for installing the latest version of Kubernetes.
 
 === Helm
 
+Some Kubernetes Helm examples are provided in the following directory as one
+option for deploying the Container Suite.
+
+....
+$CCPROOT/examples/helm/
+....
+
 Once you have your Kubernetes environment configured, it is simple to get
 Helm up and running. Please refer to link:https://docs.bitnami.com/kubernetes/get-started-kubernetes/#step-4-install-helm-and-tiller[this document]
 to get Helm installed and configured properly.
