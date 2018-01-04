@@ -1730,7 +1730,7 @@ kubectl log pgbouncer
 Next, test the failover capability within the crunchy-watch
 container using the following:
 ....
-kubectl delete pod primary
+kubectl delete pod pr-primary
 ....
 
 Take another look at the pgbouncer log and you will see it trigger
@@ -1750,7 +1750,7 @@ cd $CCPROOT/examples/openshift/pgbouncer
 
 Test the example by killing off the primary database container as follows:
 ....
-oc delete pod primary-dc
+oc delete pod pr-primary
 ....
 
 Then watch the pgbouncer log as follows to confirm it detects the loss of the primary:
@@ -1761,12 +1761,12 @@ oc logs pgbouncer
 After the failover is completed, you should be able to access the new primary using
 the primary service as follows:
 ....
-psql -h primary-dc.openshift.svc.cluster.local -U primary postgres
+psql -h pr-primary.openshift.svc.cluster.local -U primary postgres
 ....
 
 and access the replica as follows:
 ....
-psql -h replica-dc.openshift.svc.cluster.local -U primary postgres
+psql -h pr-replica.openshift.svc.cluster.local -U primary postgres
 ....
 
 or via the pgbouncer proxy as follows:
