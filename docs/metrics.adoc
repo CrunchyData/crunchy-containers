@@ -199,6 +199,8 @@ This tool collects hardware and OS level metrics exposed by the kernel as part o
 
 .*Table 1: Enabled by Default*
 
+This table lists all metrics collected by default with the node_exporter.
+
 [format="csv", options="header"]
 |===
 Name, Description
