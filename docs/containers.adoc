@@ -1,7 +1,7 @@
 = Crunchy Container Overview
 Crunchy Data Solutions, Inc.
 v1.7, {docdate}
-:title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
+:title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Introduction
 
@@ -11,7 +11,7 @@ within the Crunchy Containers for PostgreSQL.
 The containers and their relationships to the overall architecture
 are depicted below:
 
-image::containers.png[containers]
+image::images/containers.png[containers]
 
 
 == crunchy-postgres
@@ -666,7 +666,7 @@ https://www.pgadmin.org/
 pgadmin4 provides a web user interface to PostgreSQL databases.  A
 sample screenshot is below:
 
-image:pgadmin4-screenshot.png["pgadmin screenshot",align="center",scaledwidth="80%"]
+image::images/pgadmin4-screenshot.png["pgadmin screenshot",align="center",scaledwidth="80%"]
 
 
 === Environment Variables

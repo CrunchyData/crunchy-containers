@@ -2,7 +2,7 @@
 Crunchy Data Solutions, Inc.
 :toc: left
 v1.7, {docdate}
-:title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
+:title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Project Setup
 

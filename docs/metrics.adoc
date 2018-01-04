@@ -1,7 +1,7 @@
 = Metrics Collection - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
 v1.7, {docdate}
-:title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
+:title-logo-image: image:images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Description
 
@@ -17,7 +17,7 @@ To start collection of metrics on a PostgreSQL database, you add the crunchy-col
 
 === Structure
 
-image::after.png[alt=Crunchy Containers Metrics Collection,width=700,height=700]
+image::images/after.png[alt=Crunchy Containers Metrics Collection,width=700,height=700]
 
 === Overview
 
@@ -339,17 +339,17 @@ usage, GAUGE, Disk space used by the database, `SELECT pg_database_size(pg_datab
 
 You can create dashboards of various graphs using the Grafana Dashboard editor, but the following images display the default Grafana template that comes packaged in the Metrics suite:
 
-image::grafana-dashboard-1.png[]
+image::images/grafana-dashboard-1.png[]
 
-image::grafana-dashboard-2.png[]
+image::images/grafana-dashboard-2.png[]
 
-image::grafana-dashboard-3.png[]
+image::images/grafana-dashboard-3.png[]
 
-image::grafana-dashboard-4.png[]
+image::images/grafana-dashboard-4.png[]
 
-image::grafana-dashboard-5.png[]
+image::images/grafana-dashboard-5.png[]
 
-image::grafana-dashboard-6.png[]
+image::images/grafana-dashboard-6.png[]
 
 Some more information on creating custom Grafana dashboards can be found in the official documentation - http://docs.grafana.org/guides/getting_started/.
 
