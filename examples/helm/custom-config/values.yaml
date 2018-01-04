@@ -1,0 +1,18 @@
+name: custom-config
+container:
+  port: 5432
+  name: custom-config
+credentials:
+  primary: password
+  root: password
+  user: password
+serviceType: ClusterIP
+image:
+  repository: crunchydata
+  container: crunchy-postgres
+  tag: centos7-10.1-1.7.0
+resources:
+  cpu: 200m
+  memory: 512Mi
+configMap:
+  name: custom-config

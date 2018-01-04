@@ -1,0 +1,15 @@
+apiVersion: v1
+name: custom-config
+description: Deploys a basic single PostgreSQL primary database with custom configurations.
+version: 1
+appVersion: 1.7.0
+keywords:
+- postgresql
+- postgres
+- database
+- sql
+- custom-config
+home: https://www.crunchydata.com/
+icon: https://www.crunchydata.com/images/logo.svg
+sources:
+- https://github.com/CrunchyData/crunchy-containers
