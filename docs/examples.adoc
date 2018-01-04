@@ -2,7 +2,7 @@
 Crunchy Data Solutions, Inc.
 :toc: left
 v1.7, {docdate}
-:title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
+:title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Introduction to Docker, Kubernetes, & Openshift
 
@@ -392,7 +392,7 @@ by the OpenShift 'process' command.  To inspect what value was
 supplied, you can inspect the primary pod as follows:
 
 ....
-oc get pod ms-primary -o json | grep PG
+oc get pod pr-primary -o json | grep PG
 ....
 
 Look for the values of the environment variables:
@@ -672,19 +672,19 @@ It takes about a minute for the replica to begin replicating with the
 primary.  To test out replication, see if replication is underway
 with this command:
 ....
-psql -h ms-primary -U postgres postgres -c 'table pg_stat_replication'
+psql -h pr-primary -U postgres postgres -c 'table pg_stat_replication'
 ....
 
 If you see a line returned from that query it means the primary is replicating
 to the replica.  Try creating some data on the primary:
 ....
-psql -h ms-primary -U postgres postgres -c 'create table foo (id int)'
-psql -h ms-primary -U postgres postgres -c 'insert into foo values (1)'
+psql -h pr-primary -U postgres postgres -c 'create table foo (id int)'
+psql -h pr-primary -U postgres postgres -c 'insert into foo values (1)'
 ....
 
 Then verify that the data is replicated to the replica:
 ....
-psql -h ms-replica -U postgres postgres -c 'table foo'
+psql -h pr-replica -U postgres postgres -c 'table foo'
 ....
 
 *primary-replica-dc*
@@ -727,7 +727,7 @@ cd $CCPROOT/examples/openshift/primary-replica
 
 You can then connect to the database instance as follows:
 ....
-psql -h ms-primary -U testuser -W userdb
+psql -h pr-primary -U testuser -W userdb
 ....
 
 *primary-replica-dc*
@@ -888,7 +888,7 @@ kubectl log watch
 
 Then trigger a failover using this command:
 ....
-kubectl delete pod primary
+kubectl delete pod pr-primary
 ....
 
 Resume watching the watch container's log and verify that it
@@ -898,7 +898,7 @@ on the replica.
 A final test is to see if the old replica is now a fully functioning
 primary by inserting some test data into it as follows:
 ....
-psql -h primary -U postgres postgres -c 'create table failtest (id int)'
+psql -h pr-primary -U postgres postgres -c 'create table failtest (id int)'
 ....
 
 The above command still works because the watch container has
@@ -910,26 +910,18 @@ the pod is named replica.
 
 You can view the labels on a pod with this command:
 ....
-kubectl describe pod replica | grep Label
+kubectl describe pod pr-replica | grep Label
 ....
 
 ==== OpenShift
 
-First, create an OpenShift service account which is used by the crunchy-watch
-container to perform the failover. Also, set policies that allow the
-service account the ability to edit resources within the OpenShift and
-default projects.
+The following script will create an OpenShift service account which is used by the crunchy-watch
+container to perform the failover. Also, it will set policies that allow the
+service account the ability to edit resources within your namespace.
+Finally, it will create the container that will 'watch' the PostgreSQL cluster.
 
 ....
 cd $CCPROOT/examples/openshift/watch
-oc create -f watch-sa.json
-oc policy add-role-to-group edit system:serviceaccounts -n openshift
-oc policy add-role-to-group edit system:serviceaccounts -n default
-....
-
-Next, create the container that will 'watch' the PostgreSQL cluster:
-
-....
 ./run.sh
 ....
 
@@ -955,7 +947,7 @@ started as each new replica is started by OpenShift.
 
 To test it out, delete the primary pod and view the watch pod log:
 ....
-oc delete pod primary-dc
+oc delete pod pr-primary
 oc logs watch
 oc get pod
 ....
@@ -1407,7 +1399,7 @@ psql -h postgres-gis -U testuser userdb -c "SELECT postgis_full_version();"
 
 You should expect to see output similar to:
 
-....                                                                                  
+....
 postgis_full_version
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  POSTGIS="2.4.2 r16113" PGSQL="100" GEOS="3.5.0-CAPI-1.9.0 r4084" PROJ="Rel. 4.8.0, 6 March 2012" GDAL="GDAL 1.11.4, released 2016/01/25" LIBXML="2.9.1" LIBJSON="0.11" TOPOLOGY RASTER
@@ -1759,7 +1751,7 @@ kubectl log pgbouncer
 Next, test the failover capability within the crunchy-watch
 container using the following:
 ....
-kubectl delete pod primary
+kubectl delete pod pr-primary
 ....
 
 Take another look at the pgbouncer log and you will see it trigger
@@ -1779,7 +1771,7 @@ cd $CCPROOT/examples/openshift/pgbouncer
 
 Test the example by killing off the primary database container as follows:
 ....
-oc delete pod primary-dc
+oc delete pod pr-primary
 ....
 
 Then watch the pgbouncer log as follows to confirm it detects the loss of the primary:
@@ -1790,12 +1782,12 @@ oc logs pgbouncer
 After the failover is completed, you should be able to access the new primary using
 the primary service as follows:
 ....
-psql -h primary-dc.openshift.svc.cluster.local -U primary postgres
+psql -h pr-primary.openshift.svc.cluster.local -U primary postgres
 ....
 
 and access the replica as follows:
 ....
-psql -h replica-dc.openshift.svc.cluster.local -U primary postgres
+psql -h pr-replica.openshift.svc.cluster.local -U primary postgres
 ....
 
 or via the pgbouncer proxy as follows:

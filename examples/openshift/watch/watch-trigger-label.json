@@ -39,13 +39,13 @@
                     "value": "20"
                 }, {
                     "name": "PG_PRIMARY_SERVICE",
-                    "value": "ms-primary"
+                    "value": "pr-primary"
                 }, {
                     "name": "PG_REPLICA_SERVICE",
-                    "value": "ms-replica"
+                    "value": "pr-replica"
                 }, {
                     "name": "REPLICA_TO_TRIGGER_LABEL",
-                    "value": "ms-replica"
+                    "value": "pr-replica"
                 }, {
                     "name": "PG_PRIMARY_PORT",
                     "value": "5432"

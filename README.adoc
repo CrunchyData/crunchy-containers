@@ -1,7 +1,7 @@
 == Crunchy PostgreSQL Containers
 v1.7, {docdate}
 
-image::docs/crunchy_logo.png?raw=true[]
+image::images/crunchy_logo.png?raw=true[]
 
 
 Crunchy Container Suite provides Docker containers that enable
@@ -34,7 +34,7 @@ The project includes the following containers:
  * link:docs/containers.adoc#crunchy-sim[crunchy-sim] - executes queries over a specified interval range for Postgres traffic simulation purposes
 
 
-image::docs/containers.png?raw=true[]
+image::images/containers.png?raw=true[]
 
 For Kubernetes users of these containers, there is an associated
 project worth taking a look at that uses the containers found

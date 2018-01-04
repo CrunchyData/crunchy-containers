@@ -16,13 +16,13 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete dc m-s-rc-pvc-replica
-oc delete pod m-s-rc-pvc-primary
-oc delete pod m-s-rc-pvc-replica
-oc delete pod -l name=m-s-rc-pvc-primary
-$CCPROOT/examples/waitforterm.sh m-s-rc-pvc-primary oc
-$CCPROOT/examples/waitforterm.sh m-s-rc-pvc-replica oc
-oc delete service m-s-rc-pvc-primary
-oc delete service m-s-rc-pvc-replica
+oc delete dc p-r-rc-pvc-replica
+oc delete pod p-r-rc-pvc-primary
+oc delete pod p-r-rc-pvc-replica
+oc delete pod -l name=p-r-rc-pvc-primary
+$CCPROOT/examples/waitforterm.sh p-r-rc-pvc-primary oc
+$CCPROOT/examples/waitforterm.sh p-r-rc-pvc-replica oc
+oc delete service p-r-rc-pvc-primary
+oc delete service p-r-rc-pvc-replica
 
-sudo rm -rf $PV_PATH/m-s-rc-pvc*
+sudo rm -rf $PV_PATH/p-r-rc-pvc*

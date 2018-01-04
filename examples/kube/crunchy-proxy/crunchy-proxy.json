@@ -22,10 +22,10 @@
             }],
             "env": [{
                 "name": "PG_PRIMARY_SERVICE_NAME",
-                "value": "ms-primary"
+                "value": "pr-primary"
             }, {
                 "name": "PG_REPLICA_SERVICE_NAME",
-                "value": "ms-replica"
+                "value": "pr-replica"
             }, {
                 "name": "DEBUG",
                 "value": "true"
