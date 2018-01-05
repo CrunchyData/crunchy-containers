@@ -145,7 +145,7 @@ Then, go ahead and install the PostgreSQL server package.
 sudo yum -y install postgresql10-server.x86_64
 ....
 
-=== Docker Environment
+== Docker Environment
 
 As good practice, at this point you'll update your system.
 ....
