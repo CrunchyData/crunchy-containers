@@ -1,0 +1,185 @@
+{
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "pgadmin4",
+    "annotations": {
+      "openshift.io/display-name": "PGAdmin4 interface from CrunchyData Solutions",
+      "description": "PGAdmin4 to use in your OpenShift Project",
+      "tags": "quickstart,postgresql",
+      "iconClass": "icon-apache",
+      "openshift.io/provider-display-name": "Red Hat, Inc. and Crunchy Data Solutions",
+      "openshift.io/documentation-url": "https://github.com/cruncycontainers/examples/openshift/pro",
+      "template.openshift.io/bindable": "false"
+    }
+  },
+  "message": "We made your PGAdmin4 interface for you",
+  "labels": {
+    "template": "pgadmin4-crunchydatasolutions",
+    "app": "pgadmin4"
+  },
+  "objects": [
+    {
+      "kind": "Service",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${DATABASE_SERVICE_NAME}",
+        "labels": {
+          "name": "${DATABASE_SERVICE_NAME}"
+        }
+      },
+      "spec": {
+        "ports": [{
+          "protocol": "TCP",
+          "port": 5050,
+          "targetPort": 5050,
+          "nodePort": 0
+        }],
+        "selector": {
+          "name": "${DATABASE_SERVICE_NAME}"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+      },
+      "status": {
+        "loadBalancer": {}
+      }
+    }
+   ,
+    {
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${DATABASE_SERVICE_NAME}"
+      },
+      "spec": {
+        "accessModes": [
+          "ReadWriteOnce"
+        ],
+        "resources": {
+          "requests": {
+            "storage": "${VOLUME_CAPACITY}"
+          }
+        }
+      }
+    },
+    {
+      "kind": "Route",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${DATABASE_SERVICE_NAME}-route"
+      },
+      "spec": {
+        "host": "",
+        "to": {
+          "kind": "Service",
+          "name": "${DATABASE_SERVICE_NAME}"
+        }
+      }
+    },
+    {
+      "kind": "DeploymentConfig",
+      "apiVersion": "v1",
+      "metadata": {
+        "name": "${DATABASE_SERVICE_NAME}",
+        "annotations": {
+          "template.alpha.openshift.io/wait-for-ready": "true"
+        }
+      },
+      "spec": {
+        "strategy": {
+          "type": "Recreate"
+        },
+        "triggers": [
+          {
+            "type": "ConfigChange"
+          }
+        ],
+        "replicas": 1,
+        "selector": {
+          "name": "${DATABASE_SERVICE_NAME}"
+        },
+        "template": {
+          "metadata": {
+            "labels": {
+              "name": "${DATABASE_SERVICE_NAME}"
+            }
+          },
+          "spec": {
+            "containers": [
+              {
+                "name": "${DATABASE_SERVICE_NAME}",
+                "image": "docker.io/crunchydata/crunchy-pgadmin4:centos7-10.1-1.7.0",
+                "ports": [
+                  {
+                    "containerPort": 5050,
+                    "protocol": "TCP"
+                  }
+                ],
+                "livenessProbe": {
+                  "timeoutSeconds": 1,
+                  "initialDelaySeconds": 30,
+                  "tcpSocket": {
+                    "port": 5050
+                  }
+                },
+                "resources": {
+                  "limits": {
+                    "memory": "${MEMORY_LIMIT}"
+                  }
+                },
+                "volumeMounts":  [{
+                  "mountPath": "/pgdata",
+                  "name": "${DATABASE_SERVICE_NAME}-data",
+                  "readOnly": false
+                }],
+                "terminationMessagePath": "/dev/termination-log",
+                "imagePullPolicy": "IfNotPresent",
+                "capabilities": {},
+                "securityContext": {
+                  "capabilities": {},
+                  "privileged": false
+                }
+              }
+            ],
+            "volumes": [
+              {
+                "name": "${DATABASE_SERVICE_NAME}-data",
+                "persistentVolumeClaim": {
+                  "claimName": "${DATABASE_SERVICE_NAME}"
+                }
+              }
+            ],
+            "restartPolicy": "Always",
+            "dnsPolicy": "ClusterFirst"
+          }
+        }
+      },
+      "status": {}
+    }
+  ]
+,
+  "parameters": [
+    {
+      "name": "DATABASE_SERVICE_NAME",
+      "displayName": "Database Service Name",
+      "description": "The name of the OpenShift Service exposed for the database.",
+      "value": "pgadmin4",
+      "required": true
+    },
+    {
+      "name": "VOLUME_CAPACITY",
+      "displayName": "Volume Capacity",
+      "description": "Volume space available for data, e.g. 512Mi, 2Gi.",
+      "value": "1Gi",
+      "required": true
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "displayName": "Memory Limit",
+      "description": "Maximum amount of memory the container can use.",
+      "value": "512Mi",
+      "required": true
+    }
+  ]
+}
