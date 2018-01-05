@@ -39,7 +39,7 @@ image::images/containers.png?raw=true[]
 For Kubernetes users of these containers, there is an associated
 project worth taking a look at that uses the containers found
 in this repo and provides a higher level automation.
-That project is link:https://github.com/crunchydata/postgres-operator[PostgresOperator]
+That project is the link:https://github.com/crunchydata/postgres-operator[postgres-operator].
 
 === Installation
 
