@@ -15,7 +15,7 @@
     },
     "message": "We made your PostGIS database for you",
     "labels": {
-        "template": "postgis crunchydatasolutions",
+        "template": "postgis-crunchydatasolutions",
         "app": "postgis"
     },
     "objects": [
@@ -60,141 +60,171 @@
                     }
                 }
             }
-        },
-        {
-            "kind": "Pod",
+        }, {
+            "kind": "DeploymentConfig",
             "apiVersion": "v1",
             "metadata": {
-                "name": "primary",
-                "labels": {
-                    "name": "primary"
+                "name": "${DATABASE_SERVICE_NAME}",
+                "annotations": {
+                    "template.alpha.openshift.io/wait-for-ready": "true"
                 }
             },
             "spec": {
-                "securityContext": {
+                "strategy": {
+                    "type": "Recreate"
                 },
-                "volumes": [
+                "triggers": [
                     {
-                        "name": "pgdata",
-                        "persistentVolumeClaim": {
-                            "claimName": "${DATABASE_SERVICE_NAME}"
-                        }
-                    },
-                    {
-                        "name": "pgconf",
-                        "emptyDir": {
-                            "medium": "Memory"
-                        }
-                    },
-                    {
-                        "name": "pgwal",
-                        "emptyDir": {
-                            "medium": "Memory"
-                        }
-                    },
-                    {
-                        "name": "backup",
-                        "emptyDir": {
-                            "medium": "Memory"
-                        }
-                    },
-                    {
-                        "name": "recover",
-                        "emptyDir": {
-                            "medium": "Memory"
-                        }
-                    },
-                    {
-                        "name": "backrestrepo",
-                        "emptyDir": {
-                            "medium": "Memory"
-                        }
+                        "type": "ConfigChange"
                     }
                 ],
-                "containers": [
-                    {
-                        "name": "postgis",
-                        "image": "crunchydata/crunchy-postgres-gis:centos7-10.1-1.7.0",
-                        "ports": [
+                "replicas": 1,
+                "selector": {
+                    "name": "${DATABASE_SERVICE_NAME}"
+                },
+                "template": {
+                    "metadata": {
+                        "labels": {
+                            "name": "${DATABASE_SERVICE_NAME}"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
                             {
-                                "containerPort": 5432,
-                                "protocol": "TCP"
+                                "name": "postgresql",
+                                "image": "crunchydata/crunchy-postgres-gis:centos7-10.1-1.7.0 ",
+                                "ports": [
+                                    {
+                                        "containerPort": 5432,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "livenessProbe": {
+                                    "timeoutSeconds": 1,
+                                    "initialDelaySeconds": 30,
+                                    "tcpSocket": {
+                                        "port": 5432
+                                    }
+                                },
+                                "env": [
+                                    {
+                                        "name": "PG_PRIMARY_USER",
+                                        "value": "${POSTGRESQL_USER}"
+                                    },
+                                    {
+                                        "name": "PG_MODE",
+                                        "value": "primary"
+                                    },
+                                    {
+                                        "name": "PG_PRIMARY_PASSWORD",
+                                        "value": "${POSTGRESQL_PASSWORD}"
+                                    },
+                                    {
+                                        "name": "PG_PRIMARY_PORT",
+                                        "value": "5432"
+                                    },
+                                    {
+                                        "name": "PG_USER",
+                                        "value": "testuser"
+                                    },
+                                    {
+                                        "name": "PG_PASSWORD",
+                                        "value": "password"
+                                    },
+                                    {
+                                        "name": "PG_DATABASE",
+                                        "value": "${POSTGRESQL_DATABASE}"
+                                    },
+                                    {
+                                        "name": "PGHOST",
+                                        "value": "/tmp"
+                                    },
+                                    {
+                                        "name": "PG_ROOT_PASSWORD",
+                                        "value": "${POSTGRESQL_ROOT_PASSWORD}"
+                                    }
+                                ],
+                                "resources": {
+                                    "limits": {
+                                        "memory": "${MEMORY_LIMIT}"
+                                    }
+                                },
+                                "volumeMounts":  [{
+                                    "mountPath": "/pgdata",
+                                    "name": "${DATABASE_SERVICE_NAME}-data",
+                                    "readOnly": false
+                                }, {
+                                    "mountPath": "/pgconf",
+                                    "name": "pgconf",
+                                    "readOnly": true
+                                }, {
+                                    "mountPath": "/pgwal",
+                                    "name": "pgwal",
+                                    "readOnly": false
+                                }, {
+                                    "mountPath": "/backup",
+                                    "name": "backup",
+                                    "readOnly": false
+                                }, {
+                                    "mountPath": "/recover",
+                                    "name": "recover",
+                                    "readOnly": false
+                                }, {
+                                    "mountPath": "/backrestrepo",
+                                    "name": "backrestrepo",
+                                    "readOnly": false
+                                }],
+                                "terminationMessagePath": "/dev/termination-log",
+                                "imagePullPolicy": "IfNotPresent",
+                                "capabilities": {},
+                                "securityContext": {
+                                    "capabilities": {},
+                                    "privileged": false
+                                }
                             }
                         ],
-                        "env": [
+                        "volumes": [
                             {
-                                "name": "PG_PRIMARY_USER",
-                                "value": "${POSTGRESQL_USER}"
-                            },
-                            {
-                                "name": "PG_MODE",
-                                "value": "primary"
-                            },
-                            {
-                                "name": "PG_PRIMARY_PASSWORD",
-                                "value": "${POSTGRESQL_PASSWORD}"
-                            },
-                            {
-                                "name": "PG_PRIMARY_PORT",
-                                "value": "5432"
-                            },
-                            {
-                                "name": "PG_USER",
-                                "value": "testuser"
-                            },
-                            {
-                                "name": "PG_PASSWORD",
-                                "value": "password"
-                            },
-                            {
-                                "name": "PG_DATABASE",
-                                "value": "${POSTGRESQL_DATABASE}"
-                            },
-                            {
-                                "name": "PGHOST",
-                                "value": "/tmp"
-                            },
-                            {
-                                "name": "PG_ROOT_PASSWORD",
-                                "value": "${POSTGRESQL_ROOT_PASSWORD}"
-                            }
-                        ],
-                        "volumeMounts": [
-                            {
-                                "mountPath": "/pgdata",
-                                "name": "pgdata",
-                                "readOnly": false
-                            },
-                            {
-                                "mountPath": "/pgconf",
+                                "name": "${DATABASE_SERVICE_NAME}-data",
+                                "persistentVolumeClaim": {
+                                    "claimName": "${DATABASE_SERVICE_NAME}"
+                                }
+                            } , {
                                 "name": "pgconf",
-                                "readOnly": true
-                            },
-                            {
-                                "mountPath": "/pgwal",
+                                "emptyDir": {
+                                    "medium": "Memory"
+                                }
+                            }, {
                                 "name": "pgwal",
-                                "readOnly": false
-                            },
-                            {
-                                "mountPath": "/backup",
+                                "emptyDir": {
+                                    "medium": "Memory"
+                                }
+                            }, {
                                 "name": "backup",
-                                "readOnly": false
-                            },
-                            {
-                                "mountPath": "/recover",
+                                "emptyDir": {
+                                    "medium": "Memory"
+                                }
+                            }, {
                                 "name": "recover",
-                                "readOnly": false
+                                "emptyDir": {
+                                    "medium": "Memory"
+                                }
                             },
                             {
-                                "mountPath": "/backrestrepo",
                                 "name": "backrestrepo",
-                                "readOnly": false
+                                "emptyDir": {
+                                    "medium": "Memory"
+                                }
                             }
-                        ]
+                        ],
+                        "restartPolicy": "Always",
+                        "dnsPolicy": "ClusterFirst"
                     }
-                ]
-            }
+                }
+            },
+            "status": {}
         }
+
     ]
     ,
     "parameters": [
