@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2017 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting setupsql container..."
+echo "Starting setupsql container..."
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
@@ -32,12 +32,12 @@ docker run -it --privileged=true \
 	-v $DIR:/fromdir \
 	-v $CONF_VOLUME:/pgconf:z \
 	--name=$CONTAINER-setup \
-	crunchydata/crunchy-postgres:$CCP_IMAGE_TAG cp /fromdir/setup.sql /pgconf
+	$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG cp /fromdir/setup.sql /pgconf
 docker run -it --privileged=true \
 	--volume-driver=local \
 	-v $CONF_VOLUME:/pgconf:z \
 	--name=$CONTAINER-ls \
-	crunchydata/crunchy-postgres:$CCP_IMAGE_TAG ls /pgconf
+	$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG ls /pgconf
 
 docker run \
 	-p 12009:5432 \
@@ -60,4 +60,4 @@ docker run \
 	-e PG_DATABASE=userdb \
 	--name=$CONTAINER \
 	--hostname=$CONTAINER \
-	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

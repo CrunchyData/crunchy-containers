@@ -6,11 +6,11 @@ server:
 
 nodes:
   primary:
-    hostport: ms-primary:5432
+    hostport: pr-primary:5432
     role: primary
     metadata: {}
   replica1:
-    hostport: ms-replica:5432
+    hostport: pr-replica:5432
     role: replica
     metadata: {}
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2017 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -29,13 +29,13 @@ docker run -it --privileged=true \
 	-v $DIR:/fromdir \
 	-v $PGCONF_VOLUME_NAME:/pgconf:z \
 	--name=backrest-setup \
-	crunchydata/crunchy-postgres:$CCP_IMAGE_TAG cp /fromdir/pgbackrest.conf /pgconf
+	$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG cp /fromdir/pgbackrest.conf /pgconf
 
 docker run -it --privileged=true \
 	--volume-driver=local \
 	-v $PGCONF_VOLUME_NAME:/pgconf:z \
 	--name=backrest-ls \
-	crunchydata/crunchy-postgres:$CCP_IMAGE_TAG ls /pgconf
+	$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG ls /pgconf
 
 # the backrest repo that backrest will write to
 REPO_VOLUME_NAME=$CONTAINER-backrestrepo
@@ -62,10 +62,11 @@ docker run \
 	-e PG_MODE=primary \
 	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_PRIMARY_PASSWORD=password \
+	-e PG_PRIMARY_PORT=5432 \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
 	--name=$CONTAINER \
 	--hostname=$CONTAINER \
-	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

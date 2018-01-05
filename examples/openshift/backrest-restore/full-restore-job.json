@@ -1,58 +1,85 @@
 {
-    "apiVersion": "batch/v1",
-    "kind": "Job",
-    "metadata": {
-        "name": "backrest-job-nfs"
+  "kind": "Template",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "backrest-job-nfs"
+  },
+  "parameters": [
+    {
+      "name": "CCP_IMAGE_PREFIX",
+      "description": "The image prefix to use"
     },
-    "spec": {
+    {
+      "name": "CCP_IMAGE_TAG",
+      "description": "The image tag to use"
+    }
+  ],
+  "objects": [
+    {
+      "kind": "Job",
+      "apiVersion": "batch/v1",
+      "metadata": {
+        "name": "backrest-job-nfs"
+      },
+      "spec": {
         "template": {
-            "metadata": {
-                "name": "backrest-job-nfs",
-                "labels": {
-                    "app": "backrest-job-nfs"
+          "labels": {
+            "app": "backrest-job-nfs"
+          },
+          "spec": {
+            "volumes": [
+              {
+                "name": "pgconf",
+                "configMap": {
+                  "name": "backrestconf"
                 }
-            },
-        "spec": {
-            "containers": [{
+              },
+              {
+                "name": "backrestrepo",
+                "persistentVolumeClaim": {
+                  "claimName": "crunchy-pvc2"
+                }
+              },
+              {
+                "name": "pgdata",
+                "persistentVolumeClaim": {
+                  "claimName": "crunchy-pvc"
+                }
+              }
+            ],
+            "containers": [
+              {
                 "name": "backrest-restore",
-                "image": "crunchydata/crunchy-backrest-restore:$CCP_IMAGE_TAG",
-                "env": [{
-                    "name": "STANZA",
-                    "value": "db"
-                }],
-                "volumeMounts": [{
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-backrest-restore:${CCP_IMAGE_TAG}",
+                "volumeMounts": [
+                  {
                     "mountPath": "/pgdata",
                     "name": "pgdata",
                     "readOnly": false
-                }, {
+                  },
+                  {
                     "mountPath": "/pgconf",
                     "name": "pgconf",
-                    "readOnly": true
-                }, {
+                    "readOnly": false
+                  },
+                  {
                     "mountPath": "/backrestrepo",
                     "name": "backrestrepo",
                     "readOnly": false
-                }]
-            }],
-            "volumes": [{
-                "name": "pgconf",
-                "configMap": {
-                    "name": "backrestconf"
-                }
-            }, {
-                "name": "backrestrepo",
-                "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc2"
-                }
-            }, {
-                "name": "pgdata",
-           	     "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc"
-          	     }
-            }],
-                "restartPolicy": "Never"
-    	}
-
+                  }
+                ],
+                "env": [
+                  {
+                    "name": "STANZA",
+                    "value": "db"
+                  }
+                ]
+              }
+            ],
+            "restartPolicy": "Never"
+          }
         }
+      }
     }
+  ]
 }

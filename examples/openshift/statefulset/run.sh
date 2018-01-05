@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -27,4 +27,5 @@ oc create -f $DIR/set-primary-service.json
 oc create -f $DIR/set-replica-service.json
 
 # create the stateful set
+#expenv -f $DIR/set.json.dynamic | oc create -f -
 expenv -f $DIR/set.json | oc create -f -

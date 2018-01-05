@@ -46,9 +46,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "ms-primary",
+            "name": "pr-primary",
             "labels": {
-                "name": "ms-primary"
+                "name": "pr-primary"
             }
         },
         "spec": {
@@ -59,7 +59,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "ms-primary"
+                "name": "pr-primary"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
@@ -71,9 +71,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "ms-replica",
+            "name": "pr-replica",
             "labels": {
-                "name": "ms-replica"
+                "name": "pr-replica"
             }
         },
         "spec": {
@@ -84,7 +84,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "ms-replica"
+                "name": "pr-replica"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
@@ -93,9 +93,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "ms-primary",
+            "name": "pr-primary",
             "labels": {
-                "name": "ms-primary"
+                "name": "pr-primary"
             }
         },
         "spec": {
@@ -172,9 +172,9 @@
         "kind": "Pod",
         "apiVersion": "v1",
         "metadata": {
-            "name": "ms-replica",
+            "name": "pr-replica",
             "labels": {
-                "name": "ms-replica",
+                "name": "pr-replica",
                 "replicatype": "trigger"
             }
         },
@@ -227,7 +227,7 @@
                     "value": "${PG_ROOT_PASSWORD}"
                 }, {
                     "name": "PG_PRIMARY_HOST",
-                    "value": "ms-primary"
+                    "value": "pr-primary"
                 }, {
                     "name": "PG_PRIMARY_PORT",
                     "value": "5432"

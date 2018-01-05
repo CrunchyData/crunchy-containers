@@ -4,7 +4,7 @@
     "metadata": {
         "name": "crunchy-restore",
         "annotations": {
-            "description": "Crunchy postgres database restore from backup",
+            "description": "Crunchy PostgreSQL database restore from backup",
             "iconClass": "icon-database",
             "tags": "crunchy,database,postgresql"
         }
@@ -36,7 +36,7 @@
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use",
-        "value": "rhel7-9.6.6-1.7.0"
+        "value": "rhel7-10.1-1.7.0"
     }, {
         "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PG primary user",
@@ -72,7 +72,7 @@
     }, {
         "name": "PVC_ACCESS_MODE",
         "description": "The access mode for the PVC",
-        "value": "ReadWriteMany"
+        "value": "ReadWriteOnce"
     }, {
         "name": "PG_ROOT_PASSWORD",
         "description": "The password for the PG administrator",

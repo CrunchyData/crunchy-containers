@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,11 +13,10 @@
 # limitations under the License.
 
 
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete service primary-backrest
 oc delete pod primary-backrest
+oc delete configmap backrestconf
 
-sudo PV_PATH=$PV_PATH  rm  -rf $PV_PATH/archive $PV_PATH/backup
-sudo rm $PV_PATH/pgbackrest.conf
+sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/archive $PV_PATH/backup

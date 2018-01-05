@@ -1,7 +1,7 @@
 #!/bin/bash
 set -u
 
-# Copyright 2017 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -63,4 +63,4 @@ docker run \
 	-e PG_DATABASE=userdb \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
-	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

@@ -2,17 +2,15 @@
 Crunchy Data Solutions, Inc.
 :toc: left
 v1.7, {docdate}
-:title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
+:title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
-== Project Setup & Docker Installation
+== Project Setup
 
 The crunchy-containers can run on different environments including:
 
- * Docker
- * OpenShift Enterprise
- * OpenShift Origin
- * Kubernetes 1.2+
- * Helm
+ * *Docker 1.12*
+ * *OpenShift Container Platform 3.6*
+ * *Kubernetes 1.8+*
 
 In this document we list the basic installation steps required for these
 environments.
@@ -43,8 +41,12 @@ export PV_PATH=/mnt/nfsfileshare
 export LOCAL_IP=$(hostname --ip-address)
 export REPLACE_CCP_IMAGE_PREFIX=crunchydata
 ....
-It will be necessary to log out and back in for the changes to your .bashrc
-file to take effect.
+It will be necessary to refresh your bashrc file in order for the changes to take
+effect.
+
+....
+. ~/.bashrc
+....
 
 Next, set up a project directory structure and pull down the project:
 ....
@@ -83,9 +85,9 @@ need to be taken.
 
 ....
 cd $GOPATH
-subscription-manager repos --enable=rhel-7-server-optional-rpms
+sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
 sudo yum-config-manager --enable rhel-7-server-extras-rpms
-sudo yum -y install git golang docker
+sudo yum -y install git golang
 go get github.com/tools/godep
 cd src/github.com
 mkdir crunchydata
@@ -143,11 +145,16 @@ Then, go ahead and install the PostgreSQL server package.
 sudo yum -y install postgresql10-server.x86_64
 ....
 
-=== Installing Docker
+=== Docker Environment
 
 As good practice, at this point you'll update your system.
 ....
 sudo yum -y update
+....
+
+Now we'll install Docker.
+....
+sudo yum -y install docker
 ....
 
 After that, it's necessary to add the *docker* group and give your user access
@@ -300,20 +307,24 @@ README.txt for command-line usage for the ./create-pv.sh command.
 
 == OpenShift Environment
 
-=== Installation
-
 See the OpenShift installation guide for details on how to install
-OpenShift Enterprise on your host.  The main instructions are here:
+OpenShift Enterprise on your host. The main instructions are here:
 
 https://docs.openshift.com/container-platform/3.6/install_config/install/quick_install.html
 
-For testing purposes, OpenShift Origin is the simplest to install and configure. The
-easiest way to get OpenShift Origin up and running is through the link:https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md[oc cluster up] cluster configuration.
+*Note:* If you install OpenShift Enterprise on a server with less than `16GB` memory and `40GB`
+of disk, the following Ansible variables need to be added to `~/.config/openshift/installer.cfg.yml`
+prior to installation:
 
-For examples and tips on how to run OpenShift Enterprise & Origin, please look
-at the link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/examples.adoc[Examples Documentation].
+....
+openshift_check_min_host_disk_gb: '10' # min 10gb disk
+openshift_check_min_host_memory_gb: '3' # min 3gb memory
+....
 
-==== System policies for PVC creation/listing
+If you are using OpenShift Origin, the installation instructions for *oc cluster up*
+can be found link:https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md[here].
+
+=== Permissions
 
 In order to allow the *system* user to be able to create and list
 persistent volumes using *OpenShift version 3.3+*, you have to enter
@@ -325,22 +336,8 @@ oc adm policy add-cluster-role-to-user cluster-reader system
 oc adm policy add-cluster-role-to-user cluster-admin system
 ....
 
-==== Persistent volume matching
-
-Restoring a database from an NFS backup requires the building
-of a PV which maps to the NFS backup archive path.  For example,
-if you have a backup at /backups/pg-foo/2016-01-29:22:34:20
-then we create a PV that maps to that NFS path.  We also use
-a "label" on the PV so that the specific backup PV can be identified.
-
-We use the pod name in the label value to make the PV unique.  This
-way, the related PVC can find the right PV to map to and not some other
-PV.  In the PVC, we specify the same "label" which lets Kubernetes
-match to the correct PV.
-
-=== anyuid permissions
-
-One suggested method to use in order to grant a user permission to use the *anyuid* SCC:
+One suggested method to use in order to grant a user permission to use the *anyuid* SCC
+would be the following:
 ....
 oc adm policy add-scc-to-group anyuid system:authenticated
 ....
@@ -349,120 +346,22 @@ This says that any authenticated user can run with the anyuid SCC which lets
 them create PVCs and use the *fsGroup* setting for the PostgreSQL containers to
 work using NFS.
 
-=== DNS Configuration
-
-==== DNS host entry
-
-If your OpenShift environment can not resolve your hostname via
-a DNS server (external to OpenShift!), you will get errors when trying
-to create a DeploymentConfig.
-
-Because of this, it is advisable to either install dnsmasq
-and reconfigure OpenShift, or run a DNS server on another host and add
-the OpenShift host entry to that DNS server. The *skybridge2* Docker
-container is sufficient for this purpose.
-
-*Note*: Remember to adjust your /etc/resolv.conf to specify the new DNS
-server.
-
-==== OpenShift v3
-
-The following DNS modifications are necessary for versions prior to OpenShift Enterprise 3.3.
-
-Luke Meyer from Redhat wrote an excellent blog on how to configure dnsmasq and OpenShift;
-this is available link:http://developers.redhat.com/blog/2015/11/19/dns-your-openshift-v3-cluster/[here].
-
-Key things included in this blog are how to:
-
- * Configure DHCP to include the local IP address in /etc/resolv.conf upon boot
- * Configure dnsmasq
- * Configure OpenShift DNS to listen on another port
-
-A sample setup would typically have the following IP addresses/ports configured:
-
- * OpenShift DNS listening on 127.0.0.1:8053
- * dnsmasq listening on the local IP address 192.168.0.109:53
-
-Therefore in /etc/dhcp/dhclient.conf it is necessary to append the following line in
-this sample setup:
-
-....
-prepend domain-name-servers 192.168.0.109;
-....
-
-If you don't have your DNS configured correctly, replication controllers
-and deployment configurations will not work as expected.
-
-==== OpenShift Origin
-
-The official instructions for configuring DNS on your OpenShift Origin cluster can be
-found link:https://docs.openshift.org/latest/install_config/install/prerequisites.html#prereq-dns[here].
-
 == Kubernetes Environment
 
-=== Installation
-
 See link:https://kubernetes.io/docs/setup/independent/install-kubeadm/[kubeadm]
-for setting up a test environment of Kubernetes.
-
-See the following links for installation instructions:
-
- * http://linoxide.com/containers/setup-kubernetes-kubeadm-centos/
- * https://kubernetes.io/docs/getting-started-guides/kubeadm/
-
-=== Examples
-
-The namespace is set for the examples within your *bashrc* file; if you followed the
-installation instructions exactly, this will be set to *default*. Set this variable according to your
-project configuration.
-
-Note, some of the examples assume an NFS file system for creating
-persistent volumes.  See above for details on setting NFS permissions and
-the use of *supplementalGroups* within pod specs.
-
-Visit the link:examples.adoc[examples documentation] for different use cases
-and examples.
-
-=== Minishift Configuration
-
-If you are wanting to run the examples on a Minishift instance
-you will need to create the PVs using hostPath as follows:
-....
-oc login -u system:admin
-./create-pv.sh hostpath
-oc login -u developer
-./create-pvc.sh
-....
-
-Additional steps are required to allow persistence to work
-on Minishift including:
-....
-oc login -u system:admin
-oc edit scc restricted
-....
-
-Above, you will change runAsUser.Type strategy to RunAsAny.
-
-On the boot2docker instance running Minishift, you will need
-to set the host path permissions as follows:
-....
-chmod 777 /mnt/sda1/data
-....
-
-The NAMESPACE environment variable is set to indicate which OpenShift
-project you want various example objects to use.  This variable
-is set to *default* within your *bashrc* file if you followed the installation
-instructions exactly. Set this to match your project configuration.
-
-See link:examples.adoc[here] to view the documentation showing various
-examples.
+for installing the latest version of Kubernetes.
 
 === Helm
 
-*Installation*
+Some Kubernetes Helm examples are provided in the following directory as one
+option for deploying the Container Suite.
+
+....
+$CCPROOT/examples/helm/
+....
 
 Once you have your Kubernetes environment configured, it is simple to get
-Helm up and running. Please refer to link:https://docs.bitnami.com/kubernetes/get-started-kubernetes/#step-4-install-helm-and-tiller[this document]
+Helm up and running. Please refer to link:https://github.com/kubernetes/helm/blob/master/docs/install.md[this document]
 to get Helm installed and configured properly.
 
 === Permissions
@@ -533,7 +432,8 @@ which corresponds to the *fsGroup* value.
 ===  Tips
 
 Make sure your hostname resolves to a single IP address in your
-/etc/hosts file. The NFS examples will not work otherwise.
+/etc/hosts file. The NFS examples will not work otherwise and other problems
+with installation can occur unless you have a resolving hostname.
 
 You should see a single IP address returned from this command:
 ....
@@ -542,7 +442,7 @@ hostname --ip-address
 
 == Legal Notices
 
-Copyright © 2017 Crunchy Data Solutions, Inc.
+Copyright © 2018 Crunchy Data Solutions, Inc.
 
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 

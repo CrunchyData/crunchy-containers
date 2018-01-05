@@ -12,23 +12,23 @@
     },
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
-        "description": "the image tag to use",
-        "value": "REPLACE_CCP_IMAGE_TAG"
+        "description": "The image tag to use",
+        "value": "centos7-10.1-1.7.0"
     }, {
         "name": "SERVICE_NAME",
-        "description": "the name to use for the replica service and pod",
+        "description": "The name to use for the replica service and pod",
         "value": "pgreplica"
     }, {
         "name": "PG_PRIMARY_HOST",
-        "description": "the primary service name the replica will connect to",
+        "description": "The primary service name the replica will connect to",
         "value": "pgdatabase"
     }, {
         "name": "PG_PRIMARY_USER",
-        "description": "the primary user name the replica will connect with",
+        "description": "The primary user name the replica will connect with",
         "value": "primaryuser"
     }, {
         "name": "PG_PRIMARY_PASSWORD",
-        "description": "the primary user password the replica will connect with",
+        "description": "The primary user password the replica will connect with",
         "value": "password"
     }],
     "objects": [{
@@ -68,7 +68,7 @@
             "spec": {
                 "containers": [{
                     "name": "postgres",
-                    "image": "REPLACE_CCP_IMAGE_PREFIX/crunchy-postgres:${CCP_IMAGE_TAG}",
+                    "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
                         "command": [

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2017 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting primary container..."
+echo "Starting primary container..."
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -61,9 +61,9 @@ docker run \
 	-e PG_DATABASE=userdb \
 	--name=$PRIMARY_CONTAINER_NAME \
 	--hostname=$PRIMARY_CONTAINER_NAME \
-	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
 
-echo "starting pg-replica container..."
+echo "Starting pg-replica container..."
 sleep 20
 
 VOLUME_NAME=replica-volume
@@ -92,4 +92,4 @@ docker run \
 	-e PG_DATABASE=userdb \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
-	-d crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

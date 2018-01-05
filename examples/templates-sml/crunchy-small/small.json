@@ -45,7 +45,7 @@
         "metadata": {
             "name": "${NAME}-pvc",
             "annotations": {
-                "volume.beta.kubernetes.io/storage-class": "${STORAGE_CLASS}"
+              "volume.beta.kubernetes.io/storage-class": "${STORAGE_CLASS}"
             }
         },
         "spec": {

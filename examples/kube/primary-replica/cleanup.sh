@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete pod ms-replica
-kubectl delete pod ms-replica-2
+kubectl delete pod pr-replica
+kubectl delete pod pr-replica-2
 sleep  2
-kubectl delete service ms-replica
-kubectl delete service ms-primary
-kubectl delete pod ms-primary
-$CCPROOT/examples/waitforterm.sh ms-primary kubectl
-$CCPROOT/examples/waitforterm.sh ms-replica kubectl
-$CCPROOT/examples/waitforterm.sh ms-replica-2 kubectl
+kubectl delete service pr-replica
+kubectl delete service pr-primary
+kubectl delete pod pr-primary
+$CCPROOT/examples/waitforterm.sh pr-primary kubectl
+$CCPROOT/examples/waitforterm.sh pr-replica kubectl
+$CCPROOT/examples/waitforterm.sh pr-replica-2 kubectl

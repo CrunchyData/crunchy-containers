@@ -20,12 +20,16 @@
         "value": "primaryuser"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "centos7-9.5-1.2.7",
+        "value": "centos7-10.1-1.7.0",
         "description": "The image tag to use"
     }, {
         "name": "CCP_IMAGE_PREFIX",
         "value": "crunchydata",
         "description": "The image prefix to use"
+    }, {
+        "name": "PG_PRIMARY_PORT",
+        "description": "The postgresql port",
+        "value": "5432"
     }, {
         "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PG primary user",

@@ -13,7 +13,7 @@
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use",
-        "value": "centos7-9.5-1.2.7"
+        "value": "centos7-10.1-1.7.0"
     }, {
         "name": "CCP_IMAGE_PREFIX",
         "description": "the image prefix to use",
@@ -33,7 +33,7 @@
     }, {
         "name": "PVC_ACCESS_MODE",
         "description": "the accessmode of the PVCs",
-        "value": "ReadWriteMany"
+        "value": "ReadWriteOnce"
     }, {
         "name": "PRIMARY_SERVICE_NAME",
         "description": "the name of the primary",

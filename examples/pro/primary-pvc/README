@@ -1,0 +1,7 @@
+this example assumes you will create on Openshift Pro a
+PVC named 'crunchy-pgdata-pvc-for-primary' using the Openshift
+web console prior to running this 'run.sh' script.
+
+After you run 'run.sh', it will create a pod named 'primary', and
+a service named 'primary'.
+

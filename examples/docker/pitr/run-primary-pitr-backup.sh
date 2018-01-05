@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-# Copyright 2017 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,12 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting primary-pitr-backup container..."
+echo "Starting primary-pitr-backup container..."
 
 PGDATA=/tmp/backups
 
 if [ ! -d "$PGDATA" ]; then
-	echo "creating pgdata directory..."
+	echo "Creating pgdata directory..."
 	mkdir -p $PGDATA
 fi
 
@@ -39,4 +39,4 @@ docker run \
 	--link primary-pitr:primary-pitr\
 	--name=primary-pitr-backup \
 	--hostname=primary-pitr-backup \
-	-d crunchydata/crunchy-backup:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG

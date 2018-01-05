@@ -5,7 +5,7 @@
         "name": "crunchy-postgres-database-emptydir",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy PostgreSQL Single Database using EmptyDir",
+            "description": "Crunchy PostgreSQL single database using the EmptyDir storage type",
             "iconClass": "icon-database",
             "tags": "database,postgresql,crunchy"
         }
@@ -19,8 +19,12 @@
         "description": "The username used for primary / replica replication",
         "value": "primaryuser"
     }, {
+        "name": "PG_PRIMARY_PORT",
+        "description": "The postgresql port",
+        "value": "5432"
+    }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "centos7-9.5-1.2.7",
+        "value": "centos7-10.1-1.7.0",
         "description": "The image tag to pull with"
     }, {
         "name": "CCP_IMAGE_PREFIX",
@@ -120,6 +124,10 @@
                 }, {
                     "name": "PGHOST",
                     "value": "/tmp"
+                }, {
+                    "name": "PG_PRIMARY_PORT",
+                    "description": "The postgresql port",
+                    "value": "5432"
                 }, {
                     "name": "PG_PRIMARY_PASSWORD",
                     "value": "password"

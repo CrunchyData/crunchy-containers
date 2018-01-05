@@ -99,11 +99,11 @@
                 }, {
                     "name": "PG_PRIMARY_SERVICE",
                     "description": "The primary configured in pgbouncer",
-                    "value": "ms-primary"
+                    "value": "pr-primary"
                 }, {
                     "name": "PG_REPLICA_SERVICE",
                     "description": "The replica configured in pgbouncer",
-                    "value": "ms-replica"
+                    "value": "pr-replica"
                 }],
                 "volumeMounts": [{
                     "mountPath": "/pgconf/bouncerconfig",
