@@ -70,7 +70,6 @@ cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
 git checkout 1.7.0
-godep restore
 ....
 
 *If you are a Crunchy enterprise customer, you will place the Crunchy repository
@@ -95,7 +94,6 @@ cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
 git checkout 1.7.0
-godep restore
 ....
 
 *If you are a Crunchy enterprise customer, you will place the Crunchy repository
@@ -241,6 +239,7 @@ Or if you'd rather build the containers from source, perform a container
 build as follows:
 
 ....
+godep restore
 cd $CCPROOT
 make setup
 make all
