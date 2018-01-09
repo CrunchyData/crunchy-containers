@@ -3,7 +3,7 @@ Crunchy Data Solutions, Inc.
 v1.7, {docdate}
 :title-logo-image: image:images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
-== Description
+== Metrics Collection
 
 70 different PostgreSQL metrics are collected by the crunchy-collect container, which executes both the postgres_exporter and node_exporter. Written in Go, these are both metrics exporters that work with Prometheus to provide PostgreSQL server metrics in addition to hardware and OS metrics. The crunchy-collect container gathers different metrics from the crunchy-postgres PostgreSQL database container and pushes these to the Prometheus Promgateway.
 
@@ -14,8 +14,6 @@ Prometheus is a multi-dimensional time series data model with an elastic query l
 Grafana is open source, adaptable and efficient data conceptualization software. This technology is capable of converting raw data to beautifully represented graphs, allowing you to easily monitor your database with a glance. In addition, it has a strong query and transformation language that allows for instantaneous and complex combinations of metrics, queries, correlations, and mathematical graphing.
 
 To start collection of metrics on a PostgreSQL database, you add the crunchy-collect container into the pod that holds the crunchy-postgres container.
-
-=== Structure
 
 image::images/after.png[alt=Crunchy Containers Metrics Collection,width=700,height=700]
 
@@ -40,9 +38,7 @@ When running crunchy-metrics, the following ports are available:
  * POSTGRES_EXPORTER_URL - The HTTP URL of the postgres_exporter utility which collects PostgreSQL server metrics.
  * DATA_SOURCE_NAME - The URL for the PostgreSQL server's data source name. This is *required* to be in the form of *postgresql://*.
 
-=== Examples
-
-==== Docker
+=== Docker
 
 You can collect various PostgreSQL metrics from your database container by running a
 crunchy-collect container that points to your database container.
@@ -84,7 +80,7 @@ firewall-cmd --permanent --zone metrics --add-port 3000/tcp
 firewall-cmd --reload
 ....
 
-==== Kubernetes
+=== Kubernetes
 
 This example starts up Prometheus and Grafana.
 
@@ -144,7 +140,7 @@ this command:
 psql -h primary-collect -U postgres postgres
 ....
 
-==== OpenShift
+=== OpenShift
 
 This example starts up Prometheus and Grafana.
 
@@ -189,8 +185,6 @@ firewall-cmd --permanent --zone metrics --add-port 3000/tcp
 firewall-cmd --reload
 ....
 
-== Collected Metrics
-
 === node_exporter
 
 The tables below list all existing collectors that are gathered by the link:https://github.com/prometheus/node_exporter[node_exporter].
@@ -198,6 +192,8 @@ This tool collects hardware and OS level metrics exposed by the kernel as part o
 
 
 .*Table 1: Enabled by Default*
+
+This table lists all metrics collected by default with the node_exporter.
 
 [format="csv", options="header"]
 |===
@@ -336,9 +332,12 @@ usage, GAUGE, Disk space used by the database, `SELECT pg_database_size(pg_datab
 |===
 
 <<<
-== Grafana Dashboard
+=== Grafana Dashboard
 
+Some more information on creating custom Grafana dashboards can be found in the official documentation - http://docs.grafana.org/guides/getting_started/.
 You can create dashboards of various graphs using the Grafana Dashboard editor, but the following images display the default Grafana template that comes packaged in the Metrics suite:
+
+
 
 image::images/grafana-dashboard-1.png[]
 
@@ -352,7 +351,7 @@ image::images/grafana-dashboard-5.png[]
 
 image::images/grafana-dashboard-6.png[]
 
-Some more information on creating custom Grafana dashboards can be found in the official documentation - http://docs.grafana.org/guides/getting_started/.
+
 
 <<<
 == Legal Notices

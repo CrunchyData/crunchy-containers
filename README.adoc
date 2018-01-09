@@ -4,7 +4,7 @@ v1.7, {docdate}
 image::images/crunchy_logo.png?raw=true[]
 
 
-Crunchy Container Suite provides Docker containers that enable
+The Crunchy Container Suite provides Docker containers that enable
 rapid deployment of PostgreSQL, including administration and
 monitoring tools. Multiple styles of deploying PostgreSQL clusters
 are supported.
@@ -39,21 +39,21 @@ image::images/containers.png?raw=true[]
 For Kubernetes users of these containers, there is an associated
 project worth taking a look at that uses the containers found
 in this repo and provides a higher level automation.
-That project is link:https://github.com/crunchydata/postgres-operator[PostgresOperator]
+That project is the link:https://github.com/crunchydata/postgres-operator[postgres-operator].
 
-=== Installation
+== Getting Started
 
-Complete build and install documentation is found here: link:docs/install.adoc[Install Docs].  The provided Dockerfiles build the containers
+Complete build and install documentation is found link:docs/install.adoc[here].  The provided Dockerfiles build the containers
 on a Centos 7 base image and use the community PostgreSQL RPMs.
 
 Crunchy provides a commercially supported version of these containers
-built upon RHEL 7 and the Crunchy supported PostgreSQL.  Contact Crunchy
+built upon RHEL 7 and the Crunchy supported PostgreSQL. Contact Crunchy
 for more details at http://www.crunchydata.com.
 
-=== Examples
+== Usage
 
 Various examples are provided in link:docs/examples.adoc[the Examples documentation] for running Docker,
 Kubernetes, and OpenShift environments.
 
-You will need to set up your environment as per the link:docs/install.adoc[Install documentation] in order to
+You will need to set up your environment as per the link:docs/install.adoc[installation documentation] in order to
 execute the examples.

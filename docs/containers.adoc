@@ -303,18 +303,6 @@ if the primary is not reached.
 The watch container has access to a service account that is used
 inside the container to issue commands to OpenShift.
 
-You set up the SA using this:
-
-oc create -f watch-sa.json
-
-You then set up permissions for the SA to edit the OpenShift project,
-this example allows all service accounts to edit resources in the *default*
-project:
-
-....
-oc policy add-role-to-group edit system:serviceaccounts -n default
-....
-
 In Kube 1.5, if a policy file is being used for securing down the
 Kube cluster, you could possibly need to add a policy to allow
 the pg-watcher service account access to the Kube API as mentioned
@@ -373,7 +361,7 @@ the watcher will:
  * change the labels on the replica to be those of the primary
  * start watching the new primary in case that falls over next
  * look for replicas that have the metadata label value of *replicatype=trigger* to prefer
-   the failover to. If found, it will use the first replica with that label,; if
+   the failover to. If found, it will use the first replica with that label; if
    not found, it will use the first replica it finds.
 
 Example of looking for the failover replica:

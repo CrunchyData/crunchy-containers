@@ -4,9 +4,7 @@ Crunchy Data Solutions, Inc.
 v1.7, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
-== Introduction to Docker, Kubernetes, & Openshift
-
-=== Cheat Sheets
+== Usage
 
 Here are some useful resources for finding the right commands to troubleshoot & modify containers in
 the various environments shown in this guide:
@@ -1052,7 +1050,7 @@ cd $CCPROOT/examples/openshift/backup-job
 ./run.sh
 ....
 
-The *examples/openshift/crunchy-pv-backup.json* specifies a *persistentVolumeReclaimPolicy*
+The *backup-job.json* file within that directory specifies a *persistentVolumeReclaimPolicy*
 of *Retain* to tell OpenShift that we want to keep the volume contents after the removal of the PV.
 
 *primary-restore*
@@ -1062,7 +1060,7 @@ When ready to restore, you will need the timestamped directory path under
 file and update the BACKUP_PATH setting to specify the NFS backup path you want to restore with.
 ....
 "name": "BACKUP_PATH",
-"value": "basic/2016-05-27-14-35-33"
+"value": "basic-backup/2016-05-27-14-35-33"
 ....
 
 Then create the pod:

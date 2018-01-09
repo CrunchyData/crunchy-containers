@@ -63,7 +63,7 @@ EOF
 	done
 else
 	echo "Command Line Arguments:"
-	for i in "- hostPath" "- nfs" "- gce"
+	for i in "- hostpath" "- nfs" "- gce"
 	do
 		echo $i
 	done
