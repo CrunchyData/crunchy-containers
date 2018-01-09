@@ -4,9 +4,7 @@ Crunchy Data Solutions, Inc.
 v1.7, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
-== Introduction to Docker, Kubernetes, & Openshift
-
-=== Cheat Sheets
+== Usage
 
 Here are some useful resources for finding the right commands to troubleshoot & modify containers in
 the various environments shown in this guide:
