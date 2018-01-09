@@ -70,6 +70,7 @@ cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
 git checkout 1.7.0
+go get github.com/blang/expenv
 ....
 
 *If you are a Crunchy enterprise customer, you will place the Crunchy repository
@@ -94,6 +95,7 @@ cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
 git checkout 1.7.0
+go get github.com/blang/expenv
 ....
 
 *If you are a Crunchy enterprise customer, you will place the Crunchy repository
