@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete dc pgpool
 oc delete service pgpool
-oc delete pod -l name=pgpool
+oc delete pod pgpool
+oc delete configmap pgpool-conf
+$CCPROOT/examples/waitforterm.sh pgpool oc

@@ -1,0 +1,155 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pgpool",
+        "creationTimestamp": null,
+        "annotations": {
+            "description": "PostgreSQL Replication Example",
+            "iconClass": "icon-database",
+            "tags": "database,postgresql,replication"
+        }
+    },
+    "parameters": [{
+        "name": "PG_PRIMARY_USER",
+        "description": "The username used for primary / replica replication",
+        "value": "primaryuser"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "The image prefix to use"
+    }, {
+        "name": "CCP_IMAGE_TAG",
+        "description": "The image tag to use"
+    }, {
+        "name": "PG_PRIMARY_PASSWORD",
+        "description": "The password for the PG primary user",
+        "value": "password"
+    }, {
+        "name": "PG_USER",
+        "description": "The username that clients will use to connect to PG server",
+        "value": "testuser"
+    }, {
+        "name": "PG_PASSWORD",
+        "description": "The password for the PG primary user",
+        "value": "password"
+    }, {
+        "name": "PG_DATABASE",
+        "description": "The name of the database that will be created",
+        "value": "userdb"
+    }, {
+        "name": "PG_ROOT_PASSWORD",
+        "description": "The password for the PG administrator",
+        "value": "password"
+    }, {
+        "name": "PGPOOL_SERVICE_NAME",
+        "description": "The name of the pgpool Service",
+        "value": "pgpool"
+    }, {
+        "name": "PG_PRIMARY_SERVICE_NAME",
+        "description": "The primary configured in pgpool",
+        "value": "pr-primary"
+    }, {
+        "name": "PG_REPLICA_SERVICE_NAME",
+        "description": "The replica configured in pgpool",
+        "value": "pr-replica"
+    }],
+    "objects": [{
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "${PGPOOL_SERVICE_NAME}",
+            "labels": {
+                "name": "${PGPOOL_SERVICE_NAME}"
+            }
+        },
+        "spec": {
+            "ports": [{
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }],
+            "selector": {
+                "name": "${PGPOOL_SERVICE_NAME}"
+            }
+        },
+        "status": {
+            "loadBalancer": {}
+        }
+    }, {
+        "kind": "Pod",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "pgpool",
+            "labels": {
+                "name": "pgpool"
+            }
+        },
+        "spec": {
+            "containers": [{
+                "name": "pgpool",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "ports": [{
+                    "containerPort": 5432,
+                    "protocol": "TCP"
+                }],
+                "env": [{
+                  "name": "PG_PRIMARY_USER",
+                  "value": "${PG_PRIMARY_USER}"
+                }, {
+                    "name": "PGHOST",
+                    "value": "/tmp"
+                }, {
+                    "name": "PG_MODE",
+                    "value": "primary"
+                }, {
+                    "name": "PG_PRIMARY_PORT",
+                    "value": "5432"
+                }, {
+                    "name": "PG_PRIMARY_PASSWORD",
+                    "value": "${PG_PRIMARY_PASSWORD}"
+                }, {
+                    "name": "PG_USER",
+                    "value": "${PG_USER}"
+                }, {
+                    "name": "PG_PASSWORD",
+                    "value": "${PG_PASSWORD}"
+                }, {
+                    "name": "PG_DATABASE",
+                    "value": "${PG_DATABASE}"
+                }, {
+                  "name": "PG_ROOT_PASSWORD",
+                  "value": "${PG_ROOT_PASSWORD}"
+                }, {
+                    "name": "PG_PRIMARY_SERVICE_NAME",
+                    "value": "${PG_PRIMARY_SERVICE_NAME}"
+                }, {
+                    "name": "PG_REPLICA_SERVICE_NAME",
+                    "value": "${PG_REPLICA_SERVICE_NAME}"
+                }],
+                "volumeMounts": [{
+                        "name": "pgpool-conf",
+                        "mountPath": "/pgconf/pgpoolconfigdir",
+    		    "readOnly": false
+                    }
+    	    ]
+            }],
+            "volumes": [{
+                "name": "pgpool-conf",
+                "configMap": {
+                    "name": "pgpool-conf",
+                    "items": [{
+                        "key": "pgpool.conf",
+                        "path": "pgpool.conf"
+                    }, {
+                        "key": "hba",
+                        "path": "pool_hba.conf"
+                    }, {
+                        "key": "psw",
+                        "path": "pool_passwd"
+                    }]
+                }
+            }]
+        }
+    }]
+}
