@@ -12,7 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete pod pr-primary pr-replica
+oc delete pod pr-replica pr-replica-2
+sleep 2
 oc delete service pr-primary pr-replica
+oc delete pod pr-primary
 $CCPROOT/examples/waitforterm.sh pr-primary oc
 $CCPROOT/examples/waitforterm.sh pr-replica oc
+$CCPROOT/examples/waitforterm.sh pr-replica-2 oc
