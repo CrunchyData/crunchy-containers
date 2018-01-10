@@ -72,6 +72,11 @@ executed when the database is first created.
    is the default. This is useful for a primary in a deployment.
  * XLOGDIR - if set to true, will cause initdb to include --xlogdir=$PGWAL, this
    will cause a symlink to be created from /pgdata/containername/pg_xlog to /pgwal/containername-wal
+ * TEMP_BUFFERS - default is 8MB, set this value to override this PostgreSQL configuration setting
+ * MAX_CONNECTIONS - default is 100, set this value to override this PostgreSQL configuration setting
+ * SHARED_BUFFERS - default is 128MB, set this value to override this PostgreSQL configuration setting
+ * WORK_MEM - default is 4MB, set this value to override this PostgreSQL configuration setting
+ * MAX_WAL_SENDERS - default is 6, set this value to override this PostgreSQL configuration setting
 
 === Features
 
