@@ -1496,7 +1496,8 @@ firewall-cmd --permanent --zone metrics --add-port 3000/tcp
 firewall-cmd --reload
 ....
 
-All metrics collected by this set of containers are fully described in this link:metrics.adoc[document.]
+All metrics collected by this set of containers in addition to details on accessing the
+custom Grafana dashboards provided are fully described in this link:metrics.adoc[document.]
 
 To shutdown the instance and remove the container for each example, run the following:
 ....
