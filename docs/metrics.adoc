@@ -337,20 +337,14 @@ usage, GAUGE, Disk space used by the database, `SELECT pg_database_size(pg_datab
 Some information on creating custom Grafana dashboards can be found in the official documentation -
 http://docs.grafana.org/guides/getting_started/.
 
-Crunchy Data offers some customized metrics dashboards that can be imported into Grafana. This project
-is called *pgmonitor* and can be found in the link:https://github.com/CrunchyData/pgmonitor[pgmonitor repository].
-The official instructions for setting up the project can be found link:https://github.com/CrunchyData/pgmonitor/tree/master/grafana[here],
-but a visual walkthrough and screenshots of the populated graphs are provided below.
+There is a sample dashboard included in the Metrics Suite which you can take advantage of instead of
+creating a dashboard from scratch. The instructions provided below explain how to get started with using
+the Grafana web interface and upload the dashboard for use.
 
 The following instructions assume you already have the *crunchy-metrics* and *primary-collect* examples running
 for your chosen environment.
 
-First, clone the *pgmonitor* repository.
-....
-git clone https://github.com/CrunchyData/pgmonitor/tree/master/grafana
-....
-
-You can then connect to the Grafana web instance using the following address:
+Connect to the Grafana web instance using the following address:
 ....
 http://crunchy-metrics:3000
 ....
@@ -359,29 +353,26 @@ The username and password are both *admin* by default. It is a recommended secur
 
 After logging in, you'll be taken to a "Home Dashboard" page. Click "add data source", where you'll be taken to
 a page to populate your data source. In this instance, you'll want to select "type" as being "Prometheus" and change
-the URL to point to "http://crunchy-metrics:9090" (or directly to the IP address with port 9090 where your Promtheus
-datasource resides). The screen should appear like this after you've finished:
-
-
-image::images/grafana_s2.png[]
-
-
-Next, the dashboards themeselves need to be imported as JSON files. Navigate to the upper left corner and select the
-Grafana logo for the menu, then to Dashboards -> Import. Select "Upload JSON File" and repeat the process for each
-of these JSON files:
-
-  * PostgreSQL.json
-  * PostgreSQLDetails.json
-  * BloatDetails.json
-  * CRUD_Details.json
-
-The "Import Datasource" box should look similar to this before clicking "Import":
+the URL to point to "http://localhost:9090". The screen should appear like this after you've finished:
 
 
 image::images/grafana_s1.png[]
 
 
-The following images display the dashboards included in the *pgmonitor* suite populated with sample data.
+Next, the dashboard needs to be imported as a JSON file. Navigate to the upper left corner and select the
+Grafana logo for the menu, then to Dashboards -> Import. Select "Upload JSON File" and upload the following
+JSON file:
+....
+$CCPROOT/conf/grafana/dashboards/PostgreSQL.json
+....
+
+The "Import Datasource" box should look similar to this before clicking "Import":
+
+
+image::images/grafana_s2.png[]
+
+
+The following images display the different metrics the included dashboard provides.
 
 
 image::images/grafana-dashboard-1.png[]
@@ -389,13 +380,6 @@ image::images/grafana-dashboard-1.png[]
 image::images/grafana-dashboard-2.png[]
 
 image::images/grafana-dashboard-3.png[]
-
-image::images/grafana-dashboard-4.png[]
-
-image::images/grafana-dashboard-5.png[]
-
-image::images/grafana-dashboard-6.png[]
-
 
 
 <<<
