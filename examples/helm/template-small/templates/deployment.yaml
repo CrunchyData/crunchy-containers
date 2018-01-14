@@ -31,7 +31,7 @@ spec:
         - name: PG_MODE
           value: primary
         - name: PGDATA_PATH_OVERRIDE
-          value: "${NAME}"
+          value: "{{.Values.container.name.primary}}"
         - name: PG_PRIMARY_USER
           value: primaryuser
         - name: PG_PRIMARY_PORT
@@ -65,9 +65,8 @@ spec:
             memory: {{ .Values.resources.memory }}
         imagePullPolicy: IfNotPresent
       volumes:
-      - name: pgdata
-        persistentVolumeClaim:
-          claimName: "{{.Values.pvc.name}}"
+      - emptyDir: {}
+        name: pgdata
       restartPolicy: Always
       terminationGracePeriodSeconds: 30
       dnsPolicy: ClusterFirst

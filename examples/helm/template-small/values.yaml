@@ -13,12 +13,16 @@ image:
   repository: crunchydata
   container: crunchy-postgres
   tag: centos7-10.1-1.7.0
+nfs:
+  serverIP: 10.0.1.4
+  path: /mnt/nfsfileshare
+pv:
+  storage: 400M
+  name: template-small-pv
 pvc:
   name: template-small-pvc
 resources:
   cpu: 200m
   memory: 512Mi
 persistence:
-  storageClass: gluster-container
-  accessModes: ReadWriteOnce
-  size: 100m
+  accessModes: ReadWriteMany
