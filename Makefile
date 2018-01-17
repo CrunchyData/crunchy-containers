@@ -88,8 +88,8 @@ pgbouncer:	versiontest
 	docker tag crunchy-pgbouncer crunchydata/crunchy-pgbouncer:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 pgdump: versiontest
-        docker build -t crunchy-dump -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgdump.$(CCP_BASEOS) .
-        docker tag crunchy-dump crunchydata/crunchy-dump:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+	docker build -t crunchy-dump -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgdump.$(CCP_BASEOS) .
+	docker tag crunchy-dump crunchydata/crunchy-dump:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 pgpool:	versiontest
 	docker build -t crunchy-pgpool -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgpool.$(CCP_BASEOS) .
@@ -142,4 +142,3 @@ pgsim:
 #=================
 push:
 	./bin/push-to-dockerhub.sh
-
