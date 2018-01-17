@@ -2,7 +2,7 @@ FROM registry.access.redhat.com/rhel
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
-LABEL name="crunchydata/pgdump" \
+LABEL name="crunchydata/dump" \
         vendor="crunchy data" \
       	PostgresRelease="9.5" \
       	PostgresFullRelease="9.5.10" \
