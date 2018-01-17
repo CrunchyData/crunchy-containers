@@ -39,7 +39,7 @@
     }, {
       "name": "PGDUMP_ALL",
       "displayName": "pgdump_all",
-      "description": "Flag to indicate whether pgdump_all should be run (instead of pg_dump). Valid values: true, false",
+      "description": "Flag to indicate whether pg_dumpall should be run (instead of pg_dump). Valid values: true, false",
       "value": "true"
     }, {
       "name": "PGDUMP_VERBOSE",
