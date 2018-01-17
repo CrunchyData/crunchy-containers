@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/rhel
+FROM registry.access.redhat.com/rhel7
 
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
@@ -34,19 +34,21 @@ ADD conf/CRUNCHY-GPG-KEY.public  /
 ADD conf/crunchypg96.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
-RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
- && yum -y update && yum -y install bind-utils \
+RUN REPOLIST=rhel-7-server-rpms,rhel-7-server-optional-rpms,rhel-7-server-ose-3.5-rpms,pgdg-redhat96 \
+ && yum -y update-minimal --disablerepo "*" --enablerepo rhel-7-server-rpms --setopt=tsflags=nodocs \
+    --security --sec-severity=Important --sec-severity=Critical \
+ && yum -y reinstall --disablerepo "*" --enablerepo ${REPOLIST} --setopt=tsflags=nodocs glibc-common \
+ && yum -y install --disablerepo "*" --enablerepo ${REPOLIST} --setopt=tsflags=nodocs bind-utils \
 	gettext \
 	hostname \
 	nss_wrapper \
 	openssh-clients \
 	procps-ng \
  	rsync \
- && yum -y reinstall glibc-common \
- && yum -y install postgresql96 postgresql96-contrib postgresql96-server \
+  postgresql96 postgresql96-contrib postgresql96-server \
 	pgaudit96 pgaudit96_set_user \
 	crunchy-backrest \
- && yum -y --setopt=tsflags='' install pgaudit_analyze \
+ && yum -y install --disablerepo "*" --enablerepo ${REPOLIST} --setopt=tsflags='' pgaudit_analyze \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
