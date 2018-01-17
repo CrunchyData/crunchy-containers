@@ -182,15 +182,15 @@ to persist database dumps.
 
 === Environment Variables
 
- REQUIRED ARGS
+==== REQUIRED ARGS
  
  * PGDUMP_DB database we are connecting to
  * PGDUMP_HOST host we are connecting to
  * PGDUMP_PASS pg user password we are connecting with
  * PGDUMP_PORT pg port we are connecting to
  * PGDUMP_USER pg user we are connecting with
-
- OPTIONAL/EXTENDED ARGS
+ 
+==== OPTIONAL/EXTENDED ARGS
 
  * PGDUMP_ALL option to run pg_dumpall instead of pg_dump (extra all databases of a cluster into a single script file)
  * PGDUMP_BLOBS option to include large objects in the dump
