@@ -1,0 +1,59 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "name": "mongo-loader"
+    },
+    "spec": {
+        "template": {
+            "metadata": {
+                "name": "mongo-loader",
+                "labels": {
+                    "app": "mongo-loader"
+                }
+            },
+        "spec": {
+            "containers": [{
+                "name": "mongo-loader",
+                "image": "crunchydata/crunchy-mongodb-loader:$CCP_IMAGE_TAG",
+                "env": [{
+                    "name": "MONGO_USER",
+                    "value": "read_user"
+                }, {
+		    "name": "MONGO_PWD",
+		    "value": "getit"
+		}, {
+                    "name": "MONGO_DATABASE",
+                    "value": "chfort"
+                }, {
+                    "name": "MONGO_COLLECTION",
+                    "value": "chfort"
+                }, {
+                    "name": "MONGO_HOST",
+                    "value": "myhost:27017"
+                }, {
+                    "name": "PG_USER",
+                    "value": "postgres"
+                }, {
+                    "name": "PG_SERVICE",
+                    "value": "basic"
+                }, {
+                    "name": "PG_DATABASE",
+                    "value": "userdb"
+                }],
+                "volumeMounts": [{
+                    "mountPath": "/pgloader",
+                    "name": "pgloader"
+                }]
+            }],
+            "volumes": [{
+		"name": "pgloader",
+		"persistentVolumeClaim": {
+		    "claimName": "crunchy-pvc"
+		}
+            }],
+                "restartPolicy": "Never"
+	    }
+        }
+    }
+}

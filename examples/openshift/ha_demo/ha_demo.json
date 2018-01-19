@@ -1,0 +1,555 @@
+{
+  "apiVersion": "v1",
+  "kind": "Template",
+  "metadata": {
+    "annotations": {
+      "description": "Crunchy PostgreSQL HA Demo",
+      "iconClass": "icon-database",
+      "tags": "database, postgresql, replication"
+    },
+    "creationTimestamp": null,
+    "name": "crunchy-ha-demo"
+  },
+  "objects": [
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+	"labels": {
+	  "name": "${PG_MASTER_SERVICE_NAME}"
+	},
+        "name": "${PG_MASTER_SERVICE_NAME}"
+      },
+      "spec": {
+	"ports": [
+	  {
+	    "nodePort": 0,
+	    "port": 5432,
+	    "protocol": "TCP",
+	    "targetPort": 5432
+	  }
+	],
+	"selector": {
+	  "name": "${PG_MASTER_SERVICE_NAME}"
+	}
+      },
+      "status": {
+	"loadBalancer": {}
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Service",
+      "metadata": {
+	"labels": {
+	  "name": "${PG_SLAVE_SERVICE_NAME}"
+	},
+	"name": "${PG_SLAVE_SERVICE_NAME}"
+      },
+      "spec": {
+	"ports": [
+	  {
+	    "nodePort": 0,
+            "port": 5432,
+            "protocol": "TCP",
+            "targetPort": 5432
+          }
+        ],
+	"selector": {
+	  "name": "${PG_SLAVE_SERVICE_NAME}"
+	}
+      },
+      "status": {
+	"loadBalancer": {}
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "Pod",
+      "metadata": {
+	"creationTimestamp": null,
+	"labels": {
+	  "name": "${PG_MASTER_SERVICE_NAME}"
+	},
+	"name": "demo-node0"
+      },
+      "spec": {
+	"containers": [
+	  {
+	    "env": [
+	      {
+		"name": "PG_MODE",
+		"value": "master"
+	      },
+	      {
+		"name": "PGHOST",
+		"value": "/tmp"
+	      },
+	      {
+		"name": "PG_USER",
+		"value": "${PG_USER}"
+	      },
+	      {
+		"name": "PG_DATABASE",
+		"value": "${PG_DATABASE}"
+	      }
+	    ],
+	    "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+	    "name": "${PG_MASTER_SERVICE_NAME}",
+	    "ports": [
+	      {
+		"containerPort": 5432,
+		"protocol": "TCP"
+	      }
+	    ],
+	    "securityContext": {
+	      "privileged": false
+	    },
+	    "volumeMounts": [
+	      {
+		"mountPath": "/pgdata",
+		"name": "pgdata",
+		"readOnly": false
+	      },
+              {
+                "mountPath": "/pgconf",
+                "name": "pgconf",
+                "readOnly": true
+              },
+              {
+                "mountPath": "/backrestrepo",
+                "name": "backrestrepo"
+              },
+              {
+                "mountPath": "/pguser",
+                "name": "pguser-volume"
+              },
+              {
+                "mountPath": "/pgmaster",
+                "name": "pgmaster-volume"
+              },
+              {
+                "mountPath": "/pgroot",
+                "name": "pgroot-volume"
+              }
+	    ]
+	  }
+	],
+	"securityContext": {
+	  "supplementalGroups": [
+	    65534
+	  ]
+	},
+	"volumes": [
+	  {
+	    "name": "pgdata",
+	    "persistentVolumeClaim": {
+	      "claimName": "crunchy-pvc"
+	    }
+	  },
+	  {
+	    "configMap": {
+	      "items": [
+		{
+		  "key": "postgresql.conf",
+		  "path": "postgresql.conf"
+		},
+		{
+		  "key": "pgbackrest.conf",
+		  "path": "pgbackrest.conf"
+		},
+		{
+		  "key": "pghba",
+		  "path": "pg_hba.conf"
+		},
+		{
+		  "key": "setup.sql",
+		  "path": "setup.sql"
+		}
+	      ],
+	      "name": "pgmaster-conf"
+	    },
+	    "name": "pgconf"
+	  },
+	  {
+	    "name": "backrestrepo",
+	    "persistentVolumeClaim": {
+	      "claimName": "crunchy-backup-pvc"
+	    }
+	  },
+	  {
+	    "name": "pguser-volume",
+	    "secret": {
+	      "secretName": "pguser-secret"
+	    }
+	  },
+          {
+            "name": "pgmaster-volume",
+            "secret": {
+              "secretName": "pgmaster-secret"
+            }
+          },
+          {
+            "name": "pgroot-volume",
+            "secret": {
+              "secretName": "pgroot-secret"
+            }
+          }
+	]
+      }
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "DeploymentConfig",
+      "metadata": {
+	"creationTimestamp": null,
+	"name": "demo-node1"
+      },
+      "spec": {
+	"replicas": 1,
+	"selector": {
+	  "name": "${PG_SLAVE_SERVICE_NAME}"
+	},
+	"strategy": {
+	  "resources": {},
+	  "type": "Recreate"
+	},
+	"template": {
+	  "metadata": {
+	    "creationTimestamp": null,
+	    "labels": {
+	      "name": "${PG_SLAVE_SERVICE_NAME}"
+	    }
+	  },
+	  "spec": {
+	    "containers": [
+	      {
+		"env": [
+		  {
+		    "name": "PG_MASTER_HOST",
+		    "value": "${PG_MASTER_SERVICE_NAME}"
+		  },
+                  {
+                    "name": "PG_MASTER_SERVICE_NAME",
+                    "value": "${PG_MASTER_SERVICE_NAME}"
+                  },
+                  {
+                    "name": "PG_MASTER_PORT",
+                    "value": "5432"
+                  },
+                  {
+                    "name": "PG_MODE",
+                    "value": "slave"
+                  },
+                  {
+                    "name": "PGHOST",
+                    "value": "/tmp"
+                  },
+                  {
+                    "name": "PG_USER",
+                    "value": "${PG_USER}"
+                  },
+                  {
+                    "name": "PG_DATABASE",
+                    "value": "${PG_DATABASE}"
+                  }
+		],
+		"image": "$crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+		"livenessProbe": {
+		  "exec": {
+		    "command": [
+		      "/opt/cpm/bin/liveness.sh"
+		    ]
+		  },
+		  "initalDelaySeconds": 90,
+		  "timeoutSeconds": 1
+		},
+		"name": "server",
+		"ports": [
+		  {
+		    "containerPort": 5432,
+		    "protocol": "TCP"
+		  }
+		],
+		"readinessProbe": {
+		  "exec": {
+		    "command": [
+		      "/opt/cpm/bin/readiness.sh"
+		    ]
+		  },
+		  "initialDelaySeconds": 90,
+		  "timeoutSeconds": 1
+		},
+		"resources": {},
+		"securityContext": {
+		  "privileged": false
+		},
+		"terminationMessagePath": "/dev/termination-log",
+		"volumeMounts": [
+		  {
+		    "mountPath": "/pgdata",
+		    "name": "pgdata",
+		    "readOnly": false
+		  },
+                  {
+                    "mountPath": "/pgconf",
+                    "name": "pgconf",
+		    "readOnly": true
+                  },
+                  {
+                    "mountPath": "/pguser",
+                    "name": "pguser-volume"
+                  },
+                  {
+                    "mountPath": "/pgmaster",
+                    "name": "pgmaster-volume"
+                  },
+                  {
+                    "mountPath": "/pgroot",
+                    "name": "pgroot-volume"
+                  }
+		]
+	      }
+	    ],
+	    "dnsPolicy": "ClusterFirst",
+	    "restartPolicy": "Always",
+	    "volumes": [
+	      {
+		"name": "pgdata",
+		"persistentVolumeClaim": {
+		  "claimName": "crunchy-pvc2"
+		}
+	      },
+	      {
+		"configMap": {
+		  "items": [
+		    {
+		      "key": "postgresql.conf",
+		      "path": "postgresql.conf"
+		    },
+		    {
+		      "key": "pghba",
+		      "path": "pg_hba.conf"
+		    }
+		  ],
+		  "name": "pgslave-conf"
+		},
+		"name": "pgconf"
+	      },
+	      {
+		"name": "pguser-volume",
+		"secret": {
+		  "secretName": "pguser-secret"
+		}
+	      },
+              {
+                "name": "pgmaster-volume",
+                "secret": {
+                  "secretName": "pgmaster-secret"
+                }
+              },
+              {
+                "name": "pgroot-volume",
+                "secret": {
+                  "secretName": "pgroot-secret"
+                }
+              }
+	    ]
+	  }
+	}
+      },
+      "status": {}
+    },
+    {
+      "apiVersion": "v1",
+      "kind": "DeploymentConfig",
+      "metadata": {
+	"creationTimestamp": null,
+	"name": "demo-node2"
+      },
+      "spec": {
+	"replicas": 1,
+	"selector": {
+	  "name": "${PG_SLAVE_SERVICE_NAME}"
+	},
+	"strategy": {
+	  "resources": {},
+	  "type": "Recreate"
+	},
+	"template": {
+	  "metadata": {
+	    "creationTimestamp": null,
+	    "labels": {
+	      "name": "${PG_SLAVE_SERVICE_NAME}"
+	    }
+	  },
+	  "spec": {
+	    "containers": [
+	      {
+		"env": [
+		  {
+		    "name": "PG_MASTER_HOST",
+		    "value": "${PG_MASTER_SERVICE_NAME}"
+		  },
+                  {
+                    "name": "PG_MASTER_SERVICE_NAME",
+                    "value": "${PG_MASTER_SERVICE_NAME}"
+                  },
+                  {
+                    "name": "PG_MASTER_PORT",
+                    "value": "5432"
+                  },
+                  {
+                    "name": "PG_MODE",
+                    "value": "slave"
+                  },
+                  {
+                    "name": "PGHOST",
+                    "value": "/tmp"
+                  },
+                  {
+                    "name": "PG_USER",
+                    "value": "${PG_USER}"
+                  },
+                  {
+                    "name": "PG_DATABASE",
+                    "value": "${PG_DATABASE}"
+                  }
+		],
+		"image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+		"livenessProbe": {
+		  "exec": {
+		    "command": [
+		      "/opt/cpm/bin/liveness.sh"
+		    ]
+		  },
+		  "initalDelaySeconds": 90,
+		  "timeoutSeconds": 1
+		},
+		"name": "server",
+		"ports": [
+		  {
+		    "containerPort": 5432,
+		    "protocol": "TCP"
+		  }
+		],
+		"readinessProbe": {
+		  "exec": {
+		    "command": [
+		      "/opt/cpm/bin/readiness.sh"
+		    ]
+		  },
+		  "initialDelaySeconds": 90,
+		  "timeoutSeconds": 1
+		},
+		"resources": {},
+		"securityContext": {
+		  "privileged": false
+		},
+		"terminationMessagePath": "/dev/termination-log",
+		"volumeMounts": [
+		  {
+		    "mountPath": "/pgdata",
+		    "name": "pgdata",
+		    "readOnly": false
+		  },
+                  {
+                    "mountPath": "/pgconf",
+                    "name": "pgconf",
+		    "readOnly": true
+                  },
+                  {
+                    "mountPath": "/pguser",
+                    "name": "pguser-volume"
+                  },
+                  {
+                    "mountPath": "/pgmaster",
+                    "name": "pgmaster-volume"
+                  },
+                  {
+                    "mountPath": "/pgroot",
+                    "name": "pgroot-volume"
+                  }
+		]
+	      }
+	    ],
+	    "dnsPolicy": "ClusterFirst",
+	    "restartPolicy": "Always",
+	    "volumes": [
+	      {
+		"name": "pgdata",
+		"persistentVolumeClaim": {
+		  "claimName": "crunchy-pvc2"
+		}
+	      },
+	      {
+		"configMap": {
+		  "items": [
+		    {
+		      "key": "postgresql.conf",
+		      "path": "postgresql.conf"
+		    },
+		    {
+		      "key": "pghba",
+		      "path": "pg_hba.conf"
+		    }
+		  ],
+		  "name": "pgslave-conf"
+		},
+		"name": "pgconf"
+	      },
+	      {
+		"name": "pguser-volume",
+		"secret": {
+		  "secretName": "pguser-secret"
+		}
+	      },
+              {
+                "name": "pgmaster-volume",
+                "secret": {
+                  "secretName": "pgmaster-secret"
+                }
+              },
+              {
+                "name": "pgroot-volume",
+                "secret": {
+                  "secretName": "pgroot-secret"
+                }
+              }
+	    ]
+	  }
+	}
+      },
+      "status": {}
+    }
+  ],
+  "parameters": [
+    {
+	"description": "The image tag to use",
+	"name": "CCP_IMAGE_TAG",
+	"required": true
+    },
+    {
+        "description": "The RedHat provided registry for Crunchy images",
+        "name": "REDHAT_REGISTRY"
+    },
+    {
+        "description": "The name of the db to be created",
+        "name": "PG_DATABASE",
+        "value": "demo"
+    },
+    {
+        "description": "The image tag to use",
+        "name": "PG_USER",
+        "value": "testuser"
+    },
+    {
+        "name": "PG_MASTER_SERVICE_NAME",
+        "value": "demo-master"
+    },
+    {
+        "name": "PG_SLAVE_SERVICE_NAME",
+        "value": "demo-replica"
+    }
+  ]
+}

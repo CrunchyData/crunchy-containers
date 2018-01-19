@@ -51,6 +51,10 @@ backrestrestore: versiontest
 	docker build -t crunchy-backrest-restore -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backrest-restore.$(CCP_BASEOS) .
 	docker tag crunchy-backrest-restore crunchydata/crunchy-backrest-restore:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
+mongoDBloader: versiontest
+	docker build -t crunchy-mongodb-loader -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.mongoDBloader.$(CCP_BASEOS) .
+	docker tag crunchy-mongodb-loader crunchydata/crunchy-mongodb-loader:$(CCP_BASEOS)-$(CCP_PGVERSION)-$(CCP_VERSION)
+
 collectserver:	versiontest
 	cd collect && godep go install collectserver.go
 	cp $(GOBIN)/collectserver bin/collect
