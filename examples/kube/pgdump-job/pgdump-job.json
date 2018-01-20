@@ -1,0 +1,57 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "name": "pgdump-job"
+    },
+    "spec": {
+        "template": {
+            "metadata": {
+                "name": "pgdump-job",
+                "labels": {
+                    "app": "pgdump-job"
+                }
+            },
+            "spec": {
+                "volumes": [{
+                    "name": "pgdata",
+                    "persistentVolumeClaim": {
+                        "claimName": "crunchy-pvc"
+                    }
+                }],
+                "securityContext": {
+                    "supplementalGroups": [65534]
+                },
+                "containers": [{
+                    "name": "pgdump-job",
+                    "image": "$CCP_IMAGE_PREFIX/crunchy-dump:$CCP_IMAGE_TAG",
+                    "volumeMounts": [{
+                        "mountPath": "/pgdata",
+                        "name": "pgdata",
+                        "readOnly": false
+                    }],
+                    "env": [{
+                        "name": "PGDUMP_HOST",
+                        "value": "basic"
+                    }, {
+                        "name": "PGDUMP_USER",
+                        "value": "primaryuser"
+                    }, {
+                        "name": "PGDUMP_PASS",
+                        "value": "password"
+                    }, {
+                        "name": "PGDUMP_PORT",
+                        "value": "5432"
+                    }, {
+                        "name": "PGDUMP_ALL",
+                        "value": "true"
+                    }, {
+                        "name": "PGDUMP_VERBOSE",
+                        "value": "true"
+                    }]
+                }],
+                "restartPolicy": "Never"
+            }
+        }
+    }
+}

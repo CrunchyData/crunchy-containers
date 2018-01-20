@@ -164,6 +164,65 @@ to persist database backups.
    backup with
  * BACKUP_PORT - required, this is the database port we will be doing the
    backup with
+   
+== crunchy-dump
+
+The crunchy-dump container executes either a pg_dump or pg_dumpall against another
+Postgres database.  
+
+=== Dump Location
+
+Dumps are stored in a mounted backup volume location, using the
+database host name plus *-backups*  as a sub-directory, then followed by a unique
+backup directory based upon a date/timestamp.  It is left to the
+user to perform database dump archives in this current version
+of the container.  This dump location is referenced when performing
+a database restore.
+
+=== Dependencies
+
+The container is meant to be using a NFS or similar network file system
+to persist database dumps.
+
+=== Environment Variables
+
+==== REQUIRED ARGS
+ 
+ * PGDUMP_DB database we are connecting to
+ * PGDUMP_HOST host we are connecting to
+ * PGDUMP_PASS pg user password we are connecting with
+ * PGDUMP_PORT pg port we are connecting to
+ * PGDUMP_USER pg user we are connecting with
+ 
+==== OPTIONAL/EXTENDED ARGS
+
+ * PGDUMP_ALL option to run pg_dumpall instead of pg_dump (extra all databases of a cluster into a single script file)
+ * PGDUMP_BLOBS option to include large objects in the dump
+ * PGDUMP_CLEAN option to cleanly drop database objects prior to recreating them
+ * PGDUMP_COLUMNINSERTS option to dump data as INSERT commands with explicit column names
+ * PGDUMP_COMPRESSION option to specify the compression level to be applied to the output from pg_dump
+ * PGDUMP_CREATE option to begin pg_dump output with the commands to create the database itself
+ * PGDUMP_DATAONLY option to dump only the data (no schema)
+ * PGDUMP_DISABLETRIGGERS option to disable triggers when running a data-only dump
+ * PGDUMP_ENABLEROWSECURITY option to allow dumping content of tables with RLS turned on
+ * PGDUMP_ENCODING option to specify the character set encoding
+ * PGDUMP_EXCLUDEPRIVILEGES option to exclude commands which specify access privileges from the output by pg_dump
+ * PGDUMP_FILE option to send the output to the specified file
+ * PGDUMP_FORMAT option to select the output format (plain, custom, directory and tar)
+ * PGDUMP_INSERTS option to dump data as INSERT commands rather than COPY commands
+ * PGDUMP_LOCKWAITTIMEOUT option to specify the length of time to wait to acquire shared locks at the beginning of the dump
+ * PGDUMP_NOOWNER option to exclude commands that set table ownership from the output by pg_dump
+ * PGDUMP_MOTABLESPACES option to exclude tablespaces from being set in the output by pg_dump
+ * PGDUMP_NUMJOBS option to specify the number of jobs to run the dump in parallel
+ * PGDUMP_OIDS option to include object identifiers (OIDs) as part of the data for every table
+ * PGDUMP_QUOTEIDENTIFIERS option to force quoting of all identifiers
+ * PGDUMP_SCHEMA option to specify which schemas matched by the specified pattern are output by pg_dump
+ * PGDUMP_SCHEMASTOEXCLUDE option to specify schemas matched by the specified pattern should be excluded from the output by pg_dump
+ * PGDUMP_SCHEMAONLY option to dump the schema information only (no data)
+ * PGDUMP_SUPERUSER option to specify the superuser name to use when disabling triggers
+ * PGDUMP_TABLE option to specify which tables matched by the specified pattern are output by pg_dump
+ * PGDUMP_TABLESTOEXCLUDE option to specify which tables matched by the specified pattern should be excluded from the output by pg_dump
+ * PGDUMP_VERBOSE option to specify verbose mode to output detailed object comments and start/stop times to the output by pg_dump; as well as progress messages to standard error (STDERR)
 
 == crunchy-collect
 
