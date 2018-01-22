@@ -40,6 +40,11 @@
             "emptyDir": {
                 "medium": "Memory"
             }
+        }, {
+            "name": "sshd",
+            "emptyDir": {
+                "medium": "Memory"
+            }
         }],
         "containers": [{
             "name": "postgres",
@@ -100,6 +105,10 @@
             }, {
                 "mountPath": "/backrestrepo",
                 "name": "backrestrepo",
+                "readOnly": false
+            }, {
+                "mountPath": "/sshd",
+                "name": "sshd",
                 "readOnly": false
             }]
         }]

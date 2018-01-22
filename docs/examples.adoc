@@ -2377,6 +2377,11 @@ You can verify the upgraded database by running the
 and upgraded database files. Database tables and data that were in the *primary-pvc*
 test database should be found in the *primary-upgrade* database.
 
+
+==== SSHD PostgreSQL
+
+To enable SSHD on PostgreSQL, see the link:sshd.adoc[SSHD Documentation].
+
 == Legal Notices
 
 Copyright © 2018 Crunchy Data Solutions, Inc.

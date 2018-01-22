@@ -1,5 +1,4 @@
-#!/bin/bash 
-
+#!/bin/bash
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,19 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/cpm/bin/setenv.sh
 
-export PG_MODE=$PG_MODE
-export PG_PRIMARY_HOST=$PG_PRIMARY_HOST
-export PG_PRIMARY_PORT=$PG_PRIMARY_PORT
-export PG_PRIMARY_USER=$PG_PRIMARY_USER
-export PG_PRIMARY_PASSWORD=$PG_PRIMARY_PASSWORD
-export PG_USER=$PG_USER
-export PG_PASSWORD=$PG_PASSWORD
-export PG_DATABASE=$PG_DATABASE
-export PG_ROOT_PASSWORD=$PG_ROOT_PASSWORD
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-while true; do
-	echo "sleeping "
-	sleep 1000
-done
+oc delete service postgres-sshd
+oc delete pod postgres-sshd
+oc delete configmap pgconf
+oc delete secret sshd-secrets
+
+$CCPROOT/examples/waitforterm.sh postgres-sshd oc
+rm -rf ${DIR?}/keys
+
+sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/archive $PV_PATH/backup
