@@ -1,7 +1,7 @@
 = pgbackrest Support in Crunchy Container Suite
 Crunchy Data Solutions, Inc.
 v1.7, {docdate}
-:title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
+:title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Description
 
@@ -135,7 +135,7 @@ Steps for DELTA restore
 
 == Legal Notices
 
-Copyright © 2017 Crunchy Data Solutions, Inc.
+Copyright © 2018 Crunchy Data Solutions, Inc.
 
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 

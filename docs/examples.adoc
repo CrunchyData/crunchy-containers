@@ -2,11 +2,9 @@
 Crunchy Data Solutions, Inc.
 :toc: left
 v1.7, {docdate}
-:title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
+:title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
-== Introduction to Docker, Kubernetes, & Openshift
-
-=== Cheat Sheets
+== Usage
 
 Here are some useful resources for finding the right commands to troubleshoot & modify containers in
 the various environments shown in this guide:
@@ -32,7 +30,7 @@ This works by placing a file named, setup.sql, within the /pgconf mounted volume
 directory.  Portions of the setup.sql file are required for the crunchy container
 to work, see comments within the sample setup.sql file.
 
-=== Kubernetes Environment Setup
+=== Kubernetes Environment Setup & Configuration
 
 This section will illustrate how to set up a new Kubernetes namespace called *demo*, and will
 then show how to provide permissions to that namespace to allow the Kubernetes examples to run
@@ -73,6 +71,27 @@ resources within the namespace we have created.
 Follow the instructions located link:https://docs.bitnami.com/kubernetes/how-to/configure-rbac-in-your-kubernetes-cluster/#use-case-1-create-user-with-limited-namespace-access[here]
 to create a new user account with limited permissions for your namespace. Steps 2-5 will
 be sufficient to explain.
+
+==== Custom Configuration
+
+This example shows how you can use your own customized version of setup.sql
+when creating a PostgreSQL database container in Kubernetes.
+
+If you mount a /pgconf volume, crunchy-postgres will look at that directory
+for postgresql.conf, pg_hba.conf, and setup.sql.  If it finds one of them it
+will use that file instead of the default files.  Currently, if you specify a postgresql.conf
+file, you also need to specify a pg_hba.conf file.
+
+The example shows how a custom setup.sql file can be used.
+Run it as follows:
+....
+cd $CCPROOT/examples/kubernetes/custom-config
+./run.sh
+....
+
+This will start a database container that will use an NFS mounted /pgconf
+directory that will contain the custom setup.sql file found in the example
+directory.
 
 === OpenShift Environment Setup & Configuration
 
@@ -190,7 +209,7 @@ cd $CCPROOT/examples/openshift/custom-config
 ....
 
 This will start a database container that will use an NFS mounted /pgconf
-directory that will container the custom setup.sql file found in the example
+directory that will contain the custom setup.sql file found in the example
 directory.
 
 ===== Customized Configuration with Synchronous Replica
@@ -371,7 +390,7 @@ by the OpenShift 'process' command.  To inspect what value was
 supplied, you can inspect the primary pod as follows:
 
 ....
-oc get pod ms-primary -o json | grep PG
+oc get pod pr-primary -o json | grep PG
 ....
 
 Look for the values of the environment variables:
@@ -651,19 +670,19 @@ It takes about a minute for the replica to begin replicating with the
 primary.  To test out replication, see if replication is underway
 with this command:
 ....
-psql -h ms-primary -U postgres postgres -c 'table pg_stat_replication'
+psql -h pr-primary -U postgres postgres -c 'table pg_stat_replication'
 ....
 
 If you see a line returned from that query it means the primary is replicating
 to the replica.  Try creating some data on the primary:
 ....
-psql -h ms-primary -U postgres postgres -c 'create table foo (id int)'
-psql -h ms-primary -U postgres postgres -c 'insert into foo values (1)'
+psql -h pr-primary -U postgres postgres -c 'create table foo (id int)'
+psql -h pr-primary -U postgres postgres -c 'insert into foo values (1)'
 ....
 
 Then verify that the data is replicated to the replica:
 ....
-psql -h ms-replica -U postgres postgres -c 'table foo'
+psql -h pr-replica -U postgres postgres -c 'table foo'
 ....
 
 *primary-replica-dc*
@@ -706,7 +725,7 @@ cd $CCPROOT/examples/openshift/primary-replica
 
 You can then connect to the database instance as follows:
 ....
-psql -h ms-primary -U testuser -W userdb
+psql -h pr-primary -U testuser -W userdb
 ....
 
 *primary-replica-dc*
@@ -867,7 +886,7 @@ kubectl log watch
 
 Then trigger a failover using this command:
 ....
-kubectl delete pod primary
+kubectl delete pod pr-primary
 ....
 
 Resume watching the watch container's log and verify that it
@@ -877,7 +896,7 @@ on the replica.
 A final test is to see if the old replica is now a fully functioning
 primary by inserting some test data into it as follows:
 ....
-psql -h primary -U postgres postgres -c 'create table failtest (id int)'
+psql -h pr-primary -U postgres postgres -c 'create table failtest (id int)'
 ....
 
 The above command still works because the watch container has
@@ -889,26 +908,18 @@ the pod is named replica.
 
 You can view the labels on a pod with this command:
 ....
-kubectl describe pod replica | grep Label
+kubectl describe pod pr-replica | grep Label
 ....
 
 ==== OpenShift
 
-First, create an OpenShift service account which is used by the crunchy-watch
-container to perform the failover. Also, set policies that allow the
-service account the ability to edit resources within the OpenShift and
-default projects.
+The following script will create an OpenShift service account which is used by the crunchy-watch
+container to perform the failover. Also, it will set policies that allow the
+service account the ability to edit resources within your namespace.
+Finally, it will create the container that will 'watch' the PostgreSQL cluster.
 
 ....
 cd $CCPROOT/examples/openshift/watch
-oc create -f watch-sa.json
-oc policy add-role-to-group edit system:serviceaccounts -n openshift
-oc policy add-role-to-group edit system:serviceaccounts -n default
-....
-
-Next, create the container that will 'watch' the PostgreSQL cluster:
-
-....
 ./run.sh
 ....
 
@@ -934,7 +945,7 @@ started as each new replica is started by OpenShift.
 
 To test it out, delete the primary pod and view the watch pod log:
 ....
-oc delete pod primary-dc
+oc delete pod pr-primary
 oc logs watch
 oc get pod
 ....
@@ -1039,7 +1050,7 @@ cd $CCPROOT/examples/openshift/backup-job
 ./run.sh
 ....
 
-The *examples/openshift/crunchy-pv-backup.json* specifies a *persistentVolumeReclaimPolicy*
+The *backup-job.json* file within that directory specifies a *persistentVolumeReclaimPolicy*
 of *Retain* to tell OpenShift that we want to keep the volume contents after the removal of the PV.
 
 *primary-restore*
@@ -1049,7 +1060,7 @@ When ready to restore, you will need the timestamped directory path under
 file and update the BACKUP_PATH setting to specify the NFS backup path you want to restore with.
 ....
 "name": "BACKUP_PATH",
-"value": "basic/2016-05-27-14-35-33"
+"value": "basic-backup/2016-05-27-14-35-33"
 ....
 
 Then create the pod:
@@ -1386,7 +1397,7 @@ psql -h postgres-gis -U testuser userdb -c "SELECT postgis_full_version();"
 
 You should expect to see output similar to:
 
-....                                                                                  
+....
 postgis_full_version
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
  POSTGIS="2.4.2 r16113" PGSQL="100" GEOS="3.5.0-CAPI-1.9.0 r4084" PROJ="Rel. 4.8.0, 6 March 2012" GDAL="GDAL 1.11.4, released 2016/01/25" LIBXML="2.9.1" LIBJSON="0.11" TOPOLOGY RASTER
@@ -1485,7 +1496,8 @@ firewall-cmd --permanent --zone metrics --add-port 3000/tcp
 firewall-cmd --reload
 ....
 
-All metrics collected by this set of containers are fully described in this link:metrics.adoc[document.]
+All metrics collected by this set of containers in addition to details on accessing the
+custom Grafana dashboards provided are fully described in this link:metrics.adoc[document.]
 
 To shutdown the instance and remove the container for each example, run the following:
 ....
@@ -1738,7 +1750,7 @@ kubectl log pgbouncer
 Next, test the failover capability within the crunchy-watch
 container using the following:
 ....
-kubectl delete pod primary
+kubectl delete pod pr-primary
 ....
 
 Take another look at the pgbouncer log and you will see it trigger
@@ -1758,7 +1770,7 @@ cd $CCPROOT/examples/openshift/pgbouncer
 
 Test the example by killing off the primary database container as follows:
 ....
-oc delete pod primary-dc
+oc delete pod pr-primary
 ....
 
 Then watch the pgbouncer log as follows to confirm it detects the loss of the primary:
@@ -1769,12 +1781,12 @@ oc logs pgbouncer
 After the failover is completed, you should be able to access the new primary using
 the primary service as follows:
 ....
-psql -h primary-dc.openshift.svc.cluster.local -U primary postgres
+psql -h pr-primary.openshift.svc.cluster.local -U primary postgres
 ....
 
 and access the replica as follows:
 ....
-psql -h replica-dc.openshift.svc.cluster.local -U primary postgres
+psql -h pr-replica.openshift.svc.cluster.local -U primary postgres
 ....
 
 or via the pgbouncer proxy as follows:
@@ -2367,7 +2379,7 @@ test database should be found in the *primary-upgrade* database.
 
 == Legal Notices
 
-Copyright © 2017 Crunchy Data Solutions, Inc.
+Copyright © 2018 Crunchy Data Solutions, Inc.
 
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 

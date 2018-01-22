@@ -82,6 +82,6 @@ For each container, a link is added below that corresponds to the link:https://g
 
 == Legal Notices
 
-Copyright © 2017 Crunchy Data Solutions, Inc.
+Copyright © 2018 Crunchy Data Solutions, Inc.
 
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.

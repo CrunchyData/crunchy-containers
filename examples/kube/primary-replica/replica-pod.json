@@ -2,9 +2,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "ms-replica",
+        "name": "pr-replica",
         "labels": {
-            "name": "ms-replica",
+            "name": "pr-replica",
             "replicatype": "trigger"
         }
     },
@@ -40,7 +40,7 @@
                 "value": "/tmp"
             }, {
                 "name": "PG_PRIMARY_HOST",
-                "value": "ms-primary"
+                "value": "pr-primary"
             }, {
                 "name": "PG_PRIMARY_USER",
                 "value": "primaryuser"

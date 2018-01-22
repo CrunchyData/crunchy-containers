@@ -1,7 +1,7 @@
 = Crunchy Container Overview
 Crunchy Data Solutions, Inc.
 v1.7, {docdate}
-:title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
+:title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Introduction
 
@@ -11,7 +11,7 @@ within the Crunchy Containers for PostgreSQL.
 The containers and their relationships to the overall architecture
 are depicted below:
 
-image::containers.png[containers]
+image::images/containers.png[containers]
 
 
 == crunchy-postgres
@@ -59,7 +59,6 @@ executed when the database is first created.
  * CHECKSUMS - if set, this value is used to enable the *--data-checksums*
    option when initdb is executed at initialization, if not set, the
    default is to *not* enable data checksums
- * XLOGDIR - if set, initdb will use the specified directory for WAL
  * ARCHIVE_MODE - if set to *on*, will enable continuous WAL archiving
    by setting the value within the postgresql.conf file *archive_mode*
    setting, if not set, the default is *off*
@@ -73,6 +72,11 @@ executed when the database is first created.
    is the default. This is useful for a primary in a deployment.
  * XLOGDIR - if set to true, will cause initdb to include --xlogdir=$PGWAL, this
    will cause a symlink to be created from /pgdata/containername/pg_xlog to /pgwal/containername-wal
+ * TEMP_BUFFERS - default is 8MB, set this value to override this PostgreSQL configuration setting
+ * MAX_CONNECTIONS - default is 100, set this value to override this PostgreSQL configuration setting
+ * SHARED_BUFFERS - default is 128MB, set this value to override this PostgreSQL configuration setting
+ * WORK_MEM - default is 4MB, set this value to override this PostgreSQL configuration setting
+ * MAX_WAL_SENDERS - default is 6, set this value to override this PostgreSQL configuration setting
 
 === Features
 
@@ -363,18 +367,6 @@ if the primary is not reached.
 The watch container has access to a service account that is used
 inside the container to issue commands to OpenShift.
 
-You set up the SA using this:
-
-oc create -f watch-sa.json
-
-You then set up permissions for the SA to edit the OpenShift project,
-this example allows all service accounts to edit resources in the *default*
-project:
-
-....
-oc policy add-role-to-group edit system:serviceaccounts -n default
-....
-
 In Kube 1.5, if a policy file is being used for securing down the
 Kube cluster, you could possibly need to add a policy to allow
 the pg-watcher service account access to the Kube API as mentioned
@@ -433,7 +425,7 @@ the watcher will:
  * change the labels on the replica to be those of the primary
  * start watching the new primary in case that falls over next
  * look for replicas that have the metadata label value of *replicatype=trigger* to prefer
-   the failover to. If found, it will use the first replica with that label,; if
+   the failover to. If found, it will use the first replica with that label; if
    not found, it will use the first replica it finds.
 
 Example of looking for the failover replica:
@@ -726,7 +718,7 @@ https://www.pgadmin.org/
 pgadmin4 provides a web user interface to PostgreSQL databases.  A
 sample screenshot is below:
 
-image:pgadmin4-screenshot.png["pgadmin screenshot",align="center",scaledwidth="80%"]
+image::images/pgadmin4-screenshot.png["pgadmin screenshot",align="center",scaledwidth="80%"]
 
 
 === Environment Variables
@@ -819,7 +811,7 @@ queries over a specified interval range.
 
 == Legal Notices
 
-Copyright © 2017 Crunchy Data Solutions, Inc.
+Copyright © 2018 Crunchy Data Solutions, Inc.
 
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 

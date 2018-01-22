@@ -2,9 +2,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "ms-primary",
+        "name": "pr-primary",
         "labels": {
-            "name": "ms-primary"
+            "name": "pr-primary"
         }
     },
     "spec": {

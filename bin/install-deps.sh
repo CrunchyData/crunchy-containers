@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2017 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -47,32 +47,25 @@ cp $GOPATH/src/github.com/crunchydata/crunchy-containers/docs/bootstrap.js \
 $HOME/.asciidoc/backends/bootstrap/js/
 unzip $HOME/bootstrap-4.5.0.zip  $HOME/.asciidoc/backends/bootstrap/
 
-sudo yum -y install atomic-openshift-client kubernetes-client
-
-rpm -qa | grep atomic-openshift-client
+rpm -q atomic-openshift-clients
 if [ $? -ne 0 ]; then
-#
-# install oc binary into /usr/bin
-#
+	echo "atomic-openshift-clients is NOT installed"
+	sudo yum list available | grep atomic-openshift-clients
+	if [ $? -ne 0 ]; then
+		echo atomic-openshift-clients package is NOT found
+		sudo yum -y install kubernetes-client
+		FILE=openshift-origin-client-tools-v3.7.0-7ed6862-linux-64bit.tar.gz
+		wget -O /tmp/$FILE \
+		https://github.com/openshift/origin/releases/download/v3.7.0/$FILE
 
-FILE=openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit.tar.gz
-wget -O /tmp/$FILE \
-https://github.com/openshift/origin/releases/download/v1.5.1/$FILE
-
-tar xvzf /tmp/$FILE  -C /tmp
-sudo cp /tmp/openshift-origin-client-tools-v1.5.1-7b451fc-linux-64bit/oc /usr/bin/oc
+		tar xvzf /tmp/$FILE  -C /tmp
+		sudo cp /tmp/openshift-origin-client-tools-v3.7.0-7ed6862-linux-64bit/oc /usr/bin/oc
+	else
+		echo atomic-openshift-clients package IS found
+		sudo yum -y install atomic-openshift-clients
+	fi
 
 fi
-
-#
-# Install libstatgrab dependencies for collectapi container
-#
-
-sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/l/log4cplus-1.1.3-0.4.rc3.el7.x86_64.rpm
-sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/l/log4cplus-devel-1.1.3-0.4.rc3.el7.x86_64.rpm
-sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/l/libstatgrab-0.91-4.el7.x86_64.rpm
-sudo yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/l/libstatgrab-devel-0.91-4.el7.x86_64.rpm
-sudo yum -y install gcc
 
 # install expenv binary for running examples
 go get github.com/blang/expenv
