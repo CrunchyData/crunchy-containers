@@ -191,6 +191,10 @@
                                     "mountPath": "/backrestrepo",
                                     "name": "backrestrepo",
                                     "readOnly": false
+                                }, {
+                                    "mountPath": "/sshd",
+                                    "name": "sshd",
+                                    "readOnly": false
                                 }],
                                 "terminationMessagePath": "/dev/termination-log",
                                 "imagePullPolicy": "IfNotPresent",
@@ -230,6 +234,12 @@
                             },
                             {
                                 "name": "backrestrepo",
+                                "emptyDir": {
+                                    "medium": "Memory"
+                                }
+                            },
+                            {
+                                "name": "sshd",
                                 "emptyDir": {
                                     "medium": "Memory"
                                 }
