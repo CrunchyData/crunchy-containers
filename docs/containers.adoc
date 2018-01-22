@@ -164,16 +164,16 @@ to persist database backups.
    backup with
  * BACKUP_PORT - required, this is the database port we will be doing the
    backup with
-   
+
 == crunchy-dump
 
 The crunchy-dump container executes either a pg_dump or pg_dumpall against another
-Postgres database.  
+Postgres database.
 
 === Dump Location
 
 Dumps are stored in a mounted backup volume location, using the
-database host name plus *-backups*  as a sub-directory, then followed by a unique
+database host name plus *-dumps*  as a sub-directory, then followed by a unique
 backup directory based upon a date/timestamp.  It is left to the
 user to perform database dump archives in this current version
 of the container.  This dump location is referenced when performing
@@ -187,13 +187,13 @@ to persist database dumps.
 === Environment Variables
 
 ==== REQUIRED ARGS
- 
+
  * PGDUMP_DB database we are connecting to
  * PGDUMP_HOST host we are connecting to
  * PGDUMP_PASS pg user password we are connecting with
  * PGDUMP_PORT pg port we are connecting to
  * PGDUMP_USER pg user we are connecting with
- 
+
 ==== OPTIONAL/EXTENDED ARGS
 
  * PGDUMP_ALL option to run pg_dumpall instead of pg_dump (extra all databases of a cluster into a single script file)

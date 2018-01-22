@@ -1,5 +1,5 @@
 = dump (1)
-Steve Hetzel
+Crunchy Data
 January 2018
 == NAME
 dump - dump container image

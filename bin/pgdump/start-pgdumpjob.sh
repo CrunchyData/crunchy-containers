@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-# Copyright 2017 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -78,11 +78,11 @@ function ose_hack() {
 ose_hack
 
 TS=`date +%Y-%m-%d-%H-%M-%S`
-PGDUMP_BASE=/pgdata/$PGDUMP_HOST-backups
+PGDUMP_BASE=/pgdata/$PGDUMP_HOST-dumps
 PGDUMP_PATH=$PGDUMP_BASE/$TS
 
 if [ ! -d "$PGDUMP_BASE" ]; then
-	echo "creating BACKUPBASE directory..."
+	echo "creating PGDUMPBASE directory..."
 	mkdir -p $PGDUMP_BASE
 fi
 
@@ -97,7 +97,7 @@ echo "PGDUMP_LABEL is set to " $PGDUMP_LABEL
 opts=""
 
 if [[ ! -z "$PGDUMP_ALL" && "$PGDUMP_ALL" == "true" ]]; then
-	echo "PGDUMP_ALL is set to $PGDUMP_DB - EXECUTING PGDUMP_ALL INSTEAD OF PG_DUMP!"
+	echo "PGDUMP_ALL is set to $PGDUMP_DBALL - EXECUTING PGDUMP_ALL INSTEAD OF PG_DUMP!"
   echo "Any specified OPTs that don't apply to pg_dumpall will be ignored."
   ALL_OPTS_ONLY=true
 fi
@@ -262,17 +262,9 @@ else # Else, run pg_dump
     pg_dump --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER --dbname $PGDUMP_DB -w $opts
     chown -R $UID:$UID $PGDUMP_FILE
 
-    #
-    # open up permissions for the OSE Dedicated random UID scenario
-    #
-    chmod -R o+rx $PGDUMP_FILE
   else # Else, dump everything to the $PGDUMP_PATH via stdout
     pg_dump --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER --dbname $PGDUMP_DB -w $opts > "$PGDUMP_PATH/pgdump.sql"
     chown -R $UID:$UID $PGDUMP_PATH
 
-    #
-    # open up permissions for the OSE Dedicated random UID scenario
-    #
-    chmod -R o+rx $PGDUMP_PATH
   fi
 fi
