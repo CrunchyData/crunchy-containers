@@ -5,7 +5,7 @@ endif
 .PHONY:	all versiontest
 
 # Default target
-all:    backup backrestrestore collectserver dbaserver grafana pgadmin4 pgbadger pgbouncer pgdump pgpool postgres postgres-gis prometheus promgateway upgrade vac watch/
+all:    backup backrestrestore collectserver dbaserver grafana pgadmin4 pgbadger pgbouncer pgdump pgpool postgres postgres-gis prometheus promgateway upgrade vac watch
 
 versiontest:
 ifndef CCP_BASEOS
