@@ -5,7 +5,7 @@ endif
 .PHONY:	all versiontest
 
 # Default target
-all:    backup backrestrestore collectserver dbaserver grafana pgadmin4 pgbadger pgbouncer pgdump pgpool postgres postgres-gis prometheus promgateway upgrade vac watch
+all:    backup backrestrestore collectserver dbaserver grafana pgadmin4 pgbadger pgbouncer pgdump pgpool postgres postgres-gis prometheus promgateway upgrade vac
 
 versiontest:
 ifndef CCP_BASEOS
@@ -131,12 +131,6 @@ vac: versiontest
 version:
 	docker build -t crunchy-version -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.version.$(CCP_BASEOS) .
 	docker tag crunchy-version crunchydata/crunchy-version:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
-
-watch:
-	cp `which oc` bin/watch
-	cp `which kubectl` bin/watch
-	docker build -t crunchy-watch -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.watch.$(CCP_BASEOS) .
-	docker tag crunchy-watch crunchydata/crunchy-watch:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 #=================
 # Utility targets
