@@ -117,10 +117,10 @@ promgateway: versiontest
 	docker tag crunchy-promgateway crunchydata/crunchy-promgateway:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 upgrade: versiontest
-	ifneq ($(CCP_PGVERSION), 9.5)
-	docker build -t crunchy-upgrade -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.upgrade.$(CCP_BASEOS) .
-	docker tag crunchy-upgrade crunchydata/crunchy-upgrade:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
-	endif
+	if [[ '$(CCP_PGVERSION)' != '9.5' ]]; then \
+		docker build -t crunchy-upgrade -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.upgrade.$(CCP_BASEOS) . ;\
+		docker tag crunchy-upgrade crunchydata/crunchy-upgrade:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION) ;\
+	fi
 
 vac: versiontest
 	cd vacuum && godep go install vacuum.go
