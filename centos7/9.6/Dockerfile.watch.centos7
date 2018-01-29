@@ -41,6 +41,7 @@ RUN yum -y update && yum -y install epel-release \
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
 ADD bin/watch /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
 ADD conf/watch /opt/cpm/conf
 
 RUN chown -R postgres:postgres /opt/cpm

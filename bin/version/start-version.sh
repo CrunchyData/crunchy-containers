@@ -1,4 +1,4 @@
-#!/bin/bash  -x
+#!/bin/bash
 
 # Copyright 2015 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +15,16 @@
 
 #export OSE_HOST=openshift.default.svc.cluster.local
 
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
+
 function create_pgpass() {
-cd /tmp
+    cd /tmp
 cat >> ".pgpass" <<-EOF
 *:*:*:*:${PG_PRIMARY_PASSWORD}
 EOF
-chmod 0600 .pgpass
-export PGPASSFILE=/tmp/.pgpass
+    chmod 0600 .pgpass
+    export PGPASSFILE=/tmp/.pgpass
 }
 
 create_pgpass

@@ -44,6 +44,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
 ADD bin/backup/ /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
 ADD conf/backup/ /opt/cpm/conf
 RUN chown -R postgres:postgres /opt/cpm /pgdata
 

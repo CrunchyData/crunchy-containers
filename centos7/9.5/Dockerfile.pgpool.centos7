@@ -34,6 +34,7 @@ VOLUME ["/pgconf"]
 EXPOSE 5432
 
 ADD bin/pgpool /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
 ADD conf/pgpool /opt/cpm/conf/pgpool
 ADD conf/pgpool/pool_hba.conf  /etc/pgpool-II-95/pool_hba.conf
 ADD conf/pgpool/pool_passwd /etc/pgpool-II-95/pool_passwd

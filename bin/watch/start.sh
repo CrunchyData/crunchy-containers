@@ -1,4 +1,4 @@
-#!/bin/bash  -x
+#!/bin/bash 
 
 # Copyright 2015 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,9 @@
 
 #export OSE_HOST=openshift.default.svc.cluster.local
 
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
+
 function trap_sigterm() {
 	echo "Doing trap logic..."  >> /tmp/trap.out
 	shutdownrequested=true
@@ -22,15 +25,6 @@ function trap_sigterm() {
 
 trap 'trap_sigterm' SIGINT SIGTERM
 shutdownrequested=false
-
-function ose_hack() {
-	export USER_ID=$(id -u)
-	export GROUP_ID=$(id -g)
-	envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
-	export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
-	export NSS_WRAPPER_PASSWD=/tmp/passwd
-	export NSS_WRAPPER_GROUP=/etc/group
-}
 
 CONTAINER_FLAG=
 

@@ -22,6 +22,7 @@ RUN chown -R daemon:daemon /opt/cpm
 EXPOSE 9091
 
 ADD prometheus-pushgateway.tar.gz /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
 ADD bin/promgateway /opt/cpm/bin
 
 USER daemon
