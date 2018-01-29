@@ -31,7 +31,7 @@ RUN yum -y update && yum -y install epel-release \
     procps-ng  \
     rsync \
  && yum -y install postgresql10-server postgresql10-contrib postgresql10 \
-    pgaudit_10 \
+    pgaudit12_10 \
     pgbackrest \
  && yum -y clean all
 
@@ -63,9 +63,6 @@ EXPOSE 5432
 
 ADD bin/postgres /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
-
-# temp hack because PGDG pgaudit is not available at release time
-ADD conf/postgres/postgresql.conf.template.nopgaudit /opt/cpm/conf/postgresql.conf.template
 
 USER 26
 
