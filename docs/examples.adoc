@@ -2377,6 +2377,65 @@ You can verify the upgraded database by running the
 and upgraded database files. Database tables and data that were in the *primary-pvc*
 test database should be found in the *primary-upgrade* database.
 
+=== Performing a pg_dump
+
+The script assumes you are going to backup the *basic*
+container created in the first example, so you need to ensure
+that container is running. This example assumes you have configured NFS as described
+in the link:install.adoc[installation documentation]. Things to point out with this example
+include its use of persistent volumes and volume claims to store the backup data files to
+an NFS server.
+
+A successful backup will perform pg_dump/pg_dumpall on the basic and store
+the resulting files in the NFS mounted volume under a directory named using the database host
+name plus -dumps as a sub-directory, then followed by a unique backup directory based upon a
+date/timestamp - allowing any number of backups to be kept.
+
+The dump script will do the following:
+
+ * Start up a backup container named pgdump-job
+ * Run pg_dump/pg_dumpall on the container named basic
+ * Store the backup in the PV in a path named with a date/timestamp
+ * Exit after the backup
+
+To shutdown the instance and remove the container for each example, run the following:
+....
+./cleanup.sh
+....
+
+==== Docker
+
+Run the backup with this command:
+....
+cd $CCPROOT/examples/docker/pgdump
+./run.sh
+....
+
+==== Kubernetes
+
+Running the example:
+....
+cd $CCPROOT/examples/kube/pgdump-job
+./run.sh
+....
+
+The Kubernetes Job type executes a pod and then the pod exits.  You can
+view the Job status using this command:
+....
+kubectl get job
+....
+
+==== OpenShift
+
+Start the backup:
+....
+cd $CCPROOT/examples/openshift/pgdump-job
+./run.sh
+....
+
+The *pgdump-job.json* file within that directory specifies options that control the behavior of the pgdump-job.
+E.g. Whether to run pg_dump vs pg_dumpall, whether to include verbose output, if database objects should be
+cleanly dropped before being recreated, etc.
 
 ==== SSHD PostgreSQL
 
