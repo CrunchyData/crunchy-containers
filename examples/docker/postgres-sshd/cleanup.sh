@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+CONTAINER_NAME='postgres-sshd'
+DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-kubectl delete endpoints glusterfs-cluster
-kubectl delete pvc gluster-pvc
-kubectl delete pv gluster-pv
-kubectl delete service glusterfs-cluster
-kubectl delete service primary-gluster
-kubectl delete pod primary-gluster
+rm -rf ${DIR?}/keys ${DIR?}/config/authorized_keys
 
-$CCPROOT/examples/waitforterm.sh primary-gluster kubectl
+docker stop ${CONTAINER_NAME?}
+docker rm -v ${CONTAINER_NAME?}
+docker volume rm pgdata
+docker volume rm backrestrepo 

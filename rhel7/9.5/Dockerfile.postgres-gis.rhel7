@@ -37,18 +37,19 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
  && yum -y update && yum --enablerepo=epel --enablerepo="rhel-7-server-optional-rpms" -y install bind-utils \
-        R-core libRmath texinfo-tex texlive-epsf \
-        gettext \
-        hostname \
-        nss_wrapper \
-        openssh-clients \
-        procps-ng \
-        rsync \
-        postgresql95 postgresql95-contrib postgresql95-server \
-        pgaudit95 pgaudit95_set_user \
-        crunchy-backrest \
-        postgis2_95 postgis2_95-client pgrouting_95 plr95 \
+    R-core libRmath texinfo-tex texlive-epsf \
+    gettext \
+    hostname \
+    nss_wrapper \
+    openssh-server \
+    openssh-clients \
+    procps-ng \
+    rsync \
  && yum -y reinstall glibc-common \
+ && yum -y install postgresql95 postgresql95-contrib postgresql95-server \
+    pgaudit95 pgaudit95_set_user \
+    crunchy-backrest \
+    postgis2_95 postgis2_95-client pgrouting_95 plr95 \
  && yum -y --setopt=tsflags='' install pgaudit_analyze \
  && yum -y clean all
 
@@ -56,20 +57,25 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 ADD conf/.bash_profile /var/lib/pgsql/
 
 # set up cpm directory
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
-	/pgdata /pgwal /pgconf /backup /recover /backrestrepo
+    /pgdata /pgwal /pgconf /backup /recover /backrestrepo
+
+# Link pgbackrest.conf to default location for convenience
+# Remove nologin file to prevent sshd from being blocked
+RUN ln -sf /pgconf/pgbackrest.conf /etc/pgbackrest.conf \
+  && rm -f /run/nologin
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
 # add volumes to allow backup of postgres files
 # add volumes to offer a restore feature
 # add volumes to allow storage of postgres WAL segment files
 # add volumes to locate WAL files to recover with
-# volume for pgbackrest to write to
+# add volumes for pgbackrest to write to
+# add volumes for sshd host keys
 
-VOLUME /pgconf /pgdata /pgwal \
-  /backup /recover /backrestrepo
+VOLUME ["/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo", "/sshd"]
 
 # open up the postgres port
 EXPOSE 5432

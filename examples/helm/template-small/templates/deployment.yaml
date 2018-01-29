@@ -1,0 +1,77 @@
+kind: Deployment
+apiVersion: extensions/v1beta1
+metadata:
+  name: "{{.Values.container.name.primary}}"
+  labels:
+    name: "{{.Values.container.name.primary}}"
+    app: "{{.Values.container.name.primary}}"
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+  annotations:
+    "helm.sh/created": {{.Release.Time.Seconds | quote }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "{{.Values.container.name.primary}}"
+  template:
+    metadata:
+      labels:
+        app: "{{.Values.container.name.primary}}"
+    spec:
+      securityContext: {}
+      containers:
+      - name: {{.Values.container.name.primary}}
+        image: "{{.Values.image.repository}}/{{.Values.image.container}}:{{.Values.image.tag}}"
+        ports:
+        - containerPort: {{.Values.container.port}}
+          name: postgres
+        env:
+        - name: PG_PRIMARY_PORT
+          value: '5432'
+        - name: PG_MODE
+          value: primary
+        - name: PGDATA_PATH_OVERRIDE
+          value: "{{.Values.container.name.primary}}"
+        - name: PG_PRIMARY_USER
+          value: primaryuser
+        - name: PG_PRIMARY_PORT
+          value: "{{.Values.container.port}}"
+        - name: PG_PRIMARY_PASSWORD
+          value: "{{.Values.credentials.primary}}"
+        - name: PG_USER
+          value: testuser
+        - name: PG_PASSWORD
+          value: "{{.Values.credentials.user}}"
+        - name: PG_DATABASE
+          value: userdb
+        - name: PG_ROOT_PASSWORD
+          value: "{{.Values.credentials.root}}"
+        - name: PG_DATABASE
+          value: userdb
+        - name: SYNC_REPLICA
+          value: ''
+        - name: PGHOST
+          value: "/tmp"
+        volumeMounts:
+        - mountPath: "/pgdata"
+          name: pgdata
+          readOnly: false
+        ports:
+        - containerPort: {{.Values.container.port}}
+          protocol: TCP
+        resources:
+          requests:
+            cpu: {{ .Values.resources.cpu }}
+            memory: {{ .Values.resources.memory }}
+        imagePullPolicy: IfNotPresent
+      volumes:
+      - emptyDir: {}
+        name: pgdata
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1

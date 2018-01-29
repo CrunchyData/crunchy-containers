@@ -22,18 +22,17 @@ RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_
 RUN yum -y update && yum -y install epel-release \
  && yum -y update glibc-common \
  && yum -y install bind-utils \
-	gettext \
-	hostname \
-	nss_wrapper \
-	openssh-clients \
-	kubernetes-client \
- 	procps-ng  \
-	rsync \
- && yum -y clean all
-
-RUN yum -y install postgresql10-server postgresql10-contrib postgresql10 \
-	pgaudit_10 \
-	pgbackrest \
+    gettext \
+    hostname \
+    nss_wrapper \
+    openssh-server \
+    openssh-clients \
+    kubernetes-client \
+    procps-ng  \
+    rsync \
+ && yum -y install postgresql10-server postgresql10-contrib postgresql10 \
+    pgaudit12_10 \
+    pgbackrest \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
@@ -41,30 +40,29 @@ ENV PGROOT="/usr/pgsql-${PGVERSION}"
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/
 
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
-	/pgdata /pgwal /pgconf /backup /recover /backrestrepo
+    /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
+# Link pgbackrest.conf to default location for convenience
+RUN ln -sf /pgconf/pgbackrest.conf /etc/pgbackrest.conf
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
 # add volumes to allow backup of postgres files
 # add volumes to offer a restore feature
 # add volumes to allow storage of postgres WAL segment files
 # add volumes to locate WAL files to recover with
-# volume for pgbackrest to write to
+# add volumes for pgbackrest to write to
+# add volumes for sshd host keys
 
-VOLUME /pgconf /pgdata /pgwal \
-  /backup /recover /backrestrepo
+VOLUME ["/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo", "/sshd"]
 
 # open up the postgres port
 EXPOSE 5432
 
 ADD bin/postgres /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
-
-# temp hack because PGDG pgaudit is not available at release time
-ADD conf/postgres/postgresql.conf.template.nopgaudit /opt/cpm/conf/postgresql.conf.template
 
 USER 26
 

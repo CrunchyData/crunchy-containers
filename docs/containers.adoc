@@ -77,6 +77,7 @@ executed when the database is first created.
  * SHARED_BUFFERS - default is 128MB, set this value to override this PostgreSQL configuration setting
  * WORK_MEM - default is 4MB, set this value to override this PostgreSQL configuration setting
  * MAX_WAL_SENDERS - default is 6, set this value to override this PostgreSQL configuration setting
+ * ENABLE_SSHD- default is false, set this value to true to enable SSHD.  See link:sshd.adoc[SSHD Documentation] for detailed setup instructions
 
 === Features
 
@@ -92,6 +93,7 @@ The following features are supported by the crunchy-postgres container:
  * ability to specify a recovery using PITR and WAL files, see
    pitr.adoc for a detailed design explanation of how PITR
    is implemented within the container suite
+ * ability to enable SSHD 
 
 === Locale Support
 

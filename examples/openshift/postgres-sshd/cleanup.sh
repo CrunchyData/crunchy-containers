@@ -13,17 +13,14 @@
 # limitations under the License.
 
 
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+oc delete service postgres-sshd
+oc delete pod postgres-sshd
+oc delete configmap pgconf
+oc delete secret sshd-secrets
 
-expenv -f $DIR/gluster-endpoint.json | kubectl create -f -
-kubectl create -f $DIR/gluster-pv.json
-kubectl create -f $DIR/gluster-pvc.json
+$CCPROOT/examples/waitforterm.sh postgres-sshd oc
+rm -rf ${DIR?}/keys
 
-kubectl create -f $LOC/primary-gluster-service.json
-
-echo "sleeping a bit before creating the pod..."
-sleep 10
-expenv -f $LOC/primary-gluster-pod.json | kubectl create -f -
+sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/archive $PV_PATH/backup

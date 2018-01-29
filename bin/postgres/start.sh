@@ -475,8 +475,8 @@ esac
 
 
 if [ -f /pgconf/postgresql.conf ]; then
-       	echo "pgconf postgresql.conf is being used"
-	postgres -c config_file=/pgconf/postgresql.conf -c hba_file=/pgconf/pg_hba.conf -D $PGDATA  &
+    echo "pgconf postgresql.conf is being used"
+    postgres -c config_file=/pgconf/postgresql.conf -c hba_file=/pgconf/pg_hba.conf -D $PGDATA  &
 else
 	postgres -D $PGDATA  &
 fi
@@ -484,8 +484,13 @@ fi
 date
 
 if [[ -v PGAUDIT_ANALYZE ]]; then
-	echo "pgaudit_analyze will be started up..."
-	pgaudit_analyze $PGDATA/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
+    echo "pgaudit_analyze will be started up..."
+    pgaudit_analyze $PGDATA/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
+fi
+
+if [[ ${ENABLE_SSHD} == "true" ]]; then
+    source /opt/cpm/bin/sshd.sh
+    start_sshd
 fi
 
 # We will wait indefinitely until "docker stop [container_id]"

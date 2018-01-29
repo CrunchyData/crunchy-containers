@@ -5,7 +5,7 @@ endif
 .PHONY:	all versiontest
 
 # Default target
-all:    backup backrestrestore collectserver dbaserver grafana pgadmin4 pgbadger pgbouncer pgdump pgpool postgres postgres-gis prometheus promgateway upgrade vac watch
+all:    backup backrestrestore collectserver dbaserver grafana pgadmin4 pgbadger pgbouncer pgdump pgpool postgres postgres-gis prometheus promgateway upgrade vac
 
 versiontest:
 ifndef CCP_BASEOS
@@ -37,21 +37,16 @@ docbuild:
 #=============================================
 # Targets that generate images (alphabetized)
 #=============================================
-upgrade: versiontest
-    ifneq ($(CCP_PGVERSION), 9.5)
-	docker build -t crunchy-upgrade -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.upgrade.$(CCP_BASEOS) .
-	docker tag crunchy-upgrade crunchydata/crunchy-upgrade:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
-    endif
-
-backup:	versiontest
-	docker build -t crunchy-backup -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backup.$(CCP_BASEOS) .
-	docker tag crunchy-backup crunchydata/crunchy-backup:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 backrestrestore: versiontest
 	docker build -t crunchy-backrest-restore -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backrest-restore.$(CCP_BASEOS) .
 	docker tag crunchy-backrest-restore crunchydata/crunchy-backrest-restore:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-collectserver:	versiontest
+backup:	versiontest
+	docker build -t crunchy-backup -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backup.$(CCP_BASEOS) .
+	docker tag crunchy-backup crunchydata/crunchy-backup:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+
+collectserver: versiontest
 	cd collect && godep go install collectserver.go
 	cp $(GOBIN)/collectserver bin/collect
 	docker build -t crunchy-collect -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.collect.$(CCP_BASEOS) .
@@ -65,21 +60,21 @@ dbaserver:
 	docker build -t crunchy-dba -f $(CCP_BASEOS)/Dockerfile.dba.$(CCP_BASEOS) .
 	docker tag crunchy-dba crunchydata/crunchy-dba:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-grafana:	versiontest
+grafana: versiontest
 	docker build -t crunchy-grafana -f $(CCP_BASEOS)/Dockerfile.grafana.$(CCP_BASEOS) .
 	docker tag crunchy-grafana crunchydata/crunchy-grafana:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-pgadmin4:	versiontest
+pgadmin4: versiontest
 	docker build -t crunchy-pgadmin4 -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgadmin4.$(CCP_BASEOS) .
 	docker tag crunchy-pgadmin4 crunchydata/crunchy-pgadmin4:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-pgbadger:	versiontest
+pgbadger: versiontest
 	cd badger && godep go install badgerserver.go
 	cp $(GOBIN)/badgerserver bin/pgbadger
 	docker build -t crunchy-pgbadger -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbadger.$(CCP_BASEOS) .
 	docker tag crunchy-pgbadger crunchydata/crunchy-pgbadger:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-pgbouncer:	versiontest
+pgbouncer: versiontest
 	cp `which oc` bin/pgbouncer
 	cp `which kubectl` bin/pgbouncer
 	cd bounce && godep go install bounce.go
@@ -95,13 +90,19 @@ pgpool:	versiontest
 	docker build -t crunchy-pgpool -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgpool.$(CCP_BASEOS) .
 	docker tag crunchy-pgpool crunchydata/crunchy-pgpool:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-postgres:	versiontest
+pgsim:
+	cd sim && make
+	cp sim/build/crunchy-sim bin/crunchy-sim
+	docker build -t crunchy-sim -f $(CCP_BASEOS)/Dockerfile.sim.$(CCP_BASEOS) .
+	docker tag crunchy-sim crunchydata/crunchy-sim:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+
+postgres: versiontest
 	cp `which kubectl` bin/postgres
 	cp `which oc` bin/postgres
 	docker build -t crunchy-postgres -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres.$(CCP_BASEOS) .
 	docker tag crunchy-postgres crunchydata/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-postgres-gis:	versiontest
+postgres-gis: versiontest
 	cp `which kubectl` bin/postgres
 	cp `which oc` bin/postgres
 	docker build -t crunchy-postgres-gis -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS) .
@@ -111,11 +112,17 @@ prometheus:	versiontest
 	docker build -t crunchy-prometheus -f $(CCP_BASEOS)/Dockerfile.prometheus.$(CCP_BASEOS) .
 	docker tag crunchy-prometheus crunchydata/crunchy-prometheus:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-promgateway:	versiontest
+promgateway: versiontest
 	docker build -t crunchy-promgateway -f $(CCP_BASEOS)/Dockerfile.promgateway.$(CCP_BASEOS) .
 	docker tag crunchy-promgateway crunchydata/crunchy-promgateway:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-vac:	versiontest
+upgrade: versiontest
+	if [[ '$(CCP_PGVERSION)' != '9.5' ]]; then \
+		docker build -t crunchy-upgrade -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.upgrade.$(CCP_BASEOS) . ;\
+		docker tag crunchy-upgrade crunchydata/crunchy-upgrade:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION) ;\
+	fi
+
+vac: versiontest
 	cd vacuum && godep go install vacuum.go
 	cp $(GOBIN)/vacuum bin/vacuum
 	docker build -t crunchy-vacuum -f $(CCP_BASEOS)/Dockerfile.vacuum.$(CCP_BASEOS) .
@@ -124,18 +131,6 @@ vac:	versiontest
 version:
 	docker build -t crunchy-version -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.version.$(CCP_BASEOS) .
 	docker tag crunchy-version crunchydata/crunchy-version:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
-
-watch:
-	cp `which oc` bin/watch
-	cp `which kubectl` bin/watch
-	docker build -t crunchy-watch -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.watch.$(CCP_BASEOS) .
-	docker tag crunchy-watch crunchydata/crunchy-watch:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
-
-pgsim:
-	cd sim && make
-	cp sim/build/crunchy-sim bin/crunchy-sim
-	docker build -t crunchy-sim -f $(CCP_BASEOS)/Dockerfile.sim.$(CCP_BASEOS) .
-	docker tag crunchy-sim crunchydata/crunchy-sim:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 #=================
 # Utility targets

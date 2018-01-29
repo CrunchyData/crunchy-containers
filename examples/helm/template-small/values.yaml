@@ -1,0 +1,28 @@
+name: template-small
+container:
+  port: 5432
+  name:
+    default: template-small
+    primary: primary
+credentials:
+  primary: password
+  root: password
+  user: password
+serviceType: ClusterIP
+image:
+  repository: crunchydata
+  container: crunchy-postgres
+  tag: centos7-10.1-1.7.0
+nfs:
+  serverIP: 10.0.1.4
+  path: /mnt/nfsfileshare
+pv:
+  storage: 400M
+  name: template-small-pv
+pvc:
+  name: template-small-pvc
+resources:
+  cpu: 200m
+  memory: 512Mi
+persistence:
+  accessModes: ReadWriteMany

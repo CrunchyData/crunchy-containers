@@ -22,18 +22,17 @@ RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/r
 RUN yum -y update && yum -y install epel-release \
  && yum -y update glibc-common \
  && yum -y install bind-utils \
-	gettext \
-	hostname \
-	nss_wrapper \
-	openssh-clients \
-	kubernetes-client \
- 	procps-ng  \
-	rsync \
- && yum -y clean all
-
-RUN yum -y install postgresql95-server postgresql95-contrib postgresql95 \
-	pgaudit_95 \
-	pgbackrest \
+    gettext \
+    hostname \
+    nss_wrapper \
+    openssh-server \
+    openssh-clients \
+    kubernetes-client \
+    procps-ng  \
+    rsync \
+ && yum -y install postgresql95-server postgresql95-contrib postgresql95 \
+    pgaudit_95 \
+    pgbackrest \
  && yum -y clean all
 
 ENV	PGROOT="/usr/pgsql-${PGVERSION}"
@@ -42,21 +41,23 @@ ENV	PGROOT="/usr/pgsql-${PGVERSION}"
 ADD conf/.bash_profile /var/lib/pgsql/
 
 # set up cpm directory
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
-	/pgdata /pgwal /pgconf /backup /recover /backrestrepo
+    /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
+# Link pgbackrest.conf to default location for convenience
+RUN ln -sf /pgconf/pgbackrest.conf /etc/pgbackrest.conf
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
 # add volumes to allow backup of postgres files
 # add volumes to offer a restore feature
 # add volumes to allow storage of postgres WAL segment files
 # add volumes to locate WAL files to recover with
-# volume for pgbackrest to write to
+# add volumes for pgbackrest to write to
+# add volumes for sshd host keys
 
-VOLUME /pgconf /pgdata /pgwal \
-  /backup /recover /backrestrepo
+VOLUME ["/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo", "/sshd"]
 
 # open up the postgres port
 EXPOSE 5432
