@@ -16,12 +16,15 @@ This document describes what is needed to activate SSHD in the PostgreSQL contai
 
 In order to activate SSHD in the PostgreSQL containers, the following files need to be 
 mounted to the PostgreSQL container:
- * SSH Host keys mounted on the /sshd volume. Three keys are required:
+
+- SSH Host keys mounted on the /sshd volume. Three keys are required:
+
   * ssh_host_rsa_key
   * ssh_host_ecdsa_key
   * ssh_host_ed25519_key
- * sshd_config mounted on the /pgconf volume.  
- * authorized_keys mounted on the /pgconf volume.
+  
+- sshd_config mounted on the /pgconf volume
+- authorized_keys mounted on the /pgconf volume
 
 SSHD can be enabled in the PostgreSQL containers by adding the following 
 
