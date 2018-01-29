@@ -1,4 +1,4 @@
-#!/bin/bash  -x
+#!/bin/bash
 
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,16 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-function ose_hack() {
-	export USER_ID=$(id -u)
-	export GROUP_ID=$(id -g)
-	envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
-	envsubst < /opt/cpm/conf/group.template > /tmp/group
-	export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
-	export NSS_WRAPPER_PASSWD=/tmp/passwd
-	export NSS_WRAPPER_GROUP=/tmp/group
-}
-
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
 
 function start_sshd() {
     ose_hack

@@ -21,6 +21,7 @@ RUN mkdir -p /opt/cpm/bin
 RUN mkdir -p /opt/cpm/conf
 
 ADD bin/dba /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
 ADD conf/dba /opt/cpm/conf
 
 USER root

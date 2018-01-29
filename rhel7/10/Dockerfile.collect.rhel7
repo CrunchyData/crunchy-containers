@@ -52,6 +52,7 @@ ADD postgres_exporter /opt/cpm/bin
 ADD node_exporter.tar.gz /opt/cpm/bin
 
 ADD bin/collect /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
 
 RUN chown -R postgres:postgres /opt/cpm/bin
 

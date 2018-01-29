@@ -21,6 +21,7 @@ EXPOSE 9090
 
 ADD prometheus.tar.gz /opt/cpm/bin
 ADD bin/prometheus /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
 ADD conf/prometheus /opt/cpm/conf
 
 RUN chown -R daemon:daemon /opt/cpm /data

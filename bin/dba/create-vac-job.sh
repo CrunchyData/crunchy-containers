@@ -17,6 +17,9 @@
 #/opt/cpm/bin/oc login https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true --token="$TOKEN"
 #/opt/cpm/bin/oc projects $OSE_PROJECT
 
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
+
 echo "create-vac-job.sh......"
 echo $1 is tempfile
 echo $2 is JOB_HOST

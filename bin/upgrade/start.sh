@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,6 +24,9 @@
 # $OLD_VERSION (e.g. 9.5) 
 # $NEW_VERSION (e.g. 9.6)
 #
+
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
 
 function trap_sigterm() {
         echo "doing trap logic..." >> $PGDATA/trap.output
@@ -59,16 +62,6 @@ if [[ ! -d "$PGDATANEW" ]]; then
 	echo $PGDATANEW " does not exist and is required"
 #	exit 2
 fi
-
-function ose_hack() {
-        export USER_ID=$(id -u)
-        export GROUP_ID=$(id -g)
-        envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
-        export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
-        export NSS_WRAPPER_PASSWD=/tmp/passwd
-        export NSS_WRAPPER_GROUP=/etc/group
-}
-
 
 ose_hack
 

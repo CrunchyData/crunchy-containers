@@ -1,4 +1,4 @@
-#!/bin/bash  -x
+#!/bin/bash 
 
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,9 @@
 
 set -e
 
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
+
 echo STANZA $STANZA set
 if [ ! -v STANZA ]; then
 	echo "STANZA env var is not set, required value"
@@ -25,14 +28,7 @@ echo "Starting restore. Examine restore log in /backrestrepo for results" `date`
 
 # this lets us run the pgbackrest cmd  on Openshift
 # when it is configured to use random UIDs
-export USER_ID=$(id -u)
-export GROUP_ID=$(id -g)
-envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
-envsubst < /opt/cpm/conf/group.template > /tmp/group
-export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
-export NSS_WRAPPER_PASSWD=/tmp/passwd
-export NSS_WRAPPER_GROUP=/tmp/group
-
+ose_hack
 
 if [ -v DELTA ]; then
     pgbackrest --config=/pgconf/pgbackrest.conf --stanza=$STANZA --log-path=/backrestrepo --delta restore

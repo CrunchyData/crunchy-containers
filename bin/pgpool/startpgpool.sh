@@ -14,6 +14,10 @@
 # limitations under the License.
 
 # clean up leftovers from previous runs of pgpool
+
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
+
 rm -rf /tmp/pgpool.pid
 rm -rf /tmp/.s.*
 

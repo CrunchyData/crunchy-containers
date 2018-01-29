@@ -78,6 +78,8 @@ executed when the database is first created.
  * WORK_MEM - default is 4MB, set this value to override this PostgreSQL configuration setting
  * MAX_WAL_SENDERS - default is 6, set this value to override this PostgreSQL configuration setting
  * ENABLE_SSHD- default is false, set this value to true to enable SSHD.  See link:sshd.adoc[SSHD Documentation] for detailed setup instructions
+ * DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.
 
 === Features
 
@@ -166,6 +168,8 @@ to persist database backups.
    backup with
  * BACKUP_PORT - required, this is the database port we will be doing the
    backup with
+ * DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.
 
 == crunchy-dump
 
@@ -225,6 +229,8 @@ to persist database dumps.
  * PGDUMP_TABLE option to specify which tables matched by the specified pattern are output by pg_dump
  * PGDUMP_TABLESTOEXCLUDE option to specify which tables matched by the specified pattern should be excluded from the output by pg_dump
  * PGDUMP_VERBOSE option to specify verbose mode to output detailed object comments and start/stop times to the output by pg_dump; as well as progress messages to standard error (STDERR)
+ * DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.
 
 == crunchy-collect
 
@@ -254,6 +260,8 @@ which is found in the crunchy-grafana container.
  * NODE_EXPORTER_URL - The HTTP URL of the node_exporter utility which collects host and OS level system metrics.
  * POSTGRES_EXPORTER_URL - The HTTP URL of the postgres_exporter utility which collects PostgreSQL server metrics.
  * DATA_SOURCE_NAME - The URL for the PostgreSQL server's data source name. This is *required* to be in the form of *postgresql://*.
+ * DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.
 
 == crunchy-prometheus
 
@@ -281,6 +289,11 @@ The crunchy-prometheus data in this example is stored in emptyDir volume types.
 To persist the data and Grafana templates in the long term, you will want to
 use a pvc based volume type as specified in *examples/openshift/metrics/run-pvc.json*.
 
+=== Environment Variables
+
+ * DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.
+
 == crunchy-promgateway
 
 === Description
@@ -295,6 +308,11 @@ link:https://github.com/CrunchyData/crunchy-containers/blob/master/docs/metrics.
 The following port is exposed by the crunchy-promgateway container:
 
 * crunchy-promgateway:9091 - the Prometheus promgateway REST API
+
+=== Environment Variables
+
+ * DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.
 
 == crunchy-grafana
 
@@ -314,6 +332,11 @@ The following port is exposed by the crunchy-grafana container:
 
 * crunchy-grafana:3000 - the Grafana web user interface
 
+=== Environment Variables
+
+ * DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.
+
 == crunchy-pgbadger
 
 The crunchy-pgbadger container executes the pgbadger utility.  A small
@@ -329,6 +352,8 @@ http://<<ip address>>:10000/api/badgergenerate
  * BADGER_TARGET - only used in standalone mode to specify the
    name of the container, also used to find the location of the
    database log files in /pgdata/$BADGER_TARGET/pg_log/*.log
+ * DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.
 
 === Features
 
@@ -352,7 +377,9 @@ capable.
  * PG_PASSWORD - user password to connect to PostgreSQL
  * PG_PRIMARY_SERVICE_NAME - database host to connect to for the primary node
  * PG_REPLICA_SERVICE_NAME - database host to connect to for the replica node
-
+ * DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.
+ 
 === Features
 
 The following features are supported by the crunchy-pgpool container:
@@ -417,6 +444,8 @@ the watch logic to interact with the replica containers.
    the normal replica selection
  * WATCH_PRE_HOOK - path to an executable file to run before failover is processed.
  * WATCH_POST_HOOK - path to an executable file to run after failover is processed.
+ * DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.
 
 === Logic
 
@@ -467,6 +496,8 @@ The complete set of environment variables read by the crunchy-vacuum job include
     * VAC_ANALYZE - when set to true adds the ANALYZE parameter to the VACUUM command
     * VAC_VERBOSE - when set to true adds the VERBOSE parameter to the VACUUM command
     * VAC_FREEZE - when set to true adds the FREEZE parameter to the VACUUM command
+    * DEBUG - default is false, set this value to true to debugging in logs.
+      Note: this mode can reveal secrets in logs.
 
 == crunchy-dba
 
@@ -493,6 +524,8 @@ of crunchy-dba:
  setting value must be a valid cron expression as described below.
  * BACKUP_SCHEDULE - if set, this will start a backup job container.  The
  setting value must be a valid cron expression as described below.
+ * DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.
 
 For a vacuum job, you are required to supply the following
 environment variables:
@@ -520,7 +553,6 @@ environment variables:
  * BACKUP_PV_HOST - the NFS host used to build the PV
  * BACKUP_PVC_STORAGE - a value like 75M means to allow 75 megabytes for the PVC used
  in performing the backup
-
 
 === CRON Expression Format
 
@@ -673,6 +705,8 @@ utility and a failover watch script.
  * PG_PRIMARY_SERVICE - the name of the primary database container
  * PG_REPLICA_SERVICE - the name of the replica database container, this is
    used to know which container to trigger the failover on
+ * DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.
 
 === Features
 
@@ -696,7 +730,12 @@ The crunchy-backrest-restore container executes the pgbackrest utility, allowing
 === Environment Variables
 
  * STANZA - required - must be set to the desired stanza for restore
- * DELTA - when set, will add the --delta option to the restore. The delta option allows pgBackRest to automatically determine which files in the database cluster directory can be preserved and which ones need to be restored from the backup — it also removes files not present in the backup manifest so it will dispose of divergent changes.
+ * DELTA - when set, will add the --delta option to the restore. The delta option 
+   allows pgBackRest to automatically determine which files in the database cluster 
+   directory can be preserved and which ones need to be restored from the backup — 
+   it also removes files not present in the backup manifest so it will dispose of divergent changes.
+ * DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.
 
 === Features
 
@@ -762,6 +801,8 @@ a 9.5 to a 9.6 version.
    option when initdb is executed at initialization, if not set, the
    default is to *not* enable data checksums
  * XLOGDIR - if set, initdb will use the specified directory for WAL
+ * DEBUG - default is false, set this value to true to debugging in logs.  
+   Note: this mode can reveal secrets in logs.
 
 === Features
 
@@ -791,6 +832,8 @@ The crunchy-sim container is a simple traffic simulator for PostgreSQL
 * PGSIM_INTERVAL - required, The units of the simulation interval
 * PGSIM_MININTERVAL - required, the minimum interval value
 * PGSIM_MAXINTERVAL - requited, the maximum interval value
+* DEBUG - default is false, set this value to true to debugging in logs.  
+  Note: this mode can reveal secrets in logs.
 
 Valid values for PGSIM_INTERVAL are as follows:
 

@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,6 +16,9 @@
 #export TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
 #/opt/cpm/bin/oc login https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true --token="$TOKEN"
 #/opt/cpm/bin/oc projects $OSE_PROJECT
+
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
 
 echo "create-backup-job.sh......"
 echo $1 is template for backup

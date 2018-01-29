@@ -14,6 +14,10 @@
 # limitations under the License.
 
 #export OSE_HOST=openshift.default.svc.cluster.local
+
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
+
 if [ ! -v SLEEP_TIME ]; then
 	SLEEP_TIME=10
 fi

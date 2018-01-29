@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
+
 echo $PG_USER is PG_USER
 if [ ! -v PG_USER ]; then
 	echo "PG_USER env var is not set, required value"

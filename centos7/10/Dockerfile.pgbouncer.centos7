@@ -41,6 +41,7 @@ VOLUME ["/pgconf"]
 EXPOSE 5432
 
 ADD bin/pgbouncer /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
 ADD conf/pgbouncer /opt/cpm/conf
 
 RUN chown -R daemon:daemon /opt/cpm/bin
