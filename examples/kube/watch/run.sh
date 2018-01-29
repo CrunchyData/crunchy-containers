@@ -12,22 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-# Create 'watch-hooks-configmap'.
 kubectl create configmap watch-hooks-configmap \
-		--from-file=./hooks/watch-pre-hook \
-		--from-file=./hooks/watch-post-hook
+                --from-file=./hooks/watch-pre-hook \
+                --from-file=./hooks/watch-post-hook
 
 kubectl create -f $DIR/watch-sa.json
 
 kubectl create rolebinding pg-watcher-sa-edit \
   --clusterrole=edit \
-  --serviceaccount=default:pg-watcher \
-  --namespace=default
+  --serviceaccount=demo:pg-watcher \
+  --namespace=demo
 
-expenv -f $DIR/watch-pod.json | kubectl create -f -
+envsubst < $DIR/watch-pod.yaml | kubectl create -f -
+

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,7 +13,10 @@
 # limitations under the License.
 
 kubectl delete pod watch
-kubectl delete serviceaccount pg-watcher
+../../waitforterm.sh watch kubectl
+
+kubectl delete sa pg-watcher
+
 kubectl delete rolebinding pg-watcher-sa-edit
+
 kubectl delete configmap watch-hooks-configmap
-$CCPROOT/examples/waitforterm.sh watch kubectl
