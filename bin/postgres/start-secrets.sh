@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
+
 export PG_MODE=$PG_MODE
 export PG_PRIMARY_HOST=$PG_PRIMARY_HOST
 export PG_PRIMARY_PORT=$PG_PRIMARY_PORT

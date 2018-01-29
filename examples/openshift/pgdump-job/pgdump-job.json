@@ -30,7 +30,7 @@
       "name": "DATABASE_USER",
       "displayName": "Database User",
       "description": "The database user the backup will be done with.",
-      "value": "primaryuser"
+      "value": "postgres"
     }, {
       "name": "DATABASE_PASS",
       "displayName": "Database User Password",

@@ -13,10 +13,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/cpm/bin/common_lib.sh
-enable_debugging
-source /opt/cpm/bin/setenv.sh
+function enable_debugging() {
+    if [[ ${DEBUG:-false} == "true" ]]
+    then
+        echo "Turning Debugging On"
+        export PS4='+(${BASH_SOURCE}:${LINENO})> ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
+        set -x
+    fi
+}
 
-ose_hack
-
-$PGROOT/bin/psql -f /opt/cpm/bin/readiness.sql -U $PG_USER postgres
+function ose_hack() {
+    export USER_ID=$(id -u)
+    export GROUP_ID=$(id -g)
+    envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
+    export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
+    export NSS_WRAPPER_PASSWD=/tmp/passwd
+    export NSS_WRAPPER_GROUP=/etc/group
+}

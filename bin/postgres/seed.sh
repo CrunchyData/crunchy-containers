@@ -18,6 +18,8 @@
 # we will execute this script on each host since
 # we dont' want to open up the superuser 'postgres' access 
 # to outside of the container
-#
+
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
 
 psql -U postgres postgres < /opt/cpm/bin/setup.sql

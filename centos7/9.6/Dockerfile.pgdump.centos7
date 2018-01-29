@@ -34,6 +34,7 @@ RUN yum -y update && yum install -y epel-release \
 
 RUN mkdir -p /opt/cpm/bin /pgdata /opt/cpm/conf
 ADD bin/pgdump/ /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
 ADD conf/pgdump/ /opt/cpm/conf
 RUN chown -R postgres:postgres /opt/cpm /pgdata
 

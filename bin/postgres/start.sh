@@ -1,4 +1,4 @@
-#!/bin/bash  -x
+#!/bin/bash 
 
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,6 +12,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
 
 function trap_sigterm() {
 	echo "Doing trap logic..." >> $PGDATA/trap.output
@@ -141,17 +144,6 @@ function role_discovery() {
 		echo "Setting PG_MODE to replica."
 		export PG_MODE=replica
 	fi
-}
-
-# this lets us run initdb and postgres on Openshift
-# when it is configured to use random UIDs
-function ose_hack() {
-	export USER_ID=$(id -u)
-	export GROUP_ID=$(id -g)
-	envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
-	export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
-	export NSS_WRAPPER_PASSWD=/tmp/passwd
-	export NSS_WRAPPER_GROUP=/etc/group
 }
 
 function initdb_logic() {
@@ -295,11 +287,11 @@ function fill_conf_file() {
 }
 
 function create_pgpass() {
-cd /tmp
+    cd /tmp
 cat >> ".pgpass" <<-EOF
 *:*:*:*:${PG_PRIMARY_PASSWORD}
 EOF
-chmod 0600 .pgpass
+    chmod 0600 .pgpass
 }
 
 function waitforpg() {
@@ -331,102 +323,102 @@ function waitforpg() {
 }
 
 function initialize_replica() {
-echo "initialize_replica"
-rm -rf $PGDATA/*
-chmod 0700 $PGDATA
+    echo "initialize_replica"
+    rm -rf $PGDATA/*
+    chmod 0700 $PGDATA
 
-echo "Waiting to give the primary time to start up and register its hostname with Docker before performing the initial backup..."
+    echo "Waiting to give the primary time to start up and register its hostname with Docker before performing the initial backup..."
 
-waitforpg
+    waitforpg
 
-pg_basebackup -X fetch --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST --port=$PG_PRIMARY_PORT -U $PG_PRIMARY_USER
+    pg_basebackup -X fetch --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST --port=$PG_PRIMARY_PORT -U $PG_PRIMARY_USER
 
-# PostgreSQL recovery configuration.
-if [[ -v SYNC_REPLICA ]]; then
-	echo "SYNC_REPLICA set"
-	APPLICATION_NAME=$SYNC_REPLICA
-else
-	APPLICATION_NAME=$HOSTNAME
-	echo "SYNC_REPLICA not set"
-fi
-echo $APPLICATION_NAME " is the APPLICATION_NAME being used"
+    # PostgreSQL recovery configuration.
+    if [[ -v SYNC_REPLICA ]]; then
+        echo "SYNC_REPLICA set"
+        APPLICATION_NAME=$SYNC_REPLICA
+    else
+        APPLICATION_NAME=$HOSTNAME
+        echo "SYNC_REPLICA not set"
+    fi
+    echo $APPLICATION_NAME " is the APPLICATION_NAME being used"
 
-cp /opt/cpm/conf/pgrepl-recovery.conf /tmp
-sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pgrepl-recovery.conf
-sed -i "s/PG_PRIMARY_HOST/$PG_PRIMARY_HOST/g" /tmp/pgrepl-recovery.conf
-sed -i "s/PG_PRIMARY_PORT/$PG_PRIMARY_PORT/g" /tmp/pgrepl-recovery.conf
-sed -i "s/APPLICATION_NAME/$APPLICATION_NAME/g" /tmp/pgrepl-recovery.conf
-cp /tmp/pgrepl-recovery.conf $PGDATA/recovery.conf
+    cp /opt/cpm/conf/pgrepl-recovery.conf /tmp
+    sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pgrepl-recovery.conf
+    sed -i "s/PG_PRIMARY_HOST/$PG_PRIMARY_HOST/g" /tmp/pgrepl-recovery.conf
+    sed -i "s/PG_PRIMARY_PORT/$PG_PRIMARY_PORT/g" /tmp/pgrepl-recovery.conf
+    sed -i "s/APPLICATION_NAME/$APPLICATION_NAME/g" /tmp/pgrepl-recovery.conf
+    cp /tmp/pgrepl-recovery.conf $PGDATA/recovery.conf
 }
 
 #
 # the initial start of postgres will create the database
 #
 function initialize_primary() {
-echo "initialize_primary"
-if [ ! -f $PGDATA/postgresql.conf ]; then
-        echo "pgdata is empty and id is..."
-	id
-	mkdir -p $PGDATA
+    echo "initialize_primary"
+    if [ ! -f $PGDATA/postgresql.conf ]; then
+            echo "pgdata is empty and id is..."
+        id
+        mkdir -p $PGDATA
 
-	check_for_restore
-	check_for_pitr
+        check_for_restore
+        check_for_pitr
 
-        echo "Starting database..." >> /tmp/start-db.log
+            echo "Starting database..." >> /tmp/start-db.log
 
-	echo "Temporarily starting database to run setup.sql..."
-	pg_ctl -D $PGDATA start
+        echo "Temporarily starting database to run setup.sql..."
+        pg_ctl -D $PGDATA start
 
-	echo "Waiting for postgreSQL to start..."
-	while true; do
-                pg_isready \
-                --port=$PG_PRIMARY_PORT \
-		--host=$HOSTNAME \
-		--username=$PG_PRIMARY_USER \
-                --timeout=2
-                if [ $? -eq 0 ]; then
-                        echo "The database is ready for setup.sql."
-                        break
-                fi
-                sleep 2
-        done
+        echo "Waiting for postgreSQL to start..."
+        while true; do
+                    pg_isready \
+                    --port=$PG_PRIMARY_PORT \
+            --host=$HOSTNAME \
+            --username=$PG_PRIMARY_USER \
+                    --timeout=2
+                    if [ $? -eq 0 ]; then
+                            echo "The database is ready for setup.sql."
+                            break
+                    fi
+                    sleep 2
+            done
 
-	if [ -f /pgconf/pgbackrest.conf ]; then
-		echo "Creating stanza..."
-		pgbackrest --log-path=/backrestrepo --config=/pgconf/pgbackrest.conf --stanza=db stanza-create
-	fi
+        if [ -f /pgconf/pgbackrest.conf ]; then
+            echo "Creating stanza..."
+            pgbackrest --log-path=/backrestrepo --config=/pgconf/pgbackrest.conf --stanza=db stanza-create
+        fi
 
 
-        echo "Loading setup.sql" >> /tmp/start-db.log
-	cp /opt/cpm/bin/setup.sql /tmp
-	if [ -f /pgconf/setup.sql ]; then
-		echo "Using setup.sql from /pgconf"
-		cp /pgconf/setup.sql /tmp
-	fi
-	sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/setup.sql
-	sed -i "s/PG_PRIMARY_PASSWORD/$PG_PRIMARY_PASSWORD/g" /tmp/setup.sql
-	sed -i "s/PG_USER/$PG_USER/g" /tmp/setup.sql
-	sed -i "s/PG_PASSWORD/$PG_PASSWORD/g" /tmp/setup.sql
-	sed -i "s/PG_DATABASE/$PG_DATABASE/g" /tmp/setup.sql
-	sed -i "s/PG_ROOT_PASSWORD/$PG_ROOT_PASSWORD/g" /tmp/setup.sql
+            echo "Loading setup.sql" >> /tmp/start-db.log
+        cp /opt/cpm/bin/setup.sql /tmp
+        if [ -f /pgconf/setup.sql ]; then
+            echo "Using setup.sql from /pgconf"
+            cp /pgconf/setup.sql /tmp
+        fi
+        sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/setup.sql
+        sed -i "s/PG_PRIMARY_PASSWORD/$PG_PRIMARY_PASSWORD/g" /tmp/setup.sql
+        sed -i "s/PG_USER/$PG_USER/g" /tmp/setup.sql
+        sed -i "s/PG_PASSWORD/$PG_PASSWORD/g" /tmp/setup.sql
+        sed -i "s/PG_DATABASE/$PG_DATABASE/g" /tmp/setup.sql
+        sed -i "s/PG_ROOT_PASSWORD/$PG_ROOT_PASSWORD/g" /tmp/setup.sql
 
-	#set PGHOST to use socket in /tmp, we change unix_socket_directory
-	#to use /tmp instead of /var/run
-	export PGHOST=/tmp
-        psql -U postgres < /tmp/setup.sql
-	if [ -f /pgconf/audit.sql ]; then
-		echo "Using pgaudit_analyze audit.sql from /pgconf"
-		psql -U postgres < /pgconf/audit.sql
-	fi
+        #set PGHOST to use socket in /tmp, we change unix_socket_directory
+        #to use /tmp instead of /var/run
+        export PGHOST=/tmp
+            psql -U postgres < /tmp/setup.sql
+        if [ -f /pgconf/audit.sql ]; then
+            echo "Using pgaudit_analyze audit.sql from /pgconf"
+            psql -U postgres < /pgconf/audit.sql
+        fi
 
-	echo "Stopping database after primary initialization..."
+        echo "Stopping database after primary initialization..."
 
-	pg_ctl -D $PGDATA --mode=fast stop
+        pg_ctl -D $PGDATA --mode=fast stop
 
-	if [[ -v SYNC_REPLICA ]]; then
-		echo "Synchronous_standby_names = '"$SYNC_REPLICA"'" >> $PGDATA/postgresql.conf
-	fi
-fi
+        if [[ -v SYNC_REPLICA ]]; then
+            echo "Synchronous_standby_names = '"$SYNC_REPLICA"'" >> $PGDATA/postgresql.conf
+        fi
+    fi
 }
 
 #

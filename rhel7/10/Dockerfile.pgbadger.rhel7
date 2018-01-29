@@ -43,6 +43,7 @@ RUN mkdir -p /opt/cpm/bin
 EXPOSE 10000
 
 ADD bin/pgbadger /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
 
 RUN chown -R postgres:postgres /opt/cpm/bin
 

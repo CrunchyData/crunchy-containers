@@ -13,16 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/cpm/bin/setenv.sh
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
 
-function ose_hack() {
-        export USER_ID=$(id -u)
-        export GROUP_ID=$(id -g)
-        envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
-        export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
-        export NSS_WRAPPER_PASSWD=/tmp/passwd
-        export NSS_WRAPPER_GROUP=/etc/group
-}
+source /opt/cpm/bin/setenv.sh
 
 ose_hack
 

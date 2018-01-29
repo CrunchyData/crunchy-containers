@@ -13,6 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source /opt/cpm/bin/common_lib.sh
+
+enable_debugging
+ose_hack
+
 if [ -d /usr/pgsql-9.5 ]; then
 	export PGROOT=/usr/pgsql-9.5
 elif [ -d /usr/pgsql-9.4 ]; then

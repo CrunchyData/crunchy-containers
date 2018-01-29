@@ -35,7 +35,7 @@
                         "value": "basic"
                     }, {
                         "name": "PGDUMP_USER",
-                        "value": "primaryuser"
+                        "value": "postgres"
                     }, {
                         "name": "PGDUMP_PASS",
                         "value": "password"
