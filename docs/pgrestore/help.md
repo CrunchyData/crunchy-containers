@@ -1,12 +1,13 @@
-= dump (1)
-Steve Hetzel
+= restore (1)
+Crunchy Data
 January 2018
 == NAME
-dump - dump container image
+restore - restore container image
 
 == DESCRIPTION
-The dump image provides a means of performing a full database
-dump on a Postgres container database.
+The restore image provides a means of performing a restore
+of a dump from pg_dump or pg_dumpall via psql or pg_restore 
+to a Postgres container database.
 
 The container itself consists of:
     - RHEL7 base image
@@ -26,7 +27,7 @@ That atomic command runs the docker command set in this label:
 
 `Name=`
 
-The registry location and name of the image. For example, Name="crunchydata/crunchy-dump".
+The registry location and name of the image. For example, Name="crunchydata/crunchy-restore".
 
 `Version=`
 
