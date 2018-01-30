@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 # Copyright 2017 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -68,6 +68,7 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
+ose_hack
 
 if [ ! -d "$PGRESTORE_VOLUMEPATH" ]; then
   echo "PGRESTORE_VOLUMEPATH $PGRESTORE_VOLUMEPATH does not exist; exiting."
