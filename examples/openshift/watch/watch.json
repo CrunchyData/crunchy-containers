@@ -2,20 +2,20 @@
     "kind": "Template",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pg-replica-example",
+        "name": "crunchy-watch-example",
         "creationTimestamp": null,
         "annotations": {
-            "description": "PostgreSQL Replication Example",
+            "description": "Crunchy Watch Example",
             "iconClass": "icon-database",
             "tags": "database,postgresql,replication"
         }
     },
     "parameters": [{
-        "name": "CCP_IMAGE_PREFIX",
-        "description": "the image prefix to use"
-    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "the image prefix to use"
     }, {
         "name": "NAMESPACE",
         "description": "the project namespace to use"
@@ -35,47 +35,53 @@
                 "name": "watch",
                 "image": "${CCP_IMAGE_PREFIX}/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
-                    "name": "OSE_PROJECT",
+                    "name": "CRUNCHY_WATCH_PLATFORM",
+                    "value": "openshift"
+                },{
+                    "name": "CRUNCHY_WATCH_OPENSHIFT_PROJECT",
                     "value": "${NAMESPACE}"
-                }, {
-                    "name": "SLEEP_TIME",
-                    "value": "20"
-                }, {
-                    "name": "PG_PRIMARY_SERVICE",
+                },{
+                    "name": "CRUNCHY_WATCH_OPENSHIFT_FAILOVER_STRATEGY",
+                    "value": "latest"
+                },{
+                    "name": "CRUNCHY_WATCH_PRIMARY",
                     "value": "pr-primary"
                 }, {
-                    "name": "PG_REPLICA_SERVICE",
-                    "value": "pr-replica"
-                }, {
-                    "name": "PG_PRIMARY_PORT",
+                    "name": "CRUNCHY_WATCH_PRIMARY_PORT",
                     "value": "5432"
                 }, {
-                    "name": "PGHOST",
-                    "value": "/tmp"
+                    "name": "CRUNCHY_WATCH_REPLICA",
+                    "value": "pr-replica"
                 }, {
-                    "name": "PG_PRIMARY_USER",
+                    "name": "CRUNCHY_WATCH_REPLICA_PORT",
+                    "value": "5432"
+                }, {
+                    "name": "CRUNCHY_WATCH_USERNAME",
                     "value": "primaryuser"
                 }, {
-                    "name": "PG_DATABASE",
+                    "name": "CRUNCHY_WATCH_PASSWORD",
+                    "value": "password"
+                }, {
+                    "name": "CRUNCHY_WATCH_DATABASE",
                     "value": "postgres"
                 }, {
-					"name": "WATCH_PRE_HOOK",
-					"value": "/hooks/watch-pre-hook"
-				}, {
-					"name": "WATCH_POST_HOOK",
-					"value": "/hooks/watch-post-hook"
-				}],
-				"volumeMounts": [{
-					"name": "watch-hooks-volume",
-					"mountPath": "/hooks"
-				}]
+                    "name": "CRUNCHY_WATCH_PRE_HOOK",
+                    "value": "/hooks/watch-pre-hook"
+                }, {
+                    "name": "CRUNCHY_WATCH_POST_HOOK",
+                    "value": "/hooks/watch-post-hook"
+                }],
+                "volumeMounts": [{
+                    "name": "watch-hooks-volume",
+                    "mountPath": "/hooks"
+                }]
             }],
-			"volumes": [{
-				"name": "watch-hooks-volume",
-				"configMap": {
-					"name": "watch-hooks-configmap"
-				}
-			}]
+            "volumes": [{
+                "name": "watch-hooks-volume",
+                "configMap": {
+                    "name": "watch-hooks-configmap"
+                }
+            }]
         }
     }]
 }

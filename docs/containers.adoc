@@ -388,7 +388,7 @@ The following features are supported by the crunchy-pgpool container:
 
 == crunchy-watch
 
-We create a container, crunchy-watch, that runs as a pod unto itself
+crunchy-watch runs as a pod unto itself
 typically.  The watch container essentially does a health check
 on a primary database container and performs a failover sequence
 if the primary is not reached.
@@ -427,6 +427,9 @@ You then reference the SA within the POD spec.
 The oc/docker/kubectl commands are included into the container from the
 host when the container image is built.  These commands are used by
 the watch logic to interact with the replica containers.
+
+Starting with release 1.7.1 crunchy-watch source code is relocated
+to https://github.com/crunchydata/crunchy-watch
 
 === Environment Variables
 
