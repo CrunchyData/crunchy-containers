@@ -1,4 +1,6 @@
 #!/bin/bash
+set -u
+
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,20 +14,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+CONTAINER_NAME=pgadmin4
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
-DATADIR=$PV_PATH/pgadmin4
 
-if [ ! -d "$DATADIR" ]; then
-	echo "Setting up pgadmin4 data directory..."
-	sudo mkdir $DATADIR
-	sudo cp $CCPROOT/conf/pgadmin4/config_local.py $DATADIR
-	sudo cp $CCPROOT/conf/pgadmin4/pgadmin4.db $DATADIR
-	sudo chmod -R 777 $DATADIR
-fi
+docker volume create --driver local --name=pgadmin
 
-kubectl create -f $DIR/pgadmin4-service.json
-expenv -f $DIR/pgadmin4-pod.json | kubectl create -f -
+docker run \
+    --volume-driver=local \
+    --name=$CONTAINER_NAME \
+    --hostname=$CONTAINER_NAME \
+    -p 5050:5050 \
+    -v pgadmin:/var/lib/pgadmin:z\
+    -e PGADMIN_SETUP_EMAIL='admin@admin.com' \
+    -e PGADMIN_SETUP_PASSWORD='password' \
+    -e SERVER_PORT='5050' \
+    -d ${CCP_IMAGE_PREFIX?}/crunchy-pgadmin4:${CCP_IMAGE_TAG?}

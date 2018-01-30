@@ -13,55 +13,64 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export PATH=$PATH:/usr/pgsql-*/bin
-
-function trap_sigterm() {
-	echo "Doing trap logic..."
-	kill -SIGINT $PGADMIN_PID
-}
-
-trap 'trap_sigterm' SIGINT SIGTERM
-
-
-# this lets us run initdb and postgres on Openshift
-# when it is configured to use random UIDs
-function ose_hack() {
-        export USER_ID=$(id -u)
-        export GROUP_ID=$(id -g)
-        envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
-        export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
-        export NSS_WRAPPER_PASSWD=/tmp/passwd
-        export NSS_WRAPPER_GROUP=/etc/group
-}
-
-id
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
 ose_hack
-id
 
-echo $PATH is the path
-export THISDIR=/pgdata
-if [ ! -f "$THISDIR/config_local.py" ]; then
-	echo "WARNING: Could not find the mounted configuration files. Using defaults as starting point."
-	mkdir $THISDIR
-	cp /opt/cpm/conf/config_local.py $THISDIR/
-	cp /opt/cpm/conf/pgadmin4.db $THISDIR/
+export PATH=$PATH:/usr/pgsql-*/bin
+PGADMIN_DIR='/usr/lib/python2.7/site-packages/pgadmin4-web'
+
+if [[ ( ! -v PGADMIN_SETUP_EMAIL ) || ( ! -v PGADMIN_SETUP_PASSWORD ) ]]; then
+    echo "PGADMIN_SETUP_EMAIL or PGADMIN_SETUP_PASSWORD environment variable is not set, aborting"
+    exit 1
 fi
 
-if [ -d "/usr/lib/python2.7/site-packages/pgadmin4-web" ]; then
-	cp $THISDIR/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/
-	python2 /usr/lib/python2.7/site-packages/pgadmin4-web/pgAdmin4.py &
+if [[ ${ENABLE_TLS:-false} == 'true' ]]
+then
+    echo "TLS enabled.."
+    if [[ ( ! -f /certs/server.key ) || ( ! -f /certs/server.crt ) ]]; then
+	echo "ENABLE_TLS true but /certs/server.key or /certs/server.crt not found, aborting"
+	exit 1
+    fi
+    cp /opt/cpm/conf/pgadmin-https.conf /etc/httpd/conf.d/pgadmin.conf
+else
+    echo "TLS disabled.."
+    cp /opt/cpm/conf/pgadmin-http.conf /etc/httpd/conf.d/pgadmin.conf
 fi
-if [ -d "/usr/lib/python2.7/site-packages/pgadmin4" ]; then
-	cp $THISDIR/config_local.py /usr/lib/python2.7/site-packages/pgadmin4/
-	python2 /usr/lib/python2.7/site-packages/pgadmin4/pgAdmin4.py &
+
+if [[ -f /etc/httpd/conf.d/ssl.conf ]]; then
+    mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.disabled
 fi
 
-export PGADMIN_PID=$!
-echo "Waiting till docker stop or signal is sent to kill pgadmin4..."
+if [[ -f /etc/httpd/conf.d/welcome.conf ]]; then
+    mv /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/welcome.conf.disabled
+fi
 
-wait
+sed -i "s|^User .*|User daemon|g" /etc/httpd/conf/httpd.conf
+sed -i "s|^Group .*|Group daemon|g" /etc/httpd/conf/httpd.conf
+sed -i "s|SERVER_PORT|${SERVER_PORT:-5050}|g" /etc/httpd/conf.d/pgadmin.conf
 
-while true; do
-	echo "Debug sleeping..."
-	sleep 1000
-done
+cd ${PGADMIN_DIR?}
+
+cp config.py config_local.py
+chmod +x config_local.py
+
+sed -i "s/^DEFAULT_SERVER .*/DEFAULT_SERVER = '0.0.0.0'/" config_local.py
+sed -i "s/^DEFAULT_SERVER_PORT.*/DEFAULT_SERVER_PORT = ${SERVER_PORT:-5050}/" config_local.py
+sed -i "s|    LOG_FILE.*|    LOG_FILE = '/var/lib/pgadmin/pgadmin4.log'|g" config_local.py
+sed -i "s|^SQLITE_PATH.*|SQLITE_PATH = '/var/lib/pgadmin/pgadmin4.db'|g" config_local.py
+sed -i "s|^SESSION_DB_PATH.*|SESSION_DB_PATH = '/var/lib/pgadmin/sessions'|g" config_local.py
+sed -i "s|^STORAGE_DIR.*|STORAGE_DIR = '/var/lib/pgadmin/storage'|g" config_local.py
+sed -i "s|^DATA_DIR.*|DATA_DIR = '/var/lib/pgadmin/data'|g" config_local.py
+sed -i "s|^UPGRADE_CHECK_ENABLED.*|UPGRADE_CHECK_ENABLED = False|g" config_local.py
+sed -i "s|^Listen .*|Listen ${SERVER_PORT:-5050}|g" /etc/httpd/conf/httpd.conf
+sed -i "s|\"pg\":.*|\"pg\": \"/usr/pgsql-${PGVERSION?}/bin\",|g" config_local.py
+
+if [[ ! -f /var/lib/pgadmin/pgadmin4.db ]]
+then
+    echo "Setting up pgAdmin4 database.."
+    python setup.py
+fi
+
+echo "Starting web server.."
+/usr/sbin/httpd -D FOREGROUND
