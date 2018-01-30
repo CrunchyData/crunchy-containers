@@ -12,9 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-sudo rm -rf $PV_PATH/pgadmin4
-
 kubectl delete service pgadmin4
 kubectl delete pod pgadmin4
+kubectl delete secret pgadmin-secrets
+kubectl delete secret pgadmin-tls
+
+rm -f ./server.crt ./server.key ./privkey.pem
 
 $CCPROOT/examples/waitforterm.sh pgadmin4 kubectl
+
+sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/pgadmin4.db $PV_PATH/pgadmin4.log
+sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/sessions $PV_PATH/storage

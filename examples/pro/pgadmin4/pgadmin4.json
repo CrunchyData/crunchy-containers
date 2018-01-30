@@ -8,30 +8,71 @@
         }
     },
     "spec": {
-        "securityContext": {},
-
-        "containers": [{
-            "name": "pgadmin4",
-            "image": "172.30.118.67:5000/scptest/crunchy-pgadmin4:rhel7-9.6.6-1.7.0",
-            "ports": [{
-                "containerPort": 5050,
-                "protocol": "TCP"
-            }],
-            "env": [],
-            "securityContext": {
-                "capabilities": {}
+        "securityContext": {
+            "supplementalGroups": [
+                65534
+            ]
+        },
+        "volumes": [
+            {
+                "name": "pgadmin",
+                "persistentVolumeClaim": {
+                    "claimName": "crunchy-pvc"
+                }
             },
-            "volumeMounts": [{
-                "mountPath": "/pgdata",
-                "name": "pgdata",
-                "readOnly": false
-            }]
-        }],
-        "volumes": [{
-            "name": "pgdata",
-            "persistentVolumeClaim": {
-                "claimName": "crunchy-pgadmin4-pvc"
+            {
+                "name": "certs",
+                "emptyDir": {
+                    "medium": "Memory"
+                }
             }
-        }]
+        ],
+        "containers": [
+            {
+                "name": "pgadmin",
+                "image": "crunchydata/crunchy-pgadmin4:centos7-10.1-1.7.1",
+                "ports": [
+                    {
+                        "containerPort": 5050,
+                        "protocol": "TCP"
+                    }
+                ],
+                "env": [
+                    {
+                        "name": "PGADMIN_SETUP_EMAIL",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "name": "pgadmin-secrets",
+                                "key": "pgadmin-email"
+                            }
+                        }
+                    },
+                    {
+                        "name": "PGADMIN_SETUP_PASSWORD",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "name": "pgadmin-secrets",
+                                "key": "pgadmin-password"
+                            }
+                        }
+                    }
+                ],
+                "securityContext": {
+                    "capabilities": {}
+                },
+                "volumeMounts": [
+                    {
+                        "mountPath": "/var/lib/pgadmin",
+                        "name": "pgadmin",
+                        "readOnly": false
+                    },
+                    {
+                        "mountPath": "/certs",
+                        "name": "certs",
+                        "readOnly": true
+                    }
+                ]
+            }
+        ]
     }
 }

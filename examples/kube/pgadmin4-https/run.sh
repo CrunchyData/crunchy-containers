@@ -12,7 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete service pgadmin4
-oc delete pod pgadmin4
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$CCPROOT/examples/waitforterm.sh pgadmin4 oc
+$DIR/cleanup.sh
+
+openssl req -x509 -newkey rsa:4096 -keyout server.key -out server.crt -days 5 -nodes -subj '/CN=localhost'
+
+kubectl create secret generic pgadmin-secrets \
+    --from-literal=pgadmin-email='admin@admin.com' \
+    --from-literal=pgadmin-password='password'
+
+kubectl create secret generic pgadmin-tls \
+    --from-file=pgadmin-cert=${DIR?}/server.crt \
+    --from-file=pgadmin-key=${DIR?}/server.key
+
+expenv -f $DIR/pgadmin4-pod.json | kubectl create -f -
+kubectl create -f $DIR/pgadmin4-service.json

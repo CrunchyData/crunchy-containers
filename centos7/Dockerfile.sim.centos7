@@ -1,6 +1,6 @@
 FROM centos:7
 
-LABEL Release="1.7.0" Vendor="Crunchy Data Solutions"
+LABEL Release="1.7.1" Vendor="Crunchy Data Solutions"
 
 ADD bin/crunchy-sim /usr/bin
 ADD bin/common /opt/cpm/bin

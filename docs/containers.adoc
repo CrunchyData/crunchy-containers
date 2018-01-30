@@ -1,6 +1,6 @@
 = Crunchy Container Overview
 Crunchy Data Solutions, Inc.
-v1.7, {docdate}
+v1.7.1, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Introduction
@@ -388,7 +388,7 @@ The following features are supported by the crunchy-pgpool container:
 
 == crunchy-watch
 
-We create a container, crunchy-watch, that runs as a pod unto itself
+crunchy-watch runs as a pod unto itself
 typically.  The watch container essentially does a health check
 on a primary database container and performs a failover sequence
 if the primary is not reached.
@@ -427,6 +427,9 @@ You then reference the SA within the POD spec.
 The oc/docker/kubectl commands are included into the container from the
 host when the container image is built.  These commands are used by
 the watch logic to interact with the replica containers.
+
+Starting with release 1.7.1 crunchy-watch source code is relocated
+to https://github.com/crunchydata/crunchy-watch
 
 === Environment Variables
 
@@ -764,23 +767,30 @@ image::images/pgadmin4-screenshot.png["pgadmin screenshot",align="center",scaled
 
 === Environment Variables
 
- * N/A
+ * PGADMIN_SETUP_EMAIL - required, set this value to the email address 
+   used for pgAdmin4 login.
+ * PGADMIN_SETUP_PASSWORD - required, set this value to a password used
+   for pgAdmin4 login.  This should be a strong password.
+ * SERVER_PORT - default is 5050, set this value to a change the port 
+   pgAdmin4 listens on.
+ * ENABLE_TLS - default is false, set this value to true to enable HTTPS
+   on the pgAdmin4 container.  This requires a *server.key* and *server.crt* 
+   to be mounted on the */certs* directory.
+ * DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.
 
 === Features
 
 The following features are supported by the crunchy-pgadmin4 container:
 
- * mount config_local.py and pgadmin4.db to /data volume inside the
-   container to support customization and store the pgadmin4 database
-   file
- * expose port 5050 which is the web server port
- * a sample pgadmin4 database is provided with an initial administrator
-   user *admin@admin.org* and password of *password*
+ * expose port (5050 by default) which is the web server port
+ * mount a certificate and key to the */certs* directory and set *ENABLE_TLS* to true
+   to activate HTTPS mode.
+ * Set username and password for login via environment variables.
 
 === Restrictions
 
  * N/A
- 
 
 == crunchy-restore
 
@@ -847,7 +857,6 @@ to retrieve database dumps to be restored via psql or pg_restore.
  * PGRESTORE_VERSION option to output the pg_restore version and exit.
  * DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
-
 
 == crunchy-upgrade
 

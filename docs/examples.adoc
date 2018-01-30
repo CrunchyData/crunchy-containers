@@ -1,7 +1,7 @@
 = Examples & Use Cases - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
 :toc: left
-v1.7, {docdate}
+v1.7.1, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Usage
@@ -1085,24 +1085,32 @@ added to the crunchy-postgres container.  See the
 link:backrest.adoc[pgbackrest Documentation] for details
 on how this feature works within the Crunchy Container Suite.
 
-=== pgadmin4
+=== pgadmin4-http
 
-This example deploys the pgadmin4 (beta4) web user interface
-for PostgreSQL.
+This example deploys the pgadmin4 v2 web user interface
+for PostgreSQL without TLS.
 
 After running the example, you should be able to browse to http://127.0.0.1:5050
-and log into the web application using a user ID of *admin@admin.org*
-and password of *password*. If you are running this example using Kubernetes or
-OpenShift, replace *127.0.0.1* with the IP address of the created service.
+and log into the web application using a user ID of *admin@admin.com*
+and password of *password*. 
 
-The example uses pgadmin4 configuration files which are mounted
-at an NFS mount point. This NFS data directory is mounted into
-the container and used by the pgadmin4 application to persist
-Metadata.
+If you are running this example using Kubernetes or
+OpenShift, replace *127.0.0.1:5050* with the <NODE_IP>:30000.
+
+To get the node IP, run the following:
+
+....
+# Kube
+kubectl describe pod pgadmin4 | grep Node:
+
+# OCP
+oc describe pod pgadmin4 | grep Node:
+....
 
 See the link:http://pgadmin.org[pgadmin4 documentation] for more details.
 
 To shutdown the instance and remove the container for each example, run the following:
+
 ....
 ./cleanup.sh
 ....
@@ -1111,7 +1119,7 @@ To shutdown the instance and remove the container for each example, run the foll
 
 To run this example, run the following:
 ....
-cd $CCPROOT/examples/docker/pgadmin4
+cd $CCPROOT/examples/docker/pgadmin4-http
 ./run.sh
 ....
 
@@ -1119,7 +1127,7 @@ cd $CCPROOT/examples/docker/pgadmin4
 
 Start the container as follows:
 ....
-cd $CCPROOT/examples/kube/pgadmin4
+cd $CCPROOT/examples/kube/pgadmin4-http
 ./run.sh
 ....
 
@@ -1127,7 +1135,61 @@ cd $CCPROOT/examples/kube/pgadmin4
 
 To run this example, run the following:
 ....
-cd $CCPROOT/examples/openshift/pgadmin4
+cd $CCPROOT/examples/openshift/pgadmin4-http
+./run.sh
+....
+
+=== pgadmin4-https
+
+This example deploys the pgadmin4 v2 web user interface
+for PostgreSQL with TLS.
+
+After running the example, you should be able to browse to https://127.0.0.1:5050
+and log into the web application using a user ID of *admin@admin.com*
+and password of *password*. 
+
+If you are running this example using Kubernetes or
+OpenShift, replace *127.0.0.1:5050* with the <NODE_IP>:30000.
+
+To get the node IP, run the following:
+
+....
+# Kube
+kubectl describe pod pgadmin4 | grep Node:
+
+# OCP
+oc describe pod pgadmin4 | grep Node:
+....
+
+See the link:http://pgadmin.org[pgadmin4 documentation] for more details.
+
+To shutdown the instance and remove the container for each example, run the following:
+
+....
+./cleanup.sh
+....
+
+==== Docker
+
+To run this example, run the following:
+....
+cd $CCPROOT/examples/docker/pgadmin4-https
+./run.sh
+....
+
+==== Kubernetes
+
+Start the container as follows:
+....
+cd $CCPROOT/examples/kube/pgadmin4-https
+./run.sh
+....
+
+==== OpenShift
+
+To run this example, run the following:
+....
+cd $CCPROOT/examples/openshift/pgadmin4-https
 ./run.sh
 ....
 
@@ -2343,13 +2405,13 @@ you perform a pg_upgrade on a 9.5 database converting its data
 to a 9.6 version.
 
 This example assumes you have run *primary-pvc* using a PG 9.5 image
-such as *centos7-9.5.10-1.7.0* prior to running this upgrade.
+such as *centos7-9.5.10-1.7.1* prior to running this upgrade.
 
 Prior to starting this example, shut down the *primary-pvc* database
 using the *examples/kube/primary-pvc/cleanup.sh* script.
 
 Prior to running this example, make sure your CCP_IMAGE_TAG
-environment variable is using a PG 9.6 image such as *centos7-9.6.6-1.7.0*.
+environment variable is using a PG 9.6 image such as *centos7-9.6.6-1.7.1*.
 
 This will create the following in your Kubernetes environment:
 
