@@ -22,7 +22,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 #oc process --parameters -n $PROJECT crunchy-replica
 
 oc process -n $PROJECT crunchy-replica \
-	CCP_IMAGE_TAG=rhel7-10.1-1.7.0 \
+	CCP_IMAGE_TAG=rhel7-10.1-1.7.1 \
 	CCP_IMAGE_PREFIX=172.30.240.45:5000/$PROJECT \
 	CCP_IMAGE_NAME=crunchy-postgres \
 	SERVICE_NAME=replica \
