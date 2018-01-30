@@ -5,7 +5,7 @@ endif
 .PHONY:	all versiontest
 
 # Default target
-all:    backup backrestrestore collectserver dbaserver grafana pgadmin4 pgbadger pgbouncer pgdump pgpool postgres postgres-gis prometheus promgateway upgrade vac
+all:    backup backrestrestore collectserver dbaserver grafana pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis prometheus promgateway upgrade vac
 
 versiontest:
 ifndef CCP_BASEOS
@@ -89,6 +89,10 @@ pgdump: versiontest
 pgpool:	versiontest
 	docker build -t crunchy-pgpool -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgpool.$(CCP_BASEOS) .
 	docker tag crunchy-pgpool crunchydata/crunchy-pgpool:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+
+pgrestore: versiontest
+	docker build -t crunchy-restore -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgrestore.$(CCP_BASEOS) .
+	docker tag crunchy-restore crunchydata/crunchy-restore:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 pgsim:
 	cd sim && make
