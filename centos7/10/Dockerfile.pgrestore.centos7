@@ -1,0 +1,43 @@
+FROM centos:7
+
+LABEL name="crunchydata/restore" \
+        vendor="crunchy data" \
+      	PostgresVersion="10" \
+      	PostgresFullVersion="10.1" \
+        version="7.3" \
+        release="1.7.0" \
+        build-date="2018-01-17" \
+        url="https://crunchydata.com" \
+        summary="Performs a pg_restore on a database container" \
+        description="Meant to be executed upon demand, this container will run pg_restore against a running database container and write the backup files to a mounted directory." \
+        io.k8s.description="pgrestore container" \
+        io.k8s.display-name="Crunchy pgrestore` container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+ENV PGVERSION="10" PGDG_REPO="pgdg-centos10-10-2.noarch.rpm"
+
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y update && yum install -y epel-release \
+ && yum -y update glibc-common \
+ && yum install -y bind-utils \
+	gettext \
+	hostname \
+ 	nss_wrapper \
+	openssh-clients \
+	procps-ng \
+	unzip \
+ && yum -y install postgresql10 postgresql10-server \
+ && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin /pgdata /opt/cpm/conf
+ADD bin/pgrestore/ /opt/cpm/bin
+ADD conf/pgrestore/ /opt/cpm/conf
+RUN chown -R postgres:postgres /opt/cpm /pgdata
+
+VOLUME ["/pgdata"]
+
+USER 26
+
+CMD ["/opt/cpm/bin/start-pgrestorejob.sh"]
