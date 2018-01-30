@@ -40,7 +40,7 @@
                   "env":[
                      {
                         "name":"PGRESTORE_HOST",
-                        "value":"postgres-gis"
+                        "value":"basic"
                      },
                      {
                         "name":"PGRESTORE_DB",
@@ -64,11 +64,11 @@
                      },
                      {
                         "name":"PGRESTORE_VOLUMEPATH",
-                        "value":"/pgdata/postgres-gis-dumps/2018-01-29-19-06-51"
+                        "value":"/pgdata/basic-dumps/2018-01-29-19-06-51"
                      },
                      {
                         "name":"PGRESTORE_FILE",
-                        "value":"newdump.tar"
+                        "value":"sqldump.tar"
                      },
                      {
                         "name":"PGRESTORE_CREATE",
