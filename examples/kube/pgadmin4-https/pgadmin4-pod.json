@@ -13,24 +13,13 @@
                 65534
             ]
         },
-        "volumes": [
-            {
-                "name": "pgadmin",
-                "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc"
-                }
-            },
-            {
-                "name": "certs",
-                "emptyDir": {
-                    "medium": "Memory"
-                }
-            }
-        ],
         "containers": [
             {
-                "name": "pgadmin",
-                "image": "crunchydata/crunchy-pgadmin4:centos7-10.1-1.7.1",
+                "name": "pgadmin4",
+                "securityContext": {
+                    "privileged": false
+                },
+                "image": "$CCP_IMAGE_PREFIX/crunchy-pgadmin4:$CCP_IMAGE_TAG",
                 "ports": [
                     {
                         "containerPort": 5050,
@@ -55,11 +44,16 @@
                                 "key": "pgadmin-password"
                             }
                         }
+                    },
+                    {
+                        "name": "SERVER_PORT",
+                        "value": "5050"
+                    },
+                    {
+                        "name": "ENABLE_TLS",
+                        "value": "true"
                     }
                 ],
-                "securityContext": {
-                    "capabilities": {}
-                },
                 "volumeMounts": [
                     {
                         "mountPath": "/var/lib/pgadmin",
@@ -72,6 +66,30 @@
                         "readOnly": true
                     }
                 ]
+            }
+        ],
+        "volumes": [
+            {
+                "name": "pgadmin",
+                "persistentVolumeClaim": {
+                    "claimName": "crunchy-pvc"
+                }
+            },
+            {
+                "name": "certs",
+                "secret": {
+                    "secretName": "pgadmin-tls",
+                    "items": [
+                        {
+                            "key": "pgadmin-cert",
+                            "path": "server.crt"
+                        },
+                        {
+                            "key": "pgadmin-key",
+                            "path": "server.key"
+                        }
+                    ]
+                }
             }
         ]
     }

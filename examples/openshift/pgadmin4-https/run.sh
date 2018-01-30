@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,8 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "Cleaning up..."
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-CONTAINER_NAME=pgadmin4
-docker rm -f --volumes $CONTAINER_NAME
-docker volume rm $CONTAINER_NAME-volume
+$DIR/cleanup.sh
+
+openssl req -x509 -newkey rsa:4096 -keyout server.key -out server.crt -days 5 -nodes -subj '/CN=localhost'
+
+oc create secret generic pgadmin-secrets \
+    --from-literal=pgadmin-email='admin@admin.com' \
+    --from-literal=pgadmin-password='password'
+
+oc create secret generic pgadmin-tls \
+    --from-file=pgadmin-cert=${DIR?}/server.crt\
+    --from-file=pgadmin-key=${DIR?}/server.key
+
+oc process -f $DIR/pgadmin4-pod.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

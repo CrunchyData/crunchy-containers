@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,21 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "Stopping and removing pgadmin4 container..."
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-CONTAINER_NAME=pgadmin4
-VOLUME_NAME=$CONTAINER_NAME-volume
+oc delete service pgadmin4
+oc delete pod pgadmin4
+oc delete secret pgadmin-secrets
+oc delete secret pgadmin-tls
 
-$DIR/cleanup.sh
+rm -f ./server.crt ./server.key ./privkey.pem
 
-docker volume create --driver local --name=$VOLUME_NAME
+$CCPROOT/examples/waitforterm.sh pgadmin4 oc
 
-echo "Starting pgadmin4 container..."
-docker run \
-	-p 5050:5050 \
-	--privileged=true \
-	--volume-driver=local \
-	-v $VOLUME_NAME:/pgdata:z \
-	--name=$CONTAINER_NAME \
-	--hostname=$CONTAINER_NAME \
-	-d $CCP_IMAGE_PREFIX/crunchy-pgadmin4:$CCP_IMAGE_TAG
+sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/pgadmin4.db $PV_PATH/pgadmin4.log
+sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/sessions $PV_PATH/storage

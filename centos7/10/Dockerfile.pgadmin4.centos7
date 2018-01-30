@@ -2,8 +2,8 @@ FROM centos:7
 
 LABEL name="crunchydata/pgadmin4" \
         vendor="crunchy data" \
-      	PostgresVersion="10" \
-      	PostgresFullVersion="10.1" \
+        PostgresVersion="10" \
+        PostgresFullVersion="10.1" \
         version="7.3" \
         release="1.7.1" \
         build-date="2018-01-30" \
@@ -22,31 +22,33 @@ RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_
 RUN yum -y update && yum -y install epel-release \
  && yum -y install glibc-common-*2.17* \
  && yum -y install gcc \
-	gettext \
-	hostname \
- 	nss_wrapper \
-	openssh-clients \
-	procps-ng \
-	pgadmin4-v1-web \
- && yum -y install postgresql10-devel postgresql10-server \
+    gettext \
+    hostname \
+    nss_wrapper \
+    openssh-clients \
+    openssl \
+    procps-ng \
+    mod_wsgi mod_ssl \
+ && yum -y install postgresql10-devel postgresql10-server pgadmin4-v2-web \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
 
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /var/lib/pgadmin /certs \
+  && chown -R daemon:daemon /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd
 
 ADD bin/pgadmin4/ /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
 ADD conf/pgadmin4/ /opt/cpm/conf
 
-# open up the pgadmin4 http port
+RUN cp /usr/lib/python2.7/site-packages/pgadmin4-web/config.py \
+    /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
+  && chown -R daemon:daemon /usr/lib/python2.7/site-packages/pgadmin4-web
+
 EXPOSE 5050
 
-RUN mkdir -p /pgdata \
- && chown -R root:root /pgdata /opt/cpm
+VOLUME ["/var/lib/pgadmin", "/certs"]
 
-
-VOLUME ["/pgdata"]
-
-USER root
+USER daemon
 
 CMD ["/opt/cpm/bin/start-pgadmin4.sh"]

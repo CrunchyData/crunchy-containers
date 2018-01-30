@@ -12,21 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+kubectl delete service pgadmin4
+kubectl delete pod pgadmin4
+kubectl delete secret pgadmin-secrets
 
+$CCPROOT/examples/waitforterm.sh pgadmin4 kubectl
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-$DIR/cleanup.sh
-
-DATADIR=$PV_PATH/pgadmin4
-
-if [ ! -d "$DATADIR" ]; then
-	echo "Setting up pgadmin4 data directory..."
-	sudo mkdir $DATADIR
-	sudo cp $CCPROOT/conf/pgadmin4/config_local.py $DATADIR
-	sudo cp $CCPROOT/conf/pgadmin4/pgadmin4.db $DATADIR
-	sudo chmod -R 777 $DATADIR
-	sudo chown -R 26:26 $DATADIR
-fi
-
-oc process -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/pgadmin4.json | oc create -f -
+sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/pgadmin4.db $PV_PATH/pgadmin4.log
+sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/sessions $PV_PATH/storage
