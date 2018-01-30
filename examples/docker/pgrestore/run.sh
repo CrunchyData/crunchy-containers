@@ -14,13 +14,13 @@ CONTAINER_NAME=pgrestore
 VOLUME_NAME=$CONTAINER_NAME-volume
 VOLUME_PATH=/pgrestore
 RESTORE_FROM_DIR=/tmp/
-RESTORE_FROM_FILE=newdump.tar
+RESTORE_FROM_FILE=sqldump.tar
 RESTORE_FULLPATH=$(realpath -s "$RESTORE_FROM_DIR")"/$RESTORE_FROM_FILE"
 
 #
 # this example assumes you have the basic example running
 #
-HOST_TO_RESTORE=postgres-gis
+HOST_TO_RESTORE=basic
 
 docker volume create --driver local --name=$VOLUME_NAME
 
