@@ -103,6 +103,22 @@ key and yum repository file into the $CCPROOT/conf directory at this point. Thes
 files can be obtained through https://access.crunchydata.com/ on the downloads
 page.*
 
+=== Creating a Demo Namespace
+
+On Openshift and Kubernetes, you will need to create a namespace
+called *demo* for the examples to work under.
+
+On Kube:
+....
+kubectl create -f $CCPROOT/conf/demo-namespace.json
+kubectl get namespaces
+....
+
+On Openshift:
+....
+oc new-project demo
+....
+
 === Installing PostgreSQL
 
 These installation instructions assume the installation of PostgreSQL 10
