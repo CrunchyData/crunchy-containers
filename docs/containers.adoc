@@ -433,20 +433,20 @@ to https://github.com/crunchydata/crunchy-watch
 
 === Environment Variables
 
- * SLEEP_TIME - the time to sleep in seconds between checking on the primary
- * WAIT_TIME - the time to sleep in seconds between triggering the failover and updating its label (default is 40 secs)
+ * CRUNCHY_WATCH_HEALTHCHECK_INTERVAL - the time to sleep in seconds between checking on the primary
+ * CRUNCHY_WATCH_FAILOVER_WAIT - the time to sleep in seconds between triggering the failover and updating its label (default is 40 secs)
  * PG_CONTAINER_NAME -  if set, the name of the container to refer to when doing an *exec*, this is required if you have more than 1 container in your database pod
- * PG_PRIMARY_SERVICE -  the primary service name
- * PG_REPLICA_SERVICE - the replica service name
+ * CRUNCHY_WATCH_PRIMARY -  the primary service name
+ * CRUNCHY_WATCH_REPLICA - the replica service name
  * PG_PRIMARY_PORT - database port to use when checking the database
- * PG_PRIMARY_USER -  database user account to use when checking the database
+ * CRUNCHY_WATCH_USERNAME -  database user account to use when checking the database
    using pg_isready utility
- * PG_DATABASE - database to use when checking the database using pg_isready
+ * CRUNCHY_WATCH_DATABASE - database to use when checking the database using pg_isready
  * REPLICA_TO_TRIGGER_LABEL - the pod name of a replica that you
    want to choose as the new primary in a failover; this will override
    the normal replica selection
- * WATCH_PRE_HOOK - path to an executable file to run before failover is processed.
- * WATCH_POST_HOOK - path to an executable file to run after failover is processed.
+ * CRUNCHY_WATCH_PRE_HOOK - path to an executable file to run before failover is processed.
+ * CRUNCHY_WATCH_POST_HOOK - path to an executable file to run after failover is processed.
  * DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
