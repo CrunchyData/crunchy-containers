@@ -1,5 +1,5 @@
 {
-   "kind": "Template",   
+   "kind": "Template",
    "apiVersion":"v1",
    "metadata":{
       "name":"simple-pgrestore-example",
@@ -23,7 +23,7 @@
          "name":"PGRESTORE_HOST",
          "displayName":"Database Host",
          "description":"This is the host/instance the restore will be done for.",
-         "value":"postgres-gis"
+         "value":"basic"
       },
       {
          "name":"PGRESTORE_PORT",
@@ -59,7 +59,7 @@
          "name":"PGRESTORE_VOLUMEPATH",
          "displayName":"Volume Path",
          "description":"Which path (only) to use as the input source for pg_restore.",
-         "value":"/pgdata/postgres-gis-dumps/2018-01-29-19-06-51/"
+         "value":"/pgdata/basic-dumps/2018-01-29-19-06-51/"
       },
       {
          "name":"PGRESTORE_FILE",
