@@ -59,10 +59,6 @@
                         "value":"5432"
                      },
                      {
-                        "name":"PGRESTORE_VERBOSE",
-                        "value":"true"
-                     },
-                     {
                         "name":"PGRESTORE_VOLUMEPATH",
                         "value":"/pgdata/basic-dumps/2018-01-29-19-06-51"
                      },
