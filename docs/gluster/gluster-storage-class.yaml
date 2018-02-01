@@ -4,6 +4,6 @@ metadata:
   name: gluster-heketi
 provisioner: kubernetes.io/glusterfs
 parameters:
-  resturl: "http://junk1:8080"
+  resturl: "http://gluster1:8080"
   restuser: "user"
   restuserkey: "My Secret"

@@ -266,6 +266,35 @@ make all
 After this, you will have all the Crunchy containers built and are ready
 for use in a *standalone Docker* environment.
 
+== Configure Container Storage
+
+The Container Suite is tested on 3 different storage backends:
+
+ * hostPath (single node testing)
+ * NFS (single and multi-node testing)
+ * Gluster (dynamic storage on separate Gluster cluster)
+
+Other storage backends work as well including GCE, EBS, ScaleIO, and
+others but may require you to modify various examples or configuration.
+
+=== Configure HostPath
+
+HostPath is the simplist storage backend to setup, it only is feasible
+on a single node but is good for testing the examples.  You set
+up *hostPath* storage as follows:
+....
+sudo mkdir /data
+sudo chmod 777 /data
+cd $CCPROOT/examples/pv
+./create-pv.sh hostpath
+./create-pvc.sh
+....
+
+This set of scripts will create 15 sample Persistent Volumes that
+all point to */data*.  It also creates sample Persistent Volume
+Claims that can be shared by various examples because these
+Volumes are created as ReadWriteMany.
+
 === Configure NFS for Persistence
 
 NFS is required for some of the examples, including the backup and restore
@@ -283,10 +312,6 @@ http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-c
 *Note*: Most of the Crunchy containers run as the postgres UID (26), but you
 will notice that when *supplementalGroups* are specified, the pod
 will include the nfsnobody group in the list of groups for the pod user.
-
-The case of Amazon file systems is different, for that you use the
-*fsGroup* security context setting but the idea for allowing
-write permissions is the same.
 
 if you are running your client on a VM, you will need to
 add 'insecure' to the exportfs file on the NFS server due to the way port
@@ -321,6 +346,15 @@ cd $CCPROOT/examples/pv
 
 *Note*: If you elect to configure HostPath or GCE as your storage option, please view
 README.txt for command-line usage for the ./create-pv.sh command.
+
+=== Configure Gluster for Persistence
+
+Setting up a Gluster cluster will offer you the ability to use
+dynamic storage provisioning in the examples.  A set of example
+Gluster configuration files is found at $CCPROOT/docs/gluster.
+
+This configuration is for a 3 node Gluster cluster which runs
+on a Centos7 Minimal VM deployment.  See https://github.com/CrunchyData/crunchy-containers/blob/master/docs/gluster/gluster-setup.adoc
 
 == OpenShift Environment
 
