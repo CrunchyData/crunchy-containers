@@ -68,18 +68,6 @@
          "value":"pgdumpall.sql"
       },
       {
-         "name":"PGRESTORE_CREATE",
-         "displayName":"Create",
-         "description":"Flag to indicate whether to begin pg_restore by creating the datbase before restoring into it.",
-         "value":"true"
-      },
-      {
-         "name":"PGRESTORE_CLEAN",
-         "displayName":"Clean",
-         "description":"Flag to indicate whether to cleanly drop database objects prior to recreating them.",
-         "value":"true"
-      },
-      {
          "name":"PGRESTORE_FORMAT",
          "displayName":"Format",
          "description":"Option to select the output format (plain (p), custom (c), directory (d) and tar (t)).",
