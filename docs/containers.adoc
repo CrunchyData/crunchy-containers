@@ -824,6 +824,7 @@ to retrieve database dumps to be restored via psql or pg_restore.
  * PGRESTORE_USER pg user we are connecting with
  * PGRESTORE_RESTOREFILE which filename (only) to use as the input source for pg_restore
  * PGRESTORE_VOLUMEPATH which path (only) to use as the input source for pg_restore
+ Note: As the crunchy-dump container dumps files to a date/time-stamped subdirectory, the PGRESTORE_VOLUMEPATH variable will need to be updated to the correct location in the pgrestore-job.json file for each invocation.
 
 ==== OPTIONAL/EXTENDED ARGS
 
