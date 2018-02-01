@@ -68,15 +68,11 @@
                      },
                      {
                         "name":"PGRESTORE_FILE",
-                        "value":"sqldump.tar"
+                        "value":"pgdumpall.sql"
                      },
                      {
-                        "name":"PGRESTORE_CREATE",
-                        "value":"true"
-                     },
-                     {
-                        "name":"PGRESTORE_CLEAN",
-                        "value":"true"
+                        "name":"PGRESTORE_FORMAT",
+                        "value":"p"
                      }
                   ]
                }
