@@ -34,21 +34,26 @@ RUN yum -y update && yum -y install epel-release \
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
 
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /var/lib/pgadmin /certs \
-  && chown -R daemon:daemon /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /var/lib/pgadmin /certs /run/httpd
 
 ADD bin/pgadmin4/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgadmin4/ /opt/cpm/conf
 
-RUN cp /usr/lib/python2.7/site-packages/pgadmin4-web/config.py \
-    /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
-  && chown -R daemon:daemon /usr/lib/python2.7/site-packages/pgadmin4-web
+RUN cp /opt/cpm/conf/httpd.conf /etc/httpd/conf/httpd.conf \
+  && rm /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/ssl.conf
+
+RUN chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
+  && chown -R 2:0 /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
+  && chmod -R g+rwx /run/httpd
+
+RUN ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
+  && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf
 
 EXPOSE 5050
 
 VOLUME ["/var/lib/pgadmin", "/certs"]
 
-USER daemon
+USER 2
 
 CMD ["/opt/cpm/bin/start-pgadmin4.sh"]
