@@ -14,5 +14,6 @@
 
 oc delete service pgadmin4
 oc delete pod pgadmin4
+oc delete secret pgadmin-secrets
 
 $CCPROOT/examples/waitforterm.sh pgadmin4 oc

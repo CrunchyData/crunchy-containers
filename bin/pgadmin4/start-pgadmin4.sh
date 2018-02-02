@@ -29,42 +29,22 @@ if [[ ${ENABLE_TLS:-false} == 'true' ]]
 then
     echo "TLS enabled.."
     if [[ ( ! -f /certs/server.key ) || ( ! -f /certs/server.crt ) ]]; then
-	echo "ENABLE_TLS true but /certs/server.key or /certs/server.crt not found, aborting"
-	exit 1
+        echo "ENABLE_TLS true but /certs/server.key or /certs/server.crt not found, aborting"
+        exit 1
     fi
-    cp /opt/cpm/conf/pgadmin-https.conf /etc/httpd/conf.d/pgadmin.conf
+    cp /opt/cpm/conf/pgadmin-https.conf /var/lib/pgadmin/pgadmin.conf
 else
     echo "TLS disabled.."
-    cp /opt/cpm/conf/pgadmin-http.conf /etc/httpd/conf.d/pgadmin.conf
+    cp /opt/cpm/conf/pgadmin-http.conf /var/lib/pgadmin/pgadmin.conf
 fi
 
-if [[ -f /etc/httpd/conf.d/ssl.conf ]]; then
-    mv /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.disabled
-fi
+cp /opt/cpm/conf/config_local.py /var/lib/pgadmin/config_local.py
 
-if [[ -f /etc/httpd/conf.d/welcome.conf ]]; then
-    mv /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/welcome.conf.disabled
-fi
-
-sed -i "s|^User .*|User daemon|g" /etc/httpd/conf/httpd.conf
-sed -i "s|^Group .*|Group daemon|g" /etc/httpd/conf/httpd.conf
-sed -i "s|SERVER_PORT|${SERVER_PORT:-5050}|g" /etc/httpd/conf.d/pgadmin.conf
+sed -i "s|SERVER_PORT|${SERVER_PORT:-5050}|g" /var/lib/pgadmin/pgadmin.conf
+sed -i "s/^DEFAULT_SERVER_PORT.*/DEFAULT_SERVER_PORT = ${SERVER_PORT:-5050}/" /var/lib/pgadmin/config_local.py
+sed -i "s|\"pg\":.*|\"pg\": \"/usr/pgsql-${PGVERSION?}/bin\",|g" /var/lib/pgadmin/config_local.py
 
 cd ${PGADMIN_DIR?}
-
-cp config.py config_local.py
-chmod +x config_local.py
-
-sed -i "s/^DEFAULT_SERVER .*/DEFAULT_SERVER = '0.0.0.0'/" config_local.py
-sed -i "s/^DEFAULT_SERVER_PORT.*/DEFAULT_SERVER_PORT = ${SERVER_PORT:-5050}/" config_local.py
-sed -i "s|    LOG_FILE.*|    LOG_FILE = '/var/lib/pgadmin/pgadmin4.log'|g" config_local.py
-sed -i "s|^SQLITE_PATH.*|SQLITE_PATH = '/var/lib/pgadmin/pgadmin4.db'|g" config_local.py
-sed -i "s|^SESSION_DB_PATH.*|SESSION_DB_PATH = '/var/lib/pgadmin/sessions'|g" config_local.py
-sed -i "s|^STORAGE_DIR.*|STORAGE_DIR = '/var/lib/pgadmin/storage'|g" config_local.py
-sed -i "s|^DATA_DIR.*|DATA_DIR = '/var/lib/pgadmin/data'|g" config_local.py
-sed -i "s|^UPGRADE_CHECK_ENABLED.*|UPGRADE_CHECK_ENABLED = False|g" config_local.py
-sed -i "s|^Listen .*|Listen ${SERVER_PORT:-5050}|g" /etc/httpd/conf/httpd.conf
-sed -i "s|\"pg\":.*|\"pg\": \"/usr/pgsql-${PGVERSION?}/bin\",|g" config_local.py
 
 if [[ ! -f /var/lib/pgadmin/pgadmin4.db ]]
 then
@@ -72,5 +52,9 @@ then
     python setup.py
 fi
 
+cd ${PGADMIN_DIR?}
+
 echo "Starting web server.."
 /usr/sbin/httpd -D FOREGROUND
+
+cat /var/lib/pgadmin/error_log
