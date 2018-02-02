@@ -49,7 +49,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  && yum -y install postgresql95 postgresql95-contrib postgresql95-server \
     pgaudit95 pgaudit95_set_user \
     crunchy-backrest \
-    postgis2_95 postgis2_95-client pgrouting_95 plr95 \
+    postgis22_95 postgis22_95-client pgrouting_95 plr95 \
  && yum -y --setopt=tsflags='' install pgaudit_analyze \
  && yum -y clean all
 
