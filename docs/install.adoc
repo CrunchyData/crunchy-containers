@@ -372,31 +372,6 @@ openshift_check_min_host_disk_gb: '10' # min 10gb disk
 openshift_check_min_host_memory_gb: '3' # min 3gb memory
 ....
 
-If you are using OpenShift Origin, the installation instructions for *oc cluster up*
-can be found link:https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md[here].
-
-=== Permissions
-
-In order to allow the *system* user to be able to create and list
-persistent volumes using *OpenShift version 3.3+*, you have to enter
-these commands as the *root* user after installation in order to
-modify the policies.
-....
-oc adm policy add-role-to-user cluster-reader system
-oc adm policy add-cluster-role-to-user cluster-reader system
-oc adm policy add-cluster-role-to-user cluster-admin system
-....
-
-One suggested method to use in order to grant a user permission to use the *anyuid* SCC
-would be the following:
-....
-oc adm policy add-scc-to-group anyuid system:authenticated
-....
-
-This says that any authenticated user can run with the anyuid SCC which lets
-them create PVCs and use the *fsGroup* setting for the PostgreSQL containers to
-work using NFS.
-
 == Kubernetes Environment
 
 See link:https://kubernetes.io/docs/setup/independent/install-kubeadm/[kubeadm]
