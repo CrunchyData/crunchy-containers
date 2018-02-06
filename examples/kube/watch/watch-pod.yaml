@@ -27,7 +27,7 @@ spec:
         - name: CRUNCHY_WATCH_FAILOVER_WAIT
           value: 10s
         - name: CRUNCHY_WATCH_KUBE_CCP_NAMESPACE
-          value: demo
+          value: $CCP_NAMESPACE
         - name: CRUNCHY_WATCH_KUBE_FAILOVER_STRATEGY
           value: latest
         - name: CRUNCHY_WATCH_PRE_HOOK

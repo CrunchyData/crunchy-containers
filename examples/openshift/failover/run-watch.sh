@@ -21,6 +21,6 @@ $DIR/cleanup-watch.sh
 oc create -f $DIR/watch-sa.json
 #kubectl.sh policy add-role-to-group edit system:serviceaccounts -n openshift
 #kubectl.sh policy add-role-to-group edit system:serviceaccounts -n default
-oc policy add-role-to-group edit system:serviceaccounts -n demo
+oc policy add-role-to-group edit system:serviceaccounts -n $CCP_NAMESPACE
 
 expenv -f $DIR/watch-pod.json | oc create -f -

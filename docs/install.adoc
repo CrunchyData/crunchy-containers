@@ -103,34 +103,71 @@ key and yum repository file into the $CCPROOT/conf directory at this point. Thes
 files can be obtained through https://access.crunchydata.com/ on the downloads
 page.*
 
-=== Creating a Demo Namespace
+=== Creating a Demo Namespace on Kubernetes
 
-On Openshift and Kubernetes, you will need to create a namespace
-called *demo* for the examples to work under.
+This section will illustrate how to set up a new Kubernetes namespace called *demo*, and will
+then show how to provide permissions to that namespace to allow the Kubernetes examples to run
+within that namespace. This is a *requirement* for running the examples.
 
-On Kubernetes:
-
-This example is based on a kubeadm installation with the admin
-user being already created. The example below assumes the cluster name is *kubernetes* and the cluster default user is *kubernetes-admin*.
-
+First, view currently existing namespaces:
 ....
-kubectl create -f $CCPROOT/conf/demo-namespace.json
-kubectl get namespaces
-....
-
-Then, set your context to the new demo namespace:
-
-....
-sudo chmod o+w /etc/kubernetes
-sudo chmod o+w /etc/kubernetes/admin.conf
-kubectl config set-context demo --namespace=demo --cluster=kubernetes --user=kubernetes-admin
-kubectl config use-context demo
-kubectl config current-context
+$ kubectl get namespace
+NAME          STATUS    AGE
+default       Active    21d
+kube-public   Active    21d
+kube-system   Active    21d
 ....
 
-On Openshift:
+Then, create a new namespace called *demo*:
 ....
-oc new-project demo
+$ kubectl create -f $CCPROOT/conf/demo-namespace.json
+namespace "demo" created
+$ kubectl get namespace demo
+NAME      STATUS    AGE
+demo      Active    7s
+....
+
+Then we'll set the namespace as our current location:
+....
+$ kubectl config set-context $(kubectl config current-context) --namespace=demo
+....
+
+We can verify that the namespace was set correctly through the following command:
+....
+$ kubectl config view | grep namespace:
+    namespace: demo
+....
+
+=== Creating a Demo Namespace on OpenShift
+
+This section will illustrate how to set up a new OpenShift project called *demo*.
+This is a *requirement* for running the examples.
+
+First we will create a new project:
+....
+$ oc new-project demo --description="Crunchy Containers project" --display-name="Crunchy-Containers"
+Now using project "demo" on server "https://127.0.0.1:8443".
+
+You can add applications to this project with the 'new-app' command. For example, try:
+
+    oc new-app centos/ruby-22-centos7~https://github.com/openshift/ruby-ex.git
+
+to build a new example application in Ruby.
+....
+
+If we view the list of projects, we can see the new project has been added and is "active".
+....
+$ oc get projects
+NAME        DISPLAY NAME         STATUS
+demo        Crunchy-Containers   Active
+myproject   My Project           Active
+....
+
+If you were on a different project and wanted to switch to the demo project, you would do
+so by running the following:
+....
+$ oc project demo
+Now using project "demo" on server "https://127.0.0.1:8443".
 ....
 
 === Installing PostgreSQL
