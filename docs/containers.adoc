@@ -414,7 +414,7 @@ kubectl create clusterrolebinding pgwatcher-view-binding --clusterrole=cluster-a
 
 A less wide open policy would be applied like this on Kube 1.6 rbac:
 ....
-kubectl create rolebinding my-sa-binding --clusterrole=admin --serviceaccount=default:pg-watcher --namespace=default
+kubectl create rolebinding my-sa-binding --clusterrole=admin --serviceaccount=demo:pg-watcher --namespace=demo
 ....
 
 NOTE:  this kubectl command is only available in Kube 1.6, for prior

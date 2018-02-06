@@ -14,7 +14,7 @@
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to pull with"
     }, {
-        "name": "NAMESPACE",
+        "name": "CCP_NAMESPACE",
         "description": "The project namespace to use"
     }, {
         "name": "PG_PRIMARY_USER",
@@ -92,7 +92,7 @@
                     "value": "/tmp"
                 }, {
                     "name": "OSE_PROJECT",
-                    "value": "${NAMESPACE}"
+                    "value": "${CCP_NAMESPACE}"
                 }, {
                     "name": "PG_USER",
                     "value": "${PG_PRIMARY_USER}"

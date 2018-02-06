@@ -17,7 +17,7 @@
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to pull with"
     }, {
-        "name": "NAMESPACE",
+        "name": "CCP_NAMESPACE",
         "description": "The project namespace to use"
     }, {
         "name": "PG_PRIMARY_USER",
@@ -86,7 +86,7 @@
                 "image": "${CCP_IMAGE_PREFIX}/crunchy-dba:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
-                    "value": "${NAMESPACE}"
+                    "value": "${CCP_NAMESPACE}"
                 }, {
                     "name": "HOME",
                     "value": "/tmp"

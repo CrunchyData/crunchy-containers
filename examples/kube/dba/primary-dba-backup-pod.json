@@ -14,7 +14,7 @@
             "image": "$CCP_IMAGE_PREFIX/crunchy-dba:$CCP_IMAGE_TAG",
             "env": [{
                 "name": "KUBE_PROJECT",
-                "value": "$NAMESPACE"
+                "value": "$CCP_NAMESPACE"
             }, {
                 "name": "CCP_IMAGE_TAG",
                 "value": "$CCP_IMAGE_TAG"
