@@ -108,10 +108,24 @@ page.*
 On Openshift and Kubernetes, you will need to create a namespace
 called *demo* for the examples to work under.
 
-On Kube:
+On Kubernetes:
+
+This example is based on a kubeadm installation with the admin
+user being already created. The example below assumes the cluster name is *kubernetes* and the cluster default user is *kubernetes-admin*.
+
 ....
 kubectl create -f $CCPROOT/conf/demo-namespace.json
 kubectl get namespaces
+....
+
+Then, set your context to the new demo namespace:
+
+....
+sudo chmod o+w /etc/kubernetes
+sudo chmod o+w /etc/kubernetes/admin.conf
+kubectl config set-context demo --namespace=demo --cluster=kubernetes --user=kubernetes-admin
+kubectl config use-context demo
+kubectl config current-context
 ....
 
 On Openshift:
