@@ -11,6 +11,9 @@
         }
     },
     "parameters": [{
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "The image prefix to pull with"
+    }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to pull with"
     }, {
@@ -83,13 +86,16 @@
             "serviceAccount": "dba-sa",
             "containers": [{
                 "name": "dba",
-                "image": "crunchydata/crunchy-dba:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-dba:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "CCP_IMAGE_TAG",
                     "value": "${CCP_IMAGE_TAG}"
                 }, {
                     "name": "HOME",
                     "value": "/tmp"
+                }, {
+                  "name": "CCP_IMAGE_PREFIX",
+                  "value": "${CCP_IMAGE_PREFIX}"
                 }, {
                     "name": "OSE_PROJECT",
                     "value": "${CCP_NAMESPACE}"
@@ -120,7 +126,7 @@
                 }]
             }, {
                 "name": "server",
-                "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"
