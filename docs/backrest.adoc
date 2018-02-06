@@ -1,6 +1,6 @@
 = pgbackrest Support in Crunchy Container Suite
 Crunchy Data Solutions, Inc.
-v1.7.1, {docdate}
+v1.7.2, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Description
@@ -39,6 +39,13 @@ file:
 ARCHIVE_MODE=on
 ARCHIVE_TIMEOUT=60
 ARCHIVE_COMMAND='pgbackrest --stanza=db archive-push %p'
+....
+
+If you are using a postgres image older than *1.7.1*, *archive_command* must specify where 
+the *pgbackrest.conf* file is located:
+
+....
+ARCHIVE_COMMAND='pgbackrest --config=/pgconf/pgbackrest.conf --stanza=db archive-push %p'
 ....
 
 This requires you use a pgbackrest stanza name of *db* within the

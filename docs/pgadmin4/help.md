@@ -1,5 +1,5 @@
 = pgadmin4 (1)
-Jeff McCormick
+Crunchy Data
 April 13, 2017
 == NAME
 pgadmin4 - pgadmin4 container image
@@ -34,4 +34,4 @@ The Red Hat Enterprise Linux version from which the container was built. For exa
 
 `Release=`
 
-The specific release number of the container. For example, Release="1.7.0"
+The specific release number of the container. For example, Release="1.7.2"

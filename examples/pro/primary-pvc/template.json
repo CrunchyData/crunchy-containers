@@ -110,7 +110,7 @@
                         "containers": [
                             {
                                 "name": "postgresql",
-                                "image": "crunchydata/crunchy-postgres-gis:centos7-10.1-1.7.0 ",
+                                "image": "crunchydata/crunchy-postgres-gis:centos7-10.1-1.7.1 ",
                                 "ports": [
                                     {
                                         "containerPort": 5432,

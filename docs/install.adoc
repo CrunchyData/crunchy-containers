@@ -1,7 +1,7 @@
 = Installation Guide - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
 :toc: left
-v1.7.1, {docdate}
+v1.7.2, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Project Setup
@@ -36,7 +36,7 @@ export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 export CCP_CLI=kubectl
-export NAMESPACE=default
+export NAMESPACE=demo
 export PV_PATH=/mnt/nfsfileshare
 export LOCAL_IP=$(hostname --ip-address)
 export REPLACE_CCP_IMAGE_PREFIX=crunchydata
@@ -102,6 +102,22 @@ go get github.com/blang/expenv
 key and yum repository file into the $CCPROOT/conf directory at this point. These
 files can be obtained through https://access.crunchydata.com/ on the downloads
 page.*
+
+=== Creating a Demo Namespace
+
+On Openshift and Kubernetes, you will need to create a namespace
+called *demo* for the examples to work under.
+
+On Kube:
+....
+kubectl create -f $CCPROOT/conf/demo-namespace.json
+kubectl get namespaces
+....
+
+On Openshift:
+....
+oc new-project demo
+....
 
 === Installing PostgreSQL
 
@@ -250,6 +266,35 @@ make all
 After this, you will have all the Crunchy containers built and are ready
 for use in a *standalone Docker* environment.
 
+== Configure Container Storage
+
+The Container Suite is tested on 3 different storage backends:
+
+ * hostPath (single node testing)
+ * NFS (single and multi-node testing)
+ * Gluster (dynamic storage on separate Gluster cluster)
+
+Other storage backends work as well including GCE, EBS, ScaleIO, and
+others but may require you to modify various examples or configuration.
+
+=== Configure HostPath
+
+HostPath is the simplist storage backend to setup, it only is feasible
+on a single node but is good for testing the examples.  You set
+up *hostPath* storage as follows:
+....
+sudo mkdir /data
+sudo chmod 777 /data
+cd $CCPROOT/examples/pv
+./create-pv.sh hostpath
+./create-pvc.sh
+....
+
+This set of scripts will create 15 sample Persistent Volumes that
+all point to */data*.  It also creates sample Persistent Volume
+Claims that can be shared by various examples because these
+Volumes are created as ReadWriteMany.
+
 === Configure NFS for Persistence
 
 NFS is required for some of the examples, including the backup and restore
@@ -267,10 +312,6 @@ http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-c
 *Note*: Most of the Crunchy containers run as the postgres UID (26), but you
 will notice that when *supplementalGroups* are specified, the pod
 will include the nfsnobody group in the list of groups for the pod user.
-
-The case of Amazon file systems is different, for that you use the
-*fsGroup* security context setting but the idea for allowing
-write permissions is the same.
 
 if you are running your client on a VM, you will need to
 add 'insecure' to the exportfs file on the NFS server due to the way port
@@ -306,6 +347,15 @@ cd $CCPROOT/examples/pv
 *Note*: If you elect to configure HostPath or GCE as your storage option, please view
 README.txt for command-line usage for the ./create-pv.sh command.
 
+=== Configure Gluster for Persistence
+
+Setting up a Gluster cluster will offer you the ability to use
+dynamic storage provisioning in the examples.  A set of example
+Gluster configuration files is found at $CCPROOT/docs/gluster.
+
+This configuration is for a 3 node Gluster cluster which runs
+on a Centos7 Minimal VM deployment.  See https://github.com/CrunchyData/crunchy-containers/blob/master/docs/gluster/gluster-setup.adoc
+
 == OpenShift Environment
 
 See the OpenShift installation guide for details on how to install
@@ -321,31 +371,6 @@ prior to installation:
 openshift_check_min_host_disk_gb: '10' # min 10gb disk
 openshift_check_min_host_memory_gb: '3' # min 3gb memory
 ....
-
-If you are using OpenShift Origin, the installation instructions for *oc cluster up*
-can be found link:https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md[here].
-
-=== Permissions
-
-In order to allow the *system* user to be able to create and list
-persistent volumes using *OpenShift version 3.3+*, you have to enter
-these commands as the *root* user after installation in order to
-modify the policies.
-....
-oc adm policy add-role-to-user cluster-reader system
-oc adm policy add-cluster-role-to-user cluster-reader system
-oc adm policy add-cluster-role-to-user cluster-admin system
-....
-
-One suggested method to use in order to grant a user permission to use the *anyuid* SCC
-would be the following:
-....
-oc adm policy add-scc-to-group anyuid system:authenticated
-....
-
-This says that any authenticated user can run with the anyuid SCC which lets
-them create PVCs and use the *fsGroup* setting for the PostgreSQL containers to
-work using NFS.
 
 == Kubernetes Environment
 
