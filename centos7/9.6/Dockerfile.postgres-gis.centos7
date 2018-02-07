@@ -26,7 +26,6 @@ RUN yum -y update && yum -y install epel-release \
     hostname \
     nss_wrapper \
     openssh-server \
-    openssh-clients \
     procps-ng  \
     rsync \
  && yum -y install postgresql96-server postgresql96-contrib postgresql96 \
