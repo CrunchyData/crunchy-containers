@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CCP_VERSION=1.7.1
+CCP_VERSION=1.8.0
 REGISTRY=52.2.93.43:5000
 containers="crunchydata/crunchy-vacuum crunchydata/crunchy-prometheus crunchydata/crunchy-promgateway crunchydata/crunchy-grafana crunchydata/crunchy-collect crunchydata/crunchy-pgbadger crunchydata/crunchy-pgpool crunchydata/crunchy-watch crunchydata/crunchy-backup crunchydata/crunchy-postgres"
 for i in $containers;

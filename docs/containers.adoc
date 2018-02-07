@@ -1,6 +1,6 @@
 = Crunchy Container Overview
 Crunchy Data Solutions, Inc.
-v1.7.2, {docdate}
+v1.8.0, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Introduction

@@ -110,7 +110,7 @@
                         "containers": [
                             {
                                 "name": "${PGADMIN_SERVICE_NAME}",
-                                "image": "docker.io/crunchydata/crunchy-pgadmin4:centos7-10.1-1.7.1",
+                                "image": "docker.io/crunchydata/crunchy-pgadmin4:centos7-10.1-1.8.0",
                                 "ports": [
                                     {
                                         "containerPort": 5050,
