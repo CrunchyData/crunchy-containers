@@ -13,6 +13,9 @@
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "image prefix to use"
     }],
 
     "objects": [{
@@ -52,7 +55,7 @@
         "spec": {
             "containers": [{
                 "name": "pgadmin4",
-                "image": "crunchydata/crunchy-pgadmin4:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-pgadmin4:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5050,
                     "protocol": "TCP"

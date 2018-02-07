@@ -37,8 +37,8 @@ oc create -f $DIR/pgroot-secret.json
 oc create configmap postgresql-conf --from-file=postgresql.conf --from-file=pghba=pg_hba.conf --from-file=setup.sql
 
 
-oc process -f $DIR/primary-dc.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/primary-dc.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
 echo "waiting 20 seconds for primary to become active..."
 sleep 20
-oc process -f $DIR/replica-dc.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-oc process -f $DIR/replica2-dc.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/replica-dc.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/replica2-dc.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

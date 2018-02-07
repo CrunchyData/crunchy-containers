@@ -18,6 +18,9 @@
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use"
     }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "The image prefix to use"
+    }, {
         "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PostgreSQL replication user",
         "value": "password"
@@ -104,7 +107,7 @@
         "spec": {
             "containers": [{
                 "name": "collect",
-                "image": "crunchydata/crunchy-collect:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-collect:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "PG_PRIMARY_USER",
                     "value": "${PG_PRIMARY_USER}"
@@ -128,7 +131,7 @@
                 }]
             }, {
                 "name": "postgres",
-                "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "readinessProbe": {
                     "exec": {
                         "command": [
@@ -248,7 +251,7 @@
                 "spec": {
                     "containers": [{
                         "name": "postgres",
-                        "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                        "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                         "readinessProbe": {
                             "exec": {
                                 "command": [
