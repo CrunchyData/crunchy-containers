@@ -22,7 +22,7 @@ COPY docs/grafana/help.1 /help.1
 COPY docs/grafana/help.md /help.md
 COPY docs/licenses /licenses
 
-RUN yum -y update && yum -y install procps-ng openssh-clients  hostname   && yum clean all -y
+RUN yum -y update && yum -y install procps-ng hostname   && yum clean all -y
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /data
 
