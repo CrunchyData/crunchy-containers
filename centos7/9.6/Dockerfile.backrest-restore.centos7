@@ -24,7 +24,6 @@ RUN yum -y update && yum -y install epel-release \
 	hostname \
 	gettext \
 	nss_wrapper \
-	openssh-clients \
  	procps-ng  \
  && yum -y clean all
 
