@@ -30,7 +30,7 @@
         "containers": [
             {
                 "name": "pgadmin",
-                "image": "crunchydata/crunchy-pgadmin4:centos7-10.1-1.7.1",
+                "image": "crunchydata/crunchy-pgadmin4:centos7-10.1-1.8.0",
                 "ports": [
                     {
                         "containerPort": 5050,
