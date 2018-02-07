@@ -18,6 +18,10 @@
         "description": "The image tag to use",
         "value": "rhel7-9.6.7-1.8.0"
     }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "The image prefix to use",
+        "value": "crunchydata"
+    }, {
         "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PG primary user",
         "value": "password"
@@ -179,7 +183,7 @@
                         },
                         "containers": [{
                             "name": "server",
-                            "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                            "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                             "ports": [{
                                 "containerPort": 5432,
                                 "name": "postgres"
@@ -272,7 +276,7 @@
                         },
                         "containers": [{
                             "name": "pgpool",
-                            "image": "crunchydata/crunchy-pgpool:${CCP_IMAGE_TAG}",
+                            "image": "${CCP_IMAGE_PREFIX}/crunchy-pgpool:${CCP_IMAGE_TAG}",
                             "imagePullPolicy": "IfNotPresent",
                             "env": [{
                                 "name": "PG_USERNAME",
@@ -334,7 +338,7 @@
                         },
                         "containers": [{
                             "name": "collect",
-                            "image": "crunchydata/crunchy-collect:${CCP_IMAGE_TAG}",
+                            "image": "${CCP_IMAGE_PREFIX}/crunchy-collect:${CCP_IMAGE_TAG}",
                             "imagePullPolicy": "IfNotPresent",
                             "env": [{
                                 "name": "PG_PRIMARY_USER",
@@ -359,7 +363,7 @@
                             }]
                         }, {
                             "name": "server",
-                            "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                            "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                             "env": [{
                                 "name": "PG_PRIMARY_PORT",
                                 "value": "5432"

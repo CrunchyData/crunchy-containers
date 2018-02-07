@@ -63,4 +63,4 @@ docker run \
 	-e PG_DATABASE=userdb \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
-	-d crunchydata/crunchy-postgres-gis:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-postgres-gis:$CCP_IMAGE_TAG

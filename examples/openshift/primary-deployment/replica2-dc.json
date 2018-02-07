@@ -29,6 +29,9 @@
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use"
     }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "The image prefix to use"
+    }, {
         "name": "PG_USER",
         "description": "The username that clients will use to connect to PG server",
         "value": "testuser"
@@ -64,7 +67,7 @@
                 "spec": {
                     "containers": [{
                         "name": "postgres",
-                        "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                        "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                         "env": [{
                             "name": "PG_PRIMARY_PORT",
                             "value": "${PG_PRIMARY_PORT}"
