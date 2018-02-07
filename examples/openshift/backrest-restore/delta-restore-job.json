@@ -27,6 +27,9 @@
             "app": "backrest-job-nfs"
           },
           "spec": {
+	   "securityContext": {
+	                                                         "supplementalGroups": [65534]
+								                                                                           },
             "volumes": [
               {
                 "name": "pgconf",
