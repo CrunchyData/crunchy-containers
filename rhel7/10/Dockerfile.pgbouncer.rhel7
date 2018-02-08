@@ -39,7 +39,6 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 	gettext \
 	hostname  \
 	nss_wrapper \
-	openssh-clients \
 	procps-ng \
  && yum -y install 	postgresql10 pgbouncer \
  && yum clean all -y
