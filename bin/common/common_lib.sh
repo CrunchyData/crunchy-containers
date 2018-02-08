@@ -12,6 +12,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+    
+export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
+export NSS_WRAPPER_PASSWD=/tmp/passwd
+export NSS_WRAPPER_GROUP=/tmp/group
 
 function enable_debugging() {
     if [[ ${DEBUG:-false} == "true" ]]
@@ -27,7 +31,4 @@ function ose_hack() {
     export GROUP_ID=$(id -g)
     envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
     envsubst < /opt/cpm/conf/group.template > /tmp/group
-    export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
-    export NSS_WRAPPER_PASSWD=/tmp/passwd
-    export NSS_WRAPPER_GROUP=/tmp/group
 }

@@ -15,6 +15,7 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
+ose_hack
 
 function trap_sigterm() {
 	echo "Doing trap logic..." >> $PGDATA/trap.output

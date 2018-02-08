@@ -26,7 +26,6 @@ RUN yum -y update && yum -y install epel-release \
     hostname \
     nss_wrapper \
     openssh-server \
-    openssh-clients \
     procps-ng  \
     rsync \
  && yum -y install postgresql96-server postgresql96-contrib postgresql96 \
@@ -39,7 +38,12 @@ RUN yum -y update && yum -y install epel-release \
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
 
 # add path settings for postgres user
+# bash_profile is loaded in login, but not with exec
+# bashrc to set permissions in OCP when using exec
+# HOME is / in OCP
 ADD conf/.bash_profile /var/lib/pgsql/
+ADD conf/.bash_profile /
+ADD conf/.bashrc /
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd
 
@@ -47,6 +51,7 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
     /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
 # Link pgbackrest.conf to default location for convenience
+# Add passwd and group overrides for SSHD in OCP
 RUN ln -sf /pgconf/pgbackrest.conf /etc/pgbackrest.conf
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
