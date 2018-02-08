@@ -34,7 +34,6 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum -y update && yum -y install gettext \
 	hostname  \
 nss_wrapper \
-	openssh-clients \
 	libxslt \
 	libxml2 \
 	procps-ng \
