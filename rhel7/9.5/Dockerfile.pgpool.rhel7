@@ -35,7 +35,6 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 RUN yum -y update && yum -y install gettext libxslt libxml2 procps-ng \
 pgpool-II-95 pgpool-II-95-extensions \
 postgresql95 \
-openssh-clients \
 hostname  \
  && yum clean all -y
 
