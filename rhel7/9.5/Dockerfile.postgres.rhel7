@@ -41,7 +41,6 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
     hostname \
     nss_wrapper \
     openssh-server \
-    openssh-clients \
     procps-ng \
     rsync \
  && yum -y reinstall glibc-common \
