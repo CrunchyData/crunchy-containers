@@ -28,8 +28,7 @@ gendeps:
 	godep save \
 	github.com/crunchydata/crunchy-containers/dba \
 	github.com/crunchydata/crunchy-containers/collectapi \
-	github.com/crunchydata/crunchy-containers/badger  \
-	github.com/crunchydata/crunchy-containers/cct
+	github.com/crunchydata/crunchy-containers/badger
 
 docbuild:
 	cd docs && ./build-docs.sh
