@@ -20,7 +20,7 @@
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
     }, {
-        "name": "NAMESPACE",
+        "name": "CCP_NAMESPACE",
         "description": "the project namespace to use"
     }],
     "objects": [{
@@ -83,7 +83,7 @@
                 }, {
                     "name": "OSE_PROJECT",
                     "description": "ose project to login into",
-                    "value": "${NAMESPACE}"
+                    "value": "${CCP_NAMESPACE}"
                 }, {
                     "name": "SLEEP_TIME",
                     "description": "time in secs to sleep between polls",

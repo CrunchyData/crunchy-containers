@@ -24,6 +24,6 @@ oc create -f $DIR/set-sa.json
 #oadm policy add-cluster-role-to-user cluster-reader system:serviceaccount:default:pgset-sa
 
 # the most wide open permissions, adjust for your security posture
-oc policy add-role-to-group view system:serviceaccounts -n $NAMESPACE
-oc policy add-role-to-group edit system:serviceaccounts -n $NAMESPACE
+oc policy add-role-to-group view system:serviceaccounts -n $CCP_NAMESPACE
+oc policy add-role-to-group edit system:serviceaccounts -n $CCP_NAMESPACE
 

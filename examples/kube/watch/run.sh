@@ -24,8 +24,7 @@ kubectl create -f $DIR/watch-sa.json
 
 kubectl create rolebinding pg-watcher-sa-edit \
   --clusterrole=edit \
-  --serviceaccount=demo:pg-watcher \
-  --namespace=demo
+  --serviceaccount=$CCP_NAMESPACE:pg-watcher \
+  --namespace=$CCP_NAMESPACE
 
 envsubst < $DIR/watch-pod.yaml | kubectl create -f -
-

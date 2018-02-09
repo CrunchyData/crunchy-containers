@@ -23,7 +23,8 @@ kubectl create clusterrolebinding permissive-binding \
   --clusterrole=cluster-admin \
   --user=admin \
   --user=kubelet \
-  --group=system:serviceaccounts
+  --group=system:serviceaccounts \
+  --namespace=$CCP_NAMESPACE
 
 kubectl create -f $DIR/primary-dba-service.json
 expenv -f $DIR/primary-dba-vac-pod.json | kubectl create -f -

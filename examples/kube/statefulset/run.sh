@@ -28,7 +28,8 @@ kubectl create clusterrolebinding permissive-binding \
   --clusterrole=cluster-admin \
   --user=admin \
   --user=kubelet \
-  --group=system:serviceaccounts
+  --group=system:serviceaccounts \
+  --namespace=$CCP_NAMESPACE
 
 # create the services for the example
 kubectl create -f $DIR/set-service.json
