@@ -13,7 +13,7 @@ LABEL name="crunchydata/prometheus" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-RUN yum -y update && yum -y install procps-ng openssh-clients hostname  && yum clean all -y
+RUN yum -y update && yum -y install procps-ng hostname  && yum clean all -y
 
 RUN mkdir -p /data /opt/cpm/bin /opt/cpm/conf
 

@@ -22,7 +22,7 @@ RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/r
 # Install pgpool deps
 RUN yum -y update && yum -y --enablerepo=centosplus install gettext && \
 	yum install -y postgresql95  pgpool-II-95 pgpool-II-95-extensions \
-	procps-ng openssh-clients hostname &&  \
+	procps-ng hostname &&  \
 	yum clean all -y
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf

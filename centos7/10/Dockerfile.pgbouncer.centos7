@@ -27,7 +27,6 @@ RUN yum -y update && yum -y install epel-release \
 	gettext \
 	hostname  \
 	nss_wrapper \
-	openssh-clients \
 	procps-ng \
  && yum -y install 	postgresql10 pgbouncer \
  && yum clean all -y

@@ -41,7 +41,6 @@ RUN yum -y update \
     gettext \
     hostname \
     nss_wrapper \
-    openssh-clients \
     openssl \
     procps-ng \
     mod_wsgi mod_ssl \

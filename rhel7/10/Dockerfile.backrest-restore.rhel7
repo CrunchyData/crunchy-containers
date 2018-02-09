@@ -36,7 +36,6 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 	hostname \
 	gettext \
 	nss_wrapper \
-	openssh-clients \
  	procps-ng  \
  && yum -y clean all
 

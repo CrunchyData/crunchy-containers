@@ -22,7 +22,7 @@ COPY docs/vacuum/help.1 /help.1
 COPY docs/vacuum/help.md /help.md
 COPY docs/licenses /licenses
 
-RUN yum -y update && yum -y install procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
+RUN yum -y update && yum -y install procps-ng iproute bind-utils hostname  && yum clean all -y
 
 # set up cpm directory
 #

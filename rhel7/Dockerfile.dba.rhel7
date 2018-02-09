@@ -21,7 +21,7 @@ COPY docs/dba/help.1 /help.1
 COPY docs/dba/help.md /help.md
 COPY docs/licenses /licenses
 
-RUN yum -y update && yum -y install psmisc procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
+RUN yum -y update && yum -y install psmisc procps-ng iproute bind-utils hostname  && yum clean all -y
 
 RUN mkdir -p /opt/cpm/bin
 RUN mkdir -p /opt/cpm/conf
