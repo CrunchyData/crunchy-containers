@@ -16,7 +16,7 @@
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use",
-        "value": "rhel7-9.6.6-1.7.1"
+        "value": "rhel7-9.6.6-1.8.0"
     }, {
         "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PG primary user",

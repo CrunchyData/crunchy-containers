@@ -14,7 +14,7 @@
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
     }, {
-        "name": "NAMESPACE",
+        "name": "CCP_NAMESPACE",
         "description": "the project namespace to use"
     }],
     "objects": [{
@@ -33,7 +33,7 @@
                 "image": "crunchydata/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
-                    "value": "${NAMESPACE}"
+                    "value": "${CCP_NAMESPACE}"
                 }, {
                     "name": "SLEEP_TIME",
                     "value": "20"

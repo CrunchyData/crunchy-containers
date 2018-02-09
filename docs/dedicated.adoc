@@ -1,6 +1,6 @@
 = OpenShift Dedicated Examples - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.7.2, {docdate}
+v1.8.0, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == OpenShift Dedicated Environment
@@ -47,7 +47,7 @@ export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
 export CCP_PGVERSION=10
 export CCP_PG_FULLVERSION=10.1
-export CCP_VERSION=1.7.1
+export CCP_VERSION=1.8.0
 export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
@@ -60,7 +60,7 @@ export TOKEN=yourtokengoeshere
 export REG=docker-registry-default.router.default.svc.cluster.local
 export REG=172.30.240.45:5000
 export REG=registry.crunchydata.openshift.com
-export NAMESPACE=default
+export CCP_NAMESPACE=demo
 ....
 You will then need to log out and back in for the changes to your .bashrc
 file to take effect.
@@ -76,7 +76,7 @@ mkdir crunchydata
 cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 1.7.1
+git checkout 1.8.0
 godep restore
 ....
 
@@ -387,7 +387,7 @@ which uses a Persistent Volume Claim for persistence.
 
 |CCP_IMAGE_TAG
 | the image version to use for the container
-| rhel7-9.6.6-1.7.1
+| rhel7-9.6.6-1.8.0
 
 |CCP_IMAGE_PREFIX
 | the image prefix to use, typically the image stream prefix of your registry
@@ -487,7 +487,7 @@ files in a PVC.
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.6-1.7.1
+| rhel7-9.6.6-1.8.0
 |===
 
 === Restore Database Template
@@ -577,7 +577,7 @@ found in a PVC.
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.6-1.7.1
+| rhel7-9.6.6-1.8.0
 |===
 
 === Replica Database Template
@@ -640,7 +640,7 @@ These templates create the following:
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.6-1.7.1
+| rhel7-9.6.6-1.8.0
 |===
 
 === pgadmin4 Web User Interface Template
@@ -684,7 +684,7 @@ This template will create the following:
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.6-1.7.1
+| rhel7-9.6.6-1.8.0
 |===
 
 

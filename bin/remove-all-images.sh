@@ -14,7 +14,7 @@
 # limitations under the License.
 
 for i in \
-postgres-gis prometheus promgateway grafana collect pgbadger pgpool \
+restore dump postgres-gis prometheus promgateway grafana collect pgbadger pgpool \
 watch backup postgres pgbouncer pgadmin4 vacuum dba upgrade backrest-restore
 do
 	docker rmi -f  crunchydata/crunchy-$i:$CCP_IMAGE_TAG

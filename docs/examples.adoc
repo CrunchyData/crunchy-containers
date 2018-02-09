@@ -1,7 +1,7 @@
 = Examples & Use Cases - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
 :toc: left
-v1.7.2, {docdate}
+v1.8.0, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Usage
@@ -30,48 +30,6 @@ This works by placing a file named, setup.sql, within the /pgconf mounted volume
 directory.  Portions of the setup.sql file are required for the crunchy container
 to work, see comments within the sample setup.sql file.
 
-=== Kubernetes Environment Setup & Configuration
-
-This section will illustrate how to set up a new Kubernetes namespace called *demo*, and will
-then show how to provide permissions to that namespace to allow the Kubernetes examples to run
-within that namespace.
-
-First, view currently existing namespaces:
-....
-$ kubectl get namespace
-NAME          STATUS    AGE
-default       Active    21d
-kube-public   Active    21d
-kube-system   Active    21d
-....
-
-Then, create a new namespace called *demo*:
-....
-$ kubectl create namespace demo
-namespace "demo" created
-$ kubectl get namespace demo
-NAME      STATUS    AGE
-demo      Active    7s
-....
-
-Then we'll set the namespace as our current location:
-....
-$ kubectl config set-context $(kubectl config current-context) --namespace=demo
-....
-
-We can verify that the namespace was set correctly through the following command:
-....
-$ kubectl config view | grep namespace:
-    namespace: demo
-....
-
-We shall now create a user account named that will be responsible for managing Kubernetes
-resources within the namespace we have created.
-
-Follow the instructions located link:https://docs.bitnami.com/kubernetes/how-to/configure-rbac-in-your-kubernetes-cluster/#use-case-1-create-user-with-limited-namespace-access[here]
-to create a new user account with limited permissions for your namespace. Steps 2-5 will
-be sufficient to explain.
-
 ==== Custom Configuration
 
 This example shows how you can use your own customized version of setup.sql
@@ -92,104 +50,6 @@ cd $CCPROOT/examples/kubernetes/custom-config
 This will start a database container that will use an NFS mounted /pgconf
 directory that will contain the custom setup.sql file found in the example
 directory.
-
-=== OpenShift Environment Setup & Configuration
-
-This section will illustrate how to set up a new OpenShift project called *demo*, and will
-additionally show how to create a new *demo* user who has the proper privileges to run OpenShift
-examples within that project under that user.
-
-First we will create a new project as the standard *developer* user that you are logged into
-upon running *oc cluster up*:
-....
-$ oc new-project demo --description="Crunchy Containers project" --display-name="Crunchy-Containers"
-Now using project "demo" on server "https://127.0.0.1:8443".
-
-You can add applications to this project with the 'new-app' command. For example, try:
-
-    oc new-app centos/ruby-22-centos7~https://github.com/openshift/ruby-ex.git
-
-to build a new example application in Ruby.
-....
-
-If we view the list of projects, we can see the new project has been added and is "active".
-....
-$ oc get projects
-NAME        DISPLAY NAME         STATUS
-demo        Crunchy-Containers   Active
-myproject   My Project           Active
-....
-
-If you were on a different project and wanted to switch to the demo project, you would do
-so by running the following:
-....
-$ oc project demo
-Now using project "demo" on server "https://127.0.0.1:8443".
-....
-
-At this point we'll create a new user - foo. Logging in using this method will automatically
-create a new user with the authentication method of *anypassword*, meaning that you can simply
-hit enter to login.
-....
-$ oc login -u foo
-Authentication required for https://127.0.0.1:8443 (openshift)
-Username: foo
-Password:
-Login successful.
-
-You don't have any projects. You can try to create a new project, by running
-
-    oc new-project <projectname>
-....
-
-Notice that there are no projects that *foo* currently has access to. We'll fix that
-by first logging in as the *system:admin* user.
-....
-$ oc login -u system:admin
-Logged into "https://127.0.0.1:8443" as "system:admin" using existing credentials.
-
-You have access to the following projects and can switch between them with 'oc project <projectname>':
-
-  * default
-    demo
-    kube-public
-    kube-system
-    myproject
-    openshift
-    openshift-infra
-
-Using project "default".
-....
-
-If we view the list of users, *foo* has been added.
-....
-$ oc get user
-NAME        UID                                    FULL NAME   IDENTITIES
-developer   c818ca4f-c5b4-11e7-9e42-0800278f57e4               anypassword:developer
-foo         5879a850-c5b5-11e7-9e42-0800278f57e4               anypassword:foo
-....
-
-We want foo to be able to access the *demo* project and have administrative access.
-....
-$ oc adm policy add-role-to-user admin foo -n demo
-role "admin" added: "foo"
-....
-
-To verify it is working correctly, log in as foo:
-....
-$ oc login -u foo
-Logged into "https://127.0.0.1:8443" as "foo" using existing credentials.
-
-You have one project on this server: "demo"
-
-Using project "demo".
-....
-
-The *demo* project has now been added to this user's list of existing projects, and
-new clusters will be created within this project.
-
-More information on authorizing users and managing clusters can be found
-link:https://docs.openshift.com/container-platform/3.6/admin_guide/manage_users.html[here].
 
 ==== Custom Configuration
 
@@ -1092,7 +952,7 @@ for PostgreSQL without TLS.
 
 After running the example, you should be able to browse to http://127.0.0.1:5050
 and log into the web application using a user ID of *admin@admin.com*
-and password of *password*. 
+and password of *password*.
 
 If you are running this example using Kubernetes or
 OpenShift, replace *127.0.0.1:5050* with the <NODE_IP>:30000.
@@ -1146,7 +1006,7 @@ for PostgreSQL with TLS.
 
 After running the example, you should be able to browse to https://127.0.0.1:5050
 and log into the web application using a user ID of *admin@admin.com*
-and password of *password*. 
+and password of *password*.
 
 If you are running this example using Kubernetes or
 OpenShift, replace *127.0.0.1:5050* with the <NODE_IP>:30000.
@@ -2405,13 +2265,13 @@ you perform a pg_upgrade on a 9.5 database converting its data
 to a 9.6 version.
 
 This example assumes you have run *primary-pvc* using a PG 9.5 image
-such as *centos7-9.5.10-1.7.1* prior to running this upgrade.
+such as *centos7-9.5.10-1.8.0* prior to running this upgrade.
 
 Prior to starting this example, shut down the *primary-pvc* database
 using the *examples/kube/primary-pvc/cleanup.sh* script.
 
 Prior to running this example, make sure your CCP_IMAGE_TAG
-environment variable is using a PG 9.6 image such as *centos7-9.6.6-1.7.1*.
+environment variable is using a PG 9.6 image such as *centos7-9.6.6-1.8.0*.
 
 This will create the following in your Kubernetes environment:
 
@@ -2508,7 +2368,7 @@ in the link:install.adoc[installation documentation]. Things to point out with t
 include its use of persistent volumes and volume claims to store the backup data files to
 an NFS server.
 
-Successful use of the crunchy-restore container will run a job to restore files generated by 
+Successful use of the crunchy-restore container will run a job to restore files generated by
 pg_dump/pg_dumpall to a container via psql/pg_restore; then container will terminate successfully
 and signal job completion.
 
@@ -2554,7 +2414,7 @@ cd $CCPROOT/examples/openshift/pgrestore-job
 ....
 
 The *pgrestore-job.json* file within that directory specifies options that control the behavior of the pgrestore-job.
-E.g. Whether to restore via psql vs pg_restore (dependent on the PGRESTORE_FORMAT variable), whether to include verbose output, 
+E.g. Whether to restore via psql vs pg_restore (dependent on the PGRESTORE_FORMAT variable), whether to include verbose output,
 if database objects should be cleanly dropped before being recreated, etc.
 
 

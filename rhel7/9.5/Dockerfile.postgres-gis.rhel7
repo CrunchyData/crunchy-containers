@@ -7,7 +7,7 @@ LABEL name="crunchydata/postgres-gis" \
       	PostgresVersion="9.5" \
       	PostgresFullVersion="9.5.10" \
         version="7.3" \
-        release="1.7.1" \
+        release="1.8.0" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Includes PostGIS extensions on top of crunchy-postgres" \
@@ -53,7 +53,12 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  && yum -y clean all
 
 # add path settings for postgres user
+# bash_profile is loaded in login, but not with exec
+# bashrc to set permissions in OCP when using exec
+# HOME is / in OCP
 ADD conf/.bash_profile /var/lib/pgsql/
+ADD conf/.bash_profile /
+ADD conf/.bashrc /
 
 # set up cpm directory
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd

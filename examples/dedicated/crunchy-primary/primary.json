@@ -28,7 +28,7 @@
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use",
-        "value": "rhel7-10.1-1.7.1"
+        "value": "rhel7-10.1-1.8.0"
     }, {
         "name": "CCP_IMAGE_PREFIX",
         "description": "The image prefix to use",

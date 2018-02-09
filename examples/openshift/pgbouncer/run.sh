@@ -29,6 +29,6 @@ oc create configmap pgbouncer-configmap \
 		--from-file=./users.txt
 
 oc process -f $DIR/pgbouncer.json \
-	-p NAMESPACE=$NAMESPACE  \
+	-p CCP_NAMESPACE=$CCP_NAMESPACE  \
 	-p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX  \
 	-p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
