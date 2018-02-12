@@ -13,7 +13,7 @@
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use",
-        "value": "centos7-10.1-1.8.0"
+        "value": "centos7-10.2-1.8.0"
     }, {
         "name": "SERVICE_NAME",
         "description": "The name to use for the replica service and pod",
