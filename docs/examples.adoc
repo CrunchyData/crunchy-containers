@@ -234,7 +234,7 @@ psql -h server.crunchydata.com -U testuser userdb
 
 You should see a connection that looks like the following:
 ....
-psql (9.6.3)
+psql (9.6.7)
 SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
 Type "help" for help.
 
@@ -2265,13 +2265,13 @@ you perform a pg_upgrade on a 9.5 database converting its data
 to a 9.6 version.
 
 This example assumes you have run *primary-pvc* using a PG 9.5 image
-such as *centos7-9.5.10-1.8.0* prior to running this upgrade.
+such as *centos7-9.5.11-1.8.0* prior to running this upgrade.
 
 Prior to starting this example, shut down the *primary-pvc* database
 using the *examples/kube/primary-pvc/cleanup.sh* script.
 
 Prior to running this example, make sure your CCP_IMAGE_TAG
-environment variable is using a PG 9.6 image such as *centos7-9.6.6-1.8.0*.
+environment variable is using a PG 9.6 image such as *centos7-9.6.7-1.8.0*.
 
 This will create the following in your Kubernetes environment:
 
