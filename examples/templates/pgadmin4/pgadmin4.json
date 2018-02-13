@@ -12,7 +12,7 @@
     },
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
-        "value": "centos7-10.1-1.8.0",
+        "value": "centos7-10.2-1.8.0",
         "description": "image tag to use"
     }, {
         "name": "CCP_IMAGE_PREFIX",

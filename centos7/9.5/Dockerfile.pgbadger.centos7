@@ -2,7 +2,7 @@ FROM centos:7
 
 LABEL name="crunchydata/pgbadger" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.10" \
+	PostgresFullVersion="9.5.11" \
         vendor="crunchy data" \
         version="7.3" \
         release="1.8.0" \

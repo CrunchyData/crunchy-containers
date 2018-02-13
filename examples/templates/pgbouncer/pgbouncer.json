@@ -19,7 +19,7 @@
         "description": "The accessmode of the pvc"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "centos7-10.1-1.8.0",
+        "value": "centos7-10.2-1.8.0",
         "description": "The image tag to pull images with"
     }, {
         "name": "CCP_IMAGE_PREFIX",

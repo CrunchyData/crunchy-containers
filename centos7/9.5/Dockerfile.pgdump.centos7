@@ -3,7 +3,7 @@ FROM centos:7
 LABEL name="crunchydata/dump" \
         vendor="crunchy data" \
       	PostgresRelease="9.5" \
-      	PostgresFullRelease="9.5.10" \
+      	PostgresFullRelease="9.5.11" \
         version="7.3" \
         release="1.8.0" \
         build-date="2018-01-30" \

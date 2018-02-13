@@ -4,7 +4,7 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/pgpool" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.10" \
+	PostgresFullVersion="9.5.11" \
         vendor="crunchy data" \
         version="7.3" \
         release="1.8.0" \
