@@ -14,7 +14,7 @@ CONTAINER_NAME=pgrestore
 VOLUME_NAME=$CONTAINER_NAME-volume
 VOLUME_PATH=/pgrestore
 RESTORE_FROM_DIR=/tmp/
-RESTORE_FROM_FILE=sqldump.tar
+RESTORE_FROM_FILE=pgdumpall.sql
 RESTORE_FULLPATH=$(realpath -s "$RESTORE_FROM_DIR")"/$RESTORE_FROM_FILE"
 
 #
@@ -33,12 +33,9 @@ docker create \
         -e PGRESTORE_PASS=password \
         -e PGRESTORE_PORT=5432 \
         -e PGRESTORE_LABEL=myrestore \
-        -e PGRESTORE_VERBOSE=true \
         -e PGRESTORE_FILE="$RESTORE_FROM_FILE" \
 	-e PGRESTORE_VOLUMEPATH=$VOLUME_PATH \
         -e PGRESTORE_FORMAT=t \
-        -e PGRESTORE_CREATE=true \
-        -e PGRESTORE_CLEAN=true \
         --link "$HOST_TO_RESTORE":"$HOST_TO_RESTORE"\
         --name="$CONTAINER_NAME" \
         --hostname="$CONTAINER_NAME" \
