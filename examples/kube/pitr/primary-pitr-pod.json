@@ -31,6 +31,9 @@
                 "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"
             }, {
+                "name":"PG_PRIMARY_PORT",
+                "value":"5432"
+            }, {
                 "name": "PG_USER",
                 "value": "testuser"
             }, {
