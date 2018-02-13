@@ -861,9 +861,9 @@ to retrieve database dumps to be restored via psql or pg_restore.
 
 == crunchy-upgrade
 
-The crunchy-upgrade container contains both the 9.5 and 9.6
+The crunchy-upgrade container contains both the 9.5/9.6 and 9.6/10
 Postgres packages in order to perform a pg_upgrade from
-a 9.5 to a 9.6 version.
+9.5 to 9.6 or 9.6 to 10 versions.
 
 === Environment Variables
 
@@ -894,7 +894,7 @@ The following features are supported by the crunchy-upgrade container:
 
  * does NOT support a postgis upgrade currently
  * all environment variables are required
- * only supports a 9.5 to 9.6 upgrade
+ * supports upgrades from 9.5/9.6 to 10
 
 == crunchy-sim
 
