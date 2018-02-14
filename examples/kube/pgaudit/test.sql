@@ -1,4 +1,4 @@
-set pgaudit.log = 'write, ddl, user';
+set pgaudit.log = 'write, ddl';
 set pgaudit.log_relation = on;
 
 create table audittest (id int);
