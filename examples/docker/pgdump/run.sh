@@ -38,6 +38,7 @@ docker run \
 	-e PGDUMP_LABEL=mybackup \
 	-e PGDUMP_FORMAT=plain \
 	-e PGDUMP_VERBOSE=true \
+	-e PGDUMP_ALL=true \
 	--link $HOST_TO_BACKUP:$HOST_TO_BACKUP\
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
