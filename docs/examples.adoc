@@ -2339,6 +2339,32 @@ Running the example:
 ....
 cd $CCPROOT/examples/kube/pgdump-job
 ./run.sh
+
+#Output from the run.sh script will include output like:
+#starting backup container...
+#Cleaning up...
+#pgdump
+#pgdump
+#pgdump-volume
+#pgdump-volume
+#0367ee9cbe776450973f63ab875ab868c3aa8902ec3e073de8adbab9baa75c14
+
+#Make note of the container ID from above to run the following command
+docker logs 0367ee9cbe776450973f63ab875ab868c3aa8902ec3e073de8adbab9baa75c14 2>&1 | grep "output"
+
+#That will return the location where the pg_dump/pg_dumpall file(s) were written.  E.g.:
+#PGDUMP_ALL output file has been written to: /pgdata/basic-dumps/2018-02-14-05-00-23/pgdumpall.sql
+
+#Make note of the timestamp above and run a find to get the fully-qualified filesystem path where the file was written.  E.g.:
+sudo find / -name 2018-02-14-05-00-23
+
+#That will return the fully-qualified path, where the file can be accessed/copied to your local filesystem.  E.g.:
+#/var/lib/docker/volumes/pgdump-volume/_data/basic-dumps/2018-02-14-05-00-23
+
+#Copy the file (path returned above + the filename) to your local filesystem for use or for running with the pg_restore container:
+sudo cp -p /var/lib/docker/volumes/pgdump-volume/_data/basic-dumps/2018-02-14-05-00-23/pgdumpall.sql /tmp
+
+
 ....
 
 The Kubernetes Job type executes a pod and then the pod exits.  You can
