@@ -2331,14 +2331,6 @@ Run the backup with this command:
 ....
 cd $CCPROOT/examples/docker/pgdump
 ./run.sh
-....
-
-==== Kubernetes
-
-Running the example:
-....
-cd $CCPROOT/examples/kube/pgdump-job
-./run.sh
 
 #Output from the run.sh script will include output like:
 #starting backup container...
@@ -2363,8 +2355,14 @@ sudo find / -name 2018-02-14-05-00-23
 
 #Copy the file (path returned above + the filename) to your local filesystem for use or for running with the pg_restore container:
 sudo cp -p /var/lib/docker/volumes/pgdump-volume/_data/basic-dumps/2018-02-14-05-00-23/pgdumpall.sql /tmp
+....
 
+==== Kubernetes
 
+Running the example:
+....
+cd $CCPROOT/examples/kube/pgdump-job
+./run.sh
 ....
 
 The Kubernetes Job type executes a pod and then the pod exits.  You can
