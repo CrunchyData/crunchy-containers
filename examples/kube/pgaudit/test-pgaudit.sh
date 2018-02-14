@@ -13,16 +13,40 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "test pgaudit..."
+echo -e "\nTesting pgaudit..."
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DOW=$(date +%u)
 
-psql -h localhost -U postgres -f $DIR/test.sql postgres
+if [[ $DOW == 0 ]]; then
+	DAY=Sun
+elif [[ $DOW == 1 ]]; then
+	DAY=Mon
+elif [[ $DOW == 2 ]]; then
+        DAY=Tue
+elif [[ $DOW == 3 ]]; then
+        DAY=Wed
+elif [[ $DOW == 4 ]]; then
+        DAY=Thu
+elif [[ $DOW == 5 ]]; then
+        DAY=Fri
+elif [[ $DOW == 6 ]]; then
+        DAY=Sat
+fi
 
-grep AUDIT /pgdata/audit/pg_log/post*.log
+export PGPASSWORD=password
+
+svc="$(kubectl get svc audit | grep -v CLUSTER-IP )"
+svcIP="$(echo $svc | awk {'print $3'})"
+
+psql -h $svcIP -U postgres -f $DIR/test.sql postgres
+echo -e "\nTest SQL written to audit."
+sleep 2
+
+kubectl exec audit -- grep AUDIT /pgdata/audit/pg_log/postgresql-$DAY.log
 
 if [ $? -ne 0 ]; then
-	echo "test failed...no AUDIT msgs were found in the log file"
+	echo -e "\nTest failed...no AUDIT msgs were found in the log file."
 	exit 1
 fi
-echo "test passed, AUDIT msgs were found in the postgres log file"
+echo -e "\nTest passed, AUDIT msgs were found in the postgres log file."
