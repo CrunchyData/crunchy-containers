@@ -32,7 +32,7 @@ docker run \
 	-v $VOLUME_NAME:/pgdata \
 	-e PGDUMP_HOST=$HOST_TO_BACKUP \
 	-e PGDUMP_DB=postgres \
-	-e PGDUMP_USER=primaryuser\
+	-e PGDUMP_USER=postgres\
 	-e PGDUMP_PASS=password \
 	-e PGDUMP_PORT=5432 \
 	-e PGDUMP_LABEL=mybackup \
