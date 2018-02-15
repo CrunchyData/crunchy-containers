@@ -35,7 +35,7 @@ docker create \
         -e PGRESTORE_LABEL=myrestore \
         -e PGRESTORE_FILE="$RESTORE_FROM_FILE" \
 	-e PGRESTORE_VOLUMEPATH=$VOLUME_PATH \
-        -e PGRESTORE_FORMAT=t \
+        -e PGRESTORE_FORMAT=p \
         --link "$HOST_TO_RESTORE":"$HOST_TO_RESTORE"\
         --name="$CONTAINER_NAME" \
         --hostname="$CONTAINER_NAME" \
