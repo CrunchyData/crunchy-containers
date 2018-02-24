@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -175,7 +175,7 @@ function initdb_logic() {
 	echo $cmd
 	eval $cmd
 
-	echo "Overlaying postgreSQL's configuration with your settings..."
+	echo "Overlaying PostgreSQL's configuration with your settings..."
 	cp /tmp/postgresql.conf $PGDATA
 	cp /opt/cpm/conf/pg_hba.conf /tmp
 	sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pg_hba.conf
@@ -204,7 +204,12 @@ function check_for_pitr() {
 	if [ "$(ls -A /recover)" ]; then
 		echo "Found non-empty //recover ...assuming a PITR is requested"
 		ls -l /recover
-		rm $PGDATA/pg_wal/*0* $PGDATA/pg_wal/archive_status/*0*
+		if [ "$CCP_PGVERSION" = "9.5" || "$CCP_PGVERSION" = "9.6" ]; then
+			rm $PGDATA/pg_xlog/*0* $PGDATA/pg_xlog/archive_status/*0*
+		fi
+		if [ "$CCP_PGVERSION" = "10" ]; then
+			rm $PGDATA/pg_wal/*0* $PGDATA/pg_wal/archive_status/*0*
+		fi
 		cp /opt/cpm/conf/pitr-recovery.conf /tmp
 		export ENABLE_RECOVERY_TARGET_NAME=#
 		export ENABLE_RECOVERY_TARGET_TIME=#

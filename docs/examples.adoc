@@ -1871,7 +1871,8 @@ Next, we will create a base backup of that database using this:
 
 After creating the base backup of the database, WAL segment files are created every 60 seconds
 that contain any database changes. These segments are stored in the
-/tmp/primary-pitr/primary-pitr/pg_wal directory.
+/tmp/primary-pitr/primary-pitr/pg_wal directory. If you're running PostgreSQL version 9.5 or 9.6,
+pg_wal will be named pg_xlog.
 
 Create some data in your database using this command:
 ....
@@ -1930,6 +1931,11 @@ the DBA can run the following command to resume and complete the recovery:
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume()'
 ....
 
+If you're running PostgreSQL versions 9.5 or 9.6, the command will be:
+....
+psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
+....
+
 Until you run the statement above, the database will be left in read-only
 mode.
 
@@ -1945,6 +1951,11 @@ After this restore, you should be able to see the test table:
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume()'
+....
+
+Again, if you're running PostgreSQL versions 9.5 or 9.6, that last command will be:
+....
+psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
 ....
 
 Lastly, start a recovery using all of the WAL files. This will get the
