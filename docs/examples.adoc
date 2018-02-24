@@ -1851,6 +1851,10 @@ environment variables set.
 *Warning*:  WAL segment files are written to the /tmp directory. Leaving the example running
 for a long time could fill up your /tmp directory.
 
+*Note*: If you're running the PITR example for *PostgreSQL versions 9.5 or 9.6*, please note that
+starting in PostgreSQL version 10, the pg_xlog directory was renamed to pg_wal. Additionally, all usages
+of the function 'pg_xlog_replay_resume' were changed to 'pg_wal_replay_resume'.
+
 To shutdown the instance and remove the container for each example, run the following:
 ....
 ./cleanup.sh
@@ -1931,7 +1935,8 @@ the DBA can run the following command to resume and complete the recovery:
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume()'
 ....
 
-If you're running PostgreSQL versions 9.5 or 9.6, the command will be:
+*Note*: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
+pg_xlog instead:
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
 ....
@@ -1953,10 +1958,12 @@ psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume()'
 ....
 
-Again, if you're running PostgreSQL versions 9.5 or 9.6, that last command will be:
+*Note*: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
+pg_xlog instead:
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
 ....
+
 
 Lastly, start a recovery using all of the WAL files. This will get the
 restored database as current as possible. To do so, edit the script
@@ -2054,7 +2061,13 @@ psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c
 psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'create table foo (id int)'
 ....
 
-The output of these command should show that the *pitrtest* table is not
+*Note*: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
+pg_xlog instead:
+....
+psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
+....
+
+The output of these commands should show that the *pitrtest* table is not
 present.  It should also show that you can not create a new table
 because the database is paused in recovery mode.  Lastly, if you
 execute a *resume* command, it will show that you can now create
@@ -2077,15 +2090,17 @@ system with the following path configurations be present:
 
 Once you recover a database using PITR, it will be in read-only mode.  To
 make the database resume as a writable database, run the following
-sql command:
+SQL command:
 ....
 select pg_wal_replay_resume();
 ....
 
-This command changed for PG10 to:
+*Note*: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
+pg_xlog instead:
 ....
-postgres=# select pg_wal_replay_resume();
+select pg_xlog_replay_resume();
 ....
+
 
 === pgaudit
 

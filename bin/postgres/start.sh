@@ -206,8 +206,7 @@ function check_for_pitr() {
 		ls -l /recover
 		if [ "$CCP_PGVERSION" = "9.5" || "$CCP_PGVERSION" = "9.6" ]; then
 			rm $PGDATA/pg_xlog/*0* $PGDATA/pg_xlog/archive_status/*0*
-		fi
-		if [ "$CCP_PGVERSION" = "10" ]; then
+		else
 			rm $PGDATA/pg_wal/*0* $PGDATA/pg_wal/archive_status/*0*
 		fi
 		cp /opt/cpm/conf/pitr-recovery.conf /tmp
