@@ -1871,7 +1871,7 @@ Next, we will create a base backup of that database using this:
 
 After creating the base backup of the database, WAL segment files are created every 60 seconds
 that contain any database changes. These segments are stored in the
-/tmp/primary-data/master-wal directory.
+/tmp/primary-pitr/primary-pitr/pg_wal directory.
 
 Create some data in your database using this command:
 ....

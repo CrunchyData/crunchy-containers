@@ -36,7 +36,7 @@ WAL_DIR=/tmp/primary-pitr-restore-wal
 
 # RECOVER_DIR contains the WAL files from where we
 # want to recover from
-RECOVER_DIR=/tmp/primary-pitr-wal/primary-pitr
+RECOVER_DIR=/tmp/primary-pitr/primary-pitr/pg_wal
 
 DATA_DIR=/tmp/primary-pitr-restore
 sudo rm -rf $DATA_DIR $WAL_DIR
