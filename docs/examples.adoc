@@ -1924,7 +1924,7 @@ or time is specified.  This pause would allow a DBA a chance to review
 the recovery time/name and see if this is what they want or expect.  If so,
 the DBA can run the following command to resume and complete the recovery:
 ....
-psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
+psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume()'
 ....
 
 Until you run the statement above, the database will be left in read-only
@@ -1941,7 +1941,7 @@ vi ./run-restore-pitr.sh
 After this restore, you should be able to see the test table:
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
-psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
+psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume()'
 ....
 
 Lastly, start a recovery using all of the WAL files. This will get the
@@ -2036,7 +2036,7 @@ a test to see if the recovery worked as expected:
 ....
 psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'table pitrtest'
 psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'create table foo (id int)'
-psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'select pg_xlog_replay_resume()'
+psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'select pg_wal_replay_resume()'
 psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'create table foo (id int)'
 ....
 
@@ -2065,7 +2065,7 @@ Once you recover a database using PITR, it will be in read-only mode.  To
 make the database resume as a writable database, run the following
 sql command:
 ....
-select pg_xlog_replay_resume();
+select pg_wal_replay_resume();
 ....
 
 This command changed for PG10 to:

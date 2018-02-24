@@ -117,7 +117,7 @@ if [[ -v XLOGDIR ]]; then
 	if [ -d "$XLOGDIR" ]; then
 		options+=" --X "$XLOGDIR
 	else
-		echo "XLOGDIR not found! Using default pg_xlog"
+		echo "XLOGDIR not found! Using default pg_wal"
 	fi
 fi
 if [[ -v CHECKSUMS ]]; then

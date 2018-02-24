@@ -74,7 +74,7 @@ let you control the setting of the recovery.conf setting *recovery_target_inclus
 
 Once you recover a database using PITR, it will be in read-only mode.  To
 make the database resume as a writable database, run the following
-sql command:
+SQL command:
 ....
 select pg_xlog_replay_resume();
 ....
@@ -86,8 +86,8 @@ postgres=# select pg_wal_replay_resume();
 
 === Examples
 
-Examples for PITR have been created within the standalone, openshift,
-and kubernetes examples directories.
+Examples for PITR have been created within the standalone, OpenShift,
+and Kubernetes examples directories.
 
 
 There is a blog on how the example works documented here:

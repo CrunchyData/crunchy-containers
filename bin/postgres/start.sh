@@ -163,7 +163,7 @@ function initdb_logic() {
 			if [ -d "$PGWAL" ]; then
                 		cmd+=" -X "$PGWAL
 			else
-				echo "XLOGDIR not found! Using default pg_xlog."
+				echo "XLOGDIR not found! Using default pg_wal."
 			fi
 		fi
         fi
@@ -204,7 +204,7 @@ function check_for_pitr() {
 	if [ "$(ls -A /recover)" ]; then
 		echo "Found non-empty //recover ...assuming a PITR is requested"
 		ls -l /recover
-		rm $PGDATA/pg_xlog/*0* $PGDATA/pg_xlog/archive_status/*0*
+		rm $PGDATA/pg_wal/*0* $PGDATA/pg_wal/archive_status/*0*
 		cp /opt/cpm/conf/pitr-recovery.conf /tmp
 		export ENABLE_RECOVERY_TARGET_NAME=#
 		export ENABLE_RECOVERY_TARGET_TIME=#
