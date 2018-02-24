@@ -1918,6 +1918,9 @@ psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
 
 This SQL command should show that the pitrtest table does not exist
 at this recovery time. The output should be similar to:
+....
+ERROR: relation "pitrtest" does not exist
+....
 
 PostgreSQL allows you to pause the recovery process if the target name
 or time is specified.  This pause would allow a DBA a chance to review
