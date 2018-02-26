@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,5 +18,10 @@ enable_debugging
 
 export PATH=$PATH:/opt/cpm/bin
 
-# get the number of archive files in pg_xlog
-find /pgdata/*/pg_xlog/[0-9]* | wc -l
+# get the number of archive files in pg_wal / pg_xlog
+if [ "$CCP_PGVERSION" = "9.5" || "$CCP_PGVERSION" = "9.6" ]; then
+  find /pgdata/*/pg_xlog/[0-9]* | wc -l
+fi
+if [ "$CCP_PGVERSION" = "10" ]; then
+  find /pgdata/*/pg_wal/[0-9]* | wc -l
+fi

@@ -21,6 +21,9 @@
         "name": "CCP_IMAGE_TAG",
         "description": "The image tag to use"
     }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "The image prefix to use"
+    }, {
         "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PG primary user",
         "value": "password"
@@ -93,7 +96,7 @@
             }],
             "containers": [{
                 "name": "postgres",
-                "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

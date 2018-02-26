@@ -37,7 +37,15 @@
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use",
+<<<<<<< HEAD
         "value": "rhel7-9.6.7-1.8.0"
+=======
+        "value": "rhel7-9.6.6-1.7.1"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "image prefix to use",
+        "value": "crunchydata"
+>>>>>>> replace crunchydata with CCP_IMAGE_PREFIX in all JSON code
     }],
 
     "objects": [{
@@ -85,7 +93,7 @@
                     },
                     "containers": [{
                         "name": "${JOB_NAME}",
-                        "image": "crunchydata/crunchy-backup:${CCP_IMAGE_TAG}",
+                        "image": "${CCP_IMAGE_PREFIX}/crunchy-backup:${CCP_IMAGE_TAG}",
                         "imagePullPolicy": "IfNotPresent",
                         "volumeMounts": [{
                             "mountPath": "/pgdata",
