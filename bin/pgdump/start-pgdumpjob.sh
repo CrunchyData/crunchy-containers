@@ -89,7 +89,7 @@ echo "PGDUMP_LABEL is set to " $PGDUMP_LABEL
 opts=""
 
 if [[ ! -z "$PGDUMP_ALL" && "$PGDUMP_ALL" == "true" ]]; then
-	echo "PGDUMP_ALL is set to $PGDUMP_DBALL - EXECUTING PGDUMP_ALL INSTEAD OF PG_DUMP!"
+	echo "PGDUMP_ALL is set to $PGDUMP_ALL - EXECUTING PGDUMP_ALL INSTEAD OF PG_DUMP!"
   echo "Any specified OPTs that don't apply to pg_dumpall will be ignored."
   ALL_OPTS_ONLY=true
 fi
@@ -156,8 +156,18 @@ if [[ ! -z "$PGDUMP_FILE" ]]; then # PGDUMPPATH set on line 80
 fi
 
 if [[ -z "$ALL_OPTS_ONLY"  && ! -z "$PGDUMP_FORMAT" ]]; then
-	opts+=" --format=$PGDUMP_FORMAT"
-  echo "PGDUMP_FORMAT is set to $PGDUMP_FORMAT and has been added to the pg_dump options"
+  	opts+=" --format=$PGDUMP_FORMAT"
+	echo "PGDUMP_FORMAT is set to $PGDUMP_FORMAT and has been added to the pg_dump options"
+
+        if [[ $PGDUMP_FORMAT == "tar" || $PGDUMP_FORMAT == "t" ]]; then
+		PGDUMP_EXT=".tar"
+        elif [[ $PGDUMP_FORMAT == "plain" || $PGDUMP_FORMAT == "p" ]]; then
+                PGDUMP_EXT=".sql"
+        elif [[ $PGDUMP_FORMAT == "directory" || $PGDUMP_FORMAT == "d" ]]; then
+                PGDUMP_EXT=""
+        elif [[ $PGDUMP_FORMAT == "custom" || $PGDUMP_FORMAT == "c" ]]; then
+                PGDUMP_EXT=".dump"
+        fi
 fi
 
 if [[ ! -z "$PGDUMP_INSERTS" && $PGDUMP_INSERTS == "true" ]]; then
@@ -244,19 +254,24 @@ chown $UID:$UID $PGPASSFILE
 
 # If PGDUMP_ALL is set and set to true, run pg_dumpall
 if [[ ! -z "$PGDUMP_ALL" && "$PGDUMP_ALL" == "true" ]]; then
-  if [[ ! -z "$PGDUMP_FILE" ]]; then # If PG_DUMPFILE isn't set
-    pg_dumpall --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER -w $opts
-  else # Else, dump everything to the $PGDUMP_PATH via stdout
-    pg_dumpall --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER -w $opts > "$PGDUMP_PATH/pgdumpall.sql"
-  fi
+	if [[ ! -z "$PGDUMP_FILE" ]]; then # If PG_DUMPFILE is set - it will output to the fully-qualified filename specified (included in the opts)
+		pg_dumpall --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER -w $opts
+		chown -R $UID:$UID $PGDUMP_FILE
+		echo "PGDUMP_ALL output file has been written to: $PGDUMP_FILE."
+	else # Else, dump everything to the $PGDUMP_PATH via stdout
+		pg_dumpall --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER -w $opts > "$PGDUMP_PATH/pgdumpall.sql"
+	chown -R $UID:$UID "$PGDUMP_PATH/pgdumpall.sql"
+	echo "PGDUMP_ALL output file has been written to: $PGDUMP_PATH/pgdumpall.sql"
+	fi
+
 else # Else, run pg_dump
-  if [[ ! -z "$PGDUMP_FILE" ]]; then # If PG_DUMPFILE isn't set
-    pg_dump --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER --dbname $PGDUMP_DB -w $opts
-    chown -R $UID:$UID $PGDUMP_FILE
-
-  else # Else, dump everything to the $PGDUMP_PATH via stdout
-    pg_dump --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER --dbname $PGDUMP_DB -w $opts > "$PGDUMP_PATH/pgdump.sql"
-    chown -R $UID:$UID $PGDUMP_PATH
-
-  fi
+	if [[ ! -z "$PGDUMP_FILE" ]]; then # If PG_DUMPFILE is set - it will output to the fully-qualified filename specified (included in the opts)
+		pg_dump --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER --dbname $PGDUMP_DB -w $opts
+		chown -R $UID:$UID $PGDUMP_FILE
+		echo "PGDUMP_FILE output file has been written to: $PGDUMP_FILE."
+	else # Else, dump everything to the $PGDUMP_PATH via stdout
+		pg_dump --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER --dbname $PGDUMP_DB -w $opts > "$PGDUMP_PATH/pgdump.$PGDUMPEXT"
+		chown -R $UID:$UID "$PGDUMP_PATH/pgdumpall$PGDUMPEXT"
+		echo "PG_DUMP output file has been written to: $PGDUMP_PATH/pgdump$PGDUMPEXT."
+	fi
 fi
