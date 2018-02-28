@@ -2184,6 +2184,54 @@ statements as well as executes some basic SQL commands.  These
 SQL commands will cause pgaudit to create audit log messages in
 the pg_log log file created by the database container.
 
+
+==== Docker
+
+Run the following to create a database container:
+....
+cd $CCPROOT/examples/docker/pgaudit
+./run.sh
+....
+
+This starts a pg_audit database container on port 12005 on localhost.  You can then
+run the test script as follows:
+....
+./test-pgaudit.sh
+....
+
+This test executes a SQL file which contains pgaudit configuration
+statements as well as executes some basic SQL commands.  These
+SQL commands will cause pgaudit to create audit log messages in
+the pg_log log file created by the database container.
+
+==== Kubernetes
+
+Run the following:
+....
+cd $CCPROOT/examples/kube/pgaudit
+./run.sh
+....
+
+The script will create an Audit pod on the Kubernetes instance and 
+then executes a SQL file which contains pgaudit configuration
+statements as well as executes some basic SQL commands.  These
+SQL commands will cause pgaudit to create audit log messages in
+the pg_log log file created by the database container.
+
+==== OpenShift
+
+Run the following:
+....
+cd $CCPROOT/examples/openshift/pgaudit
+./run.sh
+....
+
+The script will create an Audit pod on the OpenShift instance and 
+then executes a SQL file which contains pgaudit configuration
+statements as well as executes some basic SQL commands.  These
+SQL commands will cause pgaudit to create audit log messages in
+the pg_log log file created by the database container.
+
 === Docker Swarm
 
 
