@@ -14,7 +14,7 @@ the various environments shown in this guide:
 * link:https://github.com/nekop/openshift-sandbox/blob/master/docs/command-cheatsheet.md[OpenShift Cheat Sheet]
 * link:https://github.com/kubernetes/helm/blob/master/docs/using_helm.md[Helm Cheat Sheet]
 
-=== Docker Customized Configuration
+=== Environmental Custom Configurations
 
 You can use your own version of the setup.sql SQL file to customize
 the initialization of database data and objects when the container and
@@ -30,7 +30,7 @@ This works by placing a file named, setup.sql, within the /pgconf mounted volume
 directory.  Portions of the setup.sql file are required for the crunchy container
 to work, see comments within the sample setup.sql file.
 
-==== Custom Configuration
+==== Kubernetes Custom Configuration
 
 This example shows how you can use your own customized version of setup.sql
 when creating a PostgreSQL database container in Kubernetes.
@@ -51,7 +51,7 @@ This will start a database container that will use an NFS mounted /pgconf
 directory that will contain the custom setup.sql file found in the example
 directory.
 
-==== Custom Configuration
+==== OpenShift Custom Configuration
 
 This example shows how you can use your own customized version of setup.sql
 when creating a PostgreSQL database container in OpenShift.
@@ -111,9 +111,9 @@ how the /pgconf mount is related to the configmap.
 
 An example of using OpenShift Templates to build pods, routes, services, etc can be
 found in the following directory:
-….
+....
 $CCPROOT/examples/openshift/workshop
-….
+....
 
 You use the *oc new-app* command to create objects from the
 JSON templates.  This is an alternative way to create OpenShift objects
@@ -121,61 +121,6 @@ instead of using *oc create*.
 
 See the README file within the workshop directory for instructions
 on running the example.
-
-===== Secrets
-
-You can use Kubernetes Secrets to set and maintain your database
-credentials.  Secrets requires you base64 encode your user and password
-values as follows:
-
-....
-echo -n 'myuserid' | base64
-....
-
-You will paste these values into  your JSON secrets files for values.
-
-This example allows you to set the PostgreSQL passwords
-using Kubernetes Secrets.
-
-The secret uses a base64 encoded string to represent the
-values to be read by the container during initialization.  The
-encoded password value is *password*.  Run the example
-as follows:
-
-....
-cd $CCPROOT/examples/openshift/secret
-./run.sh
-....
-
-The secrets are mounted in the */pguser*, */pgprimary*, */pgroot* volumes within the
-container and read during initialization.  The container
-scripts create a PostgreSQL user with those values, and sets the passwords
-for the primary user and PostgreSQL superuser using the mounted secret volumes.
-
-When using secrets, you do NOT have to specify the following
-environment variables if you specify all three secrets volumes:
-
- * PG_USER
- * PG_PASSWORD
- * PG_ROOT_PASSWORD
- * PG_PRIMARY_USER
- * PG_PRIMARY_PASSWORD
-
-You can test the container as follows, in all cases, the password is *password*:
-....
-psql -h secret-pg -U pguser1 postgres
-psql -h secret-pg -U postgres postgres
-psql -h secret-pg -U primary postgres
-....
-
-Secrets requires you base64 encode your user and password
-values as follows:
-
-....
-echo -n 'myuserid' | base64
-....
-
-You can paste these values into your JSON secrets files for values.
 
 ===== SSL Authentication
 
@@ -360,6 +305,71 @@ to equate the random generated UIDs/GIDs by OpenShift with
 the postgres user.
 
 https://github.com/openshift/postgresql/blob/master/9.4/root/usr/share/container-scripts/postgresql/common.sh
+
+===== Kubernetes Secrets
+
+
+===== Secrets
+
+You can use Kubernetes Secrets to set and maintain your database
+credentials.  Secrets requires you base64 encode your user and password
+values as follows:
+
+....
+echo -n 'myuserid' | base64
+....
+
+You will paste these values into  your JSON secrets files for values.
+
+This example allows you to set the PostgreSQL passwords
+using Kubernetes Secrets.
+
+The secret uses a base64 encoded string to represent the
+values to be read by the container during initialization.  The
+encoded password value is *password*.  Run the example
+as follows:
+
+....
+cd $CCPROOT/examples/openshift/secret
+./run.sh
+....
+
+Or if you're running Kubernetes:
+
+....
+cd $CCPROOT/examples/kube/secret
+./run.sh
+....
+
+The secrets are mounted in the */pguser*, */pgprimary*, */pgroot* volumes within the
+container and read during initialization.  The container
+scripts create a PostgreSQL user with those values, and sets the passwords
+for the primary user and PostgreSQL superuser using the mounted secret volumes.
+
+When using secrets, you do NOT have to specify the following
+environment variables if you specify all three secrets volumes:
+
+ * PG_USER
+ * PG_PASSWORD
+ * PG_ROOT_PASSWORD
+ * PG_PRIMARY_USER
+ * PG_PRIMARY_PASSWORD
+
+You can test the container as follows, in all cases, the password is *password*:
+....
+psql -h secret-pg -U pguser1 postgres
+psql -h secret-pg -U postgres postgres
+psql -h secret-pg -U primary postgres
+....
+
+Secrets requires you base64 encode your user and password
+values as follows:
+
+....
+echo -n 'myuserid' | base64
+....
+
+You can paste these values into your JSON secrets files for values.
 
 == Container Examples
 
