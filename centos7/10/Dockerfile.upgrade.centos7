@@ -3,10 +3,10 @@ FROM centos:7
 LABEL name="crunchydata/upgrade" \
         vendor="crunchy data" \
         PostgresVersion="10" \
-        PostgresFullVersion="10.2" \
+        PostgresFullVersion="10.3" \
         version="7.3" \
-        release="1.8.0" \
-        build-date="2018-01-30" \
+        release="1.8.1" \
+        build-date="2018-03-01" \
         url="https://crunchydata.com" \
         summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
         description="Provides a means to perform a major PostgreSQL upgrade from 9.5 to 9.6 or 9.6 to 10. Old data files are left intact." \

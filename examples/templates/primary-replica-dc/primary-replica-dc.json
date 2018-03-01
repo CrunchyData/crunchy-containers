@@ -20,7 +20,7 @@
         "description": "The image prefix to pull with"
     }, {
         "name": "CCP_IMAGE_TAG",
-        "value": "centos7-10.2-1.8.0",
+        "value": "centos7-10.3-1.8.1",
         "description": "The image tag to pull with"
     }, {
         "name": "PG_PRIMARY_PASSWORD",

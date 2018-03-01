@@ -1,6 +1,6 @@
 = Running Crunchy Containers with systemd
 Crunchy Data Solutions, Inc.
-v1.8.0, {docdate}
+v1.8.1, {docdate}
 :title-logo-image: image:images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 === Unit File

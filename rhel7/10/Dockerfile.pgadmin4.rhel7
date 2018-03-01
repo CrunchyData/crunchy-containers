@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/pgadmin4" \
         vendor="crunchy data" \
       	PostgresVersion="10" \
-      	PostgresFullVersion="10.2" \
+      	PostgresFullVersion="10.3" \
         version="7.3" \
-        release="1.8.0" \
+        release="1.8.1" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Crunchy Data pgAdmin4 GUI utility" \

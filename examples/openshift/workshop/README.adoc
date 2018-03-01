@@ -1,7 +1,7 @@
 
 = OpenShift Tutorial - Crunchy Containers
 Crunchy Data Solutions, Inc.
-v1.8.0, {docdate}
+v1.8.1, {docdate}
 :title-logo-image: image:crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == OpenShift Tutorial
@@ -42,16 +42,16 @@ be entered for configured databases.
 To execute the examples, pull down the container images
 from Dockerhub onto the VM host:
 ....
-docker pull crunchydata/crunchy-postgres:centos7-10.2-1.8.0
-docker pull crunchydata/crunchy-postgres-gis:centos7-10.2-1.8.0
-docker pull crunchydata/crunchy-backup:centos7-10.2-1.8.0
-docker pull crunchydata/crunchy-collect:centos7-10.2-1.8.0
-docker pull crunchydata/crunchy-pgbadger:centos7-10.2-1.8.0
-docker pull crunchydata/crunchy-pgadmin4:centos7-10.2-1.8.0
-docker pull crunchydata/crunchy-prometheus:centos7-10.2-1.8.0
-docker pull crunchydata/crunchy-promgateway:centos7-10.2-1.8.0
-docker pull crunchydata/crunchy-grafana:centos7-10.2-1.8.0
-docker pull crunchydata/crunchy-watch:centos7-10.2-1.8.0
+docker pull crunchydata/crunchy-postgres:centos7-10.3-1.8.1
+docker pull crunchydata/crunchy-postgres-gis:centos7-10.3-1.8.1
+docker pull crunchydata/crunchy-backup:centos7-10.3-1.8.1
+docker pull crunchydata/crunchy-collect:centos7-10.3-1.8.1
+docker pull crunchydata/crunchy-pgbadger:centos7-10.3-1.8.1
+docker pull crunchydata/crunchy-pgadmin4:centos7-10.3-1.8.1
+docker pull crunchydata/crunchy-prometheus:centos7-10.3-1.8.1
+docker pull crunchydata/crunchy-promgateway:centos7-10.3-1.8.1
+docker pull crunchydata/crunchy-grafana:centos7-10.3-1.8.1
+docker pull crunchydata/crunchy-watch:centos7-10.3-1.8.1
 ....
 
 
@@ -60,12 +60,12 @@ Running the example:
 ....
 git clone https://github.com/crunchydata/crunchy-containers.git
 cd crunchy-containers/examples/openshift/workshop
-oc new-app -p CCP_IMAGE_TAG=centos7-10.2-1.8.0 -f primary.json
-oc new-app -p CCP_IMAGE_TAG=centos7-10.2-1.8.0 -f replicas.json
-oc new-app -p CCP_IMAGE_TAG=centos7-10.2-1.8.0 -f pgadmin4.json
-oc new-app -p CCP_IMAGE_TAG=centos7-10.2-1.8.0 -f metrics.json
+oc new-app -p CCP_IMAGE_TAG=centos7-10.3-1.8.1 -f primary.json
+oc new-app -p CCP_IMAGE_TAG=centos7-10.3-1.8.1 -f replicas.json
+oc new-app -p CCP_IMAGE_TAG=centos7-10.3-1.8.1 -f pgadmin4.json
+oc new-app -p CCP_IMAGE_TAG=centos7-10.3-1.8.1 -f metrics.json
 oc policy add-role-to-group edit system:serviceaccounts -n default
-oc new-app -p CCP_IMAGE_TAG=centos7-10.2-1.8.0 -f watch.json
+oc new-app -p CCP_IMAGE_TAG=centos7-10.3-1.8.1 -f watch.json
 oc create -f badger-route.json
 oc create -f pgbadger-route.json
 ....

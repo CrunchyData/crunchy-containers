@@ -45,7 +45,7 @@
     }, {
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use",
-        "value": "rhel7-10.2-1.8.0"
+        "value": "rhel7-10.3-1.8.1"
     }],
 
     "objects": [{
