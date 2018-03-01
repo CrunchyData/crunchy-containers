@@ -22,4 +22,8 @@ oc delete service primary-dc replica-dc
 oc delete deployments primary-dc replica-dc replica2-dc
 
 oc delete configmap postgresql-conf
-oc delete secret pguser-secret pgprimary-secret pgroot-secret
+oc delete secret pguser-secret pgprimary-secret pgroot-secret\
+	
+oc delete pvc primary-dc-pvc primary-dc-pgbackrest-pvc primary-dc-pgwal-pvc
+oc delete pvc replica-dc-pvc replica-dc-pgbackrest-pvc replica-dc-pgwal-pvc
+oc delete pvc replica2-dc-pvc replica2-dc-pgbackrest-pvc replica2-dc-pgwal-pvc

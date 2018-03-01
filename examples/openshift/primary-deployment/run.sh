@@ -18,6 +18,18 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+oc create -f $DIR/primary-dc-pvc.json
+oc create -f $DIR/primary-dc-pgbackrest-pvc.json
+oc create -f $DIR/primary-dc-pgwal-pvc.json
+
+oc create -f $DIR/replica-dc-pvc.json
+oc create -f $DIR/replica-dc-pgbackrest-pvc.json
+oc create -f $DIR/replica-dc-pgwal-pvc.json
+
+oc create -f $DIR/replica2-dc-pvc.json
+oc create -f $DIR/replica2-dc-pgbackrest-pvc.json
+oc create -f $DIR/replica2-dc-pgwal-pvc.json
+
 oc create -f $DIR/pguser-secret.json
 oc create -f $DIR/pgprimary-secret.json
 oc create -f $DIR/pgroot-secret.json
@@ -26,5 +38,7 @@ oc create configmap postgresql-conf --from-file=postgresql.conf --from-file=pghb
 
 
 oc process -f $DIR/primary-dc.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-#oc process -f $DIR/replica-dc.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
-#oc process -f $DIR/replica2-dc.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+echo "waiting 20 seconds for primary to become active..."
+sleep 20
+oc process -f $DIR/replica-dc.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/replica2-dc.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

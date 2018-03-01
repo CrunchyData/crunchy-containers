@@ -164,17 +164,17 @@
                         {
                             "name": "pgwal",
                             "persistentVolumeClaim": {
-                                "claimName": "crunchy-pvc3"
+                                "claimName": "replica-dc-pgwal-pvc"
                             }
                         }, {
                             "name": "pgbackrest",
                             "persistentVolumeClaim": {
-                                "claimName": "crunchy-pvc2"
+                                "claimName": "replica-dc-pgbackrest-pvc"
                             }
                         }, {
                             "name": "pgdata",
                             "persistentVolumeClaim": {
-                                "claimName": "crunchy-pvc"
+                                "claimName": "replica-dc-pvc"
                             }
                         }, {
                             "name": "pguser-volume",

@@ -622,20 +622,6 @@ command multiple times and the IP address should alternate between the replicas:
 psql -h replica-dc -U postgres postgres -c 'select inet_server_addr()'
 ....
 
-*primary-replica-rc-pvc*
-
-The previous primary-replica deployments used emptyDir volumes for persistence. This example uses
-a PVC based volume in your NFS directory for the primary and the replicas.
-
-....
-cd $CCPROOT/examples/openshift/primary-replica-rc-pvc
-./run.sh
-....
-
-Upon examining the configured NFS directory, the PostgreSQL data directories that are created
-and used by the primary and replica pods are visible. Testing the example uses the same commands
-as above, substituting the name *primary-replica-rc-pvc*.
-
 === Primary / Replica Deployment
 
 Starting in release 1.2.8, the PostgreSQL container can accept

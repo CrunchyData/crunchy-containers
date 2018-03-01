@@ -156,17 +156,17 @@
                     "volumes": [{
                             "name": "pgwal",
                             "persistentVolumeClaim": {
-                                "claimName": "crunchy-pvc3"
+                                "claimName": "primary-dc-pgwal-pvc"
                             }
                         }, {
                             "name": "pgbackrest",
                             "persistentVolumeClaim": {
-                                "claimName": "crunchy-pvc2"
+                                "claimName": "primary-dc-pgbackrest-pvc"
                             }
                         }, {
                             "name": "pgdata",
                             "persistentVolumeClaim": {
-                                "claimName": "crunchy-pvc"
+                                "claimName": "primary-dc-pvc"
                             }
                         }, {
                             "name": "pguser-volume",

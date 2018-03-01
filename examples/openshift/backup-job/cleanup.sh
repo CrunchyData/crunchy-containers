@@ -13,3 +13,4 @@
 # limitations under the License.
 
 oc delete job backup-job
+oc delete pvc backup-pvc
