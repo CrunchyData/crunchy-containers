@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/backup" \
         vendor="crunchy data" \
       	PostgresRelease="9.5" \
-      	PostgresFullRelease="9.5.11" \
+      	PostgresFullRelease="9.5.12" \
         version="7.3" \
-        release="1.8.0" \
+        release="1.8.1" \
         build-date="2018-01-30" \
         url="https://crunchydata.com" \
         summary="Performs a pg_basebackup full database backup on a database container" \

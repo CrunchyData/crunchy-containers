@@ -4,10 +4,10 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/pgbouncer" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.11" \
+	PostgresFullVersion="9.5.12" \
         vendor="crunchy data" \
         version="7.3" \
-        release="1.8.0" \
+        release="1.8.1" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Lightweight connection pooler for crunchy-postgres" \
