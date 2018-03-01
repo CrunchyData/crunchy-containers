@@ -1087,7 +1087,7 @@ psql -h localhost -U testuser -p 12003 userdb
 
 ==== Kubernetes
 
-Running the example:
+Run the following command to deploy the pgpool service:
 ....
 cd $CCPROOT/examples/kube/primary-replica
 ./run.sh
@@ -1110,16 +1110,16 @@ psql -h pgpool -U testuser userdb -c 'show pool_nodes'
 
 Run the following command to deploy the pgpool service:
 ....
+cd $CCPROOT/examples/openshift/primary-replica
+./run.sh
 cd $CCPROOT/examples/openshift/pgpool
 ./run.sh
 ....
 
-Next, you can access the primary replica cluster via the pgpool
-service by entering the following command:
-
+The example is configured to allow the *testuser* to connect
+to the *userdb* database as follows:
 ....
 psql -h pgpool -U testuser userdb
-psql -h pgpool -U testuser postgres
 ....
 
 You can view the nodes that pgpool is configured for by running:
