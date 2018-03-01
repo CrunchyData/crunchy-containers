@@ -10,7 +10,7 @@
               "name": "recover-pv"
           },
           "accessModes": [
-              "ReadOnlyMany"
+              "ReadWriteMany"
           ],
           "resources": {
               "requests": {
