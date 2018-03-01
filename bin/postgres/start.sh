@@ -110,6 +110,7 @@ fi
 
 export PG_MODE=$PG_MODE
 export PG_PRIMARY_HOST=$PG_PRIMARY_HOST
+export PG_REPLICA_HOST=$PG_REPLICA_HOST
 export PG_PRIMARY_PORT=$PG_PRIMARY_PORT
 export PG_PRIMARY_USER=$PG_PRIMARY_USER
 export PG_PRIMARY_PASSWORD=$PG_PRIMARY_PASSWORD
@@ -143,6 +144,8 @@ function role_discovery() {
 		export PG_MODE=primary
 	else
 		echo "Setting PG_MODE to replica."
+		kubectl label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST
+		oc label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST
 		export PG_MODE=replica
 	fi
 }
