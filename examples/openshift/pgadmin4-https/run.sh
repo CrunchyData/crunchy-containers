@@ -18,6 +18,8 @@ $DIR/cleanup.sh
 
 openssl req -x509 -newkey rsa:4096 -keyout server.key -out server.crt -days 5 -nodes -subj '/CN=localhost'
 
+oc create -f $DIR/pgadmin-https-pvc.json
+
 oc create secret generic pgadmin-secrets \
     --from-literal=pgadmin-email='admin@admin.com' \
     --from-literal=pgadmin-password='password'

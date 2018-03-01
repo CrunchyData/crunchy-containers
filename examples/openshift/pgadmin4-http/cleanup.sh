@@ -18,5 +18,7 @@ oc delete secret pgadmin-secrets
 
 $CCPROOT/examples/waitforterm.sh pgadmin4 oc
 
+oc delete pvc pgadmin-http-pvc
+
 sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/pgadmin4.db $PV_PATH/pgadmin4.log
 sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/sessions $PV_PATH/storage

@@ -16,6 +16,8 @@
 oc delete pod crunchy-metrics
 oc delete service crunchy-metrics
 
+oc delete pvc metrics-prometheus-pvc metrics-grafana-pvc
+
 $CCPROOT/examples/waitforterm.sh crunchy-metrics oc
 
 

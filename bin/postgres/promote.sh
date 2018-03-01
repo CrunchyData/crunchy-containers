@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete dc pgpool
-oc delete service pgpool
-oc delete pod -l name=pgpool
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
 
-oc delete pvc pgpool-pvc
+source /opt/cpm/bin/setenv.sh
+pg_ctl promote

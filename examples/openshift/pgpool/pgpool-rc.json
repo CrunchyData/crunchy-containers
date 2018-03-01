@@ -127,7 +127,7 @@
                     "volumes": [{
                         "name": "pgconf",
                         "persistentVolumeClaim": {
-                            "claimName": "crunchy-pvc"
+                            "claimName": "pgpool-pvc"
                         }
                     }],
                     "restartPolicy": "Always",

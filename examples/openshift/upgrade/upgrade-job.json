@@ -17,13 +17,13 @@
 {
                     "name": "pgolddata",
                     "persistentVolumeClaim": {
-                        "claimName": "crunchy-pvc"
+                        "claimName": "upgrade-old-pvc"
                     }
                 },
 {
                     "name": "pgnewdata",
                     "persistentVolumeClaim": {
-                        "claimName": "crunchy-pvc2"
+                        "claimName": "upgrade-new-pvc"
                     }
                 }
 ],
