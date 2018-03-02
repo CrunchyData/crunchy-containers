@@ -2,7 +2,7 @@
       "kind": "PersistentVolumeClaim",
       "apiVersion": "v1",
       "metadata": {
-        "name": "postgres-sshd-backrest-pvc"
+        "name": "postgres-sshd-backrestrepo-pvc"
       },
       "spec": {
         "accessModes": [

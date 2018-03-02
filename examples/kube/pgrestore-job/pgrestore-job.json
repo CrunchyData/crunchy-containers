@@ -60,7 +60,7 @@
                      },
                      {
                         "name":"PGRESTORE_VOLUMEPATH",
-                        "value":"/pgdata/basic-dumps/2018-01-29-19-06-51"
+                        "value":"/pgdata/basic-dumps/2018-03-02-18-52-59"
                      },
                      {
                         "name":"PGRESTORE_FILE",
