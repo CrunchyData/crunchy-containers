@@ -14,3 +14,4 @@
 
 kubectl delete service primary-upgrade
 kubectl delete pod primary-upgrade
+kubectl delete pvc primary-upgrade-pvc

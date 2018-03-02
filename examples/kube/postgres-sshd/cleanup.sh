@@ -21,6 +21,8 @@ kubectl delete pod postgres-sshd
 kubectl delete configmap pgconf
 kubectl delete secret sshd-secrets
 
+kubectl delete pvc postgres-sshd-backrestrepo-pvc postgres-sshd-pvc
+
 $CCPROOT/examples/waitforterm.sh postgres-sshd kubectl
 rm -rf ${DIR?}/keys
 

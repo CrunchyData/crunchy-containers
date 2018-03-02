@@ -14,7 +14,7 @@
         "volumes": [{
             "name": "pgdata",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc"
+                "claimName": "primary-pitr-restore-pvc"
             }
         }, {
             "name": "pgwal",
@@ -22,12 +22,12 @@
         }, {
             "name": "recover",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc2"
+                "claimName": "recover-pvc"
             }
         }, {
             "name": "backup",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc3"
+                "claimName": "backup-primary-pitr-pvc"
             }
         }],
         "containers": [{

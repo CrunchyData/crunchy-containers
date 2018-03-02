@@ -20,5 +20,6 @@ kubectl delete service primary-backrest
 kubectl delete pod primary-backrest
 kubectl delete configmap backrestconf
 kubectl delete job backrest-job-nfs
+kubectl delete pvc backrest-pvc backrest-backrestrepo-pvc
 
 sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/archive $PV_PATH/backup

@@ -19,6 +19,7 @@ CONTAINER='custom-config'
 
 kubectl delete service custom-config
 kubectl delete pod custom-config
+kubectl delete pvc custom-config-pvc
 
 sudo rm $PV_PATH/setup.sql
 sudo rm $PV_PATH/pg_hba.conf

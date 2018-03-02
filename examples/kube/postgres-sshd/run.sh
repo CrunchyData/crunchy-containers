@@ -36,5 +36,8 @@ kubectl create configmap pgconf \
     --from-file ./config/sshd_config \
     --from-file ./keys/authorized_keys
 
+kubectl create -f $DIR/postgres-sshd-backrestrepo-pvc.json
+kubectl create -f $DIR/postgres-sshd-pvc.json
+
 expenv -f $DIR/postgres-sshd-pod.json | kubectl create -f -
 kubectl create -f $DIR/postgres-sshd-service.json

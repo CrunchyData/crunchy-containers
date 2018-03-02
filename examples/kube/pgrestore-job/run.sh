@@ -18,4 +18,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+kubectl create -f $DIR/pgrestore-pvc.json
+
 expenv -f $DIR/pgrestore-job.json | kubectl create -f -

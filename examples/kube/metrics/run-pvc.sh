@@ -24,4 +24,7 @@ $DIR/cleanup.sh
 
 kubectl create -f $DIR/metrics-service.json
 
+kubectl create -f $DIR/metrics-grafana-pvc.json
+kubectl create -f $DIR/metrics-prometheus-pvc.json
+
 expenv -f $DIR/metrics-pvc.json | kubectl create -f -

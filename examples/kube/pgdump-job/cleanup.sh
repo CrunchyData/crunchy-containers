@@ -13,3 +13,5 @@
 # limitations under the License.
 
 kubectl delete job pgdump-job
+
+kubectl delete pvc pgdump-pvc

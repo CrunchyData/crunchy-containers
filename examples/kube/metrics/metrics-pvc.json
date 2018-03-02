@@ -53,13 +53,13 @@
         "volumes": [{
             "name": "prometheusdata",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc"
+                "claimName": "metrics-prometheus-pvc"
             }
 
         }, {
             "name": "grafanadata",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc2"
+                "claimName": "metrics-grafana-pvc"
             }
 
         }]

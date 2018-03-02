@@ -21,7 +21,7 @@
                 "volumes": [{
                     "name": "pgdata",
                     "persistentVolumeClaim": {
-                        "claimName": "crunchy-pvc"
+                        "claimName": "backup-primary-pitr-pvc"
                     }
                 }],
                 "containers": [{

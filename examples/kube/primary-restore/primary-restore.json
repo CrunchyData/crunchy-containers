@@ -62,7 +62,7 @@
         }, {
             "name": "backup",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc"
+                "claimName": "backup-pvc"
             }
 
         }]

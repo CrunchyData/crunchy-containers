@@ -17,6 +17,8 @@ kubectl delete pod pgadmin4
 kubectl delete secret pgadmin-secrets
 kubectl delete secret pgadmin-tls
 
+kubectl delete pvc pgadmin-https-pvc
+
 rm -f ./server.crt ./server.key ./privkey.pem
 
 $CCPROOT/examples/waitforterm.sh pgadmin4 kubectl

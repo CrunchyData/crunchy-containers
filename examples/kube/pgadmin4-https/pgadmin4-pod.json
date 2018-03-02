@@ -72,7 +72,7 @@
             {
                 "name": "pgadmin",
                 "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc"
+                    "claimName": "pgadmin-https-pvc"
                 }
             },
             {

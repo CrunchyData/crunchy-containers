@@ -21,5 +21,7 @@ kubectl delete service primary-pitr primary-pitr-restore
 kubectl delete pod primary-pitr
 kubectl delete job primary-pitr-backup-job
 
+kubectl delete pvc primary-pitr-pvc primary-pitr-pgwal-pvc
+
 sudo rm -rf $PV_PATH/WAL/primary-pitr
 sudo rm -rf $PV_PATH/primary-pitr

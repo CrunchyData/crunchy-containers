@@ -31,5 +31,7 @@ sudo chmod g+r \
     $PV_PATH/postgresql.conf \
     $PV_PATH/pg_hba.conf
 
+kubectl create -f $DIR/custom-config-pvc.json
+
 kubectl create -f $DIR/custom-config-service.json
 expenv -f $DIR/custom-config.json | kubectl create -f -
