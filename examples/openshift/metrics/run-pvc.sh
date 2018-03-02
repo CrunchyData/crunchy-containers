@@ -27,4 +27,4 @@ $DIR/cleanup.sh
 oc create -f $DIR/metrics-grafana-pvc.json
 oc create -f $DIR/metrics-prometheus-pvc.json
 
-oc process -f $DIR/metrics-pvc -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc process -f $DIR/metrics-pvc.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

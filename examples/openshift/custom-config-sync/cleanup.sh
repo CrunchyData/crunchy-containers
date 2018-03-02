@@ -20,6 +20,7 @@ oc delete service csprimary
 oc delete service csreplica
 oc delete pod csprimary
 oc delete pod cssyncreplica
+oc delete pvc custom-config-sync-pvc custom-config-sync-pgconf-pvc
 sudo rm $PV_PATH/postgresql.conf $PV_PATH/setup.sql $PV_PATH/pg_hba.conf
 
 $CCPROOT/examples/waitforterm.sh csprimary oc

@@ -15,11 +15,12 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-kubectl scale --replicas=0 deployment/replica-dc
+oc scale --replicas=0 deployment/replica-dc
 sleep 1
-kubectl delete deployment replica-dc
+oc delete deployment replica-dc
 sleep 3
-kubectl delete pod --selector=name=primary-dc
+oc delete pod --selector=name=primary-dc
 sleep 3
-kubectl delete service primary-dc
-kubectl delete service replica-dc
+oc delete service primary-dc
+oc delete service replica-dc
+oc delete pvc failover-pvc

@@ -27,6 +27,9 @@ sudo cp $DIR/setup.sql $PV_PATH
 sudo chown nfsnobody:nfsnobody $PV_PATH/postgresql.conf $PV_PATH/pg_hba.conf $PV_PATH/setup.sql
 sudo chmod g+r $PV_PATH/postgresql.conf $PV_PATH/pg_hba.conf $PV_PATH/setup.sql
 
+oc create -f $DIR/custom-config-sync-pvc.json
+oc create -f $DIR/custom-config-sync-pgconf-pvc.json
+
 oc create -f $DIR/primary-service.json
 oc create -f $DIR/replica-service.json
 oc process -f $DIR/primary-pod.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -

@@ -18,6 +18,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+oc create -f $DIR/failover-pvc.json
+
 oc create -f $DIR/primary-service.json
 oc create -f $DIR/replica-service.json
 expenv -f $DIR/primary-pod.json | oc create -f -

@@ -100,7 +100,7 @@
           {
             "name": "pgdata",
             "persistentVolumeClaim": {
-              "claimName": "crunchy-pvc"
+              "claimName": "backrest-pvc"
             }
           },
           {
@@ -112,7 +112,7 @@
           {
             "name": "backrestrepo",
             "persistentVolumeClaim": {
-              "claimName": "crunchy-pvc2"
+              "claimName": "backrest-backrestrepo-pvc"
             }
           }
         ],
