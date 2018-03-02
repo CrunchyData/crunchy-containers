@@ -40,6 +40,9 @@
                 "name": "CCP_IMAGE_TAG",
                 "value": "$CCP_IMAGE_TAG"
             }, {
+                "name": "CCP_IMAGE_PREFIX",
+                "value": "$CCP_IMAGE_PREFIX"
+            }, {
                 "name": "JOB_HOST",
                 "value": "primary-dba"
             }]

@@ -819,15 +819,15 @@ in the link:install.adoc[installation documentation]. Things to point out with t
 include its use of persistent volumes and volume claims to store the backup data files to
 an NFS server.
 
-A successful backup will perform pg_basebackup on the pg-primary and store
-the backup in the NFS mounted volume under a directory named pg-primary. Each
+A successful backup will perform pg_basebackup on the *basic* container and store
+the backup in the NFS mounted volume under a directory named basic-backups. Each
 backup will be stored in a subdirectory with a timestamp as the name, allowing any number of backups to be kept.
 
 The backup script will do the following:
 
- * Start up a backup container named basicbackup
- * Run pg_basebackup on the container named primary
- * Store the backup in /tmp/backups/primary directory
+ * Start up a backup container named backup-job
+ * Run pg_basebackup on the container named basic
+ * Store the backup in /tmp/backups/basic-backups directory
  * Exit after the backup
 
 When you are ready to restore from the backup, the restore example runs a PostgreSQL container
@@ -878,17 +878,17 @@ kubectl get job
 
 You should find the backup archive in this location:
 ....
-ls /mnt/nfsfileshare/basic
+ls /mnt/nfsfileshare/basic-backups
 ....
 
 *primary-restore*
 
 When ready to restore, you will need the timestamped directory path under
-/mnt/nfsfileshare/basic in order to locate the backup to use. Edit the primary-restore.json
+/mnt/nfsfileshare/basic-backups in order to locate the backup to use. Edit the primary-restore.json
 file and update the BACKUP_PATH setting to specify the NFS backup path you want to restore with.
 ....
 "name": "BACKUP_PATH",
-"value": "basic/2016-05-27-14-35-33"
+"value": "basic-backups/2016-05-27-14-35-33"
 ....
 
 Running the example:
@@ -899,7 +899,7 @@ cd $CCPROOT/examples/kube/primary-restore
 
 Test the restored database as follows:
 ....
-psql -h restored-primary -U postgres postgres
+psql -h primary-restore -U postgres postgres
 ....
 
 ==== OpenShift
@@ -916,11 +916,11 @@ of *Retain* to tell OpenShift that we want to keep the volume contents after the
 *primary-restore*
 
 When ready to restore, you will need the timestamped directory path under
-/mnt/nfsfileshare/basic in order to locate the backup to use. Edit the primary-restore.json
+/mnt/nfsfileshare/basic-backups in order to locate the backup to use. Edit the primary-restore.json
 file and update the BACKUP_PATH setting to specify the NFS backup path you want to restore with.
 ....
 "name": "BACKUP_PATH",
-"value": "basic-backup/2016-05-27-14-35-33"
+"value": "basic-backups/2016-05-27-14-35-33"
 ....
 
 Then create the pod:
@@ -930,7 +930,7 @@ cd $CCPROOT/examples/openshift/primary-restore
 ....
 
 When the database pod starts, it will copy the backup files
-to the database directory inside the pod and start up postgres as
+to the database directory inside the pod and start up Postgres as
 usual.
 
 The restore only takes place if:
@@ -1188,7 +1188,7 @@ curl http://badger:10000/api/badgergenerate
 
 You can view the database container logs using this command:
 ....
-kubectl logs -c server badger
+kubectl logs badger-example -c badger
 ....
 
 ==== OpenShift
@@ -1629,17 +1629,17 @@ oc logs pgbouncer
 After the failover is completed, you should be able to access the new primary using
 the primary service as follows:
 ....
-psql -h pr-primary.openshift.svc.cluster.local -U primary postgres
+psql -h pr-primary.openshift.svc.cluster.local -U primaryuser postgres
 ....
 
 and access the replica as follows:
 ....
-psql -h pr-replica.openshift.svc.cluster.local -U primary postgres
+psql -h pr-replica.openshift.svc.cluster.local -U primaryuser postgres
 ....
 
 or via the pgbouncer proxy as follows:
 ....
-psql -h pgbouncer.openshift.svc.cluster.local  -U primary primary
+psql -h pgbouncer.openshift.svc.cluster.local  -U primaryuser primary
 ....
 
 === Synchronous Replication
@@ -2099,7 +2099,7 @@ cd $CCPROOT/examples/docker/pgaudit
 ./run.sh
 ....
 
-This starts an instance of the Audit container (running crunchy-postgres) 
+This starts an instance of the Audit container (running crunchy-postgres)
 on port 12005 on localhost.  You can then run the test script as follows:
 ....
 ./test-pgaudit.sh
@@ -2119,9 +2119,9 @@ cd $CCPROOT/examples/kube/pgaudit
 ....
 
 The script will create an Audit pod (running the crunchy-postgres container)
-on the Kubernetes instance and then executes a SQL file which 
-contains pg_audit configuration statements as well as executes some 
-basic SQL commands.  These SQL commands will cause pg_audit to create 
+on the Kubernetes instance and then executes a SQL file which
+contains pg_audit configuration statements as well as executes some
+basic SQL commands.  These SQL commands will cause pg_audit to create
 audit log messages in the pg_log log file created by the database container.
 
 ==== OpenShift
@@ -2133,9 +2133,9 @@ cd $CCPROOT/examples/openshift/pgaudit
 ....
 
 The script will create an Audit pod (running the crunchy-postgres container)
-on the OpenShift instance and then executes a SQL file which 
-contains pg_audit configuration statements as well as executes some 
-basic SQL commands.  These SQL commands will cause pg_audit to create 
+on the OpenShift instance and then executes a SQL file which
+contains pg_audit configuration statements as well as executes some
+basic SQL commands.  These SQL commands will cause pg_audit to create
 audit log messages in the pg_log log file created by the database container.
 
 === Docker Swarm

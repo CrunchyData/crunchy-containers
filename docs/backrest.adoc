@@ -41,7 +41,7 @@ ARCHIVE_TIMEOUT=60
 ARCHIVE_COMMAND='pgbackrest --stanza=db archive-push %p'
 ....
 
-If you are using a postgres image older than *1.7.1*, *archive_command* must specify where 
+If you are using a postgres image older than *1.7.1*, *archive_command* must specify where
 the *pgbackrest.conf* file is located:
 
 ....
