@@ -14,4 +14,5 @@
 
 kubectl delete service primary-pvc
 kubectl delete pod primary-pvc
+kubectl delete pvc primary-pvc
 $CCPROOT/examples/waitforterm.sh primary-pvc kubectl

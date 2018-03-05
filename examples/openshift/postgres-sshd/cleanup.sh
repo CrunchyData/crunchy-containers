@@ -20,6 +20,8 @@ oc delete pod postgres-sshd
 oc delete configmap pgconf
 oc delete secret sshd-secrets
 
+oc delete pvc postgres-sshd-pvc postgres-sshd-backrest-pvc
+
 $CCPROOT/examples/waitforterm.sh postgres-sshd oc
 rm -rf ${DIR?}/keys
 

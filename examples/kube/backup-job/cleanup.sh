@@ -13,3 +13,4 @@
 # limitations under the License.
 
 kubectl delete job backup-job
+kubectl delete pvc backup-pvc

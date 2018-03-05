@@ -74,12 +74,12 @@
         "volumes": [{
             "name": "pgdata",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc"
+                "claimName": "primary-pitr-pvc"
             }
         }, {
             "name": "pgwal",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc2"
+                "claimName": "primary-pitr-pgwal-pvc"
             }
         }, {
             "name": "backup",

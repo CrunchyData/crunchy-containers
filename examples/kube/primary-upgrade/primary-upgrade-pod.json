@@ -58,7 +58,7 @@
         "volumes": [{
             "name": "pgdata",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc"
+                "claimName": "primary-upgrade-pvc"
             }
         }, {
             "name": "backup",

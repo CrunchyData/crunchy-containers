@@ -21,6 +21,10 @@ kubectl delete pod primary-pitr
 $CCPROOT/examples/waitforterm.sh primary-pitr kubectl
 $CCPROOT/examples/waitforterm.sh primary-pitr-restore kubectl
 
+kubectl create -f $DIR/recover-pv.json
+kubectl create -f $DIR/recover-pvc.json
+kubectl create -f $DIR/primary-pitr-restore-pvc.json
+
 # start up the database container
- expenv -f $DIR/primary-pitr-restore-service.json | kubectl create -f -
- expenv -f $DIR/primary-pitr-restore-pod.json | kubectl create -f -
+expenv -f $DIR/primary-pitr-restore-service.json | kubectl create -f -
+expenv -f $DIR/primary-pitr-restore-pod.json | kubectl create -f -

@@ -1,0 +1,23 @@
+
+  {
+      "kind": "PersistentVolumeClaim",
+      "apiVersion": "v1",
+      "metadata": {
+          "name": "recover-pvc"
+      },
+      "spec": {
+          "selector": {
+          "matchLabels": {
+              "name": "recover-pv"
+          }
+	  },
+          "accessModes": [
+              "ReadWriteMany"
+          ],
+          "resources": {
+              "requests": {
+                  "storage": "178M"
+              }
+          }
+      }
+  }

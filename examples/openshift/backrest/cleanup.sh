@@ -19,4 +19,6 @@ oc delete service primary-backrest
 oc delete pod primary-backrest
 oc delete configmap backrestconf
 
+oc delete pvc backrest-pvc backrest-backrestrepo-pvc
+
 sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/archive $PV_PATH/backup

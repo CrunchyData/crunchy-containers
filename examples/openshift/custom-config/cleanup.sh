@@ -21,6 +21,8 @@ CONTAINER=custom-config
 oc delete service $CONTAINER
 oc delete pod $CONTAINER
 
+oc delete pvc custom-config-pvc 
+
 sudo rm $PV_PATH/setup.sql
 sudo rm $PV_PATH/pg_hba.conf
 sudo rm $PV_PATH/postgresql.conf

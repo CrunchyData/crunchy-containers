@@ -19,6 +19,8 @@ oc delete secret pgadmin-tls
 
 rm -f ./server.crt ./server.key ./privkey.pem
 
+oc delete pvc pgadmin-https-pvc
+
 $CCPROOT/examples/waitforterm.sh pgadmin4 oc
 
 sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/pgadmin4.db $PV_PATH/pgadmin4.log

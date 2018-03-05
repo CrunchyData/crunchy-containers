@@ -13,3 +13,4 @@
 # limitations under the License.
 
 kubectl delete job pgrestore-job
+kubectl delete pvc pgrestore-pvc

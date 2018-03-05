@@ -67,6 +67,10 @@ executed when the database is first created.
    default value of *60* is used.
  * PGAUDIT_ANALYZE - if set, will cause the container to also start the
    pgaudit_analyze program in the background
+ * PG_PRIMARY_HOST - for when PG_MODE is *set*, specifies the primary
+   host for setting the primary label
+ * PG_REPLICA_HOST - for when PG_MODE is *set*, specifies the replica
+   host for setting the replica label
  * PGDATA_PATH_OVERRIDE - if set, will cause the container to use a /pgdata path
    name of your choosing rather than the hostname of the container which
    is the default. This is useful for a primary in a deployment.

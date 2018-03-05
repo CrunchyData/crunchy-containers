@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
 
-
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-$DIR/cleanup.sh
-
-oc process -f $DIR/primary-replica.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+source /opt/cpm/bin/setenv.sh
+pg_ctl promote

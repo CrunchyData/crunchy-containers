@@ -85,12 +85,12 @@
             "volumes": [{
                 "name": "pgconf",
                 "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc"
+                    "claimName": "custom-config-sync-pgconf-pvc"
                 }
             }, {
                 "name": "pgdata",
                 "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc2"
+                    "claimName": "custom-config-sync-pvc"
                 }
             }, {
                 "name": "backup",

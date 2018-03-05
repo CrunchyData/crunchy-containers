@@ -37,7 +37,7 @@
         "volumes": [{
             "name": "pgconf",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc"
+                "claimName": "failover-pvc"
             }
         }]
     }

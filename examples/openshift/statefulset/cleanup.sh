@@ -16,3 +16,4 @@ oc delete statefulset pgset
 oc delete service pgset pgset-primary pgset-replica
 oc delete sa pgset-sa
 oc delete pod pgset-0
+oc delete pvc statefulset-pvc

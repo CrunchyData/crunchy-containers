@@ -18,6 +18,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+oc create -f $DIR/custom-config-pvc.json
+
 sudo cp $DIR/setup.sql $PV_PATH
 sudo cp $DIR/pg_hba.conf $PV_PATH
 sudo cp $DIR/postgresql.conf $PV_PATH

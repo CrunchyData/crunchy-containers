@@ -106,13 +106,13 @@
             {
                 "name": "backrestrepo",
                 "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc2"
+                    "claimName": "postgres-sshd-backrestrepo-pvc"
                 }
             },
             {
                 "name": "pgdata",
                 "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc"
+                    "claimName": "postgres-sshd-pvc"
                 }
             },
             {

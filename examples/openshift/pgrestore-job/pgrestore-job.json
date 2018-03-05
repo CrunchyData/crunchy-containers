@@ -59,7 +59,7 @@
          "name":"PGRESTORE_VOLUMEPATH",
          "displayName":"Volume Path",
          "description":"Which path (only) to use as the input source for pg_restore.",
-         "value":"/pgdata/basic-dumps/2018-01-29-19-06-51/"
+         "value":"/pgdata/basic-dumps/2018-03-01-20-43-41/"
       },
       {
          "name":"PGRESTORE_FILE",
@@ -99,7 +99,7 @@
                      {
                         "name":"pgdata",
                         "persistentVolumeClaim":{
-                           "claimName":"crunchy-pvc"
+                           "claimName":"pgrestore-pvc"
                         }
                      }
                   ],

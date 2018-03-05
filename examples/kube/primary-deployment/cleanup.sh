@@ -18,3 +18,4 @@ kubectl delete secret pguser-secret pgprimary-secret pgroot-secret
 sleep 10
 kubectl delete service primary-dc
 kubectl delete service replica-dc
+kubectl delete pvc primary-dc-pgwal-pvc primary-dc-pgbackrest-pvc

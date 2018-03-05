@@ -15,3 +15,5 @@
 oc delete dc pgpool
 oc delete service pgpool
 oc delete pod -l name=pgpool
+
+oc delete pvc pgpool-pvc

@@ -84,7 +84,7 @@
             "volumes": [{
                 "name": "pgdata",
                 "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc"
+                    "claimName": "primary-pitr-restore-pvc"
                 }
             }, {
                 "name": "pgwal",
@@ -97,7 +97,7 @@
             }, {
                 "name": "backup",
                 "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc3"
+                    "claimName": "backup-primary-pitr-pvc"
                 }
             }],
             "containers": [{
@@ -127,7 +127,7 @@
                     "value": "password"
                 }, {
                     "name": "BACKUP_PATH",
-                    "value": "primary-pitr-backups/2017-10-12-19-28-14"
+                    "value": "primary-pitr-backups/2018-03-01-18-52-55"
                 }, {
                     "name": "RECOVERY_TARGET_NAME",
                     "value": "beforechanges"

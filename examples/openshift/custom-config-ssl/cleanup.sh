@@ -21,6 +21,7 @@ CONFDIR=$PV_PATH/custom-config-ssl-pgconf
 
 oc delete service custom-config-ssl
 oc delete pod custom-config-ssl
+oc delete pvc custom-config-ssl-pvc
 
 sudo rm -rf $CONFDIR
 

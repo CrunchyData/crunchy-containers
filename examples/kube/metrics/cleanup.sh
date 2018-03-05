@@ -16,5 +16,7 @@
 kubectl delete pod crunchy-metrics
 kubectl delete service crunchy-metrics
 
+kubectl delete pvc metrics-grafana-pvc metrics-prometheus-pvc
+
 $CCPROOT/examples/waitforterm.sh crunchy-metrics kubectl
 

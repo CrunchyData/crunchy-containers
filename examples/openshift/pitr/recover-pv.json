@@ -11,10 +11,10 @@
         "capacity": {
             "storage": "199M"
         },
-        "accessModes": ["ReadOnlyMany"],
+        "accessModes": ["ReadWriteMany"],
         "nfs": {
             "path": "$PV_PATH/primary-pitr-wal",
-            "server": "$NFS_IP"
+            "server": "$LOCAL_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }

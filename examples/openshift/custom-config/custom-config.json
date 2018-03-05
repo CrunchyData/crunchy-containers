@@ -80,7 +80,7 @@
             "volumes": [{
                 "name": "pgconf",
                 "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc"
+                    "claimName": "custom-config-pvc"
                 }
             }, {
                 "name": "pgdata",
