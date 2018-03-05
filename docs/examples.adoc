@@ -1364,6 +1364,12 @@ cd $CCPROOT/examples/docker/collect
 ./run.sh
 ....
 
+You will be able to access all three services from the following web addresses:
+
+* Prometheus (http://0.0.0.0:19090)
+* Prometheus gateway (http://0.0.0.0:19091)
+* Grafana (http://0.0.0.0:13000)
+
 ==== Kubernetes
 
 Running the example:
