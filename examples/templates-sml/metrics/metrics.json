@@ -15,6 +15,10 @@
         "value": "rhel7-9.6.8-1.8.1",
         "description": "The image tag to use"
     }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "The image prefix to use",
+        "value": "crunchydata"
+    }, {
         "name": "STORAGE_CLASS",
         "description": "The name for the storage class",
         "value": "gluster-container"
@@ -94,7 +98,7 @@
 
             "containers": [{
                 "name": "prometheus",
-                "image": "crunchydata/crunchy-prometheus:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-prometheus:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "IfNotPresent",
                 "ports": [{
                     "containerPort": 9090,
@@ -108,7 +112,7 @@
                 }]
             }, {
                 "name": "promgateway",
-                "image": "crunchydata/crunchy-promgateway:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-promgateway:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "IfNotPresent",
                 "ports": [{
                     "containerPort": 9091,
@@ -118,7 +122,7 @@
                 "volumeMounts": []
             }, {
                 "name": "grafana",
-                "image": "crunchydata/crunchy-grafana:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-grafana:${CCP_IMAGE_TAG}",
                 "imagePullPolicy": "IfNotPresent",
                 "ports": [{
                     "containerPort": 3000,

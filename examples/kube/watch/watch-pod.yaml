@@ -8,7 +8,7 @@ spec:
   serviceAccount: pg-watcher
   containers:
     - name: watch
-      image: crunchydata/crunchy-watch:$CCP_IMAGE_TAG
+      image: $CCP_IMAGE_PREFIX/crunchy-watch:$CCP_IMAGE_TAG
       env:
         - name: CRUNCHY_WATCH_PLATFORM
           value: kube

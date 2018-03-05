@@ -20,4 +20,3 @@ $DIR/cleanup.sh
 oc create -f $DIR/replica.json
 
 oc create -f $DIR/replica-with-pvc.json
-

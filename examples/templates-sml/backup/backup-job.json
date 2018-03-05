@@ -38,6 +38,10 @@
         "name": "CCP_IMAGE_TAG",
         "description": "image tag to use",
         "value": "rhel7-9.6.8-1.8.1"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "image prefix to use",
+        "value": "crunchydata"
     }],
 
     "objects": [{
@@ -85,7 +89,7 @@
                     },
                     "containers": [{
                         "name": "${JOB_NAME}",
-                        "image": "crunchydata/crunchy-backup:${CCP_IMAGE_TAG}",
+                        "image": "${CCP_IMAGE_PREFIX}/crunchy-backup:${CCP_IMAGE_TAG}",
                         "imagePullPolicy": "IfNotPresent",
                         "volumeMounts": [{
                             "mountPath": "/pgdata",
