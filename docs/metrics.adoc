@@ -51,9 +51,9 @@ cd $CCPROOT/examples/docker/metrics
 
 This will start up 3 containers and services:
 
- * http://crunchy-metrics:9090 - the Prometheus web user interface
- * http://crunchy-metrics:9091 - the Prometheus pushgateway REST API
- * http://crunchy-metrics:3000 - the Grafana web user interface
+ * http://crunchy-metrics:19090 - the Prometheus web user interface
+ * http://crunchy-metrics:19091 - the Prometheus pushgateway REST API
+ * http://crunchy-metrics:13000 - the Grafana web user interface
 
 An example has been provided that runs a database container
 and also the associated metrics collection container, run the
