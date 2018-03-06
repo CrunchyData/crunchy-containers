@@ -342,6 +342,7 @@ This example deploys a primary database configuration
 which uses a Persistent Volume Claim for persistence.
 
 .Table Template Parameters
+[options="header"]
 |===
 |Parameter|Description|Default
 
@@ -450,6 +451,7 @@ will create a backup of a database and store the backup
 files in a PVC.
 
 .Table Template Parameters
+[options="header"]
 |===
 |Parameter|Description|Default
 
@@ -482,7 +484,7 @@ files in a PVC.
 | primary
 
 |CCP_IMAGE_PREFIX
-| the container image prefix to use, typically the registy IP address and namespace
+| the container image prefix to use, typically the registry IP address and namespace
 | 172.30.149.135:5000/default
 
 |CCP_IMAGE_TAG
@@ -508,6 +510,7 @@ This example performs a database restore using a backup archive
 found in a PVC.
 
 .Table Template Parameters
+[options="header"]
 |===
 |Parameter|Description|Default
 
@@ -595,6 +598,7 @@ These templates create the following:
  * service for replica
 
 .Table Template Parameters
+[options="header"]
 |===
 |Parameter|Description|Default
 
@@ -659,6 +663,7 @@ This template will create the following:
  * service for the pgadmin4 container
 
 .Table Template Parameters
+[options="header"]
 |===
 |Parameter|Description|Default
 
@@ -693,6 +698,6 @@ This template will create the following:
 
 Copyright © 2018 Crunchy Data Solutions, Inc.
 
-CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE ``AS IS'' WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
