@@ -566,6 +566,7 @@ environment variables:
 A cron expression represents a set of times, using 6 space-separated fields.
 
 .Table Fields
+[options="header"]
 |===
 |Field name   | Mandatory? | Allowed values  | Allowed special characters
 
@@ -601,8 +602,8 @@ A cron expression represents a set of times, using 6 space-separated fields.
 |===
 
 
-Note: Month and Day-of-week field values are case insensitive.  "SUN", "Sun",
-and "sun" are equally accepted.
+NOTE: Month and Day-of-week field values are case insensitive.  ``SUN'', ``Sun'',
+and ``sun'' are equally accepted.
 
 ==== Special Characters
 
@@ -616,16 +617,16 @@ indicate every month.
 
 Slashes are used to describe increments of ranges. For example 3-59/15 in
 the 1st field (minutes) would indicate the 3rd minute of the hour and every
-15 minutes thereafter. The form "*\/..." is equivalent to the form
-"first-last/...", that is, an increment over the largest possible range of
-the field.  The form "N/..." is accepted as meaning "N-MAX/...", that is,
+15 minutes thereafter. The form ``*\/...'' is equivalent to the form
+``first-last/...'', that is, an increment over the largest possible range of
+the field.  The form ``N/...'' is accepted as meaning ``N-MAX/...'', that is,
 starting at N, use the increment until the end of that specific range.
 It does not wrap around.
 
 ===== Comma ( , )
 
 Commas are used to separate items of a list. For example, using
-"MON,WED,FRI" in the 5th field (day of week) would mean Mondays,
+``MON,WED,FRI'' in the 5th field (day of week) would mean Mondays,
 Wednesdays and Fridays.
 
 ===== Hyphen ( - )
@@ -643,6 +644,7 @@ day-of-week blank.
 You may use one of several pre-defined schedules in place of a cron expression.
 
 .Table Predefined Schedules
+[options="header"]
 |===
 |Entry|Description|Equivalent To
 
@@ -676,13 +678,13 @@ supported by formatting the cron spec like this:
 @every <duration>
 ....
 
-where "duration" is a string accepted by time.ParseDuration
+where ``duration'' is a string accepted by time.ParseDuration
 (http://golang.org/pkg/time/#ParseDuration).
 
-For example, "@every 1h30m10s" would indicate a schedule that activates every
+For example, ``@every 1h30m10s'' would indicate a schedule that activates every
 1 hour, 30 minutes, 10 seconds.
 
-Note: The interval does not take the job runtime into account.  For example,
+NOTE: The interval does not take the job runtime into account.  For example,
 if a job takes 3 minutes to run, and it is scheduled to run every 5 minutes,
 it will have only 2 minutes of idle time between each run.
 
@@ -739,7 +741,7 @@ The crunchy-backrest-restore container executes the pgbackrest utility, allowing
  * STANZA - required - must be set to the desired stanza for restore
  * DELTA - when set, will add the --delta option to the restore. The delta option
    allows pgBackRest to automatically determine which files in the database cluster
-   directory can be preserved and which ones need to be restored from the backup —
+   directory can be preserved and which ones need to be restored from the backup -
    it also removes files not present in the backup manifest so it will dispose of divergent changes.
  * DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
@@ -828,7 +830,7 @@ to retrieve database dumps to be restored via psql or pg_restore.
  * PGRESTORE_USER pg user we are connecting with
  * PGRESTORE_RESTOREFILE which filename (only) to use as the input source for pg_restore
  * PGRESTORE_VOLUMEPATH which path (only) to use as the input source for pg_restore
- Note: As the crunchy-dump container dumps files to a date/time-stamped subdirectory, the PGRESTORE_VOLUMEPATH variable will need to be updated to the correct location in the pgrestore-job.json file for each invocation.
+ NOTE: As the crunchy-dump container dumps files to a date/time-stamped subdirectory, the PGRESTORE_VOLUMEPATH variable will need to be updated to the correct location in the pgrestore-job.json file for each invocation.
 
 ==== OPTIONAL/EXTENDED ARGS
 
@@ -928,7 +930,7 @@ Valid values for PGSIM_INTERVAL are as follows:
 * Creates a single connection to PostgreSQL and will execute
 queries over a specified interval range.
 * Queries are specified through a simple YAML file. Each query is a name-value
-  pair and can span multiple lines by utilizing scalar notation ("|" or ">") as
+  pair and can span multiple lines by utilizing scalar notation (``|'' or ``>'') as
   defined by the YAML spec.
 * Queries are randomly chosen for execution.
 
@@ -940,6 +942,6 @@ queries over a specified interval range.
 
 Copyright © 2018 Crunchy Data Solutions, Inc.
 
-CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE ``AS IS'' WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.

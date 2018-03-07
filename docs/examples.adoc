@@ -217,7 +217,7 @@ passwords:
  * externalize your passwords using secrets instead of using generated values
  * manually update your passwords to your known values after a restore
 
-*Note*: Environment variables can be modified when there is a a deployment
+NOTE: Environment variables can be modified when there is a a deployment
 controller in use. Currently, only the replicas have a deployment controller in
 order to avoid the possibility of creating multiple primaries.
 ....
@@ -520,7 +520,7 @@ Next, using psql, connect to the service:
 psql -d userdb -h 0.0.0.0 -p <CONTAINER_PORT> -U testuser
 ....
 
-*Note:* See *PG_PASSWORD* in *docker-compose.yml* for the user password.
+NOTE: See *PG_PASSWORD* in *docker-compose.yml* for the user password.
 
 To tear down the example, run the following:
 ....
@@ -1148,9 +1148,9 @@ To shutdown the instance and remove the container for each example, run the foll
 ==== Docker
 
 To run the example:
- * modify the run-badger.sh script to refer to the Docker container that you want to run pgbadger against
- * refer to the container’s data directory
- * start the container that you are referencing
+* modify the run-badger.sh script to refer to the Docker container that you want to run pgbadger against
+* refer to the container's data directory
+* start the container that you are referencing
 
 Then, run the example as follows:
 ....
@@ -1655,9 +1655,9 @@ Kubernetes and OpenShift environments:
 psql -h primarysync -U postgres postgres -c 'create table test (id int)'
 psql -h primarysync -U postgres postgres -c 'insert into test values (1)'
 psql -h primarysync -U postgres postgres -c 'table pg_stat_replication'
-psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test’
-psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test’
-psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test’
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
 ....
 
 This set of queries will show you the IP address of the PostgreSQL replica
@@ -1679,7 +1679,7 @@ cd $CCPROOT/examples/docker/sync
 ....
 
 You can test the replication status on the primary by using the following command
-and the password "password":
+and the password ``password'':
 ....
 psql -h 127.0.0.1 -p 12010 -U postgres postgres -c 'table pg_stat_replication'
 ....
@@ -1850,7 +1850,7 @@ It takes about 1 minute for the database to become ready for use after initially
 This database is created with the ARCHIVE_MODE and ARCHIVE_TIMEOUT
 environment variables set.
 
-*Warning*:  WAL segment files are written to the /tmp directory. Leaving the example running
+WARNING:  WAL segment files are written to the /tmp directory. Leaving the example running
 for a long time could fill up your /tmp directory.
 
 *Note*: If you're running the PITR example for *PostgreSQL versions 9.5 or 9.6*, please note that
@@ -2434,6 +2434,6 @@ To enable SSHD on PostgreSQL, see the link:sshd.adoc[SSHD Documentation].
 
 Copyright © 2018 Crunchy Data Solutions, Inc.
 
-CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE ``AS IS'' WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.

@@ -190,11 +190,9 @@ firewall-cmd --reload
 The tables below list all existing collectors that are gathered by the link:https://github.com/prometheus/node_exporter[node_exporter].
 This tool collects hardware and OS level metrics exposed by the kernel as part of the crunchy-collect container.
 
-
-.*Table 1: Enabled by Default*
-
 This table lists all metrics collected by default with the node_exporter.
 
+.Enabled by Default
 [format="csv", options="header"]
 |===
 Name, Description
@@ -228,10 +226,9 @@ zfs, Exposes link:http://open-zfs.org/[ZFS] performance statistics.
 |===
 
 
-.*Table 2: Disabled by Default*
-
 The following table contains metrics that are not enabled by default; these can be enabled using the `--collectors.enabled` flag.
 
+.Disabled by Default
 [format="csv", options="header"]
 |===
 Name, Description
@@ -253,11 +250,10 @@ tcpstat, Exposes TCP connection status information from `/proc/net/tcp` and `/pr
 |===
 
 
-.*Table 3: Deprecated*
-
 These metrics will be deprecated and (re)moved in future releases of node_exporter.
 
-[width="100%"]
+.Deprecated
+[options="header"]
 |===
 | Name | Description
 
@@ -276,11 +272,9 @@ These metrics will be deprecated and (re)moved in future releases of node_export
 
 The link:https://github.com/wrouesnel/postgres_exporter[postgres_exporter] collects PostgreSQL server metrics as part of the crunchy-collect container.
 
-
-.*Table 1: General*
-
 The following are some general metrics it collects:
 
+.General
 [format="csv", options="header"]
 |===
 Name, Description, Usage, Query
@@ -288,11 +282,9 @@ pg_replication, Replication lag behind primary in seconds, GAUGE, `SELECT EXTRAC
 pg_postmaster, Time at which postmaster started, GAUGE, `SELECT pg_postmaster_start_time as start_time_seconds from pg_postmaster_start_time()`
 |===
 
-
-.*Table 2: pg_stat_user_tables*
-
 These metrics are general statistics on tables.
 
+.pg_stat_user_tables
 [format="csv", options="header"]
 |===
 Name, Description, Usage, Query
@@ -319,11 +311,9 @@ analyze_count, Number of times this table has been manually analyzed, COUNTER, `
 autoanalyze_count, Number of times this table has been analyzed by the autovacuum daemon, COUNTER, `SELECT autoanalyze_count FROM pg_stat_user_tables`
 |===
 
-
-.*Table 3: pg_database*
-
 These statistics provide database queries.
 
+.pg_database
 [format="csv", options="header"]
 |===
 Name, Description, Usage, Query
@@ -331,7 +321,7 @@ datname, LABEL, Name of the database, `SELECT pg_database.datname as size FROM p
 usage, GAUGE, Disk space used by the database, `SELECT pg_database_size(pg_database.datname) as size FROM pg_database`
 |===
 
-<<<
+
 === Grafana Dashboard
 
 Some information on creating custom Grafana dashboards can be found in the official documentation -
@@ -351,42 +341,41 @@ http://crunchy-metrics:3000
 
 The username and password are both *admin* by default. It is a recommended security measure to change these values.
 
-After logging in, you'll be taken to a "Home Dashboard" page. Click "add data source", where you'll be taken to
-a page to populate your data source. In this instance, you'll want to select "type" as being "Prometheus" and change
-the URL to point to "http://localhost:9090". The screen should appear like this after you've finished:
+After logging in, you'll be taken to a ``Home Dashboard'' page. Click ``add data source'', where you'll be taken to
+a page to populate your data source. In this instance, you'll want to select ``type'' as being ``Prometheus'' and change
+the URL to point to ``http://localhost:9090''. The screen should appear like this after you've finished:
 
 
 image::images/grafana_s1.png[]
 
 
 Next, the dashboard needs to be imported as a JSON file. Navigate to the upper left corner and select the
-Grafana logo for the menu, then to Dashboards -> Import. Select "Upload JSON File" and upload the following
+Grafana logo for the menu, then to Dashboards -> Import. Select ``Upload JSON File'' and upload the following
 JSON file:
 ....
 $CCPROOT/conf/grafana/dashboards/PostgreSQL.json
 ....
 
-The "Import Datasource" box should look similar to this before clicking "Import":
+The ``Import Datasource'' box should look similar to this before clicking ``Import'':
 
 
-image::images/grafana_s2.png[]
+image:images/grafana_s2.png[]
 
 
 The following images display the different metrics the included dashboard provides.
 
 
-image::images/grafana-dashboard-1.png[]
+image:images/grafana-dashboard-1.png[]
 
-image::images/grafana-dashboard-2.png[]
+image:images/grafana-dashboard-2.png[]
 
-image::images/grafana-dashboard-3.png[]
+image:images/grafana-dashboard-3.png[]
 
 
-<<<
 == Legal Notices
 
 Copyright © 2018 Crunchy Data Solutions, Inc.
 
-CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE ``AS IS'' WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
