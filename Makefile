@@ -103,7 +103,7 @@ postgres: versiontest
 	cp `which kubectl` bin/postgres
 	cp `which oc` bin/postgres
 	docker build -t crunchy-postgres -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres.$(CCP_BASEOS) .
-	docker tag crunchy-postgres crunchydata/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+	docker tag crunchy-postgres jmccormick2001/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 postgres-gis: versiontest
 	cp `which kubectl` bin/postgres

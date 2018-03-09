@@ -9,15 +9,13 @@
     },
     "spec": {
         "securityContext": {
-            "supplementalGroups": [
-                65534
-            ]
+		$CCP_SECURITY_CONTEXT
         },
         "containers": [
             {
                 "name": "pgadmin4",
                 "securityContext": {
-                    "privileged": false
+                    $CCP_SECURITY_CONTEXT
                 },
                 "image": "$CCP_IMAGE_PREFIX/crunchy-pgadmin4:$CCP_IMAGE_TAG",
                 "ports": [

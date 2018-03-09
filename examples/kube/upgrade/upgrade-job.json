@@ -28,6 +28,7 @@
                 }
 ],
                 "securityContext": {
+			$CCP_SECURITY_CONTEXT
                 },
                 "containers": [{
                     "name": "upgrade-job",

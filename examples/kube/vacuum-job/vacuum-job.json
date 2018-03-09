@@ -29,7 +29,7 @@
                         "value": "testtable"
                     }, {
                         "name": "JOB_HOST",
-                        "value": "basic"
+                        "value": "primary-pvc"
                     }, {
                         "name": "PG_USER",
                         "value": "testuser"

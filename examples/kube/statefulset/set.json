@@ -16,6 +16,7 @@
             "spec": {
         	"serviceAccount": "pgset-sa",
             "securityContext": {
+			$CCP_SECURITY_CONTEXT
             },
                 "containers": [{
                     "name": "pgset",

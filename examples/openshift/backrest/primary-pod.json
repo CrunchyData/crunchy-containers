@@ -92,9 +92,7 @@
       },
       "spec": {
         "securityContext": {
-          "supplementalGroups": [
-            65534
-          ]
+          ${CCP_SECURITY_CONTEXT}
         },
         "volumes": [
           {

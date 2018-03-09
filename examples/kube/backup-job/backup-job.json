@@ -20,7 +20,7 @@
                     }
                 }],
                 "securityContext": {
-                    "supplementalGroups": [65534]
+                    $CCP_SECURITY_CONTEXT
                 },
                 "containers": [{
                     "name": "backup-job",
@@ -32,7 +32,7 @@
                     }],
                     "env": [{
                         "name": "BACKUP_HOST",
-                        "value": "basic"
+                        "value": "primary-pvc"
                     }, {
                         "name": "BACKUP_USER",
                         "value": "primaryuser"

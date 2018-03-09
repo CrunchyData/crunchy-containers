@@ -384,13 +384,13 @@ and a default password of *password*.
 For all environments, the script additionally creates:
 
  * A persistent volume claim
- * A container named *basic*
+ * A container named *primary-pvc*
  * The database using predefined environment variables
 
 And specifically for the Kubernetes and OpenShift environments:
 
- * A pod named *basic*
- * A service named *basic*
+ * A pod named *primary-pvc*
+ * A service named *primary-pvc*
 
 To shutdown the instance and remove the container for each example, run the following:
 ....
@@ -414,13 +414,13 @@ psql -h localhost -p 12000 -U testuser -W userdb
 
 To create the example:
 ....
-cd $CCPROOT/examples/kube/basic
+cd $CCPROOT/examples/kube/primary-pvc
 ./run.sh
 ....
 
 Connect from your local host as follows:
 ....
-psql -h basic -U postgres postgres
+psql -h primary-pvc -U postgres postgres
 ....
 
 ==== Helm
@@ -432,23 +432,13 @@ example using Helm link:https://github.com/CrunchyData/crunchy-containers/blob/m
 
 To create the example:
 ....
-cd $CCPROOT/examples/openshift/basic
+cd $CCPROOT/examples/openshift/primary-pvc
 ./run.sh
 ....
 
 Connect from your local host as follows:
 ....
-psql -h basic.openshift.svc.cluster.local -U testuser userdb
-....
-
-=== Creating a Primary Database with PVC
-
-The other example *basic* uses emptyDir volumes for persistence; if it is desired to
-create a PVC based volume to store the PostgreSQL data files for a single primary pod,
-run the following example:
-....
-cd $CCPROOT/examples/openshift/primary-pvc
-./run.sh
+psql -h primary-pvc.openshift.svc.cluster.local -U testuser userdb
 ....
 
 === Creating a Primary / Replica Database Cluster
@@ -808,22 +798,22 @@ oc get pod
 
 === Performing a Backup & Restore
 
-The script assumes you are going to backup the *basic*
+The script assumes you are going to backup the *primary-pvc*
 container created in the first example, so you need to ensure
 that container is running. This example assumes you have configured NFS as described
 in the link:install.adoc[installation documentation]. Things to point out with this example
 include its use of persistent volumes and volume claims to store the backup data files to
 an NFS server.
 
-A successful backup will perform pg_basebackup on the *basic* container and store
-the backup in the NFS mounted volume under a directory named basic-backups. Each
+A successful backup will perform pg_basebackup on the *primary-pvc* container and store
+the backup in the NFS mounted volume under a directory named primary-pvc-backups. Each
 backup will be stored in a subdirectory with a timestamp as the name, allowing any number of backups to be kept.
 
 The backup script will do the following:
 
  * Start up a backup container named backup-job
- * Run pg_basebackup on the container named basic
- * Store the backup in /tmp/backups/basic-backups directory
+ * Run pg_basebackup on the container named primary-pvc
+ * Store the backup in /tmp/backups/primary-pvc-backups directory
  * Exit after the backup
 
 When you are ready to restore from the backup, the restore example runs a PostgreSQL container
@@ -874,17 +864,17 @@ kubectl get job
 
 You should find the backup archive in this location:
 ....
-ls /mnt/nfsfileshare/basic-backups
+ls /mnt/nfsfileshare/primary-pvc-backups
 ....
 
 *primary-restore*
 
 When ready to restore, you will need the timestamped directory path under
-/mnt/nfsfileshare/basic-backups in order to locate the backup to use. Edit the primary-restore.json
+/mnt/nfsfileshare/primary-pvc-backups in order to locate the backup to use. Edit the primary-restore.json
 file and update the BACKUP_PATH setting to specify the NFS backup path you want to restore with.
 ....
 "name": "BACKUP_PATH",
-"value": "basic-backups/2016-05-27-14-35-33"
+"value": "primary-pvc-backups/2016-05-27-14-35-33"
 ....
 
 Running the example:
@@ -912,11 +902,11 @@ of *Retain* to tell OpenShift that we want to keep the volume contents after the
 *primary-restore*
 
 When ready to restore, you will need the timestamped directory path under
-/mnt/nfsfileshare/basic-backups in order to locate the backup to use. Edit the primary-restore.json
+/mnt/nfsfileshare/primary-pvc-backups in order to locate the backup to use. Edit the primary-restore.json
 file and update the BACKUP_PATH setting to specify the NFS backup path you want to restore with.
 ....
 "name": "BACKUP_PATH",
-"value": "basic-backups/2016-05-27-14-35-33"
+"value": "primary-pvc-backups/2016-05-27-14-35-33"
 ....
 
 Then create the pod:
@@ -1423,7 +1413,7 @@ cd $CCPROOT/examples/openshift/collect
 
 You can perform a PostgreSQL vacuum command by running the crunchy-vacuum
 container.  You specify a database to vacuum using environment variables. By default,
-it will specify the *basic* example; you will need to start the *basic* container
+it will specify the *primary-pvc* example; you will need to start the *primary-pvc* container
 before running *vacuum*.
 
 The crunchy-vacuum container image exists to allow a DBA a way to run a job either
@@ -1492,7 +1482,7 @@ cd ../vacuum-job
 The crunchy-dba container implements a cron scheduler. The purpose of the crunchy-dba
 container is to offer a way to perform simple DBA tasks that occur on some form of
 schedule such as backup jobs or running a vacuum on a single PostgreSQL database container
-(such as the *basic* example).
+(such as the *primary-pvc* example).
 
 You can either run the crunchy-dba container as a single pod or include the container
 within a database pod.
@@ -2285,14 +2275,14 @@ test database should be found in the *primary-upgrade* database.
 
 === Performing a pg_dump
 
-The script assumes you are going to backup the *basic*
+The script assumes you are going to backup the *primary-pvc*
 container created in the first example, so you need to ensure
 that container is running. This example assumes you have configured NFS as described
 in the link:install.adoc[installation documentation]. Things to point out with this example
 include its use of persistent volumes and volume claims to store the backup data files to
 an NFS server.
 
-A successful backup will perform pg_dump/pg_dumpall on the basic and store
+A successful backup will perform pg_dump/pg_dumpall on the primary-pvc and store
 the resulting files in the NFS mounted volume under a directory named using the database host
 name plus -dumps as a sub-directory, then followed by a unique backup directory based upon a
 date/timestamp - allowing any number of backups to be kept.
@@ -2300,7 +2290,7 @@ date/timestamp - allowing any number of backups to be kept.
 The dump script will do the following:
 
  * Start up a backup container named pgdump-job
- * Run pg_dump/pg_dumpall on the container named basic
+ * Run pg_dump/pg_dumpall on the container named primary-pvc
  * Store the backup in the PV in a path named with a date/timestamp
  * Exit after the backup
 
@@ -2329,16 +2319,16 @@ cd $CCPROOT/examples/docker/pgdump
 docker logs 0367ee9cbe776450973f63ab875ab868c3aa8902ec3e073de8adbab9baa75c14 2>&1 | grep "output"
 
 #That will return the location where the pg_dump/pg_dumpall file(s) were written.  E.g.:
-#PGDUMP_ALL output file has been written to: /pgdata/basic-dumps/2018-02-14-05-00-23/pgdumpall.sql
+#PGDUMP_ALL output file has been written to: /pgdata/primary-pvc-dumps/2018-02-14-05-00-23/pgdumpall.sql
 
 #Make note of the timestamp above and run a find to get the fully-qualified filesystem path where the file was written.  E.g.:
 sudo find / -name 2018-02-14-05-00-23
 
 #That will return the fully-qualified path, where the file can be accessed/copied to your local filesystem.  E.g.:
-#/var/lib/docker/volumes/pgdump-volume/_data/basic-dumps/2018-02-14-05-00-23
+#/var/lib/docker/volumes/pgdump-volume/_data/primary-pvc-dumps/2018-02-14-05-00-23
 
 #Copy the file (path returned above + the filename) to your local filesystem for use or for running with the pg_restore container:
-sudo cp -p /var/lib/docker/volumes/pgdump-volume/_data/basic-dumps/2018-02-14-05-00-23/pgdumpall.sql /tmp
+sudo cp -p /var/lib/docker/volumes/pgdump-volume/_data/primary-pvc-dumps/2018-02-14-05-00-23/pgdumpall.sql /tmp
 ....
 
 ==== Kubernetes
@@ -2369,7 +2359,7 @@ cleanly dropped before being recreated, etc.
 
 === Performing a pg_restore
 
-The script assumes you are going to restore to the *basic*
+The script assumes you are going to restore to the *primary-pvc*
 container created in the first example, so you need to ensure
 that container is running. This example assumes you have configured NFS as described
 in the link:install.adoc[installation documentation]. Things to point out with this example
@@ -2383,7 +2373,7 @@ and signal job completion.
 The restore script will do the following:
 
  * Mount a PV/PVC as named in the JSON file
- * Run psql/pg_restore on the container named basic (or as specified otherwise in the JSON file)
+ * Run psql/pg_restore on the container named primary-pvc (or as specified otherwise in the JSON file)
  * Exit after the backup
 
 To shutdown the instance and remove the container for each example, run the following:

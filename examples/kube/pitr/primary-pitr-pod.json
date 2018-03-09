@@ -9,7 +9,7 @@
     },
     "spec": {
         "securityContext": {
-            "supplementalGroups": [65534]
+            $CCP_SECURITY_CONTEXT
         },
         "containers": [{
             "name": "postgres",
@@ -53,7 +53,7 @@
                 "value": "60"
             }],
             "securityContext": {
-                "capabilities": {}
+                $CCP_SECURITY_CONTEXT
             },
 
 

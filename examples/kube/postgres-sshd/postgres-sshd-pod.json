@@ -8,13 +8,10 @@
         }
     },
     "spec": {
-        "securityContext": {},
+        "securityContext": { $CCP_SECURITY_CONTEXT },
         "containers": [
             {
                 "name": "pgsql",
-                "securityContext": {
-                    "privileged": false
-                },
                 "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
                 "ports": [
                     {

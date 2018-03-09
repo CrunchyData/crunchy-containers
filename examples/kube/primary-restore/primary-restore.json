@@ -9,7 +9,7 @@
     },
     "spec": {
         "securityContext": {
-            "supplementalGroups": [65534]
+            $CCP_SECURITY_CONTEXT
         },
         "containers": [{
             "name": "postgres",
@@ -29,7 +29,7 @@
                 "value": "primary"
             }, {
                 "name": "BACKUP_PATH",
-                "value": "basic-backups/2018-03-02-18-55-49"
+                "value": "primary-pvc-backups/2018-03-02-18-55-49"
             }, {
                 "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"

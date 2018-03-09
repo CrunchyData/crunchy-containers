@@ -35,6 +35,7 @@ export CCP_VERSION=1.8.1
 export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
+export CCP_SECURITY_CONTEXT=""
 export CCP_CLI=kubectl
 export CCP_NAMESPACE=demo
 export PV_PATH=/mnt/nfsfileshare
@@ -43,6 +44,14 @@ export REPLACE_CCP_IMAGE_PREFIX=crunchydata
 ....
 It will be necessary to refresh your bashrc file in order for the changes to take
 effect.
+
+Note:  the CCP_SECURITY_CONTEXT setting above indicates you
+intend to use *HostPath* storage.  NFS and dynamic storage are
+other options, see below for details on configuring storage.
+
+Note:  the CCP_CLI setting above indicates you are running the
+examples on a Kubernetes platform and not an Openshift platform.  For
+Openshift, use the value of *oc* as the CCP_CLI variable instead.
 
 ....
 . ~/.bashrc
@@ -328,17 +337,20 @@ The Container Suite is tested on 3 different storage backends:
 Other storage backends work as well including GCE, EBS, ScaleIO, and
 others but may require you to modify various examples or configuration.
 
+Environment variables are set to determine how and what storage
+is to be used.
+
 === Configure HostPath
 
 HostPath is the simplist storage backend to setup, it only is feasible
 on a single node but is good for testing the examples.  You set
 up *hostPath* storage as follows:
 ....
+export CCP_SECURITY_CONTEXT=""
 sudo mkdir /data
 sudo chmod 777 /data
 cd $CCPROOT/examples/pv
 ./create-pv.sh hostpath
-./create-pvc.sh
 ....
 
 This set of scripts will create 15 sample Persistent Volumes that
@@ -348,64 +360,40 @@ Volumes are created as ReadWriteMany.
 
 === Configure NFS for Persistence
 
-NFS is required for some of the examples, including the backup and restore
-containers.
-
-First, if you are running your NFS system with SELinux in enforcing mode, you will need to run the following command to allow NFS write permissions:
-....
-sudo setsebool -P virt_use_nfs 1
-....
-
-Detailed instructions that you can use for setting up a NFS server on Centos 7 are provided in the following link.
-
-http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html
-
-NOTE: Most of the Crunchy containers run as the postgres UID (26), but you
-will notice that when *supplementalGroups* are specified, the pod
-will include the nfsnobody group in the list of groups for the pod user.
-
-if you are running your client on a VM, you will need to
-add 'insecure' to the exportfs file on the NFS server due to the way port
-translation is done between the VM host and the VM instance.
-
-For more details on this bug, please see the following link.
-
-http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting
-
-A suggested best practice for tuning NFS for PostgreSQL is to configure the PostgreSQL fstab
-mount options like so:
-
-....
-proto=tcp,suid,rw,vers=3,proto=tcp,timeo=600,retrans=2,hard,fg,rsize=8192,wsize=8192
-....
-
-Network options:
-....
-MTU=9000
-....
-
-If interested in mounting the same NFS share multiple times on the same mount point,
-look into the link:https://www.novell.com/support/kb/doc.php?id=7010210[noac mount option].
+NFS can be used for the examples as well.  Instructions
+on setting up NFS are found at the bottom of this guide.
 
 Next, assuming that you are setting up NFS as your storage option, you
 will need to run the following script:
 ....
+export CCP_SECURITY_CONTEXT='"supplementalGroups": [65534]"'
 cd $CCPROOT/examples/pv
 ./create-pv.sh nfs
-./create-pvc.sh
 ....
+
+In this example above we assume the group ownership of the NFS mount
+is *nfsnobody* or *65534*.
 
 NOTE: If you elect to configure HostPath or GCE as your storage option, please view
 README.txt for command-line usage for the ./create-pv.sh command.
 
-=== Configure Gluster for Persistence
+=== Configure Dynamic Storage
+
+Dynamic storage classes can be used for the examples.  Gluster
+is only one example of a storage type that supports dynamic storage
+classes.
 
 Setting up a Gluster cluster will offer you the ability to use
 dynamic storage provisioning in the examples.  A set of example
 Gluster configuration files is found at $CCPROOT/docs/gluster.
-
 This configuration is for a 3 node Gluster cluster which runs
 on a Centos7 Minimal VM deployment.  See https://github.com/CrunchyData/crunchy-containers/blob/master/docs/gluster/gluster-setup.adoc
+
+Using block storage requires a security context to be set
+as follows:
+....
+export CCP_SECURITY_CONTEXT='"fsGroup":26"'
+....
 
 == OpenShift Environment
 
@@ -470,7 +458,6 @@ value as a parameter. This will cause the GCE disks to be created:
 cd $CCPROOT/examples/pv
 ./create-pv.sh gce
 cd $CCPROOT/examples/pv
-./create-pvc.sh
 ....
 
 Here is a link that describes more information on GCE persistent disk:
@@ -499,6 +486,44 @@ You should see a single IP address returned from this command:
 ....
 hostname --ip-address
 ....
+
+=== NFS Installation 
+
+NOTE: Most of the Crunchy containers run as the postgres UID (26), but you
+will notice that when *supplementalGroups* are specified, the pod
+will include the nfsnobody group in the list of groups for the pod user.
+
+First, if you are running your NFS system with SELinux in enforcing mode, you will need to run the following command to allow NFS write permissions:
+....
+sudo setsebool -P virt_use_nfs 1
+....
+
+Detailed instructions that you can use for setting up a NFS server on Centos 7 are provided in the following link.
+
+http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html
+
+if you are running your client on a VM, you will need to
+add 'insecure' to the exportfs file on the NFS server due to the way port
+translation is done between the VM host and the VM instance.
+
+For more details on this bug, please see the following link.
+
+http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting
+
+A suggested best practice for tuning NFS for PostgreSQL is to configure the PostgreSQL fstab
+mount options like so:
+
+....
+proto=tcp,suid,rw,vers=3,proto=tcp,timeo=600,retrans=2,hard,fg,rsize=8192,wsize=8192
+....
+
+Network options:
+....
+MTU=9000
+....
+
+If interested in mounting the same NFS share multiple times on the same mount point,
+look into the link:https://www.novell.com/support/kb/doc.php?id=7010210[noac mount option].
 
 == Legal Notices
 

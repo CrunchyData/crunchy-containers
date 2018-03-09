@@ -64,7 +64,7 @@
                 "value": "password"
             }],
             "securityContext": {
-                "capabilities": {}
+                $CCP_SECURITY_CONTEXT
             },
 			"readinessProbe": {
 				"tcpSocket": {
