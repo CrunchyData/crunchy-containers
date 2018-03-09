@@ -27,4 +27,5 @@ sudo chown nfsnobody:nfsnobody $PV_PATH/setup.sql $PV_PATH/postgresql.conf \
 $PV_PATH/pg_hba.conf
 sudo chmod g+r $PV_PATH/setup.sql $PV_PATH/postgresql.conf $PV_PATH/pg_hba.conf
 
-oc process -f $DIR/custom-config.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/service.json
+expenv -f $DIR/custom-config.json | oc create -f -

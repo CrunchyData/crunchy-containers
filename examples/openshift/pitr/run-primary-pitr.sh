@@ -22,4 +22,6 @@ oc create -f $DIR/primary-pitr-pvc.json
 oc create -f $DIR/primary-pitr-pgwal-pvc.json
 
 # start up the database container
-oc process -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/primary-pitr.json | oc create -f -
+oc create -f $DIR/primary-service.json
+
+expenv -f $DIR/primary-pitr.json | oc create -f -

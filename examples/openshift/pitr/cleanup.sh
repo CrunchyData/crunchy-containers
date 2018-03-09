@@ -22,5 +22,7 @@ oc delete job backup-primary-pitr-pvc
 
 oc delete pvc primary-pitr-pvc primary-pitr-pgwal-pvc
 
+$CCPROOT/examples/waitforterm.sh primary-pitr oc
+
 sudo rm -rf $PV_PATH/WAL/primary-pitr
 sudo rm -rf $PV_PATH/primary-pitr

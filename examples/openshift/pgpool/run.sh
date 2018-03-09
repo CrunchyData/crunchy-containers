@@ -25,4 +25,6 @@ sudo chown 7778 $PV_PATH/pgpoolconfigdir
 
 oc create -f $DIR/pgpool-pvc.json
 
-oc process -f $DIR/pgpool-rc.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/service.json
+
+expenv -f $DIR/pgpool-rc.json | oc create -f -

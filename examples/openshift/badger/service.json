@@ -1,0 +1,29 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "badger-example",
+        "labels": {
+            "name": "badger-example"
+        }
+    },
+    "spec": {
+        "ports": [{
+            "name": "dbport",
+            "protocol": "TCP",
+            "port": 5432,
+            "targetPort": 5432,
+            "nodePort": 0
+        }, {
+            "name": "badgerport",
+            "protocol": "TCP",
+            "port": 10000,
+            "targetPort": 10000,
+            "nodePort": 0
+        }],
+        "selector": {
+            "name": "badger-example"
+        },
+        "type": "ClusterIP"
+    }
+}

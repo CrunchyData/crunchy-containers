@@ -28,4 +28,6 @@ oc create secret generic pgadmin-tls \
     --from-file=pgadmin-cert=${DIR?}/server.crt\
     --from-file=pgadmin-key=${DIR?}/server.key
 
-oc process -f $DIR/pgadmin4-pod.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/service.json
+
+expenv -f $DIR/pgadmin4-pod.json | oc create -f -

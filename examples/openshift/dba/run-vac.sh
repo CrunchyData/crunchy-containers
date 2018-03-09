@@ -25,8 +25,6 @@ oc create -f $DIR/dba-sa.json
 oc policy add-role-to-group edit system:serviceaccounts -n $CCP_NAMESPACE
 oc policy add-role-to-user view system:serviceaccount:$CCP_NAMESPACE:dba-sa
 
-oc process \
-	-p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX \
-	-p CCP_IMAGE_TAG=$CCP_IMAGE_TAG \
-	-p CCP_NAMESPACE=$CCP_NAMESPACE \
-	-f $DIR/primary-dba-vac.json | oc create -f -
+oc create -f $DIR/primary-vac-service.json
+
+expenv -f $DIR/primary-dba-vac.json | oc create -f -

@@ -20,4 +20,4 @@ $DIR/cleanup.sh
 
 oc create -f $DIR/pgrestore-pvc.json
 
-oc process -f $DIR/pgrestore-job.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+expenv -f $DIR/pgrestore-job.json | oc create -f -

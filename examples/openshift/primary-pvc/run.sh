@@ -18,5 +18,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
 oc create -f $DIR/pvc.json
+oc create -f $DIR/service.json
 
-oc process -f $DIR/primary-pvc.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+expenv -f $DIR/primary-pvc.json | oc create -f -

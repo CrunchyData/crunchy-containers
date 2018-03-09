@@ -19,7 +19,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-oc process -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/audit.json | oc create -f -
+oc create -f $DIR/service.json
+
+expenv -f $DIR/audit.json | oc create -f -
 
 echo "Sleeping for 60s to allow time for pod to get into a ready state."
 sleep 60

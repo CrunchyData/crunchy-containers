@@ -42,4 +42,5 @@ sudo chown nfsnobody:nfsnobody $CONFDIR/server.crt
 sudo chmod 640 $CONFDIR/ca.crt $CONFDIR/server.key $CONFDIR/server.crt
 sudo chmod 400 $CONFDIR/server.key
 
-oc process -f $DIR/custom-config-ssl.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/service.json
+expenv -f $DIR/custom-config-ssl.json | oc create -f -

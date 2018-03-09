@@ -1,0 +1,24 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pgadmin4",
+        "labels": {
+            "name": "pgadmin4"
+        }
+    },
+    "spec": {
+        "ports": [{
+            "name": "pgadmin4",
+            "protocol": "TCP",
+            "port": 5050,
+            "targetPort": 5050,
+            "nodePort": 30000
+        }],
+        "selector": {
+            "name": "pgadmin4"
+        },
+        "type": "NodePort",
+        "sessionAffinity": "None"
+    }
+}
