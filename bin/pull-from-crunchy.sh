@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,15 +12,10 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-oc delete service primary-backrest
-oc delete pod primary-backrest
-oc delete configmap backrestconf
-
-oc delete pvc backrest-pvc backrest-backrestrepo-pvc
-$CCPROOT/examples/waitforterm.sh primary-backrest oc
-
-sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/archive $PV_PATH/backup
+REG_CCP_IMAGE_PREFIX=registry.crunchydata.com/crunchydata
+for CONTAINER in crunchy-prometheus crunchy-promgateway crunchy-grafana crunchy-collect crunchy-pgbadger crunchy-pgpool crunchy-watch crunchy-backup crunchy-postgres crunchy-postgres-gis crunchy-pgbouncer crunchy-pgadmin4 crunchy-dump crunchy-restore crunchy-backrest-restore
+do
+	echo $CONTAINER is the container
+	docker pull $REG_CCP_IMAGE_PREFIX/$CONTAINER:$CCP_IMAGE_TAG
+	docker tag $REG_CCP_IMAGE_PREFIX/$CONTAINER:$CCP_IMAGE_TAG $CCP_IMAGE_PREFIX/$CONTAINER:$CCP_IMAGE_TAG
+done

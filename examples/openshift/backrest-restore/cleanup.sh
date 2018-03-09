@@ -15,11 +15,6 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete service primary-backrest
-oc delete pod primary-backrest
-oc delete configmap backrestconf
+oc delete job backrest-job
+oc delete pvc backrest-restore-pvc
 
-oc delete pvc backrest-pvc backrest-backrestrepo-pvc
-$CCPROOT/examples/waitforterm.sh primary-backrest oc
-
-sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/archive $PV_PATH/backup

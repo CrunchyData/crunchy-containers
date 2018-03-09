@@ -19,4 +19,4 @@ oc delete pvc backrest-pvc
 
 oc create -f $DIR/backrest-pvc.json
 
-oc process -f $DIR/primary-pod.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+expenv -f $DIR/primary-pod.json | oc create -f -
