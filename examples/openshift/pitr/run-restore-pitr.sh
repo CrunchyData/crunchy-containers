@@ -26,5 +26,7 @@ expenv -f $DIR/recover-pv.json | oc create -f -
 oc create -f $DIR/recover-pvc.json
 oc create -f $DIR/primary-pitr-restore-pvc.json
 
+oc create -f $DIR/restore-service.json
+
 # start up the database container
-oc process -f $DIR/primary-pitr-restore.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+expenv -f $DIR/primary-pitr-restore.json | oc create -f -
