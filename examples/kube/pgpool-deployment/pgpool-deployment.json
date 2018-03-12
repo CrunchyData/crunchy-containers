@@ -25,12 +25,6 @@
                         "protocol": "TCP"
                     }],
                     "env": [{
-                        "name": "PG_USERNAME",
-                        "value": "testuser"
-                    }, {
-                        "name": "PG_PASSWORD",
-                        "value": "password"
-                    }, {
                         "name": "PG_PRIMARY_SERVICE_NAME",
                         "value": "pr-primary"
                     }, {
