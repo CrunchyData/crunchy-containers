@@ -1073,11 +1073,11 @@ psql -h localhost -U testuser -p 12003 userdb
 
 ==== Kubernetes
 
-Running the example:
+Run the following command to deploy the pgpool service:
 ....
 cd $CCPROOT/examples/kube/primary-replica
 ./run.sh
-cd $CCPROOT/examples/kube/pgpool
+cd $CCPROOT/examples/kube/pgpool-deployment
 ./run.sh
 ....
 
@@ -1096,16 +1096,16 @@ psql -h pgpool -U testuser userdb -c 'show pool_nodes'
 
 Run the following command to deploy the pgpool service:
 ....
-cd $CCPROOT/examples/openshift/pgpool
+cd $CCPROOT/examples/openshift/primary-replica
+./run.sh
+cd $CCPROOT/examples/openshift/pgpool-deployment
 ./run.sh
 ....
 
-Next, you can access the primary replica cluster via the pgpool
-service by entering the following command:
-
+The example is configured to allow the *testuser* to connect
+to the *userdb* database as follows:
 ....
 psql -h pgpool -U testuser userdb
-psql -h pgpool -U testuser postgres
 ....
 
 You can view the nodes that pgpool is configured for by running:
@@ -1314,21 +1314,21 @@ This will start up 4 containers:
  * PostgreSQL
  * Prometheus
 
-Every 5 seconds by default, Crunchy Prometheus will scrape the Crunchy Collect container 
+Every 5 seconds by default, Crunchy Prometheus will scrape the Crunchy Collect container
 for metrics.  These metrics will then be visualized by Crunchy Grafana.
 
 By default, Crunchy Prometheus detects which environment its running on (Docker, Kube or OCP)
 and applies a default configuration.  If this container is running on Kube or OCP,
 it will use the Kubernetes API to discover pods with the label *"crunchy-collect": "true"*.
 
-Crunchy Collect container *must* have this label to be discovered in these environments.  
+Crunchy Collect container *must* have this label to be discovered in these environments.
 
-Discovering pods requires a cluster role service account.  See the 
-link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/kube/metrics/metrics-pod.json[Kube] and 
-link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/openshift/metrics/metrics-pod.json[OCP] 
+Discovering pods requires a cluster role service account.  See the
+link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/kube/metrics/metrics-pod.json[Kube] and
+link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/openshift/metrics/metrics-pod.json[OCP]
 examples for account examples.
 
-For Docker environments the Crunchy Collect hostname must be specified as an environment 
+For Docker environments the Crunchy Collect hostname must be specified as an environment
 variable.
 
 If firewalld is enabled in your environment, it may be necessary
@@ -1356,7 +1356,7 @@ cd $CCPROOT/examples/docker/metrics
 ./run.sh
 ....
 
-You will be able to access the Grafana and Prometheus services from the following 
+You will be able to access the Grafana and Prometheus services from the following
 web addresses:
 
 * Grafana (http://0.0.0.0:3000)
@@ -1374,7 +1374,7 @@ cd $CCPROOT/examples/kube/metrics
 This example runs a pod that includes a database container and
 a metrics collection container.
 
-You will be able to access the Grafana and Prometheus services from the following 
+You will be able to access the Grafana and Prometheus services from the following
 web addresses:
 
 * Grafana (http://NODE_IP_ADDRESS:30001)
