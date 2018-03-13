@@ -5,12 +5,14 @@ April 13, 2017
 collect - collect container image
 
 == DESCRIPTION
-PostgreSQL metrics collection container. Every 3 minutes the collection container will collect PostgreSQL metrics and push them to the Crunchy Prometheus database. These can be graphed using the Crunchy grafana container.
+PostgreSQL metrics collection container. Every 5 seconds the collection container will collect PostgreSQL metrics which can be scrapped by Crunchy Prometheus container. These can be graphed using the Crunchy Grafana container.
 
 The container itself consists of:
     - RHEL7 base image
+    - Node Exporter
+    - PostgreSQL Exporter
     - bash script that performs the container startup
-    - postgres binary packages
+    - PostgreSQL binary packages
 
 Files added to the container during docker build include: /help.1.
 

@@ -9,7 +9,7 @@ LABEL name="crunchydata/collect" \
         build-date="2018-03-01" \
         url="https://crunchydata.com" \
         summary="Provides metrics for crunchy-postgres" \
-        description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus, crunchy-grafana, crunchy-promgateway." \
+        description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus and crunchy-grafana." \
         io.k8s.description="collect container" \
         io.k8s.display-name="Crunchy collect container" \
         io.openshift.expose-services="" \
@@ -21,26 +21,32 @@ ENV PGVERSION="9.5" PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 # Install postgres client tools and libraries
-RUN yum -y update && yum install -y postgresql95 postgresql95-libs epel-release && yum -y install nss_wrapper && yum -y clean all
+RUN yum install -y epel-release \
+  && yum -y update \
+  && yum -y install \
+    gettext \
+    postgresql95 \
+    postgresql95-libs \
+    nss_wrapper \
+  && yum -y clean all
 
-RUN groupadd -r -g 26 postgres
-RUN useradd -r -u 26 -g postgres postgres
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
-RUN mkdir -p /opt/cpm/bin
-
-ADD postgres_exporter /opt/cpm/bin
+ADD postgres_exporter.tar.gz /opt/cpm/bin
 ADD node_exporter.tar.gz /opt/cpm/bin
 ADD bin/collect /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/collect /opt/cpm/conf
 
-RUN chown -R postgres:postgres /opt/cpm/bin /opt/cpm/conf
+RUN chown -R 2:2 /opt/cpm/bin /opt/cpm/conf
 
-USER postgres
+VOLUME ["/conf"]
 
 # postgres_exporter
 EXPOSE 9187
-# node_exporter
+# node exporter
 EXPOSE 9100
 
-ENTRYPOINT ["/opt/cpm/bin/start.sh"]
+USER 2
+
+CMD ["/opt/cpm/bin/start.sh"]

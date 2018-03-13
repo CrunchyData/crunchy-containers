@@ -1,0 +1,4 @@
+# Crunchy Container Env
+COLLECT_HOST=crunchy-collect
+SCRAPE_INTERVAL=5s
+SCRAPE_TIMEOUT=5s

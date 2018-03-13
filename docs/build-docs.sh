@@ -44,7 +44,6 @@ a2x -f manpage ./pgpool/help.md
 a2x -f manpage ./postgres-gis/help.md
 a2x -f manpage ./postgres/help.md
 a2x -f manpage ./prometheus/help.md
-a2x -f manpage ./promgateway/help.md
 a2x -f manpage ./upgrade/help.md
 a2x -f manpage ./vacuum/help.md
 a2x -f manpage ./watch/help.md

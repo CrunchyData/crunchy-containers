@@ -19,7 +19,6 @@ The example when deployed provides the following:
  * pgadmin4 SQL console container (pgadmin4)
  * grafana metrics dashboard container (grafana)
  * prometheus metrics database container (prometheus)
- * prometheus push gateway container (promgateway)
  * backups can be performed using the backup container using the
    crunchy-backup container when executed as a Job
 
@@ -49,7 +48,6 @@ docker pull crunchydata/crunchy-collect:centos7-10.3-1.8.1
 docker pull crunchydata/crunchy-pgbadger:centos7-10.3-1.8.1
 docker pull crunchydata/crunchy-pgadmin4:centos7-10.3-1.8.1
 docker pull crunchydata/crunchy-prometheus:centos7-10.3-1.8.1
-docker pull crunchydata/crunchy-promgateway:centos7-10.3-1.8.1
 docker pull crunchydata/crunchy-grafana:centos7-10.3-1.8.1
 docker pull crunchydata/crunchy-watch:centos7-10.3-1.8.1
 ....

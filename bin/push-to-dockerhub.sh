@@ -14,7 +14,6 @@
 # limitations under the License.
 
 docker push  crunchydata/crunchy-prometheus:$CCP_IMAGE_TAG
-docker push  crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG
 docker push  crunchydata/crunchy-grafana:$CCP_IMAGE_TAG
 #docker push  crunchydata/crunchy-dns:$CCP_IMAGE_TAG
 docker push  crunchydata/crunchy-collect:$CCP_IMAGE_TAG

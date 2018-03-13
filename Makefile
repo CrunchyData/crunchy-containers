@@ -5,7 +5,7 @@ endif
 .PHONY:	all versiontest
 
 # Default target
-all:    backup backrestrestore collectserver dbaserver grafana pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis prometheus promgateway upgrade vac
+all:    backup backrestrestore collect dbaserver grafana pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis prometheus upgrade vac
 
 versiontest:
 ifndef CCP_BASEOS
@@ -27,7 +27,6 @@ setup:
 gendeps:
 	godep save \
 	github.com/crunchydata/crunchy-containers/dba \
-	github.com/crunchydata/crunchy-containers/collectapi \
 	github.com/crunchydata/crunchy-containers/badger
 
 docbuild:
@@ -45,9 +44,7 @@ backup:	versiontest
 	docker build -t crunchy-backup -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backup.$(CCP_BASEOS) .
 	docker tag crunchy-backup crunchydata/crunchy-backup:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-collectserver: versiontest
-	cd collect && godep go install collectserver.go
-	cp $(GOBIN)/collectserver bin/collect
+collect: versiontest
 	docker build -t crunchy-collect -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.collect.$(CCP_BASEOS) .
 	docker tag crunchy-collect crunchydata/crunchy-collect:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
@@ -103,7 +100,7 @@ postgres: versiontest
 	cp `which kubectl` bin/postgres
 	cp `which oc` bin/postgres
 	docker build -t crunchy-postgres -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres.$(CCP_BASEOS) .
-	docker tag crunchy-postgres jmccormick2001/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+	docker tag crunchy-postgres crunchydata/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 postgres-gis: versiontest
 	cp `which kubectl` bin/postgres
@@ -114,10 +111,6 @@ postgres-gis: versiontest
 prometheus:	versiontest
 	docker build -t crunchy-prometheus -f $(CCP_BASEOS)/Dockerfile.prometheus.$(CCP_BASEOS) .
 	docker tag crunchy-prometheus crunchydata/crunchy-prometheus:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
-
-promgateway: versiontest
-	docker build -t crunchy-promgateway -f $(CCP_BASEOS)/Dockerfile.promgateway.$(CCP_BASEOS) .
-	docker tag crunchy-promgateway crunchydata/crunchy-promgateway:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 upgrade: versiontest
 	if [[ '$(CCP_PGVERSION)' != '9.5' ]]; then \

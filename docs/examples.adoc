@@ -1308,15 +1308,28 @@ You can collect various PostgreSQL metrics from your database
 container by running a crunchy-collect container that points
 to your database container.
 
-This will start up 3 containers and services:
+This will start up 4 containers:
+ * Collect
+ * Grafana
+ * PostgreSQL
+ * Prometheus
 
- * Prometheus (http://crunchy-prometheus:9090)
- * Prometheus gateway (http://crunchy-promgateway:9091)
- * Grafana (http://crunchy-grafana:3000)
+Every 5 seconds by default, Crunchy Prometheus will scrape the Crunchy Collect container 
+for metrics.  These metrics will then be visualized by Crunchy Grafana.
 
-Every 3 minutes the collection container will collect PostgreSQL
-metrics and push them to the crunchy-prometheus database.  You
-can graph them using the crunchy-grafana container.
+By default, Crunchy Prometheus detects which environment its running on (Docker, Kube or OCP)
+and applies a default configuration.  If this container is running on Kube or OCP,
+it will use the Kubernetes API to discover pods with the label *"crunchy-collect": "true"*.
+
+Crunchy Collect container *must* have this label to be discovered in these environments.  
+
+Discovering pods requires a cluster role service account.  See the 
+link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/kube/metrics/metrics-pod.json[Kube] and 
+link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/openshift/metrics/metrics-pod.json[OCP] 
+examples for account examples.
+
+For Docker environments the Crunchy Collect hostname must be specified as an environment 
+variable.
 
 If firewalld is enabled in your environment, it may be necessary
 to allow the necessary ports through the firewall. This can be
@@ -1329,9 +1342,6 @@ firewall-cmd --permanent --zone metrics --add-port 9091/tcp
 firewall-cmd --permanent --zone metrics --add-port 3000/tcp
 firewall-cmd --reload
 ....
-
-All metrics collected by this set of containers in addition to details on accessing the
-custom Grafana dashboards provided are fully described in this link:metrics.adoc[document.]
 
 To shutdown the instance and remove the container for each example, run the following:
 ....
@@ -1346,67 +1356,64 @@ cd $CCPROOT/examples/docker/metrics
 ./run.sh
 ....
 
-An example has been provided that runs a database container
-in addition to the associated metrics collection container. Run the
-example as follows:
-....
-cd $CCPROOT/examples/docker/collect
-./run.sh
-....
+You will be able to access the Grafana and Prometheus services from the following 
+web addresses:
 
-You will be able to access all three services from the following web addresses:
-
-* Prometheus (http://0.0.0.0:19090)
-* Prometheus gateway (http://0.0.0.0:19091)
-* Grafana (http://0.0.0.0:13000)
+* Grafana (http://0.0.0.0:3000)
+* Prometheus (http://0.0.0.0:9090)
 
 ==== Kubernetes
 
 Running the example:
+
 ....
 cd $CCPROOT/examples/kube/metrics
 ./run.sh
-....
-
-If you want your metrics and dashboards to persist to NFS, run
-this script:
-....
-cd $CCPROOT/examples/kube/metrics
-./run-pvc.sh
 ....
 
 This example runs a pod that includes a database container and
-a metrics collection container. A service is also created for the pod.
-....
-cd $CCPROOT/examples/kube/collect
-./run.sh
-....
+a metrics collection container.
 
-You can view the collect container logs using this command:
-....
-kubectl logs -c collect primary-collect
-....
+You will be able to access the Grafana and Prometheus services from the following 
+web addresses:
 
-You can access the database or drive load against it using
-this command:
+* Grafana (http://NODE_IP_ADDRESS:30001)
+* Prometheus (http://NODE_IP_ADDRESS:30002)
+
+You can view the container logs using these command:
+
 ....
-psql -h primary-collect -U postgres postgres
+kubectl logs -c grafana crunchy-metrics
+kubectl logs -c prometheus crunchy-metrics
+kubectl logs -c collect crunchy-pgsql
+kubectl logs -c postgres crunchy-pgsql
 ....
 
 ==== OpenShift
 
-First, create the crunchy-metrics pod which contains
-the Prometheus data store and the Grafana graphing web application:
+Running the example:
+
 ....
-cd $CCPROOT/examples/openshift/metrics
+cd $CCPROOT/examples/oepnshift/metrics
 ./run.sh
 ....
 
-Next, start a PostgreSQL pod that has the crunchy-collect container
-as follows:
+This example runs a pod that includes a database container and
+a metrics collection container.
+
+You will be able to access the Grafana and Prometheus services from the following
+web addresses:
+
+* Grafana (http://NODE_IP_ADDRESS:30001)
+* Prometheus (http://NODE_IP_ADDRESS:30002)
+
+You can view the container logs using these command:
+
 ....
-cd $CCPROOT/examples/openshift/collect
-./run.sh
+oc logs -c grafana crunchy-metrics
+oc logs -c prometheus crunchy-metrics
+oc logs -c collect crunchy-pgsql
+oc logs -c postgres crunchy-pgsql
 ....
 
 === Vacuum

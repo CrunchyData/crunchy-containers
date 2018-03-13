@@ -7,26 +7,33 @@ LABEL name="crunchydata/grafana" \
         build-date="2018-03-01" \
         url="https://crunchydata.com" \
         summary="Provides a Grafana web dashboard to view collected PostgreSQL metrics" \
-        description="Connect this container to the crunchy-prometheus container as a data source, then use the metrics to build dashboards. Works in conjunction with crunchy-collect, crunchy-prometheus, crunchy-promgateway." \
+        description="Connect this container to the crunchy-prometheus container as a data source, then use the metrics to build dashboards. Works in conjunction with crunchy-collect and crunchy-prometheus." \
         io.k8s.description="grafana container" \
         io.k8s.display-name="Crunchy grafana container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-RUN yum -y update && yum -y install procps-ng  hostname   && yum clean all -y
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y install bind-utils \
+    nss_wrapper \
+    procps-ng \
+    hostname  \
+    gettext \
+  && yum clean all -y
 
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /data
-
-# open up the grafana port
-EXPOSE 3000
+RUN mkdir -p /data /opt/cpm/bin /opt/cpm/conf
 
 ADD grafana.tar.gz /opt/cpm/bin
 ADD bin/grafana /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/grafana /opt/cpm/conf
 
-RUN chown -R daemon:daemon /opt/cpm /data
-USER daemon
-VOLUME ["/data"]
+RUN chown -R 2:2 /opt/cpm /data
 
-CMD ["/opt/cpm/bin/start-grafana.sh"]
+VOLUME ["/data", "/conf"]
+EXPOSE 3000
+
+USER 2
+
+CMD ["/opt/cpm/bin/start.sh"]

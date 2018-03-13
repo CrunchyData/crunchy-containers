@@ -5,12 +5,12 @@ April 13, 2017
 grafana - grafana container image
 
 == DESCRIPTION
-The grafana image provides the open source prometheus push gateway
+The grafana image provides the open source visualization tool for displaying metrics.
 
 The container itself consists of:
     - RHEL7 base image
     - bash script that performs the container startup
-    - gateway binary packages
+    - grafana binary packages
 
 Files added to the container during docker build include: /help.1.
 
