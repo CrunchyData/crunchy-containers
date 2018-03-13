@@ -22,7 +22,6 @@ if [ -z "$CCP_IMAGE_TAG" ]; then
 	exit 1
 fi
 docker pull $CCP_IMAGE_PREFIX/crunchy-prometheus:$CCP_IMAGE_TAG
-docker pull $CCP_IMAGE_PREFIX/crunchy-promgateway:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-grafana:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-collect:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-pgbadger:$CCP_IMAGE_TAG

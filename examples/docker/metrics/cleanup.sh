@@ -15,12 +15,18 @@
 
 echo "Cleaning up..."
 
-docker stop crunchy-promgateway
-docker rm crunchy-promgateway
+docker stop crunchy-pgsql
+docker stop crunchy-collect
 docker stop crunchy-prometheus
-docker rm crunchy-prometheus
 docker stop crunchy-grafana
+
+docker rm crunchy-pgsql
+docker rm crunchy-collect
+docker rm crunchy-prometheus
 docker rm crunchy-grafana
 
-VOLUME_NAME=metrics-volume
-docker volume rm $VOLUME_NAME
+docker volume rm pgsql-volume
+docker volume rm metrics-volume
+docker network rm pgnet
+
+exit 0

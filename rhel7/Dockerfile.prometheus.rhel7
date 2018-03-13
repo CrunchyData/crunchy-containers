@@ -9,7 +9,7 @@ LABEL name="crunchydata/prometheus" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Prometheus server that stores metrics for crunchy-postgres" \
-        description="PostgreSQL collected metrics are stored here as defined by the Crunchy Container Suite.  Prometheus will scrape metrics from a Prometheus push gateway (crunchy-promgateway) using the supplied config file. Works in conjunction with crunchy-collect, crunchy-grafana, crunchy-promgateway." \
+        description="PostgreSQL collected metrics are stored here as defined by the Crunchy Container Suite.  Prometheus will scrape metrics from Crunchy Collect. Works in conjunction with crunchy-collect and crunchy-grafana." \
         run="" \
         start="" \
         stop="" \
@@ -22,19 +22,28 @@ COPY docs/prometheus/help.1 /help.1
 COPY docs/prometheus/help.md /help.md
 COPY docs/licenses /licenses
 
-RUN yum -y update && yum -y install procps-ng hostname  && yum clean all -y
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+  && yum -y update \
+  && yum -y install \
+    bind-utils \
+    gettext \
+    hostname \
+    nss_wrapper \
+    procps-ng \
+  && yum clean all -y
 
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /data
-
-EXPOSE 9090
+RUN mkdir -p /data /conf /opt/cpm/bin /opt/cpm/conf
 
 ADD prometheus.tar.gz /opt/cpm/bin
 ADD bin/prometheus /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/prometheus /opt/cpm/conf
 
-RUN chown -R daemon:daemon /opt/cpm /data
-USER daemon
-VOLUME ["/data"]
+RUN chown -R 2:2 /opt/cpm /data /conf
 
-CMD ["/opt/cpm/bin/start-prometheus.sh"]
+EXPOSE 9090
+VOLUME ["/data", "/conf"]
+
+USER 2
+
+CMD ["/opt/cpm/bin/start.sh"]

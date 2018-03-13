@@ -15,7 +15,7 @@
 
 CCP_VERSION=1.8.1
 REGISTRY=52.2.93.43:5000
-containers="crunchydata/crunchy-vacuum crunchydata/crunchy-prometheus crunchydata/crunchy-promgateway crunchydata/crunchy-grafana crunchydata/crunchy-collect crunchydata/crunchy-pgbadger crunchydata/crunchy-pgpool crunchydata/crunchy-watch crunchydata/crunchy-backup crunchydata/crunchy-postgres"
+containers="crunchydata/crunchy-vacuum crunchydata/crunchy-prometheus crunchydata/crunchy-grafana crunchydata/crunchy-collect crunchydata/crunchy-pgbadger crunchydata/crunchy-pgpool crunchydata/crunchy-watch crunchydata/crunchy-backup crunchydata/crunchy-postgres"
 for i in $containers;
 do
 	echo $i is the container

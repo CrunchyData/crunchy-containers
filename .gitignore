@@ -2,8 +2,8 @@
 .asciidoc/
 bootstrap-*.zip*
 grafana.tar.gz*
-prometheus-pushgateway.tar.gz*
 prometheus.tar.gz*
 bin/crunchy-sim
 node_exporter.tar.gz
 postgres_exporter
+postgres_exporter.tar.gz*

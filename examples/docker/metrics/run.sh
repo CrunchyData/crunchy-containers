@@ -18,40 +18,46 @@ echo "Starting metrics example..."
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
-#LOCAL_IP is defined in .bashrc as `hostname --ip-address`
-echo $LOCAL_IP
+docker volume create --driver local --name=metrics-volume
+docker volume create --driver local --name=pgsql-volume
+docker network create --driver bridge pgnet
 
-VOLUME_NAME=metrics-volume
-docker volume create --driver local --name=$VOLUME_NAME
-
+echo "Starting PostgreSQL container.."
 docker run \
-	-p $LOCAL_IP:19091:9091/tcp \
-	--name=crunchy-promgateway \
-	--hostname=crunchy-promgateway \
-	-d $CCP_IMAGE_PREFIX/crunchy-promgateway:$CCP_IMAGE_TAG
+    --name="crunchy-pgsql" \
+    --hostname="crunchy-pgsql" \
+    -p 5432:5432 \
+    -v pgsql-volume:/pgdata \
+    --network="pgnet" \
+    --env-file=./env/pgsql.list \
+    -d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
 
-echo "Sleep a bit in order to link to crunchy-promgateway..."
-sleep 10
-
+echo "Starting Collect container.."
 docker run \
-	-p $LOCAL_IP:19090:9090/tcp \
-	--privileged=true \
-	--volume-driver=local \
-	-v $VOLUME_NAME:/data:z \
-	--name=crunchy-prometheus \
-	--hostname=crunchy-prometheus \
-	--link crunchy-promgateway:crunchy-metrics \
-	-d $CCP_IMAGE_PREFIX/crunchy-prometheus:$CCP_IMAGE_TAG
+    --name="crunchy-collect" \
+    --hostname="crunchy-collect" \
+    --network="pgnet" \
+    --env-file=./env/collect.list \
+    -d ${CCP_IMAGE_PREFIX?}/crunchy-collect:${CCP_IMAGE_TAG?}
 
-echo "Sleep a bit in order to link to crunchy-prometheus..."
-sleep 10
-
+echo "Starting Prometheus container.."
 docker run \
-	-p $LOCAL_IP:13000:3000/tcp \
-	--privileged=true \
-	--volume-driver=local \
-	-v $VOLUME_NAME:/data:z \
-	--link crunchy-prometheus:crunchy-prometheus \
-	--name=crunchy-grafana \
-	--hostname=crunchy-grafana \
-	-d $CCP_IMAGE_PREFIX/crunchy-grafana:$CCP_IMAGE_TAG
+    --name="crunchy-prometheus" \
+    --hostname="crunchy-prometheus" \
+    -p 9090:9090 \
+    -v metrics-volume:/data \
+    --network="pgnet" \
+    --env-file=./env/prometheus.list \
+    -d ${CCP_IMAGE_PREFIX?}/crunchy-prometheus:${CCP_IMAGE_TAG?}
+
+echo "Starting Grafana container.."
+docker run \
+    --name="crunchy-grafana" \
+    --hostname="crunchy-grafana" \
+    -p 3000:3000 \
+    -v metrics-volume:/data \
+    --network="pgnet" \
+    --env-file=./env/grafana.list \
+    -d ${CCP_IMAGE_PREFIX?}/crunchy-grafana:${CCP_IMAGE_TAG?}
+
+exit 0

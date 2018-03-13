@@ -11,7 +11,7 @@ LABEL name="crunchydata/collect" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Provides metrics for crunchy-postgres" \
-        description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus, crunchy-grafana, crunchy-promgateway." \
+        description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus and crunchy-grafana." \
         run="" \
         start="" \
         stop="" \
@@ -31,31 +31,36 @@ ADD conf/CRUNCHY-GPG-KEY.public  /
 ADD conf/crunchypg10.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
-RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm && yum -y update && yum -y install gettext \
-	hostname  \
-nss_wrapper \
-	libxslt \
-	libxml2 \
-	procps-ng \
- && yum -y install postgresql10-server \
- && yum clean all -y
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
-# Install libstatgrab and dependencies
-RUN yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/l/log4cplus-1.1.3-0.4.rc3.el7.x86_64.rpm
-Run yum -y install https://dl.fedoraproject.org/pub/epel/7/x86_64/Packages/l/libstatgrab-0.91-4.el7.x86_64.rpm
+# Install postgres client tools and libraries
+RUN yum install -y epel-release \
+  && yum -y update \
+  && yum -y install \
+    gettext \
+    postgresql10 \
+    postgresql10-libs \
+    nss_wrapper \
+    hostname \
+  && yum -y clean all
 
-# set up cpm directory
-RUN mkdir -p /opt/cpm/bin
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
-ADD postgres_exporter /opt/cpm/bin
+ADD postgres_exporter.tar.gz /opt/cpm/bin
 ADD node_exporter.tar.gz /opt/cpm/bin
-
 ADD bin/collect /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
+ADD conf/collect /opt/cpm/conf
 
-RUN chown -R postgres:postgres /opt/cpm/bin
+RUN chown -R 2:2 /opt/cpm/bin /opt/cpm/conf
 
-USER postgres
+VOLUME ["/conf"]
+
+# postgres_exporter
+EXPOSE 9187
+# node exporter
+EXPOSE 9100
+
+USER 2
 
 CMD ["/opt/cpm/bin/start.sh"]
-

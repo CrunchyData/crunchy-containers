@@ -1,0 +1,2 @@
+# Crunchy Container Env
+DATA_SOURCE_NAME=postgresql://admin:password@crunchy-pgsql:5432/postgres?sslmode=disable
