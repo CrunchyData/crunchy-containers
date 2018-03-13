@@ -1,20 +1,14 @@
 {
-    "kind": "DeploymentConfig",
-    "apiVersion": "v1",
+    "kind": "Deployment",
+    "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "pgpool"
+        "name": "pgpool",
+        "labels": {
+            "name": "pgpool"
+        }
     },
     "spec": {
-        "strategy": {
-            "type": "Recreate"
-        },
-        "triggers": [{
-            "type": "ConfigChange"
-        }],
         "replicas": 1,
-        "selector": {
-            "name": "pgpool"
-        },
         "template": {
             "metadata": {
                 "labels": {
@@ -22,9 +16,6 @@
                 }
             },
             "spec": {
-                "securityContext": {
-                    $CCP_SECURITY_CONTEXT
-                },
 
                 "containers": [{
                     "name": "pgpool",
@@ -34,35 +25,33 @@
                         "protocol": "TCP"
                     }],
                     "env": [{
-                        "name": "PG_USERNAME",
-                        "value": "testuser"
-                    }, {
-                        "name": "PG_PASSWORD",
-                        "value": "password"
-                    }, {
                         "name": "PG_PRIMARY_SERVICE_NAME",
                         "value": "pr-primary"
                     }, {
                         "name": "PG_REPLICA_SERVICE_NAME",
                         "value": "pr-replica"
                     }],
-                    "terminationMessagePath": "/dev/termination-log",
                     "volumeMounts": [{
-                        "mountPath": "/pgconf",
-                        "name": "pgconf",
-                        "readOnly": false
+                    "name": "pgpool-conf",
+                    "mountPath": "/pgconf/pgpoolconfigdir",
+                    "readOnly": true
                     }]
-
                 }],
-
                 "volumes": [{
-                    "name": "pgconf",
-                    "persistentVolumeClaim": {
-                        "claimName": "pgpool-pvc"
-                    }
+                "name": "pgpool-conf",
+                  "secret": {
+                      "secretName": "pgpool-secrets"
+                  }
                 }],
                 "restartPolicy": "Always",
                 "dnsPolicy": "ClusterFirst"
+            }
+        },
+        "strategy": {
+            "type": "RollingUpdate",
+            "rollingUpdate": {
+                "maxUnavailable": 1,
+                "maxSurge": 1
             }
         }
     }

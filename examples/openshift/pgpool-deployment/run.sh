@@ -12,7 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete service pgpool
-kubectl delete pod pgpool
-kubectl delete configmap pgpool-conf
-$CCPROOT/examples/waitforterm.sh pgpool kubectl
+
+
+echo "This example depends on the primary-replica example being run prior!"
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
+
+oc create secret generic pgpool-secrets \
+	--from-file=$DIR/pool_hba.conf \
+	--from-file=$DIR/pgpool.conf \
+	--from-file=$DIR/pool_passwd
+
+oc create configmap pgpool-conf --from-file=pgpool.conf --from-file=hba=pool_hba.conf --from-file=psw=pool_passwd
+
+expenv -f $DIR/pgpool-deployment.json | oc create -f -
+oc create -f $DIR/pgpool-service.json
