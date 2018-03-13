@@ -18,6 +18,10 @@
         "description": "The image tag to use",
         "value": "rhel7-9.6.8-1.8.1"
     }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "The image prefix to use",
+        "value": "crunchydata"
+    }, {
         "name": "PG_PRIMARY_PASSWORD",
         "description": "The password for the PG primary user",
         "value": "password"
@@ -108,7 +112,7 @@
                     },
                     "containers": [{
                         "name": "server",
-                        "image": "crunchydata/crunchy-postgres:${CCP_IMAGE_TAG}",
+                        "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
                         "env": [{
                             "name": "PG_PRIMARY_PORT",
                             "value": "5432"

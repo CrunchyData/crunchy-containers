@@ -21,6 +21,10 @@ if [ -z "$CCP_IMAGE_TAG" ]; then
 	echo "CCP_IMAGE_TAG not set"
 	exit 1
 fi
+if [ -z "$CCP_IMAGE_PREFIX" ]; then
+	echo "CCP_IMAGE_PREFIX not set"
+	exit 1
+fi
 docker pull $CCP_IMAGE_PREFIX/crunchy-prometheus:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-grafana:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-collect:$CCP_IMAGE_TAG
