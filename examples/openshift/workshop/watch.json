@@ -14,6 +14,9 @@
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
     }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "the image prefix to use"
+    }, {
         "name": "CCP_NAMESPACE",
         "description": "the project namespace to use"
     }],
@@ -30,7 +33,7 @@
             "serviceAccount": "pg-watcher",
             "containers": [{
                 "name": "watch",
-                "image": "crunchydata/crunchy-watch:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
                     "value": "${CCP_NAMESPACE}"

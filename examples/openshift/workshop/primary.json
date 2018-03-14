@@ -13,6 +13,9 @@
     "parameters": [{
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
+    }, {
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "the image prefix to use"
     }],
     "objects": [{
       "kind": "Service",
@@ -61,7 +64,7 @@
             },
             "containers": [{
                 "name": "pgbadger",
-                "image": "crunchydata/crunchy-pgbadger:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-pgbadger:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 10000,
                     "protocol": "TCP"
@@ -77,7 +80,7 @@
                 }]
             }, {
                 "name": "pgcollect",
-                "image": "crunchydata/crunchy-collect:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-collect:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "PG_PRIMARY_USER",
                     "value": "primaryuser"
@@ -104,7 +107,7 @@
                 }]
             }, {
                 "name": "pg",
-                "image": "crunchydata/crunchy-postgres-gis:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres-gis:${CCP_IMAGE_TAG}",
                 "ports": [{
                     "containerPort": 5432,
                     "protocol": "TCP"

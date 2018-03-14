@@ -16,7 +16,7 @@
 echo "Starting primary-restore container..."
 
 # $1=date-named directory, e.g. 2017-01-12-17-43-08
-export BACKUP_PATH=basic-backups/$1
+export BACKUP_PATH=primary-pvc-backups/$1
 
 export CONTAINER_NAME=primary-restore
 export CONTAINER_VOLUME=$CONTAINER_NAME-volume
