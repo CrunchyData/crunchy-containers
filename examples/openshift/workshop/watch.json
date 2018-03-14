@@ -14,14 +14,10 @@
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
     }, {
-<<<<<<< HEAD
-        "name": "CCP_NAMESPACE",
-=======
         "name": "CCP_IMAGE_PREFIX",
         "description": "the image prefix to use"
     }, {
-        "name": "NAMESPACE",
->>>>>>> replace crunchydata with CCP_IMAGE_PREFIX in all JSON code
+        "name": "CCP_NAMESPACE",
         "description": "the project namespace to use"
     }],
     "objects": [{
