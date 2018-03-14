@@ -18,29 +18,29 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-CONFDIR=$PV_PATH/custom-config-ssl-pgconf
-sudo mkdir $CONFDIR
-sudo chown nfsnobody:nfsnobody $CONFDIR
-sudo cp $DIR/setup.sql $CONFDIR
-sudo cp $DIR/pg_hba.conf $CONFDIR
-sudo cp $DIR/postgresql.conf $CONFDIR
-sudo chown nfsnobody:nfsnobody $CONFDIR/setup.sql 
-sudo chown nfsnobody:nfsnobody $CONFDIR/postgresql.conf 
-sudo chown nfsnobody:nfsnobody $CONFDIR/pg_hba.conf
-sudo chmod g+r $CONFDIR/setup.sql $CONFDIR/postgresql.conf $CONFDIR/pg_hba.conf
+CONFDIR=$CCP_STORAGE_PATH/custom-config-ssl-pgconf
+sudo CONFDIR=$CONFDIR mkdir $CONFDIR
+sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR
+sudo CONFDIR=$CONFDIR cp $DIR/setup.sql $CONFDIR
+sudo CONFDIR=$CONFDIR cp $DIR/pg_hba.conf $CONFDIR
+sudo CONFDIR=$CONFDIR cp $DIR/postgresql.conf $CONFDIR
+sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/setup.sql 
+sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/postgresql.conf 
+sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/pg_hba.conf
+sudo CONFDIR=$CONFDIR chmod g+r $CONFDIR/setup.sql $CONFDIR/postgresql.conf $CONFDIR/pg_hba.conf
 
 oc create -f $DIR/custom-config-ssl-pvc.json
 
-sudo cp $DIR/ca.crt $CONFDIR
-sudo cp $DIR/server.key $CONFDIR
+sudo CONFDIR=$CONFDIR cp $DIR/ca.crt $CONFDIR
+sudo CONFDIR=$CONFDIR cp $DIR/server.key $CONFDIR
 sudo cat server.crt server-intermediate.crt ca.crt > /tmp/server.crt
 sudo mv /tmp/server.crt $CONFDIR/server.crt
 
-sudo chown nfsnobody:nfsnobody $CONFDIR/ca.crt 
-sudo chown nfsnobody:nfsnobody $CONFDIR/server.key
-sudo chown nfsnobody:nfsnobody $CONFDIR/server.crt
-sudo chmod 640 $CONFDIR/ca.crt $CONFDIR/server.key $CONFDIR/server.crt
-sudo chmod 400 $CONFDIR/server.key
+sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/ca.crt 
+sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/server.key
+sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/server.crt
+sudo CONFDIR=$CONFDIR chmod 640 $CONFDIR/ca.crt $CONFDIR/server.key $CONFDIR/server.crt
+sudo CONFDIR=$CONFDIR chmod 400 $CONFDIR/server.key
 
 oc create -f $DIR/service.json
 expenv -f $DIR/custom-config-ssl.json | oc create -f -

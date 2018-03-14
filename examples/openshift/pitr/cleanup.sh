@@ -24,5 +24,5 @@ oc delete pvc primary-pitr-pvc primary-pitr-pgwal-pvc
 
 $CCPROOT/examples/waitforterm.sh primary-pitr oc
 
-sudo rm -rf $PV_PATH/WAL/primary-pitr
-sudo rm -rf $PV_PATH/primary-pitr
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/WAL/primary-pitr
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/primary-pitr

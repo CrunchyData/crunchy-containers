@@ -21,4 +21,4 @@ oc delete pvc primary-pvc
 
 $CCPROOT/examples/waitforterm.sh primary-pvc oc
 
-sudo rm -rf $PV_PATH/primary-pvc
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/primary-pvc

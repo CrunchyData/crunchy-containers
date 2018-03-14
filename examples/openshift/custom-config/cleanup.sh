@@ -23,9 +23,9 @@ oc delete pod $CONTAINER
 
 oc delete pvc custom-config-pvc 
 
-sudo rm $PV_PATH/setup.sql
-sudo rm $PV_PATH/pg_hba.conf
-sudo rm $PV_PATH/postgresql.conf
-sudo rm -rf $PV_PATH/$CONTAINER
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm $CCP_STORAGE_PATH/setup.sql
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm $CCP_STORAGE_PATH/pg_hba.conf
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm $CCP_STORAGE_PATH/postgresql.conf
+sudo CONTAINER=$CONTAINER CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/$CONTAINER
 
 $CCPROOT/examples/waitforterm.sh custom-config oc

@@ -16,7 +16,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-sudo rm -rf $PV_PATH/primary-dc
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/primary-dc
 
 oc delete service primary-dc replica-dc
 oc delete deployments primary-dc replica-dc replica2-dc

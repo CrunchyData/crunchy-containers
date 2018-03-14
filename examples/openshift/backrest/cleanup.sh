@@ -22,4 +22,4 @@ oc delete configmap backrestconf
 oc delete pvc backrest-pvc backrest-backrestrepo-pvc
 $CCPROOT/examples/waitforterm.sh primary-backrest oc
 
-sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/archive $PV_PATH/backup
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/archive $CCP_STORAGE_PATH/backup

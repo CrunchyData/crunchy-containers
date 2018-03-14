@@ -17,7 +17,7 @@
 
 echo "This example depends upon the primary-replica example being run prior!"
 
-CONFIGDIR=$PV_PATH/bouncerconfig
+CONFIGDIR=$CCP_STORAGE_PATH/bouncerconfig
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh

@@ -13,8 +13,8 @@
         },
         "accessModes": ["ReadWriteMany"],
         "nfs": {
-            "path": "$PV_PATH/primary-pitr-wal",
-            "server": "$LOCAL_IP"
+            "path": "$CCP_STORAGE_PATH/primary-pitr-wal",
+            "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }
