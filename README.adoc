@@ -1,5 +1,10 @@
 == Crunchy PostgreSQL Containers
-v1.8.1, {docdate}
+
+Latest Release: v1.8.1, {docdate}
+
+*Warning:* the master branch is considered unstable, please consult the link:https://github.com/CrunchyData/crunchy-containers/releases[tagged release] 
+currently deployed in your environment.
+
 
 image::images/crunchy_logo.png?raw=true[]
 
