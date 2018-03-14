@@ -985,6 +985,8 @@ cd $CCPROOT/examples/openshift/pgadmin4-http
 ./run.sh
 ....
 
+*Note:* An emptyDir, with write access, must be mounted to the */run/httpd* directory in OpenShift.
+
 === pgadmin4-https
 
 This example deploys the pgadmin4 v2 web user interface
@@ -1038,6 +1040,8 @@ To run this example, run the following:
 cd $CCPROOT/examples/openshift/pgadmin4-https
 ./run.sh
 ....
+
+*Note:* An emptyDir, with write access, must be mounted to the */run/httpd* directory in OpenShift.
 
 
 === pgpool

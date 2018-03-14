@@ -60,15 +60,14 @@ RUN cp /opt/cpm/conf/httpd.conf /etc/httpd/conf/httpd.conf \
   && rm /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/ssl.conf
 
 RUN chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
-  && chown -R 2:0 /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
-  && chmod -R g+rwx /run/httpd
+  && chown -R 2:0 /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd
 
 RUN ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
   && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf
 
 EXPOSE 5050
 
-VOLUME ["/var/lib/pgadmin", "/certs"]
+VOLUME ["/var/lib/pgadmin", "/certs", "/run/httpd"]
 
 USER 2
 

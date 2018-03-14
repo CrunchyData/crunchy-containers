@@ -38,19 +38,17 @@ function ose_hack() {
 }
 
 function env_check_err() {
-    env=$(echo $1)
-    if [[ -z ${env:+x} ]]
+    if [[ -z ${!1} ]]
     then
-        echo_err "${env?} environment variable is not set, aborting.."
+        echo_err "$1 environment variable is not set, aborting.."
         exit 1
     fi
 }
 
 function env_check_warn() {
-    env=$(echo $1)
-    if [[ -z ${env:+x} ]]
+    if [[ -z ${!1} ]]
     then
-        echo_warn "${env?} environment variable is not set.."
+        echo_warn "$1 environment variable is not set.."
     fi
 }
 

@@ -16,12 +16,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-oc create -f $DIR/pgadmin-http-pvc.json
-
 oc create secret generic pgadmin-secrets \
     --from-literal=pgadmin-email='admin@admin.com' \
     --from-literal=pgadmin-password='password'
 
-oc create -f $DIR/service.json
-
-expenv -f $DIR/pgadmin4-pod.json | oc create -f -
+expenv -f $DIR/pgadmin4.json | oc create -f -
