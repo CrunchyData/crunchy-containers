@@ -353,10 +353,8 @@ cd $CCPROOT/examples/pv
 ./create-pv.sh hostpath
 ....
 
-This set of scripts will create 15 sample Persistent Volumes that
-all point to */data*.  It also creates sample Persistent Volume
-Claims that can be shared by various examples because these
-Volumes are created as ReadWriteMany.
+This set of scripts will create 100 sample Persistent Volumes that
+all point to */data*.
 
 === Configure NFS for Persistence
 
@@ -487,7 +485,7 @@ You should see a single IP address returned from this command:
 hostname --ip-address
 ....
 
-=== NFS Installation 
+=== NFS Installation
 
 NOTE: Most of the Crunchy containers run as the postgres UID (26), but you
 will notice that when *supplementalGroups* are specified, the pod
