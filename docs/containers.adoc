@@ -395,13 +395,22 @@ with a single database connection.
 Postgres replicas are read-only whereas a primary is both read and write
 capable.
 
+The default pgpool examples use a Secret to hold the set of pgpool
+configuration files used by the examples.  The Secret is mounted
+into the *pgconf* volume mount where the container will look to
+find configuration files.  If you do not specify your own
+configuration files via a Secret then you can specify environment
+variables to the container that it will attempt to use to 
+configure pgpool, this is not recommended however for a real
+pgpool deployment.
+
 === Environment Variables
 
  * PG_USERNAME - user to connect to PostgreSQL
  * PG_PASSWORD - user password to connect to PostgreSQL
  * PG_PRIMARY_SERVICE_NAME - database host to connect to for the primary node
  * PG_REPLICA_SERVICE_NAME - database host to connect to for the replica node
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 === Features

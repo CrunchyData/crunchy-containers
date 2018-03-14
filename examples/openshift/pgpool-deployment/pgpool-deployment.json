@@ -24,13 +24,7 @@
                         "containerPort": 5432,
                         "protocol": "TCP"
                     }],
-                    "env": [{
-                        "name": "PG_PRIMARY_SERVICE_NAME",
-                        "value": "pr-primary"
-                    }, {
-                        "name": "PG_REPLICA_SERVICE_NAME",
-                        "value": "pr-replica"
-                    }],
+                    "env": [],
                     "volumeMounts": [{
                     "name": "pgpool-conf",
                     "mountPath": "/pgconf/pgpoolconfigdir",
