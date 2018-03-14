@@ -38,14 +38,13 @@ export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 export CCP_SECURITY_CONTEXT=""
 export CCP_CLI=kubectl
 export CCP_NAMESPACE=demo
-export PV_PATH=/mnt/nfsfileshare
-export LOCAL_IP=$(hostname --ip-address)
+export CCP_STORAGE_PATH=/data
 export REPLACE_CCP_IMAGE_PREFIX=crunchydata
 ....
 It will be necessary to refresh your bashrc file in order for the changes to take
 effect.
 
-Note:  the CCP_SECURITY_CONTEXT setting above indicates you
+Note:  the CCP_SECURITY_CONTEXT and CCP_STORAGE_PATH settings above indicates you
 intend to use *HostPath* storage.  NFS and dynamic storage are
 other options, see below for details on configuring storage.
 
@@ -343,12 +342,18 @@ is to be used.
 === Configure HostPath
 
 HostPath is the simplist storage backend to setup, it only is feasible
-on a single node but is good for testing the examples.  You set
-up *hostPath* storage as follows:
+on a single node but is good for testing the examples.  In your *.bashrc*
+file, add the following variables to specify unique settings to
+your hostpath directory:
 ....
 export CCP_SECURITY_CONTEXT=""
-sudo mkdir /data
-sudo chmod 777 /data
+export CCP_STORAGE_PATH=/data
+....
+
+Then create the hostPath example volumes using:
+....
+sudo mkdir $CCP_STORAGE_PATH
+sudo chmod 777 $CCP_STORAGE_PATH
 cd $CCPROOT/examples/pv
 ./create-pv.sh hostpath
 ....
@@ -361,10 +366,17 @@ all point to */data*.
 NFS can be used for the examples as well.  Instructions
 on setting up NFS are found at the bottom of this guide.
 
-Next, assuming that you are setting up NFS as your storage option, you
-will need to run the following script:
+For testing with NFS, in your *.bashrc* file, include 
+the following variables that are unique to your NFS environment:
 ....
 export CCP_SECURITY_CONTEXT='"supplementalGroups": [65534]"'
+export CCP_STORAGE_PATH=/mnt/nfsfileshare
+export CCP_NFS_IP=192.168.0.118
+....
+
+Next, assuming that you are setting up NFS as your storage option, you
+will need to run the following commands:
+....
 cd $CCPROOT/examples/pv
 ./create-pv.sh nfs
 ....

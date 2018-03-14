@@ -10,7 +10,7 @@
     },
     "accessModes": [ "ReadWriteMany" ],
     "hostPath": {
-        "path": "/data"
+        "path": "$CCP_STORAGE_PATH"
     },
     "persistentVolumeReclaimPolicy": "Retain"
   }
