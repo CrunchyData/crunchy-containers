@@ -1394,7 +1394,7 @@ kubectl logs -c postgres crunchy-pgsql
 Running the example:
 
 ....
-cd $CCPROOT/examples/oepnshift/metrics
+cd $CCPROOT/examples/openshift/metrics
 ./run.sh
 ....
 
@@ -1681,11 +1681,11 @@ and the password ``password'':
 psql -h 127.0.0.1 -p 12010 -U postgres postgres -c 'table pg_stat_replication'
 ....
 
-You should see 2 rows, 1 for the async replica and 1 for the sync replica.  The
+You should see 2 rows; 1 for the asynchronous replica and 1 for the synchronous replica.  The
 sync_state column shows values of async or sync.
 
-You can test replication to the replicas by entering some data on
-the primary like this, and then querying the replicas for that data:
+You can test replication to the replicas by first entering some data on
+the primary, and secondly querying the replicas for that data:
 ....
 psql -h 127.0.0.1 -p 12010 -U postgres postgres -c 'create table foo (id int)'
 psql -h 127.0.0.1 -p 12010 -U postgres postgres -c 'insert into foo values (1)'
