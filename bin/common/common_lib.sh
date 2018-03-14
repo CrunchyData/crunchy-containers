@@ -22,7 +22,7 @@ YELLOW="\033[0;33m"
 RESET="\033[0m"
 
 function enable_debugging() {
-    if [[ ${DEBUG:-false} == "true" ]]
+    if [[ ${CRUNCHY_DEBUG:-false} == "true" ]]
     then
         echo "Turning Debugging On"
         export PS4='+(${BASH_SOURCE}:${LINENO})> ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
