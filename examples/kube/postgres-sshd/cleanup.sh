@@ -26,4 +26,4 @@ kubectl delete pvc postgres-sshd-backrestrepo-pvc postgres-sshd-pvc
 $CCPROOT/examples/waitforterm.sh postgres-sshd kubectl
 rm -rf ${DIR?}/keys
 
-sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/archive $PV_PATH/backup
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/archive $CCP_STORAGE_PATH/backup
