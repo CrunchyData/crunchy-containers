@@ -82,7 +82,7 @@ executed when the database is first created.
  * WORK_MEM - default is 4MB, set this value to override this PostgreSQL configuration setting
  * MAX_WAL_SENDERS - default is 6, set this value to override this PostgreSQL configuration setting
  * ENABLE_SSHD- default is false, set this value to true to enable SSHD.  See link:sshd.adoc[SSHD Documentation] for detailed setup instructions
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 === Features
@@ -172,7 +172,7 @@ to persist database backups.
    backup with
  * BACKUP_PORT - required, this is the database port we will be doing the
    backup with
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 == crunchy-dump
@@ -233,37 +233,37 @@ to persist database dumps.
  * PGDUMP_TABLE option to specify which tables matched by the specified pattern are output by pg_dump
  * PGDUMP_TABLESTOEXCLUDE option to specify which tables matched by the specified pattern should be excluded from the output by pg_dump
  * PGDUMP_VERBOSE option to specify verbose mode to output detailed object comments and start/stop times to the output by pg_dump; as well as progress messages to standard error (STDERR)
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 == crunchy-collect
 
 === Description
 
-Crunchy Collect container provides real time metrics about the PostgreSQL database 
-via an API.  These metrics are scrapped and stored by Crunchy Prometheus time-series 
+Crunchy Collect container provides real time metrics about the PostgreSQL database
+via an API.  These metrics are scrapped and stored by Crunchy Prometheus time-series
 database and visualized by Crunchy Grafana.
 
 === Requirements
 
-This container requires TCP access to the PostgreSQL database to run queries for 
-collecting metrics.  The PostgreSQL database to be scrapped is specified by the 
+This container requires TCP access to the PostgreSQL database to run queries for
+collecting metrics.  The PostgreSQL database to be scrapped is specified by the
 *DATA_SOURCE_NAME* environment variable.
 
-Additionally, custom queries to collect metrics can be specified by the user.  By 
-mounting a *queries.yml* file to */conf* on the container, additionally metrics 
-can be specified for the API to collect.  For an example of a *queries.yml* file, see 
+Additionally, custom queries to collect metrics can be specified by the user.  By
+mounting a *queries.yml* file to */conf* on the container, additionally metrics
+can be specified for the API to collect.  For an example of a *queries.yml* file, see
 link:https://github.com/crunchydata/crunchy-containers/blob/master/conf/collect/queries.yml[here].
 
 === Environment Variables
 
 *Required:*
 
- * DATA_SOURCE_NAME - The URL for the PostgreSQL server's data source name. 
+ * DATA_SOURCE_NAME - The URL for the PostgreSQL server's data source name.
    This is *required* to be in the form of *postgresql://*.
 
-*Optional:* 
- * DEBUG - default is false, set this value to true to debugging in logs.
+*Optional:*
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 == crunchy-prometheus
@@ -272,7 +272,7 @@ link:https://github.com/crunchydata/crunchy-containers/blob/master/conf/collect/
 
 Prometheus is a multi-dimensional time series data model with an elastic query language. It is used in collaboration
 with Grafana in this metrics suite. Overall, it’s reliable, manageable, and operationally simple for efficiently
-storing and analyzing data for large-scale environments. It scraps metrics from exporters such as 
+storing and analyzing data for large-scale environments. It scraps metrics from exporters such as
 Crunchy Collect.
 
 The following port is exposed by the crunchy-prometheus container:
@@ -281,34 +281,34 @@ The following port is exposed by the crunchy-prometheus container:
 
 === Requirements
 
-The Crunchy Prometheus container must be able to reach the Crunchy Collect container 
-to scrape metrics.  
+The Crunchy Prometheus container must be able to reach the Crunchy Collect container
+to scrape metrics.
 
-By default, Crunchy Prometheus detects which environment its running on (Docker, Kube or OCP) 
-and applies a default configuration.  If this container is running on Kube or OCP, 
-it will use the Kubernetes API to discover pods with the label *"crunchy-collect": "true"*.  
+By default, Crunchy Prometheus detects which environment its running on (Docker, Kube or OCP)
+and applies a default configuration.  If this container is running on Kube or OCP,
+it will use the Kubernetes API to discover pods with the label *"crunchy-collect": "true"*.
 Crunchy Collect container must have this label to be discovered.
 
-For Docker environments the Crunchy Collect hostname must be specified as an environment 
+For Docker environments the Crunchy Collect hostname must be specified as an environment
 variable.
 
-A user may define a custom *prometheus.yml* file and mount to */conf* for custom configuration.  
+A user may define a custom *prometheus.yml* file and mount to */conf* for custom configuration.
 For a configuration examples, see  link:https://github.com/crunchydata/crunchy-containers/blob/master/conf/prometheus[here].
 
 === Environment Variables
 
-*Required:* 
- 
- * COLLECT_HOST - Hostname of Crunchy Collect container.  Only required in *Docker* 
+*Required:*
+
+ * COLLECT_HOST - Hostname of Crunchy Collect container.  Only required in *Docker*
    environments.
 
 *Optional:*
 
- * SCRAPE_INTERVAL - default is "5s", set this value to the number of seconds to scrape 
+ * SCRAPE_INTERVAL - default is "5s", set this value to the number of seconds to scrape
    metrics from exporters.
- * SCRAPE_TIMEOUT - default is "5s", set this value to the number of seconds to timeout when scraping 
+ * SCRAPE_TIMEOUT - default is "5s", set this value to the number of seconds to timeout when scraping
    metrics from exporters.
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 == crunchy-grafana
@@ -322,7 +322,7 @@ Grafana is an open-source platform which can then apply the defined metrics and 
 various tools. It is extremely flexible with a powerful query and transformation language, producing beautiful
 and easily understandable graphics to analyze and monitor your data.
 
-By default, Crunchy Grafana will register the Crunchy Prometheus datasource within 
+By default, Crunchy Grafana will register the Crunchy Prometheus datasource within
 Grafana and import a premade dashboard for PostgreSQL monitoring.
 
 The following port is exposed by the crunchy-grafana container:
@@ -333,11 +333,11 @@ The following port is exposed by the crunchy-grafana container:
 
 The Crunchy Grafana container must be able to reach the Crunchy Prometheus container.
 
-Users must specify an administrator user and password to provide basic authentication 
+Users must specify an administrator user and password to provide basic authentication
 for the web frontend.
 
-Additionally the Prometheus Host and Port are required.  If Prometheus uses basic 
-authentication, users must specify the username and password to access Prometheus 
+Additionally the Prometheus Host and Port are required.  If Prometheus uses basic
+authentication, users must specify the username and password to access Prometheus
 via environment variables.
 
 Users may define a custom *defaults.ini* file and mount to */conf* for custom configuration.
@@ -345,12 +345,12 @@ For a configuration examples, see  link:https://github.com/crunchydata/crunchy-c
 
 === Environment Variables
 
-*Required:* 
- * ADMIN_USER - specifies the administrator user to be used when logging into the 
+*Required:*
+ * ADMIN_USER - specifies the administrator user to be used when logging into the
    web frontend.
- * ADMIN_PASS - specifies the administrator password to be used when logging into the 
+ * ADMIN_PASS - specifies the administrator password to be used when logging into the
    web frontend.
- * PROM_HOST - specifies the Prometheus container hostname for auto registering the 
+ * PROM_HOST - specifies the Prometheus container hostname for auto registering the
    prometheus datasource.
  * PROM_PORT - specifies the Prometheus container port for auto registering the
    prometheus datasource.
@@ -358,7 +358,7 @@ For a configuration examples, see  link:https://github.com/crunchydata/crunchy-c
 *Optional:*
  * PROM_USER - specifies the Prometheus username, if one is required.
  * PROM_PASS - specifies the Prometheus password, if one is required.
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 == crunchy-pgbadger
@@ -376,7 +376,7 @@ http://<<ip address>>:10000/api/badgergenerate
  * BADGER_TARGET - only used in standalone mode to specify the
    name of the container, also used to find the location of the
    database log files in /pgdata/$BADGER_TARGET/pg_log/*.log
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 === Features
@@ -401,7 +401,7 @@ capable.
  * PG_PASSWORD - user password to connect to PostgreSQL
  * PG_PRIMARY_SERVICE_NAME - database host to connect to for the primary node
  * PG_REPLICA_SERVICE_NAME - database host to connect to for the replica node
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 === Features
@@ -471,7 +471,7 @@ to https://github.com/crunchydata/crunchy-watch
    the normal replica selection
  * CRUNCHY_WATCH_PRE_HOOK - path to an executable file to run before failover is processed.
  * CRUNCHY_WATCH_POST_HOOK - path to an executable file to run after failover is processed.
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 === Logic
@@ -523,7 +523,7 @@ The complete set of environment variables read by the crunchy-vacuum job include
     * VAC_ANALYZE - when set to true adds the ANALYZE parameter to the VACUUM command
     * VAC_VERBOSE - when set to true adds the VERBOSE parameter to the VACUUM command
     * VAC_FREEZE - when set to true adds the FREEZE parameter to the VACUUM command
-    * DEBUG - default is false, set this value to true to debugging in logs.
+    * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
       Note: this mode can reveal secrets in logs.
 
 == crunchy-dba
@@ -551,7 +551,7 @@ of crunchy-dba:
  setting value must be a valid cron expression as described below.
  * BACKUP_SCHEDULE - if set, this will start a backup job container.  The
  setting value must be a valid cron expression as described below.
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 For a vacuum job, you are required to supply the following
@@ -734,7 +734,7 @@ utility and a failover watch script.
  * PG_PRIMARY_SERVICE - the name of the primary database container
  * PG_REPLICA_SERVICE - the name of the replica database container, this is
    used to know which container to trigger the failover on
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 === Features
@@ -763,7 +763,7 @@ The crunchy-backrest-restore container executes the pgbackrest utility, allowing
    allows pgBackRest to automatically determine which files in the database cluster
    directory can be preserved and which ones need to be restored from the backup -
    it also removes files not present in the backup manifest so it will dispose of divergent changes.
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 === Features
@@ -802,7 +802,7 @@ image::images/pgadmin4-screenshot.png["pgadmin screenshot",align="center",scaled
  * ENABLE_TLS - default is false, set this value to true to enable HTTPS
    on the pgAdmin4 container.  This requires a *server.key* and *server.crt*
    to be mounted on the */certs* directory.
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 === Features
@@ -882,7 +882,7 @@ to retrieve database dumps to be restored via psql or pg_restore.
  * PGRESTORE_USESESSIONAUTH option for pg_restore to output SQL-standard SET SESSION AUTHORIZATION commands instead of ALTER OWNER commands to determine object ownership.
  * PGRESTORE_VERBOSE option to specify verbose mode to output detailed object comments and start/stop times to the output from pg_restore; as well as progress messages to standard error (STDERR).
  * PGRESTORE_VERSION option to output the pg_restore version and exit.
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 == crunchy-upgrade
@@ -905,7 +905,7 @@ Postgres packages in order to perform a pg_upgrade from
    option when initdb is executed at initialization, if not set, the
    default is to *not* enable data checksums
  * XLOGDIR - if set, initdb will use the specified directory for WAL
- * DEBUG - default is false, set this value to true to debugging in logs.
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 === Features
@@ -936,7 +936,7 @@ The crunchy-sim container is a simple traffic simulator for PostgreSQL
 * PGSIM_INTERVAL - required, The units of the simulation interval
 * PGSIM_MININTERVAL - required, the minimum interval value
 * PGSIM_MAXINTERVAL - requited, the maximum interval value
-* DEBUG - default is false, set this value to true to debugging in logs.
+* CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
   Note: this mode can reveal secrets in logs.
 
 Valid values for PGSIM_INTERVAL are as follows:
