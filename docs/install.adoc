@@ -148,19 +148,28 @@ $ kubectl config view | grep namespace:
 
 === Creating a Demo Namespace on OpenShift
 
-This section will illustrate how to set up a new OpenShift project called *demo*.
-This is a *requirement* for running the examples.
+This section assumes you are first logging into Openshift as a normal
+user such as:
+....
+oc login -u someuser
+....
 
-First we will create a new project:
+For our development purposes only, we typically specify OCP
+Authorization policy of *AllowAll* as documented here:
+
+https://docs.openshift.com/container-platform/3.7/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider
+
+We do not recommend this authentication policy for a production
+deployment of OCP.
+
+You next will create a *demo* namespace to run the examples within, the
+name of this OCP project will be what you supply in the CCP_NAMESPACE
+environment variable:
 ....
 $ oc new-project demo --description="Crunchy Containers project" --display-name="Crunchy-Containers"
 Now using project "demo" on server "https://127.0.0.1:8443".
 
-You can add applications to this project with the 'new-app' command. For example, try:
-
-    oc new-app centos/ruby-22-centos7~https://github.com/openshift/ruby-ex.git
-
-to build a new example application in Ruby.
+$ export CCP_NAMESPACE=demo
 ....
 
 If we view the list of projects, we can see the new project has been added and is ``active''.
