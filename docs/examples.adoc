@@ -308,9 +308,6 @@ https://github.com/openshift/postgresql/blob/master/9.4/root/usr/share/container
 
 ===== Kubernetes Secrets
 
-
-===== Secrets
-
 You can use Kubernetes Secrets to set and maintain your database
 credentials.  Secrets requires you base64 encode your user and password
 values as follows:
@@ -985,7 +982,7 @@ cd $CCPROOT/examples/openshift/pgadmin4-http
 ./run.sh
 ....
 
-*Note:* An emptyDir, with write access, must be mounted to the */run/httpd* directory in OpenShift.
+NOTE: An emptyDir, with write access, must be mounted to the */run/httpd* directory in OpenShift.
 
 === pgadmin4-https
 
@@ -1041,7 +1038,7 @@ cd $CCPROOT/examples/openshift/pgadmin4-https
 ./run.sh
 ....
 
-*Note:* An emptyDir, with write access, must be mounted to the */run/httpd* directory in OpenShift.
+NOTE: An emptyDir, with write access, must be mounted to the */run/httpd* directory in OpenShift.
 
 
 === pgpool
@@ -1321,15 +1318,15 @@ This will start up 4 containers:
 Every 5 seconds by default, Crunchy Prometheus will scrape the Crunchy Collect container
 for metrics.  These metrics will then be visualized by Crunchy Grafana.
 
-By default, Crunchy Prometheus detects which environment its running on (Docker, Kube or OCP)
-and applies a default configuration.  If this container is running on Kube or OCP,
+By default, Crunchy Prometheus detects which environment its running on (Docker, Kubernetes, or OpenShift Container Platform)
+and applies a default configuration.  If this container is running on Kubernetes or OpenShift Container Platform,
 it will use the Kubernetes API to discover pods with the label *"crunchy-collect": "true"*.
 
 Crunchy Collect container *must* have this label to be discovered in these environments.
 
 Discovering pods requires a cluster role service account.  See the
-link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/kube/metrics/metrics-pod.json[Kube] and
-link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/openshift/metrics/metrics-pod.json[OCP]
+link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/kube/metrics/metrics-pod.json[Kubernetes] and
+link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/openshift/metrics/metrics-pod.json[OpenShift Container Platform]
 examples for account examples.
 
 For Docker environments the Crunchy Collect hostname must be specified as an environment
@@ -1854,7 +1851,7 @@ environment variables set.
 WARNING:  WAL segment files are written to the /tmp directory. Leaving the example running
 for a long time could fill up your /tmp directory.
 
-*Note*: If you're running the PITR example for *PostgreSQL versions 9.5 or 9.6*, please note that
+NOTE: If you're running the PITR example for *PostgreSQL versions 9.5 or 9.6*, please note that
 starting in PostgreSQL version 10, the pg_xlog directory was renamed to pg_wal. Additionally, all usages
 of the function 'pg_xlog_replay_resume' were changed to 'pg_wal_replay_resume'.
 
@@ -1938,7 +1935,7 @@ the DBA can run the following command to resume and complete the recovery:
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume()'
 ....
 
-*Note*: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
+NOTE: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
 pg_xlog instead:
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
@@ -1961,7 +1958,7 @@ psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume()'
 ....
 
-*Note*: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
+NOTE: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
 pg_xlog instead:
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
@@ -2064,7 +2061,7 @@ psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c
 psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'create table foo (id int)'
 ....
 
-*Note*: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
+NOTE: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
 pg_xlog instead:
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
@@ -2098,7 +2095,7 @@ SQL command:
 select pg_wal_replay_resume();
 ....
 
-*Note*: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
+NOTE: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
 pg_xlog instead:
 ....
 select pg_xlog_replay_resume();
@@ -2316,29 +2313,30 @@ Run the backup with this command:
 ....
 cd $CCPROOT/examples/docker/pgdump
 ./run.sh
+....
 
-#Output from the run.sh script will include output like:
-#starting backup container...
-#Cleaning up...
-#pgdump
-#pgdump
-#pgdump-volume
-#pgdump-volume
-#0367ee9cbe776450973f63ab875ab868c3aa8902ec3e073de8adbab9baa75c14
+Make note of the container ID from the output of the run script in order to check the Docker logs of the container.
+....
+docker logs pgdump 2>&1 | grep "output"
+....
 
-#Make note of the container ID from above to run the following command
-docker logs 0367ee9cbe776450973f63ab875ab868c3aa8902ec3e073de8adbab9baa75c14 2>&1 | grep "output"
+That will return the location where the pg_dump/pg_dumpall file(s) were written.  E.g.:
+....
+PGDUMP_ALL output file has been written to: /pgdata/primary-pvc-dumps/2018-02-14-05-00-23/pgdumpall.sql
+....
 
-#That will return the location where the pg_dump/pg_dumpall file(s) were written.  E.g.:
-#PGDUMP_ALL output file has been written to: /pgdata/primary-pvc-dumps/2018-02-14-05-00-23/pgdumpall.sql
-
-#Make note of the timestamp above and run a find to get the fully-qualified filesystem path where the file was written.  E.g.:
+Make note of the timestamp above and run a find to get the fully-qualified filesystem path where the file was written.  E.g.:
+....
 sudo find / -name 2018-02-14-05-00-23
+....
 
-#That will return the fully-qualified path, where the file can be accessed/copied to your local filesystem.  E.g.:
-#/var/lib/docker/volumes/pgdump-volume/_data/primary-pvc-dumps/2018-02-14-05-00-23
+That will return the fully-qualified path, where the file can be accessed/copied to your local filesystem.  E.g.:
+....
+/var/lib/docker/volumes/pgdump-volume/_data/primary-pvc-dumps/2018-02-14-05-00-23
+....
 
-#Copy the file (path returned above + the filename) to your local filesystem for use or for running with the pg_restore container:
+Copy the file (path returned above + the filename) to your local filesystem for use or for running with the pg_restore container:
+....
 sudo cp -p /var/lib/docker/volumes/pgdump-volume/_data/primary-pvc-dumps/2018-02-14-05-00-23/pgdumpall.sql /tmp
 ....
 
