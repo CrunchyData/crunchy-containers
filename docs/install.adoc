@@ -41,8 +41,6 @@ export CCP_NAMESPACE=demo
 export CCP_STORAGE_PATH=/data
 export REPLACE_CCP_IMAGE_PREFIX=crunchydata
 ....
-It will be necessary to refresh your bashrc file in order for the changes to take
-effect.
 
 Note:  the CCP_SECURITY_CONTEXT and CCP_STORAGE_PATH settings above indicates you
 intend to use *HostPath* storage.  NFS and dynamic storage are
@@ -51,6 +49,9 @@ other options, see below for details on configuring storage.
 Note:  the CCP_CLI setting above indicates you are running the
 examples on a Kubernetes platform and not an Openshift platform.  For
 Openshift, use the value of *oc* as the CCP_CLI variable instead.
+
+Next, it will be necessary to refresh your bashrc file in order for the changes to take
+effect.
 
 ....
 . ~/.bashrc
@@ -375,7 +376,7 @@ all point to */data*.
 NFS can be used for the examples as well.  Instructions
 on setting up NFS are found at the bottom of this guide.
 
-For testing with NFS, in your *.bashrc* file, include 
+For testing with NFS, in your *.bashrc* file, include
 the following variables that are unique to your NFS environment:
 ....
 export CCP_SECURITY_CONTEXT='"supplementalGroups": [65534]"'
