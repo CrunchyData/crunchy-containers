@@ -13,18 +13,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#export TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
-#/opt/cpm/bin/oc login https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true --token="$TOKEN"
-#/opt/cpm/bin/oc projects $OSE_PROJECT
-
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
+ose_hack
 
-echo "create-vac-job.sh......"
-echo $1 is tempfile
-echo $2 is JOB_HOST
-echo $3 is CMD
+TEMP_FILE=${1?}
+JOB_HOST=${2?}
+CMD=${3?}
 
-/opt/cpm/bin/$3 delete job $2-vac
+echo_info "Deleting vacuum job ${JOB_HOST?}.."
+/opt/cpm/bin/${CMD?} delete job ${JOB_HOST?}-vac
 sleep 15
-/opt/cpm/bin/$3 create -f $1
+
+echo_info "Creating vacuum job.."
+/opt/cpm/bin/${CMD?} create -f ${TEMP_FILE?}
+
+exit 0

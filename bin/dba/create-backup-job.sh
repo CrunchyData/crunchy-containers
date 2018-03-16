@@ -13,32 +13,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#export TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
-#/opt/cpm/bin/oc login https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true --token="$TOKEN"
-#/opt/cpm/bin/oc projects $OSE_PROJECT
-
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
+ose_hack
 
-echo "create-backup-job.sh......"
-echo $1 is template for backup
-echo $2 is template for backup pvc
-echo $3 is JOB_HOST
-echo $4 is CMD
+BACKUP_TEMPLATE=${1?}
+BACKUP_PVC_TEMPLATE=${2?}
+JOB_HOST=${3?}
+CMD=${4?}
 
-/opt/cpm/bin/$4 delete job $3-backup
-#/opt/cpm/bin/$5 delete pvc $4-backup-pvc
+echo_info "Deleting backup job ${JOB_HOST?}.."
+/opt/cpm/bin/${CMD?} delete job ${JOB_HOST?}-backup
 sleep 15
 
-# create the PV
-#cat $2
-#/opt/cpm/bin/$5 create -f $2
-#sleep 4
-# create the PVC
-cat $2
-/opt/cpm/bin/$4 create -f $2
+echo_info "Creating Backup PVC ${BACKUP_PVC_TEMPLATE?}.."
+/opt/cpm/bin/${CMD?} create -f ${BACKUP_PVC_TEMPLATE?}
 sleep 4
-# create the backup job
-cat $1
+
+echo_info "Creating backup job ${BACKUP_TEMPLATE?}.."
 /opt/cpm/bin/$4 create -f $1
 
+exit 0

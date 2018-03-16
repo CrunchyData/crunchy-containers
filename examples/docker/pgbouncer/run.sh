@@ -26,9 +26,6 @@ sudo docker run \
 	-v "$DIR":/pgconf \
 	-p 12005:5432 \
 	--privileged \
-	-v /run/docker.sock:/run/docker.sock \
-	-e FAILOVER=true \
-	-e SLEEP_TIME=12 \
 	-e PG_PRIMARY_SERVICE=primary \
 	-e PG_REPLICA_SERVICE=replica \
 	-e PG_PRIMARY_PORT=5432 \
