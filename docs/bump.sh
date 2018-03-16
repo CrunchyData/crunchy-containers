@@ -1,5 +1,5 @@
 #!/bin/bash
-OLD="1.8.0"
+OLD="1.8.1"
 NEW="1.8.1"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DPATH=$DIR/*.adoc

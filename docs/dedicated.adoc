@@ -1,6 +1,6 @@
 = OpenShift Dedicated Examples - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.8.1, {docdate}
+v1.8.2, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == OpenShift Dedicated Environment
@@ -47,7 +47,7 @@ export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
 export CCP_PGVERSION=10
 export CCP_PG_FULLVERSION=10.3
-export CCP_VERSION=1.8.1
+export CCP_VERSION=1.8.2
 export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
@@ -94,7 +94,7 @@ mkdir crunchydata
 cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 1.8.1
+git checkout 1.8.2
 go get github.com/blang/expenv
 ....
 
@@ -119,7 +119,7 @@ mkdir crunchydata
 cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 1.8.1
+git checkout 1.8.2
 go get github.com/blang/expenv
 ....
 
@@ -480,7 +480,7 @@ which uses a Persistent Volume Claim for persistence.
 
 |CCP_IMAGE_TAG
 | the image version to use for the container
-| rhel7-9.6.8-1.8.1
+| rhel7-9.6.8-1.8.2
 
 |CCP_IMAGE_PREFIX
 | the image prefix to use, typically the image stream prefix of your registry
@@ -581,7 +581,7 @@ files in a PVC.
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.8-1.8.1
+| rhel7-9.6.8-1.8.2
 |===
 
 === Restore Database Template
@@ -672,7 +672,7 @@ found in a PVC.
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.8-1.8.1
+| rhel7-9.6.8-1.8.2
 |===
 
 === Replica Database Template
@@ -736,7 +736,7 @@ These templates create the following:
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.8-1.8.1
+| rhel7-9.6.8-1.8.2
 |===
 
 === pgadmin4 Web User Interface Template
@@ -781,7 +781,7 @@ This template will create the following:
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.8-1.8.1
+| rhel7-9.6.8-1.8.2
 |===
 
 
