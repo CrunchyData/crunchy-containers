@@ -30,4 +30,4 @@ systemd-network:x:192:
 dbus:x:81:
 ssh_keys:x:998:
 nfsnobody:x:65534:
-daemon:x:${USER_ID}:daemon
+postgres:x:${USER_ID}:postgres

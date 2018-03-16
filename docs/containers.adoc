@@ -327,7 +327,7 @@ Grafana and import a premade dashboard for PostgreSQL monitoring.
 
 The following port is exposed by the crunchy-grafana container:
 
-* crunchy-grafana:3000 - the Grafana web user interface
+ * crunchy-grafana:3000 - the Grafana web user interface
 
 === Requirements
 
@@ -346,6 +346,7 @@ For a configuration examples, see  link:https://github.com/crunchydata/crunchy-c
 === Environment Variables
 
 *Required:*
+ 
  * ADMIN_USER - specifies the administrator user to be used when logging into the
    web frontend.
  * ADMIN_PASS - specifies the administrator password to be used when logging into the
@@ -356,6 +357,7 @@ For a configuration examples, see  link:https://github.com/crunchydata/crunchy-c
    prometheus datasource.
 
 *Optional:*
+ 
  * PROM_USER - specifies the Prometheus username, if one is required.
  * PROM_PASS - specifies the Prometheus password, if one is required.
  * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
@@ -731,13 +733,11 @@ utility and a failover watch script.
 
 === Environment Variables
 
- * FAILOVER - when set, the container will look at the configured
-   primary database and if it can't reach it, will perform a failover
-   to a configured replica database
- * OSE_PROJECT - when set, indicates you are running under OSE
+ * FAILOVER - This environment variable is no longer supported
+ * OSE_PROJECT - This environment variable is no longer supported
  * PG_PRIMARY_USER - the value to use for the user ID created as
    primaryuser.  The *primaryuser* has super user privileges.
- * SLEEP_TIME - time in seconds to sleep when polling the primary
+ * SLEEP_TIME - This environment variable is no longer supported
  * PG_DATABASE - the database to use when checking the readiness of the primary
  * PG_PRIMARY_PORT - the PostgreSQL port to use when checking the primary
  * PG_PRIMARY_SERVICE - the name of the primary database container

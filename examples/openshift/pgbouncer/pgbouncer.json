@@ -29,18 +29,6 @@
                 "description": "The database name configured in pgbouncer",
                 "value": "postgres"
             }, {
-                "name": "FAILOVER",
-                "description": "failover flag",
-                "value": "yes"
-            }, {
-                "name": "OSE_PROJECT",
-                "description": "ose project to login into",
-                "value": "$CCP_NAMESPACE"
-            }, {
-                "name": "SLEEP_TIME",
-                "description": "time in secs to sleep between polls",
-                "value": "12"
-            }, {
                 "name": "PG_PRIMARY_USER",
                 "description": "The primary user configured in pgbouncer",
                 "value": "primaryuser"

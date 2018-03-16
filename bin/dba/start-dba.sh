@@ -15,57 +15,55 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
+ose_hack
 
 export PATH=$PATH:/opt/cpm/bin
+export TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
 
 function trap_sigterm() {
-	echo "doing trap logic..." 
-	killall dbaserver
+    echo_info "Doing trap logic..."
+    echo_warn "Clean shutdown of dbaserver.."
+    killall dbaserver
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
 
-export TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
-
-handle_ose() {
+if [[ -v OSE_PROJECT ]]
+then
+    echo_info "OpenShift deployment detected.."
     export CMD=oc
-    oc login https://$KUBERNETES_SERVICE_HOST:$KUBERNETES_SERVICE_PORT --insecure-skip-tls-verify=true --token="$TOKEN"
-    oc project $OSE_PROJECT
 
-    oc policy add-role-to-group edit system:serviceaccounts -n $OSE_PROJECT
-}
+    env_check_err "KUBERNETES_SERVICE_HOST"
+    env_check_err "KUBERNETES_SERVICE_PORT"
+    env_check_err "OSE_PROJECT"
+    
+    echo_info "Current OpenShift Project is ${OSE_PROJECT?}.."
 
-handle_kube() {
-	echo "KUBE environmnt assumed"
+    url="https://${KUBERNETES_SERVICE_HOST?}:${KUBERNETES_SERVICE_PORT?}"
+
+    echo_info "Logging into OpenShift.."
+    oc login ${url?} --insecure-skip-tls-verify=true --token="$TOKEN"
+
+    echo_info "Setting OpenShift Project to ${OSE_PROJECT?}.."
+    oc project ${OSE_PROJECT?}
+
+    echo_info "Adding role to group system:serviceaccounts in ${OSE_PROJECT?}.."
+    oc policy add-role-to-group edit system:serviceaccounts -n ${OSE_PROJECT?}
+elif [[ -v KUBE_PROJECT ]]
+then
+    echo_info "Kubernetes deployment detected.."
 	export CMD=kubectl
-}
-
-if [ -v OSE_PROJECT ]; then
-	echo "OSE_PROJECT is assumed"
-	handle_ose
-elif [ -v KUBE_PROJECT ]; then
-	echo "KUBE_PROJECT is assumed"
-	handle_kube
 else
-	echo "OSE_PROJECT or KUBE_PROJECT need to be set"
+	echo_err "OSE_PROJECT or KUBE_PROJECT need to be set"
 	exit 2
 fi
 
+echo_info "Vacuum Schedule is ${VAC_SCHEDULE}.."
 
-echo $VAC_SCHEDULE is VAC_SCHEDULE
+env_check_err "JOB_HOST"
+echo_info "Job Host is ${JOB_HOST?}.."
 
-echo $OSE_PROJECT is OSE_PROJECT
-
-echo $JOB_HOST is JOB_HOST
-if [ ! -v JOB_HOST ]; then
-	echo "JOB_HOST env var is not set, required value"
-	exit 2
-fi
-
+echo_info "Starting dbaserver.."
 dbaserver &
 
-echo "waiting till signal is sent to quit..."
-
 wait
-
-echo "exiting...at end"

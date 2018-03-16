@@ -28,15 +28,6 @@
                 "name": "PG_DATABASE",
                 "value": "postgres"
             }, {
-                "name": "FAILOVER",
-                "value": "yes"
-            }, {
-                "name": "KUBE_PROJECT",
-                "value": "$CCP_NAMESPACE"
-            }, {
-                "name": "SLEEP_TIME",
-                "value": "12"
-            }, {
                 "name": "PG_PRIMARY_USER",
                 "value": "primaryuser"
             }, {

@@ -22,15 +22,26 @@ COPY docs/vacuum/help.1 /help.1
 COPY docs/vacuum/help.md /help.md
 COPY docs/licenses /licenses
 
-RUN yum -y update && yum -y install procps-ng iproute bind-utils hostname  && yum clean all -y
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
-# set up cpm directory
-#
-RUN mkdir -p /opt/cpm/bin
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y install \
+      gettext \
+      hostname \
+      iproute \
+      nss_wrapper \
+      procps-ng \
+ && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
 ADD bin/vacuum /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
+ADD conf/vacuum /opt/cpm/conf
 
-USER root
+RUN chown -R 2:2 /opt/cpm
+
+USER 2
 
 CMD ["/opt/cpm/bin/start-vacuum.sh"]
