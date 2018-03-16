@@ -17,25 +17,32 @@ LABEL name="crunchydata/pgbadger" \
 
 ENV PGVERSION="10" PGDG_REPO="pgdg-centos10-10-2.noarch.rpm"
 
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/${PGDG_REPO}
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
-RUN yum -y update && yum -y install hostname \
-	pgbadger \
- && yum clean all -y \
- && groupadd -g 26 postgres && useradd -g 26 -u 26 postgres
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y install \
+      gettext \
+      hostname \
+      nss_wrapper \
+      pgbadger \
+ && yum clean all -y
 
-RUN mkdir -p /opt/cpm/bin
+RUN groupadd -g 26 postgres && useradd -g 26 -u 26 postgres
 
-# open up the badger port
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+ADD conf/pgbadger /opt/cpm/conf
+ADD bin/common /opt/cpm/bin
+ADD bin/pgbadger /opt/cpm/bin
+
+RUN chown -R 26:26 /opt/cpm
+
+# pgbadger port
 EXPOSE 10000
 
-ADD bin/pgbadger /opt/cpm/bin
-ADD bin/common /opt/cpm/bin
-
-RUN chown -R postgres:postgres /opt/cpm/bin
-
-USER postgres
-
 VOLUME ["/pgdata"]
+
+USER 26
 
 CMD ["/opt/cpm/bin/start-pgbadger.sh"]

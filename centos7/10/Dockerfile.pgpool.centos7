@@ -17,30 +17,38 @@ LABEL name="crunchydata/pgpool" \
 
 ENV PGVERSION="10" PGDG_REPO="pgdg-centos10-10-2.noarch.rpm"
 
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/${PGDG_REPO}
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
-RUN yum -y update && yum -y install hostname \
-	gettext \
-	procps-ng \
- && yum -y install postgresql10 pgpool-II-10 pgpool-II-10-extensions \
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y install \
+      gettext \
+      hostname \
+      nss_wrapper \
+      procps-ng \
+ && yum -y install \
+      postgresql10 \
+      pgpool-II-10 \
+      pgpool-II-10-extensions \
  && yum -y clean all
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
-# add volumes to allow override of pgpool config files
-VOLUME ["/pgconf"]
+ADD bin/pgpool /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
+ADD conf/pgpool /opt/cpm/conf
+
+RUN ln -sf /opt/cpm/conf/pool_hba.conf /etc/pgpool-II-10/pool_hba.conf \
+  && ln -sf /opt/cpm/conf/pgpool/pool_passwd /etc/pgpool-II-10/pool_passwd
+
+RUN chown -R 2:2 /opt/cpm
 
 # open up the postgres port
 EXPOSE 5432
 
-ADD bin/pgpool /opt/cpm/bin
-ADD bin/common /opt/cpm/bin
-ADD conf/pgpool /opt/cpm/conf/pgpool
-ADD conf/pgpool/pool_hba.conf  /etc/pgpool-II-10/pool_hba.conf
-ADD conf/pgpool/pool_passwd /etc/pgpool-II-10/pool_passwd
+# add volumes to allow override of pgpool config files
+VOLUME ["/pgconf"]
 
-RUN chown -R daemon:daemon /opt/cpm/bin
-
-USER daemon
+USER 2
 
 CMD ["/opt/cpm/bin/startpgpool.sh"]

@@ -15,12 +15,13 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
+ose_hack
 
+TARGET=${HOSTNAME?}
 if [ -v BADGER_TARGET ]; then
-	echo "BADGER_TARGET is set ...this is the standalone case"
-	/bin/pgbadger -o /tmp/badger.html /pgdata/$BADGER_TARGET/pg_log/*.log
-else
-	echo "this is the openshift case"
-	/bin/pgbadger -o /tmp/badger.html /pgdata/$HOSTNAME/pg_log/*.log
+    echo_info "BADGER_TARGET env set.  Setting PGDATA target.."
+    TARGET=${BADGER_TARGET?}
 fi
 
+echo_info "Creating pgBadger output.."
+/bin/pgbadger -o /tmp/badger.html /pgdata/${TARGET?}/pg_log/*.log

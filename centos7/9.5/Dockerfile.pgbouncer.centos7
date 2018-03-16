@@ -22,26 +22,30 @@ RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/r
 # install docker from docker repo
 ADD conf/pgbouncer/docker-rhel.repo /etc/yum.repos.d/
 
-RUN yum -y update && yum -y install epel-release && yum -y install nss_wrapper gettext docker-engine procps-ng \
-pgbouncer \
-postgresql95 \
-hostname  \
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y install \
+      docker-engine \
+      gettext \
+      hostname  \
+      nss_wrapper \
+      pgbouncer \
+      postgresql95 \
+      procps-ng \
  && yum clean all -y
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
-
-# add volumes to allow override of pgbouncer config files
-VOLUME ["/pgconf"]
-
-# open up the postgres port
-EXPOSE 5432
 
 ADD bin/pgbouncer /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgbouncer /opt/cpm/conf
 
-RUN chown -R daemon:daemon /opt/cpm/bin
+RUN chown -R 2:2 /opt/cpm/bin
 
-USER pgbouncer
+EXPOSE 5432
+
+VOLUME ["/pgconf"]
+
+USER 2
 
 CMD ["/opt/cpm/bin/startpgbouncer.sh"]

@@ -17,19 +17,33 @@ LABEL name="crunchydata/dba" \
 				io.openshift.expose-services="" \
 				io.openshift.tags="crunchy,database"
 
+
 COPY docs/dba/help.1 /help.1
 COPY docs/dba/help.md /help.md
 COPY docs/licenses /licenses
 
-RUN yum -y update && yum -y install psmisc procps-ng iproute bind-utils hostname  && yum clean all -y
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
-RUN mkdir -p /opt/cpm/bin
-RUN mkdir -p /opt/cpm/conf
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y install \
+      bind-utils \
+      gettext \
+      hostname \
+      iproute \
+      nss_wrapper \
+      procps-ng \
+      psmisc \
+ && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
 ADD bin/dba /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/dba /opt/cpm/conf
 
-USER root
+RUN chown -R 2:2 /opt/cpm
+
+USER 2
 
 CMD ["/opt/cpm/bin/start-dba.sh"]
