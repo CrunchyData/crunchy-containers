@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,15 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+files=$(grep -rlE --exclude-dir=".git" --exclude="copyright.sh" "Copyright [1-9][0-9][0-9][0-9] Crunchy Data Solutions, Inc." .)
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+for i in $files;
+do
+  original=$(git log --format=%aD $i | tail -1 | grep -o '[1-9][0-9][0-9][0-9]')
+  if [[ $original != "2018" ]]; then
+    sed -i "s/Copyright 2018 Crunchy Data Solutions, Inc./Copyright $original - 2018 Crunchy Data Solutions, Inc./g" $i
+    echo "Successfully proccessed $i."
+  fi
+done
 
-$DIR/cleanup.sh
-
-# Create 'pgbouncer-configmap'
-kubectl create configmap pgbouncer-configmap \
-		--from-file=./pgbouncer.ini \
-		--from-file=./users.txt
-
-kubectl create -f $DIR/pgbouncer-service.json
-expenv -f $DIR/pgbouncer.json | kubectl create -f -
