@@ -18,7 +18,7 @@ echo -e "\nTesting pgaudit..."
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DOW=$(date +%u)
 
-if [[ $DOW == 0 ]]; then
+if [[ $DOW == 7 ]]; then
 	DAY=Sun
 elif [[ $DOW == 1 ]]; then
 	DAY=Mon
