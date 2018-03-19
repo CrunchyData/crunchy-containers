@@ -37,7 +37,7 @@ fi
 export PGPASSWORD=password
 
 svc="$(oc get svc audit | grep -v CLUSTER-IP )"
-svcIP="$(echo $svc | awk {'print $2'})"
+svcIP="$(echo $svc | awk {'print $3'})"
 
 psql -h $svcIP -U postgres -f $DIR/test.sql postgres
 echo -e "\nTest SQL written to audit."
