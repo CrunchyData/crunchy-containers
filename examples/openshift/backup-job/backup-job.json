@@ -20,7 +20,7 @@
       "name": "DATABASE_HOST",
       "displayName": "Database Host",
       "description": "This is the database the backup will be done for.",
-      "value": "basic"
+      "value": "primary-pvc"
     }, {
       "name": "DATABASE_PORT",
       "displayName": "Database Port",
