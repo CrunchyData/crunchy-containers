@@ -58,6 +58,10 @@
                 "persistentVolumeClaim": {
                     "claimName": "pgadmin-http-pvc"
                 }
+            },
+            {
+                "name": "run",
+                "emptyDir": {}
             }
         ],
         "containers": [
@@ -94,6 +98,11 @@
                     {
                         "mountPath": "/var/lib/pgadmin",
                         "name": "pgadmin",
+                        "readOnly": false
+                    },
+                    {
+                        "mountPath": "/run/httpd",
+                        "name": "run",
                         "readOnly": false
                     }
                 ]
