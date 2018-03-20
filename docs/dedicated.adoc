@@ -55,7 +55,6 @@ export CCP_SECURITY_CONTEXT=""
 export CCP_CLI=kubectl
 export CCP_NAMESPACE=demo
 export CCP_STORAGE_PATH=/data
-export REPLACE_CCP_IMAGE_PREFIX=crunchydata
 ....
 
 Note:  the CCP_SECURITY_CONTEXT and CCP_STORAGE_PATH settings above indicates you
