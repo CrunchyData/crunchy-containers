@@ -76,6 +76,10 @@
                         }
                     ]
                 }
+            },
+            {
+                "name": "run",
+                "emptyDir": {}
             }
         ],
         "containers": [
@@ -122,6 +126,11 @@
                         "mountPath": "/certs",
                         "name": "certs",
                         "readOnly": true
+                    },
+                    {
+                        "mountPath": "/run/httpd",
+                        "name": "run",
+                        "readOnly": false
                     }
                 ]
             }
