@@ -546,7 +546,7 @@ look into the link:https://www.novell.com/support/kb/doc.php?id=7010210[noac mou
 
 == Legal Notices
 
-Copyright © 2018 Crunchy Data Solutions, Inc.
+Copyright 2017 - 2018 Crunchy Data Solutions, Inc.
 
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE ``AS IS'' WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
