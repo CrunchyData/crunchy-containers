@@ -26,5 +26,4 @@ kubectl create secret generic pgadmin-tls \
     --from-file=pgadmin-cert=${DIR?}/server.crt \
     --from-file=pgadmin-key=${DIR?}/server.key
 
-expenv -f $DIR/pgadmin4-pod.json | kubectl create -f -
-kubectl create -f $DIR/pgadmin4-service.json
+expenv -f $DIR/pgadmin4.json | kubectl create -f -

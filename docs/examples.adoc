@@ -1,7 +1,7 @@
 = Examples & Use Cases - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
 :toc: left
-v1.7.2, {docdate}
+v1.8.2, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Usage
@@ -14,7 +14,7 @@ the various environments shown in this guide:
 * link:https://github.com/nekop/openshift-sandbox/blob/master/docs/command-cheatsheet.md[OpenShift Cheat Sheet]
 * link:https://github.com/kubernetes/helm/blob/master/docs/using_helm.md[Helm Cheat Sheet]
 
-=== Docker Customized Configuration
+=== Environmental Custom Configurations
 
 You can use your own version of the setup.sql SQL file to customize
 the initialization of database data and objects when the container and
@@ -30,49 +30,7 @@ This works by placing a file named, setup.sql, within the /pgconf mounted volume
 directory.  Portions of the setup.sql file are required for the crunchy container
 to work, see comments within the sample setup.sql file.
 
-=== Kubernetes Environment Setup & Configuration
-
-This section will illustrate how to set up a new Kubernetes namespace called *demo*, and will
-then show how to provide permissions to that namespace to allow the Kubernetes examples to run
-within that namespace.
-
-First, view currently existing namespaces:
-....
-$ kubectl get namespace
-NAME          STATUS    AGE
-default       Active    21d
-kube-public   Active    21d
-kube-system   Active    21d
-....
-
-Then, create a new namespace called *demo*:
-....
-$ kubectl create namespace demo
-namespace "demo" created
-$ kubectl get namespace demo
-NAME      STATUS    AGE
-demo      Active    7s
-....
-
-Then we'll set the namespace as our current location:
-....
-$ kubectl config set-context $(kubectl config current-context) --namespace=demo
-....
-
-We can verify that the namespace was set correctly through the following command:
-....
-$ kubectl config view | grep namespace:
-    namespace: demo
-....
-
-We shall now create a user account named that will be responsible for managing Kubernetes
-resources within the namespace we have created.
-
-Follow the instructions located link:https://docs.bitnami.com/kubernetes/how-to/configure-rbac-in-your-kubernetes-cluster/#use-case-1-create-user-with-limited-namespace-access[here]
-to create a new user account with limited permissions for your namespace. Steps 2-5 will
-be sufficient to explain.
-
-==== Custom Configuration
+==== Kubernetes Custom Configuration
 
 This example shows how you can use your own customized version of setup.sql
 when creating a PostgreSQL database container in Kubernetes.
@@ -93,105 +51,7 @@ This will start a database container that will use an NFS mounted /pgconf
 directory that will contain the custom setup.sql file found in the example
 directory.
 
-=== OpenShift Environment Setup & Configuration
-
-This section will illustrate how to set up a new OpenShift project called *demo*, and will
-additionally show how to create a new *demo* user who has the proper privileges to run OpenShift
-examples within that project under that user.
-
-First we will create a new project as the standard *developer* user that you are logged into
-upon running *oc cluster up*:
-....
-$ oc new-project demo --description="Crunchy Containers project" --display-name="Crunchy-Containers"
-Now using project "demo" on server "https://127.0.0.1:8443".
-
-You can add applications to this project with the 'new-app' command. For example, try:
-
-    oc new-app centos/ruby-22-centos7~https://github.com/openshift/ruby-ex.git
-
-to build a new example application in Ruby.
-....
-
-If we view the list of projects, we can see the new project has been added and is "active".
-....
-$ oc get projects
-NAME        DISPLAY NAME         STATUS
-demo        Crunchy-Containers   Active
-myproject   My Project           Active
-....
-
-If you were on a different project and wanted to switch to the demo project, you would do
-so by running the following:
-....
-$ oc project demo
-Now using project "demo" on server "https://127.0.0.1:8443".
-....
-
-At this point we'll create a new user - foo. Logging in using this method will automatically
-create a new user with the authentication method of *anypassword*, meaning that you can simply
-hit enter to login.
-....
-$ oc login -u foo
-Authentication required for https://127.0.0.1:8443 (openshift)
-Username: foo
-Password:
-Login successful.
-
-You don't have any projects. You can try to create a new project, by running
-
-    oc new-project <projectname>
-....
-
-Notice that there are no projects that *foo* currently has access to. We'll fix that
-by first logging in as the *system:admin* user.
-....
-$ oc login -u system:admin
-Logged into "https://127.0.0.1:8443" as "system:admin" using existing credentials.
-
-You have access to the following projects and can switch between them with 'oc project <projectname>':
-
-  * default
-    demo
-    kube-public
-    kube-system
-    myproject
-    openshift
-    openshift-infra
-
-Using project "default".
-....
-
-If we view the list of users, *foo* has been added.
-....
-$ oc get user
-NAME        UID                                    FULL NAME   IDENTITIES
-developer   c818ca4f-c5b4-11e7-9e42-0800278f57e4               anypassword:developer
-foo         5879a850-c5b5-11e7-9e42-0800278f57e4               anypassword:foo
-....
-
-We want foo to be able to access the *demo* project and have administrative access.
-....
-$ oc adm policy add-role-to-user admin foo -n demo
-role "admin" added: "foo"
-....
-
-To verify it is working correctly, log in as foo:
-....
-$ oc login -u foo
-Logged into "https://127.0.0.1:8443" as "foo" using existing credentials.
-
-You have one project on this server: "demo"
-
-Using project "demo".
-....
-
-The *demo* project has now been added to this user's list of existing projects, and
-new clusters will be created within this project.
-
-More information on authorizing users and managing clusters can be found
-link:https://docs.openshift.com/container-platform/3.6/admin_guide/manage_users.html[here].
-
-==== Custom Configuration
+==== OpenShift Custom Configuration
 
 This example shows how you can use your own customized version of setup.sql
 when creating a PostgreSQL database container in OpenShift.
@@ -251,9 +111,9 @@ how the /pgconf mount is related to the configmap.
 
 An example of using OpenShift Templates to build pods, routes, services, etc can be
 found in the following directory:
-….
+....
 $CCPROOT/examples/openshift/workshop
-….
+....
 
 You use the *oc new-app* command to create objects from the
 JSON templates.  This is an alternative way to create OpenShift objects
@@ -261,61 +121,6 @@ instead of using *oc create*.
 
 See the README file within the workshop directory for instructions
 on running the example.
-
-===== Secrets
-
-You can use Kubernetes Secrets to set and maintain your database
-credentials.  Secrets requires you base64 encode your user and password
-values as follows:
-
-....
-echo -n 'myuserid' | base64
-....
-
-You will paste these values into  your JSON secrets files for values.
-
-This example allows you to set the PostgreSQL passwords
-using Kubernetes Secrets.
-
-The secret uses a base64 encoded string to represent the
-values to be read by the container during initialization.  The
-encoded password value is *password*.  Run the example
-as follows:
-
-....
-cd $CCPROOT/examples/openshift/secret
-./run.sh
-....
-
-The secrets are mounted in the */pguser*, */pgprimary*, */pgroot* volumes within the
-container and read during initialization.  The container
-scripts create a PostgreSQL user with those values, and sets the passwords
-for the primary user and PostgreSQL superuser using the mounted secret volumes.
-
-When using secrets, you do NOT have to specify the following
-environment variables if you specify all three secrets volumes:
-
- * PG_USER
- * PG_PASSWORD
- * PG_ROOT_PASSWORD
- * PG_PRIMARY_USER
- * PG_PRIMARY_PASSWORD
-
-You can test the container as follows, in all cases, the password is *password*:
-....
-psql -h secret-pg -U pguser1 postgres
-psql -h secret-pg -U postgres postgres
-psql -h secret-pg -U primary postgres
-....
-
-Secrets requires you base64 encode your user and password
-values as follows:
-
-....
-echo -n 'myuserid' | base64
-....
-
-You can paste these values into your JSON secrets files for values.
 
 ===== SSL Authentication
 
@@ -374,7 +179,7 @@ psql -h server.crunchydata.com -U testuser userdb
 
 You should see a connection that looks like the following:
 ....
-psql (9.6.3)
+psql (9.6.8)
 SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
 Type "help" for help.
 
@@ -412,7 +217,7 @@ passwords:
  * externalize your passwords using secrets instead of using generated values
  * manually update your passwords to your known values after a restore
 
-*Note*: Environment variables can be modified when there is a a deployment
+NOTE: Environment variables can be modified when there is a a deployment
 controller in use. Currently, only the replicas have a deployment controller in
 order to avoid the possibility of creating multiple primaries.
 ....
@@ -501,6 +306,68 @@ the postgres user.
 
 https://github.com/openshift/postgresql/blob/master/9.4/root/usr/share/container-scripts/postgresql/common.sh
 
+===== Kubernetes Secrets
+
+You can use Kubernetes Secrets to set and maintain your database
+credentials.  Secrets requires you base64 encode your user and password
+values as follows:
+
+....
+echo -n 'myuserid' | base64
+....
+
+You will paste these values into  your JSON secrets files for values.
+
+This example allows you to set the PostgreSQL passwords
+using Kubernetes Secrets.
+
+The secret uses a base64 encoded string to represent the
+values to be read by the container during initialization.  The
+encoded password value is *password*.  Run the example
+as follows:
+
+....
+cd $CCPROOT/examples/openshift/secret
+./run.sh
+....
+
+Or if you're running Kubernetes:
+
+....
+cd $CCPROOT/examples/kube/secret
+./run.sh
+....
+
+The secrets are mounted in the */pguser*, */pgprimary*, */pgroot* volumes within the
+container and read during initialization.  The container
+scripts create a PostgreSQL user with those values, and sets the passwords
+for the primary user and PostgreSQL superuser using the mounted secret volumes.
+
+When using secrets, you do NOT have to specify the following
+environment variables if you specify all three secrets volumes:
+
+ * PG_USER
+ * PG_PASSWORD
+ * PG_ROOT_PASSWORD
+ * PG_PRIMARY_USER
+ * PG_PRIMARY_PASSWORD
+
+You can test the container as follows, in all cases, the password is *password*:
+....
+psql -h secret-pg -U pguser1 postgres
+psql -h secret-pg -U postgres postgres
+psql -h secret-pg -U primary postgres
+....
+
+Secrets requires you base64 encode your user and password
+values as follows:
+
+....
+echo -n 'myuserid' | base64
+....
+
+You can paste these values into your JSON secrets files for values.
+
 == Container Examples
 
 === Running a Single Database
@@ -514,13 +381,13 @@ and a default password of *password*.
 For all environments, the script additionally creates:
 
  * A persistent volume claim
- * A container named *basic*
+ * A container named *primary-pvc*
  * The database using predefined environment variables
 
 And specifically for the Kubernetes and OpenShift environments:
 
- * A pod named *basic*
- * A service named *basic*
+ * A pod named *primary-pvc*
+ * A service named *primary-pvc*
 
 To shutdown the instance and remove the container for each example, run the following:
 ....
@@ -544,13 +411,13 @@ psql -h localhost -p 12000 -U testuser -W userdb
 
 To create the example:
 ....
-cd $CCPROOT/examples/kube/basic
+cd $CCPROOT/examples/kube/primary-pvc
 ./run.sh
 ....
 
 Connect from your local host as follows:
 ....
-psql -h basic -U postgres postgres
+psql -h primary-pvc -U postgres postgres
 ....
 
 ==== Helm
@@ -562,23 +429,13 @@ example using Helm link:https://github.com/CrunchyData/crunchy-containers/blob/m
 
 To create the example:
 ....
-cd $CCPROOT/examples/openshift/basic
+cd $CCPROOT/examples/openshift/primary-pvc
 ./run.sh
 ....
 
 Connect from your local host as follows:
 ....
-psql -h basic.openshift.svc.cluster.local -U testuser userdb
-....
-
-=== Creating a Primary Database with PVC
-
-The other example *basic* uses emptyDir volumes for persistence; if it is desired to
-create a PVC based volume to store the PostgreSQL data files for a single primary pod,
-run the following example:
-....
-cd $CCPROOT/examples/openshift/primary-pvc
-./run.sh
+psql -h primary-pvc.openshift.svc.cluster.local -U testuser userdb
 ....
 
 === Creating a Primary / Replica Database Cluster
@@ -650,7 +507,7 @@ Next, using psql, connect to the service:
 psql -d userdb -h 0.0.0.0 -p <CONTAINER_PORT> -U testuser
 ....
 
-*Note:* See *PG_PASSWORD* in *docker-compose.yml* for the user password.
+NOTE: See *PG_PASSWORD* in *docker-compose.yml* for the user password.
 
 To tear down the example, run the following:
 ....
@@ -761,20 +618,6 @@ command multiple times and the IP address should alternate between the replicas:
 ....
 psql -h replica-dc -U postgres postgres -c 'select inet_server_addr()'
 ....
-
-*primary-replica-rc-pvc*
-
-The previous primary-replica deployments used emptyDir volumes for persistence. This example uses
-a PVC based volume in your NFS directory for the primary and the replicas.
-
-....
-cd $CCPROOT/examples/openshift/primary-replica-rc-pvc
-./run.sh
-....
-
-Upon examining the configured NFS directory, the PostgreSQL data directories that are created
-and used by the primary and replica pods are visible. Testing the example uses the same commands
-as above, substituting the name *primary-replica-rc-pvc*.
 
 === Primary / Replica Deployment
 
@@ -952,22 +795,22 @@ oc get pod
 
 === Performing a Backup & Restore
 
-The script assumes you are going to backup the *basic*
+The script assumes you are going to backup the *primary-pvc*
 container created in the first example, so you need to ensure
 that container is running. This example assumes you have configured NFS as described
 in the link:install.adoc[installation documentation]. Things to point out with this example
 include its use of persistent volumes and volume claims to store the backup data files to
 an NFS server.
 
-A successful backup will perform pg_basebackup on the pg-primary and store
-the backup in the NFS mounted volume under a directory named pg-primary. Each
+A successful backup will perform pg_basebackup on the *primary-pvc* container and store
+the backup in the NFS mounted volume under a directory named primary-pvc-backups. Each
 backup will be stored in a subdirectory with a timestamp as the name, allowing any number of backups to be kept.
 
 The backup script will do the following:
 
- * Start up a backup container named basicbackup
- * Run pg_basebackup on the container named primary
- * Store the backup in /tmp/backups/primary directory
+ * Start up a backup container named backup-job
+ * Run pg_basebackup on the container named primary-pvc
+ * Store the backup in /tmp/backups/primary-pvc-backups directory
  * Exit after the backup
 
 When you are ready to restore from the backup, the restore example runs a PostgreSQL container
@@ -1018,17 +861,17 @@ kubectl get job
 
 You should find the backup archive in this location:
 ....
-ls /mnt/nfsfileshare/basic
+ls /mnt/nfsfileshare/primary-pvc-backups
 ....
 
 *primary-restore*
 
 When ready to restore, you will need the timestamped directory path under
-/mnt/nfsfileshare/basic in order to locate the backup to use. Edit the primary-restore.json
+/mnt/nfsfileshare/primary-pvc-backups in order to locate the backup to use. Edit the primary-restore.json
 file and update the BACKUP_PATH setting to specify the NFS backup path you want to restore with.
 ....
 "name": "BACKUP_PATH",
-"value": "basic/2016-05-27-14-35-33"
+"value": "primary-pvc-backups/2016-05-27-14-35-33"
 ....
 
 Running the example:
@@ -1039,7 +882,7 @@ cd $CCPROOT/examples/kube/primary-restore
 
 Test the restored database as follows:
 ....
-psql -h restored-primary -U postgres postgres
+psql -h primary-restore -U postgres postgres
 ....
 
 ==== OpenShift
@@ -1056,11 +899,11 @@ of *Retain* to tell OpenShift that we want to keep the volume contents after the
 *primary-restore*
 
 When ready to restore, you will need the timestamped directory path under
-/mnt/nfsfileshare/basic in order to locate the backup to use. Edit the primary-restore.json
+/mnt/nfsfileshare/primary-pvc-backups in order to locate the backup to use. Edit the primary-restore.json
 file and update the BACKUP_PATH setting to specify the NFS backup path you want to restore with.
 ....
 "name": "BACKUP_PATH",
-"value": "basic-backup/2016-05-27-14-35-33"
+"value": "primary-pvc-backups/2016-05-27-14-35-33"
 ....
 
 Then create the pod:
@@ -1070,7 +913,7 @@ cd $CCPROOT/examples/openshift/primary-restore
 ....
 
 When the database pod starts, it will copy the backup files
-to the database directory inside the pod and start up postgres as
+to the database directory inside the pod and start up Postgres as
 usual.
 
 The restore only takes place if:
@@ -1092,7 +935,7 @@ for PostgreSQL without TLS.
 
 After running the example, you should be able to browse to http://127.0.0.1:5050
 and log into the web application using a user ID of *admin@admin.com*
-and password of *password*. 
+and password of *password*.
 
 If you are running this example using Kubernetes or
 OpenShift, replace *127.0.0.1:5050* with the <NODE_IP>:30000.
@@ -1139,6 +982,8 @@ cd $CCPROOT/examples/openshift/pgadmin4-http
 ./run.sh
 ....
 
+NOTE: An emptyDir, with write access, must be mounted to the */run/httpd* directory in OpenShift.
+
 === pgadmin4-https
 
 This example deploys the pgadmin4 v2 web user interface
@@ -1146,7 +991,7 @@ for PostgreSQL with TLS.
 
 After running the example, you should be able to browse to https://127.0.0.1:5050
 and log into the web application using a user ID of *admin@admin.com*
-and password of *password*. 
+and password of *password*.
 
 If you are running this example using Kubernetes or
 OpenShift, replace *127.0.0.1:5050* with the <NODE_IP>:30000.
@@ -1193,80 +1038,8 @@ cd $CCPROOT/examples/openshift/pgadmin4-https
 ./run.sh
 ....
 
-=== Proxy
+NOTE: An emptyDir, with write access, must be mounted to the */run/httpd* directory in OpenShift.
 
-A *crunchy-proxy* example is provided that will run a container that creates a special
-purpose proxy to the primary and replica example provided in the *primary-replica* example.
-
-*crunchy-proxy* offers a high performance alternative to
-pgbouncer and pgpool.
-
-The proxy example copies a configuration file to the PV_PATH
-and starts up the *crunchy-proxy* within a Deployment.
-It then reads the configuration file from a */config* volume
-mount and begins execution.
-
-The proxy will listen on port 5432 as specified in the
-configuration file.  The example creates a Service named
-*crunchy-proxy* that you can use to access the configured
-PostgreSQL backend containers from the *primary-replica* example.
-
-SQL "reads" will be sent to the PostgreSQL replica database if your
-SQL includes the *crunchy-proxy* read annotation.  SQL statements
-that do not include the read annotation will be sent to the primary
-database container within the PostgreSQL cluster.
-
-See this link for details on the *crunchy-proxy*:
-https://github.com/CrunchyData/crunchy-proxy
-
-To shutdown the instance and remove the container for each example, run the following:
-....
-./cleanup.sh
-....
-
-==== Docker
-
-You can create the proxy by running:
-....
-cd $CCPROOT/examples/docker/crunchy-proxy
-./run.sh
-....
-
-This proxy will listen on localhost:12432.  You can access the
-*primary-replica* cluster through the following:
-....
-psql -h localhost -p 12432 -U postgres postgres
-....
-
-==== Kubernetes
-
-*Note*: If you run the example in minikube, you will need to manually
-copy the crunchy-proxy-config.json file to a file on
-the minikube named */data/config.json*.
-
-Start by running the proxy container:
-....
-cd $CCPROOT/examples/kube/crunchy-proxy
-./run.sh
-....
-
-Test the proxy by running psql commands via the proxy connection:
-....
-psql -h crunchy-proxy -U postgres postgres
-....
-
-==== OpenShift
-
-Start by running the proxy container:
-....
-cd $CCPROOT/examples/openshift/crunchy-proxy
-./run.sh
-....
-
-Test the proxy by running psql commands via the proxy connection:
-....
-psql -h crunchy-proxy -U postgres postgres
-....
 
 === pgpool
 
@@ -1301,11 +1074,11 @@ psql -h localhost -U testuser -p 12003 userdb
 
 ==== Kubernetes
 
-Running the example:
+Run the following command to deploy the pgpool service:
 ....
 cd $CCPROOT/examples/kube/primary-replica
 ./run.sh
-cd $CCPROOT/examples/kube/pgpool
+cd $CCPROOT/examples/kube/pgpool-deployment
 ./run.sh
 ....
 
@@ -1324,16 +1097,16 @@ psql -h pgpool -U testuser userdb -c 'show pool_nodes'
 
 Run the following command to deploy the pgpool service:
 ....
-cd $CCPROOT/examples/openshift/pgpool
+cd $CCPROOT/examples/openshift/primary-replica
+./run.sh
+cd $CCPROOT/examples/openshift/pgpool-deployment
 ./run.sh
 ....
 
-Next, you can access the primary replica cluster via the pgpool
-service by entering the following command:
-
+The example is configured to allow the *testuser* to connect
+to the *userdb* database as follows:
 ....
 psql -h pgpool -U testuser userdb
-psql -h pgpool -U testuser postgres
 ....
 
 You can view the nodes that pgpool is configured for by running:
@@ -1366,8 +1139,9 @@ To shutdown the instance and remove the container for each example, run the foll
 ==== Docker
 
 To run the example:
- * modify the run-badger.sh script to refer to the Docker container that you want to run pgbadger against
- * refer to the container’s data directory
+
+ * modify the *run-badger.sh* script to refer to the Docker container that you want to run pgbadger against
+ * refer to the container's data directory
  * start the container that you are referencing
 
 Then, run the example as follows:
@@ -1402,7 +1176,7 @@ curl http://badger:10000/api/badgergenerate
 
 You can view the database container logs using this command:
 ....
-kubectl logs -c server badger
+kubectl logs badger-example -c badger
 ....
 
 ==== OpenShift
@@ -1536,15 +1310,28 @@ You can collect various PostgreSQL metrics from your database
 container by running a crunchy-collect container that points
 to your database container.
 
-This will start up 3 containers and services:
+This will start up 4 containers:
+ * Collect
+ * Grafana
+ * PostgreSQL
+ * Prometheus
 
- * Prometheus (http://crunchy-prometheus:9090)
- * Prometheus gateway (http://crunchy-promgateway:9091)
- * Grafana (http://crunchy-grafana:3000)
+Every 5 seconds by default, Crunchy Prometheus will scrape the Crunchy Collect container
+for metrics.  These metrics will then be visualized by Crunchy Grafana.
 
-Every 3 minutes the collection container will collect PostgreSQL
-metrics and push them to the crunchy-prometheus database.  You
-can graph them using the crunchy-grafana container.
+By default, Crunchy Prometheus detects which environment its running on (Docker, Kubernetes, or OpenShift Container Platform)
+and applies a default configuration.  If this container is running on Kubernetes or OpenShift Container Platform,
+it will use the Kubernetes API to discover pods with the label *"crunchy-collect": "true"*.
+
+Crunchy Collect container *must* have this label to be discovered in these environments.
+
+Discovering pods requires a cluster role service account.  See the
+link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/kube/metrics/metrics-pod.json[Kubernetes] and
+link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/openshift/metrics/metrics-pod.json[OpenShift Container Platform]
+examples for account examples.
+
+For Docker environments the Crunchy Collect hostname must be specified as an environment
+variable.
 
 If firewalld is enabled in your environment, it may be necessary
 to allow the necessary ports through the firewall. This can be
@@ -1557,9 +1344,6 @@ firewall-cmd --permanent --zone metrics --add-port 9091/tcp
 firewall-cmd --permanent --zone metrics --add-port 3000/tcp
 firewall-cmd --reload
 ....
-
-All metrics collected by this set of containers in addition to details on accessing the
-custom Grafana dashboards provided are fully described in this link:metrics.adoc[document.]
 
 To shutdown the instance and remove the container for each example, run the following:
 ....
@@ -1574,68 +1358,71 @@ cd $CCPROOT/examples/docker/metrics
 ./run.sh
 ....
 
-An example has been provided that runs a database container
-in addition to the associated metrics collection container. Run the
-example as follows:
-....
-cd $CCPROOT/examples/docker/collect
-./run.sh
-....
+You will be able to access the Grafana and Prometheus services from the following
+web addresses:
+
+ * Grafana (http://0.0.0.0:3000)
+ * Prometheus (http://0.0.0.0:9090)
 
 ==== Kubernetes
 
 Running the example:
+
 ....
 cd $CCPROOT/examples/kube/metrics
 ./run.sh
-....
-
-If you want your metrics and dashboards to persist to NFS, run
-this script:
-....
-cd $CCPROOT/examples/kube/metrics
-./run-pvc.sh
 ....
 
 This example runs a pod that includes a database container and
-a metrics collection container. A service is also created for the pod.
-....
-cd $CCPROOT/examples/kube/collect
-./run.sh
-....
+a metrics collection container.
 
-You can view the collect container logs using this command:
-....
-kubectl logs -c collect primary-collect
-....
+You will be able to access the Grafana and Prometheus services from the following
+web addresses:
 
-You can access the database or drive load against it using
-this command:
+ * Grafana (http://NODE_IP_ADDRESS:30001)
+ * Prometheus (http://NODE_IP_ADDRESS:30002)
+
+You can view the container logs using these command:
+
 ....
-psql -h primary-collect -U postgres postgres
+kubectl logs -c grafana crunchy-metrics
+kubectl logs -c prometheus crunchy-metrics
+kubectl logs -c collect crunchy-pgsql
+kubectl logs -c postgres crunchy-pgsql
 ....
 
 ==== OpenShift
 
-First, create the crunchy-metrics pod which contains
-the Prometheus data store and the Grafana graphing web application:
+Running the example:
+
 ....
 cd $CCPROOT/examples/openshift/metrics
 ./run.sh
 ....
 
-Next, start a PostgreSQL pod that has the crunchy-collect container
-as follows:
+This example runs a pod that includes a database container and
+a metrics collection container.
+
+You will be able to access the Grafana and Prometheus services from the following
+web addresses:
+
+ * Grafana (http://NODE_IP_ADDRESS:30001)
+ * Prometheus (http://NODE_IP_ADDRESS:30002)
+
+You can view the container logs using these command:
+
 ....
-cd $CCPROOT/examples/openshift/collect
-./run.sh
+oc logs -c grafana crunchy-metrics
+oc logs -c prometheus crunchy-metrics
+oc logs -c collect crunchy-pgsql
+oc logs -c postgres crunchy-pgsql
 ....
 
 === Vacuum
 
 You can perform a PostgreSQL vacuum command by running the crunchy-vacuum
 container.  You specify a database to vacuum using environment variables. By default,
-it will specify the *basic* example; you will need to start the *basic* container
+it will specify the *primary-pvc* example; you will need to start the *primary-pvc* container
 before running *vacuum*.
 
 The crunchy-vacuum container image exists to allow a DBA a way to run a job either
@@ -1704,7 +1491,7 @@ cd ../vacuum-job
 The crunchy-dba container implements a cron scheduler. The purpose of the crunchy-dba
 container is to offer a way to perform simple DBA tasks that occur on some form of
 schedule such as backup jobs or running a vacuum on a single PostgreSQL database container
-(such as the *basic* example).
+(such as the *primary-pvc* example).
 
 You can either run the crunchy-dba container as a single pod or include the container
 within a database pod.
@@ -1741,15 +1528,7 @@ The pgbouncer utility can be used to provide a connection pool
 to PostgreSQL databases.
 
 This example configures pgbouncer to provide connection pooling
-for the primary and pg-replica databases.  It also sets the FAILOVER
-environment variable which will cause a failover to be triggered
-if the primary database can not be reached.
-
-After triggering the failover, pgbouncer will notice that the primary is not reachable
-and will touch the trigger file on the configured replica database to start
-the failover.  The pgbouncer container will then reconfigure
-pgbouncer to relabel the replica database into the primary database so clients
-to pgbouncer will be able to connect to the primary as before the failover.
+for the primary and pg-replica databases.
 
 This example is required to run in conjunction with another container, by default the
 *primary-replica* example.
@@ -1775,11 +1554,6 @@ cd $CCPROOT/examples/docker/pgbouncer
 ./run.sh
 ....
 
-To trigger the failover, stop the primary database:
-....
-docker stop primary
-....
-
 To log into the database from the pgbouncer connection pool
 you would enter the following using the default password *password*:
 ....
@@ -1789,35 +1563,28 @@ psql -h localhost -p 12005 -U testuser primary
 ==== Kubernetes
 
 Running the example:
+
 ....
 cd $CCPROOT/examples/kube/pgbouncer
 ./run.sh
 ....
 
 Connect to the *primary* and *replica* databases as follows:
+
 ....
 psql -h pgbouncer -U postgres primary
 psql -h pgbouncer -U postgres replica
 ....
 
-The names *primary* and *replica* are pgbouncer configured names
-and don't necessarily have to match the database name in the
-actual PostgreSQL instance.
-
 View the pgbouncer log as follows:
+
 ....
 kubectl log pgbouncer
 ....
 
-Next, test the failover capability within the crunchy-watch
-container using the following:
-....
-kubectl delete pod pr-primary
-....
+To log into the database from the pgbouncer connection pool
+you would enter the following using the default password *password*:
 
-Take another look at the pgbouncer log and you will see it trigger
-the failover to the replica pod.  After this failover
-you should be able to execute the command:
 ....
 psql -h pgbouncer -U postgres primary
 ....
@@ -1830,30 +1597,21 @@ cd $CCPROOT/examples/openshift/pgbouncer
 ./run.sh
 ....
 
-Test the example by killing off the primary database container as follows:
-....
-oc delete pod pr-primary
-....
+To log into the database from the pgbouncer connection pool
+you would enter the following using the default password *password*:
 
-Then watch the pgbouncer log as follows to confirm it detects the loss of the primary:
 ....
-oc logs pgbouncer
-....
-
-After the failover is completed, you should be able to access the new primary using
-the primary service as follows:
-....
-psql -h pr-primary.openshift.svc.cluster.local -U primary postgres
+psql -h pr-primary.openshift.svc.cluster.local -U primaryuser postgres
 ....
 
 and access the replica as follows:
 ....
-psql -h pr-replica.openshift.svc.cluster.local -U primary postgres
+psql -h pr-replica.openshift.svc.cluster.local -U primaryuser postgres
 ....
 
 or via the pgbouncer proxy as follows:
 ....
-psql -h pgbouncer.openshift.svc.cluster.local  -U primary primary
+psql -h pgbouncer.openshift.svc.cluster.local  -U primaryuser primary
 ....
 
 === Synchronous Replication
@@ -1867,9 +1625,9 @@ Kubernetes and OpenShift environments:
 psql -h primarysync -U postgres postgres -c 'create table test (id int)'
 psql -h primarysync -U postgres postgres -c 'insert into test values (1)'
 psql -h primarysync -U postgres postgres -c 'table pg_stat_replication'
-psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test’
-psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test’
-psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test’
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
 ....
 
 This set of queries will show you the IP address of the PostgreSQL replica
@@ -1891,21 +1649,21 @@ cd $CCPROOT/examples/docker/sync
 ....
 
 You can test the replication status on the primary by using the following command
-and the password "password":
+and the password ``password'':
 ....
-psql -h 127.0.0.1 -p 12000 -U postgres postgres -c 'table pg_stat_replication'
+psql -h 127.0.0.1 -p 12010 -U postgres postgres -c 'table pg_stat_replication'
 ....
 
-You should see 2 rows, 1 for the async replica and 1 for the sync replica.  The
+You should see 2 rows; 1 for the asynchronous replica and 1 for the synchronous replica.  The
 sync_state column shows values of async or sync.
 
-You can test replication to the replicas by entering some data on
-the primary like this, and then querying the replicas for that data:
+You can test replication to the replicas by first entering some data on
+the primary, and secondly querying the replicas for that data:
 ....
-psql -h 127.0.0.1 -p 12000 -U postgres postgres -c 'create table foo (id int)'
-psql -h 127.0.0.1 -p 12000 -U postgres postgres -c 'insert into foo values (1)'
-psql -h 127.0.0.1 -p 12002 -U postgres postgres -c 'table foo'
-psql -h 127.0.0.1 -p 12003 -U postgres postgres -c 'table foo'
+psql -h 127.0.0.1 -p 12010 -U postgres postgres -c 'create table foo (id int)'
+psql -h 127.0.0.1 -p 12010 -U postgres postgres -c 'insert into foo values (1)'
+psql -h 127.0.0.1 -p 12011 -U postgres postgres -c 'table foo'
+psql -h 127.0.0.1 -p 12012 -U postgres postgres -c 'table foo'
 ....
 
 ==== Kubernetes
@@ -2062,8 +1820,12 @@ It takes about 1 minute for the database to become ready for use after initially
 This database is created with the ARCHIVE_MODE and ARCHIVE_TIMEOUT
 environment variables set.
 
-*Warning*:  WAL segment files are written to the /tmp directory. Leaving the example running
+WARNING:  WAL segment files are written to the /tmp directory. Leaving the example running
 for a long time could fill up your /tmp directory.
+
+NOTE: If you're running the PITR example for *PostgreSQL versions 9.5 or 9.6*, please note that
+starting in PostgreSQL version 10, the pg_xlog directory was renamed to pg_wal. Additionally, all usages
+of the function 'pg_xlog_replay_resume' were changed to 'pg_wal_replay_resume'.
 
 To shutdown the instance and remove the container for each example, run the following:
 ....
@@ -2085,7 +1847,8 @@ Next, we will create a base backup of that database using this:
 
 After creating the base backup of the database, WAL segment files are created every 60 seconds
 that contain any database changes. These segments are stored in the
-/tmp/primary-data/master-wal directory.
+/tmp/primary-pitr/primary-pitr/pg_wal directory. If you're running PostgreSQL version 9.5 or 9.6,
+pg_wal will be named pg_xlog.
 
 Create some data in your database using this command:
 ....
@@ -2132,11 +1895,20 @@ psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
 
 This SQL command should show that the pitrtest table does not exist
 at this recovery time. The output should be similar to:
+....
+ERROR: relation "pitrtest" does not exist
+....
 
 PostgreSQL allows you to pause the recovery process if the target name
 or time is specified.  This pause would allow a DBA a chance to review
 the recovery time/name and see if this is what they want or expect.  If so,
 the DBA can run the following command to resume and complete the recovery:
+....
+psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume()'
+....
+
+NOTE: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
+pg_xlog instead:
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
 ....
@@ -2155,8 +1927,15 @@ vi ./run-restore-pitr.sh
 After this restore, you should be able to see the test table:
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
+psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume()'
+....
+
+NOTE: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
+pg_xlog instead:
+....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
 ....
+
 
 Lastly, start a recovery using all of the WAL files. This will get the
 restored database as current as possible. To do so, edit the script
@@ -2250,11 +2029,17 @@ a test to see if the recovery worked as expected:
 ....
 psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'table pitrtest'
 psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'create table foo (id int)'
-psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'select pg_xlog_replay_resume()'
+psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'select pg_wal_replay_resume()'
 psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'create table foo (id int)'
 ....
 
-The output of these command should show that the *pitrtest* table is not
+NOTE: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
+pg_xlog instead:
+....
+psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
+....
+
+The output of these commands should show that the *pitrtest* table is not
 present.  It should also show that you can not create a new table
 because the database is paused in recovery mode.  Lastly, if you
 execute a *resume* command, it will show that you can now create
@@ -2277,31 +2062,32 @@ system with the following path configurations be present:
 
 Once you recover a database using PITR, it will be in read-only mode.  To
 make the database resume as a writable database, run the following
-sql command:
+SQL command:
+....
+select pg_wal_replay_resume();
+....
+
+NOTE: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
+pg_xlog instead:
 ....
 select pg_xlog_replay_resume();
 ....
 
-This command changed for PG10 to:
-....
-postgres=# select pg_wal_replay_resume();
-....
+=== pg_audit
 
-=== pgaudit
-
-This example provides an example of enabling pgaudit output.
-As of release 1.3, pgaudit is included in the crunchy-postgres
+This example provides an example of enabling pg_audit output.
+As of release 1.3, pg_audit is included in the crunchy-postgres
 container and is added to the PostgreSQL shared library list in
 the postgresql.conf.
 
-Given the numerous ways pgaudit can be configured, the exact
-pgaudit configuration is left to the user to define.  pgaudit
+Given the numerous ways pg_audit can be configured, the exact
+pg_audit configuration is left to the user to define.  pg_audit
 allows you to configure auditing rules either in postgresql.conf
 or within your SQL script.
 
-For this test, we place pgaudit statements within a SQL script
+For this test, we place pg_audit statements within a SQL script
 and verify that auditing is enabled and working.  If you choose
-to configure pgaudit via a postgresql.conf file, then you will
+to configure pg_audit via a postgresql.conf file, then you will
 need to define your own custom postgresql.conf file and mount
 it to override the default postgresql.conf file.
 
@@ -2313,16 +2099,44 @@ cd $CCPROOT/examples/docker/pgaudit
 ./run.sh
 ....
 
-This starts a database on port 12005 on localhost.  You can then
-run the test script as follows:
+This starts an instance of the Audit container (running crunchy-postgres)
+on port 12005 on localhost.  You can then run the test script as follows:
 ....
 ./test-pgaudit.sh
 ....
 
-This test executes a SQL file which contains pgaudit configuration
+This test executes a SQL file which contains pg_audit configuration
 statements as well as executes some basic SQL commands.  These
-SQL commands will cause pgaudit to create audit log messages in
+SQL commands will cause pg_audit to create audit log messages in
 the pg_log log file created by the database container.
+
+==== Kubernetes
+
+Run the following:
+....
+cd $CCPROOT/examples/kube/pgaudit
+./run.sh
+....
+
+The script will create an Audit pod (running the crunchy-postgres container)
+on the Kubernetes instance and then executes a SQL file which
+contains pg_audit configuration statements as well as executes some
+basic SQL commands.  These SQL commands will cause pg_audit to create
+audit log messages in the pg_log log file created by the database container.
+
+==== OpenShift
+
+Run the following:
+....
+cd $CCPROOT/examples/openshift/pgaudit
+./run.sh
+....
+
+The script will create an Audit pod (running the crunchy-postgres container)
+on the OpenShift instance and then executes a SQL file which
+contains pg_audit configuration statements as well as executes some
+basic SQL commands.  These SQL commands will cause pg_audit to create
+audit log messages in the pg_log log file created by the database container.
 
 === Docker Swarm
 
@@ -2405,13 +2219,13 @@ you perform a pg_upgrade on a 9.5 database converting its data
 to a 9.6 version.
 
 This example assumes you have run *primary-pvc* using a PG 9.5 image
-such as *centos7-9.5.10-1.7.1* prior to running this upgrade.
+such as *centos7-9.5.12-1.8.2* prior to running this upgrade.
 
 Prior to starting this example, shut down the *primary-pvc* database
 using the *examples/kube/primary-pvc/cleanup.sh* script.
 
 Prior to running this example, make sure your CCP_IMAGE_TAG
-environment variable is using a PG 9.6 image such as *centos7-9.6.6-1.7.1*.
+environment variable is using a PG 9.6 image such as *centos7-9.6.8-1.8.2*.
 
 This will create the following in your Kubernetes environment:
 
@@ -2441,14 +2255,14 @@ test database should be found in the *primary-upgrade* database.
 
 === Performing a pg_dump
 
-The script assumes you are going to backup the *basic*
+The script assumes you are going to backup the *primary-pvc*
 container created in the first example, so you need to ensure
 that container is running. This example assumes you have configured NFS as described
 in the link:install.adoc[installation documentation]. Things to point out with this example
 include its use of persistent volumes and volume claims to store the backup data files to
 an NFS server.
 
-A successful backup will perform pg_dump/pg_dumpall on the basic and store
+A successful backup will perform pg_dump/pg_dumpall on the primary-pvc and store
 the resulting files in the NFS mounted volume under a directory named using the database host
 name plus -dumps as a sub-directory, then followed by a unique backup directory based upon a
 date/timestamp - allowing any number of backups to be kept.
@@ -2456,7 +2270,7 @@ date/timestamp - allowing any number of backups to be kept.
 The dump script will do the following:
 
  * Start up a backup container named pgdump-job
- * Run pg_dump/pg_dumpall on the container named basic
+ * Run pg_dump/pg_dumpall on the container named primary-pvc
  * Store the backup in the PV in a path named with a date/timestamp
  * Exit after the backup
 
@@ -2471,6 +2285,31 @@ Run the backup with this command:
 ....
 cd $CCPROOT/examples/docker/pgdump
 ./run.sh
+....
+
+Make note of the container ID from the output of the run script in order to check the Docker logs of the container.
+....
+docker logs pgdump 2>&1 | grep "output"
+....
+
+That will return the location where the pg_dump/pg_dumpall file(s) were written.  E.g.:
+....
+PGDUMP_ALL output file has been written to: /pgdata/primary-pvc-dumps/2018-02-14-05-00-23/pgdumpall.sql
+....
+
+Make note of the timestamp above and run a find to get the fully-qualified filesystem path where the file was written.  E.g.:
+....
+sudo find / -name 2018-02-14-05-00-23
+....
+
+That will return the fully-qualified path, where the file can be accessed/copied to your local filesystem.  E.g.:
+....
+/var/lib/docker/volumes/pgdump-volume/_data/primary-pvc-dumps/2018-02-14-05-00-23
+....
+
+Copy the file (path returned above + the filename) to your local filesystem for use or for running with the pg_restore container:
+....
+sudo cp -p /var/lib/docker/volumes/pgdump-volume/_data/primary-pvc-dumps/2018-02-14-05-00-23/pgdumpall.sql /tmp
 ....
 
 ==== Kubernetes
@@ -2501,21 +2340,21 @@ cleanly dropped before being recreated, etc.
 
 === Performing a pg_restore
 
-The script assumes you are going to restore to the *basic*
+The script assumes you are going to restore to the *primary-pvc*
 container created in the first example, so you need to ensure
 that container is running. This example assumes you have configured NFS as described
 in the link:install.adoc[installation documentation]. Things to point out with this example
 include its use of persistent volumes and volume claims to store the backup data files to
 an NFS server.
 
-Successful use of the crunchy-restore container will run a job to restore files generated by 
+Successful use of the crunchy-restore container will run a job to restore files generated by
 pg_dump/pg_dumpall to a container via psql/pg_restore; then container will terminate successfully
 and signal job completion.
 
 The restore script will do the following:
 
  * Mount a PV/PVC as named in the JSON file
- * Run psql/pg_restore on the container named basic (or as specified otherwise in the JSON file)
+ * Run psql/pg_restore on the container named primary-pvc (or as specified otherwise in the JSON file)
  * Exit after the backup
 
 To shutdown the instance and remove the container for each example, run the following:
@@ -2554,7 +2393,7 @@ cd $CCPROOT/examples/openshift/pgrestore-job
 ....
 
 The *pgrestore-job.json* file within that directory specifies options that control the behavior of the pgrestore-job.
-E.g. Whether to restore via psql vs pg_restore (dependent on the PGRESTORE_FORMAT variable), whether to include verbose output, 
+E.g. Whether to restore via psql vs pg_restore (dependent on the PGRESTORE_FORMAT variable), whether to include verbose output,
 if database objects should be cleanly dropped before being recreated, etc.
 
 
@@ -2566,6 +2405,6 @@ To enable SSHD on PostgreSQL, see the link:sshd.adoc[SSHD Documentation].
 
 Copyright © 2018 Crunchy Data Solutions, Inc.
 
-CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE ``AS IS'' WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.

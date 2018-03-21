@@ -15,17 +15,17 @@
 
 echo "Cleaning up..."
 
-CONTAINER_NAME=sync-primary
+CONTAINER_NAME=syncprimary
 
 docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME
 
-CONTAINER_NAME=sync-replica
+CONTAINER_NAME=syncreplica
 
 docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME
 
-CONTAINER_NAME=async-replica
+CONTAINER_NAME=asyncreplica
 
 docker stop $CONTAINER_NAME
 docker rm $CONTAINER_NAME

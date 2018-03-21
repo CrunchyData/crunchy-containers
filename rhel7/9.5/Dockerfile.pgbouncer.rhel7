@@ -4,10 +4,10 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/pgbouncer" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.10" \
+	PostgresFullVersion="9.5.12" \
         vendor="crunchy data" \
         version="7.3" \
-        release="1.7.1" \
+        release="1.8.2" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Lightweight connection pooler for crunchy-postgres" \
@@ -24,11 +24,6 @@ COPY docs/pgbouncer/help.1 /help.1
 COPY docs/pgbouncer/help.md /help.md
 COPY docs/licenses /licenses
 
-# PGDG Postgres repo
-#RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
-
-RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-
 # set up Crunchy repo
 ADD conf/CRUNCHY-GPG-KEY.public  /
 ADD conf/crunchypg95.repo /etc/yum.repos.d/
@@ -37,29 +32,32 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 # install docker from docker repo
 ADD conf/pgbouncer/docker-rhel.repo /etc/yum.repos.d/
 
-RUN yum -y update && yum -y install nss_wrapper gettext docker-engine procps-ng \
-pgbouncer \
-postgresql95 \
-openssh-clients \
-hostname  \
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y install \
+      docker-engine \
+      gettext \
+      hostname  \
+      nss_wrapper \
+      pgbouncer \
+      postgresql95 \
+      procps-ng \
  && yum clean all -y
 
-# set up cpm directory
-#
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
-
-# add volumes to allow override of pgbouncer config files
-VOLUME ["/pgconf"]
-
-# open up the postgres port
-EXPOSE 5432
 
 ADD bin/pgbouncer /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgbouncer /opt/cpm/conf
 
-RUN chown -R pgbouncer:pgbouncer /opt/cpm/bin
+RUN chown -R 2:2 /opt/cpm/bin
 
-USER pgbouncer
+EXPOSE 5432
+
+VOLUME ["/pgconf"]
+
+USER 2
 
 CMD ["/opt/cpm/bin/startpgbouncer.sh"]

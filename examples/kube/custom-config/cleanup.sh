@@ -19,10 +19,11 @@ CONTAINER='custom-config'
 
 kubectl delete service custom-config
 kubectl delete pod custom-config
+kubectl delete pvc custom-config-pvc
 
-sudo rm $PV_PATH/setup.sql
-sudo rm $PV_PATH/pg_hba.conf
-sudo rm $PV_PATH/postgresql.conf
-sudo rm -rf $PV_PATH/$CONTAINER
+sudo rm $CCP_STORAGE_PATH/setup.sql
+sudo rm $CCP_STORAGE_PATH/pg_hba.conf
+sudo rm $CCP_STORAGE_PATH/postgresql.conf
+sudo rm -rf $CCP_STORAGE_PATH/$CONTAINER
 
 $CCPROOT/examples/waitforterm.sh custom-config kubectl

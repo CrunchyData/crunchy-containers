@@ -3,10 +3,10 @@ FROM centos:7
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
         PostgresVersion="9.6" \
-        PostgresFullVersion="9.6.6" \
+        PostgresFullVersion="9.6.8" \
         version="7.3" \
-        release="1.7.1" \
-        build-date="2018-01-30" \
+        release="1.8.2" \
+        build-date="2018-03-01" \
         url="https://crunchydata.com" \
         summary="Executes the pgbackrest utility, allowing FULL & DELTA restore capability." \
         description="Executes pgbackrest utility, allowing FULL & DELTA restore capability. Capable of mounting the pgbackrest.conf config file via /pgconf volume in addition to mounting the /backrestrepo for access to pgbackrest archives." \
@@ -24,7 +24,6 @@ RUN yum -y update && yum -y install epel-release \
 	hostname \
 	gettext \
 	nss_wrapper \
-	openssh-clients \
  	procps-ng  \
  && yum -y clean all
 

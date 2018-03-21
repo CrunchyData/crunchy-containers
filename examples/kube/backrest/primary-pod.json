@@ -9,6 +9,7 @@
     },
     "spec": {
         "securityContext": {
+		$CCP_SECURITY_CONTEXT
         },
         "containers": [{
             "name": "primary-backrest",
@@ -77,12 +78,12 @@
         }, {
             "name": "backrestrepo",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc2"
+                "claimName": "backrest-backrestrepo-pvc"
             }
         }, {
             "name": "pgdata",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc"
+                "claimName": "backrest-pvc"
             }
         }, {
             "name": "backup",

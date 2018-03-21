@@ -1,108 +1,57 @@
 {
-    "kind": "Template",
-    "apiVersion": "v1",
+    "kind": "Job",
+    "apiVersion": "batch/v1",
     "metadata": {
-        "name": "simple-pgdump-example",
-        "creationTimestamp": null,
-        "annotations": {
-            "description": "Crunchy PostgreSQL pgdump Example",
-            "iconClass": "icon-database",
-            "tags": "database,postgresql,replication"
-        }
+        "name": "pgdump-job"
     },
-    "parameters": [{
-        "name": "CCP_IMAGE_PREFIX",
-        "description": "image prefix to use"
-    }, {
-        "name": "CCP_IMAGE_TAG",
-        "description": "image tag to use"
-    }, {
-      "name": "DATABASE_HOST",
-      "displayName": "Database Host",
-      "description": "This is the database the backup will be done for.",
-      "value": "basic"
-    }, {
-      "name": "DATABASE_PORT",
-      "displayName": "Database Port",
-      "description": "The database port of the database the backup will be done for.",
-      "value": "5432"
-    }, {
-      "name": "DATABASE_USER",
-      "displayName": "Database User",
-      "description": "The database user the backup will be done with.",
-      "value": "postgres"
-    }, {
-      "name": "DATABASE_PASS",
-      "displayName": "Database User Password",
-      "description": "Password of the database backup user.",
-      "value": "password"
-    }, {
-      "name": "PGDUMP_ALL",
-      "displayName": "pgdump_all",
-      "description": "Flag to indicate whether pg_dumpall should be run (instead of pg_dump). Valid values: true, false",
-      "value": "true"
-    }, {
-      "name": "PGDUMP_VERBOSE",
-      "displayName": "pgdump_verbose",
-      "description": "Flag to indicate whether the output from the operation should be verbose. Valid values: true, false",
-      "value": "true"
-    }],
-
-    "objects": [{
-        "kind": "Job",
-        "apiVersion": "batch/v1",
-        "metadata": {
-            "name": "pgdump-job"
-        },
-        "spec": {
-            "template": {
-                "metadata": {
-                    "name": "pgdump-job",
-                    "labels": {
-                        "app": "pgdump-job"
-                    }
-                },
-                "spec": {
-                    "securityContext": {
-                        "supplementalGroups": [65534]
-                    },
-                    "volumes": [{
-                        "name": "pgdata",
-                        "persistentVolumeClaim": {
-                            "claimName": "crunchy-pvc"
-                        }
-                    }],
-                    "containers": [{
-                        "name": "pgdump-job",
-                        "image": "${CCP_IMAGE_PREFIX}/crunchy-dump:${CCP_IMAGE_TAG}",
-                        "volumeMounts": [{
-                            "mountPath": "/pgdata",
-                            "name": "pgdata",
-                            "readOnly": false
-                        }],
-                        "env": [{
-                            "name": "PGDUMP_HOST",
-                            "value": "${DATABASE_HOST}"
-                        }, {
-                            "name": "PGDUMP_USER",
-                            "value": "${DATABASE_USER}"
-                        }, {
-                            "name": "PGDUMP_PASS",
-                            "value": "${DATABASE_PASS}"
-                        }, {
-                            "name": "PGDUMP_PORT",
-                            "value": "${DATABASE_PORT}"
-                        }, {
-                            "name": "PGDUMP_ALL",
-                            "value": "${PGDUMP_ALL}"
-                        }, {
-                            "name": "PGDUMP_VERBOSE",
-                            "value": "${PGDUMP_VERBOSE}"
-                        }]
-                    }],
-                    "restartPolicy": "Never"
+    "spec": {
+        "template": {
+            "metadata": {
+                "name": "pgdump-job",
+                "labels": {
+                    "app": "pgdump-job"
                 }
+            },
+            "spec": {
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                },
+                "volumes": [{
+                    "name": "pgdata",
+                    "persistentVolumeClaim": {
+                        "claimName": "pgdump-pvc"
+                    }
+                }],
+                "containers": [{
+                    "name": "pgdump-job",
+                    "image": "$CCP_IMAGE_PREFIX/crunchy-dump:$CCP_IMAGE_TAG",
+                    "volumeMounts": [{
+                        "mountPath": "/pgdata",
+                        "name": "pgdata",
+                        "readOnly": false
+                    }],
+                    "env": [{
+                        "name": "PGDUMP_HOST",
+                        "value": "primary-pvc"
+                    }, {
+                        "name": "PGDUMP_USER",
+                        "value": "postgres"
+                    }, {
+                        "name": "PGDUMP_PASS",
+                        "value": "password"
+                    }, {
+                        "name": "PGDUMP_PORT",
+                        "value": "5432"
+                    }, {
+                        "name": "PGDUMP_ALL",
+                        "value": "true"
+                    }, {
+                        "name": "PGDUMP_VERBOSE",
+                        "value": "true"
+                    }]
+                }],
+                "restartPolicy": "Never"
             }
         }
-    }]
+    }
 }

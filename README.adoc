@@ -1,5 +1,10 @@
 == Crunchy PostgreSQL Containers
-v1.7.1, {docdate}
+
+Latest Release: v1.8.2, {docdate}
+
+*Warning:* the master branch is considered unstable, please consult the link:https://github.com/CrunchyData/crunchy-containers/releases[tagged release] 
+currently deployed in your environment.
+
 
 image::images/crunchy_logo.png?raw=true[]
 
@@ -23,9 +28,9 @@ The project includes the following containers:
  * link:docs/containers.adoc#crunchy-pgpool[crunchy-pgpool] - executes pgpool
  * link:docs/containers.adoc#crunchy-pgbadger[crunchy-pgbadger] - executes pgbadger
  * link:docs/containers.adoc#crunchy-watch[crunchy-watch] - performs a form of automated failover
- * link:docs/metrics.adoc#crunchy-collect[crunchy-collect] - collects Postgres metrics
- * link:docs/metrics.adoc#crunchy-prometheus[crunchy-prometheus] -stores Postgres metrics
- * link:docs/metrics.adoc#crunchy-grafana[crunchy-grafana] - graphs Postgres metrics
+ * link:docs/containers.adoc#crunchy-collect[crunchy-collect] - collects Postgres metrics
+ * link:docs/containers.adoc#crunchy-prometheus[crunchy-prometheus] -stores Postgres metrics
+ * link:docs/containers.adoc#crunchy-grafana[crunchy-grafana] - graphs Postgres metrics
  * link:docs/containers.adoc#crunchy-pgbouncer[crunchy-pgbouncer] - pgbouncer connection pooler and simple form of failover
  * link:docs/containers.adoc#crunchy-pgadmin4[crunchy-pgadmin4] - pgadmin4 web application
  * link:docs/containers.adoc#crunchy-dba[crunchy-dba] - implements a cron scheduler to perform simple DBA tasks

@@ -6,8 +6,8 @@ LABEL name="crunchydata/pgbouncer" \
         vendor="crunchy data" \
         version="7.3" \
       	PostgresVersion="10" \
-      	PostgresFullVersion="10.1" \
-        release="1.7.1" \
+      	PostgresFullVersion="10.3" \
+        release="1.8.2" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Lightweight connection pooler for crunchy-postgres" \
@@ -34,31 +34,32 @@ ADD conf/CRUNCHY-GPG-KEY.public  /
 ADD conf/crunchypg10.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
-RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
- && yum -y update && yum -y install docker-engine \
-	gettext \
-	hostname  \
-	nss_wrapper \
-	openssh-clients \
-	procps-ng \
- && yum -y install 	postgresql10 pgbouncer \
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y install \
+      docker-engine \
+      gettext \
+      hostname  \
+      nss_wrapper \
+      pgbouncer \
+      postgresql10 \
+      procps-ng \
  && yum clean all -y
 
-# set up cpm directory
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
-
-# add volumes to allow override of pgbouncer config files
-VOLUME ["/pgconf"]
-
-# open up the postgres port
-EXPOSE 5432
 
 ADD bin/pgbouncer /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgbouncer /opt/cpm/conf
 
-RUN chown -R daemon:daemon /opt/cpm/bin
+RUN chown -R 2:2 /opt/cpm/bin
 
-USER pgbouncer
+EXPOSE 5432
+
+VOLUME ["/pgconf"]
+
+USER 2
 
 CMD ["/opt/cpm/bin/startpgbouncer.sh"]

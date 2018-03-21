@@ -35,7 +35,7 @@ SyslogFacility AUTHPRIV
 
 #LoginGraceTime 2m
 PermitRootLogin no
-#StrictModes yes
+StrictModes no
 #MaxAuthTries 6
 #MaxSessions 10
 
@@ -43,7 +43,7 @@ PubkeyAuthentication yes
 
 # The default is to check both .ssh/authorized_keys and .ssh/authorized_keys2
 # but this is overridden so installations will only check .ssh/authorized_keys
-AuthorizedKeysFile	.ssh/authorized_keys
+AuthorizedKeysFile	/pgconf/authorized_keys
 
 #AuthorizedPrincipalsFile none
 
@@ -92,7 +92,7 @@ ChallengeResponseAuthentication yes
 # and ChallengeResponseAuthentication to 'no'.
 # WARNING: 'UsePAM no' is not supported in Red Hat Enterprise Linux and may cause several
 # problems.
-UsePAM yes
+UsePAM no 
 
 #AllowAgentForwarding yes
 #AllowTcpForwarding yes

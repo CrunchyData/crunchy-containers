@@ -17,5 +17,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+oc create -f $DIR/backrest-pvc.json
+oc create -f $DIR/backrest-backrestrepo-pvc.json
+
 oc create configmap backrestconf --from-file pgbackrest.conf
-oc process -f $DIR/primary-pod.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+expenv -f $DIR/primary-pod.json | oc create -f -

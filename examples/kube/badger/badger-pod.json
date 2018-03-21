@@ -40,7 +40,7 @@
                 "name": "PG_ROOT_PASSWORD",
                 "value": "password"
             }],
-            "securityContext": {},
+            "securityContext": { $CCP_SECURITY_CONTEXT },
 
             "volumeMounts": [{
                 "mountPath": "/pgdata",
@@ -55,7 +55,7 @@
                 "protocol": "TCP"
             }],
             "env": [],
-            "securityContext": {},
+            "securityContext": { $CCP_SECURITY_CONTEXT },
 
             "volumeMounts": [{
                 "mountPath": "/pgdata",

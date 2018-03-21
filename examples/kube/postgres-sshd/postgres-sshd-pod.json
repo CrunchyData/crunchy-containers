@@ -8,13 +8,10 @@
         }
     },
     "spec": {
-        "securityContext": {},
+        "securityContext": { $CCP_SECURITY_CONTEXT },
         "containers": [
             {
                 "name": "pgsql",
-                "securityContext": {
-                    "privileged": false
-                },
                 "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
                 "ports": [
                     {
@@ -106,13 +103,13 @@
             {
                 "name": "backrestrepo",
                 "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc2"
+                    "claimName": "postgres-sshd-backrestrepo-pvc"
                 }
             },
             {
                 "name": "pgdata",
                 "persistentVolumeClaim": {
-                    "claimName": "crunchy-pvc"
+                    "claimName": "postgres-sshd-pvc"
                 }
             },
             {

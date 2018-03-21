@@ -1,0 +1,30 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "postgres-sshd",
+        "labels": {
+            "name": "postgres-sshd"
+        }
+    },
+    "spec": {
+        "ports": [{
+            "name": "pgsql",
+            "protocol": "TCP",
+            "port": 5432,
+            "targetPort": 5432,
+            "nodePort": 0
+        }, {
+            "name": "sshd",
+            "protocol": "TCP",
+            "port": 2022,
+            "targetPort": 2022,
+            "nodePort": 0
+        }],
+        "selector": {
+            "name": "postgres-sshd"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+    }
+}

@@ -104,6 +104,7 @@
                 "terminationGracePeriodSeconds": 30,
                 "dnsPolicy": "ClusterFirst",
                 "securityContext": {
+			$CCP_SECURITY_CONTEXT
                 }
             }
         },

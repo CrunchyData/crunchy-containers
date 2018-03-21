@@ -3,10 +3,10 @@ FROM centos:7
 LABEL name="crunchydata/dump" \
         vendor="crunchy data" \
       	PostgresVersion="10" \
-      	PostgresFullVersion="10.1" \
+      	PostgresFullVersion="10.3" \
         version="7.3" \
-        release="1.7.1" \
-        build-date="2018-01-30" \
+        release="1.8.2" \
+        build-date="2018-03-01" \
         url="https://crunchydata.com" \
         summary="Performs a pg_dump on a database container" \
         description="Meant to be executed upon demand, this container will run pg_dump against a running database container and write the backup files to a mounted directory." \
@@ -25,7 +25,6 @@ RUN yum -y update && yum install -y epel-release \
 	gettext \
 	hostname \
  	nss_wrapper \
-	openssh-clients \
 	procps-ng \
 	unzip \
  && yum -y install postgresql10 postgresql10-server \

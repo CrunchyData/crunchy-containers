@@ -6,8 +6,8 @@ LABEL name="crunchydata/pgpool" \
         vendor="crunchy data" \
         version="7.3" \
       	PostgresVersion="10" \
-      	PostgresFullVersion="10.1" \
-        release="1.7.1" \
+      	PostgresFullVersion="10.3" \
+        release="1.8.2" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
@@ -31,27 +31,38 @@ ADD conf/CRUNCHY-GPG-KEY.public  /
 ADD conf/crunchypg10.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
-RUN yum -y update && yum -y install hostname gettext  openssh-clients  procps-ng && \
-yum -y install postgresql10 pgpool-II-10 pgpool-II-10-extensions && \
-yum -y clean all
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
-# set up cpm directory
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y install \
+      gettext \
+      hostname \
+      nss_wrapper \
+      procps-ng \
+ && yum -y install \
+      postgresql10 \
+      pgpool-II-10 \
+      pgpool-II-10-extensions \
+ && yum -y clean all
+
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
-# add volumes to allow override of pgpool config files
-VOLUME ["/pgconf"]
+ADD bin/pgpool /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
+ADD conf/pgpool /opt/cpm/conf
+
+RUN ln -sf /opt/cpm/conf/pool_hba.conf /etc/pgpool-II-10/pool_hba.conf \
+  && ln -sf /opt/cpm/conf/pgpool/pool_passwd /etc/pgpool-II-10/pool_passwd
+
+RUN chown -R 2:2 /opt/cpm
 
 # open up the postgres port
 EXPOSE 5432
 
-ADD bin/pgpool /opt/cpm/bin
-ADD bin/common /opt/cpm/bin
-ADD conf/pgpool /opt/cpm/conf/pgpool
-ADD conf/pgpool/pool_hba.conf  /etc/pgpool-II-10/pool_hba.conf
-ADD conf/pgpool/pool_passwd /etc/pgpool-II-10/pool_passwd
+# add volumes to allow override of pgpool config files
+VOLUME ["/pgconf"]
 
-RUN chown -R daemon:daemon /opt/cpm/bin
-
-USER daemon
+USER 2
 
 CMD ["/opt/cpm/bin/startpgpool.sh"]

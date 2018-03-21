@@ -1,235 +1,108 @@
 {
-    "kind": "Template",
+    "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
         "name": "postgres-sshd",
-        "creationTimestamp": null,
-        "annotations": {
-            "description": "Crunchy PostgreSQL with SSHD enabled.",
-            "iconClass": "icon-database",
-            "tags": "database,postgresql,backrest"
+        "labels": {
+            "name": "postgres-sshd"
         }
     },
-    "parameters": [
-        {
-            "name": "CCP_IMAGE_PREFIX",
-            "description": "The image prefix to use"
+    "spec": {
+        "securityContext": {
+            $CCP_SECURITY_CONTEXT
         },
-        {
-            "name": "CCP_IMAGE_TAG",
-            "description": "The image tag to use"
-        },
-        {
-            "name": "PG_PRIMARY_USER",
-            "description": "The username used for primary / replica replication",
-            "value": "primaryuser"
-        },
-        {
-            "name": "PG_PRIMARY_PASSWORD",
-            "description": "The password for the PG primary user",
-            "value": "password"
-        },
-        {
-            "name": "PG_USER",
-            "description": "The username that clients will use to connect to PG server",
-            "value": "testuser"
-        },
-        {
-            "name": "PG_PASSWORD",
-            "description": "The password for the PG primary user",
-            "value": "password"
-        },
-        {
-            "name": "PG_DATABASE",
-            "description": "The name of the database that will be created",
-            "value": "userdb"
-        },
-        {
-            "name": "PG_ROOT_PASSWORD",
-            "description": "The password for the PG administrator",
-            "value": "password"
-        }
-    ],
-    "objects": [
-        {
-            "kind": "Service",
-            "apiVersion": "v1",
-            "metadata": {
-                "name": "postgres-sshd",
-                "labels": {
-                    "name": "postgres-sshd"
-                }
-            },
-            "spec": {
-                "ports": [
-                    {
-                        "name": "pgsql",
-                        "protocol": "TCP",
-                        "port": 5432,
-                        "targetPort": 5432,
-                        "nodePort": 0
-                    },
-                    {
-                        "name": "sshd",
-                        "protocol": "TCP",
-                        "port": 2022,
-                        "targetPort": 2022,
-                        "nodePort": 0
-                    }
-                ],
-                "selector": {
-                    "name": "postgres-sshd"
-                },
-                "type": "ClusterIP",
-                "sessionAffinity": "None"
-            },
-            "status": {
-                "loadBalancer": {}
+        "volumes": [{
+            "name": "pgdata",
+            "persistentVolumeClaim": {
+                "claimName": "postgres-sshd-pvc"
             }
-        },
-        {
-            "kind": "Pod",
-            "apiVersion": "v1",
-            "metadata": {
-                "name": "postgres-sshd",
-                "labels": {
-                    "name": "postgres-sshd"
-                }
-            },
-            "spec": {
-                "securityContext": {
-                    "supplementalGroups": [
-                        65534
-                    ]
-                },
-                "volumes": [
-                    {
-                        "name": "pgdata",
-                        "persistentVolumeClaim": {
-                            "claimName": "crunchy-pvc"
-                        }
-                    },
-                    {
-                        "name": "pgconf",
-                        "configMap": {
-                            "name": "pgconf"
-                        }
-                    },
-                    {
-                        "name": "backrestrepo",
-                        "persistentVolumeClaim": {
-                            "claimName": "crunchy-pvc2"
-                        }
-                    },
-                    {
-                        "name": "sshd",
-                        "secret": {
-                            "secretName": "sshd-secrets",
-                            "items": [
-                                {
-                                    "key": "ssh-host-rsa",
-                                    "path": "ssh_host_rsa_key"
-                                },
-                                {
-                                    "key": "ssh-host-ecdsa",
-                                    "path": "ssh_host_ecdsa_key"
-                                },
-                                {
-                                    "key": "ssh-host-ed25519",
-                                    "path": "ssh_host_ed25519_key"
-                                }
-                            ]
-                        }
-                    }
-                ],
-                "containers": [
-                    {
-                        "name": "postgres",
-                        "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
-                        "ports": [
-                            {
-                                "containerPort": 5432,
-                                "protocol": "TCP"
-                            },
-                            {
-                                "containerPort": 2022,
-                                "protocol": "TCP"
-                            }
-                        ],
-                        "env": [
-                            {
-                                "name": "PG_PRIMARY_USER",
-                                "value": "${PG_PRIMARY_USER}"
-                            },
-                            {
-                                "name": "PG_PRIMARY_PORT",
-                                "value": "5432"
-                            },
-                            {
-                                "name": "PG_MODE",
-                                "value": "primary"
-                            },
-                            {
-                                "name": "PG_PRIMARY_PASSWORD",
-                                "value": "${PG_PRIMARY_PASSWORD}"
-                            },
-                            {
-                                "name": "PG_USER",
-                                "value": "${PG_USER}"
-                            },
-                            {
-                                "name": "PG_PASSWORD",
-                                "value": "${PG_PASSWORD}"
-                            },
-                            {
-                                "name": "PG_DATABASE",
-                                "value": "${PG_DATABASE}"
-                            },
-                            {
-                                "name": "PGHOST",
-                                "value": "/tmp"
-                            },
-                            {
-                                "name": "ARCHIVE_TIMEOUT",
-                                "value": "60"
-                            },
-                            {
-                                "name": "PG_ROOT_PASSWORD",
-                                "value": "${PG_ROOT_PASSWORD}"
-                            },
-                            {
-                                "name": "ENABLE_SSHD",
-                                "value": "true"
-                            }
-                        ],
-                        "securityContext": {
-                            "capabilities": {}
-                        },
-                        "volumeMounts": [
-                            {
-                                "mountPath": "/pgdata",
-                                "name": "pgdata",
-                                "readOnly": false
-                            },
-                            {
-                                "mountPath": "/pgconf",
-                                "name": "pgconf",
-                                "readOnly": true
-                            },
-                            {
-                                "mountPath": "/backrestrepo",
-                                "name": "backrestrepo",
-                                "readOnly": false
-                            },
-                            {
-                                "mountPath": "/sshd",
-                                "name": "sshd",
-                                "readOnly": true
-                            }
-                        ]
-                    }
-                ]
+        }, {
+            "name": "pgconf",
+            "configMap": {
+                "name": "pgconf"
             }
-        }
-    ]
+        }, {
+            "name": "backrestrepo",
+            "persistentVolumeClaim": {
+                "claimName": "postgres-sshd-backrest-pvc"
+            }
+        }, {
+            "name": "sshd",
+            "secret": {
+                "secretName": "sshd-secrets",
+                "items": [{
+                    "key": "ssh-host-rsa",
+                    "path": "ssh_host_rsa_key"
+                }, {
+                    "key": "ssh-host-ecdsa",
+                    "path": "ssh_host_ecdsa_key"
+                }, {
+                    "key": "ssh-host-ed25519",
+                    "path": "ssh_host_ed25519_key"
+                }]
+            }
+        }],
+        "containers": [{
+            "name": "postgres",
+            "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
+            "ports": [{
+                "containerPort": 5432,
+                "protocol": "TCP"
+            }, {
+                "containerPort": 2022,
+                "protocol": "TCP"
+            }],
+            "env": [{
+                "name": "PG_PRIMARY_USER",
+                "value": "primaryuser"
+            }, {
+                "name": "PG_PRIMARY_PORT",
+                "value": "5432"
+            }, {
+                "name": "PG_MODE",
+                "value": "primary"
+            }, {
+                "name": "PG_PRIMARY_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_USER",
+                "value": "testuser"
+            }, {
+                "name": "PG_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_DATABASE",
+                "value": "userdb"
+            }, {
+                "name": "PGHOST",
+                "value": "/tmp"
+            }, {
+                "name": "ARCHIVE_TIMEOUT",
+                "value": "60"
+            }, {
+                "name": "PG_ROOT_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "ENABLE_SSHD",
+                "value": "true"
+            }],
+            "volumeMounts": [{
+                "mountPath": "/pgdata",
+                "name": "pgdata",
+                "readOnly": false
+            }, {
+                "mountPath": "/pgconf",
+                "name": "pgconf",
+                "readOnly": true
+            }, {
+                "mountPath": "/backrestrepo",
+                "name": "backrestrepo",
+                "readOnly": false
+            }, {
+                "mountPath": "/sshd",
+                "name": "sshd",
+                "readOnly": true
+            }]
+        }]
+    }
 }

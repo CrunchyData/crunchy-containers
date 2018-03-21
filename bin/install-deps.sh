@@ -14,25 +14,21 @@
 # limitations under the License.
 
 # Dependency Versions
-PROM_GATEWAY_VERSION=0.3.1
-PROMETHEUS_VERSION=1.5.2
-GRAFANA_VERSION=4.5.1
-POSTGRES_EXPORTER_VERSION=0.2.3
-NODE_EXPORTER_VERSION=0.14.0
+PROMETHEUS_VERSION=2.2.0
+GRAFANA_VERSION=4.6.3
+POSTGRES_EXPORTER_VERSION=0.4.4
+NODE_EXPORTER_VERSION=0.15.2
 
 sudo yum -y install net-tools bind-utils wget unzip git
 
 #
 # download the metrics products, only required to build the containers
 #
-wget -O $CCPROOT/prometheus-pushgateway.tar.gz https://github.com/prometheus/pushgateway/releases/download/v${PROM_GATEWAY_VERSION}/pushgateway-${PROM_GATEWAY_VERSION}.linux-amd64.tar.gz
+
 wget -O $CCPROOT/prometheus.tar.gz https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-amd64.tar.gz
 wget -O $CCPROOT/grafana.tar.gz https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-${GRAFANA_VERSION}.linux-x64.tar.gz
-wget -O $CCPROOT/postgres_exporter https://github.com/wrouesnel/postgres_exporter/releases/download/v${POSTGRES_EXPORTER_VERSION}/postgres_exporter
+wget -O $CCPROOT/postgres_exporter.tar.gz https://github.com/wrouesnel/postgres_exporter/releases/download/v${POSTGRES_EXPORTER_VERSION?}/postgres_exporter_v${POSTGRES_EXPORTER_VERSION?}_linux-amd64.tar.gz
 wget -O $CCPROOT/node_exporter.tar.gz https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
-
-# Ensure file modes
-chmod +x postgres_exporter
 
 #
 # this set is required to build the docs with a2x

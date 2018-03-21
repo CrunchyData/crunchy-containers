@@ -15,75 +15,62 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
+ose_hack
 
+export PG_EXP_HOME=$(find /opt/cpm/bin/ -type d -name 'postgres_exporter*')
+export NODE_EXP_HOME=$(find /opt/cpm/bin/ -type d -name 'node_exporter*')
+export PG_DIR=$(find /usr/ -type d -name 'pgsql-*')
 POSTGRES_EXPORTER_PIDFILE=/tmp/postgres_exporter.pid
 NODE_EXPORTER_PIDFILE=/tmp/node_exporter.pid
-COLLECTSERVER_PIDFILE=/tmp/collectserver.pid
-
-export PATH=$PATH:/opt/cpm/bin
-
-if [ -d /usr/pgsql-10 ]; then
-    PGROOT=/usr/pgsql-10
-elif [ -d /usr/pgsql-9.6 ]; then
-    PGROOT=/usr/pgsql-9.6
-elif [ -d /usr/pgsql-9.5 ]; then
-	PGROOT=/usr/pgsql-9.5
-fi
 
 function trap_sigterm() {
-	echo "doing trap logic..."
+    echo_info "Doing trap logic.."
 
-	echo "Clean shutdown of collectserver..."
-	kill -SIGINT $(head -1 $COLLECTSERVER_PIDFILE)
+    echo_warn "Clean shutdown of postgres-exporter.."
+    kill -SIGINT $(head -1 $POSTGRES_EXPORTER_PIDFILE)
 
-	echo "Clean shutdown of postgres_exporter..."
-	kill -SIGINT $(head -1 $POSTGRES_EXPORTER_PIDFILE)
-
-	echo "Clean shutdown of node_exporter..."
-	kill -SIGINT $(head -1 $NODE_EXPORTER_PIDFILE)
+    echo_warn "Clean shutdown of node-exporter.."
+    kill -SIGINT $(head -1 $NODE_EXPORTER_PIDFILE)
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
 
-# Check that postgres is accepting connections.
-echo "Waiting for postgres to be ready..."
-while true; do
-	${PGROOT}/bin/pg_isready -d "${DATA_SOURCE_NAME}"
-	if [ $? -eq 0 ]; then
-		break
-	fi
-	sleep 2
-done
+if [[ -f /conf/queries.yml ]]
+then
+    echo_info "Custom queries configuration detected.."
+    CONFIG_DIR='/conf'
+else
+    echo_info "No custom queries detected. Applying default configuration.."
+    CONFIG_DIR='/opt/cpm/conf'
+fi
 
-# Check that postgres is accepting queries.
-while true; do
-	${PGROOT}/bin/psql "${DATA_SOURCE_NAME}" -c "SELECT now();" 
-	if [ $? -eq 0 ]; then
-		break
-	fi
-	sleep 2
-done
+PG_OPTIONS="--extend.query-path=${CONFIG_DIR?}/queries.yml"
 
-# Start postgres_exporter
-echo "Starting postgres_exporter..."
-/opt/cpm/bin/postgres_exporter &
-echo $! > $POSTGRES_EXPORTER_PIDFILE
-
-sleep 2
-
-# Start node_exporter
-echo "Starting node_exporter..."
-/opt/cpm/bin/node_exporter*/node_exporter &
+echo_info "Starting node-exporter.."
+${NODE_EXP_HOME?}/node_exporter >>/dev/stdout 2>&1 &
 echo $! > $NODE_EXPORTER_PIDFILE
 
-sleep 2
+# Check that postgres is accepting connections.
+echo_info "Waiting for PostgreSQL to be ready.."
+while true; do
+    ${PG_DIR?}/bin/pg_isready -d ${DATA_SOURCE_NAME}
+    if [ $? -eq 0 ]; then
+        break
+    fi
+    sleep 2
+done
 
-# Start collectserver
-echo "Starting collectserver..."
-/opt/cpm/bin/collectserver \
-		-exporter="${POSTGRES_EXPORTER_URL}" \
-		-exporter="${NODE_EXPORTER_URL}" \
-		-gateway="${PROM_GATEWAY}" &
-echo $! > ${COLLECTSERVER_PIDFILE}
+echo_info "Checking if PostgreSQL is accepting queries.."
+while true; do
+    ${PG_DIR?}/bin/psql "${DATA_SOURCE_NAME}" -c "SELECT now();" 
+    if [ $? -eq 0 ]; then
+        break
+    fi
+    sleep 2
+done
+
+echo_info "Starting postgres-exporter.."
+${PG_EXP_HOME?}/postgres_exporter ${PG_OPTIONS?} >>/dev/stdout 2>&1 &
+echo $! > $POSTGRES_EXPORTER_PIDFILE
 
 wait

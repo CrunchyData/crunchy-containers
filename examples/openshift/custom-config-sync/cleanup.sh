@@ -20,7 +20,9 @@ oc delete service csprimary
 oc delete service csreplica
 oc delete pod csprimary
 oc delete pod cssyncreplica
-sudo rm $PV_PATH/postgresql.conf $PV_PATH/setup.sql $PV_PATH/pg_hba.conf
+oc delete pvc custom-config-sync-pvc custom-config-sync-pgconf-pvc
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm $CCP_STORAGE_PATH/postgresql.conf $CCP_STORAGE_PATH/setup.sql $CCP_STORAGE_PATH/pg_hba.conf 
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/csprimary
 
 $CCPROOT/examples/waitforterm.sh csprimary oc
 $CCPROOT/examples/waitforterm.sh cssyncreplica oc

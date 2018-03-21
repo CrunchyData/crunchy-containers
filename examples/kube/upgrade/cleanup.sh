@@ -13,3 +13,4 @@
 # limitations under the License.
 
 kubectl delete job upgrade-job
+kubectl delete pvc upgrade-old-pvc upgrade-new-pvc

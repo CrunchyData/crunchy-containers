@@ -14,13 +14,13 @@
 # limitations under the License.
 
 #
-# this example creates the metrics backends using emptyDir volumes
+# this example creates the metrics backends with NFS volumes
+# for storing their data
 #
-
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create -f $DIR/metrics-service.json
-expenv -f $DIR/metrics.json | kubectl create -f -
+expenv -f $DIR/metrics-pod.json | kubectl create -f -
+expenv -f $DIR/pgsql-pod.json | kubectl create -f -

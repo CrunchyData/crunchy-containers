@@ -1,6 +1,6 @@
 = restore (1)
 Crunchy Data
-January 2018
+March 2018
 == NAME
 restore - restore container image
 
@@ -35,4 +35,4 @@ The Red Hat Enterprise Linux version from which the container was built. For exa
 
 `Release=`
 
-The specific release number of the container. For example, Release="1.7.0"
+The specific release number of the container. For example, Release="1.8.2"

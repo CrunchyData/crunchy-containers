@@ -2,11 +2,11 @@ FROM centos:7
 
 LABEL name="crunchydata/pgadmin4" \
         vendor="crunchy data" \
-        PostgresVersion="9.5" \
-        PostgresFullVersion="9.5.10" \
+        PostgresVersion="9.6" \
+        PostgresFullVersion="9.6.8" \
         version="7.3" \
-        release="1.7.2" \
-        build-date="2018-01-30" \
+        release="1.8.2" \
+        build-date="2018-03-01" \
         url="https://crunchydata.com" \
         summary="Crunchy Data pgAdmin4 GUI utility" \
         description="Provides GUI for the pgAdmin utility." \
@@ -25,7 +25,6 @@ RUN yum -y update && yum -y install epel-release \
         gettext \
         hostname \
         nss_wrapper \
-        openssh-clients \
         openssl \
         procps-ng \
         mod_wsgi mod_ssl \
@@ -44,15 +43,14 @@ RUN cp /opt/cpm/conf/httpd.conf /etc/httpd/conf/httpd.conf \
   && rm /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/ssl.conf
 
 RUN chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
-  && chown -R 2:0 /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
-  && chmod -R g+rwx /run/httpd
+  && chown -R 2:0 /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd
 
 RUN ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
   && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf
 
 EXPOSE 5050
 
-VOLUME ["/var/lib/pgadmin", "/certs"]
+VOLUME ["/var/lib/pgadmin", "/certs", "/run/httpd"]
 
 USER 2
 

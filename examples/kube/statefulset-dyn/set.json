@@ -15,7 +15,7 @@
             },
             "spec": {
                 "securityContext":{
-                    "fsGroup": 26
+                    $CCP_SECURITY_CONTEXT
                 },
                 "containers": [{
                     "name": "pgset",

@@ -9,6 +9,7 @@
     },
     "spec": {
         "securityContext": {
+		$CCP_SECURITY_CONTEXT
         },
         "containers": [{
             "name": "postgres",
@@ -58,7 +59,7 @@
         "volumes": [{
             "name": "pgdata",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc"
+                "claimName": "primary-pvc"
             }
         }, {
             "name": "backup",

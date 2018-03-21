@@ -13,3 +13,4 @@
 # limitations under the License.
 
 oc delete job pgdump-job
+oc delete pvc pgdump-pvc

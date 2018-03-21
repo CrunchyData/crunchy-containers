@@ -16,7 +16,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 function cleanup {
-	for i in {1..15}
+	for i in {1..100}
 	do
 		echo "deleting PV crunchy-pv$i"
 		$CCP_CLI delete pv crunchy-pv$i
@@ -26,7 +26,7 @@ function cleanup {
 if [ "$1" == "hostpath" ]; then
 	cleanup
 	echo "creating hostPath PVs"
-	for i in {1..15}
+	for i in {1..100}
 	do
 		echo "creating PV crunchy-pv$i"
 		export COUNTER=$i
@@ -35,7 +35,7 @@ if [ "$1" == "hostpath" ]; then
 elif [ "$1" == "nfs" ]; then
 	cleanup
 	echo "creating NFS PVs"
-	for i in {1..15}
+	for i in {1..100}
 	do
 		echo "creating PV crunchy-pv$i"
 		export COUNTER=$i

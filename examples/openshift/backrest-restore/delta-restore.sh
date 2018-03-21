@@ -15,5 +15,8 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-oc delete job backrest-job-nfs
-oc process -f $DIR/delta-restore-job.json CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+$DIR/cleanup.sh
+
+oc create -f $DIR/backrest-restore-pvc.json
+
+expenv -f $DIR/delta-restore-job.json | oc create -f -

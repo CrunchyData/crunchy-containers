@@ -18,11 +18,15 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc delete pod primary-pitr-restore
 oc delete service primary-pitr-restore
-sudo rm -rf $PV_PATH/primary-pitr-restore
+oc delete pvc restore-pvc primary-pitr-restore-pvc
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/primary-pitr-restore
 
 # create the recover pv and pvc
 expenv -f $DIR/recover-pv.json | oc create -f -
 oc create -f $DIR/recover-pvc.json
+oc create -f $DIR/primary-pitr-restore-pvc.json
+
+oc create -f $DIR/restore-service.json
 
 # start up the database container
-oc process -f $DIR/primary-pitr-restore.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+expenv -f $DIR/primary-pitr-restore.json | oc create -f -

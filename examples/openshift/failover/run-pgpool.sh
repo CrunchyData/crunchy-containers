@@ -18,7 +18,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup-pgpool.sh
 
-POOLDIR=/mnt/nfsfileshare/pgpoolconfigdir
+POOLDIR=$CCP_STORAGE_PATH/pgpoolconfigdir
 sudo mkdir $POOLDIR
 sudo chown daemon:daemon $POOLDIR
 sudo chmod 777 $POOLDIR

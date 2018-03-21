@@ -17,7 +17,7 @@
 
 echo "This example depends upon the primary-replica example being run prior!"
 
-CONFIGDIR=$PV_PATH/bouncerconfig
+CONFIGDIR=$CCP_STORAGE_PATH/bouncerconfig
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
@@ -28,7 +28,6 @@ oc create configmap pgbouncer-configmap \
 		--from-file=./pgbouncer.ini \
 		--from-file=./users.txt
 
-oc process -f $DIR/pgbouncer.json \
-	-p NAMESPACE=$NAMESPACE  \
-	-p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX  \
-	-p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/service.json
+
+expenv -f $DIR/pgbouncer.json | oc create -f -

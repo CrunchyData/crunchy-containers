@@ -110,7 +110,7 @@
                         "containers": [
                             {
                                 "name": "${PGADMIN_SERVICE_NAME}",
-                                "image": "docker.io/crunchydata/crunchy-pgadmin4:centos7-10.1-1.7.1",
+                                "image": "docker.io/crunchydata/crunchy-pgadmin4:centos7-10.3-1.8.2",
                                 "ports": [
                                     {
                                         "containerPort": 5050,
@@ -149,6 +149,11 @@
                                         "mountPath": "/certs",
                                         "name": "certs",
                                         "readOnly": false
+                                    },
+                                    {
+                                        "mountPath": "/run/httpd",
+                                        "name": "run",
+                                        "readOnly": false
                                     }
                                 ],
                                 "terminationMessagePath": "/dev/termination-log",
@@ -169,6 +174,12 @@
                             },
                             {
                                 "name": "certs",
+                                "emptyDir": {
+                                    "medium": "Memory"
+                                }
+                            },
+                            {
+                                "name": "run",
                                 "emptyDir": {
                                     "medium": "Memory"
                                 }

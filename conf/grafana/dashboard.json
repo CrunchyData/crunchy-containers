@@ -1,0 +1,1651 @@
+{
+    "__inputs": [
+        {
+            "name": "DS_PROMETHEUS",
+            "label": "PROMETHEUS",
+            "description": "",
+            "type": "datasource",
+            "pluginId": "prometheus",
+            "pluginName": "Prometheus"
+        }
+    ],
+    "__requires": [
+        {
+            "type": "grafana",
+            "id": "grafana",
+            "name": "Grafana",
+            "version": "4.6.3"
+        },
+        {
+            "type": "panel",
+            "id": "graph",
+            "name": "Graph",
+            "version": ""
+        },
+        {
+            "type": "datasource",
+            "id": "prometheus",
+            "name": "Prometheus",
+            "version": "1.0.0"
+        },
+        {
+            "type": "panel",
+            "id": "singlestat",
+            "name": "Singlestat",
+            "version": ""
+        }
+    ],
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": "-- Grafana --",
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
+            }
+        ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "hideControls": false,
+    "id": null,
+    "links": [],
+    "refresh": "5s",
+    "rows": [
+        {
+            "collapse": false,
+            "height": 248,
+            "panels": [
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": false,
+                    "colors": [
+                        "rgba(50, 172, 45, 0.97)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(245, 54, 54, 0.9)"
+                    ],
+                    "datasource": "${DS_PROMETHEUS}",
+                    "format": "percent",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": true,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "id": 8,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "span": 2,
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": false
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "expr": "pg_stat_activity_count{datname=\"[[datname]]\",state=\"active\"}",
+                            "hide": false,
+                            "intervalFactor": 2,
+                            "legendFormat": "",
+                            "metric": "pg_stat_activity_count",
+                            "refId": "A",
+                            "step": 10
+                        }
+                    ],
+                    "thresholds": "80,90",
+                    "title": "Active Connections",
+                    "type": "singlestat",
+                    "valueFontSize": "80%",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ],
+                    "valueName": "current"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": false,
+                    "colors": [
+                        "rgba(50, 172, 45, 0.97)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(245, 54, 54, 0.9)"
+                    ],
+                    "datasource": "${DS_PROMETHEUS}",
+                    "format": "none",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": true,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "id": 2,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "span": 2,
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": false
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "expr": "pg_stat_activity_count{datname=\"[[datname]]\",state=\"idle in transaction\"}",
+                            "hide": false,
+                            "intervalFactor": 2,
+                            "metric": "ccp_idle_xact_connections_count",
+                            "refId": "A",
+                            "step": 10
+                        }
+                    ],
+                    "thresholds": "10,30",
+                    "title": "Idle In Transaction",
+                    "type": "singlestat",
+                    "valueFontSize": "80%",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ],
+                    "valueName": "current"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": false,
+                    "colors": [
+                        "rgba(50, 172, 45, 0.97)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(245, 54, 54, 0.9)"
+                    ],
+                    "datasource": "${DS_PROMETHEUS}",
+                    "format": "none",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": true,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "id": 3,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "span": 3,
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": false
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "expr": "pg_stat_activity_count{datname=\"[[datname]]\",state=\"idle\"}",
+                            "intervalFactor": 2,
+                            "metric": "pg_stat_activity_count",
+                            "refId": "A",
+                            "step": 10
+                        }
+                    ],
+                    "thresholds": "60,80",
+                    "title": "Idle",
+                    "type": "singlestat",
+                    "valueFontSize": "80%",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ],
+                    "valueName": "current"
+                },
+                {
+                    "cacheTimeout": null,
+                    "colorBackground": false,
+                    "colorValue": false,
+                    "colors": [
+                        "rgba(245, 54, 54, 0.9)",
+                        "rgba(237, 129, 40, 0.89)",
+                        "rgba(50, 172, 45, 0.97)"
+                    ],
+                    "datasource": "-- Mixed --",
+                    "format": "none",
+                    "gauge": {
+                        "maxValue": 100,
+                        "minValue": 0,
+                        "show": false,
+                        "thresholdLabels": false,
+                        "thresholdMarkers": true
+                    },
+                    "id": 9,
+                    "interval": null,
+                    "links": [],
+                    "mappingType": 1,
+                    "mappingTypes": [
+                        {
+                            "name": "value to text",
+                            "value": 1
+                        },
+                        {
+                            "name": "range to text",
+                            "value": 2
+                        }
+                    ],
+                    "maxDataPoints": 100,
+                    "nullPointMode": "connected",
+                    "nullText": null,
+                    "postfix": "",
+                    "postfixFontSize": "50%",
+                    "prefix": "",
+                    "prefixFontSize": "50%",
+                    "rangeMaps": [
+                        {
+                            "from": "null",
+                            "text": "N/A",
+                            "to": "null"
+                        }
+                    ],
+                    "span": 5,
+                    "sparkline": {
+                        "fillColor": "rgba(31, 118, 189, 0.18)",
+                        "full": false,
+                        "lineColor": "rgb(31, 120, 193)",
+                        "show": true
+                    },
+                    "tableColumn": "",
+                    "targets": [
+                        {
+                            "datasource": "${DS_PROMETHEUS}",
+                            "expr": "sum(irate(pg_stat_database_xact_commit{datname=\"[[datname]]\"}[5m])) + sum(irate(pg_stat_database_xact_rollback{datname=\"[[datname]]\"}[5m]))",
+                            "intervalFactor": 2,
+                            "legendFormat": "",
+                            "metric": "pg_stat_database_xact_rollback",
+                            "refId": "A",
+                            "step": 10
+                        }
+                    ],
+                    "thresholds": "",
+                    "title": "TPS",
+                    "type": "singlestat",
+                    "valueFontSize": "80%",
+                    "valueMaps": [
+                        {
+                            "op": "=",
+                            "text": "N/A",
+                            "value": "null"
+                        }
+                    ],
+                    "valueName": "current"
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Dashboard Row",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": "200",
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${DS_PROMETHEUS}",
+                    "fill": 1,
+                    "id": 12,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": true,
+                        "max": true,
+                        "min": false,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "(pg_stat_database_blks_hit{datname=\"[[datname]]\"}  / ( pg_stat_database_blks_hit{datname=\"[[datname]]\"} + pg_stat_database_blks_read{datname=\"[[datname]]\"} ))* 100",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "",
+                            "intervalFactor": 2,
+                            "legendFormat": "Ratio",
+                            "metric": "pg_stat_database_",
+                            "refId": "A",
+                            "step": 2
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Cache Hit Ratio - [[datname]] - [[instance]]",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "percent",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${DS_PROMETHEUS}",
+                    "fill": 1,
+                    "id": 13,
+                    "legend": {
+                        "avg": false,
+                        "current": false,
+                        "max": false,
+                        "min": false,
+                        "show": true,
+                        "total": false,
+                        "values": false
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "sum(pg_stat_database_xact_commit{datname=\"[[datname]]\",instance=\"[[instance]]\"})",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "Commit",
+                            "metric": "pg_stat_database_xact_commit",
+                            "refId": "A",
+                            "step": 2
+                        },
+                        {
+                            "expr": "sum(pg_stat_database_xact_rollback{datname=\"[[datname]]\",instance=\"[[instance]]\"})",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "Rollback",
+                            "refId": "B",
+                            "step": 2
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Commit vs Rollback",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Dashboard Row",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": "200",
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${DS_PROMETHEUS}",
+                    "fill": 1,
+                    "id": 11,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": true,
+                        "max": true,
+                        "min": false,
+                        "rightSide": false,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [
+                        {
+                            "dashUri": "db/crud_details",
+                            "dashboard": "CRUD_Details",
+                            "includeVars": true,
+                            "targetBlank": true,
+                            "title": "CRUD_Details",
+                            "type": "dashboard"
+                        }
+                    ],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 4,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "sum(irate(pg_stat_database_tup_fetched{datname=\"[[datname]]\",instance=\"[[instance]]\"}[5m]))",
+                            "format": "time_series",
+                            "hide": false,
+                            "intervalFactor": 2,
+                            "legendFormat": "Fetched",
+                            "metric": "pg_stat_database_tup_fetched",
+                            "refId": "A",
+                            "step": 2
+                        },
+                        {
+                            "expr": "sum(irate(pg_stat_database_tup_inserted{datname=\"[[datname]]\",instance=\"[[instance]]\"}[5m]))",
+                            "format": "time_series",
+                            "hide": false,
+                            "intervalFactor": 2,
+                            "legendFormat": "Inserted",
+                            "metric": "pg_stat_database_tup_inserted",
+                            "refId": "B",
+                            "step": 2
+                        },
+                        {
+                            "expr": "sum(irate(pg_stat_database_tup_updated{datname=\"[[datname]]\",instance=\"[[instance]]\"}[5m]))",
+                            "format": "time_series",
+                            "hide": false,
+                            "intervalFactor": 2,
+                            "legendFormat": "Updated",
+                            "metric": "pg_stat_database_tup_updated",
+                            "refId": "C",
+                            "step": 2
+                        },
+                        {
+                            "expr": "sum(irate(pg_stat_database_tup_deleted{datname=\"[[datname]]\",instance=\"[[instance]]\"}[5m]))",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "Deleted",
+                            "metric": "pg_stat_database_tup_deleted",
+                            "refId": "D",
+                            "step": 2
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Rows - [[datname]] - [[instance]]",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${DS_PROMETHEUS}",
+                    "fill": 1,
+                    "id": 15,
+                    "legend": {
+                        "alignAsTable": false,
+                        "avg": false,
+                        "current": true,
+                        "max": false,
+                        "min": false,
+                        "rightSide": false,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 4,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "sum(rate(pg_stat_database_deadlocks{datname=\"[[datname]]\"}[5m]))",
+                            "format": "time_series",
+                            "hide": false,
+                            "intervalFactor": 2,
+                            "legendFormat": "Conflicts",
+                            "metric": "pg_stat_database_conflicts",
+                            "refId": "A",
+                            "step": 2
+                        },
+                        {
+                            "expr": "sum(rate(pg_stat_database_conflicts{datname=\"[[datname]]\"}[5m]))",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "DeadLocks",
+                            "metric": "pg_stat_database_deadlocks",
+                            "refId": "B",
+                            "step": 2
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Conflicts/DeadLocks - [[datname]] - [[instance]]",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${DS_PROMETHEUS}",
+                    "fill": 1,
+                    "id": 17,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": true,
+                        "max": true,
+                        "min": false,
+                        "rightSide": false,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 4,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "pg_locks_count{datname=\"[[datname]]\",instance=\"[[instance]]\",mode=\"accessexclusivelock\"}",
+                            "format": "time_series",
+                            "hide": false,
+                            "intervalFactor": 2,
+                            "legendFormat": "{{mode}}",
+                            "refId": "A",
+                            "step": 2
+                        },
+                        {
+                            "expr": "pg_locks_count{datname=\"[[datname]]\",instance=\"[[instance]]\",mode=\"accesssharelock\"}",
+                            "format": "time_series",
+                            "hide": false,
+                            "intervalFactor": 2,
+                            "legendFormat": "{{mode}}",
+                            "refId": "B",
+                            "step": 2
+                        },
+                        {
+                            "expr": "pg_locks_count{datname=\"[[datname]]\",instance=\"[[instance]]\",mode=\"exclusivelock\"}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "{{mode}}",
+                            "refId": "C",
+                            "step": 2
+                        },
+                        {
+                            "expr": "pg_locks_count{datname=\"[[datname]]\",instance=\"[[instance]]\",mode=\"rowexclusivelock\"}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "{{mode}}",
+                            "refId": "D",
+                            "step": 2
+                        },
+                        {
+                            "expr": "pg_locks_count{datname=\"[[datname]]\",instance=\"[[instance]]\",mode=\"rowsharelock\"}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "{{mode}}",
+                            "refId": "E",
+                            "step": 2
+                        },
+                        {
+                            "expr": "pg_locks_count{datname=\"[[datname]]\",instance=\"[[instance]]\",mode=\"sharelock\"}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "{{mode}}",
+                            "refId": "F",
+                            "step": 2
+                        },
+                        {
+                            "expr": "pg_locks_count{datname=\"[[datname]]\",instance=\"[[instance]]\",mode=\"sharerowexclusivelock\"}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "{{mode}}",
+                            "refId": "G",
+                            "step": 2
+                        },
+                        {
+                            "expr": "pg_locks_count{datname=\"[[datname]]\",instance=\"[[instance]]\",mode=\"shareupdateexclusivelock\"}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "{{mode}}",
+                            "refId": "H",
+                            "step": 2
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Locks - [[datname]] - [[instance]]",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Dashboard Row",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": 310,
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${DS_PROMETHEUS}",
+                    "fill": 1,
+                    "id": 14,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": false,
+                        "max": true,
+                        "min": true,
+                        "rightSide": false,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 12,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "irate(pg_stat_bgwriter_buffers_alloc{}[5m])",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "Allocated",
+                            "metric": "pg_stat_bgwriter_buffers_alloc",
+                            "refId": "A",
+                            "step": 2
+                        },
+                        {
+                            "expr": "irate(pg_stat_bgwriter_buffers_backend{}[5m])",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "Backend",
+                            "metric": "pg_stat_bgwriter_buffers_backend",
+                            "refId": "B",
+                            "step": 2
+                        },
+                        {
+                            "expr": "irate(pg_stat_bgwriter_buffers_backend_fsync{}[5m])",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "FSync",
+                            "metric": "pg_stat_bgwriter_buffers_backend_fsync",
+                            "refId": "C",
+                            "step": 2
+                        },
+                        {
+                            "expr": "irate(pg_stat_bgwriter_buffers_checkpoint{}[5m])",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "CheckPoint",
+                            "metric": "pg_stat_bgwriter_buffers_checkpoint",
+                            "refId": "D",
+                            "step": 2
+                        },
+                        {
+                            "expr": "irate(pg_stat_bgwriter_buffers_clean{}[5m])",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "Clean",
+                            "metric": "pg_stat_bgwriter_buffers_clean",
+                            "refId": "E",
+                            "step": 2
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Buffers",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Dashboard Row",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": 250,
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${DS_PROMETHEUS}",
+                    "fill": 1,
+                    "id": 18,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": true,
+                        "max": true,
+                        "min": false,
+                        "rightSide": false,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 12,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "pg_stat_activity_count{datname=\"[[datname]]\",instance=\"[[instance]]\",state=\"active\"}",
+                            "format": "time_series",
+                            "interval": "1m",
+                            "intervalFactor": 2,
+                            "legendFormat": "Active",
+                            "metric": "ccp_active_connections_count",
+                            "refId": "B",
+                            "step": 120
+                        },
+                        {
+                            "expr": "pg_stat_activity_count{datname=\"[[datname]]\",instance=\"[[instance]]\",state=\"idle in transaction\"}",
+                            "format": "time_series",
+                            "interval": "1m",
+                            "intervalFactor": 2,
+                            "legendFormat": "IdleTrn",
+                            "metric": "ccp_idle_xact_connections_count",
+                            "refId": "C",
+                            "step": 120
+                        },
+                        {
+                            "expr": "pg_stat_activity_count{datname=\"[[datname]]\",instance=\"[[instance]]\",state=\"idle\"}",
+                            "format": "time_series",
+                            "interval": "1m",
+                            "intervalFactor": 2,
+                            "legendFormat": "Idle",
+                            "metric": "ccp_idle_connections_count",
+                            "refId": "D",
+                            "step": 120
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Activity - [[datname]] - [[instance]]",
+                    "tooltip": {
+                        "shared": false,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": [
+                            "current"
+                        ]
+                    },
+                    "yaxes": [
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Dashboard Row",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": 317,
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${DS_PROMETHEUS}",
+                    "fill": 1,
+                    "id": 20,
+                    "legend": {
+                        "avg": false,
+                        "current": false,
+                        "hideEmpty": false,
+                        "hideZero": false,
+                        "max": false,
+                        "min": false,
+                        "show": true,
+                        "total": false,
+                        "values": false
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 12,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "node_filesystem_free{mountpoint=\"/pgdata\"}",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "",
+                            "intervalFactor": 1,
+                            "legendFormat": "Free",
+                            "refId": "B",
+                            "step": 1
+                        },
+                        {
+                            "expr": "node_filesystem_size{mountpoint=\"/pgdata\"}",
+                            "format": "time_series",
+                            "hide": false,
+                            "intervalFactor": 1,
+                            "legendFormat": "Total",
+                            "refId": "C",
+                            "step": 1
+                        },
+                        {
+                            "expr": "node_filesystem_size{mountpoint=\"/\"}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "refId": "A"
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "FileSystem",
+                    "tooltip": {
+                        "shared": false,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": [
+                            "total"
+                        ]
+                    },
+                    "yaxes": [
+                        {
+                            "format": "decbytes",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Dashboard Row",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": 250,
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${DS_PROMETHEUS}",
+                    "fill": 1,
+                    "id": 22,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": true,
+                        "max": true,
+                        "min": false,
+                        "rightSide": false,
+                        "show": true,
+                        "sortDesc": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "node_memory_MemTotal{}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "Total",
+                            "refId": "A",
+                            "step": 2
+                        },
+                        {
+                            "expr": "node_memory_MemAvailable{}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "Available",
+                            "metric": "node_memory_Mem",
+                            "refId": "B",
+                            "step": 2
+                        },
+                        {
+                            "expr": "node_memory_MemFree{}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "Free",
+                            "metric": "node_memory_MemFree",
+                            "refId": "C",
+                            "step": 2
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "Memory",
+                    "tooltip": {
+                        "shared": false,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": [
+                            "total"
+                        ]
+                    },
+                    "yaxes": [
+                        {
+                            "format": "decbytes",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                },
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${DS_PROMETHEUS}",
+                    "fill": 1,
+                    "id": 23,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": true,
+                        "max": true,
+                        "min": false,
+                        "rightSide": false,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 6,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "node_memory_SwapCached{instance=\"[[instance]]\"}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "Used",
+                            "refId": "A",
+                            "step": 2
+                        },
+                        {
+                            "expr": "node_memory_SwapFree{instance=\"[[instance]]\"}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "Free",
+                            "refId": "B",
+                            "step": 2
+                        },
+                        {
+                            "expr": "node_memory_SwapTotal{instance=\"[[instance]]\"}",
+                            "format": "time_series",
+                            "intervalFactor": 2,
+                            "legendFormat": "Total",
+                            "refId": "C",
+                            "step": 2
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "SWAP",
+                    "tooltip": {
+                        "shared": true,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": []
+                    },
+                    "yaxes": [
+                        {
+                            "format": "decbytes",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Dashboard Row",
+            "titleSize": "h6"
+        },
+        {
+            "collapse": false,
+            "height": 250,
+            "panels": [
+                {
+                    "aliasColors": {},
+                    "bars": false,
+                    "dashLength": 10,
+                    "dashes": false,
+                    "datasource": "${DS_PROMETHEUS}",
+                    "fill": 1,
+                    "hideTimeOverride": false,
+                    "id": 19,
+                    "legend": {
+                        "alignAsTable": true,
+                        "avg": true,
+                        "current": true,
+                        "max": true,
+                        "min": false,
+                        "rightSide": false,
+                        "show": true,
+                        "total": false,
+                        "values": true
+                    },
+                    "lines": true,
+                    "linewidth": 1,
+                    "links": [],
+                    "nullPointMode": "null",
+                    "percentage": false,
+                    "pointradius": 5,
+                    "points": false,
+                    "renderer": "flot",
+                    "seriesOverrides": [],
+                    "spaceLength": 10,
+                    "span": 12,
+                    "stack": false,
+                    "steppedLine": false,
+                    "targets": [
+                        {
+                            "expr": "sum by (mode)(irate(node_cpu{mode=\"system\",instance=\"[[instance]]\"}[5m]))",
+                            "format": "time_series",
+                            "hide": false,
+                            "interval": "",
+                            "intervalFactor": 2,
+                            "legendFormat": "{{cpu}} {{mode}}",
+                            "metric": "",
+                            "refId": "E",
+                            "step": 2
+                        },
+                        {
+                            "expr": "sum by (mode)(irate(node_cpu{mode=\"user\",instance=\"[[instance]]\"}[5m]))",
+                            "format": "time_series",
+                            "hide": false,
+                            "intervalFactor": 2,
+                            "refId": "A",
+                            "step": 2
+                        }
+                    ],
+                    "thresholds": [],
+                    "timeFrom": null,
+                    "timeShift": null,
+                    "title": "CPU",
+                    "tooltip": {
+                        "shared": false,
+                        "sort": 0,
+                        "value_type": "individual"
+                    },
+                    "type": "graph",
+                    "xaxis": {
+                        "buckets": null,
+                        "mode": "time",
+                        "name": null,
+                        "show": true,
+                        "values": [
+                            "total"
+                        ]
+                    },
+                    "yaxes": [
+                        {
+                            "format": "percent",
+                            "label": "",
+                            "logBase": 1,
+                            "max": "100",
+                            "min": "0",
+                            "show": true
+                        },
+                        {
+                            "format": "short",
+                            "label": null,
+                            "logBase": 1,
+                            "max": null,
+                            "min": null,
+                            "show": true
+                        }
+                    ]
+                }
+            ],
+            "repeat": null,
+            "repeatIteration": null,
+            "repeatRowId": null,
+            "showTitle": false,
+            "title": "Dashboard Row",
+            "titleSize": "h6"
+        }
+    ],
+    "schemaVersion": 14,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+        "list": [
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "${DS_PROMETHEUS}",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Instance",
+                "multi": false,
+                "name": "instance",
+                "options": [],
+                "query": "label_values(instance)",
+                "refresh": 1,
+                "regex": "",
+                "sort": 0,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            },
+            {
+                "allValue": null,
+                "current": {},
+                "datasource": "${DS_PROMETHEUS}",
+                "hide": 0,
+                "includeAll": false,
+                "label": "Database",
+                "multi": false,
+                "name": "datname",
+                "options": [],
+                "query": "label_values(datname)",
+                "refresh": 1,
+                "regex": "",
+                "sort": 1,
+                "tagValuesQuery": "",
+                "tags": [],
+                "tagsQuery": "",
+                "type": "query",
+                "useTags": false
+            }
+        ]
+    },
+    "time": {
+        "from": "now-5m",
+        "to": "now"
+    },
+    "timepicker": {
+        "refresh_intervals": [
+            "5s",
+            "10s",
+            "30s",
+            "1m",
+            "5m",
+            "15m",
+            "30m",
+            "1h",
+            "2h",
+            "1d"
+        ],
+        "time_options": [
+            "5m",
+            "15m",
+            "1h",
+            "6h",
+            "12h",
+            "24h",
+            "2d",
+            "7d",
+            "30d"
+        ]
+    },
+    "timezone": "browser",
+    "title": "PostgreSQLDetails",
+    "version": 1
+}

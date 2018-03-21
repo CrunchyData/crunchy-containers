@@ -35,4 +35,9 @@ oc create configmap pgconf \
     --from-file ./config/sshd_config \
     --from-file ./keys/authorized_keys
 
-oc process -f $DIR/postgres-sshd-pod.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/postgres-sshd-pvc.json
+oc create -f $DIR/postgres-sshd-backrest-pvc.json
+
+oc create -f $DIR/service.json
+
+expenv -f $DIR/postgres-sshd-pod.json | oc create -f -

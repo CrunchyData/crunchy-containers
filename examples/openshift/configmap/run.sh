@@ -21,4 +21,6 @@ $DIR/cleanup.sh
 
 oc create configmap postgresql-conf --from-file=postgresql.conf --from-file=pghba=pg_hba.conf
 
-oc process -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG -f $DIR/configmap.json | oc create -f -
+oc create -f $DIR/service.json
+
+expenv -f $DIR/configmap.json | oc create -f -

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2015 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,54 +13,51 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# clean up leftovers from previous runs of pgpool
-
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
+ose_hack
 
+CONF_DIR=/opt/cpm/conf
+CONFIGS=/tmp
+PGPOOL_PIDFILE=/tmp/pgpool-script.pid
+
+# Cleanup from prior runs
 rm -rf /tmp/pgpool.pid
 rm -rf /tmp/.s.*
 
-env
-
-BINDIR=/opt/cpm/bin
-CONFDIR=/opt/cpm/conf/pgpool
-CONFIGS=/tmp
-
 function trap_sigterm() {
-	echo "doing trap logic..."
-	kill -SIGINT $PGPOOL_PID
+    echo_info "Doing trap logic..."
+    echo_warn "Clean shutdown of pgPool.."
+    kill -SIGINT $(head -1 ${PGPOOL_PIDFILE?})
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
 
+if [[ -f /pgconf/pgpoolconfigdir/pgpool.conf ]]
+then
+    echo_info "Custom configuration detected.."
+    CONFIGS=/pgconf/pgpoolconfigdir
+else
+    echo_info "No custom configuration detected.  Applying default config.."
+    cp ${CONF_DIR?}/* ${CONFIGS?}
 
-# seed with defaults included in the container image, this is the
-# case when /pgconf is not specified
-cp $CONFDIR/* /tmp
+    env_check_err "PG_PRIMARY_SERVICE_NAME"
+    env_check_err "PG_REPLICA_SERVICE_NAME"
+    env_check_err "PG_USERNAME"
+    env_check_err "PG_PASSWORD"
 
-if [ -f /pgconf/pgpoolconfigdir/pgpool.conf ]; then
-	echo "pgconf pgpool.conf is being used"
-	CONFIGS=/pgconf/pgpoolconfigdir
+    # populate template with env vars
+    sed -i "s/PG_PRIMARY_SERVICE_NAME/$PG_PRIMARY_SERVICE_NAME/g" ${CONFIGS?}/pgpool.conf
+    sed -i "s/PG_REPLICA_SERVICE_NAME/$PG_REPLICA_SERVICE_NAME/g" ${CONFIGS?}/pgpool.conf
+    sed -i "s/PG_USERNAME/$PG_USERNAME/g" ${CONFIGS?}/pgpool.conf
+    sed -i "s/PG_PASSWORD/$PG_PASSWORD/g" ${CONFIGS?}/pgpool.conf
+
+    echo_info "Populating pool_passwd.."
+    /bin/pg_md5 --md5auth --username=${PG_USERNAME?} --config=${CONFIGS?}/pgpool.conf ${PG_PASSWORD?}
 fi
 
-# populate template with env vars
-sed -i "s/PG_PRIMARY_SERVICE_NAME/$PG_PRIMARY_SERVICE_NAME/g" $CONFIGS/pgpool.conf
-sed -i "s/PG_REPLICA_SERVICE_NAME/$PG_REPLICA_SERVICE_NAME/g" $CONFIGS/pgpool.conf
-sed -i "s/PG_USERNAME/$PG_USERNAME/g" $CONFIGS/pgpool.conf
-sed -i "s/PG_PASSWORD/$PG_PASSWORD/g" $CONFIGS/pgpool.conf
+echo_info "Starting pgPool.."
+/bin/pgpool -n -a ${CONFIGS?}/pool_hba.conf -f ${CONFIGS?}/pgpool.conf  &
+echo $! > ${PGPOOL_PIDFILE?}
 
-# populate pool_passwd file
-/bin/pg_md5 --md5auth --username=$PG_USERNAME --config=$CONFIGS/pgpool.conf $PG_PASSWORD
-
-/bin/pgpool -n -a $CONFIGS/pool_hba.conf -f $CONFIGS/pgpool.conf  &
-export PGPOOL_PID=$!
-
-echo "waiting for pgpool to be signaled..."
 wait
-
-#while true; do
-#       echo "debug sleeping..."
-#       sleep 1000
-#done
-

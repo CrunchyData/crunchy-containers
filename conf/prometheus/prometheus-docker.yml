@@ -1,0 +1,15 @@
+---
+global:
+  scrape_interval: SCRAPE_INTERVAL
+  scrape_timeout: SCRAPE_TIMEOUT
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: 'pgsql'
+    scrape_interval: 5s
+    static_configs:
+    - targets: ['COLLECT_HOST:9187']
+  - job_name: 'pgsql-node'
+    scrape_interval: 5s
+    static_configs:
+    - targets: ['COLLECT_HOST:9100']

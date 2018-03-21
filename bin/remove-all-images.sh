@@ -14,12 +14,11 @@
 # limitations under the License.
 
 for i in \
-postgres-gis prometheus promgateway grafana collect pgbadger pgpool \
+restore dump postgres-gis prometheus grafana collect pgbadger pgpool \
 watch backup postgres pgbouncer pgadmin4 vacuum dba upgrade backrest-restore
 do
-	docker rmi -f  crunchydata/crunchy-$i:$CCP_IMAGE_TAG
+	docker rmi -f  $CCP_IMAGE_PREFIX/crunchy-$i:$CCP_IMAGE_TAG
 	docker rmi -f  crunchy-$i
 #	docker rmi -f  registry.crunchydata.openshift.com/jeff-project/crunchy-$i:$CCP_IMAGE_TAG
 done
 exit
-

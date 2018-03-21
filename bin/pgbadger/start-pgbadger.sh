@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-# Copyright 2015 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,31 +15,23 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
+ose_hack
 
+export PATH=$PATH:/opt/cpm/bin
 export PIDFILE=/tmp/badgerserver.pid
 
 function trap_sigterm() {
-        echo "doing trap logic..."
-
-        echo "Clean shut-down of badgerserver ..."
-
-        kill -SIGINT $(head -1 $PIDFILE)
-
+    echo_info "Doing trap logic..."
+    echo_warn "Clean shut-down of badgerserver ..."
+    kill -SIGINT $(head -1 $PIDFILE)
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
 
-if [ -v BADGER_TARGET ]; then
-	echo "BADGER_TARGET set for standalone environment"
-	export BADGER_TARGET=$BADGER_TARGET
-fi
+env_check_warn "BADGER_TARGET"
 
-export PATH=$PATH:/opt/cpm/bin
-
+echo_info "Starting pgBadger Server.."
 /opt/cpm/bin/badgerserver &
 echo $! > $PIDFILE
 
-echo "waiting for badgerserver to catch signal..."
-
 wait
-

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2015 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -17,49 +17,40 @@ source /opt/cpm/bin/common_lib.sh
 enable_debugging
 ose_hack
 
+PGBOUNCER_PID=/tmp/pgbouncer-script.pid
+CONF_DIR=/pgconf/bouncerconfig
+
+# Cleanup previous deployments
+rm -rf /tmp/pgbouncer.pid
+
 function trap_sigterm() {
-        echo "doing trap logic..."
-	kill -SIGINT $PGBOUNCER_PID
-	kill -SIGTERM $PGBOUNCER_WATCH_PID
+    echo_warn "Doing trap logic..."
+    echo_info "Clean shutdown of pgBouncer.."
+    kill -SIGINT $(head -1 ${PGBOUNCER_PID?})
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
 
+if [[ -f ${CONF_DIR?}/users.txt ]]
+then
+    echo_info "Custom users.txt file detected.."
+fi
 
-rm -rf /tmp/pgbouncer.pid
-
-BINDIR=/opt/cpm/bin
-CONFDIR=/pgconf/bouncerconfig
-
-if [ -f $CONFDIR/users.txt ]; then
-	echo "users.txt found in " $CONFDIR
+if [[ -f ${CONF_DIR?}/pgbouncer.ini ]]
+then
+    echo_info "Custom pgbouncer.ini file detected.."
 else
-	echo "users.txt NOT found in " $CONFDIR
+    echo_info "No custom pgbouncer.ini detected.  Applying default config.."
+    cp /opt/cpm/conf/pgbouncer.ini ${CONF_DIR?}/pgbouncer.ini
 fi
 
-if [ -f $CONFDIR/pgbouncer.ini ]; then
-	echo "pgbouncer.ini found in " $CONFDIR
-else
-	echo "pgbouncer.ini NOT found in " $CONFDIR
-	echo "will use default config files"
-	cp /opt/cpm/conf/pgbouncer.ini $CONFDIR
+if [[ -v FAILOVER ]]
+then
+    echo_warn "FAILOVER env set.  Failover with pgBouncer is not supported.."
 fi
 
-if [ -v FAILOVER ]; then
-	echo "FAILOVER is set and a watch will be started on the primary"
-	/opt/cpm/bin/pgbouncer-watch.sh &
-	export PGBOUNCER_WATCH_PID=$!
-fi
-
-pgbouncer $CONFDIR/pgbouncer.ini -u pgbouncer &
-
-export PGBOUNCER_PID=$!
-
-echo "waiting for sigterm or sigint to be received..."
+echo_info "Starting pgBouncer.."
+pgbouncer ${CONF_DIR?}/pgbouncer.ini -u daemon &
+echo $! > ${PGBOUNCER_PID?}
 
 wait
-
-#while true; do
-#	echo "main sleeping..."
-#	sleep 100
-#done

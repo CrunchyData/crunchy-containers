@@ -25,6 +25,10 @@ kubectl create -f $DIR/pguser-secret.json
 kubectl create -f $DIR/pgprimary-secret.json
 kubectl create -f $DIR/pgroot-secret.json
 
+kubectl create -f $DIR/primary-dc-pvc.json
+kubectl create -f $DIR/primary-dc-pgbackrest-pvc.json
+kubectl create -f $DIR/primary-dc-pgwal-pvc.json
+
 kubectl create configmap postgresql-conf --from-file=postgresql.conf --from-file=pghba=pg_hba.conf --from-file=setup.sql
 
 expenv -f $DIR/primary-dc.json | kubectl create -f -

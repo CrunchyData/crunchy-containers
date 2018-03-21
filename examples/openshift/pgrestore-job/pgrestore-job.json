@@ -1,159 +1,63 @@
 {
-   "kind": "Template",
-   "apiVersion":"v1",
-   "metadata":{
-      "name":"simple-pgrestore-example",
-      "creationTimestamp":null,
-      "annotations":{
-         "description":"Crunchy PostgreSQL pgrestore Example",
-         "iconClass":"icon-database",
-         "tags":"database,postgresql,replication"
-      }
-   },
-   "parameters":[
-      {
-         "name":"CCP_IMAGE_PREFIX",
-         "description":"image prefix to use"
-      },
-      {
-         "name":"CCP_IMAGE_TAG",
-         "description":"image tag to use"
-      },
-      {
-         "name":"PGRESTORE_HOST",
-         "displayName":"Database Host",
-         "description":"This is the host/instance the restore will be done for.",
-         "value":"basic"
-      },
-      {
-         "name":"PGRESTORE_PORT",
-         "displayName":"Database Port",
-         "description":"The database port of the database the restore will be done for.",
-         "value":"5432"
-      },
-      {
-         "name":"PGRESTORE_USER",
-         "displayName":"Database User",
-         "description":"The database user the restore will be done with.",
-         "value":"postgres"
-      },
-      {
-         "name":"PGRESTORE_PASS",
-         "displayName":"Database User Password",
-         "description":"Password of the database restore user.",
-         "value":"password"
-      },
-      {
-         "name":"PGRESTORE_DB",
-         "displayName":"Database",
-         "description":"The database to connect to/auth against when running the restore.",
-         "value":"postgres"
-      },
-      {
-         "name":"PGRESTORE_VERBOSE",
-         "displayName":"Verbose",
-         "description":"Flag to indicate whether the output from the operation should be verbose. Valid values: true, false",
-         "value":"true"
-      },
-      {
-         "name":"PGRESTORE_VOLUMEPATH",
-         "displayName":"Volume Path",
-         "description":"Which path (only) to use as the input source for pg_restore.",
-         "value":"/pgdata/basic-dumps/2018-01-29-19-06-51/"
-      },
-      {
-         "name":"PGRESTORE_FILE",
-         "displayName":"Restore File",
-         "description":"Which filename (only) to use as the input source for pg_restore.",
-         "value":"pgdumpall.sql"
-      },
-      {
-         "name":"PGRESTORE_FORMAT",
-         "displayName":"Format",
-         "description":"Option to select the output format (plain (p), custom (c), directory (d) and tar (t)).",
-         "value":"p"
-      }
-   ],
-   "objects":[
-      {
-         "kind":"Job",
-         "apiVersion":"batch/v1",
-         "metadata":{
-            "name":"pgrestore-job"
-         },
-         "spec":{
-            "template":{
-               "metadata":{
-                  "name":"pgrestore-job",
-                  "labels":{
-                     "app":"pgrestore-job"
-                  }
-               },
-               "spec":{
-                  "securityContext":{
-                     "supplementalGroups":[
-                        65534
-                     ]
-                  },
-                  "volumes":[
-                     {
-                        "name":"pgdata",
-                        "persistentVolumeClaim":{
-                           "claimName":"crunchy-pvc"
-                        }
-                     }
-                  ],
-                  "containers":[
-                     {
-                        "name":"pgrestore-job",
-                        "image":"${CCP_IMAGE_PREFIX}/crunchy-restore:${CCP_IMAGE_TAG}",
-                        "volumeMounts":[
-                           {
-                              "mountPath":"/pgdata",
-                              "name":"pgdata",
-                              "readOnly":false
-                           }
-                        ],
-                        "env":[
-                           {
-                              "name":"PGRESTORE_HOST",
-                              "value":"${PGRESTORE_HOST}"
-                           },
-                           {
-                              "name":"PGRESTORE_USER",
-                              "value":"${PGRESTORE_USER}"
-                           },
-                           {
-                              "name":"PGRESTORE_PASS",
-                              "value":"${PGRESTORE_PASS}"
-                           },
-                           {
-                              "name":"PGRESTORE_PORT",
-                              "value":"${PGRESTORE_PORT}"
-                           },
-                           {
-                              "name":"PGRESTORE_DB",
-                              "value":"${PGRESTORE_DB}"
-                           },
-                           {
-                              "name":"PGRESTORE_VOLUMEPATH",
-                              "value":"${PGRESTORE_VOLUMEPATH}"
-                           },
-                           {
-                              "name":"PGRESTORE_FILE",
-                              "value":"${PGRESTORE_FILE}"
-                           },
-                           {
-                              "name":"PGRESTORE_FORMAT",
-                              "value":"${PGRESTORE_FORMAT}"
-                           }
-                        ]
-                     }
-                  ],
-                  "restartPolicy":"Never"
-               }
+    "kind": "Job",
+    "apiVersion": "batch/v1",
+    "metadata": {
+        "name": "pgrestore-job"
+    },
+    "spec": {
+        "template": {
+            "metadata": {
+                "name": "pgrestore-job",
+                "labels": {
+                    "app": "pgrestore-job"
+                }
+            },
+            "spec": {
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                },
+                "volumes": [{
+                    "name": "pgdata",
+                    "persistentVolumeClaim": {
+                        "claimName": "pgrestore-pvc"
+                    }
+                }],
+                "containers": [{
+                    "name": "pgrestore-job",
+                    "image": "$CCP_IMAGE_PREFIX/crunchy-restore:$CCP_IMAGE_TAG",
+                    "volumeMounts": [{
+                        "mountPath": "/pgdata",
+                        "name": "pgdata",
+                        "readOnly": false
+                    }],
+                    "env": [{
+                        "name": "PGRESTORE_HOST",
+                        "value": "primary-pvc"
+                    }, {
+                        "name": "PGRESTORE_USER",
+                        "value": "postgres"
+                    }, {
+                        "name": "PGRESTORE_PASS",
+                        "value": "password"
+                    }, {
+                        "name": "PGRESTORE_PORT",
+                        "value": "5432"
+                    }, {
+                        "name": "PGRESTORE_DB",
+                        "value": "postgres"
+                    }, {
+                        "name": "PGRESTORE_VOLUMEPATH",
+                        "value": "/pgdata/primary-pvc-dumps/2018-03-09-23-17-58/"
+                    }, {
+                        "name": "PGRESTORE_FILE",
+                        "value": "pgdumpall.sql"
+                    }, {
+                        "name": "PGRESTORE_FORMAT",
+                        "value": "p"
+                    }]
+                }],
+                "restartPolicy": "Never"
             }
-         }
-      }
-   ]
+        }
+    }
 }

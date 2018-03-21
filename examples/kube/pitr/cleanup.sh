@@ -15,11 +15,13 @@
 
 kubectl delete pod primary-pitr-restore
 kubectl delete service primary-pitr-restore
-sudo rm -rf $PV_PATH/primary-pitr-restore
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/primary-pitr-restore
 
 kubectl delete service primary-pitr primary-pitr-restore
 kubectl delete pod primary-pitr
 kubectl delete job primary-pitr-backup-job
 
-sudo rm -rf $PV_PATH/WAL/primary-pitr
-sudo rm -rf $PV_PATH/primary-pitr
+kubectl delete pvc primary-pitr-pvc primary-pitr-pgwal-pvc primary-pitr-backup-pvc backup-primary-pitr-pvc primary-pitr-restore-pvc recover-pvc 
+
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/WAL/primary-pitr
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/primary-pitr

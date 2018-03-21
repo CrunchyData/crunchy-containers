@@ -6,7 +6,7 @@ version: '3'
 
 services:
   db-primary:
-    image: crunchydata/crunchy-postgres:centos7-9.6.6-1.7.1
+    image: crunchydata/crunchy-postgres:centos7-9.6.8-1.8.2
     ports:
     - "5432"
     volumes:
@@ -28,7 +28,7 @@ services:
     - PG_ROOT_PASSWORD=password
     - PG_DATABASE=userdb
   db-replica:
-    image: crunchydata/crunchy-postgres:centos7-9.6.6-1.7.1
+    image: crunchydata/crunchy-postgres:centos7-9.6.8-1.8.2
     ports:
     - "5432"
     volumes:

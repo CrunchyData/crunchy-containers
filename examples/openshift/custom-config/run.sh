@@ -18,11 +18,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-sudo cp $DIR/setup.sql $PV_PATH
-sudo cp $DIR/pg_hba.conf $PV_PATH
-sudo cp $DIR/postgresql.conf $PV_PATH
-sudo chown nfsnobody:nfsnobody $PV_PATH/setup.sql $PV_PATH/postgresql.conf \
-$PV_PATH/pg_hba.conf
-sudo chmod g+r $PV_PATH/setup.sql $PV_PATH/postgresql.conf $PV_PATH/pg_hba.conf
+oc create -f $DIR/custom-config-pvc.json
 
-oc process -f $DIR/custom-config.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+sudo cp $DIR/setup.sql $CCP_STORAGE_PATH
+sudo cp $DIR/pg_hba.conf $CCP_STORAGE_PATH
+sudo cp $DIR/postgresql.conf $CCP_STORAGE_PATH
+sudo chown nfsnobody:nfsnobody $CCP_STORAGE_PATH/setup.sql $CCP_STORAGE_PATH/postgresql.conf \
+$CCP_STORAGE_PATH/pg_hba.conf
+sudo chmod g+r $CCP_STORAGE_PATH/setup.sql $CCP_STORAGE_PATH/postgresql.conf $CCP_STORAGE_PATH/pg_hba.conf
+
+oc create -f $DIR/service.json
+expenv -f $DIR/custom-config.json | oc create -f -

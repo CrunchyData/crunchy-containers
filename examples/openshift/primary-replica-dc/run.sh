@@ -18,4 +18,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-oc process -f $DIR/primary-replica.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+oc create -f $DIR/primary-service.json
+oc create -f $DIR/replica-service.json
+
+expenv -f $DIR/primary.json | oc create -f -
+expenv -f $DIR/replica.json | oc create -f -

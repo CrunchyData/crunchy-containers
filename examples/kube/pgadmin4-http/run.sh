@@ -20,5 +20,4 @@ kubectl create secret generic pgadmin-secrets \
     --from-literal=pgadmin-email='admin@admin.com' \
     --from-literal=pgadmin-password='password'
 
-expenv -f $DIR/pgadmin4-pod.json | kubectl create -f -
-kubectl create -f $DIR/pgadmin4-service.json
+expenv -f $DIR/pgadmin4.json | kubectl create -f -

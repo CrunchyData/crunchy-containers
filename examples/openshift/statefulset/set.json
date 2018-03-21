@@ -6,12 +6,11 @@
     },
     "spec": {
         "serviceName": "pgset",
-        "replicas": 2,
+        "replicas": 1,
         "template": {
             "metadata": {
                 "labels": {
-                    "app": "pgset",
-                    "name": "pgset-replica"
+                    "app": "pgset"
                 }
             },
             "spec": {
@@ -35,6 +34,9 @@
                     }, {
                         "name": "PG_PRIMARY_HOST",
                         "value": "pgset-primary"
+                    }, {
+                        "name": "PG_REPLICA_HOST",
+                        "value": "pgset-replica"
                     }, {
                         "name": "PG_PRIMARY_PORT",
                         "value": "5432"
@@ -63,7 +65,7 @@
                 "volumes": [{
                     "name": "pgdata",
                     "persistentVolumeClaim": {
-                        "claimName": "crunchy-pvc"
+                        "claimName": "statefulset-pvc"
                     }
                 }]
             }

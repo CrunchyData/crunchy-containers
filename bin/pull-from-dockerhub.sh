@@ -12,21 +12,32 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+if [ -z "$CCP_IMAGE_PREFIX" ]; then
+	echo "CCP_IMAGE_PREFIX not set"
+	exit 1
+fi
 
 if [ -z "$CCP_IMAGE_TAG" ]; then
 	echo "CCP_IMAGE_TAG not set"
 	exit 1
 fi
-docker pull crunchydata/crunchy-prometheus:$CCP_IMAGE_TAG
-docker pull crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG
-docker pull crunchydata/crunchy-grafana:$CCP_IMAGE_TAG
-docker pull crunchydata/crunchy-collect:$CCP_IMAGE_TAG
-docker pull crunchydata/crunchy-pgbadger:$CCP_IMAGE_TAG
-docker pull crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG
-docker pull crunchydata/crunchy-watch:$CCP_IMAGE_TAG
-docker pull crunchydata/crunchy-backup:$CCP_IMAGE_TAG
-docker pull crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
-docker pull crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG
-docker pull crunchydata/crunchy-pgadmin4:$CCP_IMAGE_TAG
-#docker pull crunchydata/crunchy-dba:$CCP_IMAGE_TAG
-#docker pull crunchydata/crunchy-vacuum:$CCP_IMAGE_TAG
+if [ -z "$CCP_IMAGE_PREFIX" ]; then
+	echo "CCP_IMAGE_PREFIX not set"
+	exit 1
+fi
+docker pull $CCP_IMAGE_PREFIX/crunchy-prometheus:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-grafana:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-collect:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-pgbadger:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-pgpool:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-watch:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-postgres-gis:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-pgbouncer:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-pgadmin4:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-dump:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-restore:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-dba:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-vacuum:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-upgrade:$CCP_IMAGE_TAG

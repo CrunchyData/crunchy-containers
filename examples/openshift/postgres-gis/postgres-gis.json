@@ -1,176 +1,95 @@
 {
-  "kind":"Template",
-  "apiVersion":"v1",
-  "metadata":{
-    "name":"crunchy-pg-gis-example",
-    "creationTimestamp":null,
-    "annotations":{
-      "description":"Crunchy PostgreSQL PostGIS Example",
-      "iconClass":"icon-database",
-      "tags":"database,postgresql,postgis"
-    }
-  },
-  "parameters":[
-    {
-      "name":"CCP_IMAGE_PREFIX",
-      "description":"The image prefix to use"
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "postgres-gis",
+        "labels": {
+            "name": "postgres-gis"
+        }
     },
-    {
-      "name":"CCP_IMAGE_TAG",
-      "description":"The image tag to use"
-    }
-  ],
-  "objects":[
-    {
-      "kind":"Service",
-      "apiVersion":"v1",
-      "metadata":{
-        "name":"postgres-gis",
-        "labels":{
-          "name":"postgres-gis"
-        }
-      },
-      "spec":{
-        "ports":[
-          {
-            "protocol":"TCP",
-            "port":5432,
-            "targetPort":5432,
-            "nodePort":0
-          }
-        ],
-        "selector":{
-          "name":"postgres-gis"
-        }
-      },
-      "status":{
-        "loadBalancer":{
-
-        }
-      }
-    },
-    {
-      "kind":"Pod",
-      "apiVersion":"v1",
-      "metadata":{
-        "name":"postgres-gis",
-        "labels":{
-          "name":"postgres-gis"
-        }
-      },
-      "spec":{
-        "containers":[
-          {
-            "name":"postgres-gis",
-            "securityContext":{
-              "privileged":false
-            },
-            "image":"${CCP_IMAGE_PREFIX}/crunchy-postgres-gis:${CCP_IMAGE_TAG}",
-            "ports":[
-              {
-                "containerPort":5432,
-                "protocol":"TCP"
-              }
-            ],
-            "env":[
-              {
-                "name":"VOLUME_NAME",
-                "value":"/pgdata"
-              },
-              {
-                "name":"TEMP_BUFFERS",
-                "value":"9MB"
-              },
-              {
-                "name":"PGHOST",
-                "value":"/tmp"
-              },
-              {
-                "name":"MAX_CONNECTIONS",
-                "value":"101"
-              },
-              {
-                "name":"SHARED_BUFFERS",
-                "value":"128MB"
-              },
-              {
-                "name":"MAX_WAL_SENDERS",
-                "value":"7"
-              },
-              {
-                "name":"WORK_MEM",
-                "value":"5MB"
-              },
-              {
-                "name":"PG_PRIMARY_USER",
-                "value":"primaryuser"
-              },
-              {
-                "name":"PG_PRIMARY_HOST",
-                "value":"postgres-gis"
-              },
-              {
-                "name":"PG_PRIMARY_PORT",
-                "value":"5432"
-              },
-              {
-                "name":"PG_PRIMARY_PASSWORD",
-                "value":"password"
-              },
-              {
-                "name":"PG_MODE",
-                "value":"primary"
-              },
-              {
-                "name":"PG_USER",
-                "value":"testuser"
-              },
-              {
-                "name":"PG_PASSWORD",
-                "value":"password"
-              },
-              {
-                "name":"PG_ROOT_PASSWORD",
-                "value":"password"
-              },
-              {
-                "name":"PG_DATABASE",
-                "value":"userdb"
-              },
-              {
-                "name":"CONTAINER_NAME",
-                "value":"postgres-gis"
-              }
-            ],
-            "volumeMounts":[
-              {
-                "mountPath":"/pgdata",
-                "name":"pgdata",
-                "readOnly":false
-              },
-              {
-                "mountPath":"/backup",
-                "name":"backup",
-                "readOnly":true
-              }
-            ]
-          }
-        ],
-        "volumes":[
-          {
-            "name":"pgdata",
-            "emptyDir":{
+    "spec": {
+        "securityContext": {
+            $CCP_SECURITY_CONTEXT
+        },
+        "containers": [{
+            "name": "postgres-gis",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-postgres-gis:$CCP_IMAGE_TAG",
+            "ports": [{
+                "containerPort": 5432,
+                "protocol": "TCP"
+            }],
+            "env": [{
+                "name": "VOLUME_NAME",
+                "value": "/pgdata"
+            }, {
+                "name": "TEMP_BUFFERS",
+                "value": "9MB"
+            }, {
+                "name": "PGHOST",
+                "value": "/tmp"
+            }, {
+                "name": "MAX_CONNECTIONS",
+                "value": "101"
+            }, {
+                "name": "SHARED_BUFFERS",
+                "value": "128MB"
+            }, {
+                "name": "MAX_WAL_SENDERS",
+                "value": "7"
+            }, {
+                "name": "WORK_MEM",
+                "value": "5MB"
+            }, {
+                "name": "PG_PRIMARY_USER",
+                "value": "primaryuser"
+            }, {
+                "name": "PG_PRIMARY_HOST",
+                "value": "postgres-gis"
+            }, {
+                "name": "PG_PRIMARY_PORT",
+                "value": "5432"
+            }, {
+                "name": "PG_PRIMARY_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_MODE",
+                "value": "primary"
+            }, {
+                "name": "PG_USER",
+                "value": "testuser"
+            }, {
+                "name": "PG_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_ROOT_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_DATABASE",
+                "value": "userdb"
+            }, {
+                "name": "CONTAINER_NAME",
+                "value": "postgres-gis"
+            }],
+            "volumeMounts": [{
+                "mountPath": "/pgdata",
+                "name": "pgdata",
+                "readOnly": false
+            }, {
+                "mountPath": "/backup",
+                "name": "backup",
+                "readOnly": true
+            }]
+        }],
+        "volumes": [{
+            "name": "pgdata",
+            "emptyDir": {
 
             }
-          },
-          {
-            "name":"backup",
-            "emptyDir":{
+        }, {
+            "name": "backup",
+            "emptyDir": {
 
             }
-          }
-        ]
-      }
+        }]
     }
-  ]
 }

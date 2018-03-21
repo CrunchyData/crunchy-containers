@@ -23,7 +23,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 oc process -n $PROJECT crunchy-pgadmin4 \
 	NAME=pgadmin4 \
-	CCP_IMAGE_TAG=rhel7-10.1-1.7.1 \
+	CCP_IMAGE_TAG=rhel7-10.3-1.8.2 \
 	CCP_IMAGE_PREFIX=172.30.240.45:5000/$PROJECT \
 	PVC_NAME=pgadmin4-pvc \
 	PVC_SIZE=300M \

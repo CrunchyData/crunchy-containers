@@ -1,116 +1,55 @@
 {
-    "kind": "Template",
+    "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pg-replica-example",
-        "creationTimestamp": null,
-        "annotations": {
-            "description": "PostgreSQL Replication Example",
-            "iconClass": "icon-database",
-            "tags": "database,postgresql,replication"
+        "name": "pgbouncer",
+        "labels": {
+            "name": "pgbouncer"
         }
     },
-    "parameters": [{
-        "name": "PGBOUNCER_SERVICE_NAME",
-        "value": "pgbouncer"
-    }, {
-        "name": "CCP_IMAGE_PREFIX",
-        "description": "the image prefix to use"
-    }, {
-        "name": "CCP_IMAGE_TAG",
-        "description": "the image tag to use"
-    }, {
-        "name": "NAMESPACE",
-        "description": "the project namespace to use"
-    }],
-    "objects": [{
-        "kind": "Service",
-        "apiVersion": "v1",
-        "metadata": {
-            "name": "${PGBOUNCER_SERVICE_NAME}",
-            "labels": {
-                "name": "${PGBOUNCER_SERVICE_NAME}"
-            }
+    "spec": {
+        "securityContext": {
+            $CCP_SECURITY_CONTEXT
         },
-        "spec": {
+        "volumes": [{
+            "name": "pgconf",
+            "configMap": {
+                "name": "pgbouncer-configmap"
+            }
+        }],
+        "containers": [{
+            "name": "pgbouncer",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-pgbouncer:$CCP_IMAGE_TAG",
             "ports": [{
-                "protocol": "TCP",
-                "port": 5432,
-                "targetPort": 5432,
-                "nodePort": 0
+                "containerPort": 5432,
+                "protocol": "TCP"
             }],
-            "selector": {
-                "name": "${PGBOUNCER_SERVICE_NAME}"
-            }
-        },
-        "status": {
-            "loadBalancer": {}
-        }
-    }, {
-        "kind": "Pod",
-        "apiVersion": "v1",
-        "metadata": {
-            "name": "${PGBOUNCER_SERVICE_NAME}",
-            "labels": {
-                "name": "${PGBOUNCER_SERVICE_NAME}"
-            }
-        },
-        "spec": {
-            "securityContext": {
-                "supplementalGroups": [65534]
-            },
-            "volumes": [{
+            "env": [{
+                "name": "PG_DATABASE",
+                "description": "The database name configured in pgbouncer",
+                "value": "postgres"
+            }, {
+                "name": "PG_PRIMARY_USER",
+                "description": "The primary user configured in pgbouncer",
+                "value": "primaryuser"
+            }, {
+                "name": "PG_PRIMARY_PORT",
+                "description": "The primary port configured in pgbouncer",
+                "value": "5432"
+            }, {
+                "name": "PG_PRIMARY_SERVICE",
+                "description": "The primary configured in pgbouncer",
+                "value": "pr-primary"
+            }, {
+                "name": "PG_REPLICA_SERVICE",
+                "description": "The replica configured in pgbouncer",
+                "value": "pr-replica"
+            }],
+            "volumeMounts": [{
+                "mountPath": "/pgconf/bouncerconfig",
                 "name": "pgconf",
-				"configMap": {
-					"name": "pgbouncer-configmap"
-				}
-            }],
-            "containers": [{
-                "name": "pgbouncer",
-                "image": "${CCP_IMAGE_PREFIX}/crunchy-pgbouncer:${CCP_IMAGE_TAG}",
-                "ports": [{
-                    "containerPort": 5432,
-                    "protocol": "TCP"
-                }],
-                "env": [{
-                    "name": "PG_DATABASE",
-                    "description": "The database name configured in pgbouncer",
-                    "value": "postgres"
-                }, {
-                    "name": "FAILOVER",
-                    "description": "failover flag",
-                    "value": "yes"
-                }, {
-                    "name": "OSE_PROJECT",
-                    "description": "ose project to login into",
-                    "value": "${NAMESPACE}"
-                }, {
-                    "name": "SLEEP_TIME",
-                    "description": "time in secs to sleep between polls",
-                    "value": "12"
-                }, {
-                    "name": "PG_PRIMARY_USER",
-                    "description": "The primary user configured in pgbouncer",
-                    "value": "primaryuser"
-                }, {
-                    "name": "PG_PRIMARY_PORT",
-                    "description": "The primary port configured in pgbouncer",
-                    "value": "5432"
-                }, {
-                    "name": "PG_PRIMARY_SERVICE",
-                    "description": "The primary configured in pgbouncer",
-                    "value": "pr-primary"
-                }, {
-                    "name": "PG_REPLICA_SERVICE",
-                    "description": "The replica configured in pgbouncer",
-                    "value": "pr-replica"
-                }],
-                "volumeMounts": [{
-                    "mountPath": "/pgconf/bouncerconfig",
-                    "name": "pgconf",
-                    "readOnly": true
-                }]
+                "readOnly": true
             }]
-        }
-    }]
+        }]
+    }
 }

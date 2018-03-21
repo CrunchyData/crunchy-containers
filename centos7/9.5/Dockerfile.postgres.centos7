@@ -3,10 +3,10 @@ FROM centos:7
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
       	PostgresVersion="9.5" \
-      	PostgresFullVersion="9.5.10" \
+      	PostgresFullVersion="9.5.12" \
         version="7.3" \
-        release="1.7.1" \
-        build-date="2018-01-30" \
+        release="1.8.2" \
+        build-date="2018-03-01" \
         url="https://crunchydata.com" \
         summary="PostgreSQL 9.5/9.6 (PGDG) on a Centos7 base image" \
         description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
@@ -26,7 +26,6 @@ RUN yum -y update && yum -y install epel-release \
     hostname \
     nss_wrapper \
     openssh-server \
-    openssh-clients \
     kubernetes-client \
     procps-ng  \
     rsync \
@@ -38,7 +37,12 @@ RUN yum -y update && yum -y install epel-release \
 ENV	PGROOT="/usr/pgsql-${PGVERSION}"
 
 # add path settings for postgres user
+# bash_profile is loaded in login, but not with exec
+# bashrc to set permissions in OCP when using exec
+# HOME is / in OCP
 ADD conf/.bash_profile /var/lib/pgsql/
+ADD conf/.bash_profile /
+ADD conf/.bashrc /
 
 # set up cpm directory
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd

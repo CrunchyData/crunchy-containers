@@ -15,22 +15,11 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
+ose_hack
 
-echo $PG_USER is PG_USER
-if [ ! -v PG_USER ]; then
-	echo "PG_USER env var is not set, required value"
-	exit 2
-fi
-echo $PG_PASSWORD is PG_PASSWORD
-if [ ! -v PG_PASSWORD ]; then
-	echo "PG_PASSWORD env var is not set, required value"
-	exit 2
-fi
-echo $JOB_HOST is JOB_HOST
-if [ ! -v JOB_HOST ]; then
-	echo "JOB_HOST env var is not set, required value"
-	exit 2
-fi
+env_check_err "PG_USER"
+env_check_err "PG_PASSWORD"
+env_check_err "JOB_HOST"
 
-
+echo_info "Starting vacuum job.."
 /opt/cpm/bin/vacuum

@@ -18,7 +18,6 @@
 a2x -f pdf ./examples.adoc
 a2x -f pdf ./dedicated.adoc
 a2x -f pdf ./install.adoc
-a2x -f pdf ./metrics.adoc
 a2x -f pdf ./containers.adoc
 a2x -f pdf ./pitr.adoc
 
@@ -27,7 +26,6 @@ a2x -f pdf ./pitr.adoc
 #a2x -f xhtml ./examples.adoc -D ./xhtml/
 #a2x -f xhtml ./dedicated.adoc -D ./xhtml/
 #a2x -f xhtml ./install.adoc -D ./xhtml/
-#a2x -f xhtml ./metrics.adoc -D ./xhtml/
 #a2x -f xhtml ./containers.adoc -D ./xhtml/
 #a2x -f xhtml ./pitr.adoc -D ./xhtml/
 
@@ -44,7 +42,6 @@ a2x -f manpage ./pgpool/help.md
 a2x -f manpage ./postgres-gis/help.md
 a2x -f manpage ./postgres/help.md
 a2x -f manpage ./prometheus/help.md
-a2x -f manpage ./promgateway/help.md
 a2x -f manpage ./upgrade/help.md
 a2x -f manpage ./vacuum/help.md
 a2x -f manpage ./watch/help.md

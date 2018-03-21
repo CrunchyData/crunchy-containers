@@ -1,90 +1,70 @@
 {
-    "kind": "Template",
+    "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pg-replica-example",
-        "creationTimestamp": null,
-        "annotations": {
-            "description": "PostgreSQL Replication Example",
-            "iconClass": "icon-database",
-            "tags": "database,postgresql,replication"
+        "name": "cssyncreplica",
+        "labels": {
+            "name": "csreplica"
         }
     },
-    "parameters": [ {
-        "name": "CCP_IMAGE_PREFIX",
-        "description": "the image prefix to use"
-    }, {
-        "name": "CCP_IMAGE_TAG",
-        "description": "the image tag to use"
-    } ],
-    "objects": [{
-        "kind": "Pod",
-        "apiVersion": "v1",
-        "metadata": {
-            "name": "cssyncreplica",
-            "labels": {
-                "name": "csreplica"
-            }
-        },
-        "spec": {
-            "containers": [{
-                "name": "postgres",
-                "image": "${CCP_IMAGE_PREFIX}/crunchy-postgres:${CCP_IMAGE_TAG}",
-                "ports": [{
-                    "containerPort": 5432,
-                    "protocol": "TCP"
-                }],
-                "env": [{
-                    "name": "PG_PRIMARY_HOST",
-                    "value": "csprimary"
-                }, {
-                    "name": "PG_PRIMARY_USER",
-                    "value": "primaryuser"
-                }, {
-                    "name": "PG_PRIMARY_PORT",
-                    "value": "5432"
-                }, {
-                    "name": "PGHOST",
-                    "value": "/tmp"
-                }, {
-                    "name": "PG_MODE",
-                    "value": "replica"
-                }, {
-                    "name": "SYNC_REPLICA",
-                    "value": "cssyncreplica"
-                }, {
-                    "name": "PG_PRIMARY_PASSWORD",
-                    "value": "password"
-                }, {
-                    "name": "PG_USER",
-                    "value": "testuser"
-                }, {
-                    "name": "PG_PASSWORD",
-                    "value": "password"
-                }, {
-                    "name": "PG_DATABASE",
-                    "value": "userdb"
-                }, {
-                    "name": "PG_ROOT_PASSWORD",
-                    "value": "password"
-                }],
-                "volumeMounts": [{
-                    "mountPath": "/pgdata",
-                    "name": "pgdata",
-                    "readOnly": false
-                }, {
-                    "mountPath": "/backup",
-                    "name": "backup",
-                    "readOnly": true
-                }]
+    "spec": {
+        "containers": [{
+            "name": "postgres",
+            "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
+            "ports": [{
+                "containerPort": 5432,
+                "protocol": "TCP"
             }],
-            "volumes": [{
-                "name": "pgdata",
-                "emptyDir": {}
+            "env": [{
+                "name": "PG_PRIMARY_HOST",
+                "value": "csprimary"
             }, {
+                "name": "PG_PRIMARY_USER",
+                "value": "primaryuser"
+            }, {
+                "name": "PG_PRIMARY_PORT",
+                "value": "5432"
+            }, {
+                "name": "PGHOST",
+                "value": "/tmp"
+            }, {
+                "name": "PG_MODE",
+                "value": "replica"
+            }, {
+                "name": "SYNC_REPLICA",
+                "value": "cssyncreplica"
+            }, {
+                "name": "PG_PRIMARY_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_USER",
+                "value": "testuser"
+            }, {
+                "name": "PG_PASSWORD",
+                "value": "password"
+            }, {
+                "name": "PG_DATABASE",
+                "value": "userdb"
+            }, {
+                "name": "PG_ROOT_PASSWORD",
+                "value": "password"
+            }],
+            "volumeMounts": [{
+                "mountPath": "/pgdata",
+                "name": "pgdata",
+                "readOnly": false
+            }, {
+                "mountPath": "/backup",
                 "name": "backup",
-                "emptyDir": {}
+                "readOnly": true
             }]
-        }
-    }]
+        }],
+        "volumes": [{
+            "name": "pgdata",
+            "emptyDir": {}
+        }, {
+            "name": "backup",
+            "emptyDir": {}
+        }]
+    }
 }

@@ -9,6 +9,7 @@
     },
     "spec": {
         "securityContext": {
+		$CCP_SECURITY_CONTEXT
         },
         "containers": [{
             "name": "postgres",
@@ -26,6 +27,9 @@
             }, {
                 "name": "PG_MODE",
                 "value": "primary"
+            }, {
+                "name":"PG_PRIMARY_PORT",
+                "value":"5432"
             }, {
                 "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"
@@ -55,7 +59,7 @@
         "volumes": [{
             "name": "pgdata",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc"
+                "claimName": "primary-upgrade-pvc"
             }
         }, {
             "name": "backup",

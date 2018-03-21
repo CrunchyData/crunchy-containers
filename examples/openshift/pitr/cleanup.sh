@@ -20,5 +20,9 @@ oc delete service primary-pitr primary-pitr-restore
 oc delete pod primary-pitr primary-pitr-restore
 oc delete job backup-primary-pitr-pvc
 
-sudo rm -rf $PV_PATH/WAL/primary-pitr
-sudo rm -rf $PV_PATH/primary-pitr
+oc delete pvc primary-pitr-pvc primary-pitr-pgwal-pvc
+
+$CCPROOT/examples/waitforterm.sh primary-pitr oc
+
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/WAL/primary-pitr
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/primary-pitr

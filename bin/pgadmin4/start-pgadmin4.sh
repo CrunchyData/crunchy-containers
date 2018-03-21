@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2015 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -19,22 +19,31 @@ ose_hack
 
 export PATH=$PATH:/usr/pgsql-*/bin
 PGADMIN_DIR='/usr/lib/python2.7/site-packages/pgadmin4-web'
+APACHE_PIDFILE='/tmp/httpd.pid'
 
-if [[ ( ! -v PGADMIN_SETUP_EMAIL ) || ( ! -v PGADMIN_SETUP_PASSWORD ) ]]; then
-    echo "PGADMIN_SETUP_EMAIL or PGADMIN_SETUP_PASSWORD environment variable is not set, aborting"
-    exit 1
-fi
+function trap_sigterm() {
+    echo_info "Doing trap logic.."
+
+    echo_warn "Clean shutdown of Apache.."
+    /usr/sbin/httpd -k stop
+    kill -SIGINT $(head -1 $APACHE_PIDFILE)
+}
+
+trap 'trap_sigterm' SIGINT SIGTERM
+
+env_check_err "PGADMIN_SETUP_EMAIL"
+env_check_err "PGADMIN_SETUP_PASSWORD"
 
 if [[ ${ENABLE_TLS:-false} == 'true' ]]
 then
-    echo "TLS enabled.."
+    echo_info "TLS enabled.  Applying https configuration.."
     if [[ ( ! -f /certs/server.key ) || ( ! -f /certs/server.crt ) ]]; then
-        echo "ENABLE_TLS true but /certs/server.key or /certs/server.crt not found, aborting"
+        echo_err "ENABLE_TLS true but /certs/server.key or /certs/server.crt not found, aborting"
         exit 1
     fi
     cp /opt/cpm/conf/pgadmin-https.conf /var/lib/pgadmin/pgadmin.conf
 else
-    echo "TLS disabled.."
+    echo_info "TLS disabled.  Applying http configuration.."
     cp /opt/cpm/conf/pgadmin-http.conf /var/lib/pgadmin/pgadmin.conf
 fi
 
@@ -48,13 +57,14 @@ cd ${PGADMIN_DIR?}
 
 if [[ ! -f /var/lib/pgadmin/pgadmin4.db ]]
 then
-    echo "Setting up pgAdmin4 database.."
+    echo_info "Setting up pgAdmin4 database.."
     python setup.py
 fi
 
 cd ${PGADMIN_DIR?}
 
-echo "Starting web server.."
-/usr/sbin/httpd -D FOREGROUND
+echo_info "Starting Apache web server.."
+/usr/sbin/httpd -D FOREGROUND &
+echo $! > $APACHE_PIDFILE
 
-cat /var/lib/pgadmin/error_log
+wait

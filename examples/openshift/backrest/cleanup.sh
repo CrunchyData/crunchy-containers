@@ -19,4 +19,7 @@ oc delete service primary-backrest
 oc delete pod primary-backrest
 oc delete configmap backrestconf
 
-sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/archive $PV_PATH/backup
+oc delete pvc backrest-pvc backrest-backrestrepo-pvc
+$CCPROOT/examples/waitforterm.sh primary-backrest oc
+
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/archive $CCP_STORAGE_PATH/backup

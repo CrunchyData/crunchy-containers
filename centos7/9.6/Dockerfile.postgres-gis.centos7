@@ -3,10 +3,10 @@ FROM centos:7
 LABEL name="crunchydata/postgres-gis" \
         vendor="crunchy data" \
       	PostgresVersion="9.6" \
-      	PostgresFullVersion="9.6.6" \
+      	PostgresFullVersion="9.6.8" \
         version="7.3" \
-        release="1.7.1" \
-        build-date="2018-01-30" \
+        release="1.8.2" \
+        build-date="2018-03-01" \
         url="https://crunchydata.com" \
         summary="Includes PostGIS extensions on top of crunchy-postgres" \
         description="An identical image of crunchy-postgres with the extra PostGIS packages added for users that require PostGIS." \
@@ -26,7 +26,6 @@ RUN yum -y update && yum -y install epel-release \
     hostname \
     nss_wrapper \
     openssh-server \
-    openssh-clients \
     procps-ng  \
     rsync \
  && yum -y install postgresql96-server postgresql96-contrib postgresql96 \
@@ -39,7 +38,12 @@ RUN yum -y update && yum -y install epel-release \
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
 
 # add path settings for postgres user
+# bash_profile is loaded in login, but not with exec
+# bashrc to set permissions in OCP when using exec
+# HOME is / in OCP
 ADD conf/.bash_profile /var/lib/pgsql/
+ADD conf/.bash_profile /
+ADD conf/.bashrc /
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd
 

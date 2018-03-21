@@ -20,4 +20,4 @@ oc create secret generic pgadmin-secrets \
     --from-literal=pgadmin-email='admin@admin.com' \
     --from-literal=pgadmin-password='password'
 
-oc process -f $DIR/pgadmin4-pod.json -p CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX CCP_IMAGE_TAG=$CCP_IMAGE_TAG | oc create -f -
+expenv -f $DIR/pgadmin4.json | oc create -f -

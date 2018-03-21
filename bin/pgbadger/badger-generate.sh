@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2015 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,12 +15,13 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
+ose_hack
 
+TARGET=${HOSTNAME?}
 if [ -v BADGER_TARGET ]; then
-	echo "BADGER_TARGET is set ...this is the standalone case"
-	/bin/pgbadger -o /tmp/badger.html /pgdata/$BADGER_TARGET/pg_log/*.log
-else
-	echo "this is the openshift case"
-	/bin/pgbadger -o /tmp/badger.html /pgdata/$HOSTNAME/pg_log/*.log
+    echo_info "BADGER_TARGET env set.  Setting PGDATA target.."
+    TARGET=${BADGER_TARGET?}
 fi
 
+echo_info "Creating pgBadger output.."
+/bin/pgbadger -o /tmp/badger.html /pgdata/${TARGET?}/pg_log/*.log

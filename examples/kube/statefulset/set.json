@@ -10,14 +10,13 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "app": "pgset",
-                    "name": "pgset-replica"
+                    "app": "pgset"
                 }
             },
             "spec": {
         	"serviceAccount": "pgset-sa",
             "securityContext": {
-                "fsGroup": 26
+			$CCP_SECURITY_CONTEXT
             },
                 "containers": [{
                     "name": "pgset",
@@ -38,6 +37,9 @@
                     }, {
                         "name": "PG_PRIMARY_HOST",
                         "value": "pgset-primary"
+                    }, {
+                        "name": "PG_REPLICA_HOST",
+                        "value": "pgset-replica"
                     }, {
                         "name": "PG_PRIMARY_PORT",
                         "value": "5432"

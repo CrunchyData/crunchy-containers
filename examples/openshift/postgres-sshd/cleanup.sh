@@ -20,7 +20,9 @@ oc delete pod postgres-sshd
 oc delete configmap pgconf
 oc delete secret sshd-secrets
 
+oc delete pvc postgres-sshd-pvc postgres-sshd-backrest-pvc
+
 $CCPROOT/examples/waitforterm.sh postgres-sshd oc
 rm -rf ${DIR?}/keys
-
-sudo PV_PATH=$PV_PATH rm -rf $PV_PATH/archive $PV_PATH/backup
+ 
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/postgres-sshd $CCP_STORAGE_PATH/db-stanza-create.log

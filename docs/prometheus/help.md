@@ -5,7 +5,7 @@ April 13, 2017
 prometheus - prometheus container image
 
 == DESCRIPTION
-The prometheus image provides the open source prometheus push gateway
+The prometheus image provides the open source time series database for storing metrics.
 
 The container itself consists of:
     - RHEL7 base image
@@ -33,4 +33,4 @@ The Red Hat Enterprise Linux version from which the container was built. For exa
 
 `Release=`
 
-The specific release number of the container. For example, Release="1.7.1"
+The specific release number of the container. For example, Release="1.8.2"

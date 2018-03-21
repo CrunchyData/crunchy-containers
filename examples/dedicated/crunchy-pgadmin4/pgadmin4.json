@@ -21,7 +21,7 @@
         }, {
             "name": "CCP_IMAGE_TAG",
             "description": "image version to use",
-            "value": "rhel7-10.1-1.7.1"
+            "value": "rhel7-10.3-1.8.2"
         }, {
             "name": "PVC_NAME",
             "description": "The name for the pvc",

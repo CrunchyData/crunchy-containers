@@ -18,4 +18,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+oc create -f $DIR/upgrade-old-pvc.json
+oc create -f $DIR/upgrade-new-pvc.json
+
 expenv -f $DIR/upgrade-job.json | oc create -f -

@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/dump" \
         vendor="crunchy data" \
       	PostgresVersion="9.6" \
-      	PostgresFullVersion="9.6.6" \
+      	PostgresFullVersion="9.6.8" \
         version="7.3" \
-        release="1.7.1" \
+        release="1.8.2" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Performs a pg_dump on a database container" \
@@ -36,7 +36,6 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 	gettext \
 	hostname \
  	nss_wrapper \
-	openssh-clients \
 	procps-ng \
 	unzip \
  && yum -y install postgresql96 postgresql96-server \

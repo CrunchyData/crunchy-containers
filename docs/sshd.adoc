@@ -1,6 +1,6 @@
 = SSHD Support in Crunchy Container Suite
 Crunchy Data Solutions, Inc.
-v1.7.2, {docdate}
+v1.8.2, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Description
@@ -30,6 +30,20 @@ SSHD can be enabled in the PostgreSQL containers by adding the following
 
 ....
 ENABLE_SSHD=true
+....
+
+The *authorized_keys* file is mounted on the */pgconf* directory.  In order to support 
+using this mount for authentication the following must be set in *sshd_config*:
+
+....
+AuthorizedKeysFile /pgconf/authorized_keys
+StrictModes no
+....
+
+For OpenShift deployments, the following configuration needs to be set in *sshd_config*:
+
+....
+UsePAM no
 ....
 
 === Running the Examples

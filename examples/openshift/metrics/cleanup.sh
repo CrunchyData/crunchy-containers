@@ -13,9 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+oc delete clusterrolebinding prometheus
+oc delete clusterrole prometheus
+oc delete sa prometheus
 oc delete pod crunchy-metrics
+oc delete pod crunchy-pgsql
 oc delete service crunchy-metrics
+oc delete service crunchy-pgsql
+
+oc delete pvc metrics-prometheus-pvc
+oc delete pvc metrics-grafana-pvc
 
 $CCPROOT/examples/waitforterm.sh crunchy-metrics oc
-
-
+$CCPROOT/examples/waitforterm.sh crunchy-pgsql oc

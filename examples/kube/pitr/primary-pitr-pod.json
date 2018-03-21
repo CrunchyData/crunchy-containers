@@ -9,7 +9,7 @@
     },
     "spec": {
         "securityContext": {
-            "supplementalGroups": [65534]
+            $CCP_SECURITY_CONTEXT
         },
         "containers": [{
             "name": "postgres",
@@ -31,6 +31,9 @@
                 "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"
             }, {
+                "name":"PG_PRIMARY_PORT",
+                "value":"5432"
+            }, {
                 "name": "PG_USER",
                 "value": "testuser"
             }, {
@@ -50,7 +53,7 @@
                 "value": "60"
             }],
             "securityContext": {
-                "capabilities": {}
+                $CCP_SECURITY_CONTEXT
             },
 
 
@@ -71,12 +74,12 @@
         "volumes": [{
             "name": "pgdata",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc"
+                "claimName": "primary-pitr-pvc"
             }
         }, {
             "name": "pgwal",
             "persistentVolumeClaim": {
-                "claimName": "crunchy-pvc2"
+                "claimName": "primary-pitr-pgwal-pvc"
             }
         }, {
             "name": "backup",

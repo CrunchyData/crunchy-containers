@@ -1,6 +1,6 @@
 = OpenShift Dedicated Examples - Crunchy Containers for PostgreSQL
 Crunchy Data Solutions, Inc.
-v1.7.2, {docdate}
+v1.8.2, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == OpenShift Dedicated Environment
@@ -38,7 +38,7 @@ within the Deployment or StatefulSet.
 Users can install the templates into their OpenShift environment
 using the following commands.
 
-First, add the following lines to your .bashrc file to set
+First add the following lines to your .bashrc file to set
 the project paths:
 ....
 export GOPATH=$HOME/cdev
@@ -46,39 +46,131 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
 export CCP_PGVERSION=10
-export CCP_PG_FULLVERSION=10.1
-export CCP_VERSION=1.7.1
+export CCP_PG_FULLVERSION=10.3
+export CCP_VERSION=1.8.2
 export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
+export CCP_SECURITY_CONTEXT=""
 export CCP_CLI=kubectl
-export PV_PATH=/mnt/nfsfileshare
-export LOCAL_IP='hostname --ip-address'
-export CCP_IMAGE_PREFIX=crunchydata
+export CCP_NAMESPACE=demo
+export CCP_STORAGE_PATH=/data
 export REPLACE_CCP_IMAGE_PREFIX=crunchydata
-export TOKEN=yourtokengoeshere
-export REG=docker-registry-default.router.default.svc.cluster.local
-export REG=172.30.240.45:5000
-export REG=registry.crunchydata.openshift.com
-export NAMESPACE=default
 ....
-You will then need to log out and back in for the changes to your .bashrc
-file to take effect.
+
+Note:  the CCP_SECURITY_CONTEXT and CCP_STORAGE_PATH settings above indicates you
+intend to use *HostPath* storage.  NFS and dynamic storage are
+other options, see below for details on configuring storage.
+
+Note:  the CCP_CLI setting above indicates you are running the
+examples on a Kubernetes platform and not an Openshift platform.  For
+Openshift, use the value of *oc* as the CCP_CLI variable instead.
+
+Next, it will be necessary to refresh your bashrc file in order for the changes to take
+effect.
+
+....
+. ~/.bashrc
+....
 
 Next, set up a project directory structure and pull down the project:
 ....
 mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
+....
+
+At this point, if you are installing crunchy-containers on a CentOS 7 machine,
+you may continue with the following instructions. If you are doing an installation
+on RHEL 7, please view the instructions located
+link:https://github.com/crunchydata/crunchy-containers/blob/master/docs/install.adoc#rhel-7[below]
+that are specific to RHEL environments.
+
+==== CentOS 7
+....
 cd $GOPATH
-sudo yum -y install golang git docker postgresql
+sudo yum -y install golang git docker
 go get github.com/tools/godep
 cd src/github.com
 mkdir crunchydata
 cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 1.7.1
-godep restore
+git checkout 1.8.2
+go get github.com/blang/expenv
 ....
+
+*If you are a Crunchy enterprise customer, you will place the Crunchy repository
+key and yum repository file into the $CCPROOT/conf directory at this point. These
+files can be obtained through https://access.crunchydata.com/ on the downloads
+page.*
+
+==== RHEL 7
+
+When setting up the environment on RHEL 7, there are slightly different steps that
+need to be taken.
+
+....
+cd $GOPATH
+sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
+sudo yum-config-manager --enable rhel-7-server-extras-rpms
+sudo yum -y install git golang
+go get github.com/tools/godep
+cd src/github.com
+mkdir crunchydata
+cd crunchydata
+git clone https://github.com/crunchydata/crunchy-containers
+cd crunchy-containers
+git checkout 1.8.2
+go get github.com/blang/expenv
+....
+
+*If you are a Crunchy enterprise customer, you will place the Crunchy repository
+key and yum repository file into the $CCPROOT/conf directory at this point. These
+files can be obtained through https://access.crunchydata.com/ on the downloads
+page.*
+
+=== Installing PostgreSQL
+
+These installation instructions assume the installation of PostgreSQL 10
+through the official PGDG repository. View the documentation located
+link:https://wiki.postgresql.org/wiki/YUM_Installation[here] in
+order to view more detailed notes or install a different version of PostgreSQL.
+
+Locate and edit your distributions .repo file, located:
+
+ * On CentOS: /etc/yum.repos.d/CentOS-Base.repo, [base] and [updates] sections
+ * On Red Hat: /etc/yum/pluginconf.d/rhnplugin.conf [main] section
+
+To the section(s) identified above, you need to append a line (otherwise
+dependencies might resolve to the PostgreSQL supplied by the base repository):
+
+....
+exclude=postgresql*
+....
+
+Next, install the RPM relating to the base operating system and PostgreSQL version
+you wish to install. The RPMs can be found link:https://yum.postgresql.org/repopackages.php[here].
+
+For example, to install PostgreSQL 10 on a CentOS 7 system:
+....
+sudo yum -y install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
+....
+
+Or to install PostgreSQL 10 on a RHEL 7 system:
+....
+sudo yum -y install https://download.postgresql.org/pub/repos/yum/testing/10/redhat/rhel-7-x86_64/pgdg-redhat10-10-2.noarch.rpm
+....
+
+You'll need to update your system:
+....
+sudo yum -y update
+....
+
+Then, go ahead and install the PostgreSQL server package.
+....
+sudo yum -y install postgresql10-server.x86_64
+....
+
+=== Building the Templates
 
 Finally, you'll change directories to your Dedicated examples repository and create all the templates stored there.
 ....
@@ -342,6 +434,7 @@ This example deploys a primary database configuration
 which uses a Persistent Volume Claim for persistence.
 
 .Table Template Parameters
+[options="header"]
 |===
 |Parameter|Description|Default
 
@@ -387,7 +480,7 @@ which uses a Persistent Volume Claim for persistence.
 
 |CCP_IMAGE_TAG
 | the image version to use for the container
-| rhel7-9.6.6-1.7.1
+| rhel7-9.6.8-1.8.2
 
 |CCP_IMAGE_PREFIX
 | the image prefix to use, typically the image stream prefix of your registry
@@ -450,6 +543,7 @@ will create a backup of a database and store the backup
 files in a PVC.
 
 .Table Template Parameters
+[options="header"]
 |===
 |Parameter|Description|Default
 
@@ -482,12 +576,12 @@ files in a PVC.
 | primary
 
 |CCP_IMAGE_PREFIX
-| the container image prefix to use, typically the registy IP address and namespace
+| the container image prefix to use, typically the registry IP address and namespace
 | 172.30.149.135:5000/default
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.6-1.7.1
+| rhel7-9.6.8-1.8.2
 |===
 
 === Restore Database Template
@@ -508,6 +602,7 @@ This example performs a database restore using a backup archive
 found in a PVC.
 
 .Table Template Parameters
+[options="header"]
 |===
 |Parameter|Description|Default
 
@@ -577,7 +672,7 @@ found in a PVC.
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.6-1.7.1
+| rhel7-9.6.8-1.8.2
 |===
 
 === Replica Database Template
@@ -595,6 +690,7 @@ These templates create the following:
  * service for replica
 
 .Table Template Parameters
+[options="header"]
 |===
 |Parameter|Description|Default
 
@@ -640,7 +736,7 @@ These templates create the following:
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.6-1.7.1
+| rhel7-9.6.8-1.8.2
 |===
 
 === pgadmin4 Web User Interface Template
@@ -659,6 +755,7 @@ This template will create the following:
  * service for the pgadmin4 container
 
 .Table Template Parameters
+[options="header"]
 |===
 |Parameter|Description|Default
 
@@ -684,7 +781,7 @@ This template will create the following:
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.6-1.7.1
+| rhel7-9.6.8-1.8.2
 |===
 
 
@@ -693,6 +790,6 @@ This template will create the following:
 
 Copyright © 2018 Crunchy Data Solutions, Inc.
 
-CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE ``AS IS'' WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.

@@ -25,12 +25,18 @@
                 "emptyDir": {
                     "medium": "Memory"
                 }
+            },
+            {
+                "name": "run",
+                "emptyDir": {
+                    "medium": "Memory"
+                }
             }
         ],
         "containers": [
             {
                 "name": "pgadmin",
-                "image": "crunchydata/crunchy-pgadmin4:centos7-10.1-1.7.1",
+                "image": "crunchydata/crunchy-pgadmin4:centos7-10.3-1.8.2",
                 "ports": [
                     {
                         "containerPort": 5050,
@@ -70,6 +76,11 @@
                         "mountPath": "/certs",
                         "name": "certs",
                         "readOnly": true
+                    },
+                    {
+                        "mountPath": "/run/httpd",
+                        "name": "run",
+                        "readOnly": false
                     }
                 ]
             }

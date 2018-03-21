@@ -14,7 +14,10 @@
         "name": "CCP_IMAGE_TAG",
         "description": "the image tag to use"
     }, {
-        "name": "NAMESPACE",
+        "name": "CCP_IMAGE_PREFIX",
+        "description": "the image prefix to use"
+    }, {
+        "name": "CCP_NAMESPACE",
         "description": "the project namespace to use"
     }],
     "objects": [{
@@ -30,10 +33,10 @@
             "serviceAccount": "pg-watcher",
             "containers": [{
                 "name": "watch",
-                "image": "crunchydata/crunchy-watch:${CCP_IMAGE_TAG}",
+                "image": "${CCP_IMAGE_PREFIX}/crunchy-watch:${CCP_IMAGE_TAG}",
                 "env": [{
                     "name": "OSE_PROJECT",
-                    "value": "${NAMESPACE}"
+                    "value": "${CCP_NAMESPACE}"
                 }, {
                     "name": "SLEEP_TIME",
                     "value": "20"

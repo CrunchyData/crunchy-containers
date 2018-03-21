@@ -23,14 +23,14 @@ echo "Starting primary container..."
 #sudo chcon -Rt svirt_sandbox_file_t $PGCONF
 # add this next line to the docker run to override pg config files
 
-DATA_DIR=/tmp/sync-primary-data
+DATA_DIR=/tmp/syncprimary-data
 sudo rm -rf $DATA_DIR
 sudo mkdir -p $DATA_DIR
 sudo chown postgres:postgres $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-sudo docker stop sync-primary
-sudo docker rm sync-primary
+sudo docker stop syncprimary
+sudo docker rm syncprimary
 
 sudo docker run \
 	-p 12010:5432 \
@@ -42,7 +42,7 @@ sudo docker run \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=primary \
-	-e SYNC_REPLICA=sync-replica \
+	-e SYNC_REPLICA=syncreplica \
 	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_PRIMARY_PORT=5432 \
@@ -50,8 +50,8 @@ sudo docker run \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=sync-primary \
-	--hostname=sync-primary \
+	--name=syncprimary \
+	--hostname=syncprimary \
 	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
 
 echo "Sleeping in order to let the primary start..."
@@ -59,14 +59,14 @@ sleep 20
 
 echo "Starting synchronous replica..."
 
-DATA_DIR=/tmp/sync-replica
+DATA_DIR=/tmp/syncreplica
 sudo rm -rf $DATA_DIR
 sudo mkdir -p $DATA_DIR
 sudo chown postgres:postgres $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-sudo docker stop sync-replica
-sudo docker rm sync-replica
+sudo docker stop syncreplica
+sudo docker rm syncreplica
 
 sudo docker run \
 	-p 12011:5432 \
@@ -80,29 +80,29 @@ sudo docker run \
 	-e PG_MODE=replica \
 	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_PRIMARY_PASSWORD=password \
-	-e PG_PRIMARY_HOST=sync-primary \
-	-e SYNC_REPLICA=sync-replica \
-	--link sync-primary:sync-primary \
+	-e PG_PRIMARY_HOST=syncprimary \
+	-e SYNC_REPLICA=syncreplica \
+	--link syncprimary:syncprimary \
 	-e PG_PRIMARY_PORT=5432 \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=sync-replica \
-	--hostname=sync-replica \
+	--name=syncreplica \
+	--hostname=syncreplica \
 	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
 
 
 echo "Starting asynchronous replica..."
 
-DATA_DIR=/tmp/async-replica
+DATA_DIR=/tmp/asyncreplica
 sudo rm -rf $DATA_DIR
 sudo mkdir -p $DATA_DIR
 sudo chown postgres:postgres $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-sudo docker stop async-replica
-sudo docker rm async-replica
+sudo docker stop asyncreplica
+sudo docker rm asyncreplica
 
 sudo docker run \
 	-p 12012:5432 \
@@ -116,13 +116,13 @@ sudo docker run \
 	-e PG_MODE=replica \
 	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_PRIMARY_PASSWORD=password \
-	-e PG_PRIMARY_HOST=sync-primary \
-	--link sync-primary:sync-primary \
+	-e PG_PRIMARY_HOST=syncprimary \
+	--link syncprimary:syncprimary \
 	-e PG_PRIMARY_PORT=5432 \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=async-replica \
-	--hostname=async-replica \
+	--name=asyncreplica \
+	--hostname=asyncreplica \
 	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

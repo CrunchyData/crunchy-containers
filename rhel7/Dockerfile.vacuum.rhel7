@@ -5,7 +5,7 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/vacuum" \
         vendor="crunchy data" \
         version="7.3" \
-        release="1.7.1" \
+        release="1.8.2" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Provides a simple SQL VACUUM execution for a PostgreSQL table" \
@@ -22,15 +22,26 @@ COPY docs/vacuum/help.1 /help.1
 COPY docs/vacuum/help.md /help.md
 COPY docs/licenses /licenses
 
-RUN yum -y update && yum -y install procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
-# set up cpm directory
-#
-RUN mkdir -p /opt/cpm/bin
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y install \
+      gettext \
+      hostname \
+      iproute \
+      nss_wrapper \
+      procps-ng \
+ && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
 ADD bin/vacuum /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
+ADD conf/vacuum /opt/cpm/conf
 
-USER root
+RUN chown -R 2:2 /opt/cpm
+
+USER 2
 
 CMD ["/opt/cpm/bin/start-vacuum.sh"]

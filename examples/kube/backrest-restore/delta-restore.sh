@@ -17,5 +17,6 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 kubectl delete job backrest-job-nfs
+kubectl create -f $DIR/backrest-restore-pvc.json
 
 expenv -f $DIR/delta-restore-job.json | kubectl create -f -

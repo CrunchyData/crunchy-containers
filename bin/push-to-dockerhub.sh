@@ -13,18 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-docker push  crunchydata/crunchy-prometheus:$CCP_IMAGE_TAG
-docker push  crunchydata/crunchy-promgateway:$CCP_IMAGE_TAG
-docker push  crunchydata/crunchy-grafana:$CCP_IMAGE_TAG
-#docker push  crunchydata/crunchy-dns:$CCP_IMAGE_TAG
-docker push  crunchydata/crunchy-collect:$CCP_IMAGE_TAG
-docker push  crunchydata/crunchy-pgbadger:$CCP_IMAGE_TAG
-docker push  crunchydata/crunchy-pgpool:$CCP_IMAGE_TAG
-docker push  crunchydata/crunchy-watch:$CCP_IMAGE_TAG
-docker push  crunchydata/crunchy-backup:$CCP_IMAGE_TAG
-docker push  crunchydata/crunchy-postgres:$CCP_IMAGE_TAG
-docker push  crunchydata/crunchy-postgres-gis:$CCP_IMAGE_TAG
-docker push  crunchydata/crunchy-pgbouncer:$CCP_IMAGE_TAG
-docker push  crunchydata/crunchy-pgadmin4:$CCP_IMAGE_TAG
-docker push  crunchydata/crunchy-vacuum:$CCP_IMAGE_TAG
-docker push  crunchydata/crunchy-dba:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-prometheus:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-grafana:$CCP_IMAGE_TAG
+#docker push  $CCP_IMAGE_PREFIX/crunchy-dns:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-collect:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-pgbadger:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-pgpool:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-watch:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-postgres-gis:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-pgbouncer:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-pgadmin4:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-vacuum:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-dba:$CCP_IMAGE_TAG

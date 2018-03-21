@@ -17,11 +17,12 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-CONFDIR=$PV_PATH/custom-config-ssl-pgconf
+CONFDIR=$CCP_STORAGE_PATH/custom-config-ssl-pgconf
 
 oc delete service custom-config-ssl
 oc delete pod custom-config-ssl
+oc delete pvc custom-config-ssl-pvc
 
-sudo rm -rf $CONFDIR
+sudo CONFDIR=$CONFDIR rm -rf $CONFDIR
 
 $CCPROOT/examples/waitforterm.sh custom-config-ssl oc

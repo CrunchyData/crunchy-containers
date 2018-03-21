@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/pgadmin4" \
         vendor="crunchy data" \
       	PostgresVersion="10" \
-      	PostgresFullVersion="10.1" \
+      	PostgresFullVersion="10.3" \
         version="7.3" \
-        release="1.7.2" \
+        release="1.8.2" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Crunchy Data pgAdmin4 GUI utility" \
@@ -41,7 +41,6 @@ RUN yum -y update \
     gettext \
     hostname \
     nss_wrapper \
-    openssh-clients \
     openssl \
     procps-ng \
     mod_wsgi mod_ssl \
@@ -61,15 +60,14 @@ RUN cp /opt/cpm/conf/httpd.conf /etc/httpd/conf/httpd.conf \
   && rm /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/ssl.conf
 
 RUN chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
-  && chown -R 2:0 /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
-  && chmod -R g+rwx /run/httpd
+  && chown -R 2:0 /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd
 
 RUN ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
   && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf
 
 EXPOSE 5050
 
-VOLUME ["/var/lib/pgadmin", "/certs"]
+VOLUME ["/var/lib/pgadmin", "/certs", "/run/httpd"]
 
 USER 2
 

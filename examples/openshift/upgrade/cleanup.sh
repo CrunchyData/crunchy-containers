@@ -13,3 +13,4 @@
 # limitations under the License.
 
 oc delete job upgrade-job
+oc delete pvc upgrade-old-pvc upgrade-new-pvc

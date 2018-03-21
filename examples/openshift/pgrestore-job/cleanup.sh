@@ -13,3 +13,4 @@
 # limitations under the License.
 
 oc delete job pgrestore-job
+oc delete pvc pgrestore-pvc

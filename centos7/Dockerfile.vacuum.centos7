@@ -3,8 +3,8 @@ FROM centos:7
 LABEL name="crunchydata/vacuum" \
         vendor="crunchy data" \
         version="7.3" \
-        release="1.7.1" \
-        build-date="2018-01-30" \
+        release="1.8.2" \
+        build-date="2018-03-01" \
         url="https://crunchydata.com" \
         summary="Provides a simple SQL VACUUM execution for a PostgreSQL table" \
         description="The crunchy-vacuum container runs a SQL VACUUM statement against a database table(s). You can pass in environment variables to determine how it functions, such as the tables to run the vacuum against and if the ANALYZE is to be performed." \
@@ -13,15 +13,24 @@ LABEL name="crunchydata/vacuum" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-RUN yum -y update && yum -y install procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y install \
+      gettext \
+      hostname \
+      iproute \
+      nss_wrapper \
+      procps-ng \
+ && yum clean all -y
 
-# set up cpm directory
-#
-RUN mkdir -p /opt/cpm/bin
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
 ADD bin/vacuum /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
+ADD conf/vacuum /opt/cpm/conf
 
-USER root
+RUN chown -R 2:2 /opt/cpm
+
+USER 2
 
 CMD ["/opt/cpm/bin/start-vacuum.sh"]

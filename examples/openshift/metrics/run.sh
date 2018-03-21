@@ -14,12 +14,13 @@
 # limitations under the License.
 
 #
-# this example creates the metrics backends using emptyDir volumes
+# this example creates the metrics backends with NFS volumes
+# for storing their data
 #
-
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-oc process -f $DIR/metrics.json -p CCP_IMAGE_TAG=$CCP_IMAGE_TAG CCP_IMAGE_PREFIX=$CCP_IMAGE_PREFIX | oc create -f -
+expenv -f $DIR/metrics-pod.json | oc create -f -
+expenv -f $DIR/pgsql-pod.json | oc create -f -

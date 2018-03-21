@@ -17,14 +17,12 @@
                {
                   "name":"pgdata",
                   "persistentVolumeClaim":{
-                     "claimName":"crunchy-pvc"
+                     "claimName":"pgrestore-pvc"
                   }
                }
             ],
             "securityContext":{
-               "supplementalGroups":[
-                  65534
-               ]
+               $CCP_SECURITY_CONTEXT
             },
             "containers":[
                {
@@ -40,7 +38,7 @@
                   "env":[
                      {
                         "name":"PGRESTORE_HOST",
-                        "value":"basic"
+                        "value":"primary-pvc"
                      },
                      {
                         "name":"PGRESTORE_DB",
@@ -60,7 +58,7 @@
                      },
                      {
                         "name":"PGRESTORE_VOLUMEPATH",
-                        "value":"/pgdata/basic-dumps/2018-01-29-19-06-51"
+                        "value":"/pgdata/primary-pvc-dumps/2018-03-09-16-35-27"
                      },
                      {
                         "name":"PGRESTORE_FILE",

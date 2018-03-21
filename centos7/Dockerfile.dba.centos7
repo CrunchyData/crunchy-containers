@@ -3,8 +3,8 @@ FROM centos:7
 LABEL name="crunchydata/dba" \
 	vendor="crunchy data" \
 	version="7.3" \
-	release="1.7.1" \
-	build-date="2018-01-30" \
+	release="1.8.2" \
+	build-date="2018-03-01" \
 	url="https://crunchydata.com" \
 	summary="Implements a cron scheduler." \
 	description="Offers a way to perform simple DBA tasks that occur on some form of schedule such as backup jobs or running a vacuum on a single Postgres database container. You can either run the crunchy-dba container as a single pod or include the container within a database pod. The crunchy-dba container makes use of a Service Account to perform the startup of scheduled jobs. The Kube Job type is used to execute the scheduled jobs with a Restart policy of Never." \
@@ -13,17 +13,26 @@ LABEL name="crunchydata/dba" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-RUN yum -y update && yum -y install psmisc procps-ng iproute bind-utils openssh-clients hostname  && yum clean all -y
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y install \
+      bind-utils \
+      gettext \
+      hostname \
+      iproute \
+      nss_wrapper \
+      procps-ng \
+      psmisc \
+ && yum clean all -y
 
-# set up cpm directory
-#
-RUN mkdir -p /opt/cpm/bin
-RUN mkdir -p /opt/cpm/conf
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
 ADD bin/dba /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/dba /opt/cpm/conf
 
-USER root
+RUN chown -R 2:2 /opt/cpm
+
+USER 2
 
 CMD ["/opt/cpm/bin/start-dba.sh"]

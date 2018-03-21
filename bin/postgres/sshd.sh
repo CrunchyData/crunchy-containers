@@ -13,16 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/cpm/bin/common_lib.sh
-enable_debugging
-
 function start_sshd() {
-    ose_hack
-
-    echo "Creating ${HOME?}/.ssh directory..."
-    mkdir -p ${HOME?}/.ssh
-    chmod 755 ${HOME?}/.ssh
-
     echo 'Checking for SSH Host Keys in /sshd...'
 
     if [[ ! -f /sshd/ssh_host_rsa_key ]]; then
@@ -42,9 +33,6 @@ function start_sshd() {
         echo 'No authorized_keys file found in /pgconf.  Exiting..'
         exit 1
     fi
-
-    cp /pgconf/authorized_keys ${HOME?}/.ssh/authorized_keys
-    chmod 644 ${HOME?}/.ssh/authorized_keys
 
     echo 'Checking for sshd_config in /pgconf...'
 

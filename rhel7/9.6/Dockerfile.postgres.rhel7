@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
       	PostgresVersion="9.6" \
-      	PostgresFullVersion="9.6.6" \
+      	PostgresFullVersion="9.6.8" \
         version="7.3" \
-        release="1.7.1" \
+        release="1.8.2" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="PostgreSQL 9.6 (PGDG) on a RHEL7 base image" \
@@ -40,7 +40,6 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
     hostname \
     nss_wrapper \
     openssh-server \
-    openssh-clients \
     procps-ng \
     rsync \
  && yum -y reinstall glibc-common \
@@ -53,7 +52,12 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
 
 # add path settings for postgres user
+# bash_profile is loaded in login, but not with exec
+# bashrc to set permissions in OCP when using exec
+# HOME is / in OCP
 ADD conf/.bash_profile /var/lib/pgsql/
+ADD conf/.bash_profile /
+ADD conf/.bashrc /
 
 # set up cpm directory
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd

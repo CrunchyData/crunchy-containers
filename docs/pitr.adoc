@@ -1,6 +1,6 @@
 = PITR (Point in Time Recovery) Support in Crunchy Container Suite
 Crunchy Data Solutions, Inc.
-v1.7.2, {docdate}
+v1.8.2, {docdate}
 :title-logo-image: image:images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Description
@@ -74,7 +74,7 @@ let you control the setting of the recovery.conf setting *recovery_target_inclus
 
 Once you recover a database using PITR, it will be in read-only mode.  To
 make the database resume as a writable database, run the following
-sql command:
+SQL command:
 ....
 select pg_xlog_replay_resume();
 ....
@@ -86,8 +86,8 @@ postgres=# select pg_wal_replay_resume();
 
 === Examples
 
-Examples for PITR have been created within the standalone, openshift,
-and kubernetes examples directories.
+Examples for PITR have been created within the standalone, OpenShift,
+and Kubernetes examples directories.
 
 
 There is a blog on how the example works documented here:
@@ -97,6 +97,6 @@ https://blog.openshift.com/crunchy-postgresql-containers-on-openshift-performing
 
 Copyright © 2018 Crunchy Data Solutions, Inc.
 
-CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE ``AS IS'' WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.

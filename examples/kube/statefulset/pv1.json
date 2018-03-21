@@ -13,8 +13,8 @@
     },
     "accessModes": [ "ReadWriteMany" ],
     "nfs": {
-        "path": "$PV_PATH",
-        "server": "$LOCAL_IP"
+        "path": "$CCP_STORAGE_PATH",
+        "server": "$CCP_NFS_IP"
     },
     "persistentVolumeReclaimPolicy": "Retain"
   }

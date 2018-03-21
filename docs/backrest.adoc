@@ -1,6 +1,6 @@
 = pgbackrest Support in Crunchy Container Suite
 Crunchy Data Solutions, Inc.
-v1.7.2, {docdate}
+v1.8.2, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Description
@@ -41,7 +41,7 @@ ARCHIVE_TIMEOUT=60
 ARCHIVE_COMMAND='pgbackrest --stanza=db archive-push %p'
 ....
 
-If you are using a postgres image older than *1.7.1*, *archive_command* must specify where 
+If you are using a postgres image older than *1.7.1*, *archive_command* must specify where
 the *pgbackrest.conf* file is located:
 
 ....
@@ -148,6 +148,6 @@ Steps for DELTA restore
 
 Copyright © 2018 Crunchy Data Solutions, Inc.
 
-CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE ``AS IS'' WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 
 Crunchy, Crunchy Data Solutions, Inc. and the Crunchy Hippo Logo are trademarks of Crunchy Data Solutions, Inc.
