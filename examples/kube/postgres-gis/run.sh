@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting postgres-gis container..."
+echo "Starting postgres-gis container..."
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-expenv -f $DIR/postgres-gis.json | kubectl create -f -
-kubectl create -f $DIR/postgres-gis-service.json
+expenv -f $DIR/postgres-gis.json | $CCP_CLI create -f -

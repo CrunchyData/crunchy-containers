@@ -18,8 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create -f $DIR/pguser-secret.json
-kubectl create -f $DIR/pgprimary-secret.json
-kubectl create -f $DIR/pgroot-secret.json
-expenv -f $DIR/secret-pg-pod.json | kubectl create -f -
-expenv -f $DIR/secret-pg-service.json | kubectl create -f -
+expenv -f $DIR/secret.json | $CCP_CLI create -f -

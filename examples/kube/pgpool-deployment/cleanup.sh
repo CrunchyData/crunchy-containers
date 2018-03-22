@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete service pgpool
-kubectl delete deployment pgpool
-kubectl delete secret pgpool-secrets
-kubectl delete configmap pgpool-conf
+$CCP_CLI delete service pgpool
+$CCP_CLI delete deployment pgpool
+$CCP_CLI delete secret pgpool-secrets
+$CCP_CLI delete configmap pgpool-conf

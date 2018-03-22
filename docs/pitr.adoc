@@ -23,7 +23,7 @@ as implemented so far.
 === WAL
 
 Write Ahead Logs (WAL) is created when you enable continuous archiving
-as described link:https://www.postgresql.org/docs/9.5/static/continuous-archiving.html[here.]
+as described link:https://www.postgresql.org/docs/10/static/continuous-archiving.html[here.]
 
 By default in the crunchy-postgres container, WAL logging is *not* enabled.
 To enable WAL logging, you set the following environment variables
@@ -86,12 +86,8 @@ postgres=# select pg_wal_replay_resume();
 
 === Examples
 
-Examples for PITR have been created within the standalone, OpenShift,
-and Kubernetes examples directories.
+Examples for PITR have been created within the Docker and standard examples directories.
 
-
-There is a blog on how the example works documented here:
-https://blog.openshift.com/crunchy-postgresql-containers-on-openshift-performing-point-in-time-recovery/
 
 == Legal Notices
 

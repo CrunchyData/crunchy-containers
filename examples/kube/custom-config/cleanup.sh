@@ -13,17 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-CONTAINER='custom-config'
 
-kubectl delete service custom-config
-kubectl delete pod custom-config
-kubectl delete pvc custom-config-pvc
+${CCP_CLI?} delete service custom-config
+${CCP_CLI?} delete pod custom-config
+${CCP_CLI?} delete pvc custom-config-pvc
+${CCP_CLI?} delete configmap customconfigconf
 
-sudo rm $CCP_STORAGE_PATH/setup.sql
-sudo rm $CCP_STORAGE_PATH/pg_hba.conf
-sudo rm $CCP_STORAGE_PATH/postgresql.conf
-sudo rm -rf $CCP_STORAGE_PATH/$CONTAINER
-
-$CCPROOT/examples/waitforterm.sh custom-config kubectl
+$CCPROOT/examples/waitforterm.sh custom-config ${CCP_CLI?}

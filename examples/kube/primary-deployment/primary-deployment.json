@@ -1,0 +1,638 @@
+{
+    "apiVersion": "v1",
+    "kind": "Secret",
+    "type": "Opaque",
+    "metadata": {
+    	"name": "pgprimary-secret"
+	},
+    "data": {
+        "username": "bWFzdGVy",
+        "password": "cGFzc3dvcmQ="
+    }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "Secret",
+    "type": "Opaque",
+    "metadata": {
+    	"name": "pgroot-secret"
+	},
+    "data": {
+        "username": "cGd1c2VyMQ==",
+        "password": "cGFzc3dvcmQ="
+    }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "Secret",
+    "type": "Opaque",
+    "metadata": {
+    	"name": "pguser-secret"
+	},
+    "data": {
+        "username": "cGd1c2VyMQ==",
+        "password": "cGFzc3dvcmQ="
+    }
+}
+
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "primary-dc",
+        "labels": {
+            "name": "primary-dc"
+        }
+    },
+    "spec": {
+        "ports": [{
+            "protocol": "TCP",
+            "port": 5432,
+            "targetPort": 5432,
+            "nodePort": 0
+        }],
+        "selector": {
+            "name": "primary-dc"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+    }
+}
+
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "replica-dc",
+        "labels": {
+            "name": "replica-dc"
+        }
+    },
+    "spec": {
+        "ports": [{
+            "protocol": "TCP",
+            "port": 5432,
+            "targetPort": 5432,
+            "nodePort": 0
+        }],
+        "selector": {
+            "name": "replica-dc"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "primary-dc-pgbackrest-pvc"
+    },
+    "spec": {
+      "accessModes": [
+        "ReadWriteMany"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "400M"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "primary-dc-pgwal-pvc"
+    },
+    "spec": {
+      "accessModes": [
+        "ReadWriteMany"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "400M"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "primary-dc-pvc"
+    },
+    "spec": {
+      "accessModes": [
+        "ReadWriteMany"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "400M"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "replica-dc-pgbackrest-pvc"
+    },
+    "spec": {
+      "accessModes": [
+        "ReadWriteMany"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "400M"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "replica-dc-pgwal-pvc"
+    },
+    "spec": {
+      "accessModes": [
+        "ReadWriteMany"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "400M"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "replica-dc-pvc"
+    },
+    "spec": {
+      "accessModes": [
+        "ReadWriteMany"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "400M"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "replica2-dc-pgbackrest-pvc"
+    },
+    "spec": {
+      "accessModes": [
+        "ReadWriteMany"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "400M"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "replica2-dc-pgwal-pvc"
+    },
+    "spec": {
+      "accessModes": [
+        "ReadWriteMany"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "400M"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "replica2-dc-pvc"
+    },
+    "spec": {
+      "accessModes": [
+        "ReadWriteMany"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "400M"
+        }
+      }
+    }
+}
+
+{
+    "kind": "Deployment",
+    "apiVersion": "extensions/v1beta1",
+    "metadata": {
+        "name": "primary-dc",
+        "labels": {
+            "name": "primary-dc"
+        }
+    },
+    "spec": {
+        "replicas": 1,
+        "template": {
+            "metadata": {
+                "labels": {
+                    "name": "primary-dc"
+                }
+            },
+            "spec": {
+                "containers": [{
+                    "name": "postgres",
+                    "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
+                    "env": [{
+                        "name": "PG_PRIMARY_PORT",
+                        "value": "5432"
+                    }, {
+                        "name": "PG_MODE",
+                        "value": "primary"
+                    }, {
+                        "name": "PGDATA_PATH_OVERRIDE",
+                        "value": "primary-dc"
+                    }, {
+                        "name": "PG_PRIMARY_USER",
+                        "value": "primaryuser"
+                    }, {
+                        "name": "PG_PRIMARY_PASSWORD",
+                        "value": ""
+                    }, {
+                        "name": "PG_ROOT_PASSWORD",
+                        "value": ""
+                    }, {
+                        "name": "PG_PASSWORD",
+                        "value": ""
+                    }, {
+                        "name": "PG_USER",
+                        "value": "testuser"
+                    }, {
+                        "name": "PG_DATABASE",
+                        "value": "userdb"
+                    }, {
+                        "name": "PGHOST",
+                        "value": "/tmp"
+                    }],
+                    "volumeMounts": [
+			{
+                        "mountPath": "/pgbackrest",
+                        "name": "pgbackrest",
+                        "readOnly": false
+                    }, {
+                        "mountPath": "/pgwal",
+                        "name": "pgwal",
+                        "readOnly": false
+                    }, {
+                        "mountPath": "/pgdata",
+                        "name": "pgdata",
+                        "readOnly": false
+                    }, {
+                        "mountPath": "/pguser",
+                        "name": "pguser-volume"
+                    }, {
+                        "mountPath": "/pgprimary",
+                        "name": "pgprimary-volume"
+                    }, {
+                        "mountPath": "/pgroot",
+                        "name": "pgroot-volume"
+                    }, {
+                        "mountPath": "/pgconf",
+                        "name": "postgresql-conf"
+                    } ],
+
+                    "ports": [{
+                        "containerPort": 5432,
+                        "protocol": "TCP"
+                    }],
+                    "resources": {},
+                    "imagePullPolicy": "IfNotPresent"
+                }],
+                "volumes": [
+		{
+                    "name": "pgwal",
+            		"persistentVolumeClaim": {
+                		"claimName": "primary-dc-pgwal-pvc"
+            		}
+                },{
+                    "name": "pgbackrest",
+            		"persistentVolumeClaim": {
+                		"claimName": "primary-dc-pgbackrest-pvc"
+            		}
+                },{
+                    "name": "pgdata",
+            		"persistentVolumeClaim": {
+                		"claimName": "primary-dc-pvc"
+            		}
+                },{
+                    "name": "pguser-volume",
+                    "secret": {
+                        "secretName": "pguser-secret"
+                    }
+                },{
+                    "name": "pgprimary-volume",
+                    "secret": {
+                        "secretName": "pgprimary-secret"
+                    }
+                },{
+                    "name": "pgroot-volume",
+                    "secret": {
+                        "secretName": "pgroot-secret"
+                    }
+                }, {
+                "name": "postgresql-conf",
+                "configMap": {
+                    "name": "postgresql-conf",
+                    "items": [{
+                        "key": "setup.sql",
+                        "path": "setup.sql"
+                    }, {
+                        "key": "postgresql.conf",
+                        "path": "postgresql.conf"
+                    }, {
+                        "key": "pghba",
+                        "path": "pg_hba.conf"
+                    }]
+                }
+            }
+
+		],
+
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "securityContext": {
+			$CCP_SECURITY_CONTEXT
+                }
+            }
+        },
+        "strategy": {
+            "type": "RollingUpdate",
+            "rollingUpdate": {
+                "maxUnavailable": 1,
+                "maxSurge": 1
+            }
+        }
+    }
+}
+
+{
+    "kind": "Deployment",
+    "apiVersion": "extensions/v1beta1",
+    "metadata": {
+        "name": "replica-dc",
+        "labels": {
+            "name": "replica-dc"
+        }
+    },
+    "spec": {
+        "replicas": 1,
+        "template": {
+            "metadata": {
+                "labels": {
+                    "name": "replica-dc"
+                }
+            },
+            "spec": {
+                "containers": [{
+                    "name": "postgres",
+                    "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
+                    "env": [{
+                        "name": "PG_PRIMARY_HOST",
+                        "value": "primary-dc"
+                    }, {
+                        "name": "PG_PRIMARY_SERVICE_NAME",
+                        "value": "primary-dc"
+                    }, {
+                        "name": "PG_PRIMARY_PORT",
+                        "value": "5432"
+                    }, {
+                        "name": "PG_MODE",
+                        "value": "replica"
+                    }, {
+                        "name": "PG_PRIMARY_USER",
+                        "value": "primaryuser"
+                    }, {
+                        "name": "PG_USER",
+                        "value": "testuser"
+                    }, {
+                        "name": "PG_DATABASE",
+                        "value": "userdb"
+                    }, {
+                        "name": "PG_PRIMARY_PASSWORD",
+                        "value": ""
+                    }, {
+                        "name": "PG_ROOT_PASSWORD",
+                        "value": ""
+                    }, {
+                        "name": "PG_PASSWORD",
+                        "value": ""
+                    }, {
+                        "name": "PGHOST",
+                        "value": "/tmp"
+                    }],
+                    "volumeMounts": [ {
+                        "mountPath": "/pgdata",
+                        "name": "pgdata",
+                        "readOnly": false
+                    	}, {
+                        "mountPath": "/pguser",
+                        "name": "pguser-volume"
+                    }, {
+                        "mountPath": "/pgprimary",
+                        "name": "pgprimary-volume"
+                    }, {
+                        "mountPath": "/pgroot",
+                        "name": "pgroot-volume"
+                    } ],
+
+                    "ports": [{
+                        "containerPort": 5432,
+                        "protocol": "TCP"
+                    }],
+                    "resources": {},
+                    "imagePullPolicy": "IfNotPresent"
+                }],
+                "volumes": [
+		{
+                    "name": "pgdata",
+                    "emptyDir": {}
+                }, {
+                    "name": "pguser-volume",
+                    "secret": {
+                        "secretName": "pguser-secret"
+                    }
+                }, {
+                    "name": "pgprimary-volume",
+                    "secret": {
+                        "secretName": "pgprimary-secret"
+                    }
+                }, {
+                    "name": "pgroot-volume",
+                    "secret": {
+                        "secretName": "pgroot-secret"
+                    }
+                } ],
+
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "securityContext": {
+			$CCP_SECURITY_CONTEXT
+                }
+            }
+        },
+        "strategy": {
+            "type": "RollingUpdate",
+            "rollingUpdate": {
+                "maxUnavailable": 1,
+                "maxSurge": 1
+            }
+        }
+    }
+}
+
+{
+    "kind": "Deployment",
+    "apiVersion": "extensions/v1beta1",
+    "metadata": {
+        "name": "replica2-dc",
+        "labels": {
+            "name": "replica-dc"
+        }
+    },
+    "spec": {
+        "replicas": 1,
+        "template": {
+            "metadata": {
+                "labels": {
+                    "name": "replica-dc"
+                }
+            },
+            "spec": {
+                "containers": [{
+                    "name": "postgres",
+                    "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
+                    "env": [{
+                        "name": "PG_PRIMARY_HOST",
+                        "value": "primary-dc"
+                    }, {
+                        "name": "PG_PRIMARY_SERVICE_NAME",
+                        "value": "primary-dc"
+                    }, {
+                        "name": "PG_PRIMARY_PORT",
+                        "value": "5432"
+                    }, {
+                        "name": "PG_MODE",
+                        "value": "replica"
+                    }, {
+                        "name": "PG_PRIMARY_USER",
+                        "value": "primaryuser"
+                    }, {
+                        "name": "PG_USER",
+                        "value": "testuser"
+                    }, {
+                        "name": "PG_DATABASE",
+                        "value": "userdb"
+                    }, {
+                        "name": "PG_PRIMARY_PASSWORD",
+                        "value": ""
+                    }, {
+                        "name": "PG_ROOT_PASSWORD",
+                        "value": ""
+                    }, {
+                        "name": "PG_PASSWORD",
+                        "value": ""
+                    }, {
+                        "name": "PGHOST",
+                        "value": "/tmp"
+                    }],
+                    "volumeMounts": [
+			{
+                        "mountPath": "/pgdata",
+                        "name": "pgdata",
+                        "readOnly": false
+                    }, {
+                        "mountPath": "/pguser",
+                        "name": "pguser-volume"
+                    }, {
+                        "mountPath": "/pgprimary",
+                        "name": "pgprimary-volume"
+                    }, {
+                        "mountPath": "/pgroot",
+                        "name": "pgroot-volume"
+                    }
+
+			],
+
+                    "ports": [{
+                        "containerPort": 5432,
+                        "protocol": "TCP"
+                    }],
+                    "resources": {},
+                    "imagePullPolicy": "IfNotPresent"
+                }],
+                "volumes": [{
+                    "name": "pgdata",
+                    "emptyDir": {}
+                }, {
+                    "name": "pguser-volume",
+                    "secret": {
+                        "secretName": "pguser-secret"
+                    }
+                }, {
+                    "name": "pgprimary-volume",
+                    "secret": {
+                        "secretName": "pgprimary-secret"
+                    }
+                }, {
+                    "name": "pgroot-volume",
+                    "secret": {
+                        "secretName": "pgroot-secret"
+                    }
+                }
+
+		],
+
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "securityContext": {
+			$CCP_SECURITY_CONTEXT
+                }
+            }
+        },
+        "strategy": {
+            "type": "RollingUpdate",
+            "rollingUpdate": {
+                "maxUnavailable": 1,
+                "maxSurge": 1
+            }
+        }
+    }
+}

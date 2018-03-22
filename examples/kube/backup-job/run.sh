@@ -12,12 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create -f $DIR/backup-pvc.json
-
-expenv -f $DIR/backup-job.json | kubectl create -f -
+expenv -f $DIR/backup-job.json | ${CCP_CLI?} create -f -

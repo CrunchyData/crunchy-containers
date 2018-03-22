@@ -18,9 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create -f $DIR/primary-service.json
-kubectl create -f $DIR/replica-service.json
-expenv -f $DIR/primary-pod.json | kubectl create -f -
-echo "Sleeping until the primary is alive..."
-sleep 30
-expenv -f $DIR/replica-dc.json | kubectl create -f -
+expenv -f $DIR/primary-replica-dc.json | $CCP_CLI create -f -

@@ -1,4 +1,31 @@
 {
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pgbouncer",
+        "labels": {
+            "name": "pgbouncer"
+        }
+    },
+    "spec": {
+        "ports": [
+            {
+                "protocol": "TCP",
+                "port": 6543,
+                "targetPort": 6543,
+                "nodePort": 0
+            }
+        ],
+        "selector": {
+            "name": "pgbouncer"
+        }
+    },
+    "status": {
+        "loadBalancer": {}
+    }
+}
+
+{
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
@@ -11,39 +38,33 @@
         "securityContext": {
             $CCP_SECURITY_CONTEXT
         },
-        "volumes": [{
-            "name": "pgconf",
-			"configMap": {
-				"name": "pgbouncer-configmap"
-			}
-        }],
-        "containers": [{
-            "name": "pgbouncer",
-            "image": "$CCP_IMAGE_PREFIX/crunchy-pgbouncer:$CCP_IMAGE_TAG",
-            "ports": [{
-                "containerPort": 5432,
-                "protocol": "TCP"
-            }],
-            "env": [{
-                "name": "PG_DATABASE",
-                "value": "postgres"
-            }, {
-                "name": "PG_PRIMARY_USER",
-                "value": "primaryuser"
-            }, {
-                "name": "PG_PRIMARY_PORT",
-                "value": "5432"
-            }, {
-                "name": "PG_PRIMARY_SERVICE",
-                "value": "pr-primary"
-            }, {
-                "name": "PG_REPLICA_SERVICE",
-                "value": "pr-replica"
-            }],
-            "volumeMounts": [{
+        "volumes": [
+            {
                 "name": "pgconf",
-                "mountPath": "/pgconf/bouncerconfig"
-            }]
-        }]
+                "configMap": {
+                    "name": "pgbouncer-configmap"
+                }
+            }
+        ],
+        "containers": [
+            {
+                "name": "pgbouncer",
+                "image": "$CCP_IMAGE_PREFIX/crunchy-pgbouncer:$CCP_IMAGE_TAG",
+                "ports": [
+                    {
+                        "containerPort": 6543,
+                        "protocol": "TCP"
+                    }
+                ],
+                "env": [
+                ],
+                "volumeMounts": [
+                    {
+                        "name": "pgconf",
+                        "mountPath": "/pgconf/bouncerconfig"
+                    }
+                ]
+            }
+        ]
     }
 }

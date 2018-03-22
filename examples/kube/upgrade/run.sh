@@ -18,7 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create -f $DIR/upgrade-old-pvc.json
-kubectl create -f $DIR/upgrade-new-pvc.json
-
-expenv -f $DIR/upgrade-job.json | kubectl create -f -
+expenv -f $DIR/upgrade.json | $CCP_CLI create -f -

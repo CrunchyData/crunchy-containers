@@ -11,17 +11,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# remove any existing components of this example 
+# remove any existing components of this example
 
-kubectl delete pod primary-pitr-restore
-kubectl delete service primary-pitr-restore
+$CCP_CLI delete pod primary-pitr-restore
+$CCP_CLI delete service primary-pitr-restore
 sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/primary-pitr-restore
 
-kubectl delete service primary-pitr primary-pitr-restore
-kubectl delete pod primary-pitr
-kubectl delete job primary-pitr-backup-job
+$CCP_CLI delete service primary-pitr primary-pitr-restore
+$CCP_CLI delete pod primary-pitr
+$CCP_CLI delete job primary-pitr-backup-job
 
-kubectl delete pvc primary-pitr-pvc primary-pitr-pgwal-pvc primary-pitr-backup-pvc backup-primary-pitr-pvc primary-pitr-restore-pvc recover-pvc 
+$CCP_CLI delete pvc primary-pitr-pvc primary-pitr-pgwal-pvc primary-pitr-backup-pvc backup-primary-pitr-pvc primary-pitr-restore-pvc recover-pvc recover-pv
 
 sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/WAL/primary-pitr
 sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/primary-pitr

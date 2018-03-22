@@ -1,4 +1,22 @@
 {
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "backup-pvc"
+    },
+    "spec": {
+        "accessModes": [
+            "ReadWriteMany"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "400M"
+            }
+        }
+    }
+}
+
+{
     "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {
@@ -13,37 +31,48 @@
                 }
             },
             "spec": {
-                "volumes": [{
-                    "name": "pgdata",
-                    "persistentVolumeClaim": {
-                        "claimName": "backup-pvc"
-                    }
-                }],
-                "securityContext": {
-                    $CCP_SECURITY_CONTEXT
-                },
-                "containers": [{
-                    "name": "backup-job",
-                    "image": "$CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG",
-                    "volumeMounts": [{
-                        "mountPath": "/pgdata",
+                "volumes": [
+                    {
                         "name": "pgdata",
-                        "readOnly": false
-                    }],
-                    "env": [{
-                        "name": "BACKUP_HOST",
-                        "value": "primary-pvc"
-                    }, {
-                        "name": "BACKUP_USER",
-                        "value": "primaryuser"
-                    }, {
-                        "name": "BACKUP_PASS",
-                        "value": "password"
-                    }, {
-                        "name": "BACKUP_PORT",
-                        "value": "5432"
-                    }]
-                }],
+                        "persistentVolumeClaim": {
+                            "claimName": "backup-pvc"
+                        }
+                    }
+                ],
+                "securityContext": {
+                     $CCP_SECURITY_CONTEXT
+                },
+                "containers": [
+                    {
+                        "name": "backup-job",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": false
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "BACKUP_HOST",
+                                "value": "primary-pvc"
+                            },
+                            {
+                                "name": "BACKUP_USER",
+                                "value": "primaryuser"
+                            },
+                            {
+                                "name": "BACKUP_PASS",
+                                "value": "password"
+                            },
+                            {
+                                "name": "BACKUP_PORT",
+                                "value": "5432"
+                            }
+                        ]
+                    }
+                ],
                 "restartPolicy": "Never"
             }
         }

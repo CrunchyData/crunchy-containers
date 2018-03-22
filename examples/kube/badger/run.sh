@@ -17,5 +17,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create -f $DIR/badger-service.json
-expenv -f $DIR/badger-pod.json | kubectl create -f -
+expenv -f $DIR/badger.json | ${CCP_CLI?} create -f -

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete service audit
-kubectl delete pod audit
+${CCP_CLI?} delete service audit
+${CCP_CLI?} delete pod audit
 
-$CCPROOT/examples/waitforterm.sh audit kubectl
+$CCPROOT/examples/waitforterm.sh audit ${CCP_CLI?}

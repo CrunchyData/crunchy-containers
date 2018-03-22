@@ -13,15 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-# Create 'pgbouncer-configmap'
-kubectl create configmap pgbouncer-configmap \
-		--from-file=./pgbouncer.ini \
-		--from-file=./users.txt
+${CCP_CLI?} create configmap pgbouncer-configmap \
+    --from-file=./configs/pgbouncer.ini \
+    --from-file=./configs/users.txt
 
-kubectl create -f $DIR/pgbouncer-service.json
-expenv -f $DIR/pgbouncer.json | kubectl create -f -
+expenv -f $DIR/primary.json| ${CCP_CLI?} create -f -
+expenv -f $DIR/replica.json| ${CCP_CLI?} create -f -
+expenv -f $DIR/pgbouncer.json | ${CCP_CLI?} create -f -

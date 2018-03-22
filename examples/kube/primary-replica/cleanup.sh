@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete pod pr-replica
-kubectl delete pod pr-replica-2
+$CCP_CLI delete pod pr-replica
+$CCP_CLI delete pod pr-replica-2
 sleep  2
-kubectl delete service pr-replica
-kubectl delete service pr-primary
-kubectl delete pod pr-primary
-$CCPROOT/examples/waitforterm.sh pr-primary kubectl
-$CCPROOT/examples/waitforterm.sh pr-replica kubectl
-$CCPROOT/examples/waitforterm.sh pr-replica-2 kubectl
+$CCP_CLI delete service pr-replica
+$CCP_CLI delete service pr-primary
+$CCP_CLI delete pod pr-primary
+$CCPROOT/examples/waitforterm.sh pr-primary $CCP_CLI
+$CCPROOT/examples/waitforterm.sh pr-replica $CCP_CLI
+$CCPROOT/examples/waitforterm.sh pr-replica-2 $CCP_CLI
