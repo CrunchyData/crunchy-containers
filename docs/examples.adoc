@@ -327,13 +327,6 @@ encoded password value is *password*.  Run the example
 as follows:
 
 ....
-cd $CCPROOT/examples/openshift/secret
-./run.sh
-....
-
-Or if you're running Kubernetes:
-
-....
 cd $CCPROOT/examples/kube/secret
 ./run.sh
 ....
@@ -407,7 +400,7 @@ Connect from your local host as follows:
 psql -h localhost -p 12000 -U testuser -W userdb
 ....
 
-==== Kubernetes
+==== Kubernetes / OpenShift
 
 To create the example:
 ....
@@ -424,19 +417,6 @@ psql -h primary-pvc -U postgres postgres
 
 This example resides under the $CCPROOT/examples/helm directory. View the README to run this
 example using Helm link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/helm/basic/README.md[here].
-
-==== OpenShift
-
-To create the example:
-....
-cd $CCPROOT/examples/openshift/primary-pvc
-./run.sh
-....
-
-Connect from your local host as follows:
-....
-psql -h primary-pvc.openshift.svc.cluster.local -U testuser userdb
-....
 
 === Creating a Primary / Replica Database Cluster
 
@@ -515,7 +495,7 @@ docker-compose stop
 docker-compose rm
 ....
 
-==== Kubernetes
+==== Kubernetes / OpenShift
 
 Run the following command to deploy a primary and replica database cluster:
 ....
@@ -555,10 +535,10 @@ You can verify that replication is working using the same commands as above.
 This example creates 2 replicas when it initially starts.  To scale
 up the number of replicas and view what the deployment looks like before and after, run these commands:
 ....
-kubectl get deployment
-kubectl scale --current-replicas=2 --replicas=3 deployment/replica-dc
-kubectl get deployment
-kubectl get pod
+$CCP_CLI get deployment
+$CCP_CLI scale --current-replicas=2 --replicas=3 deployment/replica-dc
+$CCP_CLI get deployment
+$CCP_CLI get pod
 ....
 
 You can verify that you now have 3 replicas by running this query
@@ -571,53 +551,6 @@ psql -h primary-dc -U postgres postgres -c 'table pg_stat_replication'
 
 This example resides under the $CCPROOT/examples/helm directory. View the README to run this example
 using Helm link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/helm/primary-replica/README.md[here].
-
-==== OpenShift
-
-Run the following command to deploy a primary and replica database cluster:
-....
-cd $CCPROOT/examples/openshift/primary-replica
-./run.sh
-....
-
-You can then connect to the database instance as follows:
-....
-psql -h pr-primary -U testuser -W userdb
-....
-
-*primary-replica-dc*
-
-The primary-replica example creates a primary and non-scaling replica; if you wanted to experiment
-with scaling replicas, try the primary-replica-dc example:
-....
-cd $CCPROOT/examples/openshift/primary-replica-dc
-./run.sh
-....
-
-Connect to the PostgreSQL instances with the following:
-
-....
-psql -h primary-dc.pgproject.svc.cluster.local -U testuser userdb
-psql -h replica-dc.pgproject.svc.cluster.local -U testuser userdb
-....
-
-Here is an example of increasing or scaling up the PostgreSQL 'replica' pods to 2:
-
-....
-oc scale rc replica-dc-1 --replicas=2
-....
-
-Enter the following commands to verify the PostgreSQL replication is working:
-....
-psql -c 'table pg_stat_replication' -h primary-dc.pgproject.svc.cluster.local -U primary postgres
-psql -h replica-dc.pgproject.svc.cluster.local -U primary postgres
-....
-
-The replica service is load balancing between multiple replicas; this can be shown by running this
-command multiple times and the IP address should alternate between the replicas:
-....
-psql -h replica-dc -U postgres postgres -c 'select inet_server_addr()'
-....
 
 === Primary / Replica Deployment
 
@@ -662,19 +595,11 @@ To shutdown the instance and remove the container for each example, run the foll
 ./cleanup.sh
 ....
 
-==== Kubernetes
+==== Kubernetes / OpenShift
 
 Start the example as follows:
 ....
 cd $CCPROOT/examples/kube/primary-deployment
-./run.sh
-....
-
-==== OpenShift
-
-Start the example as follows:
-....
-cd $CCPROOT/examples/openshift/primary-deployment
 ./run.sh
 ....
 
@@ -714,7 +639,7 @@ docker logs watch
 
 Look at the watch container logs to see it perform the failover.
 
-==== Kubernetes
+==== Kubernetes / OpenShift
 
 Running the example:
 ....
@@ -724,12 +649,12 @@ cd $CCPROOT/examples/kube/watch
 
 Check out the log of the watch container as follows:
 ....
-kubectl log watch
+$CCP_CLI log watch
 ....
 
 Then trigger a failover using this command:
 ....
-kubectl delete pod pr-primary
+$CCP_CLI delete pod pr-primary
 ....
 
 Resume watching the watch container's log and verify that it
@@ -751,46 +676,7 @@ the pod is named replica.
 
 You can view the labels on a pod with this command:
 ....
-kubectl describe pod pr-replica | grep Label
-....
-
-==== OpenShift
-
-The following script will create an OpenShift service account which is used by the crunchy-watch
-container to perform the failover. Also, it will set policies that allow the
-service account the ability to edit resources within your namespace.
-Finally, it will create the container that will 'watch' the PostgreSQL cluster.
-
-....
-cd $CCPROOT/examples/openshift/watch
-./run.sh
-....
-
-At this point, the watcher will sleep every 20 seconds (configurable) to
-see if the primary is responding. If the primary doesn't respond, the watcher
-will perform the following logic:
-
- * log into OpenShift using the service account
- * set its current project
- * find the first replica pod
- * delete the primary service saving off the primary service definition
- * create the trigger file on the first replica pod
- * wait 20 seconds for the failover to complete on the replica pod
- * edit the replica pod's label to match that of the primary
- * recreate the primary service using the stored service definition
- * loop through the other remaining replica and delete its pod
-
-At this point, clients when access the primary's service will actually
-be accessing the new primary.  Also, OpenShift will recreate the number
-of replicas to its original configuration which each replica pointed to the
-new primary.  Replication from the primary to the new replicas will be
-started as each new replica is started by OpenShift.
-
-To test it out, delete the primary pod and view the watch pod log:
-....
-oc delete pod pr-primary
-oc logs watch
-oc get pod
+$CCP_CLI describe pod pr-replica | grep Label
 ....
 
 === Performing a Backup & Restore
@@ -867,8 +753,8 @@ ls /mnt/nfsfileshare/primary-pvc-backups
 *primary-restore*
 
 When ready to restore, you will need the timestamped directory path under
-/mnt/nfsfileshare/primary-pvc-backups in order to locate the backup to use. Edit the primary-restore.json
-file and update the BACKUP_PATH setting to specify the NFS backup path you want to restore with.
+$CCP_STORAGE_PATH/primary-pvc-backups in order to locate the backup to use. Edit the primary-restore.json
+file and update the BACKUP_PATH setting to specify the backup path you want to restore with.
 ....
 "name": "BACKUP_PATH",
 "value": "primary-pvc-backups/2016-05-27-14-35-33"
@@ -884,42 +770,6 @@ Test the restored database as follows:
 ....
 psql -h primary-restore -U postgres postgres
 ....
-
-==== OpenShift
-
-Start the backup:
-....
-cd $CCPROOT/examples/openshift/backup-job
-./run.sh
-....
-
-The *backup-job.json* file within that directory specifies a *persistentVolumeReclaimPolicy*
-of *Retain* to tell OpenShift that we want to keep the volume contents after the removal of the PV.
-
-*primary-restore*
-
-When ready to restore, you will need the timestamped directory path under
-/mnt/nfsfileshare/primary-pvc-backups in order to locate the backup to use. Edit the primary-restore.json
-file and update the BACKUP_PATH setting to specify the NFS backup path you want to restore with.
-....
-"name": "BACKUP_PATH",
-"value": "primary-pvc-backups/2016-05-27-14-35-33"
-....
-
-Then create the pod:
-....
-cd $CCPROOT/examples/openshift/primary-restore
-./run.sh
-....
-
-When the database pod starts, it will copy the backup files
-to the database directory inside the pod and start up Postgres as
-usual.
-
-The restore only takes place if:
-
- * the /pgdata directory is empty
- * the /backups directory contains a valid postgresql.conf file
 
 === pgbackrest
 
@@ -1072,34 +922,13 @@ mapped to your local port 12003:
 psql -h localhost -U testuser -p 12003 userdb
 ....
 
-==== Kubernetes
+==== Kubernetes / OpenShift
 
 Run the following command to deploy the pgpool service:
 ....
 cd $CCPROOT/examples/kube/primary-replica
 ./run.sh
 cd $CCPROOT/examples/kube/pgpool-deployment
-./run.sh
-....
-
-The example is configured to allow the *testuser* to connect
-to the *userdb* database as follows:
-....
-psql -h pgpool -U testuser userdb
-....
-
-You can view the nodes that pgpool is configured for by running:
-....
-psql -h pgpool -U testuser userdb -c 'show pool_nodes'
-....
-
-==== OpenShift
-
-Run the following command to deploy the pgpool service:
-....
-cd $CCPROOT/examples/openshift/primary-replica
-./run.sh
-cd $CCPROOT/examples/openshift/pgpool-deployment
 ./run.sh
 ....
 
@@ -1274,7 +1103,7 @@ mapped to your local port 12000:
 psql -h localhost -U testuser -p 12000 userdb
 ....
 
-==== Kubernetes
+==== Kubernetes / OpenShift
 
 Running the example:
 ....
@@ -1286,22 +1115,6 @@ The example is configured to allow the *testuser* to connect
 to the *userdb* database as follows:
 ....
 psql -h postgres-gis -U testuser userdb
-....
-
-==== OpenShift
-
-Run the following command to deploy the postgres-gis pod and service:
-....
-cd $CCPROOT/examples/openshift/postgres-gis
-./run.sh
-....
-
-Next, you can access the postgres-gis pod via the postgres-gis
-service by entering the following command:
-
-....
-psql -h postgres-gis -U testuser userdb
-psql -h postgres-gis -U testuser postgres
 ....
 
 === Metrics Collection
@@ -1460,7 +1273,7 @@ cd $CCPROOT/examples/docker/vacuum
 ./run.sh
 ....
 
-==== Kubernetes
+==== Kubernetes / OpenShift
 
 Running the example:
 ....
@@ -1470,20 +1283,12 @@ cd $CCPROOT/examples/kube/vacuum-job/
 
 Verify the job is completed:
 ....
-kubectl get job
+$CCP_CLI get job
 ....
 
 View the docker log of the vacuum job's pod:
 ....
 docker logs $(docker ps -a | grep crunchy-vacuum | cut -f 1 -d' ')
-....
-
-==== OpenShift
-
-Run the example as follows:
-....
-cd ../vacuum-job
-./run.sh
 ....
 
 === Cron Scheduler
@@ -1666,19 +1471,11 @@ psql -h 127.0.0.1 -p 12011 -U postgres postgres -c 'table foo'
 psql -h 127.0.0.1 -p 12012 -U postgres postgres -c 'table foo'
 ....
 
-==== Kubernetes
+==== Kubernetes / OpenShift
 
 Running the example:
 ....
 cd $CCPROOT/examples/kube/sync
-./run.sh
-....
-
-==== OpenShift
-
-Running the example:
-....
-cd $CCPROOT/examples/openshift/sync
 ./run.sh
 ....
 
@@ -1687,6 +1484,9 @@ cd $CCPROOT/examples/openshift/sync
 This example deploys a statefulset named *pgset*.  The statefulset
 is a new feature in Kubernetes as of version 1.5 and in OpenShift Origin as of
 version 3.5. Statefulsets have replaced PetSets going forward.
+
+Please view link:https://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/[this Kubernetes description]
+to better understand what a Statefulset is and how it works.
 
 This example creates 2 PostgreSQL containers to form the set.  At
 startup, each container will examine its hostname to determine
@@ -1723,7 +1523,7 @@ To shutdown the instance and remove the container for each example, run the foll
 ./cleanup.sh
 ....
 
-==== Kubernetes
+==== Kubernetes / OpenShift
 
 Start the example as follows:
 ....
@@ -1742,9 +1542,9 @@ psql -h pgset-replica -U postgres postgres
 ....
 
 You can scale the number of containers using this command, this will
-essentially create an additional replica databse:
+essentially create an additional replica database:
 ....
-kubectl scale pgset --replica=3
+$CCP_CLI scale pgset --replica=3
 ....
 
 ===== Statefulset using Dynamic Provisioning
@@ -1752,7 +1552,7 @@ kubectl scale pgset --replica=3
 The example in *examples/statefulset-dyn* is almost an exact copy of the
 previous statefulset example; however, this example uses
 Dynamic Storage Provisioning to automatically create Persistent
-Volume Claims based on StorageClasses.  This Kubernetes feature is
+Volume Claims based on StorageClasses.  This feature is
 available on Google Container Engine which this example was
 tested upon.
 
@@ -1764,14 +1564,14 @@ cd $CCPROOT/examples/kube/statefulset-dyn
 
 This will create a StorageClass named *slow* which you can view using:
 ....
-kubectl get storageclass
+$CCP_CLI get storageclass
 NAME      TYPE
 slow      kubernetes.io/gce-pd
 ....
 
 The example causes Kube to create the required PVCs automatically:
 ....
-kubectl get pvc
+$CCP_CLI get pvc
 NAME             STATUS    VOLUME                                     CAPACITY   ACCESSMODES   STORAGECLASS   AGE
 pgdata-pgset-0   Bound     pvc-06334f6f-371b-11e7-9bda-42010a8000e9   1Gi        RWX           slow           5m
 pgdata-pgset-1   Bound     pvc-063795b3-371b-11e7-9bda-42010a8000e9   1Gi        RWX           slow           5m
@@ -1951,24 +1751,11 @@ At this point, you should be able to create new data in the restored database
 and the test table should be present.  When you recover the entire
 WAL history, resuming the recovery is not necessary to enable writes.
 
-==== Kubernetes
-
-This example is identical to the OpenShift PITR example; please see below for
-details on how the PITR example works.
-
-The only differences are the following:
-
- * paths are *$CCPROOT/examples/kube/pitr*
- * JSON and scripts are modified to work with Kubernetes
- * *kubectl* commands are used instead of *oc* commands
- * database services resolve to *default.svc.cluster.local* instead
-   of *openshift.svc.cluster.local*
-
-==== OpenShift
+==== Kubernetes / OpenShift
 
 Start by running the example database container:
 ....
-cd $CCPROOT/examples/openshift/pitr
+cd $CCPROOT/examples/kube/pitr
 ./run-primary-pitr.sh
 ....
 
@@ -2000,7 +1787,7 @@ Next, now that we have a base backup and a set of WAL files containing
 our database changes, we can shut down the *primary-pitr* database
 to simulate a database failure.  Do this by running the following:
 ....
-oc delete pod primary-pitr
+$CCP_CLI delete pod primary-pitr
 ....
 
 Next, we will create 3 different restored database containers based
@@ -2027,14 +1814,14 @@ Then run the following to create the restored database container:
 After the database has restored, you should be able to perform
 a test to see if the recovery worked as expected:
 ....
-psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'table pitrtest'
-psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'create table foo (id int)'
-psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'select pg_wal_replay_resume()'
-psql -h primary-pitr-restore.openshift.svc.cluster.local -U postgres postgres -c 'create table foo (id int)'
+psql -h primary-pitr-restore -U postgres postgres -c 'table pitrtest'
+psql -h primary-pitr-restore -U postgres postgres -c 'create table foo (id int)'
+psql -h primary-pitr-restore -U postgres postgres -c 'select pg_wal_replay_resume()'
+psql -h primary-pitr-restore -U postgres postgres -c 'create table foo (id int)'
 ....
 
 NOTE: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
-pg_xlog instead:
+pg_xlog instead.
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
 ....
@@ -2052,13 +1839,7 @@ mode.
 Lastly, you can test a full recovery using *all* of the WAL files, if
 you remove the *RECOVERY_TARGET_NAME* environment variable completely.
 
-The NFS portions of this example depend upon an NFS file
-system with the following path configurations be present:
-....
-/mnt/nfsfileshare
-/mnt/nfsfileshare/backups
-/mnt/nfsfileshare/WAL
-....
+The storage portions of this example can all be found under $CCP_STORAGE_PATH.
 
 Once you recover a database using PITR, it will be in read-only mode.  To
 make the database resume as a writable database, run the following
@@ -2068,7 +1849,7 @@ select pg_wal_replay_resume();
 ....
 
 NOTE: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
-pg_xlog instead:
+pg_xlog instead.
 ....
 select pg_xlog_replay_resume();
 ....
@@ -2233,7 +2014,7 @@ This will create the following in your Kubernetes environment:
  * a new data directory name *primary-upgrade* found in the *pgnewdata*
  PVC
 
-==== Kubernetes
+==== Kubernetes / OpenShift
 
 Start the upgrade as follows:
 ....
@@ -2241,11 +2022,11 @@ cd $CCPROOT/examples/kube/upgrade
 ./run.sh
 ....
 
-If successful, the Job will end with a Successful status. Verify
+If successful, the Job will end with a **successful** status. Verify
 the results of the Job by examining the Job's pod log:
 ....
-kubectl get pod -a -l job-name=upgrade-job
-kubectl logs -l job-name=upgrade-job
+$CCP_CLI get pod -a -l job-name=upgrade-job
+$CCP_CLI logs -l job-name=upgrade-job
 ....
 
 You can verify the upgraded database by running the
@@ -2370,7 +2151,7 @@ cd $CCPROOT/examples/docker/pgrestore
 ./run.sh
 ....
 
-==== Kubernetes
+==== Kubernetes / OpenShift
 
 Running the example:
 ....
@@ -2381,15 +2162,7 @@ cd $CCPROOT/examples/kube/pgrestore-job
 The Kubernetes Job type executes a pod and then the pod exits.  You can
 view the Job status using this command:
 ....
-kubectl get job
-....
-
-==== OpenShift
-
-Start the restore:
-....
-cd $CCPROOT/examples/openshift/pgrestore-job
-./run.sh
+$CCP_CLI get job
 ....
 
 The *pgrestore-job.json* file within that directory specifies options that control the behavior of the pgrestore-job.

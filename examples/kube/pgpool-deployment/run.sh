@@ -18,12 +18,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create secret generic pgpool-secrets \
-	--from-file=$DIR/pool_hba.conf \
-	--from-file=$DIR/pgpool.conf \
-	--from-file=$DIR/pool_passwd
+$CCP_CLI create secret generic pgpool-secrets \
+	--from-file=$DIR/configs/pool_hba.conf \
+	--from-file=$DIR/configs/pgpool.conf \
+	--from-file=$DIR/configs/pool_passwd
 
-kubectl create configmap pgpool-conf --from-file=pgpool.conf --from-file=hba=pool_hba.conf --from-file=psw=pool_passwd
+$CCP_CLI create configmap pgpool-conf \
+	--from-file=./configs/pgpool.conf \
+	--from-file=hba=./configs/pool_hba.conf \
+	--from-file=psw=./configs/pool_passwd
 
-expenv -f $DIR/pgpool-deployment.json | kubectl create -f -
-kubectl create -f $DIR/pgpool-service.json
+expenv -f $DIR/pgpool-deployment.json | $CCP_CLI create -f -

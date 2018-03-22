@@ -18,6 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create -f $DIR/primary-restore-service.json
-
-expenv -f $DIR/primary-restore.json | kubectl create -f -
+expenv -f $DIR/primary-restore.json | $CCP_CLI create -f -

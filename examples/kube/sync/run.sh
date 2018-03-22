@@ -18,9 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create -f $DIR/primary-sync-service.json
-kubectl create -f $DIR/replica-sync-service.json
-
-expenv -f $DIR/primary-sync-pod.json | kubectl create -f -
-expenv -f $DIR/replica-async-pod.json | kubectl create -f -
-expenv -f $DIR/replica-sync-pod.json | kubectl create -f -
+expenv -f $DIR/sync.json | $CCP_CLI create -f -

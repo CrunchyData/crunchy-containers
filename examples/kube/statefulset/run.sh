@@ -18,31 +18,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-# create the service account used in the containers
-kubectl create -f $DIR/set-sa.json
-
 # as of Kube 1.6, we need to allow the service account to perform
 # a label command, for this example, we open up wide permissions
 # for all serviceaccounts, this is NOT for production!
-kubectl create clusterrolebinding permissive-binding \
+$CCP_CLI create clusterrolebinding permissive-binding \
   --clusterrole=cluster-admin \
   --user=admin \
   --user=kubelet \
   --group=system:serviceaccounts \
   --namespace=$CCP_NAMESPACE
 
-# create the services for the example
-kubectl create -f $DIR/set-service.json
-kubectl create -f $DIR/set-primary-service.json
-kubectl create -f $DIR/set-replica-service.json
-
-# create some sample pv to use
-#expenv -f $DIR/pv1.json | kubectl create -f -
-#expenv -f $DIR/pv2.json | kubectl create -f -
-#expenv -f $DIR/pv3.json | kubectl create -f -
-
-# create the pvc we will use for all pods in the set
-kubectl create -f $DIR/pvc.json
-
-# create the stateful set
-expenv -f $DIR/set.json | kubectl create -f -
+expenv -f $DIR/statefulset.json | $CCP_CLI create -f -

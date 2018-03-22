@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete job pgrestore-job
-kubectl delete pvc pgrestore-pvc
+$CCP_CLI delete job pgrestore-job
+$CCP_CLI delete pvc pgrestore-pvc

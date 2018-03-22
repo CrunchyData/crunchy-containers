@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete secret pguser-secret pgprimary-secret pgroot-secret
-kubectl delete pod secret-pg
-kubectl delete service secret-pg
-$CCPROOT/examples/waitforterm.sh secret-pg kubectl
+$CCP_CLI delete secret pguser-secret pgprimary-secret pgroot-secret
+$CCP_CLI delete pod secret-pg
+$CCP_CLI delete service secret-pg
+$CCPROOT/examples/waitforterm.sh secret-pg $CCP_CLI

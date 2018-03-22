@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete pod replicasync replicaasync
-kubectl delete pod primarysync
-kubectl delete service primarysync
-kubectl delete service replicasync replicaasync
-$CCPROOT/examples/waitforterm.sh primarysync kubectl
-$CCPROOT/examples/waitforterm.sh replicasync kubectl
+$CCP_CLI delete pod replicasync replicaasync
+$CCP_CLI delete pod primarysync
+$CCP_CLI delete service primarysync
+$CCP_CLI delete service replicasync replicaasync
+$CCPROOT/examples/waitforterm.sh primarysync $CCP_CLI
+$CCPROOT/examples/waitforterm.sh replicasync $CCP_CLI

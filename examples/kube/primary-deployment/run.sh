@@ -18,19 +18,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create -f $DIR/primary-service.json
-kubectl create -f $DIR/replica-service.json
+$CCP_CLI create configmap postgresql-conf \
+  --from-file=./configs/postgresql.conf \
+  --from-file=pghba=./configs/pg_hba.conf \
+  --from-file=./configs/setup.sql
 
-kubectl create -f $DIR/pguser-secret.json
-kubectl create -f $DIR/pgprimary-secret.json
-kubectl create -f $DIR/pgroot-secret.json
-
-kubectl create -f $DIR/primary-dc-pvc.json
-kubectl create -f $DIR/primary-dc-pgbackrest-pvc.json
-kubectl create -f $DIR/primary-dc-pgwal-pvc.json
-
-kubectl create configmap postgresql-conf --from-file=postgresql.conf --from-file=pghba=pg_hba.conf --from-file=setup.sql
-
-expenv -f $DIR/primary-dc.json | kubectl create -f -
-expenv -f $DIR/replica-dc.json | kubectl create -f -
-expenv -f $DIR/replica2-dc.json | kubectl create -f -
+expenv -f $DIR/primary-deployment.json | $CCP_CLI create -f -

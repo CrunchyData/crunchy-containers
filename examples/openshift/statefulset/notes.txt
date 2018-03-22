@@ -1,3 +1,0 @@
-http://linoxide.com/containers/setup-kubernetes-kubeadm-centos/
-https://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/
-https://github.com/gluster/gluster-kubernetes/blob/v0.3/docs/setup-guide.md

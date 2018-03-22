@@ -5,16 +5,16 @@ v1.8.2, {docdate}
 
 == Description
 
-The PostgreSQL and PostgreSQL GIS containers can enable an SSH daemon to allow developers 
-to do DBA tasks on the database server without the need for exec privileges.  An administrator 
-who deploys the SSHD enabled PostgreSQL database can specify the authorized public keys for 
+The PostgreSQL and PostgreSQL GIS containers can enable an SSH daemon to allow developers
+to do DBA tasks on the database server without the need for exec privileges.  An administrator
+who deploys the SSHD enabled PostgreSQL database can specify the authorized public keys for
 access to the database server.
 
 This document describes what is needed to activate SSHD in the PostgreSQL containers.
 
-=== SSHD Configuration 
+=== SSHD Configuration
 
-In order to activate SSHD in the PostgreSQL containers, the following files need to be 
+In order to activate SSHD in the PostgreSQL containers, the following files need to be
 mounted to the PostgreSQL container:
 
 - SSH Host keys mounted on the /sshd volume. Three keys are required:
@@ -22,17 +22,17 @@ mounted to the PostgreSQL container:
   * ssh_host_rsa_key
   * ssh_host_ecdsa_key
   * ssh_host_ed25519_key
-  
+
 - sshd_config mounted on the /pgconf volume
 - authorized_keys mounted on the /pgconf volume
 
-SSHD can be enabled in the PostgreSQL containers by adding the following 
+SSHD can be enabled in the PostgreSQL containers by adding the following
 
 ....
 ENABLE_SSHD=true
 ....
 
-The *authorized_keys* file is mounted on the */pgconf* directory.  In order to support 
+The *authorized_keys* file is mounted on the */pgconf* directory.  In order to support
 using this mount for authentication the following must be set in *sshd_config*:
 
 ....
@@ -69,7 +69,7 @@ After running the example, SSH to the container using the forwarded port 2022:
 ssh -i ./keys/id_rsa -p 2022 postgres@0.0.0.0
 ....
 
-==== Kubernetes
+==== Kubernetes / OpenShift
 
 Start the example as follows:
 ....
@@ -90,30 +90,9 @@ After running the example, SSH to the service using the postgres-sshd service av
 ssh -i ./keys/id_rsa -p 2022 postgres@postgres-sshd
 ....
 
-==== OpenShift
+==== Using pgBackrest via SSH
 
-Start the example as follows:
-....
-cd $CCPROOT/examples/openshift/postgres-sshd
-./run.sh
-....
-
-This will create the following in your Kubernetes environment:
-
- * A configMap named pgconf which contains the pgbackrest.conf, pg_hba.conf, postgresql.conf, sshd_config, authorized_keys file
- * A secret named sshd-secrets containing the SSH Host keys
- * postgres-sshd pod with pgbackrest archive and sshd enabled. An initial stanza db will be created on initialization
- * postgres-sshd service with port 2022 for SSH
-
-After running the example, SSH to the service using the postgres-sshd service available in OpenShift:
-
-....
-ssh -i ./keys/id_rsa -p 2022 postgres@postgres-sshd
-....
-
-==== Using pgBackrest via SSH 
-
-If a pgbackrest.conf file is located on the /pgconf volume and archiving is enabled, it's possible to 
+If a pgbackrest.conf file is located on the /pgconf volume and archiving is enabled, it's possible to
 run backups using the pgBackrest utility.
 
 With the SSHD service running, the following command will issue a pgBackrest backup:

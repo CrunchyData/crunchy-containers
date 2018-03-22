@@ -1,24 +1,42 @@
 {
-    "kind": "Service",
+        "kind": "Service",
+        "apiVersion": "v1",
+        "metadata": {
+            "name": "primary-pvc",
+            "labels": {
+                "name": "primary-pvc"
+            }
+        },
+        "spec": {
+            "ports": [{
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }],
+            "selector": {
+                "name": "primary-pvc"
+            },
+            "type": "ClusterIP",
+            "sessionAffinity": "None"
+        }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-restore",
-        "labels": {
-            "name": "primary-restore"
-        }
+      "name": "primary-pvc"
     },
     "spec": {
-        "ports": [{
-            "protocol": "TCP",
-            "port": 5432,
-            "targetPort": 5432,
-            "nodePort": 0
-        }],
-        "selector": {
-            "name": "primary-restore"
-        },
-        "type": "ClusterIP",
-        "sessionAffinity": "None"
+      "accessModes": [
+        "ReadWriteMany"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "400M"
+        }
+      }
     }
 }
 
@@ -26,14 +44,14 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-restore",
+        "name": "primary-pvc",
         "labels": {
-            "name": "primary-restore"
+            "name": "primary-pvc"
         }
     },
     "spec": {
         "securityContext": {
-            $CCP_SECURITY_CONTEXT
+		$CCP_SECURITY_CONTEXT
         },
         "containers": [{
             "name": "postgres",
@@ -43,6 +61,9 @@
                 "protocol": "TCP"
             }],
             "env": [{
+                "name": "PGHOST",
+                "value": "/tmp"
+            }, {
                 "name": "PG_PRIMARY_USER",
                 "value": "primaryuser"
             }, {
@@ -51,9 +72,6 @@
             }, {
                 "name": "PG_MODE",
                 "value": "primary"
-            }, {
-                "name": "BACKUP_PATH",
-                "value": "primary-pvc-backups/2018-03-02-18-55-49"
             }, {
                 "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"
@@ -82,13 +100,12 @@
         }],
         "volumes": [{
             "name": "pgdata",
-            "emptyDir": {}
+            "persistentVolumeClaim": {
+                "claimName": "primary-pvc"
+            }
         }, {
             "name": "backup",
-            "persistentVolumeClaim": {
-                "claimName": "backup-pvc"
-            }
-
+            "emptyDir": {}
         }]
     }
 }

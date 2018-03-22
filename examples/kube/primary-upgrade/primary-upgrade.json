@@ -2,9 +2,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-restore",
+        "name": "primary-upgrade",
         "labels": {
-            "name": "primary-restore"
+            "name": "primary-upgrade"
         }
     },
     "spec": {
@@ -15,7 +15,7 @@
             "nodePort": 0
         }],
         "selector": {
-            "name": "primary-restore"
+            "name": "primary-upgrade"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -23,17 +23,35 @@
 }
 
 {
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "primary-upgrade-pvc"
+    },
+    "spec": {
+      "accessModes": [
+        "ReadWriteMany"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "400M"
+        }
+      }
+    }
+}
+
+{
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-restore",
+        "name": "primary-upgrade",
         "labels": {
-            "name": "primary-restore"
+            "name": "primary-upgrade"
         }
     },
     "spec": {
         "securityContext": {
-            $CCP_SECURITY_CONTEXT
+		$CCP_SECURITY_CONTEXT
         },
         "containers": [{
             "name": "postgres",
@@ -43,17 +61,17 @@
                 "protocol": "TCP"
             }],
             "env": [{
+                "name": "PGHOST",
+                "value": "/tmp"
+            }, {
                 "name": "PG_PRIMARY_USER",
                 "value": "primaryuser"
-            }, {
-                "name": "PG_PRIMARY_PORT",
-                "value": "5432"
             }, {
                 "name": "PG_MODE",
                 "value": "primary"
             }, {
-                "name": "BACKUP_PATH",
-                "value": "primary-pvc-backups/2018-03-02-18-55-49"
+                "name":"PG_PRIMARY_PORT",
+                "value":"5432"
             }, {
                 "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"
@@ -82,13 +100,12 @@
         }],
         "volumes": [{
             "name": "pgdata",
-            "emptyDir": {}
+            "persistentVolumeClaim": {
+                "claimName": "primary-upgrade-pvc"
+            }
         }, {
             "name": "backup",
-            "persistentVolumeClaim": {
-                "claimName": "backup-pvc"
-            }
-
+            "emptyDir": {}
         }]
     }
 }

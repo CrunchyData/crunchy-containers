@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete service primary-upgrade
-kubectl delete pod primary-upgrade
-kubectl delete pvc primary-upgrade-pvc
+$CCP_CLI delete service primary-upgrade
+$CCP_CLI delete pod primary-upgrade
+$CCP_CLI delete pvc primary-upgrade-pvc

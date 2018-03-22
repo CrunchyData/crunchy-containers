@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete statefulset pgset
-kubectl delete sa pgset-sa
-kubectl delete pvc pgset-pvc
-kubectl delete pv pv1 pv2 pv3
-kubectl delete service pgset pgset-primary pgset-replica
-kubectl delete pod pgset-0 pgset-1
+$CCP_CLI delete statefulset pgset
+$CCP_CLI delete sa pgset-sa
+$CCP_CLI delete pvc pgset-pvc
+$CCP_CLI delete pv pv1 pv2 pv3
+$CCP_CLI delete service pgset pgset-primary pgset-replica
+$CCP_CLI delete pod pgset-0 pgset-1
