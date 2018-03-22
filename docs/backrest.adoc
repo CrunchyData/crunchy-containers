@@ -71,9 +71,21 @@ see the archive files and also the backup files.
 
 === Running the Examples
 
-==== Kubernetes
+==== Kubernetes and OpenShift
+
+*Note*: The examples work on both Kube and Openshift.  Set the CCP_CLI environment variable 
+to the correct binary for your environment:
+
+....
+# Kubernetes
+export CCP_CLI=kubectl
+
+# OpenShift
+export CCP_CLI=oc
+....
 
 Start the example as follows:
+
 ....
 cd $CCPROOT/examples/kube/backrest
 ./run.sh
@@ -87,33 +99,6 @@ This will create the following in your Kubernetes environment:
 
 The crunchy-pvc will be used for /pgdata, and crunchy-pvc2 for the /backrestrepo. Examine the /backrestrepo location
 to view the archive directory and ensure WAL archiving is working.
-
-==== OpenShift
-
-Start by running the example database container:
-
-....
-cd $CCPROOT/examples/openshift/backrest
-./run.sh
-....
-
-This will create the following:
-
- * PV/PVC for /pgconf and /backrestrepo volumes
- * primary database pod
- * primary service
- * configmap holding the pgbackrest.conf config file
-
-The archive files are written to the NFS path of /mnt/nfsfileshare/backrestrepo.
-
-The presence of /pgconf/pgbackrest.conf is what is used to
-determine whether pgbackrest will be used as the archive command or not.
-You will need to specify the ARCHIVE_TIMEOUT environment variable
-as well to use this.
-
-After you run the example, you should see archive files
-being written to the /backrestrepo volume (/mnt/nfsfileshare/backrestrepo).
-
 
 ==== Manual Backup
 
