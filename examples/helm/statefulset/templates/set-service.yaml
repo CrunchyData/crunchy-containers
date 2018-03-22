@@ -13,4 +13,4 @@ spec:
     name: web
   clusterIP: None
   selector:
-    app: "{{.Values.container.name.primary}}"
+    app: "{{.Values.container.name.default}}"
