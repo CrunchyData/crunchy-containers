@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete job primary-dba-vac
-kubectl delete job primary-dba-backup
-kubectl delete serviceaccount dba-sa
-kubectl delete pod primary-dba
-kubectl delete service primary-dba
-kubectl delete clusterrolebinding permissive-binding
+${CCP_CLI?} delete pod primary-dba
+${CCP_CLI?} delete service primary-dba
+${CCP_CLI?} delete serviceaccount dba-sa
+${CCP_CLI?} delete clusterrolebinding dba-sa
+${CCP_CLI?} delete clusterrole dba-sa
 
-../../waitforterm.sh primary-dba kubectl
+$CCPROOT/examples/waitforterm.sh primary-dba ${CCP_CLI?}

@@ -12,19 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create -f $DIR/dba-sa.json
-
-kubectl create clusterrolebinding permissive-binding \
-  --clusterrole=cluster-admin \
-  --user=admin \
-  --user=kubelet \
-  --group=system:serviceaccounts \
-  --namespace=$CCP_NAMESPACE
-
-kubectl create -f $DIR/primary-dba-service.json
-expenv -f $DIR/primary-dba-vac-pod.json | kubectl create -f -
+PLATFORM='KUBE_PROJECT' expenv -f $DIR/dba-vac.json | ${CCP_CLI?} create -f -

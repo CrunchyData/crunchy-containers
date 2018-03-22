@@ -13,16 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete clusterrolebinding prometheus
-kubectl delete clusterrole prometheus
-kubectl delete sa prometheus
-kubectl delete pod crunchy-metrics
-kubectl delete pod crunchy-pgsql
-kubectl delete service crunchy-metrics
-kubectl delete service crunchy-pgsql
+${CCP_CLI?} delete clusterrolebinding prometheus
+${CCP_CLI?} delete clusterrole prometheus
+${CCP_CLI?} delete sa prometheus
+${CCP_CLI?} delete pod crunchy-metrics
+${CCP_CLI?} delete pod crunchy-pgsql
+${CCP_CLI?} delete service crunchy-metrics
+${CCP_CLI?} delete service crunchy-pgsql
 
-kubectl delete pvc metrics-prometheus-pvc
-kubectl delete pvc metrics-grafana-pvc
+${CCP_CLI?} delete pvc metrics-prometheus-pvc
+${CCP_CLI?} delete pvc metrics-grafana-pvc
 
-$CCPROOT/examples/waitforterm.sh crunchy-metrics kubectl
-$CCPROOT/examples/waitforterm.sh crunchy-pgsql kubectl
+$CCPROOT/examples/waitforterm.sh crunchy-metrics ${CCP_CLI?}
+$CCPROOT/examples/waitforterm.sh crunchy-pgsql ${CCP_CLI?}

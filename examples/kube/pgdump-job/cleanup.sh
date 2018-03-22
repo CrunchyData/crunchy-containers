@@ -12,6 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete job pgdump-job
-
-kubectl delete pvc pgdump-pvc
+${CCP_CLI?} delete job pgdump-job
+${CCP_CLI?} delete pvc pgdump-pvc

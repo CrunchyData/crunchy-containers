@@ -2,9 +2,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pgbouncer",
+        "name": "custom-config-ssl",
         "labels": {
-            "name": "pgbouncer"
+            "name": "custom-config-ssl"
         }
     },
     "spec": {
@@ -15,10 +15,8 @@
             "nodePort": 0
         }],
         "selector": {
-            "name": "pgbouncer"
-        }
-    },
-    "status": {
-        "loadBalancer": {}
+            "name": "custom-config-ssl"
+        },
+        "type": "ClusterIP"
     }
 }

@@ -16,18 +16,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-kubectl create -f $DIR/dba-sa.json
-
-# as of kube 1.6, we need to
-# grant permissions to service account to create PVCs, comment
-# out if you are running kube 1.5
-
-kubectl create clusterrolebinding permissive-binding \
-  --clusterrole=cluster-admin \
-  --user=admin \
-  --user=kubelet \
-  --group=system:serviceaccounts \
-  --namespace=$CCP_NAMESPACE
-
-kubectl create -f $DIR/primary-dba-service.json
-expenv -f $DIR/primary-dba-backup-pod.json | kubectl create -f -
+PLATFORM='OSE_PROJECT' expenv -f $DIR/dba-vac.json | ${CCP_CLI?} create -f -

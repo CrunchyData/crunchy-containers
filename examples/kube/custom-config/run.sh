@@ -18,20 +18,9 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-sudo cp $DIR/setup.sql $CCP_STORAGE_PATH
-sudo cp $DIR/pg_hba.conf $CCP_STORAGE_PATH
-sudo cp $DIR/postgresql.conf $CCP_STORAGE_PATH
-sudo chown nfsnobody:nfsnobody \
-    $CCP_STORAGE_PATH/setup.sql \
-    $CCP_STORAGE_PATH/postgresql.conf \
-    $CCP_STORAGE_PATH/pg_hba.conf
+${CCP_CLI?} create configmap customconfigconf \
+    --from-file ./configs/postgresql.conf \
+    --from-file ./configs/pg_hba.conf \
+    --from-file ./configs/setup.sql
 
-sudo chmod g+r \
-    $CCP_STORAGE_PATH/setup.sql \
-    $CCP_STORAGE_PATH/postgresql.conf \
-    $CCP_STORAGE_PATH/pg_hba.conf
-
-kubectl create -f $DIR/custom-config-pvc.json
-
-kubectl create -f $DIR/custom-config-service.json
-expenv -f $DIR/custom-config.json | kubectl create -f -
+expenv -f $DIR/custom-config.json | ${CCP_CLI?} create -f -

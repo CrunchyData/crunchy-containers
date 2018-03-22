@@ -1,0 +1,3 @@
+"admin" "password"
+"postgres" "password"
+"testuser" "password"

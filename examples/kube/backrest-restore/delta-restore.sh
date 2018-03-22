@@ -12,11 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-kubectl delete job backrest-job-nfs
-kubectl create -f $DIR/backrest-restore-pvc.json
+${CCP_CLI?} delete job backrest-job-nfs
+${CCP_CLI?} delete backrest-restore-pvc
 
-expenv -f $DIR/delta-restore-job.json | kubectl create -f -
+expenv -f $DIR/delta-restore-job.json | ${CCP_CLI?} create -f -

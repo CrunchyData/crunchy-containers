@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-kubectl delete pod badger
-kubectl delete service badger
-$CCPROOT/examples/waitforterm.sh badger kubectl
+${CCP_CLI?} delete pod badger
+${CCP_CLI?} delete service badger
+$CCPROOT/examples/waitforterm.sh badger ${CCP_CLI?}

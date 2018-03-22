@@ -12,14 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-kubectl delete service primary-backrest
-kubectl delete pod primary-backrest
-kubectl delete configmap backrestconf
-kubectl delete job backrest-job-nfs
-kubectl delete pvc backrest-pvc backrest-backrestrepo-pvc
-
-sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/archive $CCP_STORAGE_PATH/backup
+${CCP_CLI?} delete service primary-backrest
+${CCP_CLI?} delete pod primary-backrest
+${CCP_CLI?} delete configmap backrestconf
+${CCP_CLI?} delete pvc backrest-pvc backrest-backrestrepo-pvc
