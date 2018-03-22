@@ -3,7 +3,7 @@ apiVersion: v1
 metadata:
   name: "{{.Values.container.name.replica}}"
   labels:
-    name: "{{.Values.container.name.primary}}"
+    name: "{{.Values.container.name.replica}}"
     heritage: {{ .Release.Service | quote }}
     release: {{ .Release.Name | quote }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"

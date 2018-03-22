@@ -75,10 +75,10 @@ See `values.yaml` for configuration notes. Specify each parameter using the `--s
 
 ```console
 $ helm install basic --name basic \
-  --set Image.tag=centos7-10.3-1.8.2
+  --set Image.tag=centos7-9.6.8-1.8.2
 ```
 
-The above command changes the image tag of the container from the default of `centos7-9.6.8-1.8.2` to `centos7-10.3-1.8.2`.
+The above command changes the image tag of the container from the default of `centos7-10.3-1.8.2` to `centos7-9.6.8-1.8.2`.
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
 
