@@ -12,6 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-$CCP_CLI delete deployments,pods,service -l name=postgres-gis
+${CCP_CLI?} delete deployments,pods,service -l name=postgres-gis
 
-$CCPROOT/examples/waitforterm.sh postgres-gis $CCP_CLI
+$CCPROOT/examples/waitforterm.sh postgres-gis ${CCP_CLI?}

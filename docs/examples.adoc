@@ -21,6 +21,17 @@ The examples generally follow these conventions:
 
 == Usage
 
+NOTE: The examples located in the `kube` directory work on both Kube and OpenShift. Set the CCP_CLI environment variable
+to the correct binary for your environment:
+
+....
+# Kubernetes
+export CCP_CLI=kubectl
+
+# OpenShift
+export CCP_CLI=oc
+....
+
 Here are some useful resources for finding the right commands to troubleshoot & modify containers in
 the various environments shown in this guide:
 
@@ -35,7 +46,7 @@ You can use your own version of the setup.sql SQL file to customize
 the initialization of database data and objects when the container and
 database are created.
 
-This example can be run as follows:
+This example can be run as follows for the Docker environment:
 ....
 cd $CCPROOT/examples/docker/custom-setup
 ./run.sh
@@ -46,17 +57,6 @@ directory.  Portions of the setup.sql file are required for the crunchy containe
 to work, see comments within the sample setup.sql file.
 
 ==== Kubernetes and OpenShift Custom Configuration
-
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
 
 This example shows how you can use your own customized version of *setup.sql*
 when creating a PostgreSQL database container in Kubernetes and OpenShift.
@@ -78,33 +78,7 @@ This will start a database container that will use an NFS mounted /pgconf
 directory that will contain the custom setup.sql file found in the example
 directory.
 
-===== Templates Configuration
-
-An example of using OpenShift Templates to build pods, routes, services, etc can be
-found in the following directory:
-....
-$CCPROOT/examples/openshift/workshop
-....
-
-You use the *oc new-app* command to create objects from the
-JSON templates.  This is an alternative way to create OpenShift objects
-instead of using *oc create*.
-
-See the README file within the workshop directory for instructions
-on running the example.
-
 ===== SSL Authentication
-
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
 
 This example shows how you can configure PostgreSQL to use SSL for
 client authentication.
@@ -138,7 +112,7 @@ a server certificate with the server name of *server.crunchyhdata.com*.
 
 For example, if your service has an address as follows:
 ....
-${CCP_CLI?} get service
+${CCP_CLI} get service
 NAME                CLUSTER-IP       EXTERNAL-IP   PORT(S)                   AGE
 custom-config-ssl   172.30.211.108   <none>        5432/TCP
 ....
@@ -148,7 +122,7 @@ Then your */etc/hosts* file needs an entry like this:
 172.30.211.108 server.crunchydata.com
 ....
 
-For a production Kubernetes and Openshift installations, you'll likely want DNS
+For production Kubernetes and OpenShift installations, you'll likely want DNS
 names to resolve to the PostgreSQL Service name and generate
 server certificates using the DNS names instead of an example
 name like *server.crunchydata.com*.
@@ -290,17 +264,6 @@ https://github.com/openshift/postgresql/blob/master/9.4/root/usr/share/container
 
 ===== Kubernetes Secrets
 
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
-
 You can use Kubernetes Secrets to set and maintain your database
 credentials.  Secrets requires you base64 encode your user and password
 values as follows:
@@ -394,17 +357,6 @@ psql -h localhost -p 12000 -U testuser -W userdb
 ....
 
 ==== Kubernetes and OpenShift
-
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
 
 To create the example:
 ....
@@ -500,17 +452,6 @@ docker-compose rm
 ....
 
 ==== Kubernetes and OpenShift
-
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
 
 Run the following command to deploy a primary and replica database cluster:
 ....
@@ -612,17 +553,6 @@ To shutdown the instance and remove the container for each example, run the foll
 
 ==== Kubernetes and OpenShift
 
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
-
 Start the example as follows:
 ....
 cd $CCPROOT/examples/kube/primary-deployment
@@ -665,7 +595,7 @@ docker logs watch
 
 Look at the watch container logs to see it perform the failover.
 
-==== Kubernetes / OpenShift
+==== Kubernetes and OpenShift
 
 Running the example:
 ....
@@ -675,12 +605,12 @@ cd $CCPROOT/examples/kube/watch
 
 Check out the log of the watch container as follows:
 ....
-$CCP_CLI log watch
+${CCP_CLI} log watch
 ....
 
 Then trigger a failover using this command:
 ....
-$CCP_CLI delete pod pr-primary
+${CCP_CLI} delete pod pr-primary
 ....
 
 Resume watching the watch container's log and verify that it
@@ -698,11 +628,9 @@ changed the labels of the replica to make it a primary, so the primary
 service will still work and route now to the new primary even though
 the pod is named replica.
 
-*Tip*
-
 You can view the labels on a pod with this command:
 ....
-$CCP_CLI describe pod pr-replica | grep Label
+${CCP_CLI} describe pod pr-replica | grep Label
 ....
 
 === Performing a Backup & Restore
@@ -758,17 +686,6 @@ cd $CCPROOT/examples/docker/restore
 ....
 
 ==== Kubernetes and OpenShift
-
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
 
 Running the example:
 ....
@@ -851,17 +768,6 @@ cd $CCPROOT/examples/docker/pgadmin4-http
 
 ==== Kubernetes and OpenShift
 
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
-
 Start the container as follows:
 ....
 cd $CCPROOT/examples/kube/pgadmin4-http
@@ -906,17 +812,6 @@ cd $CCPROOT/examples/docker/pgadmin4-https
 
 ==== Kubernetes and OpenShift
 
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
-
 Start the container as follows:
 ....
 cd $CCPROOT/examples/kube/pgadmin4-https
@@ -959,17 +854,6 @@ psql -h localhost -U testuser -p 12003 userdb
 
 ==== Kubernetes and OpenShift
 
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
-
 Run the following command to deploy the pgpool service:
 ....
 cd $CCPROOT/examples/kube/primary-replica
@@ -998,7 +882,7 @@ pgbadger reads the log files from a database to product an HTML report
 that shows various PostgreSQL statistics and graphs.
 
 The port utilized for this tool is port 14000 for Docker environments and port 10000
-for Kubernetes and Openshift environments.
+for Kubernetes and OpenShift environments.
 
 Additional requirements to build this container include *golang*. On RHEL 7.2, golang
 is found in the 'server optional' repository which needs to be enabled in order to install this dependency.
@@ -1034,17 +918,6 @@ curl http://127.0.0.1:14000/api/badgergenerate
 
 ==== Kubernetes and OpenShift
 
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
-
 Running the example:
 ....
 cd $CCPROOT/examples/kube/badger
@@ -1057,8 +930,6 @@ the database, you can invoke this URL to generate updated reports:
 ....
 curl http://badger:10000/api/badgergenerate
 ....
-
-*Tip*
 
 You can view the database container logs using this command:
 ....
@@ -1128,17 +999,6 @@ psql -h localhost -U testuser -p 12000 userdb
 
 ==== Kubernetes and OpenShift
 
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
-
 Running the example:
 ....
 cd $CCPROOT/examples/kube/postgres-gis
@@ -1158,39 +1018,27 @@ container by running a crunchy-collect container that points
 to your database container.
 
 This will start up 4 containers:
+
  * Collect
  * Grafana
  * PostgreSQL
  * Prometheus
 
-Every 5 seconds by default, Crunchy Prometheus will scrape the Crunchy Collect container
+Every 5 seconds by default, Prometheus will scrape the Collect container
 for metrics.  These metrics will then be visualized by Crunchy Grafana.
 
-By default, Crunchy Prometheus detects which environment its running on (Docker, Kubernetes, or OpenShift Container Platform)
+By default, Prometheus detects which environment its running on (Docker, Kubernetes, or OpenShift Container Platform)
 and applies a default configuration.  If this container is running on Kubernetes or OpenShift Container Platform,
 it will use the Kubernetes API to discover pods with the label *"crunchy-collect": "true"*.
 
-Crunchy Collect container *must* have this label to be discovered in these environments.
+The Collect container *must* have this label to be discovered in these environments.
 
 Discovering pods requires a cluster role service account.  See the
-link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/kube/metrics/metrics-pod.json[Kubernetes] and
-link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/openshift/metrics/metrics-pod.json[OpenShift Container Platform]
-examples for account examples.
+link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/kube/metrics/metrics-pod.json[Kubernetes and OpenShift]
+metrics JSON file for more details.
 
-For Docker environments the Crunchy Collect hostname must be specified as an environment
+For Docker environments the Collect hostname must be specified as an environment
 variable.
-
-If firewalld is enabled in your environment, it may be necessary
-to allow the necessary ports through the firewall. This can be
-accomplished by the following:
-
-....
-firewall-cmd --permanent --new-zone metrics
-firewall-cmd --permanent --zone metrics --add-port 9090/tcp
-firewall-cmd --permanent --zone metrics --add-port 9091/tcp
-firewall-cmd --permanent --zone metrics --add-port 3000/tcp
-firewall-cmd --reload
-....
 
 To shutdown the instance and remove the container for each example, run the following:
 ....
@@ -1212,17 +1060,6 @@ web addresses:
  * Prometheus (http://0.0.0.0:9090)
 
 ==== Kubernetes and OpenShift
-
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
 
 Running the example:
 
@@ -1263,20 +1100,8 @@ This example performs a vacuum on a single table in the primary PostgreSQL
 database. The crunchy-vacuum image is executed, passed in
 the PostgreSQL connection parameters to the single-primary PostgreSQL
 container.  The type of vacuum performed is dictated by the
-environment variables passed into the job. Vacuum is controlled via the following
-environment variables:
-
- * VAC_FULL - when set to true adds the FULL parameter to the VACUUM command
- * VAC_TABLE - when set, allows you to specify a single table to vacuum, when
- not specified, the entire database tables are vacuumed
- * JOB_HOST - required variable is the PostgreSQL host we connect to
- * PG_USER - required variable is the PostgreSQL user we connect with
- * PG_DATABASE - required variable is the PostgreSQL database we connect to
- * PG_PASSWORD - required variable is the PostgreSQL user password we connect with
- * PG_PORT - allows you to override the default value of 5432
- * VAC_ANALYZE - when set to true adds the ANALYZE parameter to the VACUUM command
- * VAC_VERBOSE - when set to true adds the VERBOSE parameter to the VACUUM command
- * VAC_FREEZE - when set to true adds the FREEZE parameter to the VACUUM command
+environment variables passed into the job; these are defined with further detail
+ link:https://github.com/CrunchyData/crunchy-containers/blob/master/docs/containers.adoc#environment-variables-9[here].
 
 To shutdown the instance and remove the container for each example, run the following:
 ....
@@ -1292,17 +1117,6 @@ cd $CCPROOT/examples/docker/vacuum
 ....
 
 ==== Kubernetes and OpenShift
-
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
 
 Running the example:
 ....
@@ -1341,17 +1155,6 @@ To shutdown the instance and remove the container for each example, run the foll
 
 ==== Kubernetes and OpenShift
 
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
-
 The script to schedule vacuum on a regular schedule is executed through the following
 commands:
 
@@ -1360,7 +1163,7 @@ commands:
 cd $CCPROOT/examples/kube/dba
 ./run-kube-vac.sh
 
-# OpenShift 
+# OpenShift
 cd $CCPROOT/examples/kube/dba
 ./run-ocp-vac.sh
 ....
@@ -1420,17 +1223,6 @@ psql -h localhost -p 12005 -U testuser primary
 ....
 
 ==== Kubernetes and OpenShift
-
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
 
 Running the example:
 
@@ -1507,17 +1299,6 @@ psql -h 127.0.0.1 -p 12012 -U postgres postgres -c 'table foo'
 
 ==== Kubernetes and OpenShift
 
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
-
 Running the example:
 ....
 cd $CCPROOT/examples/kube/sync
@@ -1570,17 +1351,6 @@ To shutdown the instance and remove the container for each example, run the foll
 
 ==== Kubernetes and OpenShift
 
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
-
 Start the example as follows:
 ....
 cd $CCPROOT/examples/kube/statefulset
@@ -1605,20 +1375,8 @@ ${CCP_CLI} scale pgset --replica=3
 
 ===== Statefulset using Dynamic Provisioning
 
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
-
-
-The example in *examples/statefulset-dyn* is almost an exact copy of the
-previous statefulset example; however, this example uses
+The *statefulset-dyn* example is almost an exact copy of the
+previous Statefulset example; however, this example uses
 Dynamic Storage Provisioning to automatically create Persistent
 Volume Claims based on StorageClasses.  This feature is
 available on Google Container Engine which this example was
@@ -1752,7 +1510,7 @@ psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume(
 ....
 
 NOTE: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
-pg_xlog instead:
+pg_xlog instead.
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
 ....
@@ -1775,7 +1533,7 @@ psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume(
 ....
 
 NOTE: If you're running PostgreSQL versions 9.5 or 9.6, the function should reference
-pg_xlog instead:
+pg_xlog instead.
 ....
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_xlog_replay_resume()'
 ....
@@ -1795,7 +1553,7 @@ At this point, you should be able to create new data in the restored database
 and the test table should be present.  When you recover the entire
 WAL history, resuming the recovery is not necessary to enable writes.
 
-==== Kubernetes / OpenShift
+==== Kubernetes and OpenShift
 
 Start by running the example database container:
 ....
@@ -1831,7 +1589,7 @@ Next, now that we have a base backup and a set of WAL files containing
 our database changes, we can shut down the *primary-pitr* database
 to simulate a database failure.  Do this by running the following:
 ....
-$CCP_CLI delete pod primary-pitr
+${CCP_CLI} delete pod primary-pitr
 ....
 
 Next, we will create 3 different restored database containers based
@@ -1936,18 +1694,6 @@ SQL commands will cause pg_audit to create audit log messages in
 the pg_log log file created by the database container.
 
 ==== Kubernetes and OpenShift
-
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
-
 
 Run the following:
 ....
@@ -2058,18 +1804,6 @@ This will create the following in your Kubernetes environment:
 
 ==== Kubernetes and OpenShift
 
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
-
-
 Start the upgrade as follows:
 ....
 cd $CCPROOT/examples/kube/upgrade
@@ -2079,8 +1813,8 @@ cd $CCPROOT/examples/kube/upgrade
 If successful, the Job will end with a **successful** status. Verify
 the results of the Job by examining the Job's pod log:
 ....
-$CCP_CLI get pod -a -l job-name=upgrade-job
-$CCP_CLI logs -l job-name=upgrade-job
+${CCP_CLI} get pod -a -l job-name=upgrade-job
+${CCP_CLI} logs -l job-name=upgrade-job
 ....
 
 You can verify the upgraded database by running the
@@ -2149,18 +1883,6 @@ sudo cp -p /var/lib/docker/volumes/pgdump-volume/_data/primary-pvc-dumps/2018-02
 
 ==== Kubernetes and OpenShift
 
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
-
-
 Running the example:
 ....
 cd $CCPROOT/examples/kube/pgdump-job
@@ -2210,17 +1932,6 @@ cd $CCPROOT/examples/docker/pgrestore
 ....
 
 ==== Kubernetes and OpenShift
-
-*Note*: This example works on both Kube and Openshift.  Set the CCP_CLI environment variable
-to the correct binary for your environment:
-
-....
-# Kubernetes
-export CCP_CLI=kubectl
-
-# OpenShift
-export CCP_CLI=oc
-....
 
 Running the example:
 ....

@@ -21,12 +21,12 @@ $DIR/cleanup.sh
 # as of Kube 1.6, we need to allow the service account to perform
 # a label command, for this example, we open up wide permissions
 # for all serviceaccounts, this is NOT for production!
-$CCP_CLI create clusterrolebinding permissive-binding \
+${CCP_CLI?} create clusterrolebinding permissive-binding \
   --clusterrole=cluster-admin \
   --user=admin \
   --user=kubelet \
   --group=system:serviceaccounts \
   --namespace=$CCP_NAMESPACE
 
-$CCP_CLI create -f $DIR/storage-class.yaml
-expenv -f $DIR/statefulset-dyn.json | $CCP_CLI create -f -
+${CCP_CLI?} create -f $DIR/storage-class.yaml
+expenv -f $DIR/statefulset-dyn.json | ${CCP_CLI?} create -f -

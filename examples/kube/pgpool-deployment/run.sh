@@ -18,14 +18,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-$CCP_CLI create secret generic pgpool-secrets \
+${CCP_CLI?} create secret generic pgpool-secrets \
 	--from-file=$DIR/configs/pool_hba.conf \
 	--from-file=$DIR/configs/pgpool.conf \
 	--from-file=$DIR/configs/pool_passwd
 
-$CCP_CLI create configmap pgpool-conf \
+${CCP_CLI?} create configmap pgpool-conf \
 	--from-file=./configs/pgpool.conf \
 	--from-file=hba=./configs/pool_hba.conf \
 	--from-file=psw=./configs/pool_passwd
 
-expenv -f $DIR/pgpool-deployment.json | $CCP_CLI create -f -
+expenv -f $DIR/pgpool-deployment.json | ${CCP_CLI?} create -f -

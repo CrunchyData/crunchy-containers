@@ -16,14 +16,14 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$CCP_CLI delete service postgres-sshd
-$CCP_CLI delete pod postgres-sshd
-$CCP_CLI delete configmap pgconf
-$CCP_CLI delete secret sshd-secrets
+${CCP_CLI?} delete service postgres-sshd
+${CCP_CLI?} delete pod postgres-sshd
+${CCP_CLI?} delete configmap pgconf
+${CCP_CLI?} delete secret sshd-secrets
 
-$CCP_CLI delete pvc postgres-sshd-backrestrepo-pvc postgres-sshd-pvc
+${CCP_CLI?} delete pvc postgres-sshd-backrestrepo-pvc postgres-sshd-pvc
 
-$CCPROOT/examples/waitforterm.sh postgres-sshd $CCP_CLI
+$CCPROOT/examples/waitforterm.sh postgres-sshd ${CCP_CLI?}
 rm -rf ${DIR?}/keys
 
 sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/archive $CCP_STORAGE_PATH/backup

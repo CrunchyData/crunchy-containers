@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-$CCP_CLI delete deploy primary-dc replica-dc replica2-dc
-$CCP_CLI delete configmap postgresql-conf
-$CCP_CLI delete secret pguser-secret pgprimary-secret pgroot-secret
+${CCP_CLI?} delete deploy primary-dc replica-dc replica2-dc
+${CCP_CLI?} delete configmap postgresql-conf
+${CCP_CLI?} delete secret pguser-secret pgprimary-secret pgroot-secret
 sleep 10
-$CCP_CLI delete service primary-dc
-$CCP_CLI delete service replica-dc
-$CCP_CLI delete pvc primary-dc-pgwal-pvc primary-dc-pgbackrest-pvc primary-dc-pvc
+${CCP_CLI?} delete service primary-dc
+${CCP_CLI?} delete service replica-dc
+${CCP_CLI?} delete pvc primary-dc-pgwal-pvc primary-dc-pgbackrest-pvc primary-dc-pvc
