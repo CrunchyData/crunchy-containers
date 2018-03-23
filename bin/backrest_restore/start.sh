@@ -17,24 +17,32 @@ set -e
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-
-echo STANZA $STANZA set
-if [ ! -v STANZA ]; then
-	echo "STANZA env var is not set, required value"
-	exit 2
-fi
-
-echo "Starting restore. Examine restore log in /backrestrepo for results" `date`
-
-# this lets us run the pgbackrest cmd  on Openshift
-# when it is configured to use random UIDs
 ose_hack
 
-if [ -v DELTA ]; then
-    pgbackrest --config=/pgconf/pgbackrest.conf --stanza=$STANZA --log-path=/backrestrepo --delta restore
-else
-    pgbackrest --config=/pgconf/pgbackrest.conf --stanza=$STANZA --log-path=/backrestrepo restore
+BACKREST_CONF='/pgconf/pgbackrest.conf'
+if [[ ! -f ${BACKREST_CONF?} ]]
+then
+    echo_err "${BACKREST_CONF?} does not exist.  A pgBackRest configuration file must be mounted to /pgconf.  Exiting.."
+    exit 1
 fi
 
-echo "Completed restore at " `date`
+env_check_err "STANZA"
+
+if [[ -v DELTA ]]
+then
+    echo_info "Delta restore detected.  Enabling delta restore.."
+    restore='--delta restore'
+else
+    echo_info "Full restore detected.  Enabling full restore.."
+    restore='restore'
+fi
+
+echo_info "Starting restore.."
+pgbackrest \
+    --config=${BACKREST_CONF?} \
+    --stanza=${STANZA?} \
+    ${restore?}
+
+echo_info "Restore completed.  Exiting.."
+
 exit 0

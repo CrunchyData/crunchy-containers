@@ -20,14 +20,14 @@
     "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {
-        "name": "backrest-job-nfs"
+        "name": "backrest-delta-restore-job"
     },
     "spec": {
         "template": {
             "metadata": {
-                "name": "backrest-job-nfs",
+                "name": "backrest-delta-restore-job",
                 "labels": {
-                    "app": "backrest-job-nfs"
+                    "app": "backrest-delta-restore-job"
                 }
             },
             "spec": {
@@ -61,7 +61,7 @@
                             {
                                 "mountPath": "/backrestrepo",
                                 "name": "backrestrepo",
-                                "readOnly": false
+                                "readOnly": true
                             }
                         ]
                     }

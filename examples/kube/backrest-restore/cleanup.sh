@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,6 +14,6 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
-
-expenv -f $DIR/full-restore-job.json | ${CCP_CLI?} create -f -
+${CCP_CLI?} delete pvc backrest-restore-pvc
+${CCP_CLI?} delete job backrest-full-restore-job
+${CCP_CLI?} delete job backrest-delta-restore-job
