@@ -15,11 +15,11 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$CCP_CLI scale --replicas=0 deployment/replica-dc
+${CCP_CLI?} scale --replicas=0 deployment/replica-dc
 sleep 1
-$CCP_CLI delete deployment replica-dc
+${CCP_CLI?} delete deployment replica-dc
 sleep 3
-$CCP_CLI delete pod primary-dc
+${CCP_CLI?} delete pod primary-dc
 sleep 3
-$CCP_CLI delete service primary-dc
-$CCP_CLI delete service replica-dc
+${CCP_CLI?} delete service primary-dc
+${CCP_CLI?} delete service replica-dc

@@ -18,4 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-expenv -f $DIR/postgres-gis.json | $CCP_CLI create -f -
+expenv -f $DIR/postgres-gis.json | ${CCP_CLI?} create -f -

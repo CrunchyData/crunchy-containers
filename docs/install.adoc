@@ -46,8 +46,8 @@ intend to use *HostPath* storage.  NFS and dynamic storage are
 other options, see below for details on configuring storage.
 
 Note:  the CCP_CLI setting above indicates you are running the
-examples on a Kubernetes platform and not an Openshift platform.  For
-Openshift, use the value of *oc* as the CCP_CLI variable instead.
+examples on a Kubernetes platform and not an OpenShift platform.  For
+OpenShift, use the value of *oc* as the CCP_CLI variable instead.
 
 Next, it will be necessary to refresh your bashrc file in order for the changes to take
 effect.
@@ -148,7 +148,7 @@ $ kubectl config view | grep namespace:
 
 === Creating a Demo Namespace on OpenShift
 
-This section assumes you are first logging into Openshift as a normal
+This section assumes you are first logging into OpenShift as a normal
 user such as:
 ....
 oc login -u someuser

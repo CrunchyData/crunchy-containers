@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-$CCP_CLI delete pod primary-restore
-$CCP_CLI delete service primary-restore
+${CCP_CLI?} delete pod primary-restore
+${CCP_CLI?} delete service primary-restore
 
-$CCPROOT/examples/waitforterm.sh primary-restore $CCP_CLI
+$CCPROOT/examples/waitforterm.sh primary-restore ${CCP_CLI?}
