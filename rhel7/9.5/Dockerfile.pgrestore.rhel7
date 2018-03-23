@@ -20,8 +20,8 @@ LABEL name="crunchydata/restore" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-COPY docs/pgrestore/help.1 /help.1
-COPY docs/pgrestore/help.md /help.md
+COPY docs/atomic/pgrestore/help.1 /help.1
+COPY docs/atomic/pgrestore/help.md /help.md
 COPY docs/licenses /licenses
 
 # PGDG Postgres repo

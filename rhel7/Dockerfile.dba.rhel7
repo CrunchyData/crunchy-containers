@@ -18,8 +18,8 @@ LABEL name="crunchydata/dba" \
 				io.openshift.tags="crunchy,database"
 
 
-COPY docs/dba/help.1 /help.1
-COPY docs/dba/help.md /help.md
+COPY docs/atomic/dba/help.1 /help.1
+COPY docs/atomic/dba/help.md /help.md
 COPY docs/licenses /licenses
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
