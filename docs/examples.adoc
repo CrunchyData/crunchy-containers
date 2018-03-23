@@ -360,7 +360,7 @@ psql -h localhost -p 12000 -U testuser -W userdb
 
 To create the example:
 ....
-cd $CCPROOT/examples/kube/primary-pvc
+cd $CCPROOT/examples/kube/primary
 ./run.sh
 ....
 
@@ -689,7 +689,7 @@ cd $CCPROOT/examples/docker/restore
 
 Running the example:
 ....
-cd $CCPROOT/examples/kube/backup-job
+cd $CCPROOT/examples/kube/backup
 ./run.sh
 ....
 
@@ -858,7 +858,7 @@ Run the following command to deploy the pgpool service:
 ....
 cd $CCPROOT/examples/kube/primary-replica
 ./run.sh
-cd $CCPROOT/examples/kube/pgpool-deployment
+cd $CCPROOT/examples/kube/pgpool
 ./run.sh
 ....
 
@@ -1120,7 +1120,7 @@ cd $CCPROOT/examples/docker/vacuum
 
 Running the example:
 ....
-cd $CCPROOT/examples/kube/vacuum-job/
+cd $CCPROOT/examples/kube/vacuum/
 ./run.sh
 ....
 
@@ -1885,7 +1885,7 @@ sudo cp -p /var/lib/docker/volumes/pgdump-volume/_data/primary-pvc-dumps/2018-02
 
 Running the example:
 ....
-cd $CCPROOT/examples/kube/pgdump-job
+cd $CCPROOT/examples/kube/pgdump
 ./run.sh
 ....
 
@@ -1935,7 +1935,7 @@ cd $CCPROOT/examples/docker/pgrestore
 
 Running the example:
 ....
-cd $CCPROOT/examples/kube/pgrestore-job
+cd $CCPROOT/examples/kube/pgrestore
 ./run.sh
 ....
 
