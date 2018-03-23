@@ -4,6 +4,21 @@ Crunchy Data Solutions, Inc.
 v1.8.2, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
+== Example Conventions
+
+The examples provided in Container Suite are simple examples that
+are meant to demonstrate key Container Suite features.  These
+examples can be used to build more production level deployments
+as dictated by user requirements specific to their operating
+environments.
+
+The examples generally follow these conventions:
+
+ * there is a *run.sh* script that you will execute to start the example
+ * there is a *cleanup.sh* script that you will execute to shutdown and cleanup the example
+ * each example will create resources such as Secrets, ConfigMaps, Services, PersistentVolumeClaims, all which following a naming convention of *<example name>-<optional description suffix>*, for example an example called *primary* might have a PersistentVolumeClaim called *primary-pgconf* to describe the purpose of that particular PVC
+ * the example folder names gives a clue as to the Container Suite feature it demonstrates, for example the *examples/kube/pgaudit* example demonstrates how to enable the *pgaudit* capability of the *crunchy-postgres* container
+
 == Usage
 
 Here are some useful resources for finding the right commands to troubleshoot & modify containers in
