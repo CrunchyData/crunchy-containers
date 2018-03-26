@@ -14,7 +14,6 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-${CCP_CLI?} delete job backrest-job-nfs
-${CCP_CLI?} delete backrest-restore-pvc
+$DIR/cleanup.sh
 
 expenv -f $DIR/delta-restore-job.json | ${CCP_CLI?} create -f -
