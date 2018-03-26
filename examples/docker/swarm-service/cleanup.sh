@@ -13,14 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "cleaning up ..."
+docker stack rm pg-stack
 
-SERVICE_NAME=primary
-VOLUME_NAME=$SERVICE_NAME-volume
-
-docker service rm $SERVICE_NAME
-
-SERVICE_NAME=replica
-VOLUME_NAME=$SERVICE_NAME-volume
-
-docker service rm $SERVICE_NAME
+exit 0
