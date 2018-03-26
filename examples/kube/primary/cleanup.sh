@@ -15,4 +15,5 @@
 ${CCP_CLI?} delete service primary-pvc
 ${CCP_CLI?} delete pod primary-pvc
 ${CCP_CLI?} delete pvc primary-pvc
+${CCP_CLI?} delete pv primary
 $CCPROOT/examples/waitforterm.sh primary-pvc ${CCP_CLI?}

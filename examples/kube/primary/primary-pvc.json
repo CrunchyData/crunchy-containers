@@ -29,6 +29,11 @@
       "name": "primary-pvc"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "primary"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],
