@@ -20,8 +20,8 @@ LABEL name="crunchydata/postgres" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-COPY docs/postgres/help.1 /help.1
-COPY docs/postgres/help.md /help.md
+COPY docs/atomic/postgres/help.1 /help.1
+COPY docs/atomic/postgres/help.md /help.md
 COPY docs/licenses /licenses
 
 ENV PGVERSION="10"
@@ -63,7 +63,7 @@ ADD conf/.bashrc /
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
-    /pgdata /pgwal /pgconf /backup /recover /backrestrepo 
+    /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
 # Link pgbackrest.conf to default location for convenience
 # Remove nologin file to prevent sshd from being blocked

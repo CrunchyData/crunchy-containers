@@ -20,8 +20,8 @@ LABEL name="crunchydata/pgbouncer" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-COPY docs/pgbouncer/help.1 /help.1
-COPY docs/pgbouncer/help.md /help.md
+COPY docs/atomic/pgbouncer/help.1 /help.1
+COPY docs/atomic/pgbouncer/help.md /help.md
 COPY docs/licenses /licenses
 
 # set up Crunchy repo

@@ -20,8 +20,8 @@ LABEL name="crunchydata/pgpool" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-COPY docs/pgpool/help.1 /help.1
-COPY docs/pgpool/help.md /help.md
+COPY docs/atomic/pgpool/help.1 /help.1
+COPY docs/atomic/pgpool/help.md /help.md
 COPY docs/licenses /licenses
 
 # PGDG Postgres repo
@@ -35,7 +35,7 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
 RUN yum -y update \
- && yum -y install epel-release \ 
+ && yum -y install epel-release \
  && yum -y install \
       gettext \
       hostname \
