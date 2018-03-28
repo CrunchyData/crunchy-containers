@@ -76,7 +76,7 @@
                        },
                        {
                           "name":"PGRESTORE_VOLUMEPATH",
-                          "value":"/pgdata/primary-dumps/2018-03-09-16-35-27"
+                          "value":"/pgdata/$PGDUMP_HOST-dumps/$PGDUMP_PATH"
                        },
                        {
                           "name":"PGRESTORE_FILE",

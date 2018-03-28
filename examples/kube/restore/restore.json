@@ -2,7 +2,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-restore-backup"
+        "name": "restore-backup"
     },
     "spec": {
         "accessModes": [
@@ -20,9 +20,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-restore",
+        "name": "restore",
         "labels": {
-            "name": "primary-restore"
+            "name": "restore"
         }
     },
     "spec": {
@@ -33,7 +33,7 @@
             "nodePort": 0
         }],
         "selector": {
-            "name": "primary-restore"
+            "name": "restore"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -44,9 +44,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-restore",
+        "name": "restore",
         "labels": {
-            "name": "primary-restore"
+            "name": "restore"
         }
     },
     "spec": {
@@ -71,7 +71,7 @@
                 "value": "primary"
             }, {
                 "name": "BACKUP_PATH",
-                "value": "primary-backups/2018-03-02-18-55-49"
+                "value": "$BACKUP_HOST-backups/$BACKUP_PATH"
             }, {
                 "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"
@@ -104,7 +104,7 @@
         }, {
             "name": "backup",
             "persistentVolumeClaim": {
-                "claimName": "primary-restore-backup"
+                "claimName": "restore-backup"
             }
 
         }]

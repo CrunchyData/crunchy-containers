@@ -630,7 +630,7 @@ data to this new container and then launch PostgreSQL using the original backed-
 
 The restore script will do the following:
 
-* Start up a container named *primary-restore*
+* Start up a container named *restore*
 * Copy the backup files from the previous backup example into `/pgdata`
 * Start up the container using the backup files
 * Map the PostgreSQL port of 5432 in the container to your local host port of 12001
@@ -648,7 +648,7 @@ cd $CCPROOT/examples/docker/backup
 ./run.sh
 ....
 
-*primary-restore*
+*restore*
 
 When you are ready to restore from the backup created, run the following example:
 ....
@@ -675,25 +675,26 @@ You should find the backup archive in this location:
 ls $CCP_STORAGE_PATH/primary-backups
 ....
 
-*primary-restore*
+*restore*
 
-When ready to restore, you will need the timestamped directory path under
-`$CCP_STORAGE_PATH/primary-backups` in order to locate the backup to use. Edit the `primary-restore.json`
-file and update the `BACKUP_PATH` setting to specify the backup path you want to restore with.
+By default, the example will automatically restore from the most recent backup
+created by the backup example, located under `$CCP_STORAGE_PATH/$BACKUP_HOST-backups`.
+If you want to restore to a specific backup, edit the `restore.json` file and update the
+`BACKUP_PATH` setting to specify the backup path you want to restore with. For example:
 ....
 "name": "BACKUP_PATH",
-"value": "primary-backups/2016-05-27-14-35-33"
+"value": "primary-backups/2018-03-27-14-35-33"
 ....
 
 Running the example:
 ....
-cd $CCPROOT/examples/kube/primary-restore
+cd $CCPROOT/examples/kube/restore
 ./run.sh
 ....
 
 Test the restored database as follows:
 ....
-psql -h primary-restore -U postgres postgres
+psql -h restore -U postgres postgres
 ....
 
 === pgbackrest
@@ -1897,13 +1898,22 @@ To shutdown the instance and remove the container for each example, run the foll
 
 ==== Docker
 
-Run the backup with this command:
+Run the restore with this command:
 ....
 cd $CCPROOT/examples/docker/pgrestore
 ./run.sh
 ....
 
 ==== Kubernetes and OpenShift
+
+By default, the example will automatically restore from the most recent backup
+created by the backup example, located under `$CCP_STORAGE_PATH/$PGDUMP_HOST-dumps`.
+If you want to restore to a specific backup, edit the `pgrestore.json` file and update the
+`PGRESTORE_VOLUMEPATH` setting to specify the backup path you want to restore with. For example:
+....
+"name":"PGRESTORE_VOLUMEPATH",
+"value":"/pgdata/primary-dumps/2018-03-27-14-35-33"
+....
 
 Running the example:
 ....
