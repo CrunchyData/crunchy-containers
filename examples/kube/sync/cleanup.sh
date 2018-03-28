@@ -15,6 +15,6 @@
 ${CCP_CLI?} delete pod replicasync replicaasync
 ${CCP_CLI?} delete pod primarysync
 ${CCP_CLI?} delete service primarysync
-${CCP_CLI?} delete service replicasync replicaasync
+${CCP_CLI?} delete service replicasync
 $CCPROOT/examples/waitforterm.sh primarysync ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh replicasync ${CCP_CLI?}

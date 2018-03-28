@@ -2,9 +2,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-pitr-restore",
+        "name": "restore-pitr",
         "labels": {
-            "name": "primary-pitr-restore"
+            "name": "restore-pitr"
         }
     },
     "spec": {
@@ -15,7 +15,7 @@
             "nodePort": 0
         }],
         "selector": {
-            "name": "primary-pitr-restore"
+            "name": "restore-pitr"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -40,7 +40,7 @@
         },
         "accessModes": ["ReadWriteMany"],
         "hostPath": {
-            "path": "/data/primary-pitr-wal"
+            "path": "/data/pitr-wal"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }
@@ -50,7 +50,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-pitr-restore-pvc"
+      "name": "restore-pitr-pgdata"
     },
     "spec": {
       "accessModes": [
@@ -73,7 +73,7 @@
     "spec": {
         "selector": {
         "matchLabels": {
-            "name": "recover-pvc"
+            "name": "recover-pv"
         }
   },
         "accessModes": [
@@ -91,9 +91,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-pitr-restore",
+        "name": "restore-pitr",
         "labels": {
-            "name": "primary-pitr-restore"
+            "name": "restore-pitr"
         }
     },
     "spec": {
@@ -103,7 +103,7 @@
         "volumes": [{
             "name": "pgdata",
             "persistentVolumeClaim": {
-                "claimName": "primary-pitr-restore-pvc"
+                "claimName": "restore-pitr-pgdata"
             }
         }, {
             "name": "pgwal",
@@ -116,7 +116,7 @@
         }, {
             "name": "backup",
             "persistentVolumeClaim": {
-                "claimName": "backup-primary-pitr-pvc"
+                "claimName": "backup-pitr-pgdata"
             }
         }],
         "containers": [{
@@ -137,7 +137,7 @@
                 "value": "primary"
             }, {
                 "name": "WAL_DIR",
-                "value": "primary-pitr-wal"
+                "value": "pitr-wal"
             }, {
                 "name": "ARCHIVE_MODE",
                 "value": "on"
@@ -155,7 +155,7 @@
                 "value":"5432"
             }, {
                 "name": "BACKUP_PATH",
-                "value": "primary-pitr-backups/2018-03-02-19-41-50"
+                "value": "backup-pitr/2018-03-02-19-41-50"
             }, {
                 "name": "RECOVERY_TARGET_NAME",
                 "value": "afterchanges"

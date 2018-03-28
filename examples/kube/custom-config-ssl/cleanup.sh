@@ -19,7 +19,7 @@ CONFDIR=$CCP_STORAGE_PATH/custom-config-ssl-pgconf
 
 ${CCP_CLI?} delete service custom-config-ssl
 ${CCP_CLI?} delete pod custom-config-ssl
-${CCP_CLI?} delete pvc custom-config-ssl-pvc
+${CCP_CLI?} delete pvc custom-config-ssl-pgconf
 
 sudo CONFDIR=$CONFDIR rm -rf $CONFDIR
 

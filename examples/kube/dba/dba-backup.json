@@ -30,9 +30,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-dba",
+        "name": "dba",
         "labels": {
-            "name": "primary-dba"
+            "name": "dba"
         }
     },
     "spec": {
@@ -45,7 +45,7 @@
             }
         ],
         "selector": {
-            "name": "primary-dba"
+            "name": "dba"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -59,9 +59,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-dba",
+        "name": "dba",
         "labels": {
-            "name": "primary-dba"
+            "name": "dba"
         }
     },
     "spec": {
@@ -90,7 +90,7 @@
                     },
                     {
                         "name": "JOB_HOST",
-                        "value": "primary-dba"
+                        "value": "dba"
                     },
                     {
                         "name": "PG_USER",

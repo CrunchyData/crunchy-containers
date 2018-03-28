@@ -18,12 +18,12 @@ $DIR/cleanup.sh
 
 openssl req -x509 -newkey rsa:4096 -keyout server.key -out server.crt -days 5 -nodes -subj '/CN=localhost'
 
-${CCP_CLI?} create secret generic pgadmin-secrets \
+${CCP_CLI?} create secret generic pgadmin4-https-secrets \
     --from-literal=pgadmin-email='admin@admin.com' \
     --from-literal=pgadmin-password='password'
 
-${CCP_CLI?} create secret generic pgadmin-tls \
+${CCP_CLI?} create secret generic pgadmin4-https-tls \
     --from-file=pgadmin-cert=${DIR?}/server.crt \
     --from-file=pgadmin-key=${DIR?}/server.key
 
-expenv -f $DIR/pgadmin4.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/pgadmin4-https.json | ${CCP_CLI?} create -f -

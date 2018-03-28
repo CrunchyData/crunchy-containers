@@ -2,7 +2,7 @@
     "apiVersion": "v1",
     "kind": "ServiceAccount",
     "metadata": {
-      "name": "pgset-sa"
+      "name": "statefulset-dyn-sa"
     }
 }
 
@@ -10,9 +10,9 @@
     "apiVersion": "v1",
     "kind": "Service",
     "metadata": {
-      "name": "pgset",
+      "name": "statefulset-dyn",
       "labels": {
-        "app": "pgset"
+        "app": "statefulset-dyn"
       }
     },
     "spec": {
@@ -24,7 +24,7 @@
       ],
       "clusterIP": "None",
       "selector": {
-        "app": "pgset"
+        "app": "statefulset-dyn"
       }
     }
 }
@@ -33,9 +33,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pgset-primary",
+        "name": "statefulset-dyn-primary",
         "labels": {
-            "name": "pgset-primary"
+            "name": "statefulset-dyn-primary"
         }
     },
     "spec": {
@@ -46,7 +46,7 @@
             "nodePort": 0
         }],
         "selector": {
-            "name": "pgset-primary"
+            "name": "statefulset-dyn-primary"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -57,9 +57,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pgset-replica",
+        "name": "statefulset-dyn-replica",
         "labels": {
-            "name": "pgset-replica"
+            "name": "statefulset-dyn-replica"
         }
     },
     "spec": {
@@ -70,7 +70,7 @@
             "nodePort": 0
         }],
         "selector": {
-            "name": "pgset-replica"
+            "name": "statefulset-dyn-replica"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -81,15 +81,15 @@
     "apiVersion": "apps/v1beta1",
     "kind": "StatefulSet",
     "metadata": {
-        "name": "pgset"
+        "name": "statefulset-dyn"
     },
     "spec": {
-        "serviceName": "pgset",
+        "serviceName": "statefulset-dyn",
         "replicas": 2,
         "template": {
             "metadata": {
                 "labels": {
-                    "app": "pgset"
+                    "app": "statefulset-dyn"
                 }
             },
             "spec": {
@@ -97,7 +97,7 @@
                     $CCP_SECURITY_CONTEXT
                 },
                 "containers": [{
-                    "name": "pgset",
+                    "name": "statefulset-dyn",
                     "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
                     "ports": [{
                         "containerPort": 5432,
@@ -132,7 +132,7 @@
                         "value": "5432"
                     }, {
                         "name": "PG_PRIMARY_HOST",
-                        "value": "pgset-primary"
+                        "value": "statefulset-dyn-primary"
                     }],
                     "volumeMounts": [{
                         "name": "pgdata",

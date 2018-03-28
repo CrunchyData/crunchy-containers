@@ -17,7 +17,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-expenv -f $DIR/audit.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/pgaudit.json | ${CCP_CLI?} create -f -
 echo "Sleeping for 20s to allow time for pod to get into a ready state."
 sleep 20
 

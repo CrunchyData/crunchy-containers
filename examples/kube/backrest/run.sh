@@ -17,5 +17,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-${CCP_CLI?} create configmap backrestconf --from-file ./configs/pgbackrest.conf
-expenv -f $DIR/primary.json | ${CCP_CLI?} create -f -
+${CCP_CLI?} create configmap backrest-pgconf --from-file ./configs/pgbackrest.conf
+expenv -f $DIR/backrest.json | ${CCP_CLI?} create -f -

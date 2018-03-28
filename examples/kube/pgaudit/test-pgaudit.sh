@@ -36,17 +36,17 @@ fi
 
 export PGPASSWORD=password
 
-svc="$(kubectl get svc audit | grep -v CLUSTER-IP )"
+svc="$(kubectl get svc pgaudit | grep -v CLUSTER-IP )"
 svcIP="$(echo $svc | awk {'print $3'})"
 
 psql -h $svcIP -U postgres -f $DIR/test.sql postgres
-echo -e "\nTest SQL written to audit."
+echo -e "\nTest SQL written to pgaudit."
 sleep 2
 
-kubectl exec audit -- grep AUDIT /pgdata/audit/pg_log/postgresql-$DAY.log
+kubectl exec pgaudit -- grep AUDIT /pgdata/pgaudit/pg_log/postgresql-$DAY.log
 
 if [ $? -ne 0 ]; then
-	echo -e "\nTest failed...no AUDIT msgs were found in the log file."
+	echo -e "\nTest failed. No AUDIT messages were found in the PostgreSQL log file."
 	exit 1
 fi
-echo -e "\nTest passed, AUDIT msgs were found in the postgres log file."
+echo -e "\nTest passed. AUDIT messages were found in the PostgreSQL log file."

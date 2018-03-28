@@ -2,7 +2,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "pgrestore-pvc"
+      "name": "pgrestore-pgdata"
     },
     "spec": {
       "accessModes": [
@@ -20,14 +20,14 @@
      "apiVersion":"batch/v1",
      "kind":"Job",
      "metadata":{
-        "name":"pgrestore-job"
+        "name":"pgrestore"
      },
      "spec":{
         "template":{
            "metadata":{
-              "name":"pgrestore-job",
+              "name":"pgrestore",
               "labels":{
-                 "app":"pgrestore-job"
+                 "app":"pgrestore"
               }
            },
            "spec":{
@@ -35,7 +35,7 @@
                  {
                     "name":"pgdata",
                     "persistentVolumeClaim":{
-                       "claimName":"pgrestore-pvc"
+                       "claimName":"pgrestore-pgdata"
                     }
                  }
               ],
@@ -44,7 +44,7 @@
               },
               "containers":[
                  {
-                    "name":"pgrestore-job",
+                    "name":"pgrestore",
                     "image":"$CCP_IMAGE_PREFIX/crunchy-restore:$CCP_IMAGE_TAG",
                     "volumeMounts":[
                        {
@@ -56,7 +56,7 @@
                     "env":[
                        {
                           "name":"PGRESTORE_HOST",
-                          "value":"primary-pvc"
+                          "value":"primary"
                        },
                        {
                           "name":"PGRESTORE_DB",
@@ -76,7 +76,7 @@
                        },
                        {
                           "name":"PGRESTORE_VOLUMEPATH",
-                          "value":"/pgdata/primary-pvc-dumps/2018-03-09-16-35-27"
+                          "value":"/pgdata/primary-dumps/2018-03-09-16-35-27"
                        },
                        {
                           "name":"PGRESTORE_FILE",

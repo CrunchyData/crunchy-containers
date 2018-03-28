@@ -17,7 +17,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-${CCP_CLI?} create configmap pgbouncer-configmap \
+${CCP_CLI?} create configmap pgbouncer-pgconf \
     --from-file=./configs/pgbouncer.ini \
     --from-file=./configs/users.txt
 

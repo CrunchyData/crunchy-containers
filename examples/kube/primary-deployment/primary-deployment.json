@@ -41,9 +41,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-dc",
+        "name": "primary-deployment",
         "labels": {
-            "name": "primary-dc"
+            "name": "primary-deployment"
         }
     },
     "spec": {
@@ -54,7 +54,7 @@
             "nodePort": 0
         }],
         "selector": {
-            "name": "primary-dc"
+            "name": "primary-deployment"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -65,9 +65,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "replica-dc",
+        "name": "replica-deployment",
         "labels": {
-            "name": "replica-dc"
+            "name": "replica-deployment"
         }
     },
     "spec": {
@@ -78,7 +78,7 @@
             "nodePort": 0
         }],
         "selector": {
-            "name": "replica-dc"
+            "name": "replica-deployment"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -89,7 +89,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-dc-pgbackrest-pvc"
+      "name": "primary-deployment-pgbackrest"
     },
     "spec": {
       "accessModes": [
@@ -107,7 +107,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-dc-pgwal-pvc"
+      "name": "primary-deployment-pgwal"
     },
     "spec": {
       "accessModes": [
@@ -125,7 +125,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-dc-pvc"
+      "name": "primary-deployment-pgdata"
     },
     "spec": {
       "accessModes": [
@@ -143,7 +143,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "replica-dc-pgbackrest-pvc"
+      "name": "replica-deployment-pgbackrest"
     },
     "spec": {
       "accessModes": [
@@ -161,7 +161,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "replica-dc-pgwal-pvc"
+      "name": "replica-deployment-pgwal"
     },
     "spec": {
       "accessModes": [
@@ -179,7 +179,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "replica-dc-pvc"
+      "name": "replica-deployment-pgdata"
     },
     "spec": {
       "accessModes": [
@@ -197,7 +197,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "replica2-dc-pgbackrest-pvc"
+      "name": "replica2-deployment-pgbackrest"
     },
     "spec": {
       "accessModes": [
@@ -215,7 +215,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "replica2-dc-pgwal-pvc"
+      "name": "replica2-deployment-pgwal"
     },
     "spec": {
       "accessModes": [
@@ -233,7 +233,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "replica2-dc-pvc"
+      "name": "replica2-deployment-pgdata"
     },
     "spec": {
       "accessModes": [
@@ -251,9 +251,9 @@
     "kind": "Deployment",
     "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "primary-dc",
+        "name": "primary-deployment",
         "labels": {
-            "name": "primary-dc"
+            "name": "primary-deployment"
         }
     },
     "spec": {
@@ -261,7 +261,7 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "primary-dc"
+                    "name": "primary-deployment"
                 }
             },
             "spec": {
@@ -276,7 +276,7 @@
                         "value": "primary"
                     }, {
                         "name": "PGDATA_PATH_OVERRIDE",
-                        "value": "primary-dc"
+                        "value": "primary-deployment"
                     }, {
                         "name": "PG_PRIMARY_USER",
                         "value": "primaryuser"
@@ -323,7 +323,7 @@
                         "name": "pgroot-volume"
                     }, {
                         "mountPath": "/pgconf",
-                        "name": "postgresql-conf"
+                        "name": "primary-deployment-pgconf"
                     } ],
 
                     "ports": [{
@@ -337,17 +337,17 @@
 		{
                     "name": "pgwal",
             		"persistentVolumeClaim": {
-                		"claimName": "primary-dc-pgwal-pvc"
+                		"claimName": "primary-deployment-pgwal"
             		}
                 },{
                     "name": "pgbackrest",
             		"persistentVolumeClaim": {
-                		"claimName": "primary-dc-pgbackrest-pvc"
+                		"claimName": "primary-deployment-pgbackrest"
             		}
                 },{
                     "name": "pgdata",
             		"persistentVolumeClaim": {
-                		"claimName": "primary-dc-pvc"
+                		"claimName": "primary-deployment-pgdata"
             		}
                 },{
                     "name": "pguser-volume",
@@ -365,9 +365,9 @@
                         "secretName": "pgroot-secret"
                     }
                 }, {
-                "name": "postgresql-conf",
+                "name": "primary-deployment-pgconf",
                 "configMap": {
-                    "name": "postgresql-conf",
+                    "name": "primary-deployment-pgconf",
                     "items": [{
                         "key": "setup.sql",
                         "path": "setup.sql"
@@ -405,9 +405,9 @@
     "kind": "Deployment",
     "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "replica-dc",
+        "name": "replica-deployment",
         "labels": {
-            "name": "replica-dc"
+            "name": "replica-deployment"
         }
     },
     "spec": {
@@ -415,7 +415,7 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "replica-dc"
+                    "name": "replica-deployment"
                 }
             },
             "spec": {
@@ -424,10 +424,10 @@
                     "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
                     "env": [{
                         "name": "PG_PRIMARY_HOST",
-                        "value": "primary-dc"
+                        "value": "primary-deployment"
                     }, {
                         "name": "PG_PRIMARY_SERVICE_NAME",
-                        "value": "primary-dc"
+                        "value": "primary-deployment"
                     }, {
                         "name": "PG_PRIMARY_PORT",
                         "value": "5432"
@@ -521,9 +521,9 @@
     "kind": "Deployment",
     "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "replica2-dc",
+        "name": "replica2-deployment",
         "labels": {
-            "name": "replica-dc"
+            "name": "replica-deployment"
         }
     },
     "spec": {
@@ -531,7 +531,7 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "replica-dc"
+                    "name": "replica-deployment"
                 }
             },
             "spec": {
@@ -540,10 +540,10 @@
                     "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
                     "env": [{
                         "name": "PG_PRIMARY_HOST",
-                        "value": "primary-dc"
+                        "value": "primary-deployment"
                     }, {
                         "name": "PG_PRIMARY_SERVICE_NAME",
-                        "value": "primary-dc"
+                        "value": "primary-deployment"
                     }, {
                         "name": "PG_PRIMARY_PORT",
                         "value": "5432"

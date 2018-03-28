@@ -18,10 +18,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ${CCP_CLI?} delete service postgres-sshd
 ${CCP_CLI?} delete pod postgres-sshd
-${CCP_CLI?} delete configmap pgconf
-${CCP_CLI?} delete secret sshd-secrets
+${CCP_CLI?} delete configmap postgres-sshd-pgconf
+${CCP_CLI?} delete secret postgres-sshd-secrets
 
-${CCP_CLI?} delete pvc postgres-sshd-backrestrepo-pvc postgres-sshd-pvc
+${CCP_CLI?} delete pvc postgres-sshd-backrestrepo postgres-sshd-pgdata
 
 $CCPROOT/examples/waitforterm.sh postgres-sshd ${CCP_CLI?}
 rm -rf ${DIR?}/keys

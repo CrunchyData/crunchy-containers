@@ -14,7 +14,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-${CCP_CLI?} delete service primary-backrest
-${CCP_CLI?} delete pod primary-backrest
-${CCP_CLI?} delete configmap backrestconf
-${CCP_CLI?} delete pvc backrest-pvc backrest-backrestrepo-pvc
+${CCP_CLI?} delete service backrest
+${CCP_CLI?} delete pod backrest
+${CCP_CLI?} delete configmap backrest-pgconf
+${CCP_CLI?} delete pvc backrest-pgdata backrest-backrestrepo

@@ -2,7 +2,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "custom-config-ssl-pvc"
+        "name": "custom-config-ssl-pgconf"
     },
     "spec": {
         "accessModes": [
@@ -58,7 +58,7 @@
             {
                 "name": "pgconf",
                 "persistentVolumeClaim": {
-                    "claimName": "custom-config-ssl-pvc"
+                    "claimName": "custom-config-ssl-pgconf"
                 }
             },
             {

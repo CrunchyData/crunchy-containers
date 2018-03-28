@@ -24,12 +24,12 @@ ssh-keygen -t ecdsa -f ${DIR?}/keys/ssh_host_ecdsa_key -N ''
 ssh-keygen -t ed25519 -f ${DIR?}/keys/ssh_host_ed25519_key -N ''
 cp ${DIR?}/keys/id_rsa.pub ${DIR?}/keys/authorized_keys
 
-${CCP_CLI?} create secret generic sshd-secrets\
+${CCP_CLI?} create secret generic postgres-sshd-secrets\
     --from-file=ssh-host-rsa=${DIR?}/keys/ssh_host_rsa_key \
     --from-file=ssh-host-ecdsa=${DIR?}/keys/ssh_host_ecdsa_key \
     --from-file=ssh-host-ed25519=${DIR?}/keys/ssh_host_ecdsa_key
 
-${CCP_CLI?} create configmap pgconf \
+${CCP_CLI?} create configmap postgres-sshd-pgconf \
     --from-file ./configs/pgbackrest.conf \
     --from-file ./configs/pg_hba.conf \
     --from-file ./configs/postgresql.conf \

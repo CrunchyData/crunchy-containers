@@ -12,12 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-${CCP_CLI?} delete service pgadmin4
-${CCP_CLI?} delete pod pgadmin4
-${CCP_CLI?} delete secret pgadmin-secrets
-${CCP_CLI?} delete secret pgadmin-tls
+${CCP_CLI?} delete service pgadmin4-https
+${CCP_CLI?} delete pod pgadmin4-https
+${CCP_CLI?} delete secret pgadmin4-https-secrets
+${CCP_CLI?} delete secret pgadmin4-https-tls
 
-${CCP_CLI?} delete pvc pgadmin-https-pvc
+${CCP_CLI?} delete pvc pgadmin4-https-data
 
 rm -f ./server.crt ./server.key ./privkey.pem
 

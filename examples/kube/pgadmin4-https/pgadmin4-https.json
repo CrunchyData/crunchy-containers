@@ -2,7 +2,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pgadmin-http-pvc"
+        "name": "pgadmin4-https-data"
     },
     "spec": {
         "accessModes": [
@@ -15,37 +15,39 @@
         }
     }
 }
+
 {
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pgadmin4",
+        "name": "pgadmin4-https",
         "labels": {
-            "name": "pgadmin4"
+            "name": "pgadmin4-https"
         }
     },
     "spec": {
         "ports": [{
-            "name": "pgadmin4",
+            "name": "pgadmin4-https",
             "protocol": "TCP",
             "port": 5050,
             "targetPort": 5050,
             "nodePort": 30000
         }],
         "selector": {
-            "name": "pgadmin4"
+            "name": "pgadmin4-https"
         },
         "type": "NodePort",
         "sessionAffinity": "None"
     }
 }
+
 {
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pgadmin4",
+        "name": "pgadmin4-https",
         "labels": {
-            "name": "pgadmin4"
+            "name": "pgadmin4-https"
         }
     },
     "spec": {
@@ -56,7 +58,23 @@
             {
                 "name": "pgadmin",
                 "persistentVolumeClaim": {
-                    "claimName": "pgadmin-http-pvc"
+                    "claimName": "pgadmin4-https-data"
+                }
+            },
+            {
+                "name": "certs",
+                "secret": {
+                    "secretName": "pgadmin4-https-tls",
+                    "items": [
+                        {
+                            "key": "pgadmin-cert",
+                            "path": "server.crt"
+                        },
+                        {
+                            "key": "pgadmin-key",
+                            "path": "server.key"
+                        }
+                    ]
                 }
             },
             {
@@ -79,7 +97,7 @@
                         "name": "PGADMIN_SETUP_EMAIL",
                         "valueFrom": {
                             "secretKeyRef": {
-                                "name": "pgadmin-secrets",
+                                "name": "pgadmin4-https-secrets",
                                 "key": "pgadmin-email"
                             }
                         }
@@ -88,10 +106,14 @@
                         "name": "PGADMIN_SETUP_PASSWORD",
                         "valueFrom": {
                             "secretKeyRef": {
-                                "name": "pgadmin-secrets",
+                                "name": "pgadmin4-https-secrets",
                                 "key": "pgadmin-password"
                             }
                         }
+                    },
+                    {
+                        "name": "ENABLE_TLS",
+                        "value": "true"
                     }
                 ],
                 "volumeMounts": [
@@ -99,6 +121,11 @@
                         "mountPath": "/var/lib/pgadmin",
                         "name": "pgadmin",
                         "readOnly": false
+                    },
+                    {
+                        "mountPath": "/certs",
+                        "name": "certs",
+                        "readOnly": true
                     },
                     {
                         "mountPath": "/run/httpd",

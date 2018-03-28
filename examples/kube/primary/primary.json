@@ -2,9 +2,9 @@
         "kind": "Service",
         "apiVersion": "v1",
         "metadata": {
-            "name": "primary-pvc",
+            "name": "primary",
             "labels": {
-                "name": "primary-pvc"
+                "name": "primary"
             }
         },
         "spec": {
@@ -15,7 +15,7 @@
                 "nodePort": 0
             }],
             "selector": {
-                "name": "primary-pvc"
+                "name": "primary"
             },
             "type": "ClusterIP",
             "sessionAffinity": "None"
@@ -23,10 +23,31 @@
 }
 
 {
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "primary",
+        "labels": {
+            "name": "primary"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "hostPath": {
+            "path": "$CCP_STORAGE_PATH"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
+
+{
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-pvc"
+      "name": "primary-pgdata"
     },
     "spec": {
       "selector": {
@@ -49,9 +70,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-pvc",
+        "name": "primary",
         "labels": {
-            "name": "primary-pvc"
+            "name": "primary"
         }
     },
     "spec": {
@@ -106,7 +127,7 @@
         "volumes": [{
             "name": "pgdata",
             "persistentVolumeClaim": {
-                "claimName": "primary-pvc"
+                "claimName": "primary-pgdata"
             }
         }, {
             "name": "backup",

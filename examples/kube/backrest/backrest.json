@@ -1,10 +1,46 @@
 {
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "backrest-pgdata"
+    },
+    "spec": {
+        "accessModes": [
+            "ReadWriteMany"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "400M"
+            }
+        }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "backrest-backrestrepo"
+    },
+    "spec": {
+        "accessModes": [
+            "ReadWriteMany"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "400M"
+            }
+        }
+    }
+}
+
+{
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "audit",
+        "name": "backrest",
         "labels": {
-            "name": "audit"
+            "name": "backrest"
         }
     },
     "spec": {
@@ -17,7 +53,7 @@
             }
         ],
         "selector": {
-            "name": "audit"
+            "name": "backrest"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -28,37 +64,22 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "audit",
+        "name": "backrest",
         "labels": {
-            "name": "audit"
+            "name": "backrest"
         }
     },
     "spec": {
+        "securityContext": {
+            $CCP_SECURITY_CONTEXT
+        },
         "containers": [
             {
-                "name": "postgres",
+                "name": "backrest",
                 "securityContext": {
-                    $CCP_SECURITY_CONTEXT
+                    "privileged": false
                 },
                 "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
-                "readinessProbe": {
-                    "exec": {
-                        "command": [
-                            "/opt/cpm/bin/readiness.sh"
-                        ]
-                    },
-                    "initialDelaySeconds": 10,
-                    "timeoutSeconds": 1
-                },
-                "livenessProbe": {
-                    "exec": {
-                        "command": [
-                            "/opt/cpm/bin/liveness.sh"
-                        ]
-                    },
-                    "initialDelaySeconds": 120,
-                    "timeoutSeconds": 1
-                },
                 "ports": [
                     {
                         "containerPort": 5432,
@@ -75,16 +96,16 @@
                         "value": "5432"
                     },
                     {
-                        "name": "PGHOST",
-                        "value": "/tmp"
-                    },
-                    {
                         "name": "PG_MODE",
                         "value": "primary"
                     },
                     {
                         "name": "PG_PRIMARY_PASSWORD",
                         "value": "password"
+                    },
+                    {
+                        "name": "PGHOST",
+                        "value": "/tmp"
                     },
                     {
                         "name": "PG_USER",
@@ -101,6 +122,10 @@
                     {
                         "name": "PG_ROOT_PASSWORD",
                         "value": "password"
+                    },
+                    {
+                        "name": "ARCHIVE_TIMEOUT",
+                        "value": "60"
                     }
                 ],
                 "volumeMounts": [
@@ -113,14 +138,38 @@
                         "mountPath": "/backup",
                         "name": "backup",
                         "readOnly": true
+                    },
+                    {
+                        "mountPath": "/pgconf",
+                        "name": "pgconf",
+                        "readOnly": true
+                    },
+                    {
+                        "mountPath": "/backrestrepo",
+                        "name": "backrestrepo",
+                        "readOnly": false
                     }
                 ]
             }
         ],
         "volumes": [
             {
+                "name": "pgconf",
+                "configMap": {
+                    "name": "backrest-pgconf"
+                }
+            },
+            {
+                "name": "backrestrepo",
+                "persistentVolumeClaim": {
+                    "claimName": "backrest-backrestrepo"
+                }
+            },
+            {
                 "name": "pgdata",
-                "emptyDir": {}
+                "persistentVolumeClaim": {
+                    "claimName": "backrest-pgdata"
+                }
             },
             {
                 "name": "backup",

@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-${CCP_CLI?} delete job upgrade-job
-${CCP_CLI?} delete pvc upgrade-old-pvc upgrade-new-pvc
+${CCP_CLI?} delete job upgrade
+${CCP_CLI?} delete pvc upgrade-pgolddata upgrade-pgnewdata

@@ -13,6 +13,5 @@
 # limitations under the License.
 
 ${CCP_CLI?} delete secret pguser-secret pgprimary-secret pgroot-secret
-${CCP_CLI?} delete pod secret-pg
-${CCP_CLI?} delete service secret-pg
-$CCPROOT/examples/waitforterm.sh secret-pg ${CCP_CLI?}
+${CCP_CLI?} delete pod secret
+${CCP_CLI?} delete service secret

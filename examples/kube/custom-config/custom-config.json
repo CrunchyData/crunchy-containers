@@ -2,7 +2,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "custom-config-pvc"
+        "name": "custom-config-pgdata"
     },
     "spec": {
         "accessModes": [
@@ -139,13 +139,13 @@
             {
                 "name": "pgdata",
                 "persistentVolumeClaim": {
-                    "claimName": "custom-config-pvc"
+                    "claimName": "custom-config-pgdata"
                 }
             },
             {
                 "name": "pgconf",
                 "configMap": {
-                    "name": "customconfigconf"
+                    "name": "custom-config-pgconf"
                 }
             }
         ]

@@ -16,7 +16,6 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-${CCP_CLI?} delete pvc backup-primary-pitr-pvc
-${CCP_CLI?} delete job backup-primary-pitr-job
+$DIR/cleanup.sh
 
-expenv -f $DIR/backup-primary-pitr.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/pitr.json | ${CCP_CLI?} create -f -

@@ -22,5 +22,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-expenv -f $DIR/metrics-pod.json | ${CCP_CLI?} create -f -
-expenv -f $DIR/pgsql-pod.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/metrics.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/pgsql.json | ${CCP_CLI?} create -f -

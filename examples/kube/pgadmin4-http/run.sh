@@ -16,8 +16,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-${CCP_CLI?} create secret generic pgadmin-secrets \
+${CCP_CLI?} create secret generic pgadmin4-http-secrets \
     --from-literal=pgadmin-email='admin@admin.com' \
     --from-literal=pgadmin-password='password'
 
-expenv -f $DIR/pgadmin4.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/pgadmin4-http.json | ${CCP_CLI?} create -f -

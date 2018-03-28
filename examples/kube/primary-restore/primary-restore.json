@@ -1,4 +1,22 @@
 {
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "primary-restore-backup"
+    },
+    "spec": {
+        "accessModes": [
+            "ReadWriteMany"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "400M"
+            }
+        }
+    }
+}
+
+{
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
@@ -53,7 +71,7 @@
                 "value": "primary"
             }, {
                 "name": "BACKUP_PATH",
-                "value": "primary-pvc-backups/2018-03-02-18-55-49"
+                "value": "primary-backups/2018-03-02-18-55-49"
             }, {
                 "name": "PG_PRIMARY_PASSWORD",
                 "value": "password"
@@ -86,7 +104,7 @@
         }, {
             "name": "backup",
             "persistentVolumeClaim": {
-                "claimName": "backup-pvc"
+                "claimName": "primary-restore-backup"
             }
 
         }]

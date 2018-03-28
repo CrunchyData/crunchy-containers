@@ -33,7 +33,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "postgres-sshd-backrestrepo-pvc"
+      "name": "postgres-sshd-backrestrepo"
     },
     "spec": {
       "accessModes": [
@@ -51,7 +51,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "postgres-sshd-pvc"
+      "name": "postgres-sshd-pgdata"
     },
     "spec": {
       "accessModes": [
@@ -164,25 +164,25 @@
             {
                 "name": "pgconf",
                 "configMap": {
-                    "name": "pgconf"
+                    "name": "postgres-sshd-pgconf"
                 }
             },
             {
                 "name": "backrestrepo",
                 "persistentVolumeClaim": {
-                    "claimName": "postgres-sshd-backrestrepo-pvc"
+                    "claimName": "postgres-sshd-backrestrepo"
                 }
             },
             {
                 "name": "pgdata",
                 "persistentVolumeClaim": {
-                    "claimName": "postgres-sshd-pvc"
+                    "claimName": "postgres-sshd-pgdata"
                 }
             },
             {
                 "name": "sshd",
                 "secret": {
-                    "secretName": "sshd-secrets",
+                    "secretName": "postgres-sshd-secrets",
                     "items": [
                         {
                             "key": "ssh-host-rsa",

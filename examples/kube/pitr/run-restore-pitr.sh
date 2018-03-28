@@ -16,10 +16,14 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-${CCP_CLI?} delete pod primary-pitr-restore
-${CCP_CLI?} delete pod primary-pitr
-$CCPROOT/examples/waitforterm.sh primary-pitr ${CCP_CLI?}
-$CCPROOT/examples/waitforterm.sh primary-pitr-restore ${CCP_CLI?}
+${CCP_CLI?} delete pod restore-pitr
+${CCP_CLI?} delete pod pitr
+$CCPROOT/examples/waitforterm.sh pitr ${CCP_CLI?}
+$CCPROOT/examples/waitforterm.sh restore-pitr ${CCP_CLI?}
+${CCP_CLI?} delete pvc recover-pvc
+${CCP_CLI?} delete pvc restore-pitr-pgdata
+${CCP_CLI?} delete svc restore-pitr
+${CCP_CLI?} delete pv recover-pv
 
 # start up the database container
-expenv -f $DIR/primary-pitr-restore.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/restore-pitr.json | ${CCP_CLI?} create -f -

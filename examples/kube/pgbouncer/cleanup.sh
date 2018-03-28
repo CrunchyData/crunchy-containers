@@ -19,7 +19,7 @@ ${CCP_CLI?} delete pod pgbouncer
 ${CCP_CLI?} delete service pg-primary
 ${CCP_CLI?} delete service pg-replica
 ${CCP_CLI?} delete service pgbouncer
-${CCP_CLI?} delete configmap pgbouncer-configmap
+${CCP_CLI?} delete configmap pgbouncer-pgconf
 
 $CCPROOT/examples/waitforterm.sh pgbouncer ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh pg-primary ${CCP_CLI?}
