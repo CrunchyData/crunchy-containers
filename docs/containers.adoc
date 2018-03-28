@@ -1,5 +1,7 @@
 = Crunchy Container Overview
 Crunchy Data Solutions, Inc.
+:toc: left
+:toclevels: 1
 v1.8.2, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
@@ -935,7 +937,7 @@ The following features are supported by the crunchy-upgrade container:
 
 The crunchy-sim container is a simple traffic simulator for PostgreSQL.
 
-== Environment Variables
+=== Environment Variables
 
 * PGSIM_HOST - required, the PostgreSQL host address
 * PGSIM_PORT - required, the PostgreSQL host port
@@ -954,7 +956,7 @@ Valid values for PGSIM_INTERVAL are as follows:
 * second
 * minute
 
-== Features
+=== Features
 
 * Creates a single connection to PostgreSQL and will execute
 queries over a specified interval range.
@@ -963,7 +965,7 @@ queries over a specified interval range.
   defined by the YAML spec.
 * Queries are randomly chosen for execution.
 
-== Restrictions
+=== Restrictions
 
 * Only one connection is created for all queries.
 
