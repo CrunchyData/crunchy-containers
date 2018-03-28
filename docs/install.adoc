@@ -43,15 +43,15 @@ export CCP_STORAGE_MODE=ReadWriteMany
 export CCP_STORAGE_CAPACITY=400M
 ....
 
-Note:  the CCP_SECURITY_CONTEXT and CCP_STORAGE_PATH settings above indicates you
+NOTE:  the CCP_SECURITY_CONTEXT and CCP_STORAGE_PATH settings above indicate you
 intend to use *HostPath* storage.  NFS and dynamic storage are
 other options, see below for details on configuring storage.
 
-Note:  the CCP_CLI setting above indicates you are running the
+NOTE:  the CCP_CLI setting above indicates you are running the
 examples on a Kubernetes platform and not an OpenShift platform.  For
 OpenShift, use the value of *oc* as the CCP_CLI variable instead.
 
-Next, it will be necessary to refresh your bashrc file in order for the changes to take
+It will be necessary to refresh your bashrc file in order for the changes to take
 effect.
 
 ....
@@ -113,11 +113,24 @@ key and yum repository file into the $CCPROOT/conf directory at this point. Thes
 files can be obtained through https://access.crunchydata.com/ on the downloads
 page.*
 
-=== Creating a Demo Namespace on Kubernetes
+=== Creating a Demo Namespace
+
+In Kubernetes, a concept called a *namespace* provides the means to separate
+created resources or components into individual logically grouped partitions.
+
+It is considered a best practice to have dedicated namespaces for projects in
+both testing and production environments.
+
+NOTE: All examples in the Crunchy Container Suite operate within the namespace
+defined by the environment variable `$CCP_NAMESPACE`. The instructions below
+illustrate how to set up and work within new namespaces or projects in both
+Kubernetes and OpenShift.
+
+==== Kubernetes
 
 This section will illustrate how to set up a new Kubernetes namespace called *demo*, and will
 then show how to provide permissions to that namespace to allow the Kubernetes examples to run
-within that namespace. This is a *requirement* for running the examples.
+within that namespace.
 
 First, view currently existing namespaces:
 ....
@@ -137,7 +150,7 @@ NAME      STATUS    AGE
 demo      Active    7s
 ....
 
-Then we'll set the namespace as our current location:
+Then set the namespace as the current location to avoid using the wrong namespace:
 ....
 $ kubectl config set-context $(kubectl config current-context) --namespace=demo
 ....
@@ -148,7 +161,7 @@ $ kubectl config view | grep namespace:
     namespace: demo
 ....
 
-=== Creating a Demo Namespace on OpenShift
+=== OpenShift
 
 This section assumes you are first logging into OpenShift as a normal
 user such as:
@@ -156,7 +169,7 @@ user such as:
 oc login -u someuser
 ....
 
-For our development purposes only, we typically specify OCP
+For our development purposes only, we typically specify the OCP
 Authorization policy of *AllowAll* as documented here:
 
 https://docs.openshift.com/container-platform/3.7/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider
@@ -164,7 +177,7 @@ https://docs.openshift.com/container-platform/3.7/install_config/configuring_aut
 We do not recommend this authentication policy for a production
 deployment of OCP.
 
-You next will create a *demo* namespace to run the examples within, the
+The next step is to create a *demo* namespace to run the examples within. The
 name of this OCP project will be what you supply in the CCP_NAMESPACE
 environment variable:
 ....
@@ -352,10 +365,10 @@ is to be used.
 
 === Configure HostPath
 
-HostPath is the simplist storage backend to setup, it only is feasible
-on a single node but is good for testing the examples.  In your *.bashrc*
+HostPath is the simplest storage backend to setup, it only is feasible
+on a single node but is good for testing the examples.  In your `.bashrc`
 file, add the following variables to specify unique settings to
-your hostpath directory:
+the hostpath directory:
 ....
 export CCP_SECURITY_CONTEXT=""
 export CCP_STORAGE_PATH=/data
@@ -363,9 +376,12 @@ export CCP_STORAGE_MODE=ReadWriteMany
 export CCP_STORAGE_CAPACITY=400M
 ....
 
+NOTE: It may be necessary to grant your user in OpenShift or Kubernetes the
+rights to modify the hostaccess SCC. This can be done with the command: `oadm policy add-scc-to-user hostaccess $(oc whoami)`
+
 === Configure NFS for Persistence
 
-NFS can be used for the examples as well.  Instructions
+NFS can also be used as a storage mechanism.  Instructions
 on setting up NFS are found at the bottom of this guide.
 
 For testing with NFS, in your *.bashrc* file, include
@@ -378,8 +394,8 @@ export CCP_STORAGE_MODE=ReadWriteMany
 export CCP_STORAGE_CAPACITY=400M
 ....
 
-In this example above we assume the group ownership of the NFS mount
-is *nfsnobody* or *65534*.
+In this example above the group ownership of the NFS mount is assumed to be
+*nfsnobody* or *65534*.
 
 === Configure Dynamic Storage
 
