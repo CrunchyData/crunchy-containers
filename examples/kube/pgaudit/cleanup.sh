@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-${CCP_CLI?} delete service audit
-${CCP_CLI?} delete pod audit
+${CCP_CLI?} delete service pgaudit
+${CCP_CLI?} delete pod pgaudit
 
-$CCPROOT/examples/waitforterm.sh audit ${CCP_CLI?}
+$CCPROOT/examples/waitforterm.sh pgaudit ${CCP_CLI?}

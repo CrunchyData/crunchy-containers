@@ -2,7 +2,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "upgrade-new-pvc"
+      "name": "upgrade-pgnewdata"
     },
     "spec": {
       "accessModes": [
@@ -20,7 +20,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "upgrade-old-pvc"
+      "name": "upgrade-pgolddata"
     },
     "spec": {
       "accessModes": [
@@ -38,14 +38,14 @@
     "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {
-        "name": "upgrade-job"
+        "name": "upgrade"
     },
     "spec": {
         "template": {
             "metadata": {
-                "name": "upgrade-job",
+                "name": "upgrade",
                 "labels": {
-                    "app": "upgrade-job"
+                    "app": "upgrade"
                 }
             },
             "spec": {
@@ -53,13 +53,13 @@
 {
                     "name": "pgolddata",
                     "persistentVolumeClaim": {
-                        "claimName": "upgrade-old-pvc"
+                        "claimName": "upgrade-pgolddata"
                     }
                 },
 {
                     "name": "pgnewdata",
                     "persistentVolumeClaim": {
-                        "claimName": "upgrade-new-pvc"
+                        "claimName": "upgrade-pgnewdata"
                     }
                 }
 ],
@@ -67,7 +67,7 @@
 			$CCP_SECURITY_CONTEXT
                 },
                 "containers": [{
-                    "name": "upgrade-job",
+                    "name": "upgrade",
                     "image": "$CCP_IMAGE_PREFIX/crunchy-upgrade:$CCP_IMAGE_TAG",
                     "volumeMounts": [
 {
@@ -83,7 +83,7 @@
 ],
                     "env": [{
                         "name": "OLD_DATABASE_NAME",
-                        "value": "primary-pvc"
+                        "value": "primary"
                     }, {
                         "name": "NEW_DATABASE_NAME",
                         "value": "primary-upgrade"

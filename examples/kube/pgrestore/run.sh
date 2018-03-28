@@ -18,4 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-expenv -f $DIR/pgrestore-job.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/pgrestore.json | ${CCP_CLI?} create -f -

@@ -16,7 +16,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+${CCP_CLI?} delete pvc backup-pitr-pgdata
+${CCP_CLI?} delete job backup-pitr
 
-# start up the database container
-expenv -f $DIR/primary-pitr.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/backup-pitr.json | ${CCP_CLI?} create -f -

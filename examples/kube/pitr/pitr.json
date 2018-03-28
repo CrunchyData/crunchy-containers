@@ -2,9 +2,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-pitr",
+        "name": "pitr",
         "labels": {
-            "name": "primary-pitr"
+            "name": "pitr"
         }
     },
     "spec": {
@@ -15,7 +15,7 @@
             "nodePort": 0
         }],
         "selector": {
-            "name": "primary-pitr"
+            "name": "pitr"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -29,7 +29,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-pitr-pgwal-pvc"
+      "name": "pitr-pgwal"
     },
     "spec": {
       "accessModes": [
@@ -47,7 +47,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-pitr-pvc"
+      "name": "pitr-pgdata"
     },
     "spec": {
       "accessModes": [
@@ -65,9 +65,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-pitr",
+        "name": "pitr",
         "labels": {
-            "name": "primary-pitr"
+            "name": "pitr"
         }
     },
     "spec": {
@@ -137,12 +137,12 @@
         "volumes": [{
             "name": "pgdata",
             "persistentVolumeClaim": {
-                "claimName": "primary-pitr-pvc"
+                "claimName": "pitr-pgdata"
             }
         }, {
             "name": "pgwal",
             "persistentVolumeClaim": {
-                "claimName": "primary-pitr-pgwal-pvc"
+                "claimName": "pitr-pgwal"
             }
         }, {
             "name": "backup",

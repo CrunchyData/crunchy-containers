@@ -2,79 +2,63 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-pgsql",
+        "name": "pgaudit",
         "labels": {
-            "name": "crunchy-pgsql"
+            "name": "pgaudit"
         }
     },
     "spec": {
-        "ports": [{
-            "name": "pgsql",
-            "protocol": "TCP",
-            "port": 5432,
-            "targetPort": 5432,
-            "nodePort": 0
-        }, {
-            "name": "node-exporter",
-            "protocol": "TCP",
-            "port": 9100,
-            "targetPort": 9100,
-            "nodePort": 0
-        }, {
-            "name": "postgres-exporter",
-            "protocol": "TCP",
-            "port": 9187,
-            "targetPort": 9187,
-            "nodePort": 0
-        }],
+        "ports": [
+            {
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }
+        ],
         "selector": {
-            "name": "crunchy-pgsql"
+            "name": "pgaudit"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
-    },
-    "status": {
-        "loadBalancer": {}
     }
 }
+
 {
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-pgsql",
+        "name": "pgaudit",
         "labels": {
-            "name": "crunchy-pgsql",
-            "crunchy_collect": "true"
+            "name": "pgaudit"
         }
     },
     "spec": {
-        "securityContext": {
-            $CCP_SECURITY_CONTEXT
-        },
         "containers": [
             {
-                "name": "collect",
-                "image": "$CCP_IMAGE_PREFIX/crunchy-collect:$CCP_IMAGE_TAG",
-                "ports": [
-                    {
-                        "containerPort": 9187,
-                        "protocol": "TCP"
-                    },
-                    {
-                        "containerPort": 9100,
-                        "protocol": "TCP"
-                    }
-                ],
-                "env": [
-                    {
-                        "name": "DATA_SOURCE_NAME",
-                        "value": "postgresql://primaryuser:password@crunchy-pgsql:5432/postgres?sslmode=disable"
-                    }
-                ]
-            },
-            {
                 "name": "postgres",
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                },
                 "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
+                "readinessProbe": {
+                    "exec": {
+                        "command": [
+                            "/opt/cpm/bin/readiness.sh"
+                        ]
+                    },
+                    "initialDelaySeconds": 10,
+                    "timeoutSeconds": 1
+                },
+                "livenessProbe": {
+                    "exec": {
+                        "command": [
+                            "/opt/cpm/bin/liveness.sh"
+                        ]
+                    },
+                    "initialDelaySeconds": 120,
+                    "timeoutSeconds": 1
+                },
                 "ports": [
                     {
                         "containerPort": 5432,
@@ -87,16 +71,20 @@
                         "value": "primaryuser"
                     },
                     {
+                        "name": "PG_PRIMARY_PORT",
+                        "value": "5432"
+                    },
+                    {
+                        "name": "PGHOST",
+                        "value": "/tmp"
+                    },
+                    {
                         "name": "PG_MODE",
                         "value": "primary"
                     },
                     {
                         "name": "PG_PRIMARY_PASSWORD",
                         "value": "password"
-                    },
-                    {
-                        "name": "PG_PRIMARY_PORT",
-                        "value": "5432"
                     },
                     {
                         "name": "PG_USER",
@@ -115,21 +103,16 @@
                         "value": "password"
                     }
                 ],
-                "securityContext": {
-                    $CCP_SECURITY_CONTEXT
-                },
-                "readinessProbe": {
-                    "tcpSocket": {
-                        "port": 5432
-                    },
-                    "initialDelaySeconds": 5,
-                    "periodSeconds": 10
-                },
                 "volumeMounts": [
                     {
                         "mountPath": "/pgdata",
                         "name": "pgdata",
                         "readOnly": false
+                    },
+                    {
+                        "mountPath": "/backup",
+                        "name": "backup",
+                        "readOnly": true
                     }
                 ]
             }
@@ -137,6 +120,10 @@
         "volumes": [
             {
                 "name": "pgdata",
+                "emptyDir": {}
+            },
+            {
+                "name": "backup",
                 "emptyDir": {}
             }
         ]

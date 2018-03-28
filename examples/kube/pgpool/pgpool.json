@@ -50,13 +50,13 @@
                     }],
                     "env": [],
                     "volumeMounts": [{
-                    "name": "pgpool-conf",
+                    "name": "pgpool-pgconf",
                     "mountPath": "/pgconf/pgpoolconfigdir",
                     "readOnly": false
                     }]
                 }],
                 "volumes": [{
-                "name": "pgpool-conf",
+                "name": "pgpool-pgconf",
                   "secret": {
                       "secretName": "pgpool-secrets"
                   }

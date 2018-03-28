@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-${CCP_CLI?} delete service primary-pvc
-${CCP_CLI?} delete pod primary-pvc
-${CCP_CLI?} delete pvc primary-pvc
+${CCP_CLI?} delete service primary
+${CCP_CLI?} delete pod primary
+${CCP_CLI?} delete pvc primary-pgdata
 ${CCP_CLI?} delete pv primary
-$CCPROOT/examples/waitforterm.sh primary-pvc ${CCP_CLI?}
+$CCPROOT/examples/waitforterm.sh primary ${CCP_CLI?}

@@ -2,7 +2,7 @@
   "apiVersion": "v1",
   "kind": "ServiceAccount",
   "metadata": {
-    "name": "pgset-sa"
+    "name": "statefulset-sa"
   }
 }
 
@@ -10,9 +10,9 @@
   "apiVersion": "v1",
   "kind": "Service",
   "metadata": {
-    "name": "pgset",
+    "name": "statefulset",
     "labels": {
-      "app": "pgset"
+      "app": "statefulset"
     }
   },
   "spec": {
@@ -24,7 +24,7 @@
     ],
     "clusterIP": "None",
     "selector": {
-      "app": "pgset"
+      "app": "statefulset"
     }
   }
 }
@@ -33,9 +33,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pgset-primary",
+        "name": "statefulset-primary",
         "labels": {
-            "name": "pgset-primary"
+            "name": "statefulset-primary"
         }
     },
     "spec": {
@@ -46,7 +46,7 @@
             "nodePort": 0
         }],
         "selector": {
-            "name": "pgset-primary"
+            "name": "statefulset-primary"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -57,9 +57,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pgset-replica",
+        "name": "statefulset-replica",
         "labels": {
-            "name": "pgset-replica"
+            "name": "statefulset-replica"
         }
     },
     "spec": {
@@ -70,7 +70,7 @@
             "nodePort": 0
         }],
         "selector": {
-            "name": "pgset-replica"
+            "name": "statefulset-replica"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -82,7 +82,7 @@
     "kind": "PersistentVolume",
     "metadata": {
    "labels": {
-            "app": "pgset"
+            "app": "statefulset"
           },
       "name": "pv1"
     },
@@ -104,7 +104,7 @@
     "kind": "PersistentVolume",
     "metadata": {
    "labels": {
-            "app": "pgset"
+            "app": "statefulset"
           },
 
       "name": "pv2"
@@ -127,7 +127,7 @@
     "kind": "PersistentVolume",
     "metadata": {
    "labels": {
-            "app": "pgset"
+            "app": "statefulset"
           },
 
       "name": "pv3"
@@ -149,7 +149,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "pgset-pvc"
+      "name": "statefulset-pgdata"
     },
     "spec": {
       "accessModes": [
@@ -167,24 +167,24 @@
     "apiVersion": "apps/v1beta1",
     "kind": "StatefulSet",
     "metadata": {
-        "name": "pgset"
+        "name": "statefulset"
     },
     "spec": {
-        "serviceName": "pgset",
+        "serviceName": "statefulset",
         "replicas": 2,
         "template": {
             "metadata": {
                 "labels": {
-                    "app": "pgset"
+                    "app": "statefulset"
                 }
             },
             "spec": {
-        	"serviceAccount": "pgset-sa",
+        	"serviceAccount": "statefulset-sa",
             "securityContext": {
 			$CCP_SECURITY_CONTEXT
             },
                 "containers": [{
-                    "name": "pgset",
+                    "name": "statefulset",
                     "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
                     "ports": [{
                         "containerPort": 5432,
@@ -201,10 +201,10 @@
                         "value": "set"
                     }, {
                         "name": "PG_PRIMARY_HOST",
-                        "value": "pgset-primary"
+                        "value": "statefulset-primary"
                     }, {
                         "name": "PG_REPLICA_HOST",
-                        "value": "pgset-replica"
+                        "value": "statefulset-replica"
                     }, {
                         "name": "PG_PRIMARY_PORT",
                         "value": "5432"
@@ -233,7 +233,7 @@
                 "volumes": [{
                     "name": "pgdata",
                     "persistentVolumeClaim": {
-                        "claimName": "pgset-pvc"
+                        "claimName": "statefulset-pgdata"
                     }
                 }]
             }

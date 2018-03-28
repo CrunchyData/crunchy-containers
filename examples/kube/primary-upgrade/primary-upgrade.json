@@ -26,7 +26,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-upgrade-pvc"
+      "name": "primary-upgrade-pgdata"
     },
     "spec": {
       "accessModes": [
@@ -101,7 +101,7 @@
         "volumes": [{
             "name": "pgdata",
             "persistentVolumeClaim": {
-                "claimName": "primary-upgrade-pvc"
+                "claimName": "primary-upgrade-pgdata"
             }
         }, {
             "name": "backup",

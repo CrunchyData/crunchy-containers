@@ -16,4 +16,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-expenv -f $DIR/pgdump-job.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/pgdump.json | ${CCP_CLI?} create -f -

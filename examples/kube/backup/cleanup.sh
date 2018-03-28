@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-${CCP_CLI?} delete job backup-job
-${CCP_CLI?} delete pvc backup-pvc
+${CCP_CLI?} delete job backup
+${CCP_CLI?} delete pvc backup-pgdata

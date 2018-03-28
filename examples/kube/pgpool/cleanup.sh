@@ -15,4 +15,4 @@
 ${CCP_CLI?} delete service pgpool
 ${CCP_CLI?} delete deployment pgpool
 ${CCP_CLI?} delete secret pgpool-secrets
-${CCP_CLI?} delete configmap pgpool-conf
+${CCP_CLI?} delete configmap pgpool-pgconf

@@ -42,7 +42,7 @@
             {
                 "name": "pgconf",
                 "configMap": {
-                    "name": "pgbouncer-configmap"
+                    "name": "pgbouncer-pgconf"
                 }
             }
         ],

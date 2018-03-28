@@ -13,15 +13,15 @@
 # limitations under the License.
 # remove any existing components of this example
 
-${CCP_CLI?} delete pod primary-pitr-restore
-${CCP_CLI?} delete service primary-pitr-restore
-sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/primary-pitr-restore
+${CCP_CLI?} delete pod restore-pitr
+${CCP_CLI?} delete service restore-pitr
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/restore-pitr
 
-${CCP_CLI?} delete service primary-pitr primary-pitr-restore
-${CCP_CLI?} delete pod primary-pitr
-${CCP_CLI?} delete job primary-pitr-backup-job
+${CCP_CLI?} delete service pitr
+${CCP_CLI?} delete pod pitr
+${CCP_CLI?} delete job backup-pitr
 
-${CCP_CLI?} delete pvc primary-pitr-pvc primary-pitr-pgwal-pvc primary-pitr-backup-pvc backup-primary-pitr-pvc primary-pitr-restore-pvc recover-pvc recover-pv
+${CCP_CLI?} delete pvc pitr-pgdata pitr-pgwal backup-pitr-pgdata backup-pitr-pgdata restore-pitr-pgdata recover-pv recover-pvc
 
-sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/WAL/primary-pitr
-sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/primary-pitr
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/WAL/pitr
+sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/pitr

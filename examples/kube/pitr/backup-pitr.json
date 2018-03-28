@@ -2,7 +2,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "backup-primary-pitr-pvc"
+      "name": "backup-pitr-pgdata"
     },
     "spec": {
       "accessModes": [
@@ -21,25 +21,25 @@
     "kind": "Job",
     "apiVersion": "batch/v1",
     "metadata": {
-        "name": "backup-primary-pitr-job"
+        "name": "backup-pitr"
     },
     "spec": {
         "template": {
             "metadata": {
-                "name": "backup-primary-pitr-job",
+                "name": "backup-pitr",
                 "labels": {
-                    "app": "backup-primary-pitr-job"
+                    "app": "backup-pitr"
                 }
             },
             "spec": {
                 "volumes": [{
                     "name": "pgdata",
                     "persistentVolumeClaim": {
-                        "claimName": "backup-primary-pitr-pvc"
+                        "claimName": "backup-pitr-pgdata"
                     }
                 }],
                 "containers": [{
-                    "name": "backup-primary-pitr",
+                    "name": "backup-pitr",
                     "image": "$CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG",
                     "volumeMounts": [{
                         "mountPath": "/pgdata",
@@ -48,7 +48,7 @@
                     }],
                     "env": [{
                         "name": "BACKUP_HOST",
-                        "value": "primary-pitr"
+                        "value": "pitr"
                     }, {
                         "name": "BACKUP_LABEL",
                         "value": "somebackup"

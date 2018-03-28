@@ -3,7 +3,7 @@
     "apiVersion": "rbac.authorization.k8s.io/v1beta1",
     "kind": "ClusterRole",
     "metadata": {
-        "name": "prometheus"
+        "name": "prometheus-sa"
     },
     "rules": [
         {
@@ -35,7 +35,7 @@
     "apiVersion": "v1",
     "kind": "ServiceAccount",
     "metadata": {
-        "name": "prometheus",
+        "name": "prometheus-sa",
         "namespace": "$CCP_NAMESPACE"
     }
 }
@@ -43,17 +43,17 @@
     "apiVersion": "rbac.authorization.k8s.io/v1beta1",
     "kind": "ClusterRoleBinding",
     "metadata": {
-        "name": "prometheus"
+        "name": "prometheus-sa"
     },
     "roleRef": {
         "apiGroup": "rbac.authorization.k8s.io",
         "kind": "ClusterRole",
-        "name": "prometheus"
+        "name": "prometheus-sa"
     },
     "subjects": [
         {
             "kind": "ServiceAccount",
-            "name": "prometheus",
+            "name": "prometheus-sa",
             "namespace": "$CCP_NAMESPACE"
         }
     ]
@@ -62,7 +62,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "metrics-prometheus-pvc"
+        "name": "metrics-prometheusdata"
     },
     "spec": {
         "accessModes": [
@@ -79,7 +79,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "metrics-grafana-pvc"
+        "name": "metrics-grafanadata"
     },
     "spec": {
         "accessModes": [
@@ -96,9 +96,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-metrics",
+        "name": "metrics",
         "labels": {
-            "name": "crunchy-metrics"
+            "name": "metrics"
         }
     },
     "spec": {
@@ -119,7 +119,7 @@
             }
         ],
         "selector": {
-            "name": "crunchy-metrics"
+            "name": "metrics"
         },
         "type": "NodePort",
         "sessionAffinity": "None"
@@ -129,13 +129,13 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "crunchy-metrics",
+        "name": "metrics",
         "labels": {
-            "name": "crunchy-metrics"
+            "name": "metrics"
         }
     },
     "spec": {
-        "serviceAccountName": "prometheus",
+        "serviceAccountName": "prometheus-sa",
         "securityContext": {
             $CCP_SECURITY_CONTEXT
         },
@@ -178,7 +178,7 @@
                     },
                     {
                         "name": "PROM_HOST",
-                        "value": "crunchy-metrics"
+                        "value": "metrics"
                     },
                     {
                         "name": "PROM_PORT",
@@ -198,13 +198,13 @@
             {
                 "name": "prometheusdata",
                 "persistentVolumeClaim": {
-                    "claimName": "metrics-prometheus-pvc"
+                    "claimName": "metrics-prometheusdata"
                 }
             },
             {
                 "name": "grafanadata",
                 "persistentVolumeClaim": {
-                    "claimName": "metrics-grafana-pvc"
+                    "claimName": "metrics-grafanadata"
                 }
             }
         ]

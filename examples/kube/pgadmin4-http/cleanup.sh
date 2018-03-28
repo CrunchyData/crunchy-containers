@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-${CCP_CLI?} delete service pgadmin4
-${CCP_CLI?} delete pod pgadmin4
-${CCP_CLI?} delete secret pgadmin-secrets
-${CCP_CLI?} delete pvc pgadmin-http-pvc
+${CCP_CLI?} delete service pgadmin4-http
+${CCP_CLI?} delete pod pgadmin4-http
+${CCP_CLI?} delete secret pgadmin4-http-secrets
+${CCP_CLI?} delete pvc pgadmin4-http-data
 
-$CCPROOT/examples/waitforterm.sh pgadmin4 ${CCP_CLI?}
+$CCPROOT/examples/waitforterm.sh pgadmin4-http ${CCP_CLI?}

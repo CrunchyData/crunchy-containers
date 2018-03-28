@@ -12,9 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-${CCP_CLI?} delete statefulset pgset
-${CCP_CLI?} delete sa pgset-sa
-${CCP_CLI?} delete pvc pgset-pvc
+${CCP_CLI?} delete statefulset statefulset
+${CCP_CLI?} delete sa statefulset-sa
+${CCP_CLI?} delete clusterrolebinding statefulset-sa
+${CCP_CLI?} delete pvc statefulset-pgdata
 ${CCP_CLI?} delete pv pv1 pv2 pv3
-${CCP_CLI?} delete service pgset pgset-primary pgset-replica
-${CCP_CLI?} delete pod pgset-0 pgset-1
+${CCP_CLI?} delete service statefulset statefulset-primary statefulset-replica
+${CCP_CLI?} delete pod statefulset-0 statefulset-1

@@ -2,7 +2,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "backrest-restore-pvc"
+        "name": "backrest-restore-pgdata"
     },
     "spec": {
         "accessModes": [
@@ -20,14 +20,14 @@
     "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {
-        "name": "backrest-full-restore-job"
+        "name": "backrest-delta-restore-job"
     },
     "spec": {
         "template": {
             "metadata": {
-                "name": "backrest-full-restore-job",
+                "name": "backrest-delta-restore-job",
                 "labels": {
-                    "app": "backrest-full-restore-job"
+                    "app": "backrest-delta-restore-job"
                 }
             },
             "spec": {
@@ -42,6 +42,9 @@
                             {
                                 "name": "STANZA",
                                 "value": "db"
+                            },
+                            {
+                                "name": "DELTA"
                             }
                         ],
                         "volumeMounts": [
@@ -67,19 +70,19 @@
                     {
                         "name": "pgconf",
                         "configMap": {
-                            "name": "backrestconf"
+                            "name": "backrest-restore-pgconf"
                         }
                     },
                     {
                         "name": "backrestrepo",
                         "persistentVolumeClaim": {
-                            "claimName": "backrest-backrestrepo-pvc"
+                            "claimName": "backrest-restore-backrestrepo"
                         }
                     },
                     {
                         "name": "pgdata",
                         "persistentVolumeClaim": {
-                            "claimName": "backrest-pvc"
+                            "claimName": "backrest-restore-pgdata"
                         }
                     }
                 ],

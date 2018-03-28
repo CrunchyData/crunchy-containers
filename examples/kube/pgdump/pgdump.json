@@ -2,7 +2,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "backup-pvc"
+        "name": "pgdump-pgdata"
     },
     "spec": {
         "accessModes": [
@@ -20,14 +20,14 @@
     "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {
-        "name": "backup-job"
+        "name": "pgdump"
     },
     "spec": {
         "template": {
             "metadata": {
-                "name": "backup-job",
+                "name": "pgdump",
                 "labels": {
-                    "app": "backup-job"
+                    "app": "pgdump"
                 }
             },
             "spec": {
@@ -35,17 +35,17 @@
                     {
                         "name": "pgdata",
                         "persistentVolumeClaim": {
-                            "claimName": "backup-pvc"
+                            "claimName": "pgdump-pgdata"
                         }
                     }
                 ],
                 "securityContext": {
-                     $CCP_SECURITY_CONTEXT
+                    $CCP_SECURITY_CONTEXT
                 },
                 "containers": [
                     {
-                        "name": "backup-job",
-                        "image": "$CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG",
+                        "name": "pgdump",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-dump:$CCP_IMAGE_TAG",
                         "volumeMounts": [
                             {
                                 "mountPath": "/pgdata",
@@ -55,20 +55,28 @@
                         ],
                         "env": [
                             {
-                                "name": "BACKUP_HOST",
-                                "value": "primary-pvc"
+                                "name": "PGDUMP_HOST",
+                                "value": "primary"
                             },
                             {
-                                "name": "BACKUP_USER",
-                                "value": "primaryuser"
+                                "name": "PGDUMP_USER",
+                                "value": "postgres"
                             },
                             {
-                                "name": "BACKUP_PASS",
+                                "name": "PGDUMP_PASS",
                                 "value": "password"
                             },
                             {
-                                "name": "BACKUP_PORT",
+                                "name": "PGDUMP_PORT",
                                 "value": "5432"
+                            },
+                            {
+                                "name": "PGDUMP_ALL",
+                                "value": "true"
+                            },
+                            {
+                                "name": "PGDUMP_VERBOSE",
+                                "value": "true"
                             }
                         ]
                     }

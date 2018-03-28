@@ -27,4 +27,4 @@ ${CCP_CLI?} create rolebinding pg-watcher-sa-edit \
   --serviceaccount=$CCP_NAMESPACE:pg-watcher \
   --namespace=$CCP_NAMESPACE
 
-envsubst < $DIR/watch-pod.yaml | ${CCP_CLI?} create -f -
+envsubst < $DIR/watch.yaml | ${CCP_CLI?} create -f -

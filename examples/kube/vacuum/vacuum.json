@@ -2,20 +2,20 @@
     "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {
-        "name": "vacuum-job"
+        "name": "vacuum"
     },
     "spec": {
         "template": {
             "metadata": {
-                "name": "vacuum-job",
+                "name": "vacuum",
                 "labels": {
-                    "app": "vacuum-job"
+                    "app": "vacuum"
                 }
             },
             "spec": {
                 "volumes": [],
                 "containers": [{
-                    "name": "vacuum-job",
+                    "name": "vacuum",
                     "image": "$CCP_IMAGE_PREFIX/crunchy-vacuum:$CCP_IMAGE_TAG",
                     "volumeMounts": [],
                     "env": [{
@@ -29,7 +29,7 @@
                         "value": "testtable"
                     }, {
                         "name": "JOB_HOST",
-                        "value": "primary-pvc"
+                        "value": "primary"
                     }, {
                         "name": "PG_USER",
                         "value": "testuser"

@@ -14,5 +14,5 @@
 
 ${CCP_CLI?} delete pod primary-restore
 ${CCP_CLI?} delete service primary-restore
-
+${CCP_CLI?} delete pvc primary-restore-backup
 $CCPROOT/examples/waitforterm.sh primary-restore ${CCP_CLI?}

@@ -18,7 +18,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-${CCP_CLI?} create configmap postgresql-conf \
+${CCP_CLI?} create configmap primary-deployment-pgconf \
   --from-file=./configs/postgresql.conf \
   --from-file=pghba=./configs/pg_hba.conf \
   --from-file=./configs/setup.sql
