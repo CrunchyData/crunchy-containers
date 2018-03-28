@@ -1,5 +1,5 @@
 '\" t
-.\"     Title: dump
+.\"     Title: pgdump
 .\"    Author: Crunchy Data
 .\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
 .\"      Date: 2018
@@ -7,7 +7,7 @@
 .\"    Source: \ \& 13
 .\"  Language: English
 .\"
-.TH "DUMP" "1" "2018" "\ \& 13" "\ \&"
+.TH "PGDUMP" "1" "2018" "\ \& 13" "\ \&"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -28,10 +28,10 @@
 .\" * MAIN CONTENT STARTS HERE *
 .\" -----------------------------------------------------------------
 .SH "NAME"
-dump \- dump container image
+pgdump \- pgdump container image
 .SH "DESCRIPTION"
 .sp
-The dump image provides a means of performing either a pg_dump or pg_dumpall on a Postgres container database\&.
+The pgdump image provides a means of performing either a pg_dump or pg_dumpall on a Postgres container database\&.
 .sp
 The container itself consists of: \- RHEL7 base image \- bash script that performs the container startup \- postgres binary packages
 .sp
@@ -47,7 +47,7 @@ That atomic command runs the docker command set in this label:
 .sp
 Name=
 .sp
-The registry location and name of the image\&. For example, Name="crunchydata/crunchy-dump"\&.
+The registry location and name of the image\&. For example, Name="crunchydata/crunchy-pgdump"\&.
 .sp
 Version=
 .sp

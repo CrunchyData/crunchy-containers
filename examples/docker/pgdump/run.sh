@@ -42,4 +42,4 @@ docker run \
 	--link $HOST_TO_BACKUP:$HOST_TO_BACKUP\
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
-	-d $CCP_IMAGE_PREFIX/crunchy-dump:$CCP_IMAGE_TAG
+	-d $CCP_IMAGE_PREFIX/crunchy-pgdump:$CCP_IMAGE_TAG

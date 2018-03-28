@@ -1,16 +1,16 @@
-.TH "dump " "1" " Container Image Pages" "Crunchy Data" "March 2018"
+.TH "pgdump " "1" " Container Image Pages" "Crunchy Data" "March 2018"
 .nh
 .ad l
 
 
 .SH NAME
 .PP
-dump \- dump container image
+pgdump \- pgdump container image
 
 
 .SH DESCRIPTION
 .PP
-The dump image provides a means of performing either a pg_dump or pg_dumpall on a Postgres container database
+The pgdump image provides a means of performing either a pg_dump or pg_dumpall on a Postgres container database
 
 .PP
 The container itself consists of:
@@ -38,7 +38,7 @@ That atomic command runs the docker command set in this label:
 \fB\fCName=\fR
 
 .PP
-The registry location and name of the image. For example, Name="crunchydata/backup".
+The registry location and name of the image. For example, Name="crunchydata/pgdump".
 
 .PP
 \fB\fCVersion=\fR
