@@ -37,7 +37,7 @@ The project includes the following containers:
  * link:docs/containers.adoc#crunchy-upgrade[crunchy-upgrade] - allows you to perform a major postgres upgrade using pg_upgrade
  * link:docs/containers.adoc#crunchy-backrest-restore[crunchy-backrest-restore] - allows you to perform a pgbackrest restore
  * link:docs/containers.adoc#crunchy-sim[crunchy-sim] - executes queries over a specified interval range for Postgres traffic simulation purposes
- * link:docs/containers.adoc#crunchy-dump[crunchy-dump] - provides a means of performing either a pg_dump or pg_dumpall on a Postgres database
+ * link:docs/containers.adoc#crunchy-pgdump[crunchy-pgdump] - provides a means of performing either a pg_dump or pg_dumpall on a Postgres database
  * link:docs/containers.adoc#crunchy-restore[crunchy-restore] - provides a means of performing a restore of a dump from pg_dump or pg_dumpall via psql or pg_restore to a Postgres container database
 
 

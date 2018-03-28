@@ -36,7 +36,7 @@ docker pull $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-postgres-gis:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-pgbouncer:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-pgadmin4:$CCP_IMAGE_TAG
-docker pull $CCP_IMAGE_PREFIX/crunchy-dump:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-pgdump:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-restore:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-upgrade:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-dba:$CCP_IMAGE_TAG

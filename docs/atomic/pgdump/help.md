@@ -1,12 +1,12 @@
-= dump (1)
+= pgdump (1)
 Crunchy Data
 March 2018
 == NAME
-dump - dump container image
+pgdump - pgdump container image
 
 == DESCRIPTION
-The dump image provides a means of performing a full database
-dump on a Postgres container database.
+The pgdump image provides a means of performing a full database
+pgdump on a Postgres container database.
 
 The container itself consists of:
     - RHEL7 base image
@@ -26,7 +26,7 @@ That atomic command runs the docker command set in this label:
 
 `Name=`
 
-The registry location and name of the image. For example, Name="crunchydata/crunchy-dump".
+The registry location and name of the image. For example, Name="crunchydata/crunchy-pgdump".
 
 `Version=`
 

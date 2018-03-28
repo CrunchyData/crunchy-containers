@@ -1,6 +1,6 @@
 FROM centos:7
 
-LABEL name="crunchydata/dump" \
+LABEL name="crunchydata/pgdump" \
         vendor="crunchy data" \
       	PostgresVersion="9.6" \
       	PostgresFullVersion="9.6.8" \

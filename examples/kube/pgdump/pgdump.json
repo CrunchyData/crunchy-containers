@@ -45,7 +45,7 @@
                 "containers": [
                     {
                         "name": "pgdump",
-                        "image": "$CCP_IMAGE_PREFIX/crunchy-dump:$CCP_IMAGE_TAG",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-pgdump:$CCP_IMAGE_TAG",
                         "volumeMounts": [
                             {
                                 "mountPath": "/pgdata",
