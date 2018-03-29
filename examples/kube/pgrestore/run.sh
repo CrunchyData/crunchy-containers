@@ -18,4 +18,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+export PGDUMP_HOST=$($CCP_CLI describe job pgdump | grep PGDUMP_HOST | awk '{print $NF}')
+export PGDUMP_PATH=$(ls -tc "$CCP_STORAGE_PATH/$PGDUMP_HOST-dumps/" | head -n1)
+
 expenv -f $DIR/pgrestore.json | ${CCP_CLI?} create -f -
