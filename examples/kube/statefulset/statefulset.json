@@ -81,67 +81,20 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-   "labels": {
-            "app": "statefulset"
-          },
-      "name": "pv1"
+        "name": "statefulset",
+        "labels": {
+            "name": "statefulset"
+        }
     },
     "spec": {
-      "capacity": {
-          "storage": "150M"
-      },
-      "accessModes": [ "ReadWriteMany" ],
-      "nfs": {
-          "path": "$CCP_STORAGE_PATH",
-          "server": "$CCP_NFS_IP"
-      },
-      "persistentVolumeReclaimPolicy": "Retain"
-    }
-}
-
-{
-    "apiVersion": "v1",
-    "kind": "PersistentVolume",
-    "metadata": {
-   "labels": {
-            "app": "statefulset"
-          },
-
-      "name": "pv2"
-    },
-    "spec": {
-      "capacity": {
-          "storage": "150M"
-      },
-      "accessModes": [ "ReadWriteMany" ],
-      "nfs": {
-          "path": "$CCP_STORAGE_PATH",
-          "server": "$CCP_NFS_IP"
-      },
-      "persistentVolumeReclaimPolicy": "Retain"
-    }
-}
-
-{
-    "apiVersion": "v1",
-    "kind": "PersistentVolume",
-    "metadata": {
-   "labels": {
-            "app": "statefulset"
-          },
-
-      "name": "pv3"
-    },
-    "spec": {
-      "capacity": {
-          "storage": "150M"
-      },
-      "accessModes": [ "ReadWriteMany" ],
-      "nfs": {
-          "path": "$CCP_STORAGE_PATH",
-          "server": "$CCP_NFS_IP"
-      },
-      "persistentVolumeReclaimPolicy": "Retain"
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "hostPath": {
+            "path": "$CCP_STORAGE_PATH"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
     }
 }
 

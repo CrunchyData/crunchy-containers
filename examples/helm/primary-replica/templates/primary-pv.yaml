@@ -6,8 +6,7 @@ spec:
   capacity:
     storage: {{.Values.pv.storage}}
   accessModes:
-  - ReadWriteMany
-  nfs:
-    path: "{{.Values.nfs.path}}"
-    server: "{{.Values.nfs.serverIP}}"
+  - {{.Values.pv.mode}}
+  hostPath:
+    path: "{{.Values.pv.path}}"
   persistentVolumeReclaimPolicy: Retain

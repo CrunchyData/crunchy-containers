@@ -13,10 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-#
-# this example creates the metrics backends with NFS volumes
-# for storing their data
-#
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 

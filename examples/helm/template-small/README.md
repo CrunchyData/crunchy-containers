@@ -94,9 +94,6 @@ The above command changes the image tag of the container from the default of `ce
 | `.image.repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
 | `.image.container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
 | `.image.tag` | The image tag to be used.    | `centos7-10.3-1.8.2`                                                    |
-| `.pv.storage` | Size of persistent volume     | 400M                                                    |
-| `.pv.name` | Name of persistent volume    | `template-small-pv`                                                    |
-| `.pvc.name` | Name of persistent volume    | `template-small-pvc`                                                    |
 | `.resources.cpu` | Defines a limit for CPU    | `200m`                                                    |
 | `.resources.memory` | Defines a limit for memory    | `512Mi`                                                    |
 

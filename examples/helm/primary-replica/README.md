@@ -122,10 +122,10 @@ The above command changes the image tag of the container from the default of `ce
 | `.image.repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
 | `.image.container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
 | `.image.tag` | The image tag to be used.    | `centos7-10.3-1.8.2`                                                    |
-| `.nfs.serverIP` | The IP address of the NFS server     | 10.0.1.4                                                    |
-| `.nfs.path` | The path of the mounted NFS drive    | `/mnt/nfsfileshare`                                                    |
 | `.pv.storage` | Size of persistent volume     | 400M                                                    |
 | `.pv.name` | Name of persistent volume    | `primary-pv`                                                    |
+| `.pv.mode` | The storage mode for the persistent volume    | `ReadWriteMany`                                                    |
+| `.pv.path` | The path of the mounted storage filesystem    | `/data`                                                    |
 | `.pvc.name` | Name of persistent volume    | `primary-pvc`                                                    |
 | `.resources.cpu` | Defines a limit for CPU    | `200m`                                                    |
 | `.resources.memory` | Defines a limit for memory    | `512Mi`                                                    |
