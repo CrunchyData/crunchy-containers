@@ -18,7 +18,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-CONFIGDIR=/mnt/nfsfileshare/bouncerconfig
+CONFIGDIR=$CCP_STORAGE_PATH/bouncerconfig
 
 sudo rm -rf $CONFIGDIR
 sudo mkdir -p $CONFIGDIR
@@ -27,7 +27,6 @@ sudo chmod 777 $CONFIGDIR
 cp $DIR/pgbouncer.ini $CONFIGDIR
 cp $DIR/users.txt $CONFIGDIR
 
-oc create -f $DIR/pgbouncer-pv.json 
+oc create -f $DIR/pgbouncer-pv.json
 
-oc create -f $DIR/pgbouncer.json 
-
+oc create -f $DIR/pgbouncer.json

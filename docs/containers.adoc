@@ -157,7 +157,7 @@ a database restore.
 
 === Dependencies
 
-The container is meant to be using a NFS or similar network file system
+The container is meant to be using NFS or a similar network file system
 to persist database backups.
 
 === Environment Variables
@@ -191,7 +191,7 @@ a database restore.
 
 === Dependencies
 
-The container is meant to be using a NFS or similar network file system
+The container is meant to be using NFS or a similar network file system
 to persist database dumps.
 
 === Environment Variables
@@ -587,8 +587,8 @@ environment variables:
  * PG_PASSWORD - database user password used to perform the backup
  * PG_PORT - port value used when connecting for a backup to the database
  * BACKUP_PV_CAPACITY - a value like 1Gi is used to define the PV storage capacity
- * BACKUP_PV_PATH - the NFS path used to build the PV
- * BACKUP_PV_HOST - the NFS host used to build the PV
+ * BACKUP_PV_PATH - the storage path used to build the PV
+ * BACKUP_PV_HOST - the storage host used to build the PV
  * BACKUP_PVC_STORAGE - a value like 75M means to allow 75 megabytes for the PVC used
  in performing the backup
 
@@ -844,7 +844,7 @@ of the container.
 
 === Dependencies
 
-The container is meant to be using a NFS or similar network file system
+The container is meant to be using NFS or a similar network file system
 to retrieve database dumps to be restored via psql or pg_restore.
 
 === Environment Variables

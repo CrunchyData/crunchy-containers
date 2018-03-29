@@ -13,12 +13,11 @@ image:
   repository: crunchydata
   container: crunchy-postgres
   tag: centos7-10.3-1.8.2
-nfs:
-  serverIP: 10.0.1.4
-  path: /mnt/nfsfileshare
 pv:
   storage: 400M
   name: primary-pv
+  mode: ReadWriteMany
+  path: /data
 pvc:
   name: primary-pvc
 resources:
