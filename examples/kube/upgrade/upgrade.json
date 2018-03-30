@@ -5,6 +5,11 @@
       "name": "upgrade-pgnewdata"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "upgrade-pgnewdata"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],
@@ -23,6 +28,11 @@
       "name": "upgrade-pgolddata"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "upgrade-pgolddata"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],

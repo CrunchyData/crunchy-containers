@@ -5,6 +5,11 @@
         "name": "backup-pgdata"
     },
     "spec": {
+        "selector": {
+          "matchLabels": {
+            "name": "backup-pgdata"
+          }
+        },
         "accessModes": [
             "ReadWriteMany"
         ],

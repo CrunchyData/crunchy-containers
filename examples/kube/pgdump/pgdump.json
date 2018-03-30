@@ -5,6 +5,11 @@
         "name": "pgdump-pgdata"
     },
     "spec": {
+        "selector": {
+          "matchLabels": {
+            "name": "pgdump-pgdata"
+          }
+        },
         "accessModes": [
             "ReadWriteMany"
         ],

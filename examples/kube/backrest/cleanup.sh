@@ -18,3 +18,4 @@ ${CCP_CLI?} delete service backrest
 ${CCP_CLI?} delete pod backrest
 ${CCP_CLI?} delete configmap backrest-pgconf
 ${CCP_CLI?} delete pvc backrest-pgdata backrest-backrestrepo
+${CCP_CLI?} delete pv backrest-pgdata backrest-backrestrepo

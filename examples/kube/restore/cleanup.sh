@@ -15,4 +15,5 @@
 ${CCP_CLI?} delete pod restore
 ${CCP_CLI?} delete service restore
 ${CCP_CLI?} delete pvc restore-backup
+${CCP_CLI?} delete pv restore-backup
 $CCPROOT/examples/waitforterm.sh restore ${CCP_CLI?}

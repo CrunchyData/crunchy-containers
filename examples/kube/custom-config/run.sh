@@ -23,4 +23,5 @@ ${CCP_CLI?} create configmap custom-config-pgconf \
     --from-file ./configs/pg_hba.conf \
     --from-file ./configs/setup.sql
 
+expenv -f $DIR/custom-config-pv.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/custom-config.json | ${CCP_CLI?} create -f -

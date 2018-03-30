@@ -36,4 +36,5 @@ ${CCP_CLI?} create configmap postgres-sshd-pgconf \
     --from-file ./configs/sshd_config \
     --from-file ./keys/authorized_keys
 
+expenv -f $DIR/postgres-sshd-pv.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/postgres-sshd.json | ${CCP_CLI?} create -f -

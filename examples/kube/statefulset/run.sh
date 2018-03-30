@@ -28,4 +28,5 @@ ${CCP_CLI?} create clusterrolebinding statefulset-sa \
   --group=system:serviceaccounts \
   --namespace=$CCP_NAMESPACE
 
+expenv -f $DIR/statefulset-pv.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/statefulset.json | ${CCP_CLI?} create -f -

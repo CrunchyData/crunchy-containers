@@ -20,10 +20,9 @@ ${CCP_CLI?} delete pod restore-pitr
 ${CCP_CLI?} delete pod pitr
 $CCPROOT/examples/waitforterm.sh pitr ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh restore-pitr ${CCP_CLI?}
-${CCP_CLI?} delete pvc recover-pvc
-${CCP_CLI?} delete pvc restore-pitr-pgdata
+${CCP_CLI?} delete pvc recover-pvc restore-pitr-pgdata
+${CCP_CLI?} delete pv recover-pv restore-pitr-pgdata
 ${CCP_CLI?} delete svc restore-pitr
-${CCP_CLI?} delete pv recover-pv
 
-# start up the database container
+expenv -f $DIR/restore-pitr-pv.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/restore-pitr.json | ${CCP_CLI?} create -f -
