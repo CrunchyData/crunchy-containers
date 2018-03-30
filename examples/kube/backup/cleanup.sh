@@ -14,3 +14,4 @@
 
 ${CCP_CLI?} delete job backup
 ${CCP_CLI?} delete pvc backup-pgdata
+${CCP_CLI?} delete pv backup-pgdata

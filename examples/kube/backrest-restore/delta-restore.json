@@ -5,6 +5,11 @@
         "name": "backrest-restore-pgdata"
     },
     "spec": {
+        "selector": {
+          "matchLabels": {
+            "name": "backrest-restore-pgdata"
+          }
+        },
         "accessModes": [
             "ReadWriteMany"
         ],

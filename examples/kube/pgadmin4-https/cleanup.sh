@@ -18,6 +18,7 @@ ${CCP_CLI?} delete secret pgadmin4-https-secrets
 ${CCP_CLI?} delete secret pgadmin4-https-tls
 
 ${CCP_CLI?} delete pvc pgadmin4-https-data
+${CCP_CLI?} delete pv pgadmin4-https-data
 
 rm -f ./server.crt ./server.key ./privkey.pem
 

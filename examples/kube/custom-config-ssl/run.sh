@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 - 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,8 +24,8 @@ sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR
 sudo CONFDIR=$CONFDIR cp $DIR/configs/setup.sql $CONFDIR
 sudo CONFDIR=$CONFDIR cp $DIR/configs/pg_hba.conf $CONFDIR
 sudo CONFDIR=$CONFDIR cp $DIR/configs/postgresql.conf $CONFDIR
-sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/setup.sql 
-sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/postgresql.conf 
+sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/setup.sql
+sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/postgresql.conf
 sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/pg_hba.conf
 sudo CONFDIR=$CONFDIR chmod g+r $CONFDIR/setup.sql $CONFDIR/postgresql.conf $CONFDIR/pg_hba.conf
 
@@ -34,10 +34,11 @@ sudo CONFDIR=$CONFDIR cp $DIR/certs/server.key $CONFDIR
 sudo cat ./certs/server.crt ./certs/server-intermediate.crt ./certs/ca.crt > /tmp/server.crt
 sudo mv /tmp/server.crt $CONFDIR/server.crt
 
-sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/ca.crt 
+sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/ca.crt
 sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/server.key
 sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/server.crt
 sudo CONFDIR=$CONFDIR chmod 640 $CONFDIR/ca.crt $CONFDIR/server.key $CONFDIR/server.crt
 sudo CONFDIR=$CONFDIR chmod 400 $CONFDIR/server.key
 
-expenv -f $DIR/custom-config-ssl.json | oc create -f -
+expenv -f $DIR/custom-config-ssl-pv.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/custom-config-ssl.json | ${CCP_CLI?} create -f -

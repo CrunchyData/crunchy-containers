@@ -26,4 +26,5 @@ ${CCP_CLI?} create secret generic pgadmin4-https-tls \
     --from-file=pgadmin-cert=${DIR?}/server.crt \
     --from-file=pgadmin-key=${DIR?}/server.key
 
+expenv -f $DIR/pgadmin4-https-pv.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/pgadmin4-https.json | ${CCP_CLI?} create -f -

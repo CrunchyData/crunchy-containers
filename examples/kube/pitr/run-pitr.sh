@@ -18,4 +18,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+expenv -f $DIR/pitr-pv.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/pitr.json | ${CCP_CLI?} create -f -

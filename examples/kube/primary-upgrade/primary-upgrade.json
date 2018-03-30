@@ -29,6 +29,11 @@
       "name": "primary-upgrade-pgdata"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "primary-upgrade-pgdata"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],

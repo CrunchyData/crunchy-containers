@@ -5,6 +5,11 @@
       "name": "pgrestore-pgdata"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "pgrestore-pgdata"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],
@@ -14,9 +19,9 @@
         }
       }
     }
-  }
+}
 
-  {
+{
      "apiVersion":"batch/v1",
      "kind":"Job",
      "metadata":{
@@ -93,4 +98,4 @@
            }
         }
      }
-  }
+}

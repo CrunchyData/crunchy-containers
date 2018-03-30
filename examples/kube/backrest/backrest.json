@@ -5,6 +5,11 @@
         "name": "backrest-pgdata"
     },
     "spec": {
+        "selector": {
+          "matchLabels": {
+            "name": "backrest-pgdata"
+          }
+        },
         "accessModes": [
             "ReadWriteMany"
         ],
@@ -23,6 +28,11 @@
         "name": "backrest-backrestrepo"
     },
     "spec": {
+        "selector": {
+          "matchLabels": {
+            "name": "backrest-backrestrepo"
+          }
+        },
         "accessModes": [
             "ReadWriteMany"
         ],

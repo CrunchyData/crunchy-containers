@@ -14,3 +14,4 @@
 
 ${CCP_CLI?} delete job pgrestore
 ${CCP_CLI?} delete pvc pgrestore-pgdata
+${CCP_CLI?} delete pv pgrestore-pgdata

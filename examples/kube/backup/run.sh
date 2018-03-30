@@ -16,4 +16,5 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+expenv -f $DIR/backup-pv.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/backup.json | ${CCP_CLI?} create -f -

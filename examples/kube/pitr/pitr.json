@@ -32,6 +32,11 @@
       "name": "pitr-pgwal"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "pitr-pgwal"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],
@@ -50,6 +55,11 @@
       "name": "pitr-pgdata"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "pitr-pgdata"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],

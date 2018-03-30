@@ -21,4 +21,5 @@ $DIR/cleanup.sh
 export BACKUP_HOST=$($CCP_CLI describe job backup | grep BACKUP_HOST | awk '{print $NF}')
 export BACKUP_PATH=$(ls -tc "$CCP_STORAGE_PATH/$BACKUP_HOST-backups/" | head -n1)
 
+expenv -f $DIR/restore-pv.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/restore.json | ${CCP_CLI?} create -f -

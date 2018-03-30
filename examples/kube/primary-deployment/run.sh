@@ -23,4 +23,5 @@ ${CCP_CLI?} create configmap primary-deployment-pgconf \
   --from-file=pghba=./configs/pg_hba.conf \
   --from-file=./configs/setup.sql
 
+expenv -f $DIR/primary-deployment-pv.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/primary-deployment.json | ${CCP_CLI?} create -f -
