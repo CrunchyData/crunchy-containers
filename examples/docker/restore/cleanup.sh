@@ -15,8 +15,8 @@
 
 echo "Cleaning up..."
 
-CONTAINER_NAME=primary-restore
-CONTAINER_VOLUME=$CONTAINER_NAME-volume
+CONTAINER_NAME=restore
+CONTAINER_VOLUME=$CONTAINER_NAME-pgdata
 
 docker stop $CONTAINER_NAME
 docker rm -v $CONTAINER_NAME

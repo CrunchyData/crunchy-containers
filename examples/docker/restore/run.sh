@@ -13,15 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "Starting primary-restore container..."
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
+
+export CONTAINER_NAME=restore
+
+echo "Starting the ${CONTAINER_NAME} example..."
 
 # $1=date-named directory, e.g. 2017-01-12-17-43-08
-export BACKUP_PATH=primary-pvc-backups/$1
+export BACKUP_PATH=primary-backups/$1
 
-export CONTAINER_NAME=primary-restore
-export CONTAINER_VOLUME=$CONTAINER_NAME-volume
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-$DIR/cleanup.sh
+export CONTAINER_VOLUME=$CONTAINER_NAME-pgdata
 
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
@@ -32,7 +35,7 @@ $DIR/cleanup.sh
 # add this next line to the docker run to override pg config files
 
 docker volume create --driver local --name=$CONTAINER_VOLUME
-BACKUP_VOLUME=basicbackup-volume
+BACKUP_VOLUME=backup-volume
 
 docker run \
 	-p 12001:5432 \

@@ -92,6 +92,11 @@
       "name": "primary-deployment-pgbackrest"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "primary-deployment-pgbackrest"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],
@@ -110,6 +115,11 @@
       "name": "primary-deployment-pgwal"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "primary-deployment-pgwal"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],
@@ -128,6 +138,11 @@
       "name": "primary-deployment-pgdata"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "primary-deployment-pgdata"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],
@@ -146,6 +161,11 @@
       "name": "replica-deployment-pgbackrest"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "replica-deployment-pgbackrest"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],
@@ -164,6 +184,11 @@
       "name": "replica-deployment-pgwal"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "replica-deployment-pgwal"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],
@@ -182,6 +207,11 @@
       "name": "replica-deployment-pgdata"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "replica-deployment-pgdata"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],
@@ -200,6 +230,11 @@
       "name": "replica2-deployment-pgbackrest"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "replica2-deployment-pgbackrest"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],
@@ -218,6 +253,11 @@
       "name": "replica2-deployment-pgwal"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "replica2-deployment-pgwal"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],
@@ -236,6 +276,11 @@
       "name": "replica2-deployment-pgdata"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "replica2-deployment-pgdata"
+        }
+      },
       "accessModes": [
         "ReadWriteMany"
       ],

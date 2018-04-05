@@ -13,10 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "cleaning up example..."
+echo "Cleaning up example..."
 
 CONTAINER_NAME=postgres-gis
-VOLUME_NAME=postgres-gis-volume
+VOLUME_NAME=${CONTAINER_NAME}-pgdata
 
 docker stop $CONTAINER_NAME
 docker rm -v $CONTAINER_NAME

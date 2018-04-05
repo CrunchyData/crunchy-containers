@@ -21,6 +21,6 @@ ${CCP_CLI?} create configmap pgbouncer-pgconf \
     --from-file=./configs/pgbouncer.ini \
     --from-file=./configs/users.txt
 
-expenv -f $DIR/primary.json| ${CCP_CLI?} create -f -
-expenv -f $DIR/replica.json| ${CCP_CLI?} create -f -
+expenv -f $DIR/primary.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/replica.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/pgbouncer.json | ${CCP_CLI?} create -f -

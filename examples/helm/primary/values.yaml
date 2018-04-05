@@ -1,7 +1,7 @@
-name: basic
+name: primary
 container:
   port: 5432
-  name: basic
+  name: primary
 credentials:
   primary: password
   root: password

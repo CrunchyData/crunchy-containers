@@ -25,8 +25,8 @@ docker rm crunchy-collect
 docker rm crunchy-prometheus
 docker rm crunchy-grafana
 
-docker volume rm pgsql-volume
-docker volume rm metrics-volume
+docker volume rm pgsql-pgdata
+docker volume rm metrics-data
 docker network rm pgnet
 
 exit 0

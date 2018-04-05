@@ -15,3 +15,4 @@
 ${CCP_CLI?} delete service primary-upgrade
 ${CCP_CLI?} delete pod primary-upgrade
 ${CCP_CLI?} delete pvc primary-upgrade-pgdata
+${CCP_CLI?} delete pv primary-upgrade-pgdata

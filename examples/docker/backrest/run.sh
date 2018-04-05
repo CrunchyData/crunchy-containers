@@ -13,14 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting primary container..."
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-CONTAINER=backrest
-PGCONF_VOLUME_NAME=$CONTAINER-pgconf
+CONTAINER_NAME=backrest
+
+echo "Starting the ${CONTAINER_NAME} example..."
+
+PGCONF_VOLUME_NAME=$CONTAINER_NAME-pgconf
 
 docker volume create --driver local --name=$PGCONF_VOLUME_NAME
 
@@ -38,11 +39,11 @@ docker run -it --privileged=true \
 	$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG ls /pgconf
 
 # the backrest repo that backrest will write to
-REPO_VOLUME_NAME=$CONTAINER-backrestrepo
+REPO_VOLUME_NAME=$CONTAINER_NAME-backrestrepo
 
 docker volume create --driver local --name=$REPO_VOLUME_NAME
 
-DATA_VOLUME_NAME=$CONTAINER-pgdata
+DATA_VOLUME_NAME=$CONTAINER_NAME-pgdata
 docker volume create --driver local --name=$DATA_VOLUME_NAME
 
 docker run \
@@ -67,6 +68,6 @@ docker run \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=$CONTAINER \
-	--hostname=$CONTAINER \
+	--name=$CONTAINER_NAME \
+	--hostname=$CONTAINER_NAME \
 	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

@@ -13,15 +13,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "Starting setupsql container..."
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-CONTAINER=setupsql
-CONF_VOLUME=$CONTAINER-pgconf
-DATA_VOLUME=$CONTAINER-volume
-WAL_VOLUME=$CONTAINER-wal
+CONTAINER_NAME=custom-config
+
+echo "Starting the ${CONTAINER_NAME} example..."
+
+CONF_VOLUME=${CONTAINER_NAME}-pgconf
+DATA_VOLUME=${CONTAINER_NAME}-pgdata
+WAL_VOLUME=${CONTAINER_NAME}-wal
 
 docker volume create --driver local --name=$CONF_VOLUME
 docker volume create --driver local --name=$DATA_VOLUME
@@ -31,12 +33,12 @@ docker run -it --privileged=true \
 	--volume-driver=local \
 	-v $DIR:/fromdir \
 	-v $CONF_VOLUME:/pgconf:z \
-	--name=$CONTAINER-setup \
+	--name=${CONTAINER_NAME}-setup \
 	$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG cp /fromdir/setup.sql /pgconf
 docker run -it --privileged=true \
 	--volume-driver=local \
 	-v $CONF_VOLUME:/pgconf:z \
-	--name=$CONTAINER-ls \
+	--name=${CONTAINER_NAME}-ls \
 	$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG ls /pgconf
 
 docker run \
@@ -58,6 +60,6 @@ docker run \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=$CONTAINER \
-	--hostname=$CONTAINER \
+	--name=${CONTAINER_NAME} \
+	--hostname=${CONTAINER_NAME} \
 	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

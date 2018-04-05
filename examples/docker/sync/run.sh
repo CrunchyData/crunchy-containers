@@ -13,7 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "Starting primary container..."
+echo "Starting the sync example..."
+
+PRIMARY_CONTAINER_NAME=primarysync
+SYNC_CONTAINER_NAME=replicasync
+ASYNC_CONTAINER_NAME=replicaasync
+
+echo "Starting the ${PRIMARY_CONTAINER_NAME} container..."
 
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
@@ -23,14 +29,14 @@ echo "Starting primary container..."
 #sudo chcon -Rt svirt_sandbox_file_t $PGCONF
 # add this next line to the docker run to override pg config files
 
-DATA_DIR=/tmp/syncprimary-data
+DATA_DIR=/tmp/${PRIMARY_CONTAINER_NAME}-data
 sudo rm -rf $DATA_DIR
 sudo mkdir -p $DATA_DIR
 sudo chown postgres:postgres $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-sudo docker stop syncprimary
-sudo docker rm syncprimary
+sudo docker stop ${PRIMARY_CONTAINER_NAME}
+sudo docker rm ${PRIMARY_CONTAINER_NAME}
 
 sudo docker run \
 	-p 12010:5432 \
@@ -42,7 +48,7 @@ sudo docker run \
 	-e MAX_WAL_SENDERS=7 \
 	-e WORK_MEM=5MB \
 	-e PG_MODE=primary \
-	-e SYNC_REPLICA=syncreplica \
+	-e SYNC_REPLICA=${SYNC_CONTAINER_NAME} \
 	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_PRIMARY_PASSWORD=password \
 	-e PG_PRIMARY_PORT=5432 \
@@ -50,23 +56,23 @@ sudo docker run \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=syncprimary \
-	--hostname=syncprimary \
+	--name=${PRIMARY_CONTAINER_NAME} \
+	--hostname=${PRIMARY_CONTAINER_NAME} \
 	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
 
-echo "Sleeping in order to let the primary start..."
+echo "Sleeping in order to let the ${PRIMARY_CONTAINER_NAME} container start..."
 sleep 20
 
-echo "Starting synchronous replica..."
+echo "Starting the ${SYNC_CONTAINER_NAME} container..."
 
-DATA_DIR=/tmp/syncreplica
+DATA_DIR=/tmp/${SYNC_CONTAINER_NAME}
 sudo rm -rf $DATA_DIR
 sudo mkdir -p $DATA_DIR
 sudo chown postgres:postgres $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-sudo docker stop syncreplica
-sudo docker rm syncreplica
+sudo docker stop ${SYNC_CONTAINER_NAME}
+sudo docker rm ${SYNC_CONTAINER_NAME}
 
 sudo docker run \
 	-p 12011:5432 \
@@ -80,29 +86,28 @@ sudo docker run \
 	-e PG_MODE=replica \
 	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_PRIMARY_PASSWORD=password \
-	-e PG_PRIMARY_HOST=syncprimary \
-	-e SYNC_REPLICA=syncreplica \
-	--link syncprimary:syncprimary \
+	-e PG_PRIMARY_HOST=${PRIMARY_CONTAINER_NAME} \
+	-e SYNC_REPLICA=${SYNC_CONTAINER_NAME} \
+	--link ${PRIMARY_CONTAINER_NAME}:${PRIMARY_CONTAINER_NAME} \
 	-e PG_PRIMARY_PORT=5432 \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=syncreplica \
-	--hostname=syncreplica \
+	--name=${SYNC_CONTAINER_NAME} \
+	--hostname=${SYNC_CONTAINER_NAME} \
 	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
 
+echo "Starting the ${ASYNC_CONTAINER_NAME} container..."
 
-echo "Starting asynchronous replica..."
-
-DATA_DIR=/tmp/asyncreplica
+DATA_DIR=/tmp/${ASYNC_CONTAINER_NAME}
 sudo rm -rf $DATA_DIR
 sudo mkdir -p $DATA_DIR
 sudo chown postgres:postgres $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-sudo docker stop asyncreplica
-sudo docker rm asyncreplica
+sudo docker stop ${ASYNC_CONTAINER_NAME}
+sudo docker rm ${ASYNC_CONTAINER_NAME}
 
 sudo docker run \
 	-p 12012:5432 \
@@ -116,13 +121,13 @@ sudo docker run \
 	-e PG_MODE=replica \
 	-e PG_PRIMARY_USER=primaryuser \
 	-e PG_PRIMARY_PASSWORD=password \
-	-e PG_PRIMARY_HOST=syncprimary \
-	--link syncprimary:syncprimary \
+	-e PG_PRIMARY_HOST=${PRIMARY_CONTAINER_NAME} \
+	--link ${PRIMARY_CONTAINER_NAME}:${PRIMARY_CONTAINER_NAME} \
 	-e PG_PRIMARY_PORT=5432 \
 	-e PG_USER=testuser \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=asyncreplica \
-	--hostname=asyncreplica \
+	--name=${ASYNC_CONTAINER_NAME} \
+	--hostname=${ASYNC_CONTAINER_NAME} \
 	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

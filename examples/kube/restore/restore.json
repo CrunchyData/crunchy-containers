@@ -5,6 +5,11 @@
         "name": "restore-backup"
     },
     "spec": {
+        "selector": {
+          "matchLabels": {
+            "name": "restore-backup"
+          }
+        },
         "accessModes": [
             "ReadWriteMany"
         ],

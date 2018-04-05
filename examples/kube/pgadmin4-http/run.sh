@@ -20,4 +20,5 @@ ${CCP_CLI?} create secret generic pgadmin4-http-secrets \
     --from-literal=pgadmin-email='admin@admin.com' \
     --from-literal=pgadmin-password='password'
 
+expenv -f $DIR/pgadmin4-http-pv.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/pgadmin4-http.json | ${CCP_CLI?} create -f -

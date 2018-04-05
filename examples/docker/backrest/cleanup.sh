@@ -17,6 +17,7 @@ echo "Cleaning up..."
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-CONTAINER=backrest
-docker rm -f --volumes $CONTAINER-ls $CONTAINER-setup
-docker rm -f --volumes $CONTAINER
+CONTAINER_NAME=backrest
+
+docker rm -f --volumes $CONTAINER_NAME-ls $CONTAINER_NAME-setup
+docker rm -f --volumes $CONTAINER_NAME
