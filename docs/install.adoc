@@ -387,7 +387,7 @@ on setting up NFS are found at the bottom of this guide.
 For testing with NFS, in your *.bashrc* file, include
 the following variables that are unique to your NFS environment:
 ....
-export CCP_SECURITY_CONTEXT='"supplementalGroups": [65534]"'
+export CCP_SECURITY_CONTEXT='"supplementalGroups": [65534]'
 export CCP_STORAGE_PATH=/mnt/nfsfileshare
 export CCP_NFS_IP=192.168.0.118
 export CCP_STORAGE_MODE=ReadWriteMany
