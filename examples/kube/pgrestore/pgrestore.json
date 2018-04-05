@@ -50,7 +50,7 @@
               "containers":[
                  {
                     "name":"pgrestore",
-                    "image":"$CCP_IMAGE_PREFIX/crunchy-restore:$CCP_IMAGE_TAG",
+                    "image":"$CCP_IMAGE_PREFIX/crunchy-pgrestore:$CCP_IMAGE_TAG",
                     "volumeMounts":[
                        {
                           "mountPath":"/pgdata",

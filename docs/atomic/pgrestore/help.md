@@ -6,7 +6,7 @@ restore - restore container image
 
 == DESCRIPTION
 The restore image provides a means of performing a restore
-of a dump from pg_dump or pg_dumpall via psql or pg_restore 
+of a dump from pg_dump or pg_dumpall via psql or pg_restore
 to a Postgres container database.
 
 The container itself consists of:
@@ -27,7 +27,7 @@ That atomic command runs the docker command set in this label:
 
 `Name=`
 
-The registry location and name of the image. For example, Name="crunchydata/crunchy-restore".
+The registry location and name of the image. For example, Name="crunchydata/crunchy-pgrestore".
 
 `Version=`
 

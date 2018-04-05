@@ -49,7 +49,7 @@ docker create \
         --link "$RESTORE_HOST":"$RESTORE_HOST"\
         --name="$CONTAINER_NAME" \
         --hostname="$CONTAINER_NAME" \
-        "$CCP_IMAGE_PREFIX/crunchy-restore:$CCP_IMAGE_TAG"
+        "$CCP_IMAGE_PREFIX/crunchy-pgrestore:$CCP_IMAGE_TAG"
 
 echo "Copying files to container with the command: docker cp $RESTORE_FULLPATH $CONTAINER_NAME:$VOLUME_PATH"
 docker cp "$RESTORE_FULLPATH" "$CONTAINER_NAME":"$VOLUME_PATH"

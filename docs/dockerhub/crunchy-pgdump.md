@@ -47,7 +47,7 @@ docker run \
     --env=PGDUMP_LABEL=mybackup \
     --env=PGDUMP_FORMAT=plain \
     --env=PGDUMP_VERBOSE=true \
-    --detach crunchydata/crunchy-dump:centos7-10.3-1.8.2
+    --detach crunchydata/crunchy-pgdump:centos7-10.3-1.8.2
 ```
 
 ### View pgdump

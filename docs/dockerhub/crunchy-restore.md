@@ -47,7 +47,7 @@ docker run \
     --env=PGDUMP_LABEL=mybackup \
     --env=PGDUMP_FORMAT=plain \
     --env=PGDUMP_VERBOSE=true \
-    --detach crunchydata/crunchy-dump:centos7-10.3-1.8.2
+    --detach crunchydata/crunchy-pgdump:centos7-10.3-1.8.2
 
 sleep 10
 
@@ -66,12 +66,12 @@ docker run \
     --env=PGRESTORE_FILE="pgdumpall.sql" \
     --env=PGRESTORE_VOLUMEPATH='/pgrestore' \
     --env=PGRESTORE_FORMAT=plain \
-    --detach crunchydata/crunchy-restore:centos7-10.3-1.8.2
+    --detach crunchydata/crunchy-pgrestore:centos7-10.3-1.8.2
 ```
 
 ### Environment Variables
 
-See the [official documentation](https://github.com/CrunchyData/crunchy-containers/blob/master/docs/containers.adoc#crunchy-restore) for a list of environment variables available for this container.
+See the [official documentation](https://github.com/CrunchyData/crunchy-containers/blob/master/docs/containers.adoc#crunchy-pgrestore) for a list of environment variables available for this container.
 
 
 ## More Examples
