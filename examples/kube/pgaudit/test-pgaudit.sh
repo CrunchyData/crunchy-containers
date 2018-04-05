@@ -16,6 +16,7 @@
 echo -e "\nTesting pgaudit..."
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 DOW=$(date +%u)
 
 if [[ $DOW == 7 ]]; then

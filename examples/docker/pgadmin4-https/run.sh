@@ -14,11 +14,13 @@ set -u
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CONTAINER_NAME=pgadmin4
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
+
+CONTAINER_NAME=pgadmin4-https
+
+echo "Starting the ${CONTAINER_NAME} example..."
 
 mkdir $DIR/out
 
@@ -26,15 +28,15 @@ openssl req -x509 -newkey rsa:4096 -keyout $DIR/out/server.key \
     -out ${DIR}/out/server.crt \
     -days 5 -nodes -subj '/CN=localhost'
 
-docker volume create --driver local --name=pgadmin
-docker volume create --driver local --name=certs
+docker volume create --driver local --name=${CONTAINER_NAME}-data
+docker volume create --driver local --name=${CONTAINER_NAME}-certs
 
 docker run \
     --volume-driver=local \
     --name=$CONTAINER_NAME \
     --hostname=$CONTAINER_NAME \
     -p 5050:5050 \
-    -v pgadmin:/var/lib/pgadmin:z\
+    -v ${CONTAINER_NAME}-data:/var/lib/pgadmin:z\
     -v ${DIR?}/out:/certs:z \
     -e PGADMIN_SETUP_EMAIL='admin@admin.com' \
     -e PGADMIN_SETUP_PASSWORD='password' \

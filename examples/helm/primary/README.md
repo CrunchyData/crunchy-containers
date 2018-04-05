@@ -1,4 +1,4 @@
-Crunchy Data Basic Helm Example
+Crunchy Data Primary Helm Example
 =======
 
 [PostgreSQL](https://postgresql.org) is a powerful, open source object-relational database system. It has more than 15 years of active development and a proven architecture that has earned it a strong reputation for reliability, data integrity, and correctness.
@@ -8,7 +8,7 @@ TL;DR;
 ------
 
 ```console
-$ helm install basic --name basic
+$ helm install primary --name primary
 ```
 
 Introduction
@@ -18,9 +18,9 @@ This is an example of running the Crunchy PostgreSQL containers using the Helm p
 
 This example will create the following in your Kubernetes cluster:
 
- * Create a pod named *basic*
- * Create a service named *basic*
- * Create a release named *basic*
+ * Create a pod named *primary*
+ * Create a service named *primary*
+ * Create a release named *primary*
  * Initialize the database using the predefined environment variables
 
 This example creates a simple PostgreSQL streaming replication deployment with a single primary (read-write).
@@ -31,7 +31,7 @@ Installing the Chart
 The chart can be installed as follows:
 
 ```console
-$ helm install basic --name basic
+$ helm install primary --name primary
 ```
 
 The command deploys both primary and replica pods on the Kubernetes cluster in the default configuration.
@@ -44,16 +44,16 @@ Using the Chart
 After the database starts up you can connect to it as follows:
 
 ```console
-$ psql -h basic -U postgres postgres
+$ psql -h primary -U postgres postgres
 ```
 
 Uninstalling the Chart
 ----------------------
 
-To uninstall/delete the `basic` deployment:
+To uninstall/delete the `primary` deployment:
 
 ```console
-$ helm del --purge basic
+$ helm del --purge primary
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -64,7 +64,7 @@ Configuration
 See `values.yaml` for configuration notes. Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```console
-$ helm install basic --name basic \
+$ helm install primary --name primary \
   --set Image.tag=centos7-9.6.8-1.8.2
 ```
 
@@ -74,9 +74,9 @@ The above command changes the image tag of the container from the default of `ce
 
 | Parameter                  | Description                        | Default                                                    |
 | -----------------------    | ---------------------------------- | ---------------------------------------------------------- |
-| `.name`                 | Name of release.                 | `basic`                                        |
+| `.name`                 | Name of release.                 | `primary`                                        |
 | `.container.port`        | The port used for the primary container      | `5432`                                                      |
-| `.container.name`        | Name for the primary container      | `basic`                                                      |
+| `.container.name`        | Name for the primary container      | `primary`                                                      |
 | `.credentials.primary`                | Password for the primary user    | `password`                                                      |
 | `.credentials.root`            | Password for the root user        | `password`                                                      |
 | `.credentials.user`            | Password for the standard user   | `password`                                                      |
@@ -90,7 +90,7 @@ The above command changes the image tag of the container from the default of `ce
 Alternatively, a YAML file that specifies the values for the above parameters can be provided while installing the chart. For example,
 
 ```console
-$ helm install basic --name basic  \
+$ helm install primary --name primary  \
   -f values.yaml
 ```
 

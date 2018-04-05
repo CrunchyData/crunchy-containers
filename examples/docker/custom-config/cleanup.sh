@@ -15,9 +15,16 @@
 
 echo "Cleaning up..."
 
-CONTAINER_NAME=backup
-VOLUME_NAME=$CONTAINER_NAME-pgdata
+CONTAINER_NAME=custom-config
 
-docker stop $CONTAINER_NAME
-docker rm -v $CONTAINER_NAME
-docker volume rm $VOLUME_NAME
+CONF_VOLUME=${CONTAINER_NAME?}-pgconf
+DATA_VOLUME=${CONTAINER_NAME?}-pgdata
+WAL_VOLUME=${CONTAINER_NAME?}-wal
+
+docker stop ${CONTAINER_NAME?}
+
+docker rm -f --volumes ${CONTAINER_NAME} ${CONTAINER_NAME}-ls ${CONTAINER_NAME}-setup
+
+docker volume rm ${CONF_VOLUME?}
+docker volume rm ${DATA_VOLUME?}
+docker volume rm ${WAL_VOLUME?}

@@ -15,7 +15,9 @@
 
 echo "Cleaning up..."
 
-CONTAINER=setupsql
+CONTAINER_NAME=primary
+VOLUME_NAME=$CONTAINER_NAME-pgdata
 
-docker rm -f --volumes $CONTAINER $CONTAINER-ls $CONTAINER-setup
-docker volume rm $CONTAINER-wal
+docker stop $CONTAINER_NAME
+docker rm -v $CONTAINER_NAME
+docker volume rm $VOLUME_NAME

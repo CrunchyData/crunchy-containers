@@ -13,11 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "Starting primary container..."
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
+
+echo "Starting the primary-replica example..."
+
+PRIMARY_CONTAINER_NAME=primary
+
+echo "Starting the ${PRIMARY_CONTAINER_NAME} container..."
 
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
@@ -37,14 +41,13 @@ $DIR/cleanup.sh
 #sudo chown postgres:postgres $DATA_DIR
 #sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-VOLUME_NAME=primary-volume
-PRIMARY_CONTAINER_NAME=primary
-docker volume create --driver local --name=$VOLUME_NAME
+PRIMARY_VOLUME_NAME=${PRIMARY_CONTAINER_NAME}-pgdata
+docker volume create --driver local --name=${PRIMARY_VOLUME_NAME}
 
 docker run \
 	-p 12007:5432 \
 	--privileged=true \
-	-v $VOLUME_NAME:/pgdata \
+	-v ${PRIMARY_VOLUME_NAME}:/pgdata \
 	-e TEMP_BUFFERS=9MB \
 	-e PGHOST=/tmp \
 	-e MAX_CONNECTIONS=101 \
@@ -63,19 +66,21 @@ docker run \
 	--hostname=$PRIMARY_CONTAINER_NAME \
 	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
 
-echo "Starting pg-replica container..."
+REPLICA_CONTAINER_NAME=replica
+
+echo "Starting the ${REPLICA_CONTAINER_NAME} container..."
+
 sleep 20
 
-VOLUME_NAME=replica-volume
-CONTAINER_NAME=replica
-docker volume create --driver local --name=$VOLUME_NAME
+REPLICA_VOLUME_NAME=${REPLICA_CONTAINER_NAME}-pgdata
+docker volume create --driver local --name=${REPLICA_VOLUME_NAME}
 
 docker run \
 	-p 12008:5432 \
 	--privileged=true \
-	-v $VOLUME_NAME:/pgdata \
+	-v ${REPLICA_VOLUME_NAME}:/pgdata \
 	-e TEMP_BUFFERS=9MB \
-	-e PG_PRIMARY_HOST=primary \
+	-e PG_PRIMARY_HOST=$PRIMARY_CONTAINER_NAME \
 	-e PGHOST=/tmp \
 	-e MAX_CONNECTIONS=101 \
 	-e SHARED_BUFFERS=129MB \
@@ -90,6 +95,6 @@ docker run \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=$CONTAINER_NAME \
-	--hostname=$CONTAINER_NAME \
+	--name=${REPLICA_CONTAINER_NAME} \
+	--hostname=${REPLICA_CONTAINER_NAME} \
 	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

@@ -13,12 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CONTAINER_NAME='pgadmin4'
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+echo "Cleaning up..."
+
+CONTAINER_NAME='pgadmin4-https'
 
 rm -rf ${DIR?}/out ${DIR?}/privkey.pem
 
 docker stop ${CONTAINER_NAME?}
 docker rm -v ${CONTAINER_NAME?}
-docker volume rm pgadmin
-docker volume rm certs
+docker volume rm ${CONTAINER_NAME?}-data
+docker volume rm ${CONTAINER_NAME?}-certs

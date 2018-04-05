@@ -14,13 +14,15 @@ set -u
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CONTAINER_NAME=pgadmin4
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-docker volume create --driver local --name=pgadmin
+CONTAINER_NAME=pgadmin4-http
+
+echo "Starting the ${CONTAINER_NAME} example..."
+
+docker volume create --driver local --name=${CONTAINER_NAME}-data
 
 docker run \
     --volume-driver=local \

@@ -57,7 +57,7 @@ file, you also need to specify a `pg_hba.conf` file.
 
 This example can be run as follows for the Docker environment:
 ....
-cd $CCPROOT/examples/docker/custom-setup
+cd $CCPROOT/examples/docker/custom-config
 ./run.sh
 ....
 
@@ -156,11 +156,10 @@ are copied over from the original database and saved. Because of this, you
 cannot use generated passwords as the new passwords will not be the same as the
 passwords stored in the backup.
 
-You have various options to deal with managing your
-passwords:
+You have various options to deal with managing your passwords:
 
- * externalize your passwords using secrets instead of using generated values
- * manually update your passwords to your known values after a restore
+ * externalize your passwords using Secrets instead of using generated values
+ * manually update your passwords to known values after a restore
 
 NOTE: Environment variables can be modified when there is a deployment
 or deployment controller in use.
@@ -297,7 +296,7 @@ and a default password of *password*.
 For all environments, the script additionally creates:
 
  * A persistent volume claim
- * A container named *primary*
+ * A crunchy-postgres container named *primary*
  * The database using predefined environment variables
 
 And specifically for the Kubernetes and OpenShift environments:
@@ -316,7 +315,7 @@ To shutdown the instance and remove the container for each example, run the foll
 
 To create the example and run the container:
 ....
-cd $CCPROOT/examples/docker/basic
+cd $CCPROOT/examples/docker/primary
 ./run.sh
 ....
 
@@ -341,7 +340,7 @@ psql -h primary -U postgres postgres
 ==== Helm
 
 This example resides under the `$CCPROOT/examples/helm` directory. View the README to run this
-example using Helm link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/helm/basic/README.md[here].
+example using Helm link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/helm/primary/README.md[here].
 
 === Creating a Primary / Replica Database Cluster
 
@@ -1159,10 +1158,7 @@ to PostgreSQL databases.
 This example configures pgbouncer to provide connection pooling
 for the pg-primary and pg-replica databases.
 
-On Docker, this example is required to run in conjunction with another container, by default the
-*primary-replica* example.
-
-On Kubernetes and OpenShift, the example will deploy a *primary-replica* equivalent set of pods and related services.
+On Docker, Kubernetes, and OpenShift, the example will deploy a *primary-replica* equivalent set of pods and related services.
 
 A storage filesystem is required to mount the pgbouncer configuration files which are
 then mounted to `/pgconf` in the crunchy-pgbouncer container.
@@ -1184,10 +1180,11 @@ cd $CCPROOT/examples/docker/pgbouncer
 ./run.sh
 ....
 
-To log into the database from the pgbouncer connection pool
+To log into the databases from the pgbouncer connection pool
 you would enter the following using the default password *password*:
 ....
-psql -h localhost -p 12005 -U testuser primary
+psql -h localhost -p 6543 -U testuser pg-primary
+psql -h localhost -p 6543 -U testuser pg-replica
 ....
 
 ==== Kubernetes and OpenShift
@@ -1457,17 +1454,17 @@ To shutdown the instance and remove the container for each example, run the foll
 Create a database container as follows:
 ....
 cd $CCPROOT/examples/docker/pitr
-./run-primary-pitr.sh
+./run-pitr.sh
 ....
 
 Next, we will create a base backup of that database using this:
 ....
-./run-primary-pitr-backup.sh
+./run-backup-pitr.sh
 ....
 
 After creating the base backup of the database, WAL segment files are created every 60 seconds
 that contain any database changes. These segments are stored in the
-`/tmp/primary-pitr/primary-pitr/pg_wal` directory.
+`/tmp/pitr/pitr/pg_wal` directory.
 
 Next, create some recovery targets within the database by running
 the SQL commands against the *pitr* database as follows:
@@ -1486,19 +1483,16 @@ Next, now that we have a base backup and a set of WAL files containing
 our database changes, we can shut down the *pitr* database
 to simulate a database failure.  Do this by running the following:
 ....
-docker stop primary-pitr
+docker stop pitr
 ....
 
 Next, let's edit the restore script to use the base backup files
 created in the step above.  You can view the backup path name
-under the `/tmp/backups/primary-pitr-backups/` directory. You will see
+under the `/tmp/backups/pitr-backups/` directory. You will see
 another directory inside of this path with a name similar to
 `2018-03-21-21-03-29`.  Copy and paste that value into the
 `run-restore-pitr.sh` script in the `BACKUP` environment variable.
 
-In order to restore the database before we created test table in the
-last command, you'll need uncomment to the `RECOVERY_TARGET_NAME` label
-`-e RECOVERY_TARGET_NAME=beforechanges` to define the restore target name.
 After that, run the script.
 ....
 vi ./run-restore-pitr.sh
@@ -1674,10 +1668,7 @@ cd $CCPROOT/examples/docker/pgaudit
 ....
 
 This starts an instance of the pg_audit container (running crunchy-postgres)
-on port 12005 on localhost.  You can then run the test script as follows:
-....
-./test-pgaudit.sh
-....
+on port 12005 on localhost. The test script is then automatically executed.
 
 This test executes a SQL file which contains pg_audit configuration
 statements as well as executes some basic SQL commands.  These
@@ -1696,7 +1687,7 @@ The script will create the pg_audit pod (running the crunchy-postgres container)
 on the Kubernetes instance and then execute a SQL file which
 contains pg_audit configuration statements as well as some
 basic SQL commands.  These SQL commands will cause pg_audit to create
- log messages in the `pg_log` file created by the database container.
+log messages in the `pg_log` file created by the database container.
 
 === Docker Swarm
 

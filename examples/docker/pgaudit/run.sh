@@ -13,13 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "Starting the PostgreSQL container to run PGAudit..."
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
-CONTAINER_NAME=audittest
-VOLUME_NAME=$CONTAINER_NAME-volume
+CONTAINER_NAME=pgaudit
+
+echo "Starting the ${CONTAINER_NAME} example..."
+
+VOLUME_NAME=$CONTAINER_NAME-pgdata
 
 docker volume create --driver local --name=$VOLUME_NAME
 
@@ -45,3 +46,8 @@ sudo docker run \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
 	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
+
+echo "Sleeping for 20s to allow time for the ${CONTAINER_NAME} container to get into a ready state."
+sleep 20
+
+$DIR/test-pgaudit.sh

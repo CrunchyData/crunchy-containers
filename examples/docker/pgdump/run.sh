@@ -13,24 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting backup container..."
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
 CONTAINER_NAME=pgdump
-VOLUME_NAME=$CONTAINER_NAME-volume
+
+echo "Starting the ${CONTAINER_NAME} example..."
+
+VOLUME_NAME=$CONTAINER_NAME-pgdata
 #
-# this example assumes you have the basic example running
+# This example assumes you have the primary example running.
 #
-HOST_TO_BACKUP=basic
+BACKUP_HOST=primary
 
 docker volume create --driver local --name=$VOLUME_NAME
 
 docker run \
 	--privileged=true \
 	-v $VOLUME_NAME:/pgdata \
-	-e PGDUMP_HOST=$HOST_TO_BACKUP \
+	-e PGDUMP_HOST=$BACKUP_HOST \
 	-e PGDUMP_DB=postgres \
 	-e PGDUMP_USER=postgres\
 	-e PGDUMP_PASS=password \
@@ -39,7 +41,7 @@ docker run \
 	-e PGDUMP_FORMAT=plain \
 	-e PGDUMP_VERBOSE=true \
 	-e PGDUMP_ALL=true \
-	--link $HOST_TO_BACKUP:$HOST_TO_BACKUP\
+	--link $BACKUP_HOST:$BACKUP_HOST\
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
 	-d $CCP_IMAGE_PREFIX/crunchy-pgdump:$CCP_IMAGE_TAG

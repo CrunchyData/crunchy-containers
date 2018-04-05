@@ -13,14 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "Starting badger..."
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
 CONTAINER_NAME=badger
-DATABASE_CONTAINER=basic
-VOLUME_NAME=basic-example-volume
+
+echo "Starting the ${CONTAINER_NAME} example..."
+
+DATABASE_CONTAINER=primary
+VOLUME_NAME=${DATABASE_CONTAINER}-pgdata
 
 docker run \
 	-p 14000:10000 \

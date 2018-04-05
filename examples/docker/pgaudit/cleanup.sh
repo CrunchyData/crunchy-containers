@@ -14,8 +14,9 @@
 # limitations under the License.
 
 echo "Cleaning up..."
-CONTAINER_NAME=audittest
-VOLUME=$CONTAINER_NAME-volume
+
+CONTAINER_NAME=pgaudit
+VOLUME_NAME=$CONTAINER_NAME-pgdata
 
 docker rm -f $CONTAINER_NAME
-docker volume rm $VOLUME
+docker volume rm $VOLUME_NAME

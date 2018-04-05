@@ -13,10 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "Starting primary-restore-pitr container..."
+CONTAINER_NAME=restore-pitr
 
-sudo docker stop primary-restore-pitr
-sudo docker rm primary-restore-pitr
+echo "Cleaning up..."
+
+sudo docker stop ${CONTAINER_NAME}
+sudo docker rm ${CONTAINER_NAME}
+
+echo "Starting the ${CONTAINER_NAME} example..."
 
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
@@ -28,17 +32,17 @@ sudo docker rm primary-restore-pitr
 
 # the following path is where the base backup files
 # are located for doing the database restore
-BACKUP=/tmp/backups/primary-pitr-backups/2016-12-21-21-08-57
+BACKUP=/tmp/backups/pitr-backups/2018-04-05-18-39-54
 
 # WAL_DIR contains the WAL files generated from
 # this database after recovery and ongoing afterwards
-WAL_DIR=/tmp/primary-pitr-restore-wal
+WAL_DIR=/tmp/${CONTAINER_NAME}-wal
 
 # RECOVER_DIR contains the WAL files from where we
 # want to recover from
-RECOVER_DIR=/tmp/primary-pitr/primary-pitr/pg_wal
+RECOVER_DIR=/tmp/pitr/pitr/pg_wal
 
-DATA_DIR=/tmp/primary-pitr-restore
+DATA_DIR=/tmp/${CONTAINER_NAME}
 sudo rm -rf $DATA_DIR $WAL_DIR
 sudo mkdir -p $DATA_DIR $WAL_DIR
 sudo chown postgres:postgres $DATA_DIR $WAL_DIR
@@ -69,6 +73,6 @@ sudo docker run \
 	-e PG_ROOT_PASSWORD=password \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=userdb \
-	--name=primary-restore-pitr \
-	--hostname=primary-restore-pitr \
+	--name=${CONTAINER_NAME} \
+	--hostname=${CONTAINER_NAME} \
 	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

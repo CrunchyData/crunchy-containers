@@ -13,7 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "Starting primary-pitr container with PITR enabled..."
+CONTAINER_NAME=pitr
+
+echo "Cleaning up..."
+
+sudo docker stop ${CONTAINER_NAME}
+sudo docker rm ${CONTAINER_NAME}
+
+echo "Starting the ${CONTAINER_NAME} example..."
 
 # uncomment these lines to override the pg config files with
 # your own versions of pg_hba.conf and postgresql.conf
@@ -23,20 +30,17 @@ echo "Starting primary-pitr container with PITR enabled..."
 #sudo chcon -Rt svirt_sandbox_file_t $PGCONF
 # add this next line to the docker run to override pg config files
 
-DATA_DIR=/tmp/primary-pitr
+DATA_DIR=/tmp/${CONTAINER_NAME}
 sudo rm -rf $DATA_DIR
 sudo mkdir -p $DATA_DIR
 sudo chown postgres:postgres $DATA_DIR
 sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-WAL_DIR=/tmp/primary-pitr-wal
+WAL_DIR=/tmp/${CONTAINER_NAME}-wal
 sudo rm -rf $WAL_DIR
 sudo mkdir -p $WAL_DIR
 sudo chown postgres:postgres $WAL_DIR
 sudo chcon -Rt svirt_sandbox_file_t $WAL_DIR
-
-sudo docker stop primary-pitr
-sudo docker rm primary-pitr
 
 sudo docker run \
 	-p 12000:5432 \
@@ -58,6 +62,6 @@ sudo docker run \
 	-e PG_DATABASE=userdb \
 	-e ARCHIVE_MODE=on \
 	-e ARCHIVE_TIMEOUT=60 \
-	--name=primary-pitr \
-	--hostname=primary-pitr \
+	--name=${CONTAINER_NAME} \
+	--hostname=${CONTAINER_NAME} \
 	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

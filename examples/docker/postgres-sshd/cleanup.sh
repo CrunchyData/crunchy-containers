@@ -20,5 +20,5 @@ rm -rf ${DIR?}/keys ${DIR?}/config/authorized_keys
 
 docker stop ${CONTAINER_NAME?}
 docker rm -v ${CONTAINER_NAME?}
-docker volume rm pgdata
-docker volume rm backrestrepo 
+docker volume rm ${CONTAINER_NAME?}-pgdata
+docker volume rm ${CONTAINER_NAME?}-backrestrepo 

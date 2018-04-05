@@ -14,7 +14,13 @@ set -u
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting postgres-gis container..."
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+$DIR/cleanup.sh
+
+CONTAINER_NAME=postgres-gis
+
+echo "Starting the ${CONTAINER_NAME} example..."
 
 # if you want to use local host directories for persistence
 # then uncomment out these lines below and use them instead
@@ -32,12 +38,7 @@ echo "starting postgres-gis container..."
 #sudo chown postgres:postgres $DATA_DIR
 #sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
 
-CONTAINER_NAME=postgres-gis
-VOLUME_NAME=postgres-gis-volume
-
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-$DIR/cleanup.sh
+VOLUME_NAME=${CONTAINER_NAME}-pgdata
 
 docker volume create --driver local --name=$VOLUME_NAME
 

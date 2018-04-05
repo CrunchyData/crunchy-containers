@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,9 +15,15 @@
 
 echo "Cleaning up..."
 
-CONTAINER_NAME=basic
-VOLUME_NAME=basic-example-volume
+PITR_CONTAINER_NAME=pitr
+BACKUP_CONTAINER_NAME=backup-pitr
+RESTORE_CONTAINER_NAME=restore-pitr
 
-docker stop $CONTAINER_NAME
-docker rm -v $CONTAINER_NAME
-docker volume rm $VOLUME_NAME
+docker stop $PITR_CONTAINER_NAME
+docker rm -v $PITR_CONTAINER_NAME
+
+docker stop $BACKUP_CONTAINER_NAME
+docker rm -v $BACKUP_CONTAINER_NAME
+
+docker stop $RESTORE_CONTAINER_NAME
+docker rm -v $RESTORE_CONTAINER_NAME

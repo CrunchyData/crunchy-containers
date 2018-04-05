@@ -15,16 +15,16 @@
 
 echo "Cleaning up..."
 
-CONTAINER_NAME=primary
-VOLUME_NAME=primary-volume
+PRIMARY_CONTAINER_NAME=primary
+PRIMARY_VOLUME_NAME=${PRIMARY_CONTAINER_NAME?}-pgdata
 
-docker stop $CONTAINER_NAME
-docker rm -v $CONTAINER_NAME
-docker volume rm $VOLUME_NAME
+REPLICA_CONTAINER_NAME=replica
+REPLICA_VOLUME_NAME=${REPLICA_CONTAINER_NAME?}-pgdata
 
-CONTAINER_NAME=replica
-VOLUME_NAME=replica-volume
+docker stop ${PRIMARY_CONTAINER_NAME?}
+docker rm -v ${PRIMARY_CONTAINER_NAME?}
+docker volume rm ${PRIMARY_VOLUME_NAME?}
 
-docker stop $CONTAINER_NAME
-docker rm -v $CONTAINER_NAME
-docker volume rm $VOLUME_NAME
+docker stop ${REPLICA_CONTAINER_NAME?}
+docker rm -v ${REPLICA_CONTAINER_NAME?}
+docker volume rm ${REPLICA_VOLUME_NAME?}

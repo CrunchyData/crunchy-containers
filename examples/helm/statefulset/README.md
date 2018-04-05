@@ -8,7 +8,7 @@ TL;DR;
 ------
 
 ```console
-$ helm install basic --name basic
+$ helm install statefulset --name statefulset
 ```
 
 Introduction
@@ -103,7 +103,7 @@ Configuration
 See `values.yaml` for configuration notes. Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```console
-$ helm install basic --name basic \
+$ helm install statefulset --name statefulset \
   --set Image.tag=centos7-9.6.8-1.8.2
 ```
 

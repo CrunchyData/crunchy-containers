@@ -13,26 +13,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "Starting metrics example..."
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
-docker volume create --driver local --name=metrics-volume
-docker volume create --driver local --name=pgsql-volume
+echo "Starting the metrics example..."
+
+docker volume create --driver local --name=metrics-data
+docker volume create --driver local --name=pgsql-pgdata
 docker network create --driver bridge pgnet
 
-echo "Starting PostgreSQL container.."
+echo "Starting the PostgreSQL container..."
 docker run \
     --name="crunchy-pgsql" \
     --hostname="crunchy-pgsql" \
     -p 5432:5432 \
-    -v pgsql-volume:/pgdata \
+    -v pgsql-pgdata:/pgdata \
     --network="pgnet" \
     --env-file=./env/pgsql.list \
     -d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
 
-echo "Starting Collect container.."
+echo "Starting the Collect container..."
 docker run \
     --name="crunchy-collect" \
     --hostname="crunchy-collect" \
@@ -40,22 +40,22 @@ docker run \
     --env-file=./env/collect.list \
     -d ${CCP_IMAGE_PREFIX?}/crunchy-collect:${CCP_IMAGE_TAG?}
 
-echo "Starting Prometheus container.."
+echo "Starting the Prometheus container..."
 docker run \
     --name="crunchy-prometheus" \
     --hostname="crunchy-prometheus" \
     -p 9090:9090 \
-    -v metrics-volume:/data \
+    -v metrics-data:/data \
     --network="pgnet" \
     --env-file=./env/prometheus.list \
     -d ${CCP_IMAGE_PREFIX?}/crunchy-prometheus:${CCP_IMAGE_TAG?}
 
-echo "Starting Grafana container.."
+echo "Starting the Grafana container..."
 docker run \
     --name="crunchy-grafana" \
     --hostname="crunchy-grafana" \
     -p 3000:3000 \
-    -v metrics-volume:/data \
+    -v metrics-data:/data \
     --network="pgnet" \
     --env-file=./env/grafana.list \
     -d ${CCP_IMAGE_PREFIX?}/crunchy-grafana:${CCP_IMAGE_TAG?}

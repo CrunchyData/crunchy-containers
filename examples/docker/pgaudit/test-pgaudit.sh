@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,16 +13,39 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "test pgaudit..."
+echo -e "\nTesting pgaudit..."
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+DOW=$(date +%u)
+
+if [[ $DOW == 7 ]]; then
+	DAY=Sun
+elif [[ $DOW == 1 ]]; then
+	DAY=Mon
+elif [[ $DOW == 2 ]]; then
+        DAY=Tue
+elif [[ $DOW == 3 ]]; then
+        DAY=Wed
+elif [[ $DOW == 4 ]]; then
+        DAY=Thu
+elif [[ $DOW == 5 ]]; then
+        DAY=Fri
+elif [[ $DOW == 6 ]]; then
+        DAY=Sat
+fi
+
+export PGPASSWORD=password
+
 psql -h localhost -p 12005 -U postgres -f $DIR/test.sql postgres
 
-docker exec audittest /bin/sh -c 'grep AUDIT /pgdata/audittest/pg_log/post*.log'
+echo -e "\nTest SQL written to pgaudit."
+sleep 2
+
+docker exec pgaudit /bin/sh -c 'grep AUDIT /pgdata/pgaudit/pg_log/postgresql-'${DAY}'.log'
 
 if [ $? -ne 0 ]; then
-	echo "test failed...no AUDIT msgs were found in the log file"
+	echo -e "\nTest failed. No AUDIT messages were found in the PostgreSQL log file."
 	exit 1
 fi
-echo "test passed, AUDIT msgs were found in the postgres log file"
+echo -e "\nTest passed. AUDIT messages were found in the PostgreSQL log file."

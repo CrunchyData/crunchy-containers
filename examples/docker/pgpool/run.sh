@@ -13,11 +13,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "Starting pgpool container..."
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
+
+CONTAINER_NAME=pgpool
+
+echo "Starting the ${CONTAINER_NAME} example..."
 
 docker run \
 	-p 12003:5432 \
@@ -28,6 +30,6 @@ docker run \
 	-e PG_USERNAME=testuser \
 	-e PG_PASSWORD=password \
 	-e PG_DATABASE=postgres \
-	--name=pgpool \
-	--hostname=pgpool \
+	--name=$CONTAINER_NAME \
+	--hostname=$CONTAINER_NAME \
 	-d $CCP_IMAGE_PREFIX/crunchy-pgpool:$CCP_IMAGE_TAG

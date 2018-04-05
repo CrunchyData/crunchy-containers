@@ -14,29 +14,28 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "starting backup container..."
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-CONTAINER_NAME=basicbackup
-VOLUME_NAME=$CONTAINER_NAME-volume
-#
-# this example assumes you have the basic example running
-#
-HOST_TO_BACKUP=basic
+CONTAINER_NAME=backup
+
+echo "Starting the ${CONTAINER_NAME} example..."
+
+VOLUME_NAME=$CONTAINER_NAME-pgdata
+BACKUP_HOST=primary
 
 docker volume create --driver local --name=$VOLUME_NAME
 
 docker run \
 	--privileged=true \
 	-v $VOLUME_NAME:/pgdata \
-	-e BACKUP_HOST=$HOST_TO_BACKUP \
-	-e BACKUP_USER=primaryuser\
+	-e BACKUP_HOST=$BACKUP_HOST \
+	-e BACKUP_USER=primaryuser \
 	-e BACKUP_PASS=password \
 	-e BACKUP_PORT=5432 \
 	-e BACKUP_LABEL=mybackup \
-	--link $HOST_TO_BACKUP:$HOST_TO_BACKUP\
+	--link $BACKUP_HOST:$BACKUP_HOST \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
 	-d $CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG

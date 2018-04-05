@@ -14,11 +14,13 @@ set -u
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CONTAINER_NAME=postgres-sshd
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
+
+CONTAINER_NAME=postgres-sshd
+
+echo "Starting the ${CONTAINER_NAME} example..."
 
 mkdir -p ${DIR?}/keys
 ssh-keygen -f ${DIR?}/keys/id_rsa -t rsa -N ''
@@ -27,8 +29,8 @@ ssh-keygen -t ecdsa -f ${DIR?}/keys/ssh_host_ecdsa_key -N ''
 ssh-keygen -t ed25519 -f ${DIR?}/keys/ssh_host_ed25519_key -N ''
 cp ${DIR?}/keys/id_rsa.pub ${DIR?}/config/authorized_keys
 
-docker volume create --driver local --name=pgdata
-docker volume create --driver local --name=backrestrepo
+docker volume create --driver local --name=${CONTAINER_NAME?}-pgdata
+docker volume create --driver local --name=${CONTAINER_NAME?}-backrestrepo
 
 docker run \
     --volume-driver=local \
@@ -37,8 +39,8 @@ docker run \
     --hostname=$CONTAINER_NAME \
     -p 5432:5432 \
     -p 2022:2022 \
-    -v pgdata:/pgdata:z\
-    -v backrestrepo:/backrestrepo:z \
+    -v ${CONTAINER_NAME?}-pgdata:/pgdata:z\
+    -v ${CONTAINER_NAME?}-backrestrepo:/backrestrepo:z \
     -v ${DIR?}/config:/pgconf \
     -v ${DIR?}/keys:/sshd \
     -d ${CCP_IMAGE_PREFIX?}/crunchy-postgres:${CCP_IMAGE_TAG?}
