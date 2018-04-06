@@ -413,6 +413,7 @@ Using block storage requires a security context to be set
 as follows:
 ....
 export CCP_SECURITY_CONTEXT='"fsGroup":26'
+export CCP_STORAGE_CLASS=standard
 export CCP_STORAGE_MODE=ReadWriteOnce
 export CCP_STORAGE_CAPACITY=400M
 ....
