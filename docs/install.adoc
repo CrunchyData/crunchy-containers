@@ -401,7 +401,11 @@ In this example above the group ownership of the NFS mount is assumed to be
 
 Dynamic storage classes can be used for the examples.  Gluster
 is only one example of a storage type that supports dynamic storage
-classes.
+classes.  The environment variable CCP_STORAGE_CLASS is used
+in the examples to determine whether or not to create a PersistentVolume
+manually or that it will be created dynamically using a StorageClass.  In
+the case of GKE, the default StorageClass is named *default*.   Storage
+class names are determined by how Kube administrator and can vary.
 
 Setting up a Gluster cluster will offer you the ability to use
 dynamic storage provisioning in the examples.  A set of example
