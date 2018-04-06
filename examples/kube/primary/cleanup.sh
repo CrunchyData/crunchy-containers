@@ -15,5 +15,8 @@
 ${CCP_CLI?} delete service primary
 ${CCP_CLI?} delete pod primary
 ${CCP_CLI?} delete pvc primary-pgdata
-${CCP_CLI?} delete pv primary-pgdata
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+	echo "CCP_STORAGE_CLASS not set, deleting PV"
+	${CCP_CLI?} delete pv primary-pgdata
+fi
 $CCPROOT/examples/waitforterm.sh primary ${CCP_CLI?}

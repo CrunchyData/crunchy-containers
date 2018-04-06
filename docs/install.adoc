@@ -412,7 +412,7 @@ on a Centos7 Minimal VM deployment.  See https://github.com/CrunchyData/crunchy-
 Using block storage requires a security context to be set
 as follows:
 ....
-export CCP_SECURITY_CONTEXT='"fsGroup":26"'
+export CCP_SECURITY_CONTEXT='"fsGroup":26'
 export CCP_STORAGE_MODE=ReadWriteOnce
 export CCP_STORAGE_CAPACITY=400M
 ....

@@ -17,5 +17,13 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-expenv -f $DIR/primary-pv.json | ${CCP_CLI?} create -f -
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+	echo "CCP_STORAGE_CLASS not set, creating the PV"
+	expenv -f $DIR/primary-pv.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/primary-pgdata.json | ${CCP_CLI?} create -f -
+else
+	echo "using the storage class for the PV"
+	expenv -f $DIR/primary-pgdata-sc.json | ${CCP_CLI?} create -f -
+fi
+
 expenv -f $DIR/primary.json | ${CCP_CLI?} create -f -
