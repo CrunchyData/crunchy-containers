@@ -1028,6 +1028,8 @@ web addresses:
  * Grafana (http://0.0.0.0:3000)
  * Prometheus (http://0.0.0.0:9090)
 
+ The crunchy-postgres container is accessible on port *12015*. 
+
 ==== Kubernetes and OpenShift
 
 Running the example:

@@ -10,11 +10,11 @@ scrape_configs:
   - role: pod
 
   relabel_configs:
-  - source_labels: [__meta_kubernetes_pod_label_crunchy_collect]
+  - source_labels: [__meta_kubernetes_pod_label_crunchy-collect]
     action: keep
     regex: true
   - source_labels: [__meta_kubernetes_pod_container_port_number]
-    action: drop 
+    action: drop
     regex: 5432
   - action: labelmap
     regex: __meta_kubernetes_pod_label_(.+)
