@@ -18,9 +18,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-# as of Kube 1.6, we need to allow the service account to perform
-# a label command, for this example, we open up wide permissions
-# for all serviceaccounts, this is NOT for production!
+# As of Kube 1.6, it is necessary to allow the service account to perform
+# a label command. For this example, we open up wide permissions
+# for all serviceaccounts. This is NOT for production!
+
 ${CCP_CLI?} create clusterrolebinding statefulset-sa \
   --clusterrole=cluster-admin \
   --user=admin \
@@ -28,5 +29,17 @@ ${CCP_CLI?} create clusterrolebinding statefulset-sa \
   --group=system:serviceaccounts \
   --namespace=$CCP_NAMESPACE
 
-expenv -f $DIR/statefulset-pv.json | ${CCP_CLI?} create -f -
-expenv -f $DIR/statefulset.json | ${CCP_CLI?} create -f -
+if [ ! -z "$CCP_STORAGE_CLASS" ]; then
+	echo "CCP_STORAGE_CLASS is set. Using the existing storage class for the PV."
+	expenv -f $DIR/statefulset-pvc-sc.json | ${CCP_CLI?} create -f -
+elif [ ! -z "$CCP_NFS_IP" ]; then
+	echo "CCP_NFS_IP is set. Creating NFS based storage volumes."
+	expenv -f $DIR/statefulset-pv-nfs.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/statefulset-pvc.json | ${CCP_CLI?} create -f -
+else
+	echo "CCP_NFS_IP and CCP_STORAGE_CLASS not set. Creating HostPath based storage volumes."
+	expenv -f $DIR/statefulset-pv.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/statefulset-pvc.json | ${CCP_CLI?} create -f -
+fi
+
+  expenv -f $DIR/statefulset.json | ${CCP_CLI?} create -f -

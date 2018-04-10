@@ -17,13 +17,17 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-if [ -z "$CCP_STORAGE_CLASS" ]; then
-	echo "CCP_STORAGE_CLASS not set, creating the PV"
-	expenv -f $DIR/primary-pv.json | ${CCP_CLI?} create -f -
-	expenv -f $DIR/primary-pgdata.json | ${CCP_CLI?} create -f -
+if [ ! -z "$CCP_STORAGE_CLASS" ]; then
+	echo "CCP_STORAGE_CLASS is set. Using the existing storage class for the PV."
+	expenv -f $DIR/primary-pvc-sc.json | ${CCP_CLI?} create -f -
+elif [ ! -z "$CCP_NFS_IP" ]; then
+	echo "CCP_NFS_IP is set. Creating NFS based storage volumes."
+	expenv -f $DIR/primary-pv-nfs.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/primary-pvc.json | ${CCP_CLI?} create -f -
 else
-	echo "using the storage class for the PV"
-	expenv -f $DIR/primary-pgdata-sc.json | ${CCP_CLI?} create -f -
+	echo "CCP_NFS_IP and CCP_STORAGE_CLASS not set. Creating HostPath based storage volumes."
+	expenv -f $DIR/primary-pv.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/primary-pvc.json | ${CCP_CLI?} create -f -
 fi
 
 expenv -f $DIR/primary.json | ${CCP_CLI?} create -f -

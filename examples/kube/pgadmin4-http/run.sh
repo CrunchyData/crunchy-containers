@@ -20,5 +20,17 @@ ${CCP_CLI?} create secret generic pgadmin4-http-secrets \
     --from-literal=pgadmin-email='admin@admin.com' \
     --from-literal=pgadmin-password='password'
 
-expenv -f $DIR/pgadmin4-http-pv.json | ${CCP_CLI?} create -f -
+if [ ! -z "$CCP_STORAGE_CLASS" ]; then
+	echo "CCP_STORAGE_CLASS is set. Using the existing storage class for the PV."
+	expenv -f $DIR/pgadmin4-http-pvc-sc.json | ${CCP_CLI?} create -f -
+elif [ ! -z "$CCP_NFS_IP" ]; then
+	echo "CCP_NFS_IP is set. Creating NFS based storage volumes."
+	expenv -f $DIR/pgadmin4-http-pv-nfs.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/pgadmin4-http-pvc.json | ${CCP_CLI?} create -f -
+else
+	echo "CCP_NFS_IP and CCP_STORAGE_CLASS not set. Creating HostPath based storage volumes."
+	expenv -f $DIR/pgadmin4-http-pv.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/pgadmin4-http-pvc.json | ${CCP_CLI?} create -f -
+fi
+
 expenv -f $DIR/pgadmin4-http.json | ${CCP_CLI?} create -f -

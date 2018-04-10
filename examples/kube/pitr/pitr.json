@@ -26,52 +26,6 @@
 }
 
 {
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-      "name": "pitr-pgwal"
-    },
-    "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "pitr-pgwal"
-        }
-      },
-      "accessModes": [
-        "ReadWriteMany"
-      ],
-      "resources": {
-        "requests": {
-          "storage": "400M"
-        }
-      }
-    }
-}
-
-{
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-      "name": "pitr-pgdata"
-    },
-    "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "pitr-pgdata"
-        }
-      },
-      "accessModes": [
-        "ReadWriteMany"
-      ],
-      "resources": {
-        "requests": {
-          "storage": "400M"
-        }
-      }
-    }
-}
-
-{
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {

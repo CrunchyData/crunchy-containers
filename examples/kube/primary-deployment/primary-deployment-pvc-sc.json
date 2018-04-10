@@ -1,0 +1,170 @@
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "primary-deployment-pgbackrest"
+    },
+    "spec": {
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "storageClassName": "$CCP_STORAGE_CLASS",
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "primary-deployment-pgwal"
+    },
+    "spec": {
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "storageClassName": "$CCP_STORAGE_CLASS",
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "primary-deployment-pgdata"
+    },
+    "spec": {
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "storageClassName": "$CCP_STORAGE_CLASS",
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "replica-deployment-pgbackrest"
+    },
+    "spec": {
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "storageClassName": "$CCP_STORAGE_CLASS",
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "replica-deployment-pgwal"
+    },
+    "spec": {
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "storageClassName": "$CCP_STORAGE_CLASS",
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "replica-deployment-pgdata"
+    },
+    "spec": {
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "storageClassName": "$CCP_STORAGE_CLASS",
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "replica2-deployment-pgbackrest"
+    },
+    "spec": {
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "storageClassName": "$CCP_STORAGE_CLASS",
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "replica2-deployment-pgwal"
+    },
+    "spec": {
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "storageClassName": "$CCP_STORAGE_CLASS",
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "replica2-deployment-pgdata"
+    },
+    "spec": {
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "storageClassName": "$CCP_STORAGE_CLASS",
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}

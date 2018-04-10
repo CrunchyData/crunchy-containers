@@ -23,8 +23,9 @@ ${CCP_CLI?} delete service pgsql
 
 ${CCP_CLI?} delete pvc metrics-prometheusdata
 ${CCP_CLI?} delete pvc metrics-grafanadata
-${CCP_CLI?} delete pv metrics-prometheusdata
-${CCP_CLI?} delete pv metrics-grafanadata
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+  ${CCP_CLI?} delete pv metrics-prometheusdata metrics-grafanadata
+fi
 
 $CCPROOT/examples/waitforterm.sh metrics ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh pgsql ${CCP_CLI?}

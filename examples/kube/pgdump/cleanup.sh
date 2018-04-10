@@ -14,4 +14,6 @@
 
 ${CCP_CLI?} delete job pgdump
 ${CCP_CLI?} delete pvc pgdump-pgdata
-${CCP_CLI?} delete pv pgdump-pgdata
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+  ${CCP_CLI?} delete pv pgdump-pgdata
+fi

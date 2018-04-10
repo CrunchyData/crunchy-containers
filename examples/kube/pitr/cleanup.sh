@@ -22,7 +22,9 @@ ${CCP_CLI?} delete pod pitr
 ${CCP_CLI?} delete job backup-pitr
 
 ${CCP_CLI?} delete pvc pitr-pgdata pitr-pgwal backup-pitr-pgdata restore-pitr-pgdata recover-pvc
-${CCP_CLI?} delete pv pitr-pgdata pitr-pgwal backup-pitr-pgdata restore-pitr-pgdata recover-pv
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+  ${CCP_CLI?} delete pv pitr-pgdata pitr-pgwal backup-pitr-pgdata restore-pitr-pgdata recover-pv
+fi
 
 sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/WAL/pitr
 sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/pitr

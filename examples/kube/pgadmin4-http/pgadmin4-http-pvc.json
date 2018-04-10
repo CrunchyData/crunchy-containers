@@ -1,0 +1,22 @@
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pgadmin4-http-data"
+    },
+    "spec": {
+        "selector": {
+          "matchLabels": {
+            "name": "pgadmin4-http-data"
+          }
+        },
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
+        }
+    }
+}

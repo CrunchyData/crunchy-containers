@@ -1,27 +1,4 @@
 {
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "restore-backup"
-    },
-    "spec": {
-        "selector": {
-          "matchLabels": {
-            "name": "restore-backup"
-          }
-        },
-        "accessModes": [
-            "ReadWriteMany"
-        ],
-        "resources": {
-            "requests": {
-                "storage": "400M"
-            }
-        }
-    }
-}
-
-{
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {

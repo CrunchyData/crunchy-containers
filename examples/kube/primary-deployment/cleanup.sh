@@ -25,6 +25,8 @@ ${CCP_CLI?} delete pvc primary-deployment-pgwal primary-deployment-pgbackrest pr
 ${CCP_CLI?} delete pvc replica-deployment-pgwal replica-deployment-pgbackrest replica-deployment-pgdata
 ${CCP_CLI?} delete pvc replica2-deployment-pgwal replica2-deployment-pgbackrest replica2-deployment-pgdata
 
-${CCP_CLI?} delete pv primary-deployment-pgwal primary-deployment-pgbackrest primary-deployment-pgdata
-${CCP_CLI?} delete pv replica-deployment-pgwal replica-deployment-pgbackrest replica-deployment-pgdata
-${CCP_CLI?} delete pv replica2-deployment-pgwal replica2-deployment-pgbackrest replica2-deployment-pgdata
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+  ${CCP_CLI?} delete pv primary-deployment-pgwal primary-deployment-pgbackrest primary-deployment-pgdata
+  ${CCP_CLI?} delete pv replica-deployment-pgwal replica-deployment-pgbackrest replica-deployment-pgdata
+  ${CCP_CLI?} delete pv replica2-deployment-pgwal replica2-deployment-pgbackrest replica2-deployment-pgdata
+fi

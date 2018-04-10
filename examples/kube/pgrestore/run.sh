@@ -21,5 +21,17 @@ $DIR/cleanup.sh
 export PGDUMP_HOST=$($CCP_CLI describe job pgdump | grep PGDUMP_HOST | awk '{print $NF}')
 export PGDUMP_PATH=$(ls -tc "$CCP_STORAGE_PATH/$PGDUMP_HOST-dumps/" | head -n1)
 
-expenv -f $DIR/pgrestore-pv.json | ${CCP_CLI?} create -f -
+if [ ! -z "$CCP_STORAGE_CLASS" ]; then
+	echo "CCP_STORAGE_CLASS is set. Using the existing storage class for the PV."
+	expenv -f $DIR/pgrestore-pvc-sc.json | ${CCP_CLI?} create -f -
+elif [ ! -z "$CCP_NFS_IP" ]; then
+	echo "CCP_NFS_IP is set. Creating NFS based storage volumes."
+	expenv -f $DIR/pgrestore-pv-nfs.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/pgrestore-pvc.json | ${CCP_CLI?} create -f -
+else
+	echo "CCP_NFS_IP and CCP_STORAGE_CLASS not set. Creating HostPath based storage volumes."
+	expenv -f $DIR/pgrestore-pv.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/pgrestore-pvc.json | ${CCP_CLI?} create -f -
+fi
+
 expenv -f $DIR/pgrestore.json | ${CCP_CLI?} create -f -

@@ -12,11 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-expenv -f $DIR/upgrade-pv.json | ${CCP_CLI?} create -f -
+if [ ! -z "$CCP_STORAGE_CLASS" ]; then
+	echo "CCP_STORAGE_CLASS is set. Using the existing storage class for the PV."
+	expenv -f $DIR/upgrade-pvc-sc.json | ${CCP_CLI?} create -f -
+elif [ ! -z "$CCP_NFS_IP" ]; then
+	echo "CCP_NFS_IP is set. Creating NFS based storage volumes."
+	expenv -f $DIR/upgrade-pv-nfs.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/upgrade-pvc.json | ${CCP_CLI?} create -f -
+else
+	echo "CCP_NFS_IP and CCP_STORAGE_CLASS not set. Creating HostPath based storage volumes."
+	expenv -f $DIR/upgrade-pv.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/upgrade-pvc.json | ${CCP_CLI?} create -f -
+fi
+
 expenv -f $DIR/upgrade.json | ${CCP_CLI?} create -f -
