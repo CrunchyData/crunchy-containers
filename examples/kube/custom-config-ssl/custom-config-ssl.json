@@ -1,27 +1,4 @@
 {
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "custom-config-ssl-pgconf"
-    },
-    "spec": {
-        "selector": {
-          "matchLabels": {
-            "name": "custom-config-ssl-pgconf"
-          }
-        },
-        "accessModes": [
-            "ReadWriteMany"
-        ],
-        "resources": {
-            "requests": {
-                "storage": "400M"
-            }
-        }
-    }
-}
-
-{
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {

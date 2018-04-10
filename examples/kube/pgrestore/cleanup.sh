@@ -14,4 +14,6 @@
 
 ${CCP_CLI?} delete job pgrestore
 ${CCP_CLI?} delete pvc pgrestore-pgdata
-${CCP_CLI?} delete pv pgrestore-pgdata
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+  ${CCP_CLI?} delete pv pgrestore-pgdata
+fi

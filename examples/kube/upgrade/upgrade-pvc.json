@@ -1,0 +1,45 @@
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "upgrade-pgnewdata"
+    },
+    "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "upgrade-pgnewdata"
+        }
+      },
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "upgrade-pgolddata"
+    },
+    "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "upgrade-pgolddata"
+        }
+      },
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}

@@ -26,52 +26,6 @@
 }
 
 {
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-      "name": "restore-pitr-pgdata"
-    },
-    "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "restore-pitr-pgdata"
-        }
-      },
-      "accessModes": [
-        "ReadWriteMany"
-      ],
-      "resources": {
-        "requests": {
-          "storage": "400M"
-        }
-      }
-    }
-}
-
-{
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "recover-pvc"
-    },
-    "spec": {
-        "selector": {
-        "matchLabels": {
-            "name": "recover-pv"
-        }
-  },
-        "accessModes": [
-            "ReadWriteMany"
-        ],
-        "resources": {
-            "requests": {
-                "storage": "178M"
-            }
-        }
-    }
-}
-
-{
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {

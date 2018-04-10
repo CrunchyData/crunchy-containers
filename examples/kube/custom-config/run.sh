@@ -23,5 +23,17 @@ ${CCP_CLI?} create configmap custom-config-pgconf \
     --from-file ./configs/pg_hba.conf \
     --from-file ./configs/setup.sql
 
-expenv -f $DIR/custom-config-pv.json | ${CCP_CLI?} create -f -
+if [ ! -z "$CCP_STORAGE_CLASS" ]; then
+	echo "CCP_STORAGE_CLASS is set. Using the existing storage class for the PV."
+	expenv -f $DIR/custom-config-pvc-sc.json | ${CCP_CLI?} create -f -
+elif [ ! -z "$CCP_NFS_IP" ]; then
+	echo "CCP_NFS_IP is set. Creating NFS based storage volumes."
+	expenv -f $DIR/custom-config-pv-nfs.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/custom-config-pvc.json | ${CCP_CLI?} create -f -
+else
+	echo "CCP_NFS_IP and CCP_STORAGE_CLASS not set. Creating HostPath based storage volumes."
+	expenv -f $DIR/custom-config-pv.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/custom-config-pvc.json | ${CCP_CLI?} create -f -
+fi
+
 expenv -f $DIR/custom-config.json | ${CCP_CLI?} create -f -

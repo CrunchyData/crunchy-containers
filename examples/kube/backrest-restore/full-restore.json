@@ -1,27 +1,4 @@
 {
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "backrest-restore-pgdata"
-    },
-    "spec": {
-        "selector": {
-          "matchLabels": {
-            "name": "backrest-restore-pgdata"
-          }
-        },
-        "accessModes": [
-            "ReadWriteMany"
-        ],
-        "resources": {
-            "requests": {
-                "storage": "400M"
-            }
-        }
-    }
-}
-
-{
     "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {

@@ -1,27 +1,4 @@
 {
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "backup-pgdata"
-    },
-    "spec": {
-        "selector": {
-          "matchLabels": {
-            "name": "backup-pgdata"
-          }
-        },
-        "accessModes": [
-            "ReadWriteMany"
-        ],
-        "resources": {
-            "requests": {
-                "storage": "400M"
-            }
-        }
-    }
-}
-
-{
     "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {

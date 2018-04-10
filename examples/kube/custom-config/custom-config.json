@@ -1,27 +1,4 @@
 {
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "custom-config-pgdata"
-    },
-    "spec": {
-        "selector": {
-          "matchLabels": {
-            "name": "custom-config-pgdata"
-          }
-        },
-        "accessModes": [
-            "ReadWriteMany"
-        ],
-        "resources": {
-            "requests": {
-                "storage": "400M"
-            }
-        }
-    }
-}
-
-{
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {

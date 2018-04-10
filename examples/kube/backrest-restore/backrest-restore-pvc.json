@@ -1,0 +1,22 @@
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "backrest-restore-pgdata"
+    },
+    "spec": {
+        "selector": {
+          "matchLabels": {
+            "name": "backrest-restore-pgdata"
+          }
+        },
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
+        }
+    }
+}

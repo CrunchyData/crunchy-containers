@@ -22,7 +22,10 @@ ${CCP_CLI?} delete configmap postgres-sshd-pgconf
 ${CCP_CLI?} delete secret postgres-sshd-secrets
 
 ${CCP_CLI?} delete pvc postgres-sshd-backrestrepo postgres-sshd-pgdata
-${CCP_CLI?} delete pv postgres-sshd-backrestrepo postgres-sshd-pgdata
+
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+  ${CCP_CLI?} delete pv postgres-sshd-backrestrepo postgres-sshd-pgdata
+fi
 
 $CCPROOT/examples/waitforterm.sh postgres-sshd ${CCP_CLI?}
 rm -rf ${DIR?}/keys

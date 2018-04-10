@@ -1,27 +1,4 @@
 {
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-      "name": "backup-pitr-pgdata"
-    },
-    "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "backup-pitr-pgdata"
-        }
-      },
-      "accessModes": [
-        "ReadWriteMany"
-      ],
-      "resources": {
-        "requests": {
-          "storage": "400M"
-        }
-      }
-    }
-}
-
-{
     "kind": "Job",
     "apiVersion": "batch/v1",
     "metadata": {

@@ -36,5 +36,17 @@ ${CCP_CLI?} create configmap postgres-sshd-pgconf \
     --from-file ./configs/sshd_config \
     --from-file ./keys/authorized_keys
 
-expenv -f $DIR/postgres-sshd-pv.json | ${CCP_CLI?} create -f -
+if [ ! -z "$CCP_STORAGE_CLASS" ]; then
+	echo "CCP_STORAGE_CLASS is set. Using the existing storage class for the PV."
+	expenv -f $DIR/postgres-sshd-pvc-sc.json | ${CCP_CLI?} create -f -
+elif [ ! -z "$CCP_NFS_IP" ]; then
+	echo "CCP_NFS_IP is set. Creating NFS based storage volumes."
+	expenv -f $DIR/postgres-sshd-pv-nfs.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/postgres-sshd-pvc.json | ${CCP_CLI?} create -f -
+else
+	echo "CCP_NFS_IP and CCP_STORAGE_CLASS not set. Creating HostPath based storage volumes."
+	expenv -f $DIR/postgres-sshd-pv.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/postgres-sshd-pvc.json | ${CCP_CLI?} create -f -
+fi
+
 expenv -f $DIR/postgres-sshd.json | ${CCP_CLI?} create -f -

@@ -1,0 +1,45 @@
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "postgres-sshd-pgdata"
+    },
+    "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "postgres-sshd-pgdata"
+        }
+      },
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "postgres-sshd-backrestrepo"
+    },
+    "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "postgres-sshd-backrestrepo"
+        }
+      },
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}

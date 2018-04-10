@@ -15,6 +15,8 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ${CCP_CLI?} delete pvc backrest-restore-pgdata
-${CCP_CLI?} delete pv backrest-restore-pgdata
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+  ${CCP_CLI?} delete pv backrest-restore-pgdata
+fi
 ${CCP_CLI?} delete job backrest-full-restore-job
 ${CCP_CLI?} delete job backrest-delta-restore-job

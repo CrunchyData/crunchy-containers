@@ -26,5 +26,17 @@ ${CCP_CLI?} create secret generic pgadmin4-https-tls \
     --from-file=pgadmin-cert=${DIR?}/server.crt \
     --from-file=pgadmin-key=${DIR?}/server.key
 
-expenv -f $DIR/pgadmin4-https-pv.json | ${CCP_CLI?} create -f -
+if [ ! -z "$CCP_STORAGE_CLASS" ]; then
+	echo "CCP_STORAGE_CLASS is set. Using the existing storage class for the PV."
+	expenv -f $DIR/pgadmin4-https-pvc-sc.json | ${CCP_CLI?} create -f -
+elif [ ! -z "$CCP_NFS_IP" ]; then
+	echo "CCP_NFS_IP is set. Creating NFS based storage volumes."
+	expenv -f $DIR/pgadmin4-https-pv-nfs.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/pgadmin4-https-pvc.json | ${CCP_CLI?} create -f -
+else
+	echo "CCP_NFS_IP and CCP_STORAGE_CLASS not set. Creating HostPath based storage volumes."
+	expenv -f $DIR/pgadmin4-https-pv.json | ${CCP_CLI?} create -f -
+	expenv -f $DIR/pgadmin4-https-pvc.json | ${CCP_CLI?} create -f -
+fi
+
 expenv -f $DIR/pgadmin4-https.json | ${CCP_CLI?} create -f -
