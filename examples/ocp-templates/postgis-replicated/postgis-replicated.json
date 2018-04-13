@@ -381,7 +381,8 @@
                     "metadata": {
                         "creationTimestamp": null,
                         "labels": {
-                            "name": "${SERVICE_NAME}-replica"
+                            "name": "${SERVICE_NAME}-replica",
+                            "app": "${SERVICE_NAME}"
                         }
                     },
                     "spec": {
