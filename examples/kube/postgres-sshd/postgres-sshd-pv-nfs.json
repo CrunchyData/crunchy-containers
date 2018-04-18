@@ -1,0 +1,43 @@
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "postgres-sshd-pgdata",
+        "labels": {
+            "name": "postgres-sshd-pgdata"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "nfs": {
+            "path": "$CCP_STORAGE_PATH",
+            "server": "$CCP_NFS_IP"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "postgres-sshd-backrestrepo",
+        "labels": {
+            "name": "postgres-sshd-backrestrepo"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "nfs": {
+            "path": "$CCP_STORAGE_PATH",
+            "server": "$CCP_NFS_IP"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}

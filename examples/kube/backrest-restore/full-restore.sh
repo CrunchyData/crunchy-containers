@@ -12,9 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source ${CCPROOT}/examples/common.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+${DIR}/cleanup.sh
 
-expenv -f $DIR/backrest-restore-pv.json | ${CCP_CLI?} create -f -
+create_storage "backrest-restore"
+if [[ $? -ne 0 ]]
+then
+    echo_err "Failed to create storage, exiting.."
+    exit 1
+fi
+
 expenv -f $DIR/full-restore.json | ${CCP_CLI?} create -f -

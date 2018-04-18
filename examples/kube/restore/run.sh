@@ -12,14 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+source ${CCPROOT}/examples/common.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+${DIR}/cleanup.sh
+
+create_storage "restore"
+if [[ $? -ne 0 ]]
+then
+    echo_err "Failed to create storage, exiting.."
+    exit 1
+fi
 
 export BACKUP_HOST=$($CCP_CLI describe job backup | grep BACKUP_HOST | awk '{print $NF}')
 export BACKUP_PATH=$(ls -tc "$CCP_STORAGE_PATH/$BACKUP_HOST-backups/" | head -n1)
 
-expenv -f $DIR/restore-pv.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/restore.json | ${CCP_CLI?} create -f -

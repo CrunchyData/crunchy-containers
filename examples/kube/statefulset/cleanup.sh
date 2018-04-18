@@ -12,10 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source ${CCPROOT}/examples/common.sh
+echo_info "Cleaning up.."
+
 ${CCP_CLI?} delete statefulset statefulset
 ${CCP_CLI?} delete sa statefulset-sa
 ${CCP_CLI?} delete clusterrolebinding statefulset-sa
 ${CCP_CLI?} delete pvc statefulset-pgdata
-${CCP_CLI?} delete pv statefulset-pgdata
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+  ${CCP_CLI?} delete pv statefulset-pgdata
+fi
 ${CCP_CLI?} delete service statefulset statefulset-primary statefulset-replica
 ${CCP_CLI?} delete pod statefulset-0 statefulset-1

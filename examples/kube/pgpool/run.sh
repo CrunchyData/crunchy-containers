@@ -12,11 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "This example depends on the primary-replica example being run prior!"
+source ${CCPROOT}/examples/common.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
+
+echo_warn "This example depends on the primary-replica example being run prior!"
+
+echo_info "Creating the example components.."
 
 ${CCP_CLI?} create secret generic pgpool-secrets \
 	--from-file=$DIR/configs/pool_hba.conf \

@@ -1,27 +1,4 @@
 {
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "backrest-restore-pgdata"
-    },
-    "spec": {
-        "selector": {
-          "matchLabels": {
-            "name": "backrest-restore-pgdata"
-          }
-        },
-        "accessModes": [
-            "ReadWriteMany"
-        ],
-        "resources": {
-            "requests": {
-                "storage": "400M"
-            }
-        }
-    }
-}
-
-{
     "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {
@@ -72,13 +49,13 @@
                     {
                         "name": "pgconf",
                         "configMap": {
-                            "name": "backrest-restore-pgconf"
+                            "name": "backrest-pgconf"
                         }
                     },
                     {
                         "name": "backrestrepo",
                         "persistentVolumeClaim": {
-                            "claimName": "backrest-restore-backrestrepo"
+                            "claimName": "backrest-backrestrepo"
                         }
                     },
                     {

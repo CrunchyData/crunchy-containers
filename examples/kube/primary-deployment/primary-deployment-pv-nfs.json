@@ -1,0 +1,189 @@
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "primary-deployment-pgwal",
+        "labels": {
+            "name": "primary-deployment-pgwal"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "nfs": {
+            "path": "$CCP_STORAGE_PATH",
+            "server": "$CCP_NFS_IP"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "primary-deployment-pgbackrest",
+        "labels": {
+            "name": "primary-deployment-pgbackrest"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "hostPath": {
+            "path": "$CCP_STORAGE_PATH"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "primary-deployment-pgdata",
+        "labels": {
+            "name": "primary-deployment-pgdata"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "hostPath": {
+            "path": "$CCP_STORAGE_PATH"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "replica-deployment-pgwal",
+        "labels": {
+            "name": "replica-deployment-pgwal"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "hostPath": {
+            "path": "$CCP_STORAGE_PATH"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "replica-deployment-pgbackrest",
+        "labels": {
+            "name": "replica-deployment-pgbackrest"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "hostPath": {
+            "path": "$CCP_STORAGE_PATH"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "replica-deployment-pgdata",
+        "labels": {
+            "name": "replica-deployment-pgdata"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "hostPath": {
+            "path": "$CCP_STORAGE_PATH"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "replica2-deployment-pgwal",
+        "labels": {
+            "name": "replica2-deployment-pgwal"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "hostPath": {
+            "path": "$CCP_STORAGE_PATH"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "replica2-deployment-pgbackrest",
+        "labels": {
+            "name": "replica2-deployment-pgbackrest"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "hostPath": {
+            "path": "$CCP_STORAGE_PATH"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "replica2-deployment-pgdata",
+        "labels": {
+            "name": "replica2-deployment-pgdata"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "hostPath": {
+            "path": "$CCP_STORAGE_PATH"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}

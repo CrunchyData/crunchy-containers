@@ -13,12 +13,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source ${CCPROOT}/examples/common.sh
+echo_info "Cleaning up.."
 
 ${CCP_CLI?} delete service custom-config
 ${CCP_CLI?} delete pod custom-config
 ${CCP_CLI?} delete pvc custom-config-pgdata
-${CCP_CLI?} delete pv custom-config-pgdata
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+  ${CCP_CLI?} delete pv custom-config-pgdata
+fi
 ${CCP_CLI?} delete configmap custom-config-pgconf
 
 $CCPROOT/examples/waitforterm.sh custom-config ${CCP_CLI?}

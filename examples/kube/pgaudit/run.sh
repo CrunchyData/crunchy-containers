@@ -12,13 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source ${CCPROOT}/examples/common.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+echo_info "Creating the example components.."
+
 expenv -f $DIR/pgaudit.json | ${CCP_CLI?} create -f -
-echo "Sleeping for 20s to allow time for the pod to get into a ready state."
+echo_info "Sleeping for 20 seconds to allow time for the pod to get into a ready state."
 sleep 20
 
 $DIR/test-pgaudit.sh
