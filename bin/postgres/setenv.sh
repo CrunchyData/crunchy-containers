@@ -16,29 +16,25 @@
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
 
-if [ -d /usr/pgsql-10 ]; then
-	export PGROOT=/usr/pgsql-10
-elif [ -d /usr/pgsql-9.6 ]; then
-	export PGROOT=/usr/pgsql-9.6
-elif [ -d /usr/pgsql-9.5 ]; then
-	export PGROOT=/usr/pgsql-9.5
-elif [ -d /usr/pgsql-9.4 ]; then
-	export PGROOT=/usr/pgsql-9.4
-else
-	export PGROOT=/usr/pgsql-9.3
-fi
+export PGROOT=$(find /usr/ -type d -name 'pgsql-*')
 
-echo "setting PGROOT to " $PGROOT
+echo_info "Setting PGROOT to ${PGROOT?}."
 
 export PGDATA=/pgdata/$HOSTNAME
 export PGWAL=/pgwal/$HOSTNAME-wal
 
 if [[ -v PGDATA_PATH_OVERRIDE ]]; then
-	export PGDATA=/pgdata/$PGDATA_PATH_OVERRIDE
-	export PGWAL=/pgwal/$PGDATA_PATH_OVERRIDE-wal
+    export PGDATA=/pgdata/$PGDATA_PATH_OVERRIDE
+    export PGWAL=/pgwal/$PGDATA_PATH_OVERRIDE-wal
 fi
 
 export PATH=/opt/cpm/bin:$PGROOT/bin:$PATH
 export LD_LIBRARY_PATH=$PGROOT/lib
 
-chown postgres $PGDATA $PGWAL
+if [[ -d ${PGDATA} ]]; then
+    chown postgres:postgres ${PGDATA?}
+fi
+
+if [[ -d ${PGWAL} ]]; then
+    chown postgres:postgres ${PGWAL?}
+fi

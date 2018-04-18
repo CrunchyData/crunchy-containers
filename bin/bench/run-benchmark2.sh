@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source /opt/cpm/bin/common_lib.sh
+
 #pgbench -c 2 -j 2 -T 20 benchmark
 
 #-c   # of client connections to simulate
@@ -25,17 +27,15 @@
 # $1 is the HOSTNAME
 # $2 is the PG PORT
 # $3 is the PG USER
-#
-# initialize the pgbench database
-#
+
+echo_info "Initializing pgbench database.."
 /usr/pgsql-9.5/bin/pgbench --host=$1 \
 	--port=$2 \
 	--username=$3 \
 	--scale=5 \
 	--initialize pgbench
-#
-# run some load
-#
+
+echo_info "Adding some load.."
 /usr/pgsql-9.5/bin/pgbench --host=$1 \
 	--port=$2 \
 	--username=$3 \

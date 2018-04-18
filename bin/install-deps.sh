@@ -45,21 +45,21 @@ unzip $HOME/bootstrap-4.5.0.zip  $HOME/.asciidoc/backends/bootstrap/
 
 rpm -q atomic-openshift-clients
 if [ $? -ne 0 ]; then
-	echo "atomic-openshift-clients is NOT installed"
-	sudo yum list available | grep atomic-openshift-clients
-	if [ $? -ne 0 ]; then
-		echo atomic-openshift-clients package is NOT found
-		sudo yum -y install kubernetes-client
-		FILE=openshift-origin-client-tools-v3.7.0-7ed6862-linux-64bit.tar.gz
-		wget -O /tmp/$FILE \
-		https://github.com/openshift/origin/releases/download/v3.7.0/$FILE
+    echo "atomic-openshift-clients is NOT installed"
+    sudo yum list available | grep atomic-openshift-clients
+    if [ $? -ne 0 ]; then
+        echo atomic-openshift-clients package is NOT found
+        sudo yum -y install kubernetes-client
+        FILE=openshift-origin-client-tools-v3.7.0-7ed6862-linux-64bit.tar.gz
+        wget -O /tmp/$FILE \
+        https://github.com/openshift/origin/releases/download/v3.7.0/$FILE
 
-		tar xvzf /tmp/$FILE  -C /tmp
-		sudo cp /tmp/openshift-origin-client-tools-v3.7.0-7ed6862-linux-64bit/oc /usr/bin/oc
-	else
-		echo atomic-openshift-clients package IS found
-		sudo yum -y install atomic-openshift-clients
-	fi
+        tar xvzf /tmp/$FILE  -C /tmp
+        sudo cp /tmp/openshift-origin-client-tools-v3.7.0-7ed6862-linux-64bit/oc /usr/bin/oc
+    else
+        echo atomic-openshift-clients package IS found
+        sudo yum -y install atomic-openshift-clients
+    fi
 
 fi
 

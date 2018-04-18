@@ -26,7 +26,7 @@ rm -rf /tmp/pgpool.pid
 rm -rf /tmp/.s.*
 
 function trap_sigterm() {
-    echo_info "Doing trap logic..."
+    echo_info "Doing trap logic.."
     echo_warn "Clean shutdown of pgPool.."
     kill -SIGINT $(head -1 ${PGPOOL_PIDFILE?})
 }
@@ -38,7 +38,7 @@ then
     echo_info "Custom configuration detected.."
     CONFIGS=/pgconf/pgpoolconfigdir
 else
-    echo_info "No custom configuration detected.  Applying default config.."
+    echo_info "No custom configuration detected. Applying default config.."
     cp ${CONF_DIR?}/* ${CONFIGS?}
 
     env_check_err "PG_PRIMARY_SERVICE_NAME"

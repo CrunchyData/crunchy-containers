@@ -24,7 +24,7 @@ RESET="\033[0m"
 function enable_debugging() {
     if [[ ${CRUNCHY_DEBUG:-false} == "true" ]]
     then
-        echo "Turning Debugging On"
+        echo_info "Turning debugging on.."
         export PS4='+(${BASH_SOURCE}:${LINENO})> ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
         set -x
     fi
@@ -40,7 +40,7 @@ function ose_hack() {
 function env_check_err() {
     if [[ -z ${!1} ]]
     then
-        echo_err "$1 environment variable is not set, aborting.."
+        echo_err "$1 environment variable is not set, aborting."
         exit 1
     fi
 }
@@ -48,7 +48,22 @@ function env_check_err() {
 function env_check_warn() {
     if [[ -z ${!1} ]]
     then
-        echo_warn "$1 environment variable is not set.."
+        echo_warn "$1 environment variable is not set."
+    fi
+}
+
+function env_check_info() {
+    if [[ ! -z ${!1} ]]
+    then
+        echo_info "$2"
+    fi
+}
+
+function dir_check_err() {
+    if [[ -d ${!1} ]]
+    then
+        echo_err "The $1 directory does not exist and is required."
+        exit 1
     fi
 }
 

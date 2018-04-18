@@ -23,7 +23,6 @@ APACHE_PIDFILE='/tmp/httpd.pid'
 
 function trap_sigterm() {
     echo_info "Doing trap logic.."
-
     echo_warn "Clean shutdown of Apache.."
     /usr/sbin/httpd -k stop
     kill -SIGINT $(head -1 $APACHE_PIDFILE)
@@ -36,14 +35,14 @@ env_check_err "PGADMIN_SETUP_PASSWORD"
 
 if [[ ${ENABLE_TLS:-false} == 'true' ]]
 then
-    echo_info "TLS enabled.  Applying https configuration.."
+    echo_info "TLS enabled. Applying https configuration.."
     if [[ ( ! -f /certs/server.key ) || ( ! -f /certs/server.crt ) ]]; then
         echo_err "ENABLE_TLS true but /certs/server.key or /certs/server.crt not found, aborting"
         exit 1
     fi
     cp /opt/cpm/conf/pgadmin-https.conf /var/lib/pgadmin/pgadmin.conf
 else
-    echo_info "TLS disabled.  Applying http configuration.."
+    echo_info "TLS disabled. Applying http configuration.."
     cp /opt/cpm/conf/pgadmin-http.conf /var/lib/pgadmin/pgadmin.conf
 fi
 

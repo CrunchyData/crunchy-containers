@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +21,7 @@ export PATH=$PATH:/opt/cpm/bin
 export TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"
 
 function trap_sigterm() {
-    echo_info "Doing trap logic..."
+    echo_info "Doing trap logic.."
     echo_warn "Clean shutdown of dbaserver.."
     killall dbaserver
 }
@@ -36,7 +36,7 @@ then
     env_check_err "KUBERNETES_SERVICE_HOST"
     env_check_err "KUBERNETES_SERVICE_PORT"
     env_check_err "OSE_PROJECT"
-    
+
     echo_info "Current OpenShift Project is ${OSE_PROJECT?}.."
 
     url="https://${KUBERNETES_SERVICE_HOST?}:${KUBERNETES_SERVICE_PORT?}"

@@ -22,7 +22,7 @@ export GRAFANA_HOME=$(find /opt/cpm/bin/ -type d -name 'grafana-[1-9].*')
 export CONFIG_DIR='/opt/cpm/conf'
 
 function trap_sigterm() {
-    echo_info "Doing trap logic..."
+    echo_info "Doing trap logic.."
     echo_warn "Clean shutdown of Grafana.."
 
     if ! pgrep grafana-server > /dev/null
