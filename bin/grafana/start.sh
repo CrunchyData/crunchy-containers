@@ -104,7 +104,18 @@ ${GRAFANA_HOME?}/bin/grafana-server \
     --homepath=${GRAFANA_HOME?} \
     web &
 
-sleep 10
+while true
+do
+    echo_info "Checking if Grafana API is ready.."
+    ok=$(curl -Ssl http://${ADMIN_USER?}:${ADMIN_PASS?}@localhost:3000/api/health)
+    if grep --quiet "ok" <<< ${ok}
+    then
+        echo_info "Grafana API is ready!"
+        break
+    fi
+    sleep 5
+done
+
 echo_info "Registering Prometheus datasource in Grafana.."
 register_datasource
 
