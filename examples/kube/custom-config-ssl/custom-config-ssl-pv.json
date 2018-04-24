@@ -2,9 +2,30 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "custom-config-ssl-pgconf",
+        "name": "custom-config-ssl-pgdata",
         "labels": {
-            "name": "custom-config-ssl-pgconf"
+            "name": "custom-config-ssl-pgdata"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "hostPath": {
+            "path": "$CCP_STORAGE_PATH"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "custom-config-ssl-backrestrepo",
+        "labels": {
+            "name": "custom-config-ssl-backrestrepo"
         }
     },
     "spec": {
