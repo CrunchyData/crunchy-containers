@@ -18,27 +18,26 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-CONFDIR=$CCP_STORAGE_PATH/custom-config-ssl-pgconf
-sudo CONFDIR=$CONFDIR mkdir $CONFDIR
-sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR
-sudo CONFDIR=$CONFDIR cp $DIR/configs/setup.sql $CONFDIR
-sudo CONFDIR=$CONFDIR cp $DIR/configs/pg_hba.conf $CONFDIR
-sudo CONFDIR=$CONFDIR cp $DIR/configs/postgresql.conf $CONFDIR
-sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/setup.sql
-sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/postgresql.conf
-sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/pg_hba.conf
-sudo CONFDIR=$CONFDIR chmod g+r $CONFDIR/setup.sql $CONFDIR/postgresql.conf $CONFDIR/pg_hba.conf
+set -e
+$DIR/ssl-creator.sh testuser custom-config-ssl
+set +e
 
-sudo CONFDIR=$CONFDIR cp $DIR/certs/ca.crt $CONFDIR
-sudo CONFDIR=$CONFDIR cp $DIR/certs/server.key $CONFDIR
-sudo cat ./certs/server.crt ./certs/server-intermediate.crt ./certs/ca.crt > /tmp/server.crt
-sudo mv /tmp/server.crt $CONFDIR/server.crt
-
-sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/ca.crt
-sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/server.key
-sudo CONFDIR=$CONFDIR chown nfsnobody:nfsnobody $CONFDIR/server.crt
-sudo CONFDIR=$CONFDIR chmod 640 $CONFDIR/ca.crt $CONFDIR/server.key $CONFDIR/server.crt
-sudo CONFDIR=$CONFDIR chmod 400 $CONFDIR/server.key
+${CCP_CLI?} create secret generic postgres-ssl-secrets\
+    --from-file=ca-crt=${DIR?}/certs/ca.crt \
+    --from-file=ca-crl=${DIR?}/certs/ca.crl \
+    --from-file=server-crt=${DIR?}/certs/server.crt \
+    --from-file=server-key=${DIR?}/certs/server.key \
+    --from-file=pgbackrest-conf=${DIR?}/configs/pgbackrest.conf \
+    --from-file=pg-hba-conf=${DIR?}/configs/pg_hba.conf \
+    --from-file=postgresql-conf=${DIR?}/configs/postgresql.conf
 
 expenv -f $DIR/custom-config-ssl-pv.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/custom-config-ssl.json | ${CCP_CLI?} create -f -
+
+echo ""
+echo "To connect via SSL, run the following once the DB is ready: "
+echo "source ./env.sh"
+echo "psql "postgresql://custom-config-ssl:5432/postgres?sslmode=verify-full" -U testuser"
+echo ""
+
+exit 0

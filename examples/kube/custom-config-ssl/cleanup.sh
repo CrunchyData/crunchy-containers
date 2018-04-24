@@ -15,13 +15,15 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-CONFDIR=$CCP_STORAGE_PATH/custom-config-ssl-pgconf
-
 ${CCP_CLI?} delete service custom-config-ssl
 ${CCP_CLI?} delete pod custom-config-ssl
-${CCP_CLI?} delete pvc custom-config-ssl-pgconf
-${CCP_CLI?} delete pv custom-config-ssl-pgconf
-
-sudo CONFDIR=$CONFDIR rm -rf $CONFDIR
+${CCP_CLI?} delete secret postgres-ssl-secrets
+${CCP_CLI?} delete pvc custom-config-ssl-pgdata
+${CCP_CLI?} delete pvc custom-config-ssl-backrestrepo
+${CCP_CLI?} delete pv custom-config-ssl-pgdata
+${CCP_CLI?} delete pv custom-config-ssl-backrestrepo
 
 $CCPROOT/examples/waitforterm.sh custom-config-ssl ${CCP_CLI?}
+
+rm -rf ${DIR?}/certs
+rm -rf ${DIR?}/out
