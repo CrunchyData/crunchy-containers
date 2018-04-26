@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source ${CCPROOT}/examples/common.sh
+echo_info "Cleaning up.."
 
 ${CCP_CLI?} delete service backrest
 ${CCP_CLI?} delete pod backrest
 ${CCP_CLI?} delete configmap backrest-pgconf
 ${CCP_CLI?} delete pvc backrest-pgdata backrest-backrestrepo
-${CCP_CLI?} delete pv backrest-pgdata backrest-backrestrepo
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+  ${CCP_CLI?} delete pv backrest-pgdata backrest-backrestrepo
+fi

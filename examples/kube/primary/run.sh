@@ -12,18 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source ${CCPROOT}/examples/common.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+${DIR}/cleanup.sh
 
-if [ -z "$CCP_STORAGE_CLASS" ]; then
-	echo "CCP_STORAGE_CLASS not set, creating the PV"
-	expenv -f $DIR/primary-pv.json | ${CCP_CLI?} create -f -
-	expenv -f $DIR/primary-pgdata.json | ${CCP_CLI?} create -f -
-else
-	echo "using the storage class for the PV"
-	expenv -f $DIR/primary-pgdata-sc.json | ${CCP_CLI?} create -f -
+create_storage "primary"
+if [[ $? -ne 0 ]]
+then
+    echo_err "Failed to create storage, exiting.."
+    exit 1
 fi
 
 expenv -f $DIR/primary.json | ${CCP_CLI?} create -f -

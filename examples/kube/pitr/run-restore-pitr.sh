@@ -12,17 +12,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+source ${CCPROOT}/examples/common.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+echo_info "Cleaning up.."
 
 ${CCP_CLI?} delete pod restore-pitr
 ${CCP_CLI?} delete pod pitr
 $CCPROOT/examples/waitforterm.sh pitr ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh restore-pitr ${CCP_CLI?}
 ${CCP_CLI?} delete pvc recover-pvc restore-pitr-pgdata
-${CCP_CLI?} delete pv recover-pv restore-pitr-pgdata
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+  ${CCP_CLI?} delete pv recover-pv restore-pitr-pgdata
+fi
 ${CCP_CLI?} delete svc restore-pitr
 
-expenv -f $DIR/restore-pitr-pv.json | ${CCP_CLI?} create -f -
+create_storage "restore-pitr"
+if [[ $? -ne 0 ]]
+then
+    echo_err "Failed to create storage, exiting.."
+    exit 1
+fi
+
 expenv -f $DIR/restore-pitr.json | ${CCP_CLI?} create -f -

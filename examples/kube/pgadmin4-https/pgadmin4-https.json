@@ -1,27 +1,4 @@
 {
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "pgadmin4-https-data"
-    },
-    "spec": {
-        "selector": {
-          "matchLabels": {
-            "name": "pgadmin4-https-data"
-          }
-        },
-        "accessModes": [
-            "ReadWriteMany"
-        ],
-        "resources": {
-            "requests": {
-                "storage": "400M"
-            }
-        }
-    }
-}
-
-{
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {

@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source ${CCPROOT}/examples/common.sh
+echo_info "Cleaning up.."
+
 ${CCP_CLI?} delete clusterrolebinding prometheus-sa
 ${CCP_CLI?} delete clusterrole prometheus-sa
 ${CCP_CLI?} delete sa prometheus-sa
@@ -23,8 +26,9 @@ ${CCP_CLI?} delete service pgsql
 
 ${CCP_CLI?} delete pvc metrics-prometheusdata
 ${CCP_CLI?} delete pvc metrics-grafanadata
-${CCP_CLI?} delete pv metrics-prometheusdata
-${CCP_CLI?} delete pv metrics-grafanadata
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+  ${CCP_CLI?} delete pv metrics-prometheusdata metrics-grafanadata
+fi
 
 $CCPROOT/examples/waitforterm.sh metrics ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh pgsql ${CCP_CLI?}

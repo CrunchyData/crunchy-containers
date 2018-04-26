@@ -1,27 +1,4 @@
 {
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-      "name": "pgrestore-pgdata"
-    },
-    "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "pgrestore-pgdata"
-        }
-      },
-      "accessModes": [
-        "ReadWriteMany"
-      ],
-      "resources": {
-        "requests": {
-          "storage": "400M"
-        }
-      }
-    }
-}
-
-{
      "apiVersion":"batch/v1",
      "kind":"Job",
      "metadata":{

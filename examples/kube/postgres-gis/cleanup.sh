@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source ${CCPROOT}/examples/common.sh
+echo_info "Cleaning up.."
+
 ${CCP_CLI?} delete deployments,pods,service -l name=postgres-gis
 
 $CCPROOT/examples/waitforterm.sh postgres-gis ${CCP_CLI?}

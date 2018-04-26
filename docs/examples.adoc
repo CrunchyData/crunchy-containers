@@ -1340,39 +1340,6 @@ essentially create an additional replica database.
 ${CCP_CLI} scale --replicas=3 statefulset statefulset
 ....
 
-===== Statefulset using Dynamic Provisioning
-
-The *statefulset-dyn* example is almost an exact copy of the
-previous Statefulset example; however, this example uses
-Dynamic Storage Provisioning to automatically create Persistent
-Volume Claims based on StorageClasses.  This feature is
-available on Google Container Engine which this example was
-tested upon.
-
-You can run the example as follows:
-....
-cd $CCPROOT/examples/kube/statefulset-dyn
-./run.sh
-....
-
-This will create a StorageClass named *slow* which you can view using:
-....
-${CCP_CLI} get storageclass
-NAME      TYPE
-slow      kubernetes.io/gce-pd
-....
-
-The example causes Kubernetes to create the required persistent volume claims automatically:
-....
-${CCP_CLI} get pvc
-NAME             STATUS    VOLUME                                     CAPACITY   ACCESSMODES   STORAGECLASS   AGE
-pgdata-statefulset-0   Bound     pvc-06334f6f-371b-11e7-9bda-42010a8000e9   1Gi        RWX           slow           5m
-pgdata-statefulset-1   Bound     pvc-063795b3-371b-11e7-9bda-42010a8000e9   1Gi        RWX           slow           5m
-....
-
-More information on dynamic storage provisioning can be found here:
-https://kubernetes.io/docs/concepts/storage/persistent-volumes/
-
 ==== Helm
 
 This example resides under the `$CCPROOT/examples/helm` directory. View the README to

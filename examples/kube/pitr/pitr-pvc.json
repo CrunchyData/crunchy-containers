@@ -1,0 +1,45 @@
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "pitr-pgwal"
+    },
+    "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "pitr-pgwal"
+        }
+      },
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "pitr-pgdata"
+    },
+    "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "pitr-pgdata"
+        }
+      },
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}

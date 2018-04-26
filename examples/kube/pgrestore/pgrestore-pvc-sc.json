@@ -2,22 +2,17 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-pgdata"
+      "name": "pgrestore-pgdata"
     },
     "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "primary-pgdata"
-        }
-      },
       "accessModes": [
-        "ReadWriteMany"
+        "$CCP_STORAGE_MODE"
       ],
+      "storageClassName": "$CCP_STORAGE_CLASS",
       "resources": {
         "requests": {
-          "storage": "400M"
+          "storage": "$CCP_STORAGE_CAPACITY"
         }
       }
     }
 }
-

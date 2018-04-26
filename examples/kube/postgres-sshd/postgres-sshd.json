@@ -30,52 +30,6 @@
 }
 
 {
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-      "name": "postgres-sshd-backrestrepo"
-    },
-    "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "postgres-sshd-backrestrepo"
-        }
-      },
-      "accessModes": [
-        "ReadWriteMany"
-      ],
-      "resources": {
-        "requests": {
-          "storage": "400M"
-        }
-      }
-    }
-}
-
-{
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-      "name": "postgres-sshd-pgdata"
-    },
-    "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "postgres-sshd-pgdata"
-        }
-      },
-      "accessModes": [
-        "ReadWriteMany"
-      ],
-      "resources": {
-        "requests": {
-          "storage": "400M"
-        }
-      }
-    }
-}
-
-{
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {

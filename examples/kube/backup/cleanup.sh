@@ -12,6 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source ${CCPROOT}/examples/common.sh
+echo_info "Cleaning up.."
+
 ${CCP_CLI?} delete job backup
 ${CCP_CLI?} delete pvc backup-pgdata
-${CCP_CLI?} delete pv backup-pgdata
+${CCP_CLI?} delete pvc primary-pgdata
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+  ${CCP_CLI?} delete pv backup-pgdata
+fi

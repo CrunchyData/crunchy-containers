@@ -12,10 +12,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source ${CCPROOT}/examples/common.sh
+echo_info "Cleaning up.."
+
 ${CCP_CLI?} delete service pgadmin4-http
 ${CCP_CLI?} delete pod pgadmin4-http
 ${CCP_CLI?} delete secret pgadmin4-http-secrets
 ${CCP_CLI?} delete pvc pgadmin4-http-data
-${CCP_CLI?} delete pv pgadmin4-http-data
+if [ -z "$CCP_STORAGE_CLASS" ]; then
+  ${CCP_CLI?} delete pv pgadmin4-http-data
+fi
 
 $CCPROOT/examples/waitforterm.sh pgadmin4-http ${CCP_CLI?}

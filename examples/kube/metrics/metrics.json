@@ -58,50 +58,6 @@
     ]
 }
 {
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "metrics-prometheusdata"
-    },
-      "spec": {
-        "selector": {
-          "matchLabels": {
-            "name": "metrics-prometheusdata"
-          }
-        },
-        "accessModes": [
-            "ReadWriteMany"
-        ],
-        "resources": {
-            "requests": {
-                "storage": "400M"
-            }
-        }
-    }
-}
-{
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "metrics-grafanadata"
-    },
-    "spec": {
-        "selector": {
-          "matchLabels": {
-            "name": "metrics-grafanadata"
-          }
-        },
-        "accessModes": [
-            "ReadWriteMany"
-        ],
-        "resources": {
-            "requests": {
-                "storage": "400M"
-            }
-        }
-    }
-}
-{
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {

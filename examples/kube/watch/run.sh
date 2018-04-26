@@ -12,9 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source ${CCPROOT}/examples/common.sh
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
+
+echo_info "Creating the example components.."
 
 ${CCP_CLI?} create configmap watch-hooks-configmap \
                 --from-file=./hooks/watch-pre-hook \

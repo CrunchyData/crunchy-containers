@@ -12,6 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source ${CCPROOT}/examples/common.sh
+echo_info "Cleaning up.."
+
 ${CCP_CLI?} delete pod watch
 ../../waitforterm.sh watch ${CCP_CLI?}
 

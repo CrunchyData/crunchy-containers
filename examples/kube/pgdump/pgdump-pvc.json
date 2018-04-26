@@ -1,0 +1,22 @@
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pgdump-pgdata"
+    },
+    "spec": {
+        "selector": {
+          "matchLabels": {
+            "name": "pgdump-pgdata"
+          }
+        },
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
+        }
+    }
+}

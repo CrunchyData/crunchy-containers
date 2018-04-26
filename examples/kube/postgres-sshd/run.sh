@@ -12,10 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+source ${CCPROOT}/examples/common.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/cleanup.sh
+${DIR}/cleanup.sh
+
+create_storage "postgres-sshd"
+if [[ $? -ne 0 ]]
+then
+    echo_err "Failed to create storage, exiting.."
+    exit 1
+fi
 
 mkdir -p ${DIR?}/keys
 ssh-keygen -f ${DIR?}/keys/id_rsa -t rsa -N ''
@@ -36,5 +44,4 @@ ${CCP_CLI?} create configmap postgres-sshd-pgconf \
     --from-file ./configs/sshd_config \
     --from-file ./keys/authorized_keys
 
-expenv -f $DIR/postgres-sshd-pv.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/postgres-sshd.json | ${CCP_CLI?} create -f -
