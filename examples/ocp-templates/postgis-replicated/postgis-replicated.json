@@ -3,9 +3,7 @@
     "apiVersion": "v1",
     "message": "The following service(s) have been created in your project: ${SERVICE_NAME}.\n\nPG Database: ${PG_DATABASE}\nPG Username: ${PG_USER}\nPG Password: ${PG_PASSWORD}\nPG Primary User: ${PG_PRIMARY_USER}\nPG Primary Password: ${PG_PRIMARY_PASSWORD}",
     "name": "crunchy-postgis-replicated-template",
-    "labels": {
-        "template": "crunchy-postgis-replicated-template"
-    },
+
     "metadata": {
         "name": "crunchy-postgis-replicated-template",
         "creationTimestamp": null,
@@ -26,6 +24,9 @@
             "kind": "Secret",
             "metadata": {
                 "name": "${SERVICE_NAME}",
+                "labels": {
+                    "app": "${SERVICE_NAME}"
+                },
                 "annotations": {
                     "template.openshift.io/expose-db_name": "{.data['PG_DATABASE']}",
                     "template.openshift.io/expose-db_password": "{.data['PG_PASSWORD']}",
@@ -45,6 +46,9 @@
             "kind": "PersistentVolumeClaim",
             "apiVersion": "v1",
             "metadata": {
+              "labels": {
+                  "app": "${SERVICE_NAME}"
+              },
                 "name": "${PVC_NAME}"
             },
             "spec": {
@@ -64,7 +68,8 @@
             "metadata": {
                 "name": "${SERVICE_NAME}-primary",
                 "labels": {
-                    "name": "${SERVICE_NAME}-primary"
+                    "name": "${SERVICE_NAME}-primary",
+                    "app": "${SERVICE_NAME}"
                 },
                 "annotations": {
                     "template.openshift.io/expose-uri": "postgres://{.spec.clusterIP}:{.spec.ports[?(.name==\"postgresql-primary\")].port}"
@@ -91,10 +96,14 @@
         {
             "kind": "Service",
             "apiVersion": "v1",
+            "labels": {
+                "app": "${SERVICE_NAME}"
+            },
             "metadata": {
                 "name": "${SERVICE_NAME}-replica",
                 "labels": {
-                    "name": "${SERVICE_NAME}-replica"
+                    "name": "${SERVICE_NAME}-replica",
+                    "app": "${SERVICE_NAME}"
                 },
                 "annotations": {
                     "template.openshift.io/expose-uri": "postgres://{.spec.clusterIP}:{.spec.ports[?(.name==\"postgresql-replica\")].port}"
@@ -124,7 +133,8 @@
             "metadata": {
                 "name": "${SERVICE_NAME}-primary",
                 "labels": {
-                    "name": "${SERVICE_NAME}-primary"
+                    "name": "${SERVICE_NAME}-primary",
+                    "app": "${SERVICE_NAME}"
                 }
             },
             "spec": {
@@ -341,6 +351,7 @@
             "apiVersion": "apps/v1beta1",
             "metadata": {
                 "name": "${SERVICE_NAME}-replica",
+                "app": "${SERVICE_NAME}",
                 "creationTimestamp": null
             },
             "spec": {
@@ -363,7 +374,8 @@
                     "metadata": {
                         "creationTimestamp": null,
                         "labels": {
-                            "name": "${SERVICE_NAME}-replica"
+                            "name": "${SERVICE_NAME}-replica",
+                            "app": "${SERVICE_NAME}"
                         }
                     },
                     "spec": {
