@@ -18,6 +18,6 @@ enable_debugging
 
 ls -l /
 id
+
 source /opt/cpm/bin/setenv.sh
 initdb /pgdata
-

@@ -14,10 +14,10 @@
 # limitations under the License.
 
 #
-# start the pgrestore job
+# Start the pgrestore job -
 #
 # the service looks for the following env vars to be set by
-# the cpm-admin that provisioned us
+# the cpm-admin -
 #
 # STANDARD ARGS:
 #
@@ -71,156 +71,154 @@ enable_debugging
 ose_hack
 
 if [ ! -d "$PGRESTORE_VOLUMEPATH" ]; then
-  echo "PGRESTORE_VOLUMEPATH $PGRESTORE_VOLUMEPATH does not exist; exiting."
+  echo_info "PGRESTORE_VOLUMEPATH $PGRESTORE_VOLUMEPATH does not exist; exiting."
   exit 1
 else
   PGRESTORE_FULLPATH=$(realpath -s "$PGRESTORE_VOLUMEPATH")"/$PGRESTORE_FILE"
-  echo "PGRESTORE_FULLPATH has been concatenated together as: $PGRESTORE_FULLPATH."
+  echo_info "PGRESTORE_FULLPATH has been concatenated together as: $PGRESTORE_FULLPATH."
   if [ ! -f "$PGRESTORE_FULLPATH" ]; then
-    echo "PGRESTORE_FULLPATH $PGRESTORE_FULLPATH does not exist; exiting."
+    echo_err "PGRESTORE_FULLPATH $PGRESTORE_FULLPATH does not exist; exiting."
     exit 1
   fi
-  echo "The restore process will pickup the file from that location on the container filesytem."
+  echo_info "The restore process will pickup the file from that location on the container filesytem."
 fi
 
-if [[ ! -v "PGRESTORELABEL" ]]; then
-	PGRESTORE_LABEL="crunchypgrestore"
-fi
-echo "PGRESTORE_LABEL is set to " $PGRESTORE_LABEL
+export PGDUMP_LABEL=${PGDUMP_LABEL:-crunchypgrestore}
+env_check_info "PGDUMP_LABEL" "PGDUMP_LABEL is set to ${PGDUMP_LABEL}."
 
 opts=""
 
 if [[ ! -z "$PGRESTORE_CLEAN" && $PGRESTORE_CLEAN == "true" ]]; then
-	opts+=" --clean"
-  echo "PGRESTORE_CLEAN is set to $PGRESTORE_CLEAN and has been added to the pg_restore options"
+    opts+=" --clean"
+    echo_info "PGRESTORE_CLEAN is set to $PGRESTORE_CLEAN and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_CREATE" && $PGRESTORE_CREATE == "true" ]]; then
-	opts+=" --create"
-  echo "PGRESTORE_CREATE is set to $PGRESTORE_CREATE and has been added to the pg_restore options"
+    opts+=" --create"
+    echo_info "PGRESTORE_CREATE is set to $PGRESTORE_CREATE and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_DATAONLY" && $PGRESTORE_DATAONLY == "true" ]]; then
-	opts+=" --data-only"
-  echo "PGRESTORE_DATAONLY is set to $PGRESTORE_DATAONLY and has been added to the pg_restore options"
+    opts+=" --data-only"
+    echo_info "PGRESTORE_DATAONLY is set to $PGRESTORE_DATAONLY and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_DB" ]]; then
-        opts+=" --dbname=$PGRESTORE_DB"
-  echo "PGRESTORE_DB is set to $PGRESTORE_DB and has been added to the pg_restore options"
+    opts+=" --dbname=$PGRESTORE_DB"
+    echo_info "PGRESTORE_DB is set to $PGRESTORE_DB and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_DISABLETRIGGERS" && $PGRESTORE_DISABLETRIGGERS == "true" ]]; then
-	opts+=" --disable-triggers"
-  echo "PGRESTORE_DISABLETRIGGERS is set to $PGRESTORE_DISABLETRIGGERS and has been added to the pg_restore options"
+    opts+=" --disable-triggers"
+    echo_info "PGRESTORE_DISABLETRIGGERS is set to $PGRESTORE_DISABLETRIGGERS and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_ENABLEROWSECURITY" && $PGRESTORE_ENABLEROWSECURITY == "true" ]]; then
-	opts+=" --enable-row-security"
-  echo "PGRESTORE_ENABLEROWSECURITY is set to $PGRESTORE_ENABLEROWSECURITY and has been added to the pg_restore options"
+    opts+=" --enable-row-security"
+    echo_info "PGRESTORE_ENABLEROWSECURITY is set to $PGRESTORE_ENABLEROWSECURITY and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_EXCLUDEPRIVILEGES" && $PGRESTORE_EXCLUDEPRIVILEGES == "true" ]]; then
-	opts+=" --no-privileges"
-  echo "PGRESTORE_EXCLUDEPRIVILEGES is set to $PGRESTORE_EXCLUDEPRIVILEGES and has been added to the pg_restore options"
+    opts+=" --no-privileges"
+    echo_info "PGRESTORE_EXCLUDEPRIVILEGES is set to $PGRESTORE_EXCLUDEPRIVILEGES and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_EXITONERROR" && $PGRESTORE_EXITONERROR == "true" ]]; then
-	opts+=" --exit-on-error"
-  echo "PGRESTORE_DATAONLY is set to $PGRESTORE_EXITONERROR and has been added to the pg_restore options"
+    opts+=" --exit-on-error"
+    echo_info "PGRESTORE_DATAONLY is set to $PGRESTORE_EXITONERROR and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_FORMAT" ]]; then
   if [[ $PGRESTORE_FORMAT == "plain" || $PGRESTORE_FORMAT == "p" ]]; then
     USE_PSQL="true"
-    echo "As the restore format is plaintext, using psql instead of pg_restore."
+    echo_info "As the restore format is plaintext, using psql instead of pg_restore."
   else
     opts+=" --format=$PGRESTORE_FORMAT"
-    echo "PGRESTORE_FORMAT is set to $PGRESTORE_FORMAT and has been added to the pg_restore options"
+    echo_info "PGRESTORE_FORMAT is set to $PGRESTORE_FORMAT and has been added to the pg_restore options."
   fi
 fi
 
 if [[ ! -z "$PGRESTORE_IFEXISTS" && $PGRESTORE_IFEXISTS == "true" ]]; then
-	opts+=" --if-exists"
-  echo "PGRESTORE_IFEXISTS is set to $PGRESTORE_IFEXISTS and has been added to the pg_restore options"
+    opts+=" --if-exists"
+    echo_info "PGRESTORE_IFEXISTS is set to $PGRESTORE_IFEXISTS and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_INDEX" ]]; then
-	opts+=" --index=$PGRESTORE_INDEX"
-  echo "PGRESTORE_INDEX is set to $PGRESTORE_INDEX and has been added to the pg_restore options"
+    opts+=" --index=$PGRESTORE_INDEX"
+    echo_info "PGRESTORE_INDEX is set to $PGRESTORE_INDEX and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_LIST" && $PGRESTORE_LIST == "true" ]]; then
-	opts+=" --list"
-  echo "PGRESTORE_LIST is set to $PGRESTORE_LIST and has been added to the pg_restore options"
+    opts+=" --list"
+    echo_info "PGRESTORE_LIST is set to $PGRESTORE_LIST and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_LISTFILE" ]]; then
-	opts+=" --use-list=$PGRESTORE_LISTFILE"
-  echo "PGRESTORE_LISTFILE is set to $PGRESTORE_LISTFILE and has been added to the pg_restore options"
+    opts+=" --use-list=$PGRESTORE_LISTFILE"
+    echo_info "PGRESTORE_LISTFILE is set to $PGRESTORE_LISTFILE and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_NODATAFORFAILEDTABLES" && $PGRESTORE_NODATAFORFAILEDTABLES == "true" ]]; then
-	opts+=" --no-data-for-failed-tables"
-  echo "PGRESTORE_NODATAFORFAILEDTABLES is set to $PGRESTORE_NODATAFORFAILEDTABLES and has been added to the pg_restore options"
+    opts+=" --no-data-for-failed-tables"
+    echo_info "PGRESTORE_NODATAFORFAILEDTABLES is set to $PGRESTORE_NODATAFORFAILEDTABLES and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_NOOWNER" && $PGRESTORE_NOOWNER == "true" ]]; then
-	opts+=" --noowner"
-  echo "PGRESTORE_NOOWNER is set to $PGRESTORE_NOOWNER and has been added to the pg_restore options"
+    opts+=" --noowner"
+    echo_info "PGRESTORE_NOOWNER is set to $PGRESTORE_NOOWNER and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_NOTABLESPACES" && $PGRESTORE_NOTABLESPACES == "true" ]]; then
-	opts+=" --no-tablespaces"
-  echo "PGRESTORE_NOTABLESPACES is set to $PGRESTORE_NOTABLESPACES and has been added to the pg_restore options"
+    opts+=" --no-tablespaces"
+    echo_info "PGRESTORE_NOTABLESPACES is set to $PGRESTORE_NOTABLESPACES and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_NUMJOBS" ]]; then
-	opts+=" --jobs=$PGRESTORE_NUMJOBS"
-  echo "PGRESTORE_NUMJOBS is set to $PGRESTORE_NUMJOBS and has been added to the pg_restore options"
+    opts+=" --jobs=$PGRESTORE_NUMJOBS"
+    echo_info "PGRESTORE_NUMJOBS is set to $PGRESTORE_NUMJOBS and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_SCHEMA" ]]; then
-	opts+=" --schema=$PGRESTORE_SCHEMA"
-  echo "PGRESTORE_SCHEMA is set to $PGRESTORE_SCHEMA and has been added to the pg_restore options"
+    opts+=" --schema=$PGRESTORE_SCHEMA"
+    echo_info "PGRESTORE_SCHEMA is set to $PGRESTORE_SCHEMA and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_SCHEMAONLY" && $PGRESTORE_SCHEMAONLY == "true" ]]; then
-	opts+=" --schema-only"
-  echo "PGRESTORE_SCHEMAONLY is set to $PGRESTORE_SCHEMAONLY and has been added to the pg_restore options"
+    opts+=" --schema-only"
+    echo_info "PGRESTORE_SCHEMAONLY is set to $PGRESTORE_SCHEMAONLY and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_SUPERUSER" ]]; then
-	opts+=" --superuser=$PGRESTORE_SUPERUSER"
-  echo "PGRESTORE_SUPERUSER is set to $PGRESTORE_SUPERUSER and has been added to the pg_restore options"
+    opts+=" --superuser=$PGRESTORE_SUPERUSER"
+    echo_info "PGRESTORE_SUPERUSER is set to $PGRESTORE_SUPERUSER and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_TABLE" ]]; then
-	opts+=" --table=$PGRESTORE_TABLE"
-  echo "PGRESTORE_TABLE is set to $PGRESTORE_TABLE and has been added to the pg_restore options"
+    opts+=" --table=$PGRESTORE_TABLE"
+    echo_info "PGRESTORE_TABLE is set to $PGRESTORE_TABLE and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_TRIGGER" ]]; then
-	opts+=" --trigger=$PGRESTORE_TRIGGER"
-  echo "PGRESTORE_TRIGGER is set to $PGRESTORE_TRIGGER and has been added to the pg_restore options"
+    opts+=" --trigger=$PGRESTORE_TRIGGER"
+    echo_info "PGRESTORE_TRIGGER is set to $PGRESTORE_TRIGGER and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_USESESSIONAUTH" && $PGRESTORE_USESESSIONAUTH == "true" ]]; then
-	opts+=" --use-set-session-authorization"
-  echo "PGRESTORE_USESESSIONAUTH is set to $PGRESTORE_USESESSIONAUTH and has been added to the pg_restore options"
+    opts+=" --use-set-session-authorization"
+    echo_info "PGRESTORE_USESESSIONAUTH is set to $PGRESTORE_USESESSIONAUTH and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_VERBOSE" && $PGRESTORE_VERBOSE == "true" ]]; then
-	opts+=" --verbose"
-  echo "PGRESTORE_VERBOSE is set to $PGRESTORE_VERBOSE and has been added to the pg_restore options"
+    opts+=" --verbose"
+    echo_info "PGRESTORE_VERBOSE is set to $PGRESTORE_VERBOSE and has been added to the pg_restore options."
 fi
 
 if [[ ! -z "$PGRESTORE_VERSION" && $PGRESTORE_VERSION == "true" ]]; then
-	opts+=" --version"
-  echo "PGRESTORE_VERSION is set to $PGRESTORE_VERSION and has been added to the pg_restore options"
+    opts+=" --version"
+    echo_info "PGRESTORE_VERSION is set to $PGRESTORE_VERSION and has been added to the pg_restore options."
 fi
 
-echo "pg_restore opts: $opts"
+echo_info "The options specified for pg_restore include: ${opts}"
 
 export PGPASSFILE=/tmp/pgpass
 
@@ -238,3 +236,5 @@ if [[ ! -z "$USE_PSQL" && "$USE_PSQL" == "true" ]]; then
 else
   pg_restore --host=$PGRESTORE_HOST --port=$PGRESTORE_PORT --username $PGRESTORE_USER -w $opts $PGRESTORE_FULLPATH
 fi
+
+echo_info "Restore has completed."

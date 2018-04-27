@@ -18,15 +18,9 @@ source /opt/cpm/bin/common_lib.sh
 enable_debugging
 ose_hack
 
-if [ -d /usr/pgsql-9.5 ]; then
-	export PGROOT=/usr/pgsql-9.5
-elif [ -d /usr/pgsql-9.4 ]; then
-	export PGROOT=/usr/pgsql-9.4
-else
-	export PGROOT=/usr/pgsql-9.3
-fi
+export PGROOT=$(find /usr/ -type d -name 'pgsql-*')
 
-echo "setting PGROOT to " $PGROOT
+echo_info "Setting PGROOT to ${PGROOT?}."
 
 export PGDATA=/pgdata/$HOSTNAME
 export PATH=/opt/cpm/bin:$PGROOT/bin:$PATH

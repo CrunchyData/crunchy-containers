@@ -16,7 +16,7 @@
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
 
-export PGROOT=/usr/$(find /usr/ -type d -name 'pgsql-*')
+export PGROOT=$(find /usr/ -type d -name 'pgsql-*')
 
 echo_info "Setting PGROOT to ${PGROOT?}."
 
@@ -31,4 +31,10 @@ fi
 export PATH=/opt/cpm/bin:$PGROOT/bin:$PATH
 export LD_LIBRARY_PATH=$PGROOT/lib
 
-chown postgres $PGDATA $PGWAL
+if [[ -d ${PGDATA} ]]; then
+    chown postgres:postgres ${PGDATA?}
+fi
+
+if [[ -d ${PGWAL} ]]; then
+    chown postgres:postgres ${PGWAL?}
+fi

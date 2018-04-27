@@ -22,3 +22,5 @@ ${CCP_CLI?} delete pvc backrest-pgdata backrest-backrestrepo
 if [ -z "$CCP_STORAGE_CLASS" ]; then
   ${CCP_CLI?} delete pv backrest-pgdata backrest-backrestrepo
 fi
+
+$CCPROOT/examples/waitforterm.sh backrest ${CCP_CLI?}

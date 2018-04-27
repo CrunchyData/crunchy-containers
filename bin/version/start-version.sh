@@ -29,10 +29,8 @@ EOF
 
 create_pgpass
 
-if [ ! -v SLEEP_TIME ]; then
-	SLEEP_TIME=10
-fi
-echo "SLEEP_TIME is set to " $SLEEP_TIME
+export SLEEP_TIME=${SLEEP_TIME:-10}
+env_check_info "SLEEP_TIME is set to ${SLEEP_TIME}."
 
 export PG_PRIMARY_SERVICE=$PG_PRIMARY_SERVICE
 export GIT_USER_NAME=$GIT_USER_NAME
@@ -41,29 +39,18 @@ export PG_PRIMARY_PORT=$PG_PRIMARY_PORT
 export PG_PRIMARY_USER=$PG_PRIMARY_USER
 export PG_DATABASE=$PG_DATABASE
 
-if [ -d /usr/pgsql-10 ]; then
-        export PGROOT=/usr/pgsql-10
-elif [ -d /usr/pgsql-9.6 ]; then
-        export PGROOT=/usr/pgsql-9.6
-elif [ -d /usr/pgsql-9.5 ]; then
-        export PGROOT=/usr/pgsql-9.5
-elif [ -d /usr/pgsql-9.4 ]; then
-        export PGROOT=/usr/pgsql-9.4
-else
-        export PGROOT=/usr/pgsql-9.3
-fi
+export PGROOT=$(find /usr/ -type d -name 'pgsql-*')
 
-echo "setting PGROOT to " $PGROOT
+echo_info "Setting PGROOT to ${PGROOT?}."
 
 export PATH=$PATH:/opt/cpm/bin:$PGROOT/bin
-
 
 git config --global user.name $GIT_USER_NAME
 git config --global user.email $GIT_USER_EMAIL
 git config --global push.default simple
 
 pg_dump --schema-only --username=$PG_PRIMARY_USER --dbname=$PG_DATABASE \
-	--host=$PG_PRIMARY_SERVICE > /tmp/schema.sql
+    --host=$PG_PRIMARY_SERVICE > /tmp/schema.sql
 
 cd /gitrepo
 GIT_PROJECT=`ls | cut -f1 -d' '`
@@ -72,7 +59,3 @@ cp /tmp/schema.sql .
 git add schema.sql
 git commit -am 'update schema version'
 git push
-
-#while true; do 
-#	sleep $SLEEP_TIME
-#done
