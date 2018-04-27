@@ -40,13 +40,13 @@ if [[ -f ${CONF_DIR?}/pgbouncer.ini ]]
 then
     echo_info "Custom pgbouncer.ini file detected.."
 else
-    echo_info "No custom pgbouncer.ini detected.  Applying default config.."
+    echo_info "No custom pgbouncer.ini detected. Applying default config.."
     cp /opt/cpm/conf/pgbouncer.ini ${CONF_DIR?}/pgbouncer.ini
 fi
 
 if [[ -v FAILOVER ]]
 then
-    echo_warn "FAILOVER env set.  Failover with pgBouncer is not supported.."
+    echo_warn "FAILOVER environment variable set. Failover with pgBouncer is not supported."
 fi
 
 echo_info "Starting pgBouncer.."

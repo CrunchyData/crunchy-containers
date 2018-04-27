@@ -19,7 +19,7 @@ ose_hack
 
 TARGET=${HOSTNAME?}
 if [ -v BADGER_TARGET ]; then
-    echo_info "BADGER_TARGET env set.  Setting PGDATA target.."
+    echo_info "BADGER_TARGET environment variable set.  Setting PGDATA target.."
     TARGET=${BADGER_TARGET?}
 fi
 

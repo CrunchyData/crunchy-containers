@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +14,10 @@
 # limitations under the License.
 
 #
-# start the pgdump job
+# Starting the pgdump job -
 #
-# the service looks for the following env vars to be set by
-# the cpm-admin that provisioned us
+# The service looks for the following environment variables to be set by
+# the cpm-admin -
 #
 # STANDARD ARGS:
 #
@@ -58,8 +58,6 @@
 # $PGDUMP_TABLESTOEXCLUDE option to specify which tables matched by the specified pattern should be excluded from the output by pg_dump
 # $PGDUMP_VERBOSE option to specify verbose mode to output detailed object comments and start/stop times to the output by pg_dump; as well as progress messages to standard error (STDERR)
 
-
-
 # ls -l /
 # ls -l /pgdata
 
@@ -74,93 +72,91 @@ PGDUMP_BASE=/pgdata/$PGDUMP_HOST-dumps
 PGDUMP_PATH=$PGDUMP_BASE/$TS
 
 if [ ! -d "$PGDUMP_BASE" ]; then
-	echo "creating PGDUMPBASE directory..."
-	mkdir -p $PGDUMP_BASE
+    echo_info "Creating PGDUMP_BASE directory as ${PGDUMP_BASE}.."
+    mkdir -p $PGDUMP_BASE
 fi
 
-echo "PGDUMP_PATH: "$PGDUMP_PATH
+echo_info "PGDUMP_PATH is set to ${PGDUMP_PATH}."
 mkdir $PGDUMP_PATH
 
-if [[ ! -v "PGDUMPLABEL" ]]; then
-	PGDUMP_LABEL="crunchypgdump"
-fi
-echo "PGDUMP_LABEL is set to " $PGDUMP_LABEL
+export PGDUMP_LABEL=${PGDUMP_LABEL:-crunchypgdump}
+env_check_info "PGDUMP_LABEL" "PGDUMP_LABEL is set to ${PGDUMP_LABEL}."
 
 opts=""
 
 if [[ ! -z "$PGDUMP_ALL" && "$PGDUMP_ALL" == "true" ]]; then
-	echo "PGDUMP_ALL is set to $PGDUMP_ALL - EXECUTING PGDUMP_ALL INSTEAD OF PG_DUMP!"
-  echo "Any specified OPTs that don't apply to pg_dumpall will be ignored."
-  ALL_OPTS_ONLY=true
+    echo_info "PGDUMP_ALL is set to $PGDUMP_ALL - Executing PGDUMP_ALL instead of PG_DUMP."
+    echo_info "Any specified options that don't apply to pg_dumpall will be ignored."
+    ALL_OPTS_ONLY=true
 fi
 
 # -z "$ALL_OPTS_ONLY" will only evaluate to true if $ALL_OPTS_ONLY is set (not a null string)
 if [[ -z "$ALL_OPTS_ONLY" && ! -z "$PGDUMP_DB" ]]; then
-	opts+=" --dbname=$PGDUMP_DB"
-  echo "PGDUMP_DB is set to $PGDUMP_DB and has been added to the pg_dump options"
+    opts+=" --dbname=$PGDUMP_DB"
+    echo_info "PGDUMP_DB is set to $PGDUMP_DB and has been added to the pg_dump options."
 fi
 
 if [[ -z "$ALL_OPTS_ONLY" && ! -z "$PGDUMP_BLOBS" && $PGDUMP_BLOBS == "true" ]]; then
-	opts+=" --blobs=$PGDUMP_BLOBS"
-  echo "PGDUMP_BLOBS is set to $PGDUMP_BLOBS and has been added to the pg_dump options"
+    opts+=" --blobs=$PGDUMP_BLOBS"
+    echo_info "PGDUMP_BLOBS is set to $PGDUMP_BLOBS and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_CLEAN" && $PGDUMP_CLEAN == "true" ]]; then
-	opts+=" --clean"
-  echo "PGDUMP_CLEAN is set to $PGDUMP_CLEAN and has been added to the pg_dump options"
+    opts+=" --clean"
+    echo_info "PGDUMP_CLEAN is set to $PGDUMP_CLEAN and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_COLUMNINSERTS" && $PGDUMP_COLUMNINSERTS == "true" ]]; then
-	opts+=" --column-inserts"
-  echo "PGDUMP_COLUMNINSERTS is set to $PGDUMP_COLUMNINSERTS and has been added to the pg_dump options"
+    opts+=" --column-inserts"
+    echo_info "PGDUMP_COLUMNINSERTS is set to $PGDUMP_COLUMNINSERTS and has been added to the pg_dump options."
 fi
 
 if [[ -z "$ALL_OPTS_ONLY" && ! -z "$PGDUMP_COMPRESSION" ]]; then
-	opts+=" --compress=$PGDUMP_COMPRESSION"
-  echo "PGDUMP_COMPRESSION is set to $PGDUMP_COMPRESSION and has been added to the pg_dump options"
+    opts+=" --compress=$PGDUMP_COMPRESSION"
+    echo_info "PGDUMP_COMPRESSION is set to $PGDUMP_COMPRESSION and has been added to the pg_dump options."
 fi
 
 if [[ -z "$ALL_OPTS_ONLY" && ! -z "$PGDUMP_CREATE" && $PGDUMP_CREATE == "true" ]]; then
-	opts+=" --create"
-  echo "PGDUMP_CREATE is set to $PGDUMP_CREATE and has been added to the pg_dump options"
+    opts+=" --create"
+    echo_info "PGDUMP_CREATE is set to $PGDUMP_CREATE and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_DATAONLY" && $PGDUMP_DATAONLY == "true" ]]; then
-	opts+=" --data-only"
-  echo "PGDUMP_DATAONLY is set to $PGDUMP_DATAONLY and has been added to the pg_dump options"
+    opts+=" --data-only"
+    echo_info "PGDUMP_DATAONLY is set to $PGDUMP_DATAONLY and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_DISABLETRIGGERS" && $PGDUMP_DISABLETRIGGERS == "true" ]]; then
-	opts+=" --disable-triggers"
-  echo "PGDUMP_DISABLETRIGGERS is set to $PGDUMP_DISABLETRIGGERS and has been added to the pg_dump options"
+    opts+=" --disable-triggers"
+    echo_info "PGDUMP_DISABLETRIGGERS is set to $PGDUMP_DISABLETRIGGERS and has been added to the pg_dump options."
 fi
 
 if [[ -z "$ALL_OPTS_ONLY" && ! -z "$PGDUMP_ENABLEROWSECURITY" && $PGDUMP_ENABLEROWSECURITY == "true" ]]; then
-	opts+=" --enable-row-security"
-  echo "PGDUMP_ENABLEROWSECURITY is set to $PGDUMP_ENABLEROWSECURITY and has been added to the pg_dump options"
+    opts+=" --enable-row-security"
+    echo_info "PGDUMP_ENABLEROWSECURITY is set to $PGDUMP_ENABLEROWSECURITY and has been added to the pg_dump options."
 fi
 
 if [[ -z "$ALL_OPTS_ONLY" && ! -z "$PGDUMP_ENCODING" ]]; then
-	opts+=" --encoding=$PGDUMP_ENCODING"
-  echo "PGDUMP_ENCODING is set to $PGDUMP_ENCODING and has been added to the pg_dump options"
+    opts+=" --encoding=$PGDUMP_ENCODING"
+    echo_info "PGDUMP_ENCODING is set to $PGDUMP_ENCODING and has been added to the pg_dump options."
 fi
 
 if [[ -z "$ALL_OPTS_ONLY" && ! -z "$PGDUMP_EXCLUDEPRIVILEGES" && $PGDUMP_EXCLUDEPRIVILEGES == "true" ]]; then
-	opts+=" --no-privileges"
-  echo "PGDUMP_EXCLUDEPRIVILEGES is set to $PGDUMP_EXCLUDEPRIVILEGES and has been added to the pg_dump options"
+    opts+=" --no-privileges"
+    echo_info "PGDUMP_EXCLUDEPRIVILEGES is set to $PGDUMP_EXCLUDEPRIVILEGES and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_FILE" ]]; then # PGDUMPPATH set on line 80
-	opts+=" --file=$PGDUMP_FILE"
-  echo "PGDUMP_FILE is set to $PGDUMP_FILE and has been added to the PGDUMP_PATH options"
+    opts+=" --file=$PGDUMP_FILE"
+    echo_info "PGDUMP_FILE is set to $PGDUMP_FILE and has been added to the PGDUMP_PATH options."
 fi
 
 if [[ -z "$ALL_OPTS_ONLY"  && ! -z "$PGDUMP_FORMAT" ]]; then
-  	opts+=" --format=$PGDUMP_FORMAT"
-	echo "PGDUMP_FORMAT is set to $PGDUMP_FORMAT and has been added to the pg_dump options"
+    opts+=" --format=$PGDUMP_FORMAT"
+    echo_info "PGDUMP_FORMAT is set to $PGDUMP_FORMAT and has been added to the pg_dump options."
 
         if [[ $PGDUMP_FORMAT == "tar" || $PGDUMP_FORMAT == "t" ]]; then
-		PGDUMP_EXT=".tar"
+        PGDUMP_EXT=".tar"
         elif [[ $PGDUMP_FORMAT == "plain" || $PGDUMP_FORMAT == "p" ]]; then
                 PGDUMP_EXT=".sql"
         elif [[ $PGDUMP_FORMAT == "directory" || $PGDUMP_FORMAT == "d" ]]; then
@@ -171,76 +167,76 @@ if [[ -z "$ALL_OPTS_ONLY"  && ! -z "$PGDUMP_FORMAT" ]]; then
 fi
 
 if [[ ! -z "$PGDUMP_INSERTS" && $PGDUMP_INSERTS == "true" ]]; then
-	opts+=" --inserts"
-  echo "PGDUMP_INSERTS is set to $PGDUMP_INSERTS and has been added to the pg_dump options"
+    opts+=" --inserts"
+    echo_info "PGDUMP_INSERTS is set to $PGDUMP_INSERTS and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_LOCKWAITTIMEOUT" ]]; then
-	opts+=" --lock-wait-timeout=$PGDUMP_LOCKWAITTIMEOUT"
-  echo "PGDUMP_LOCKWAITTIMEOUT is set to $PGDUMP_LOCKWAITTIMEOUT and has been added to the pg_dump options"
+    opts+=" --lock-wait-timeout=$PGDUMP_LOCKWAITTIMEOUT"
+    echo_info "PGDUMP_LOCKWAITTIMEOUT is set to $PGDUMP_LOCKWAITTIMEOUT and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_NOOWNER" && $PGDUMP_NOOWNER == "true" ]]; then
-	opts+=" --noowner"
-  echo "PGDUMP_NOOWNER is set to $PGDUMP_NOOWNER and has been added to the pg_dump options"
+    opts+=" --noowner"
+    echo_info "PGDUMP_NOOWNER is set to $PGDUMP_NOOWNER and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_NOTABLESPACES" && $PGDUMP_NOTABLESPACES == "true" ]]; then
-	opts+=" --no-tablespaces"
-  echo "PGDUMP_NOTABLESPACES is set to $PGDUMP_NOTABLESPACES and has been added to the pg_dump options"
+    opts+=" --no-tablespaces"
+    echo_info "PGDUMP_NOTABLESPACES is set to $PGDUMP_NOTABLESPACES and has been added to the pg_dump options."
 fi
 
 if [[ -z "$ALL_OPTS_ONLY" && ! -z "$PGDUMP_NUMJOBS" ]]; then
-	opts+=" --jobs=$PGDUMP_NUMJOBS"
-  echo "PGDUMP_NUMJOBS is set to $PGDUMP_NUMJOBS and has been added to the pg_dump options"
+    opts+=" --jobs=$PGDUMP_NUMJOBS"
+    echo_info "PGDUMP_NUMJOBS is set to $PGDUMP_NUMJOBS and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_OIDS" && $PGDUMP_OIDS == "true" ]]; then
-	opts+=" --oids"
-  echo "PGDUMP_OIDS is set to $PGDUMP_OIDS and has been added to the pg_dump options"
+    opts+=" --oids"
+    echo_info "PGDUMP_OIDS is set to $PGDUMP_OIDS and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_QUOTEIDENTIFIERS" && $PGDUMP_QUOTEIDENTIFIERS == "true" ]]; then
-	opts+=" --quote-all-identifiers"
-  echo "PGDUMP_QUOTEIDENTIFIERS is set to $PGDUMP_QUOTEIDENTIFIERS and has been added to the pg_dump options"
+    opts+=" --quote-all-identifiers"
+    echo_info "PGDUMP_QUOTEIDENTIFIERS is set to $PGDUMP_QUOTEIDENTIFIERS and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_SCHEMA" ]]; then
-	opts+=" --schema=$PGDUMP_SCHEMA"
-  echo "PGDUMP_SCHEMA is set to $PGDUMP_SCHEMA and has been added to the pg_dump options"
+    opts+=" --schema=$PGDUMP_SCHEMA"
+    echo_info "PGDUMP_SCHEMA is set to $PGDUMP_SCHEMA and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_SCHEMASTOEXCLUDE" ]]; then
-	opts+=" --exclude-schema=$PGDUMP_SCHEMASTOEXCLUDE"
-  echo "PGDUMP_SCHEMASTOEXCLUDE is set to $PGDUMP_SCHEMASTOEXCLUDE and has been added to the pg_dump options"
+    opts+=" --exclude-schema=$PGDUMP_SCHEMASTOEXCLUDE"
+    echo_info "PGDUMP_SCHEMASTOEXCLUDE is set to $PGDUMP_SCHEMASTOEXCLUDE and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_SCHEMAONLY" && $PGDUMP_SCHEMAONLY == "true" ]]; then
-	opts+=" --schema-only"
-  echo "PGDUMP_SCHEMAONLY is set to $PGDUMP_SCHEMAONLY and has been added to the pg_dump options"
+    opts+=" --schema-only"
+    echo_info "PGDUMP_SCHEMAONLY is set to $PGDUMP_SCHEMAONLY and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_SUPERUSER" ]]; then
-	opts+=" --superuser=$PGDUMP_SUPERUSER"
-  echo "PGDUMP_SUPERUSER is set to $PGDUMP_SUPERUSER and has been added to the pg_dump options"
+    opts+=" --superuser=$PGDUMP_SUPERUSER"
+    echo_info "PGDUMP_SUPERUSER is set to $PGDUMP_SUPERUSER and has been added to the pg_dump options."
 fi
 
 if [[ -z "$ALL_OPTS_ONLY" && ! -z "$PGDUMP_TABLE" ]]; then
-	opts+=" --table=$PGDUMP_TABLE"
-  echo "PGDUMP_TABLE is set to $PGDUMP_TABLE and has been added to the pg_dump options"
+    opts+=" --table=$PGDUMP_TABLE"
+    echo_info "PGDUMP_TABLE is set to $PGDUMP_TABLE and has been added to the pg_dump options."
 fi
 
 if [[ -z "$ALL_OPTS_ONLY" && ! -z "$PGDUMP_TABLESTOEXCLUDE" ]]; then
-	opts+=" --exclude-table=$PGDUMP_TABLESTOEXCLUDE"
-  echo "PGDUMP_TABLESTOEXCLUDE is set to $PGDUMP_TABLESTOEXCLUDE and has been added to the pg_dump options"
+    opts+=" --exclude-table=$PGDUMP_TABLESTOEXCLUDE"
+    echo_info "PGDUMP_TABLESTOEXCLUDE is set to $PGDUMP_TABLESTOEXCLUDE and has been added to the pg_dump options."
 fi
 
 if [[ ! -z "$PGDUMP_VERBOSE" && $PGDUMP_VERBOSE == "true" ]]; then
-	opts+=" --verbose"
-  echo "PGDUMP_VERBOSE is set to $PGDUMP_VERBOSE and has been added to the pg_dump options"
+    opts+=" --verbose"
+    echo_info "PGDUMP_VERBOSE is set to $PGDUMP_VERBOSE and has been added to the pg_dump options."
 fi
 
-echo "pg_dump opts:" $opts
+echo_info "The options specified for pg_dump include: ${opts}"
 
 export PGPASSFILE=/tmp/pgpass
 
@@ -254,24 +250,26 @@ chown $UID:$UID $PGPASSFILE
 
 # If PGDUMP_ALL is set and set to true, run pg_dumpall
 if [[ ! -z "$PGDUMP_ALL" && "$PGDUMP_ALL" == "true" ]]; then
-	if [[ ! -z "$PGDUMP_FILE" ]]; then # If PG_DUMPFILE is set - it will output to the fully-qualified filename specified (included in the opts)
-		pg_dumpall --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER -w $opts
-		chown -R $UID:$UID $PGDUMP_FILE
-		echo "PGDUMP_ALL output file has been written to: $PGDUMP_FILE."
-	else # Else, dump everything to the $PGDUMP_PATH via stdout
-		pg_dumpall --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER -w $opts > "$PGDUMP_PATH/pgdumpall.sql"
-	chown -R $UID:$UID "$PGDUMP_PATH/pgdumpall.sql"
-	echo "PGDUMP_ALL output file has been written to: $PGDUMP_PATH/pgdumpall.sql"
-	fi
+    if [[ ! -z "$PGDUMP_FILE" ]]; then # If PG_DUMPFILE is set - it will output to the fully-qualified filename specified (included in the opts)
+        pg_dumpall --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER -w $opts
+        chown -R $UID:$UID $PGDUMP_FILE
+        echo_info "PGDUMP_ALL output file has been written to: $PGDUMP_FILE"
+    else # Else, dump everything to the $PGDUMP_PATH via stdout
+        pg_dumpall --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER -w $opts > "$PGDUMP_PATH/pgdumpall.sql"
+    chown -R $UID:$UID "$PGDUMP_PATH/pgdumpall.sql"
+    echo_info "PGDUMP_ALL output file has been written to: $PGDUMP_PATH/pgdumpall.sql"
+    fi
 
 else # Else, run pg_dump
-	if [[ ! -z "$PGDUMP_FILE" ]]; then # If PG_DUMPFILE is set - it will output to the fully-qualified filename specified (included in the opts)
-		pg_dump --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER --dbname $PGDUMP_DB -w $opts
-		chown -R $UID:$UID $PGDUMP_FILE
-		echo "PGDUMP_FILE output file has been written to: $PGDUMP_FILE."
-	else # Else, dump everything to the $PGDUMP_PATH via stdout
-		pg_dump --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER --dbname $PGDUMP_DB -w $opts > "$PGDUMP_PATH/pgdump.$PGDUMPEXT"
-		chown -R $UID:$UID "$PGDUMP_PATH/pgdumpall$PGDUMPEXT"
-		echo "PG_DUMP output file has been written to: $PGDUMP_PATH/pgdump$PGDUMPEXT."
-	fi
+    if [[ ! -z "$PGDUMP_FILE" ]]; then # If PG_DUMPFILE is set - it will output to the fully-qualified filename specified (included in the opts)
+        pg_dump --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER --dbname $PGDUMP_DB -w $opts
+        chown -R $UID:$UID $PGDUMP_FILE
+        echo_info "PGDUMP_FILE output file has been written to: $PGDUMP_FILE"
+    else # Else, dump everything to the $PGDUMP_PATH via stdout
+        pg_dump --host=$PGDUMP_HOST --port=$PGDUMP_PORT --username $PGDUMP_USER --dbname $PGDUMP_DB -w $opts > "$PGDUMP_PATH/pgdump.$PGDUMPEXT"
+        chown -R $UID:$UID "$PGDUMP_PATH/pgdumpall$PGDUMPEXT"
+        echo_info "PG_DUMP output file has been written to: $PGDUMP_PATH/pgdump$PGDUMPEXT"
+    fi
 fi
+
+echo_info "Backup has completed."

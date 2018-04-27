@@ -14,33 +14,33 @@
 # limitations under the License.
 
 function start_sshd() {
-    echo 'Checking for SSH Host Keys in /sshd...'
+    echo_info 'Checking for SSH Host Keys in /sshd..'
 
     if [[ ! -f /sshd/ssh_host_rsa_key ]]; then
-        echo 'No ssh_host_rsa_key found in /sshd.  Exiting..'
+        echo_err 'No ssh_host_rsa_key found in /sshd.  Exiting..'
         exit 1
     elif [[ ! -f /sshd/ssh_host_ecdsa_key ]]; then
-        echo 'No ssh_host_ecdsa_key found in /sshd.  Exiting..'
+        echo_err 'No ssh_host_ecdsa_key found in /sshd.  Exiting..'
         exit 1
     elif [[ ! -f /sshd/ssh_host_ed25519_key ]]; then
-        echo 'No ssh_host_ed25519_key found in /sshd.  Exiting..'
+        echo_err 'No ssh_host_ed25519_key found in /sshd.  Exiting..'
         exit 1
     fi
-	
-    echo 'Checking for authorized_keys in /pgconf...'
+
+    echo_info 'Checking for authorized_keys in /pgconf..'
 
     if [[ ! -f /pgconf/authorized_keys ]]; then
-        echo 'No authorized_keys file found in /pgconf.  Exiting..'
+        echo_err 'No authorized_keys file found in /pgconf.  Exiting..'
         exit 1
     fi
 
-    echo 'Checking for sshd_config in /pgconf...'
+    echo_info 'Checking for sshd_config in /pgconf..'
 
     if [[ ! -f /pgconf/sshd_config ]]; then
-        echo 'No sshd_config file found in /pgconf.  Exiting..'
+        echo_err 'No sshd_config file found in /pgconf.  Exiting..'
         exit 1
     fi
 
-    echo 'Starting SSHD...'
+    echo_info 'Starting SSHD..'
     /usr/sbin/sshd -f /pgconf/sshd_config
 }

@@ -21,7 +21,7 @@
 #
 # /pgolddata is a volume that gets mapped into this container
 # /pgnewdata is a volume that gets mapped into this container
-# $OLD_VERSION (e.g. 9.5) 
+# $OLD_VERSION (e.g. 9.5)
 # $NEW_VERSION (e.g. 9.6)
 #
 
@@ -29,120 +29,104 @@ source /opt/cpm/bin/common_lib.sh
 enable_debugging
 
 function trap_sigterm() {
-        echo "doing trap logic..." >> $PGDATA/trap.output
-	kill -SIGINT `head -1 $PGDATA/postmaster.pid` >> $PGDATA/trap.output
+    echo_warn "Signal trap triggered, beginning shutdown.." >> $PGDATA/trap.output
+    echo_warn "Signal trap triggered, beginning shutdown.."
+    kill -SIGINT `head -1 $PGDATA/postmaster.pid` >> $PGDATA/trap.output
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
 
-if [[ ! -v "OLD_VERSION" ]]; then
-	echo "OLD_VERSION env var is not set, it is required"
-	exit 2
-fi
-if [[ ! -v "NEW_VERSION" ]]; then
-	echo "NEW_VERSION env var is not set, it is required"
-	exit 2
-fi
-if [[ ! -v "OLD_DATABASE_NAME" ]]; then
-	echo "OLD_DATABASE_NAME env var is not set, it is required"
-	exit 2
-fi
-if [[ ! -v "NEW_DATABASE_NAME" ]]; then
-	echo "NEW_DATABASE_NAME env var is not set, it is required"
-	exit 2
-fi
+env_check_err "OLD_VERSION"
+env_check_err "NEW_VERSION"
+env_check_err "OLD_DATABASE_NAME"
+env_check_err "NEW_DATABASE_NAME"
 
 export PGDATAOLD=/pgolddata/$OLD_DATABASE_NAME
-if [[ ! -d "$PGDATAOLD" ]]; then
-	echo $PGDATAOLD " does not exist and is required"
-#	exit 2
-fi
+dir_check_err "PGDATAOLD"
+
 export PGDATANEW=/pgnewdata/$NEW_DATABASE_NAME
-if [[ ! -d "$PGDATANEW" ]]; then
-	echo $PGDATANEW " does not exist and is required"
-#	exit 2
-fi
+dir_check_err "PGDATANEW"
 
 ose_hack
 
-# set the postgres binary to match the NEW_VERSION
+# Set the postgres binary to match the NEW_VERSION
 
 case $NEW_VERSION in
 "10")
-	echo "setting PGBINNEW to " $NEW_VERSION
-	export PGBINNEW=/usr/pgsql-10/bin
-	export LD_LIBRARY_PATH=/usr/pgsql-10/lib
-	;;
+    echo_info "Setting PGBINNEW to ${NEW_VERSION}."
+    export PGBINNEW=/usr/pgsql-10/bin
+    export LD_LIBRARY_PATH=/usr/pgsql-10/lib
+    ;;
 "9.6")
-	echo "setting PGBINNEW to " $NEW_VERSION
-	export PGBINNEW=/usr/pgsql-9.6/bin
-	export LD_LIBRARY_PATH=/usr/pgsql-9.6/lib
-	;;
+    echo_info "Setting PGBINNEW to ${NEW_VERSION}."
+    export PGBINNEW=/usr/pgsql-9.6/bin
+    export LD_LIBRARY_PATH=/usr/pgsql-9.6/lib
+    ;;
 "9.5")
-	echo "setting PGBINNEW to " $NEW_VERSION
-	export PGBINNEW=/usr/pgsql-9.5/bin
-	export LD_LIBRARY_PATH=/usr/pgsql-9.5/lib
-	;;
+    echo_info "Setting PGBINNEW to ${NEW_VERSION}."
+    export PGBINNEW=/usr/pgsql-9.5/bin
+    export LD_LIBRARY_PATH=/usr/pgsql-9.5/lib
+    ;;
 *)
-	echo "unsupported NEW_VERSION of " $NEW_VERSION
-        exit 2
-	;;
+    echo_info "Unsupported NEW_VERSION of ${NEW_VERSION}."
+    exit 2
+    ;;
 esac
 case $OLD_VERSION in
 "9.6")
-	echo "setting PGBINOLD to " $OLD_VERSION
-	export PGBINOLD=/usr/pgsql-9.6/bin
-	;;
+    echo_info "Setting PGBINOLD to ${OLD_VERSION}."
+    export PGBINOLD=/usr/pgsql-9.6/bin
+    ;;
 "9.5")
-	echo "setting PGBINOLD to " $OLD_VERSION
-	export PGBINOLD=/usr/pgsql-9.5/bin
-	;;
+    echo_info "Setting PGBINOLD to ${OLD_VERSION}."
+    export PGBINOLD=/usr/pgsql-9.5/bin
+    ;;
 *)
-	echo "unsupported OLD_VERSION of " $OLD_VERSION
-        exit 2
-	;;
+    echo_info "Unsupported OLD_VERSION of ${OLD_VERSION}."
+    exit 2
+    ;;
 esac
 
-
-export PATH=/opt/cpm/bin:$PGBINNEW:$PATH
+export PATH=/opt/cpm/bin:${PGBINNEW?}:$PATH
 
 env
 
-# create a clean new data directory
+# Create a clean new data directory
 options=" "
 if [[ -v PG_LOCALE ]]; then
-	options+=" --locale="$PG_LOCALE
+    options+=" --locale="$PG_LOCALE
 fi
 if [[ -v XLOGDIR ]]; then
-	if [ -d "$XLOGDIR" ]; then
-		options+=" --X "$XLOGDIR
-	else
-		echo "XLOGDIR not found! Using default pg_wal"
-	fi
+    if [ -d "$XLOGDIR" ]; then
+        options+=" --X "$XLOGDIR
+    else
+        echo_info "XLOGDIR not found. Using default pg_wal directory.."
+    fi
 fi
 if [[ -v CHECKSUMS ]]; then
-	options+=" --data-checksums"
+    options+=" --data-checksums"
 fi
 
-echo "using " $options " for initdb options"
-$PGBINNEW/initdb -D $PGDATANEW $options
+echo_info "Using the ${options} flags for initdb.."
+${PGBINNEW?}/initdb -D ${PGDATANEW?} $options
 
-# get the old config files and use those in the new database
-cp $PGDATAOLD/postgresql.conf  $PGDATANEW
-cp $PGDATAOLD/pg_hba.conf  $PGDATANEW
+# Get the old config files and use those in the new database
+cp ${PGDATAOLD?}/postgresql.conf ${PGDATANEW?}
+cp ${PGDATAOLD?}/pg_hba.conf ${PGDATANEW?}
 
-# remove the old postmaster.pid 
-rm $PGDATAOLD/postmaster.pid
+# Remove the old postmaster.pid
+echo_info "Cleaning up the old postmaster.pid file.."
+rm ${PGDATAOLD?}/postmaster.pid
 
 # changing to /tmp is necessary since pg_upgrade has to have write access
 cd /tmp
 
-$PGBINNEW/pg_upgrade
+${PGBINNEW?}/pg_upgrade
 rc=$?
 if (( $rc ==  0 )); then
-	echo "Successfully performed upgrade"
+    echo_info "Upgrade has completed."
 else
-	echo "error in upgrade rc=" $rc
+    echo_err "Problem with upgrade. rc=${rc}"
 fi
 
 exit $rc
@@ -152,5 +136,3 @@ exit $rc
 #done
 
 #wait
-
-

@@ -31,20 +31,18 @@ ose_hack
 
 BACKUPBASE=/pgdata/$BACKUP_HOST-backups
 if [ ! -d "$BACKUPBASE" ]; then
-	echo "creating BACKUPBASE directory..."
-	mkdir -p $BACKUPBASE
+    echo_info "Creating BACKUPBASE directory as ${BACKUPBASE}.."
+    mkdir -p $BACKUPBASE
 fi
 
-if [[ ! -v "BACKUP_LABEL" ]]; then
-	BACKUP_LABEL="crunchybackup"
-fi
-echo "BACKUP_LABEL is set to " $BACKUP_LABEL
+export BACKUP_LABEL=${BACKUP_LABEL:-crunchybackup}
+env_check_info "BACKUP_LABEL" "BACKUP_LABEL is set to ${BACKUP_LABEL}."
 
 TS=`date +%Y-%m-%d-%H-%M-%S`
 BACKUP_PATH=$BACKUPBASE/$TS
 mkdir $BACKUP_PATH
 
-echo $BACKUP_PATH
+echo_info "BACKUP_PATH is set to ${BACKUP_PATH}."
 
 export PGPASSFILE=/tmp/pgpass
 
@@ -59,9 +57,8 @@ chown $UID:$UID $PGPASSFILE
 pg_basebackup --label=$BACKUP_LABEL -X fetch --pgdata $BACKUP_PATH --host=$BACKUP_HOST --port=$BACKUP_PORT -U $BACKUP_USER
 
 chown -R $UID:$UID $BACKUP_PATH
-# 
-# open up permissions for the OSE Dedicated random UID scenario
-#
+
+# Open up permissions for the OSE Dedicated random UID scenario
 chmod -R o+rx $BACKUP_PATH
 
-echo "backup has ended!"
+echo_info "Backup has completed."

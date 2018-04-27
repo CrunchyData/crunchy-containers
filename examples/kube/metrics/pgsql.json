@@ -44,7 +44,7 @@
         "name": "pgsql",
         "labels": {
             "name": "pgsql",
-            "crunchy-collect": "true"
+            "crunchy_collect": "true"
         }
     },
     "spec": {

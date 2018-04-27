@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,16 +21,16 @@ export PATH=$PATH:/opt/cpm/bin
 export PIDFILE=/tmp/badgerserver.pid
 
 function trap_sigterm() {
-    echo_info "Doing trap logic..."
-    echo_warn "Clean shut-down of badgerserver ..."
+    echo_info "Doing trap logic.."
+    echo_warn "Clean shut-down of pgBadger server.."
     kill -SIGINT $(head -1 $PIDFILE)
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
 
-env_check_warn "BADGER_TARGET"
+env_check_info "BADGER_TARGET" "Overriding BADGER_TARGET environment variable and setting to ${BADGER_TARGET}."
 
-echo_info "Starting pgBadger Server.."
+echo_info "Starting pgBadger server.."
 /opt/cpm/bin/badgerserver &
 echo $! > $PIDFILE
 
