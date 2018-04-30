@@ -2,9 +2,38 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "custom-config-ssl-pgconf"
+      "name": "custom-config-ssl-pgdata"
     },
     "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "custom-config-ssl-pgdata"
+        }
+      },
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "storageClassName": "$CCP_STORAGE_CLASS",
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "custom-config-ssl-backrestrepo"
+    },
+    "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "custom-config-ssl-backrestrepo"
+        }
+      },
       "accessModes": [
         "$CCP_STORAGE_MODE"
       ],

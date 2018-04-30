@@ -27,8 +27,9 @@ then
 fi
 
 ${CCP_CLI?} create configmap custom-config-pgconf \
-    --from-file ./configs/postgresql.conf \
     --from-file ./configs/pg_hba.conf \
+    --from-file ./configs/pgbackrest.conf \
+    --from-file ./configs/postgresql.conf \
     --from-file ./configs/setup.sql
 
 expenv -f $DIR/custom-config.json | ${CCP_CLI?} create -f -

@@ -1,10 +1,4 @@
 
-/* create these extensions if you want to do GIS work */
-create extension postgis;
-create extension postgis_topology;
-create extension fuzzystrmatch;
-create extension postgis_tiger_geocoder;
-
 /* the following are required for other container operations */
 alter user postgres password 'PG_ROOT_PASSWORD';
 
