@@ -45,10 +45,10 @@ RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
 ADD bin/pgdump/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgdump/ /opt/cpm/conf
-RUN chown -R postgres:postgres /opt/cpm /pgdata
+RUN chown -R 26:26 /opt/cpm /pgdata
 
 VOLUME ["/pgdata"]
 
 USER 26
 
-CMD ["/opt/cpm/bin/start-pgdumpjob.sh"]
+CMD ["/opt/cpm/bin/start.sh"]

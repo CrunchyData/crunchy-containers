@@ -15,9 +15,6 @@
 
 echo "Cleaning up..."
 
-CONTAINER_NAME=pgdump
-VOLUME_NAME=$CONTAINER_NAME-pgdata
-
-docker stop $CONTAINER_NAME
-docker rm -v $CONTAINER_NAME
-docker volume rm $VOLUME_NAME
+docker stop pgdump
+docker rm -v pgdump
+docker volume rm pgdump

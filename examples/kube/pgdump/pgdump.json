@@ -49,16 +49,8 @@
                                 "value": "password"
                             },
                             {
-                                "name": "PGDUMP_PORT",
-                                "value": "5432"
-                            },
-                            {
-                                "name": "PGDUMP_ALL",
-                                "value": "true"
-                            },
-                            {
-                                "name": "PGDUMP_VERBOSE",
-                                "value": "true"
+                                "name": "PGDUMP_DB",
+                                "value": "postgres"
                             }
                         ]
                     }

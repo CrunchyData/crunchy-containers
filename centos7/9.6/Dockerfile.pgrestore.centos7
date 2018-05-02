@@ -28,6 +28,7 @@ RUN yum -y update && yum install -y epel-release \
  	nss_wrapper \
 	procps-ng \
 	unzip \
+	file \
  && yum -y install postgresql96 postgresql96-server \
  && yum clean all -y
 
@@ -35,10 +36,10 @@ RUN mkdir -p /opt/cpm/bin /pgdata /opt/cpm/conf
 ADD bin/pgrestore/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgrestore/ /opt/cpm/conf
-RUN chown -R postgres:postgres /opt/cpm /pgdata
+RUN chown -R 26:26 /opt/cpm /pgdata
 
 VOLUME ["/pgdata"]
 
 USER 26
 
-CMD ["/opt/cpm/bin/start-pgrestorejob.sh"]
+CMD ["/opt/cpm/bin/start.sh"]

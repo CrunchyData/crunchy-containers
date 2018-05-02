@@ -38,6 +38,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  	nss_wrapper \
 	procps-ng \
 	unzip \
+	file \
  && yum -y install postgresql10 postgresql10-server \
  && yum clean all -y
 
@@ -45,10 +46,10 @@ RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
 ADD bin/pgrestore/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgrestore/ /opt/cpm/conf
-RUN chown -R postgres:postgres /opt/cpm /pgdata
+RUN chown -R 26:26 /opt/cpm /pgdata
 
 VOLUME ["/pgdata"]
 
 USER 26
 
-CMD ["/opt/cpm/bin/start-pgrestorejob.sh"]
+CMD ["/opt/cpm/bin/start.sh"]

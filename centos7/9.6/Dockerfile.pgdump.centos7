@@ -17,7 +17,6 @@ LABEL name="crunchydata/pgdump" \
 
 ENV PGVERSION="9.6" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
 
-# PGDG Postgres repo
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 RUN yum -y update && yum install -y epel-release \
@@ -35,10 +34,10 @@ RUN mkdir -p /opt/cpm/bin /pgdata /opt/cpm/conf
 ADD bin/pgdump/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgdump/ /opt/cpm/conf
-RUN chown -R postgres:postgres /opt/cpm /pgdata
+RUN chown -R 26:26 /opt/cpm /pgdata
 
 VOLUME ["/pgdata"]
 
 USER 26
 
-CMD ["/opt/cpm/bin/start-pgdumpjob.sh"]
+CMD ["/opt/cpm/bin/start.sh"]
