@@ -36,18 +36,6 @@
         "securityContext": {
             $CCP_SECURITY_CONTEXT
         },
-        "volumes": [
-            {
-                "name": "pgconf",
-                "persistentVolumeClaim": {
-                    "claimName": "custom-config-ssl-pgconf"
-                }
-            },
-            {
-                "name": "pgdata",
-                "emptyDir": {}
-            }
-        ],
         "containers": [
             {
                 "name": "postgres",
@@ -59,10 +47,6 @@
                     }
                 ],
                 "env": [
-                    {
-                        "name": "PGHOST",
-                        "value": "/tmp"
-                    },
                     {
                         "name": "PG_PRIMARY_USER",
                         "value": "primaryuser"
@@ -80,6 +64,10 @@
                         "value": "password"
                     },
                     {
+                        "name": "PGHOST",
+                        "value": "/tmp"
+                    },
+                    {
                         "name": "PG_USER",
                         "value": "testuser"
                     },
@@ -94,20 +82,83 @@
                     {
                         "name": "PG_ROOT_PASSWORD",
                         "value": "password"
+                    },
+                    {
+                        "name": "ARCHIVE_TIMEOUT",
+                        "value": "60"
                     }
                 ],
                 "volumeMounts": [
                     {
-                        "mountPath": "/pgconf/custom-config-ssl-pgconf",
+                        "mountPath": "/pgdata",
+                        "name": "pgdata",
+                        "readOnly": false
+                    },
+                    {
+                        "mountPath": "/pgconf",
                         "name": "pgconf",
                         "readOnly": true
                     },
                     {
-                        "mountPath": "/pgdata",
-                        "name": "pgdata",
+                        "mountPath": "/backrestrepo",
+                        "name": "backrestrepo",
                         "readOnly": false
                     }
                 ]
+            }
+        ],
+        "volumes": [
+            {
+                "name": "backrestrepo",
+                "persistentVolumeClaim": {
+                    "claimName": "custom-config-ssl-backrestrepo"
+                }
+            },
+            {
+                "name": "pgdata",
+                "persistentVolumeClaim": {
+                    "claimName": "custom-config-ssl-pgdata"
+                }
+            },
+            {
+                "name": "pgconf",
+                "secret": {
+                    "secretName": "custom-config-ssl-secrets",
+                    "items": [
+                        {
+                            "key": "ca-crt",
+                            "path": "ca.crt"
+                        },
+                        {
+                            "key": "ca-crl",
+                            "path": "ca.crl"
+                        },
+                        {
+                            "key": "server-crt",
+                            "path": "server.crt"
+                        },
+                        {
+                            "key": "server-key",
+                            "path": "server.key"
+                        },
+                        {
+                            "key": "pgbackrest-conf",
+                            "path": "pgbackrest.conf"
+                        },
+                        {
+                            "key": "postgresql-conf",
+                            "path": "postgresql.conf"
+                        },
+                        {
+                            "key": "pg-ident-conf",
+                            "path": "pg_ident.conf"
+                        },
+                        {
+                            "key": "pg-hba-conf",
+                            "path": "pg_hba.conf"
+                        }
+                    ]
+                }
             }
         ]
     }

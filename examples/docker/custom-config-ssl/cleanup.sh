@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,17 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source ${CCPROOT}/examples/common.sh
-echo_info "Cleaning up.."
+echo "Cleaning up..."
 
-${CCP_CLI?} delete service custom-config
-${CCP_CLI?} delete pod custom-config
-${CCP_CLI?} delete pvc custom-config-pgdata
-${CCP_CLI?} delete configmap custom-config-pgconf
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+CONTAINER_NAME='custom-config-ssl'
+PGDATA_VOL="${CONTAINER_NAME?}-pgdata"
+BACKUP_VOL="${CONTAINER_NAME?}-backup"
 
-if [[ -z "$CCP_STORAGE_CLASS" ]]
+docker stop ${CONTAINER_NAME?}
+docker rm ${CONTAINER_NAME}
+docker volume rm ${PGDATA_VOL?} ${BACKUP_VOL?}
+
+if [[ -d ${DIR?}/certs ]]
 then
-    ${CCP_CLI?} delete pv custom-config-pgdata
+    rm -rf ${DIR?}/certs
 fi
 
-$CCPROOT/examples/waitforterm.sh custom-config ${CCP_CLI?}
+if [[ -d ${DIR?}/out ]]
+then
+    rm -rf ${DIR?}/out
+fi
+
+rm -f ${DIR?}/configs/*.key
+rm -f ${DIR?}/configs/*.crt
+rm -f ${DIR?}/configs/*.crl

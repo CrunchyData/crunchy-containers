@@ -18,3 +18,45 @@
         "persistentVolumeReclaimPolicy": "Retain"
     }
 }
+
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "custom-config-backrestrepo",
+        "labels": {
+            "name": "custom-config-backrestrepo"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "hostPath": {
+            "path": "$CCP_STORAGE_PATH"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "custom-config-pgwal",
+        "labels": {
+            "name": "custom-config-pgwal"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "hostPath": {
+            "path": "$CCP_STORAGE_PATH"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}

@@ -20,3 +20,49 @@
         }
     }
 }
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "custom-config-backrestrepo"
+    },
+    "spec": {
+        "selector": {
+          "matchLabels": {
+            "name": "custom-config-backrestrepo"
+          }
+        },
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
+        }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "custom-config-pgwal"
+    },
+    "spec": {
+        "selector": {
+          "matchLabels": {
+            "name": "custom-config-pgwal"
+          }
+        },
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
+        }
+    }
+}

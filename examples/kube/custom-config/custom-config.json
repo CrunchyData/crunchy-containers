@@ -56,7 +56,7 @@
                             "/opt/cpm/bin/liveness.sh"
                         ]
                     },
-                    "initialDelaySeconds": 120,
+                    "initialDelaySeconds": 40,
                     "timeoutSeconds": 1
                 },
                 "ports": [
@@ -101,12 +101,26 @@
                     {
                         "name": "PG_ROOT_PASSWORD",
                         "value": "password"
+                    },
+                    {
+                        "name": "XLOGDIR",
+                        "value": "true"
                     }
                 ],
                 "volumeMounts": [
                     {
                         "mountPath": "/pgdata",
                         "name": "pgdata",
+                        "readOnly": false
+                    },
+                    {
+                        "mountPath": "/pgwal",
+                        "name": "pgwal",
+                        "readOnly": false
+                    },
+                    {
+                        "mountPath": "/backrestrepo",
+                        "name": "backrestrepo",
                         "readOnly": false
                     },
                     {
@@ -122,6 +136,18 @@
                 "name": "pgdata",
                 "persistentVolumeClaim": {
                     "claimName": "custom-config-pgdata"
+                }
+            },
+            {
+                "name": "pgwal",
+                "persistentVolumeClaim": {
+                    "claimName": "custom-config-pgwal"
+                }
+            },
+            {
+                "name": "backrestrepo",
+                "persistentVolumeClaim": {
+                    "claimName": "custom-config-backrestrepo"
                 }
             },
             {

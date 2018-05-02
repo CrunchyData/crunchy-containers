@@ -15,16 +15,12 @@
 
 echo "Cleaning up..."
 
-CONTAINER_NAME=custom-config
-
-CONF_VOLUME=${CONTAINER_NAME?}-pgconf
-DATA_VOLUME=${CONTAINER_NAME?}-pgdata
-WAL_VOLUME=${CONTAINER_NAME?}-wal
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+CONTAINER_NAME='custom-config'
+PGDATA_VOL="${CONTAINER_NAME?}-pgdata"
+PGWAL_VOL="${CONTAINER_NAME?}-wal"
+BACKUP_VOL="${CONTAINER_NAME?}-backup"
 
 docker stop ${CONTAINER_NAME?}
-
-docker rm -f --volumes ${CONTAINER_NAME} ${CONTAINER_NAME}-ls ${CONTAINER_NAME}-setup
-
-docker volume rm ${CONF_VOLUME?}
-docker volume rm ${DATA_VOLUME?}
-docker volume rm ${WAL_VOLUME?}
+docker rm ${CONTAINER_NAME}
+docker volume rm ${PGDATA_VOL?} ${PGWAL_VOL?} ${BACKUP_VOL?}

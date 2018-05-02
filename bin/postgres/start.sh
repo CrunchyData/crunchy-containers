@@ -335,7 +335,7 @@ function initialize_primary() {
         BACKREST_CONF='/pgconf/pgbackrest.conf'
         if [[ -f ${BACKREST_CONF?} ]]; then
             echo_info "Creating stanza.."
-            pgbackrest --log-path=/backrestrepo --config=/pgconf/pgbackrest.conf --stanza=db stanza-create
+            pgbackrest --stanza=db stanza-create
         fi
 
         echo_info "Loading setup.sql.." >> /tmp/start-db.log
@@ -416,14 +416,9 @@ case "$PG_MODE" in
     ;;
 esac
 
-PGCONF='/pgconf/postgresql.conf'
+source /opt/cpm/bin/custom-configs.sh
 echo_info "Starting PostgreSQL.."
-if [[ -f ${PGCONF?} ]]; then
-    echo_info "Setting the postgresql.conf file.."
-    postgres -c config_file=/pgconf/postgresql.conf -c hba_file=/pgconf/pg_hba.conf -D $PGDATA  &
-else
-    postgres -D $PGDATA  &
-fi
+postgres -D $PGDATA &
 
 date
 
