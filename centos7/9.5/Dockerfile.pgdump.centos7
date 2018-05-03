@@ -15,20 +15,29 @@ LABEL name="crunchydata/pgdump" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="9.5" \
-        PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
+ENV PGVERSION="9.5" PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
+
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
-RUN yum -y update && yum install -y epel-release && yum install -y nss_wrapper gettext procps-ng postgresql95 postgresql95-server unzip hostname bind-utils && yum clean all -y
+RUN yum -y update && yum install -y epel-release \
+ && yum -y update glibc-common \
+ && yum install -y bind-utils \
+    gettext \
+    hostname \
+    nss_wrapper \
+    procps-ng \
+    unzip \
+ && yum -y install postgresql95 postgresql95-server \
+ && yum clean all -y
 
 RUN mkdir -p /opt/cpm/bin /pgdata /opt/cpm/conf
 ADD bin/pgdump/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgdump/ /opt/cpm/conf
-RUN chown -R postgres:postgres /opt/cpm /pgdata
+RUN chown -R 26:26 /opt/cpm /pgdata
 
 VOLUME ["/pgdata"]
 
 USER 26
 
-CMD ["/opt/cpm/bin/start-pgdumpjob.sh"]
+CMD ["/opt/cpm/bin/start.sh"]

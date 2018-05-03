@@ -15,9 +15,5 @@
 
 echo "Cleaning up..."
 
-CONTAINER_NAME=pgrestore
-VOLUME_NAME=$CONTAINER_NAME-pgdata
-
-docker stop $CONTAINER_NAME
-docker rm -v $CONTAINER_NAME
-docker volume rm $VOLUME_NAME
+docker stop pgrestore
+docker rm pgrestore

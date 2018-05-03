@@ -16,7 +16,5 @@ source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
 ${CCP_CLI?} delete job pgrestore
-${CCP_CLI?} delete pvc pgrestore-pgdata
-if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete pv pgrestore-pgdata
-fi
+
+$CCPROOT/examples/waitforterm.sh pgrestore ${CCP_CLI?}

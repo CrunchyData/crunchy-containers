@@ -17,7 +17,7 @@
                  {
                     "name":"pgdata",
                     "persistentVolumeClaim":{
-                       "claimName":"pgrestore-pgdata"
+                       "claimName":"pgdump-pgdata"
                     }
                  }
               ],
@@ -32,7 +32,7 @@
                        {
                           "mountPath":"/pgdata",
                           "name":"pgdata",
-                          "readOnly":false
+                          "readOnly":true
                        }
                     ],
                     "env":[
@@ -51,22 +51,6 @@
                        {
                           "name":"PGRESTORE_PASS",
                           "value":"password"
-                       },
-                       {
-                          "name":"PGRESTORE_PORT",
-                          "value":"5432"
-                       },
-                       {
-                          "name":"PGRESTORE_VOLUMEPATH",
-                          "value":"/pgdata/$PGDUMP_HOST-dumps/$PGDUMP_PATH"
-                       },
-                       {
-                          "name":"PGRESTORE_FILE",
-                          "value":"pgdumpall.sql"
-                       },
-                       {
-                          "name":"PGRESTORE_FORMAT",
-                          "value":"p"
                        }
                     ]
                  }

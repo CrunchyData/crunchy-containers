@@ -78,3 +78,88 @@ function echo_info() {
 function echo_warn() {
     echo -e "${YELLOW?}$(date) WARN: ${1?}${RESET?}"
 }
+
+function pgisready() {
+    export PGROOT=$(find /usr/ -type d -name 'pgsql-*')
+    local dbname=${1?}
+    local dbhost=${2?}
+    local dbport=${3?}
+    local dbuser=${4?}
+    local max_attempts=${5:-5}
+    local timeout=${6:-2}
+    set +e
+    test_server ${dbname?} ${dbhost?} ${dbport?} ${dbuser?} ${max_attempts?} ${timeout?}
+    test_query ${dbname?} ${dbhost?} ${dbport?} ${dbuser?} ${max_attempts?} ${timeout?}
+    set -e
+}
+
+# Check if PostgreSQL is ready with exponential backoffs on attempts
+function test_server() {
+    local dbname=${1?}
+    local dbhost=${2?}
+    local dbport=${3?}
+    local dbuser=${4?}
+    local max_attempts=${5:-5}
+    local timeout=${6:-2}
+    local attempt=0
+    local error='false'
+
+    echo_info "Waiting for PostgreSQL to be ready.."
+    while [[ ${attempt?} < ${max_attempts?} ]]
+    do
+        ${PGROOT?}/bin/pg_isready \
+            --dbname=${dbname?} --host=${dbhost?} \
+            --port=${dbport?} --username=${dbuser?}
+        if [[ $? -eq 0 ]]
+        then
+            error='false'
+            break
+        fi
+        error='true'
+        sleep ${timeout?}
+        attempt=$(( attempt + 1 ))
+        timeout=$(( timeout * 2 ))
+    done
+
+    if [[ ${error?} == 'true' ]]
+    then
+        echo_err "Could not connect to PostgreSQL: Host=${dbhost?}:${dbport?} DB=${dbname?} User=${dbuser?}"
+        exit 1
+    fi
+}
+
+# Check if PostgreSQL is ready with exponential backoffs on attempts
+function test_query {
+    local dbname=${1?}
+    local dbhost=${2?}
+    local dbport=${3?}
+    local dbuser=${4?}
+    local max_attempts=${5:-5}
+    local timeout=${6:-2}
+    local attempt=0
+    local error='false'
+
+    echo_info "Checking if PostgreSQL is accepting queries.."
+    while [[ ${attempt?} < ${max_attempts?} ]]
+    do
+        ${PGROOT?}/bin/psql \
+            --dbname=${dbname?} --host=${dbhost?} \
+            --port=${dbport?} --username=${dbuser?} \
+            --command="SELECT now();"
+        if [[ $? -eq 0 ]]
+        then 
+            error='false'
+            break
+        fi
+        error='true'
+        sleep ${timeout?}
+        attempt=$(( attempt + 1 ))
+        timeout=$(( timeout * 2 ))
+    done
+
+    if [[ ${error?} == 'true' ]]
+    then
+        echo_err "Could not run query against PostgreSQL: Host=${dbhost?}:${dbport?} DB=${dbname?} User=${dbuser?}"
+        exit 1
+    fi
+}

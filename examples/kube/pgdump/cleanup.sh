@@ -17,6 +17,6 @@ echo_info "Cleaning up.."
 
 ${CCP_CLI?} delete job pgdump
 ${CCP_CLI?} delete pvc pgdump-pgdata
-if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete pv pgdump-pgdata
-fi
+${CCP_CLI?} delete pv pgdump-pgdata
+
+$CCPROOT/examples/waitforterm.sh pgdump ${CCP_CLI?}
