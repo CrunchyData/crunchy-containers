@@ -174,7 +174,7 @@ function check_for_pitr() {
     if [ "$(ls -A /recover)" ]; then
         echo_info "Found non-empty /recover. Assuming a PITR is requested."
         ls -l /recover
-        if [ "$CCP_PGVERSION" = "9.5" || "$CCP_PGVERSION" = "9.6" ]; then
+        if [ "$CCP_PGVERSION" = "9.5" ] || [ "$CCP_PGVERSION" = "9.6" ]; then
             rm $PGDATA/pg_xlog/*0* $PGDATA/pg_xlog/archive_status/*0*
         else
             rm $PGDATA/pg_wal/*0* $PGDATA/pg_wal/archive_status/*0*
