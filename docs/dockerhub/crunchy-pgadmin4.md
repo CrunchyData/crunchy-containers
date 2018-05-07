@@ -27,7 +27,7 @@ docker run \
     --env=PG_USER=testuser \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
-    --detach crunchydata/crunchy-postgres:centos7-10.3-1.8.2
+    --detach crunchydata/crunchy-postgres:centos7-10.3-1.8.3
 
 docker run \
     --name=pgadmin4 \
@@ -37,7 +37,7 @@ docker run \
     --env=PGADMIN_SETUP_EMAIL='admin@admin.com' \
     --env=PGADMIN_SETUP_PASSWORD='password' \
     --env=SERVER_PORT='5050' \
-    --detach crunchydata/crunchy-pgadmin4:centos7-10.3-1.8.2
+    --detach crunchydata/crunchy-pgadmin4:centos7-10.3-1.8.3
 ```
 
 

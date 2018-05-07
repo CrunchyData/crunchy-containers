@@ -2,7 +2,7 @@
 Crunchy Data Solutions, Inc.
 :toc: left
 :toclevels: 1
-v1.8.2, {docdate}
+v1.8.3, {docdate}
 :title-logo-image: image::images/crunchy_logo.png["CrunchyData Logo",align="center",scaledwidth="80%"]
 
 == Introduction
