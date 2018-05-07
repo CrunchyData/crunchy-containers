@@ -49,7 +49,7 @@ docker run \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
     --env=ARCHIVE_TIMEOUT=60 \
-    --detach crunchydata/crunchy-postgres:centos7-10.3-1.8.2
+    --detach crunchydata/crunchy-postgres:centos7-10.3-1.8.3
 
 sleep 20
 
@@ -69,7 +69,7 @@ docker run \
     --volume=backrestrepo:/backrestrepo:z \
     --env=STANZA=db \
     --env=DELTA=true \
-    --detach crunchydata/crunchy-backrest-restore:centos7-10.3-1.8.2
+    --detach crunchydata/crunchy-backrest-restore:centos7-10.3-1.8.3
 
 sleep 20
 

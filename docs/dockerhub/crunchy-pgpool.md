@@ -27,7 +27,7 @@ docker run \
     --env=PG_USER=testuser \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
-    --detach crunchydata/crunchy-postgres:centos7-10.3-1.8.2
+    --detach crunchydata/crunchy-postgres:centos7-10.3-1.8.3
 
 docker run \
     --name=replica \
@@ -43,7 +43,7 @@ docker run \
     --env=PG_USER=testuser \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
-    --detach crunchydata/crunchy-postgres:centos7-10.3-1.8.2
+    --detach crunchydata/crunchy-postgres:centos7-10.3-1.8.3
 
 docker run \
     --name=pgpool \
@@ -55,7 +55,7 @@ docker run \
     --env=PG_USERNAME=testuser \
     --env=PG_PASSWORD=password \
     --env=PG_DATABASE=userdb \
-    --detach crunchydata/crunchy-pgpool:centos7-10.3-1.8.2
+    --detach crunchydata/crunchy-pgpool:centos7-10.3-1.8.3
 ```
 
 ### Connect via `psql`

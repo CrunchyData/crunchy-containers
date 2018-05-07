@@ -1,6 +1,6 @@
 #!/bin/bash
-OLD="1.8.1"
-NEW="1.8.2"
+OLD="1.8.2"
+NEW="1.8.3"
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 DPATH=$DIR/*.adoc
 BPATH=/tmp/backups

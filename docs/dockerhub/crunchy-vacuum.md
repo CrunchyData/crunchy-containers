@@ -27,7 +27,7 @@ docker run \
     --env=PG_USER=testuser \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
-    --detach crunchydata/crunchy-postgres:centos7-10.3-1.8.2
+    --detach crunchydata/crunchy-postgres:centos7-10.3-1.8.3
 
 sleep 10
 
@@ -45,7 +45,7 @@ docker run \
     --env=PG_PASSWORD=password \
     --env=PG_DATABASE=userdb \
     --env=PG_PORT=5432 \
-    --detach crunchydata/crunchy-vacuum:centos7-10.3-1.8.2
+    --detach crunchydata/crunchy-vacuum:centos7-10.3-1.8.3
 ```
 
 **Note**: Crunchy Vacuum is a short lived job, it should exit `vacuum` is completed.
