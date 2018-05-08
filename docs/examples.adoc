@@ -149,7 +149,7 @@ psql postgresql://IP_OF_PGSQL:5432/userdb?sslmode=require -U testuser"
 
 You should see a connection that looks like the following:
 ....
-psql (10.3)
+psql (10.4)
 SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
 Type "help" for help.
 
@@ -1765,7 +1765,7 @@ you perform a pg_upgrade either from a PostgreSQL version 9.5 database to
 9.6 or from 9.6 to 10.
 
 This example assumes you have run *primary* using a PG 9.5 or 9.6 image
-such as `centos7-9.5.12-1.8.3` prior to running this upgrade.
+such as `centos7-9.5.13-1.8.3` prior to running this upgrade.
 
 Prior to starting this example, shut down the *primary* database
 using the `examples/kube/primary/cleanup.sh` script.
@@ -1773,7 +1773,7 @@ using the `examples/kube/primary/cleanup.sh` script.
 Prior to running this example, make sure your `CCP_IMAGE_TAG`
 environment variable is using the next major version of PostgreSQL that you
 want to upgrade to. For example, if you're upgrading from 9.5 to 9.6, make
-sure the variable references a PG 9.6 image such as `centos7-9.6.8-1.8.3`.
+sure the variable references a PG 9.6 image such as `centos7-9.6.9-1.8.3`.
 
 This will create the following in your Kubernetes environment:
 

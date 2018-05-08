@@ -5,7 +5,7 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/pgdump" \
         vendor="crunchy data" \
       	PostgresVersion="10" \
-      	PostgresFullVersion="10.3" \
+      	PostgresFullVersion="10.4" \
         version="7.3" \
         release="1.8.3" \
         #build-date="2017-05-11" \

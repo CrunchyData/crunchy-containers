@@ -3,10 +3,10 @@ FROM centos:7
 LABEL name="crunchydata/postgres" \
 vendor="crunchy data" \
       	PostgresVersion="9.6" \
-      	PostgresFullVersion="9.6.8" \
+      	PostgresFullVersion="9.6.9" \
         version="7.3" \
         release="1.8.3" \
-        build-date="2018-03-01" \
+        build-date="2018-05-08" \
         url="https://crunchydata.com" \
         summary="PostgreSQL 9.5/9.6 (PGDG) on a Centos7 base image" \
         description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
