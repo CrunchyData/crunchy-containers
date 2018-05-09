@@ -2,9 +2,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "restore-backup",
+        "name": "restore-pgdata",
         "labels": {
-            "name": "restore-backup"
+            "name": "restore-pgdata"
         }
     },
     "spec": {
