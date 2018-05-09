@@ -16,9 +16,11 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
+docker network create --driver bridge pgnet
+
 docker run \
     -v backups:/pgdata \
-    -e PGDUMP_HOST=pgsql \
+    -e PGDUMP_HOST=primary \
     -e PGDUMP_DB=postgres \
     -e PGDUMP_USER=postgres\
     -e PGDUMP_PASS=password \

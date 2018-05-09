@@ -21,3 +21,4 @@ VOLUME_NAME=$CONTAINER_NAME-pgdata
 docker stop $CONTAINER_NAME
 docker rm -v $CONTAINER_NAME
 docker volume rm $VOLUME_NAME
+docker network rm pgnet

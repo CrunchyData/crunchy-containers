@@ -18,9 +18,11 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+docker network create --driver bridge pgnet
+
 docker run \
     -p 5432:5432 \
-    -v pgsql:/pgdata \
+    -v primary-pgdata:/pgdata \
     -e PG_MODE=primary \
     -e PG_USER=testuser \
     -e PG_PASSWORD=password \
@@ -29,7 +31,7 @@ docker run \
     -e PG_PRIMARY_PORT=5432 \
     -e PG_PRIMARY_PASSWORD=password \
     -e PG_ROOT_PASSWORD=password \
-    --name=pgsql \
-    --hostname=pgsql \
+    --name=primary \
+    --hostname=primary \
     --network=pgnet \
     -d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
