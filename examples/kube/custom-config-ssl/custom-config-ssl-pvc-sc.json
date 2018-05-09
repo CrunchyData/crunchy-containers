@@ -5,11 +5,6 @@
       "name": "custom-config-ssl-pgdata"
     },
     "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "custom-config-ssl-pgdata"
-        }
-      },
       "accessModes": [
         "$CCP_STORAGE_MODE"
       ],
@@ -29,11 +24,6 @@
       "name": "custom-config-ssl-backrestrepo"
     },
     "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "custom-config-ssl-backrestrepo"
-        }
-      },
       "accessModes": [
         "$CCP_STORAGE_MODE"
       ],
