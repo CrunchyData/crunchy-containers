@@ -673,6 +673,23 @@ cd $CCPROOT/examples/docker/backup
 
 *restore*
 
+It's required to specified a backup path for this example.  To get the correct path
+check the `backup` job logs or a timestamp:
+
+....
+docker logs backup-vpk9l | grep BACKUP_PATH
+Wed May  9 20:32:00 UTC 2018 INFO: BACKUP_PATH is set to /pgdata/primary-backups/2018-05-09-20-32-00.
+....
+
+BACKUP_PATH can also be discovered by looking at the backup mount directly (if access
+to the storage is available to the user).
+
+An example of BACKUP_PATH is as followed:
+....
+"name": "BACKUP_PATH",
+"value": "primary-backups/2018-05-09-20-32-00"
+....
+
 When you are ready to restore from the backup created, run the following example:
 ....
 cd $CCPROOT/examples/docker/restore
@@ -693,20 +710,23 @@ view the Job status using this command:
 ${CCP-CLI} get job
 ....
 
-You should find the backup archive in this location:
-....
-ls $CCP_STORAGE_PATH/primary-backups
-....
-
 *restore*
 
-By default, the example will automatically restore from the most recent backup
-created by the backup example, located under `$CCP_STORAGE_PATH/$BACKUP_HOST-backups`.
-If you want to restore to a specific backup, edit the `restore.json` file and update the
-`BACKUP_PATH` setting to specify the backup path you want to restore with. For example:
+It's required to specified a backup path for this example.  To get the correct path 
+check the `backup` job logs or a timestamp:
+
+....
+kubectl logs backup-vpk9l | grep BACKUP_PATH
+Wed May  9 20:32:00 UTC 2018 INFO: BACKUP_PATH is set to /pgdata/primary-backups/2018-05-09-20-32-00.
+....
+
+BACKUP_PATH can also be discovered by looking at the backup mount directly (if access 
+to the storage is available to the user).
+
+An example of BACKUP_PATH is as followed:
 ....
 "name": "BACKUP_PATH",
-"value": "primary-backups/2018-03-27-14-35-33"
+"value": "primary-backups/2018-05-09-20-32-00"
 ....
 
 Running the example:

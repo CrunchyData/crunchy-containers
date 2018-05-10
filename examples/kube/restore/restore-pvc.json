@@ -2,12 +2,12 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "restore-backup"
+        "name": "restore-pgdata"
     },
     "spec": {
         "selector": {
           "matchLabels": {
-            "name": "restore-backup"
+            "name": "restore-pgdata"
           }
         },
         "accessModes": [

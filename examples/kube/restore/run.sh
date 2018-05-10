@@ -25,7 +25,4 @@ then
     exit 1
 fi
 
-export BACKUP_HOST=$($CCP_CLI describe job backup | grep BACKUP_HOST | awk '{print $NF}')
-export BACKUP_PATH=$(ls -tc "$CCP_STORAGE_PATH/$BACKUP_HOST-backups/" | head -n1)
-
 expenv -f $DIR/restore.json | ${CCP_CLI?} create -f -
