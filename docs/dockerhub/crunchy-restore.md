@@ -29,7 +29,7 @@ docker run \
     --env=PG_USER=testuser \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
-    --detach crunchydata/crunchy-postgres:centos7-10.3-1.8.3
+    --detach crunchydata/crunchy-postgres:centos7-10.4-1.8.3
 
 sleep 10
 
@@ -47,7 +47,7 @@ docker run \
     --env=PGDUMP_LABEL=mybackup \
     --env=PGDUMP_FORMAT=plain \
     --env=PGDUMP_VERBOSE=true \
-    --detach crunchydata/crunchy-pgdump:centos7-10.3-1.8.3
+    --detach crunchydata/crunchy-pgdump:centos7-10.4-1.8.3
 
 sleep 10
 
@@ -66,7 +66,7 @@ docker run \
     --env=PGRESTORE_FILE="pgdumpall.sql" \
     --env=PGRESTORE_VOLUMEPATH='/pgrestore' \
     --env=PGRESTORE_FORMAT=plain \
-    --detach crunchydata/crunchy-pgrestore:centos7-10.3-1.8.3
+    --detach crunchydata/crunchy-pgrestore:centos7-10.4-1.8.3
 ```
 
 ### Environment Variables

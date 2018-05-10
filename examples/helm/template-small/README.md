@@ -75,10 +75,10 @@ See `values.yaml` for configuration notes. Specify each parameter using the `--s
 
 ```console
 $ helm install template-small --name template-small \
-  --set Image.tag=centos7-9.6.8-1.8.3
+  --set Image.tag=centos7-9.6.9-1.8.3
 ```
 
-The above command changes the image tag of the container from the default of `centos7-10.3-1.8.3` to `centos7-9.6.8-1.8.3`.
+The above command changes the image tag of the container from the default of `centos7-10.4-1.8.3` to `centos7-9.6.9-1.8.3`.
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
 
@@ -93,7 +93,7 @@ The above command changes the image tag of the container from the default of `ce
 | `.serviceType`      | The type of service      | `ClusterIP`               
 | `.image.repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
 | `.image.container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
-| `.image.tag` | The image tag to be used.    | `centos7-10.3-1.8.3`                                                    |
+| `.image.tag` | The image tag to be used.    | `centos7-10.4-1.8.3`                                                    |
 | `.resources.cpu` | Defines a limit for CPU    | `200m`                                                    |
 | `.resources.memory` | Defines a limit for memory    | `512Mi`                                                    |
 

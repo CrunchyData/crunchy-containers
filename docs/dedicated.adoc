@@ -46,7 +46,7 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
 export CCP_PGVERSION=10
-export CCP_PG_FULLVERSION=10.3
+export CCP_PG_FULLVERSION=10.4
 export CCP_VERSION=1.8.3
 export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
@@ -478,7 +478,7 @@ which uses a Persistent Volume Claim for persistence.
 
 |CCP_IMAGE_TAG
 | the image version to use for the container
-| rhel7-9.6.8-1.8.3
+| rhel7-9.6.9-1.8.3
 
 |CCP_IMAGE_PREFIX
 | the image prefix to use, typically the image stream prefix of your registry
@@ -579,7 +579,7 @@ files in a PVC.
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.8-1.8.3
+| rhel7-9.6.9-1.8.3
 |===
 
 === Restore Database Template
@@ -670,7 +670,7 @@ found in a PVC.
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.8-1.8.3
+| rhel7-9.6.9-1.8.3
 |===
 
 === Replica Database Template
@@ -734,7 +734,7 @@ These templates create the following:
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.8-1.8.3
+| rhel7-9.6.9-1.8.3
 |===
 
 === pgadmin4 Web User Interface Template
@@ -779,7 +779,7 @@ This template will create the following:
 
 |CCP_IMAGE_TAG
 | the container image version to use
-| rhel7-9.6.8-1.8.3
+| rhel7-9.6.9-1.8.3
 |===
 
 

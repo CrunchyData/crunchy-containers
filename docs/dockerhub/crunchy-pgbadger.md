@@ -28,7 +28,7 @@ docker run \
     --env=PG_USER=testuser \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
-    --detach crunchydata/crunchy-postgres:centos7-10.3-1.8.3
+    --detach crunchydata/crunchy-postgres:centos7-10.4-1.8.3
 
 docker run \
     --name=pgbadger \
@@ -37,7 +37,7 @@ docker run \
     --network="pgnet" \
     --volume=pgdata:/pgdata:z \
     --env=BADGER_TARGET='primary' \
-    --detach crunchydata/crunchy-pgbadger:centos7-10.3-1.8.3
+    --detach crunchydata/crunchy-pgbadger:centos7-10.4-1.8.3
 ```
 
 ### Using pgBadger
