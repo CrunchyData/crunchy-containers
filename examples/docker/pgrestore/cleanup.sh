@@ -17,3 +17,4 @@ echo "Cleaning up..."
 
 docker stop pgrestore
 docker rm pgrestore
+docker network rm pgnet

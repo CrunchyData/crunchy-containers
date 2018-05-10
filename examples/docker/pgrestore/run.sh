@@ -13,13 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
+docker network create --driver bridge pgnet
+
 docker run \
     -v backups:/pgdata \
-    -e PGRESTORE_HOST=pgsql \
+    -e PGRESTORE_HOST=primary \
     -e PGRESTORE_DB=postgres \
     -e PGRESTORE_USER=postgres\
     -e PGRESTORE_PASS=password \

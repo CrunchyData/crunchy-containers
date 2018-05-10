@@ -18,3 +18,4 @@ echo "Cleaning up..."
 docker stop pgdump
 docker rm -v pgdump
 docker volume rm pgdump
+docker network rm pgnet
