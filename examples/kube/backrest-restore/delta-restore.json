@@ -64,7 +64,7 @@
                     {
                         "name": "pgdata",
                         "persistentVolumeClaim": {
-                            "claimName": "backrest-restore-pgdata"
+                            "claimName": "backrest-pgdata"
                         }
                     }
                 ],

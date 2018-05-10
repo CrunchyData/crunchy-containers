@@ -92,11 +92,11 @@ cd $CCPROOT/examples/kube/backrest
 
 This will create the following in your Kubernetes environment:
 
- * configMap named backrest-restore-pgconf which contains the pgbackrest.conf file
+ * configMap named backrest-pgconf which contains the pgbackrest.conf file
  * backrest pod with pgbackrest archive enabled and an initial stanza db created on initialization
  * backrest service
- * backrest-restore-pgdata PVC which is used for `/pgdata`
- * backrest-restore-backrestrepo PVC which is used for `/backrestrepo`
+ * backrest-pgdata PVC which is used for `/pgdata`
+ * backrest-backrestrepo PVC which is used for `/backrestrepo`
 
 Examine the `/backrestrepo` location to view the archive directory and ensure WAL archiving is working.
 

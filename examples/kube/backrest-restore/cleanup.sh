@@ -15,9 +15,5 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete pvc backrest-restore-pgdata
-if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete pv backrest-restore-pgdata
-fi
 ${CCP_CLI?} delete job backrest-full-restore-job
 ${CCP_CLI?} delete job backrest-delta-restore-job
