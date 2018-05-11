@@ -65,3 +65,7 @@ fi
 
 # install expenv binary for running examples
 go get github.com/blang/expenv
+
+# pull in godeps and the dependencies for the golang code
+go get github.com/tools/godep
+godep restore
