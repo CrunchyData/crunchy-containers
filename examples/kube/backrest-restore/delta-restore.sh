@@ -18,11 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ${DIR}/cleanup.sh
 
-create_storage "backrest-restore"
-if [[ $? -ne 0 ]]
-then
-    echo_err "Failed to create storage, exiting.."
-    exit 1
-fi
-
 expenv -f $DIR/delta-restore.json | ${CCP_CLI?} create -f -
