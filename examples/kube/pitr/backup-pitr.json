@@ -13,37 +13,49 @@
                 }
             },
             "spec": {
-                "volumes": [{
-                    "name": "pgdata",
-                    "persistentVolumeClaim": {
-                        "claimName": "backup-pitr-pgdata"
-                    }
-                }],
-                "containers": [{
-                    "name": "backup-pitr",
-                    "image": "$CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG",
-                    "volumeMounts": [{
-                        "mountPath": "/pgdata",
+                "volumes": [
+                    {
                         "name": "pgdata",
-                        "readOnly": false
-                    }],
-                    "env": [{
-                        "name": "BACKUP_HOST",
-                        "value": "pitr"
-                    }, {
-                        "name": "BACKUP_LABEL",
-                        "value": "somebackup"
-                    }, {
-                        "name": "BACKUP_USER",
-                        "value": "primaryuser"
-                    }, {
-                        "name": "BACKUP_PASS",
-                        "value": "password"
-                    }, {
-                        "name": "BACKUP_PORT",
-                        "value": "5432"
-                    }]
-                }],
+                        "persistentVolumeClaim": {
+                            "claimName": "backup-pitr-pgdata"
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "backup-pitr",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": false
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "BACKUP_HOST",
+                                "value": "pitr"
+                            },
+                            {
+                                "name": "BACKUP_LABEL",
+                                "value": "somebackup"
+                            },
+                            {
+                                "name": "BACKUP_USER",
+                                "value": "primaryuser"
+                            },
+                            {
+                                "name": "BACKUP_PASS",
+                                "value": "password"
+                            },
+                            {
+                                "name": "BACKUP_PORT",
+                                "value": "5432"
+                            }
+                        ]
+                    }
+                ],
                 "restartPolicy": "Never"
             }
         }

@@ -1607,18 +1607,37 @@ ${CCP_CLI} delete pod pitr
 Next, we will create 3 different restored database containers based
 upon the base backup and the saved WAL files.
 
-First, we restore prior to the `beforechanges` recovery target.  This
+First, get the BACKUP_PATH created by the `backup-pitr` example by viewing the pods logs:
+
+....
+${CCP_CLI} logs backup-pitr-8sfkh | grep PATH
+Thu May 10 18:07:58 UTC 2018 INFO: BACKUP_PATH is set to /pgdata/pitr-backups/2018-05-10-18-07-58.
+....
+
+Edit the `restore-pitr.json` file and change the `BACKUP_PATH` environment variable 
+using the path discovered above (note: `/pgdata/` is not required and should be excluded 
+in the variable):
+
+....
+{
+    "name": "BACKUP_PATH",
+    "value": "pitr-backups/2018-05-10-18-07-58"
+{
+....
+
+Next, we restore prior to the `beforechanges` recovery target.  This
 recovery point is *before* the *pitrtest* table is created.
 
 Edit the `restore-pitr.json` file, and edit the environment
 variable to indicate we want to use the `beforechanges` recovery
 point:
 ....
-}, {
-"name": "RECOVERY_TARGET_NAME",
-"value": "beforechanges"
-}, {
+{
+    "name": "RECOVERY_TARGET_NAME",
+    "value": "beforechanges"
+{
 ....
+
 
 Then run the following to create the restored database container:
 ....
