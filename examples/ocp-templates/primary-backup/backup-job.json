@@ -2,10 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "message": "The following job(s) have been created in your project: ${JOB_NAME}.\n",
-    "name": "crunchy-postgres-backup-secret-template",
-    "labels": {
-        "template": "postgresql-backup-template"
-    },
+    "name": "crunchy-postgres-backup-template",
     "metadata": {
         "name": "crunchy-postgres-backup-template",
         "creationTimestamp": null,
@@ -22,25 +19,20 @@
     },
     "objects": [
         {
-            "apiVersion": "v1",
-            "kind": "Secret",
-            "metadata": {
-                "name": "${JOB_NAME}"
-            },
-            "stringData": {
-                "backup-pass": "${BACKUP_PASS}"
-            }
-        },
-        {
             "kind": "PersistentVolumeClaim",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${JOB_NAME}"
+                "name": "${BACKUP_PVC_NAME}",
+                "labels": {
+                    "name": "${JOB_NAME}",
+                    "app": "${JOB_NAME}"
+                }
             },
             "spec": {
                 "accessModes": [
                     "${VOLUME_ACCESS_MODE}"
                 ],
+                "storageClassName": "${VOLUME_STORAGE_CLASS}",
                 "resources": {
                     "requests": {
                         "storage": "${VOLUME_CAPACITY}"
@@ -52,7 +44,11 @@
             "kind": "Job",
             "apiVersion": "batch/v1",
             "metadata": {
-                "name": "${JOB_NAME}"
+                "name": "${JOB_NAME}",
+                "labels": {
+                    "name": "${JOB_NAME}",
+                    "app": "${JOB_NAME}"
+                }
             },
             "spec": {
                 "template": {
@@ -64,7 +60,7 @@
                             {
                                 "name": "pgdata",
                                 "persistentVolumeClaim": {
-                                    "claimName": "${JOB_NAME}"
+                                    "claimName": "${BACKUP_PVC_NAME}"
                                 }
                             }
                         ],
@@ -84,7 +80,7 @@
                                 "env": [
                                     {
                                         "name": "BACKUP_HOST",
-                                        "value": "${DB_NAME}"
+                                        "value": "${DB_HOSTNAME}"
                                     },
                                     {
                                         "name": "BACKUP_USER",
@@ -92,12 +88,7 @@
                                     },
                                     {
                                         "name": "BACKUP_PASS",
-                                        "valueFrom": {
-                                            "secretKeyRef": {
-                                                "key": "backup-pass",
-                                                "name": "${JOB_NAME}"
-                                            }
-                                        }
+                                        "value": "${BACKUP_PASS}"
                                     },
                                     {
                                         "name": "BACKUP_PORT",
@@ -114,6 +105,12 @@
     ],
     "parameters": [
         {
+            "description": "Name of the volume storage class to use, e.g. ebs, gluster",
+            "displayName": "Volume Storage Class",
+            "name": "VOLUME_STORAGE_CLASS",
+            "required": true
+        },
+        {
             "description": "Volume space available for data, e.g. 512Mi, 2Gi.",
             "displayName": "Volume Capacity",
             "name": "VOLUME_CAPACITY",
@@ -126,6 +123,14 @@
             "name": "VOLUME_ACCESS_MODE",
             "required": true,
             "value": "ReadWriteOnce"
+        },
+        {
+            "description": "The name of the PVC that holds the backup archives",
+            "displayName": "Backup PVC Name",
+            "name": "BACKUP_PVC_NAME",
+            "from": "crunchy-postgres-[a-z0-9]{5}-backups",
+            "generate": "expression",
+            "required": true
         },
         {
             "description": "The name of the database user to perform the backup",
@@ -142,14 +147,7 @@
         {
             "description": "The service name of the database to backup",
             "displayName": "Database Hostname",
-            "name": "DB_NAME",
-            "required": true
-        },
-        {
-            "description": "The port of the database to backup",
-            "displayName": "Database Port",
-            "name": "DB_PORT",
-            "value": "5432",
+            "name": "DB_HOSTNAME",
             "required": true
         },
         {
@@ -157,6 +155,13 @@
             "name": "JOB_NAME",
             "description": "The name to give the backup job",
             "value": "crunchy-backup-job",
+            "required": true
+        },
+        {
+            "description": "The port of the database to backup",
+            "displayName": "Database Port",
+            "name": "DB_PORT",
+            "value": "5432",
             "required": true
         },
         {

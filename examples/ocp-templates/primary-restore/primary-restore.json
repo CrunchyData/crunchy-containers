@@ -3,19 +3,16 @@
     "apiVersion": "v1",
     "message": "The following service(s) have been created in your project: ${SERVICE_NAME}.\n\nPG Database: ${PG_DATABASE}\nPG Username: ${PG_USER}\nPG Password: ${PG_PASSWORD}\nPG Primary User: ${PG_PRIMARY_USER}\nPG Primary Password: ${PG_PRIMARY_PASSWORD}",
     "name": "crunchy-postgres-primary-restore-template",
-    "labels": {
-        "template": "crunchy-postgres-primary-restore-template"
-    },
     "metadata": {
         "name": "crunchy-postgres-primary-restore-template",
         "creationTimestamp": null,
         "annotations": {
-            "description": "Crunchy PostgreSQL restored from backup",
+            "description": "Crunchy PostgreSQL restored from pg_basebackup's created by the Crunchy Backup template.",
             "iconClass": "icon-postgresql",
             "tags": "database,postgresql",
             "openshift.io/display-name": "Crunchy PostgreSQL Restore",
             "openshift.io/documentation-url": "https://github.com/CrunchyData/crunchy-containers/tree/master/docs",
-            "openshift.io/long-description": "Crunchy PostgreSQL primary database with scalable read replicas.",
+            "openshift.io/long-description": "Crunchy PostgreSQL restored from pg_basebackup's created by the Crunchy Backup template.",
             "openshift.io/provider-display-name": "Crunchy Data",
             "openshift.io/support-url": "https://github.com/CrunchyData/crunchy-containers"
         }
@@ -26,6 +23,10 @@
             "kind": "Secret",
             "metadata": {
                 "name": "${SERVICE_NAME}",
+                "labels": {
+                    "name": "${SERVICE_NAME}",
+                    "app": "${SERVICE_NAME}"
+                },
                 "annotations": {
                     "template.openshift.io/expose-db_name": "{.data['PG_DATABASE']}",
                     "template.openshift.io/expose-db_password": "{.data['PG_PASSWORD']}",
@@ -47,7 +48,8 @@
             "metadata": {
                 "name": "${SERVICE_NAME}-primary",
                 "labels": {
-                    "name": "${SERVICE_NAME}-primary"
+                    "name": "${SERVICE_NAME}-primary",
+                    "app": "${SERVICE_NAME}"
                 },
                 "annotations": {
                     "template.openshift.io/expose-uri": "postgres://{.spec.clusterIP}:{.spec.ports[?(.name==\"postgresql-primary\")].port}"
@@ -75,12 +77,14 @@
             "kind": "PersistentVolumeClaim",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${PVC_NAME}"
+                "name": "${PGDATA_PVC_NAME}",
+                "app": "${SERVICE_NAME}"
             },
             "spec": {
                 "accessModes": [
                     "${VOLUME_ACCESS_MODE}"
                 ],
+                "storageClassName": "${VOLUME_STORAGE_CLASS}",
                 "resources": {
                     "requests": {
                         "storage": "${VOLUME_CAPACITY}"
@@ -94,7 +98,8 @@
             "metadata": {
                 "name": "${SERVICE_NAME}-primary",
                 "labels": {
-                    "name": "${SERVICE_NAME}-primary"
+                    "name": "${SERVICE_NAME}-primary",
+                    "app": "${SERVICE_NAME}"
                 }
             },
             "spec": {
@@ -243,7 +248,7 @@
                             {
                                 "mountPath": "/backup",
                                 "name": "backup",
-                                "readOnly": true
+                                "readOnly": false
                             },
                             {
                                 "mountPath": "/recover",
@@ -258,7 +263,7 @@
                             {
                                 "mountPath": "/sshd",
                                 "name": "sshd",
-                                "readOnly": false
+                                "readOnly": true
                             }
                         ],
                         "restartPolicy": "Always"
@@ -268,7 +273,7 @@
                     {
                         "name": "pgdata",
                         "persistentVolumeClaim": {
-                            "claimName": "${PVC_NAME}"
+                            "claimName": "${PGDATA_PVC_NAME}"
                         }
                     },
                     {
@@ -313,6 +318,12 @@
     ],
     "parameters": [
         {
+            "description": "Name of the volume storage class to use, e.g. ebs, gluster",
+            "displayName": "Volume Storage Class",
+            "name": "VOLUME_STORAGE_CLASS",
+            "required": true
+        },
+        {
             "description": "Volume space available for data, e.g. 512Mi, 2Gi.",
             "displayName": "Volume Capacity",
             "name": "VOLUME_CAPACITY",
@@ -327,9 +338,17 @@
             "value": "ReadWriteOnce"
         },
         {
+            "displayName": "PGData PVC Name",
+            "name": "PGDATA_PVC_NAME",
+            "from": "crunchy-postgres-[a-z0-9]{5}-pgdata",
+            "generate": "expression",
+            "description": "Name of the PVC to claim on the primary pgdata directory.",
+            "required": true
+        },
+        {
+            "displayName": "Backup PVC Name",
             "name": "BACKUP_PVC_NAME",
-            "description": "The name of the PVC that holds the backup archives",
-            "value": "",
+            "description": "Name of the existing PVC that contains backups for PostgreSQL.",
             "required": true
         },
         {
@@ -340,6 +359,38 @@
         {
             "name": "BACKUP_HOSTNAME",
             "description": "The hostname of the database you want to restore from, e.g. crunchy-postgres-primary",
+            "required": true
+        },
+        {
+            "name": "PG_USER",
+            "description": "The username that clients will use to connect to PG server",
+            "required": true
+        },
+        {
+            "name": "PG_PASSWORD",
+            "description": "The password for the PG primary user",
+            "required": true
+        },
+        {
+            "name": "PG_DATABASE",
+            "description": "The name of the database that will be created",
+            "value": "userdb",
+            "required": true
+        },
+        {
+            "name": "PG_PRIMARY_USER",
+            "description": "The username used for primary / replica replication",
+            "value": "primaryuser",
+            "required": true
+        },
+        {
+            "name": "PG_PRIMARY_PASSWORD",
+            "description": "The password for the PG primary user",
+            "required": true
+        },
+        {
+            "name": "PG_ROOT_PASSWORD",
+            "description": "The password for the PG administrator",
             "required": true
         },
         {
@@ -363,57 +414,9 @@
             "required": true
         },
         {
-            "displayName": "PVC Name",
-            "name": "PVC_NAME",
-            "from": "crunchy-postgres-[a-z0-9]{5}",
-            "generate": "expression",
-            "description": "Name of the PVC to claim on the primary",
-            "required": true
-        },
-        {
-            "name": "PG_USER",
-            "description": "The username that clients will use to connect to PG server",
-            "from": "user[a-z0-9]{5}",
-            "generate": "expression",
-            "required": true
-        },
-        {
-            "name": "PG_PASSWORD",
-            "description": "The password for the PG primary user",
-            "generate": "expression",
-            "from": "[a-zA-Z0-9]{20}",
-            "required": true
-        },
-        {
-            "name": "PG_DATABASE",
-            "description": "The name of the database that will be created",
-            "value": "userdb",
-            "required": true
-        },
-        {
-            "name": "PG_PRIMARY_USER",
-            "description": "The username used for primary / replica replication",
-            "value": "primaryuser",
-            "required": true
-        },
-        {
-            "name": "PG_PRIMARY_PASSWORD",
-            "description": "The password for the PG primary user",
-            "generate": "expression",
-            "from": "[a-zA-Z0-9]{20}",
-            "required": true
-        },
-        {
             "name": "PG_PRIMARY_PORT",
             "description": "The postgresql port",
             "value": "5432",
-            "required": true
-        },
-        {
-            "name": "PG_ROOT_PASSWORD",
-            "description": "The password for the PG administrator",
-            "generate": "expression",
-            "from": "[a-zA-Z0-9]{20}",
             "required": true
         },
         {

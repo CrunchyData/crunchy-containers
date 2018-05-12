@@ -3,9 +3,6 @@
     "apiVersion": "v1",
     "message": "The following service(s) have been created in your project: ${SERVICE_NAME}.\n\nPG Database: ${PG_DATABASE}\nPG Username: ${PG_USER}\nPG Password: ${PG_PASSWORD}\nPG Primary User: ${PG_PRIMARY_USER}\nPG Primary Password: ${PG_PRIMARY_PASSWORD}",
     "name": "crunchy-postgres-primary-replica-template",
-    "labels": {
-        "template": "crunchy-postgres-primary-replica-template"
-    },
     "metadata": {
         "name": "crunchy-postgres-primary-replica-template",
         "creationTimestamp": null,
@@ -26,6 +23,9 @@
             "kind": "Secret",
             "metadata": {
                 "name": "${SERVICE_NAME}",
+                "labels": {
+                    "app": "${SERVICE_NAME}"
+                },
                 "annotations": {
                     "template.openshift.io/expose-db_name": "{.data['PG_DATABASE']}",
                     "template.openshift.io/expose-db_password": "{.data['PG_PASSWORD']}",
@@ -45,12 +45,17 @@
             "kind": "PersistentVolumeClaim",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${PVC_NAME}"
+                "name": "${PGDATA_PVC_NAME}",
+                "labels": {
+                    "name": "${SERVICE_NAME}-primary",
+                    "app": "${SERVICE_NAME}"
+                }
             },
             "spec": {
                 "accessModes": [
                     "${VOLUME_ACCESS_MODE}"
                 ],
+                "storageClassName": "${VOLUME_STORAGE_CLASS}",
                 "resources": {
                     "requests": {
                         "storage": "${VOLUME_CAPACITY}"
@@ -64,7 +69,8 @@
             "metadata": {
                 "name": "${SERVICE_NAME}-primary",
                 "labels": {
-                    "name": "${SERVICE_NAME}-primary"
+                    "name": "${SERVICE_NAME}-primary",
+                    "app": "${SERVICE_NAME}"
                 },
                 "annotations": {
                     "template.openshift.io/expose-uri": "postgres://{.spec.clusterIP}:{.spec.ports[?(.name==\"postgresql-primary\")].port}"
@@ -94,7 +100,8 @@
             "metadata": {
                 "name": "${SERVICE_NAME}-replica",
                 "labels": {
-                    "name": "${SERVICE_NAME}-replica"
+                    "name": "${SERVICE_NAME}-replica",
+                    "app": "${SERVICE_NAME}"
                 },
                 "annotations": {
                     "template.openshift.io/expose-uri": "postgres://{.spec.clusterIP}:{.spec.ports[?(.name==\"postgresql-replica\")].port}"
@@ -124,7 +131,8 @@
             "metadata": {
                 "name": "${SERVICE_NAME}-primary",
                 "labels": {
-                    "name": "${SERVICE_NAME}-primary"
+                    "name": "${SERVICE_NAME}-primary",
+                    "app": "${SERVICE_NAME}"
                 }
             },
             "spec": {
@@ -294,7 +302,7 @@
                     {
                         "name": "pgdata",
                         "persistentVolumeClaim": {
-                            "claimName": "${PVC_NAME}"
+                            "claimName": "${PGDATA_PVC_NAME}"
                         }
                     },
                     {
@@ -363,7 +371,8 @@
                     "metadata": {
                         "creationTimestamp": null,
                         "labels": {
-                            "name": "${SERVICE_NAME}-replica"
+                            "name": "${SERVICE_NAME}-replica",
+                            "app": "${SERVICE_NAME}"
                         }
                     },
                     "spec": {
@@ -551,25 +560,25 @@
                                 }
                             },
                             {
-                                "name": "backup",
-                                "emptyDir": {
-                                    "medium": "Memory"
-                                }
-                            },
-                            {
                                 "name": "recover",
                                 "emptyDir": {
                                     "medium": "Memory"
                                 }
                             },
                             {
-                                "name": "backrestrepo",
+                                "name": "sshd",
                                 "emptyDir": {
                                     "medium": "Memory"
                                 }
                             },
                             {
-                                "name": "sshd",
+                                "name": "backup",
+                                "emptyDir": {
+                                    "medium": "Memory"
+                                }
+                            },
+                            {
+                                "name": "backrestrepo",
                                 "emptyDir": {
                                     "medium": "Memory"
                                 }
@@ -588,6 +597,7 @@
                             "accessModes": [
                                 "${VOLUME_ACCESS_MODE}"
                             ],
+                            "storageClassName": "${VOLUME_STORAGE_CLASS}",
                             "resources": {
                                 "requests": {
                                     "storage": "${VOLUME_CAPACITY}"
@@ -602,6 +612,12 @@
     ],
     "parameters": [
         {
+            "description": "Name of the volume storage class to use, e.g. ebs, gluster",
+            "displayName": "Volume Storage Class",
+            "name": "VOLUME_STORAGE_CLASS",
+            "required": true
+        },
+        {
             "description": "Volume space available for data, e.g. 512Mi, 2Gi.",
             "displayName": "Volume Capacity",
             "name": "VOLUME_CAPACITY",
@@ -614,6 +630,14 @@
             "name": "VOLUME_ACCESS_MODE",
             "required": true,
             "value": "ReadWriteOnce"
+        },
+        {
+            "displayName": "PGData PVC Name",
+            "name": "PGDATA_PVC_NAME",
+            "from": "crunchy-postgres-[a-z0-9]{5}-pgdata",
+            "generate": "expression",
+            "description": "Name of the PVC to claim on the primary pgdata directory.",
+            "required": true
         },
         {
             "displayName": "Container Image Tag",
@@ -633,14 +657,6 @@
             "name": "SERVICE_NAME",
             "description": "The name to use for the service and container",
             "value": "crunchy-postgres",
-            "required": true
-        },
-        {
-            "displayName": "PVC Name",
-            "name": "PVC_NAME",
-            "from": "crunchy-postgres-[a-z0-9]{5}",
-            "generate": "expression",
-            "description": "Name of the PVC to claim on the primary",
             "required": true
         },
         {
