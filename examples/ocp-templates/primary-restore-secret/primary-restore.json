@@ -2,10 +2,7 @@
     "kind": "Template",
     "apiVersion": "v1",
     "message": "The following service(s) have been created in your project: ${SERVICE_NAME}.",
-    "name": "crunchy-postgres-primary-restore-template",
-    "labels": {
-        "template": "crunchy-postgres-primary-restore-secrets-template"
-    },
+    "name": "crunchy-postgres-primary-restore-secrets-template",
     "metadata": {
         "name": "crunchy-postgres-primary-restore-secrets-template",
         "creationTimestamp": null,
@@ -13,7 +10,7 @@
             "description": "Crunchy PostgreSQL restored from backup using the secrets of the previous primary.",
             "iconClass": "icon-postgresql",
             "tags": "database,postgresql",
-            "openshift.io/display-name": "Crunchy PostgreSQL Restore Using Secrets",
+            "openshift.io/display-name": "Crunchy PostgreSQL Restore using Secrets",
             "openshift.io/documentation-url": "https://github.com/CrunchyData/crunchy-containers/tree/master/docs",
             "openshift.io/long-description": "Crunchy PostgreSQL primary database with scalable read replicas.",
             "openshift.io/provider-display-name": "Crunchy Data",
@@ -26,6 +23,10 @@
             "kind": "Secret",
             "metadata": {
                 "name": "${SERVICE_NAME}",
+                "labels": {
+                    "name": "${SERVICE_NAME}",
+                    "app": "${SERVICE_NAME}"
+                },
                 "annotations": {
                     "template.openshift.io/expose-db_name": "{.data['PG_DATABASE']}",
                     "template.openshift.io/expose-db_password": "{.data['PG_PASSWORD']}",
@@ -47,7 +48,8 @@
             "metadata": {
                 "name": "${SERVICE_NAME}-primary",
                 "labels": {
-                    "name": "${SERVICE_NAME}-primary"
+                    "name": "${SERVICE_NAME}-primary",
+                    "app": "${SERVICE_NAME}"
                 },
                 "annotations": {
                     "template.openshift.io/expose-uri": "postgres://{.spec.clusterIP}:{.spec.ports[?(.name==\"postgresql-primary\")].port}"
@@ -75,12 +77,14 @@
             "kind": "PersistentVolumeClaim",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${PVC_NAME}"
+                "name": "${PGDATA_PVC_NAME}",
+                "app": "${SERVICE_NAME}"
             },
             "spec": {
                 "accessModes": [
                     "${VOLUME_ACCESS_MODE}"
                 ],
+                "storageClassName": "${VOLUME_STORAGE_CLASS}",
                 "resources": {
                     "requests": {
                         "storage": "${VOLUME_CAPACITY}"
@@ -94,7 +98,8 @@
             "metadata": {
                 "name": "${SERVICE_NAME}-primary",
                 "labels": {
-                    "name": "${SERVICE_NAME}-primary"
+                    "name": "${SERVICE_NAME}-primary",
+                    "app": "${SERVICE_NAME}"
                 }
             },
             "spec": {
@@ -268,7 +273,7 @@
                     {
                         "name": "pgdata",
                         "persistentVolumeClaim": {
-                            "claimName": "${PVC_NAME}"
+                            "claimName": "${PGDATA_PVC_NAME}"
                         }
                     },
                     {
@@ -313,6 +318,12 @@
     ],
     "parameters": [
         {
+            "description": "Name of the volume storage class to use, e.g. ebs, gluster",
+            "displayName": "Volume Storage Class",
+            "name": "VOLUME_STORAGE_CLASS",
+            "required": true
+        },
+        {
             "description": "Volume space available for data, e.g. 512Mi, 2Gi.",
             "displayName": "Volume Capacity",
             "name": "VOLUME_CAPACITY",
@@ -331,12 +342,6 @@
             "displayName": "PG Primary Secret Name",
             "name": "PG_SECRET_NAME",
             "required": true
-        }, 
-        {
-            "name": "BACKUP_PVC_NAME",
-            "description": "The name of the PVC that holds the backup archives",
-            "value": "",
-            "required": true
         },
         {
             "name": "BACKUP_DATE",
@@ -346,6 +351,20 @@
         {
             "name": "BACKUP_HOSTNAME",
             "description": "The hostname of the database you want to restore from, e.g. crunchy-postgres-primary",
+            "required": true
+        },
+        {
+            "name": "BACKUP_PVC_NAME",
+            "description": "The name of the PVC that holds the backup archives",
+            "value": "",
+            "required": true
+        },
+        {
+            "displayName": "PGData PVC Name",
+            "name": "PGDATA_PVC_NAME",
+            "from": "crunchy-postgres-[a-z0-9]{5}-pgdata",
+            "generate": "expression",
+            "description": "Name of the PVC to claim on the primary pgdata directory.",
             "required": true
         },
         {
@@ -365,15 +384,7 @@
         {
             "name": "SERVICE_NAME",
             "description": "The name to use for the service and container",
-            "value": "crunchy-postgres-restore",
-            "required": true
-        },
-        {
-            "displayName": "PVC Name",
-            "name": "PVC_NAME",
-            "from": "crunchy-postgres-[a-z0-9]{5}",
-            "generate": "expression",
-            "description": "Name of the PVC to claim on the primary",
+            "value": "crunchy-postgres-restore-secret",
             "required": true
         },
         {

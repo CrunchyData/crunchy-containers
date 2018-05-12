@@ -3,9 +3,6 @@
     "apiVersion": "v1",
     "message": "The following service(s) have been created in your project: ${SERVICE_NAME}.\n\n\tUsername: ${PGADMIN_EMAIL}\n\tPassword: ${PGADMIN_PASSWORD}",
     "name": "pgadmin4-template",
-    "labels": {
-        "template": "pgadmin4-template"
-    },
     "metadata": {
         "name": "crunchy-pgadmin4",
         "creationTimestamp": null,
@@ -25,7 +22,10 @@
             "apiVersion": "v1",
             "kind": "Secret",
             "metadata": {
-                "name": "${SERVICE_NAME}"
+                "name": "${SERVICE_NAME}",
+                "labels": {
+                    "app": "${SERVICE_NAME}"
+                }
             },
             "stringData": {
                 "pgadmin-email": "${PGADMIN_EMAIL}",
@@ -36,12 +36,14 @@
             "kind": "PersistentVolumeClaim",
             "apiVersion": "v1",
             "metadata": {
-                "name": "${SERVICE_NAME}"
+                "name": "${SERVICE_NAME}",
+                "app": "${SERVICE_NAME}"
             },
             "spec": {
                 "accessModes": [
                     "${VOLUME_ACCESS_MODE}"
                 ],
+                "storageClassName": "${VOLUME_STORAGE_CLASS}",
                 "resources": {
                     "requests": {
                         "storage": "${VOLUME_CAPACITY}"
@@ -55,7 +57,8 @@
             "metadata": {
                 "name": "${SERVICE_NAME}",
                 "labels": {
-                    "name": "${SERVICE_NAME}"
+                    "name": "${SERVICE_NAME}",
+                    "app": "${SERVICE_NAME}"
                 }
             },
             "spec": {
@@ -85,7 +88,8 @@
             "metadata": {
                 "name": "${SERVICE_NAME}",
                 "labels": {
-                    "name": "${SERVICE_NAME}"
+                    "name": "${SERVICE_NAME}",
+                    "app": "${SERVICE_NAME}"
                 }
             },
             "spec": {
@@ -163,6 +167,12 @@
         }
     ],
     "parameters": [
+        {
+            "description": "Name of the volume storage class to use, e.g. eb, gluster",
+            "displayName": "Volume Storage Class",
+            "name": "VOLUME_STORAGE_CLASS",
+            "required": true
+        },
         {
             "description": "Volume space available for data, e.g. 512Mi, 2Gi.",
             "displayName": "Volume Capacity",
