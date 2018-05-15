@@ -1,0 +1,39 @@
+---
+title: "Build the Containers"
+date: 2018-05-08T08:52:16-07:00
+draft: false
+weight: 2
+---
+
+:toc:
+v1.8.3, {docdate}
+
+== Build the Containers
+
+At this point, you have a decision to make - either download prebuilt
+containers from link:https://hub.docker.com/[Dockerhub], *or* build the containers on your local host.
+
+To download the prebuilt containers, make sure you can login to
+link:https://hub.docker.com/[Dockerhub], and then run the following:
+....
+docker login
+cd $CCPROOT
+./bin/pull-from-dockerhub.sh
+....
+
+Or if you'd rather build the containers from source, perform a container
+build as follows:
+
+....
+godep restore
+cd $CCPROOT
+make setup
+make all
+....
+
+After this, you will have all the Crunchy containers built and are ready
+for use in a *standalone Docker* environment.
+
+== Next Steps
+
+Next, configure a storage type as demonstrated in the link:/installation/storage-configuration/[Storage Configuration] document.

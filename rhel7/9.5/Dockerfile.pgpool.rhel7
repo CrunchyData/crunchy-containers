@@ -20,9 +20,9 @@ LABEL name="crunchydata/pgpool" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-COPY docs/atomic/pgpool/help.1 /help.1
-COPY docs/atomic/pgpool/help.md /help.md
-COPY docs/licenses /licenses
+COPY conf/atomic/pgpool/help.1 /help.1
+COPY conf/atomic/pgpool/help.md /help.md
+COPY conf/licenses /licenses
 
 # PGDG Postgres repo
 #RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm

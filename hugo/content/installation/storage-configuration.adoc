@@ -1,0 +1,131 @@
+---
+title: "Storage Configuration"
+date: 2018-05-08T08:52:46-07:00
+draft: false
+weight: 3
+---
+
+:toc:
+v1.8.3, {docdate}
+
+== Available Storage Types
+
+The Container Suite is tested on 3 different storage backends:
+
+ * hostPath (single node testing)
+ * NFS (single and multi-node testing)
+ * Gluster (dynamic storage on separate Gluster cluster)
+
+Other storage backends work as well including GCE, EBS, ScaleIO, and
+others, but may require you to modify various examples or configuration.
+
+Environment variables are set to determine how and what storage
+is to be used.
+
+== HostPath
+
+HostPath is the simplest storage backend to setup. It is only feasible
+on a single node but is sufficient for testing the examples.  In your `.bashrc`
+file, add the following variables to specify unique settings to
+the HostPath directory:
+....
+export CCP_SECURITY_CONTEXT=""
+export CCP_STORAGE_PATH=/data
+export CCP_STORAGE_MODE=ReadWriteMany
+export CCP_STORAGE_CAPACITY=400M
+....
+
+NOTE: It may be necessary to grant your user in OpenShift or Kubernetes the
+rights to modify the hostaccess SCC. This can be done with the command: `oadm policy add-scc-to-user hostaccess $(oc whoami)`
+
+== NFS
+
+NFS can also be used as a storage mechanism.  Instructions
+on setting up NFS are found at the bottom of this guide.
+
+For testing with NFS, in your *.bashrc* file, include
+the following variables that are unique to your NFS environment:
+....
+export CCP_SECURITY_CONTEXT='"supplementalGroups": [65534]'
+export CCP_STORAGE_PATH=/mnt/nfsfileshare
+export CCP_NFS_IP=192.168.0.118
+export CCP_STORAGE_MODE=ReadWriteMany
+export CCP_STORAGE_CAPACITY=400M
+....
+
+In this example above the group ownership of the NFS mount is assumed to be
+*nfsnobody* or *65534*.
+
+{{%expand "Configuration Notes for NFS" %}}
+
+Note: Most of the Crunchy containers run as the postgres UID (26), but you
+will notice that when `supplementalGroups` is specified, the pod
+will include the `nfsnobody` group in the list of groups for the pod user.
+
+First, if you are running your NFS system with SELinux in enforcing mode, you will need to run the following command to allow NFS write permissions:
+....
+sudo setsebool -P virt_use_nfs 1
+....
+
+Detailed instructions that you can use for setting up a NFS server on Centos 7 are provided in the following link.
+
+http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html
+
+if you are running your client on a VM, you will need to
+add 'insecure' to the exportfs file on the NFS server due to the way port
+translation is done between the VM host and the VM instance.
+
+For more details on this bug, please see the following link.
+
+http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting
+
+A suggested best practice for tuning NFS for PostgreSQL is to configure the PostgreSQL fstab
+mount options like so:
+
+....
+proto=tcp,suid,rw,vers=3,proto=tcp,timeo=600,retrans=2,hard,fg,rsize=8192,wsize=8192
+....
+
+Network options:
+....
+MTU=9000
+....
+
+If interested in mounting the same NFS share multiple times on the same mount point,
+look into the link:https://www.novell.com/support/kb/doc.php?id=7010210[noac mount option].
+
+{{% /expand%}}
+
+== Dynamic Storage
+
+Dynamic storage classes can be used for the examples.  Gluster
+is only one example of a storage type that supports dynamic storage
+classes.  The environment variable `CCP_STORAGE_CLASS` is used
+in the examples to determine whether or not to create a PersistentVolume
+manually or that it will be created dynamically using a StorageClass.  In
+the case of GKE, the default StorageClass is named *default*.   Storage
+class names are determined by the Kubernetes administrator and can vary.
+
+Setting up a Gluster cluster will offer you the ability to use
+dynamic storage provisioning in the examples.  A set of example
+Gluster configuration files is found at `$CCPROOT/docs/gluster`.
+This configuration is for a 3 node Gluster cluster which runs
+on a Centos7 Minimal VM deployment.
+
+Using block storage requires a security context to be set
+as follows:
+....
+export CCP_SECURITY_CONTEXT='"fsGroup":26'
+export CCP_STORAGE_CLASS=standard
+export CCP_STORAGE_MODE=ReadWriteOnce
+export CCP_STORAGE_CAPACITY=400M
+....
+
+== Next Steps
+
+There are many ways to configure the examples and containers further. Descriptions of each container
+offered and the variables that can be used to customize them are found on the
+link:/container-specifications/[Container Specifications] page.
+
+Information can be found on the full scope of examples that can be performed on the
+link:/getting-started/[Getting Started] page.

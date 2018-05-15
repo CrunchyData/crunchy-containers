@@ -20,9 +20,9 @@ LABEL name="crunchydata/collect" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-COPY docs/atomic/collect/help.1 /help.1
-COPY docs/atomic/collect/help.md /help.md
-COPY docs/licenses /licenses
+COPY conf/atomic/collect/help.1 /help.1
+COPY conf/atomic/collect/help.md /help.md
+COPY conf/licenses /licenses
 
 # Crunchy Postgres repo
 ADD conf/CRUNCHY-GPG-KEY.public  /
