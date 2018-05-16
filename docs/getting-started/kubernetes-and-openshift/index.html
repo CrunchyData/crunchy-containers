@@ -313,6 +313,7 @@
 <li><a href="#_geospatial_postgis">Geospatial (PostGIS)</a></li>
 <li><a href="#_custom_configuration">Custom Configuration</a></li>
 <li><a href="#_ssl_authentication">SSL Authentication</a></li>
+<li><a href="#_docker_swarm">Docker Swarm</a></li>
 </ul>
 </li>
 <li><a href="#_failover">Failover</a>
@@ -2937,6 +2938,111 @@ userdb=&gt;</pre>
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_docker_swarm">Docker Swarm</h3>
+<div class="paragraph">
+<p>This example shows how to run a primary and replica database
+container on a Docker Swarm (v.1.12) cluster.</p>
+</div>
+<div class="paragraph">
+<p>First, set up a cluster. The Kubernetes libvirt coreos cluster
+example works well; see <a href="http://kubernetes.io/docs/getting-started-guides/libvirt-coreos/">coreos-libvirt-cluster.</a></p>
+</div>
+<div class="paragraph">
+<p>Next, on each node, create the Swarm using these
+<a href="https://docs.docker.com/engine/swarm/swarm-tutorial/create-swarm/">Swarm Install instructions.</a></p>
+</div>
+<div class="paragraph">
+<p>Include this command on the manager node:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker swarm init --advertise-addr 192.168.10.1</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then this command on all the worker nodes:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre> docker swarm join \
+     --token SWMTKN-1-65cn5wa1qv76l8l45uvlsbprogyhlprjpn27p1qxjwqmncn37o-015egopg4jhtbmlu04faon82u \
+         192.168.10.1.37</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Before creating Swarm services, it is necessary
+to define an overlay network to be used by the services you will
+create. This can be done as follows:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker network create --driver overlay crunchynet</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We want to have the primary database always placed on
+a specific node. This is accomplished using node constraints
+as follows:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker node inspect kubernetes-node-1 | grep ID
+docker node update --label-add type=primary 18yrb7m650umx738rtevojpqy</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the above example, the <code>kubernetes-node-1</code> node with ID
+<code>18yrb7m650umx738rtevojpqy</code> has a user defined label of <strong>primary</strong> added to it.
+The primary service specifies <strong>primary</strong> as a constraint when created; this
+tells Swarm to place the service on that specific node.  The replica specifies
+a constraint of <code>node.labels.type != primary</code> to have the replica
+always placed on a node that is not hosting the primary service.</p>
+</div>
+<div class="sect3">
+<h4 id="_docker_16">Docker</h4>
+<div class="paragraph">
+<p>After you set up the Swarm cluster, you can then run this example as follows on the <strong>Swarm Manager Node</strong>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/docker/swarm-service
+./run.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can then find the nodes that are running the primary and replica containers
+by:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker service ps primary
+docker service ps replica</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also scale up the number of <strong>replica</strong> containers.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker service scale replica=2
+docker service ls</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Verify you have two replicas within PostgreSQL by viewing the <code>pg_stat_replication</code> table.
+The password is <strong>password</strong> by default when logged into the <code>kubernetes-node-1</code> host:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker exec -it $(docker ps -q) psql -U postgres -c 'table pg_stat_replication' postgres</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see a row for each replica along with its replication status.</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -2964,7 +3070,7 @@ file permissions of <code>/run/docker.sock</code> accordingly.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_16">Docker</h4>
+<h4 id="_docker_17">Docker</h4>
 <div class="paragraph">
 <p>Run the example as follows:</p>
 </div>
@@ -3089,7 +3195,7 @@ this dependency.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_17">Docker</h4>
+<h4 id="_docker_18">Docker</h4>
 <div class="paragraph">
 <p>Run the example as follows:</p>
 </div>
@@ -3198,7 +3304,7 @@ variable.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_18">Docker</h4>
+<h4 id="_docker_19">Docker</h4>
 <div class="paragraph">
 <p>To start this set of containers, run the following:</p>
 </div>
@@ -3286,7 +3392,7 @@ need to define your own custom file and mount it to override the
 default <code>postgresql.conf</code> file.</p>
 </div>
 <div class="sect3">
-<h4 id="_docker_19">Docker</h4>
+<h4 id="_docker_20">Docker</h4>
 <div class="paragraph">
 <p>Run the following to create a database container:</p>
 </div>
