@@ -1,0 +1,25 @@
+---
+title: "Installation"
+date: 2018-05-08T08:55:54-07:00
+draft: false
+weight: 1
+---
+
+v1.8.3, {docdate}
+
+== Installation
+
+To set up the environment, visit the link:/installation/environment-setup/[Environment Setup] document.
+From there, navigate to link:/installation/build-the-containers/[Build the Containers] page to either
+build or pull the container images necessary to run examples. The final step will be to configure storage
+in the link:/installation/storage-configuration/[Storage Configuration] page, with either HostPath, NFS,
+or dynamic storage options.
+
+== Next Steps
+
+There are many ways to configure the examples and containers further. Descriptions of each container
+offered and the variables that can be used to customize them are found on the
+link:/container-specifications/[Container Specifications] page.
+
+Information can be found on the full scope of examples that can be performed on the
+link:/getting-started/[Getting Started] page.

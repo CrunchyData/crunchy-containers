@@ -20,9 +20,9 @@ LABEL name="crunchydata/backup" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-COPY docs/atomic/backup/help.1 /help.1
-COPY docs/atomic/backup/help.md /help.md
-COPY docs/licenses /licenses
+COPY conf/atomic/backup/help.1 /help.1
+COPY conf/atomic/backup/help.md /help.md
+COPY conf/licenses /licenses
 
 ENV PGVERSION="10"
 

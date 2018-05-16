@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/installation/</loc>
+    <lastmod>2018-05-08T08:55:54-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/installation/environment-setup/</loc>
+    <lastmod>2018-05-08T08:52:09-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/getting-started/</loc>
+    <lastmod>2018-05-08T08:56:03-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/installation/build-the-containers/</loc>
+    <lastmod>2018-05-08T08:52:16-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/container-specifications/</loc>
+    <lastmod>2018-05-08T08:57:16-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/installation/storage-configuration/</loc>
+    <lastmod>2018-05-08T08:52:46-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/contributing/</loc>
+    <lastmod>2018-05-08T08:57:09-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/</loc>
+    <lastmod>2018-05-15T08:35:00-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/getting-started/kubernetes-and-openshift/</loc>
+    <lastmod>2018-05-15T08:30:41-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/single-primary/</loc>
+    <lastmod>2018-05-15T07:22:59-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/primary-restore/</loc>
+    <lastmod>2018-05-15T07:22:51-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/primary-restore-secret/</loc>
+    <lastmod>2018-05-15T07:22:45-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/primary-backup/</loc>
+    <lastmod>2018-05-15T07:22:27-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/primary-backup-secret/</loc>
+    <lastmod>2018-05-15T07:22:20-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/postgres-replicated/</loc>
+    <lastmod>2018-05-15T07:22:10-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/pgadmin4/</loc>
+    <lastmod>2018-05-15T07:22:02-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/</loc>
+    <lastmod>2018-04-23T14:52:09-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

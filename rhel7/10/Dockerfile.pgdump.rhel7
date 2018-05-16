@@ -20,9 +20,9 @@ LABEL name="crunchydata/pgdump" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-COPY docs/atomic/pgdump/help.1 /help.1
-COPY docs/atomic/pgdump/help.md /help.md
-COPY docs/licenses /licenses
+COPY conf/atomic/pgdump/help.1 /help.1
+COPY conf/atomic/pgdump/help.md /help.md
+COPY conf/licenses /licenses
 
 ENV PGVERSION="10"
 
