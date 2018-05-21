@@ -87,10 +87,8 @@ function pgisready() {
     local dbuser=${4?}
     local max_attempts=${5:-5}
     local timeout=${6:-2}
-    set +e
     test_server ${dbname?} ${dbhost?} ${dbport?} ${dbuser?} ${max_attempts?} ${timeout?}
     test_query ${dbname?} ${dbhost?} ${dbport?} ${dbuser?} ${max_attempts?} ${timeout?}
-    set -e
 }
 
 # Check if PostgreSQL is ready with exponential backoffs on attempts

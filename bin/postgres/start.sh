@@ -366,9 +366,9 @@ function initialize_primary() {
         if [[ -v SYNC_REPLICA ]]; then
             echo "Synchronous_standby_names = '"$SYNC_REPLICA"'" >> $PGDATA/postgresql.conf
         fi
-        else
-            echo_info "PGDATA already contains a database."
-        fi
+    else
+        echo_info "PGDATA already contains a database."
+    fi
 }
 
 
@@ -395,7 +395,6 @@ case "$PG_MODE" in
     ;;
 esac
 
-ose_hack
 fill_conf_file
 
 case "$PG_MODE" in
@@ -420,8 +419,6 @@ source /opt/cpm/bin/custom-configs.sh
 echo_info "Starting PostgreSQL.."
 postgres -D $PGDATA &
 
-date
-
 if [[ -v PGAUDIT_ANALYZE ]]; then
     echo_info "Starting pgaudit_analyze.."
     pgaudit_analyze $PGDATA/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
@@ -431,6 +428,15 @@ if [[ ${ENABLE_SSHD} == "true" ]]; then
     echo_info "Applying SSHD.."
     source /opt/cpm/bin/sshd.sh
     start_sshd
+fi
+        
+if [[ -v PGBOUNCER_PASSWORD ]]
+then
+    if [[ ${PG_MODE?} == "primary" ]] || [[ ${PG_MODE?} == "master" ]]
+    then
+        echo_info "pgBouncer Password detected.  Setting up pgBouncer.."
+        source /opt/cpm/bin/pgbouncer.sh
+    fi
 fi
 
 # We will wait indefinitely until "docker stop [container_id]"

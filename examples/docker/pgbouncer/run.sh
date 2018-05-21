@@ -14,84 +14,42 @@
 # limitations under the License.
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-"$DIR"/cleanup.sh
+${DIR?}/cleanup.sh
 
-CONTAINER_NAME=pgbouncer
-PRIMARY_CONTAINER_NAME=pg-primary
-REPLICA_CONTAINER_NAME=pg-replica
-
-echo "Starting the ${CONTAINER_NAME} example..."
-
-sudo chcon -Rt svirt_sandbox_file_t "$DIR"
-
-echo "Starting the ${PRIMARY_CONTAINER_NAME} container..."
-
-PRIMARY_VOLUME_NAME=${PRIMARY_CONTAINER_NAME}-pgdata
-docker volume create --driver local --name=$PRIMARY_VOLUME_NAME
+docker network create --driver bridge pgnet
 
 docker run \
-	-p 12007:5432 \
-	--privileged=true \
-	-v $PRIMARY_VOLUME_NAME:/pgdata \
-	-e TEMP_BUFFERS=9MB \
-	-e PGHOST=/tmp \
-	-e MAX_CONNECTIONS=101 \
-	-e SHARED_BUFFERS=129MB \
-	-e MAX_WAL_SENDERS=7 \
-	-e WORK_MEM=5MB \
-	-e PG_MODE=primary \
-	-e PG_PRIMARY_USER=primaryuser \
-	-e PG_PRIMARY_PASSWORD=password \
-	-e PG_PRIMARY_PORT=5432 \
-	-e PG_USER=testuser \
-	-e PG_ROOT_PASSWORD=password \
-	-e PG_PASSWORD=password \
-	-e PG_DATABASE=userdb \
-	--name=${PRIMARY_CONTAINER_NAME} \
-	--hostname=${PRIMARY_CONTAINER_NAME} \
-	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
-
-echo "Starting the ${REPLICA_CONTAINER_NAME} container..."
-
-sleep 20
-
-REPLICA_VOLUME_NAME=${REPLICA_CONTAINER_NAME}-pgdata
-docker volume create --driver local --name=$REPLICA_VOLUME_NAME
+    -p 6432:6432 \
+    --env-file=${DIR?}/env/pgbouncer-primary.list \
+    --network=pgnet \
+    --name='pgbouncer-primary' \
+    --hostname='pgbouncer-primary' \
+    -d ${CCP_IMAGE_PREFIX?}/crunchy-pgbouncer:${CCP_IMAGE_TAG?}
 
 docker run \
-	-p 12008:5432 \
-	--privileged=true \
-	-v $REPLICA_VOLUME_NAME:/pgdata \
-	-e TEMP_BUFFERS=9MB \
-	-e PG_PRIMARY_HOST=${PRIMARY_CONTAINER_NAME} \
-	-e PGHOST=/tmp \
-	-e MAX_CONNECTIONS=101 \
-	-e SHARED_BUFFERS=129MB \
-	-e MAX_WAL_SENDERS=7 \
-	-e WORK_MEM=5MB \
-	-e PG_MODE=replica \
-	-e PG_PRIMARY_USER=primaryuser \
-	-e PG_PRIMARY_PASSWORD=password \
-	--link ${PRIMARY_CONTAINER_NAME}:${PRIMARY_CONTAINER_NAME} \
-	-e PG_PRIMARY_PORT=5432 \
-	-e PG_USER=testuser \
-	-e PG_ROOT_PASSWORD=password \
-	-e PG_PASSWORD=password \
-	-e PG_DATABASE=userdb \
-	--name=${REPLICA_CONTAINER_NAME} \
-	--hostname=${REPLICA_CONTAINER_NAME} \
-	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
+    -p 6433:6432 \
+    --env-file=${DIR?}/env/pgbouncer-replica.list \
+    --network=pgnet \
+    --name='pgbouncer-replica' \
+    --hostname='pgbouncer-replica' \
+    -d ${CCP_IMAGE_PREFIX?}/crunchy-pgbouncer:${CCP_IMAGE_TAG?}
 
-echo "Starting the ${CONTAINER_NAME} container..."
+docker run \
+    -p 5432:5432 \
+    -v pg-primary:/pgdata \
+    --network=pgnet \
+    --env-file=${DIR?}/env/pgsql-primary.list \
+    --name=pg-primary \
+    --hostname=pg-primary \
+    -d ${CCP_IMAGE_PREFIX?}/crunchy-postgres:${CCP_IMAGE_TAG?}
 
-sleep 20
+docker run \
+    -p 5433:5432 \
+    -v pg-replica:/pgdata \
+    --network=pgnet \
+    --env-file=${DIR?}/env/pgsql-replica.list \
+    --name=pg-replica \
+    --hostname=pg-replica \
+    -d ${CCP_IMAGE_PREFIX?}/crunchy-postgres:${CCP_IMAGE_TAG?}
 
-sudo docker run \
-	-v "$DIR":/pgconf \
-	-p 6543:6543 \
-	--privileged \
-	--link ${PRIMARY_CONTAINER_NAME}:${PRIMARY_CONTAINER_NAME} \
-	--link ${REPLICA_CONTAINER_NAME}:${REPLICA_CONTAINER_NAME} \
-	--name=$CONTAINER_NAME \
-	--hostname=$CONTAINER_NAME \
-	-d ${CCP_IMAGE_PREFIX}/crunchy-pgbouncer:$CCP_IMAGE_TAG
+exit 0

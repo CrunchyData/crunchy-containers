@@ -1,0 +1,82 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pgbouncer-replica",
+        "labels": {
+            "name": "pgbouncer-replica"
+        }
+    },
+    "spec": {
+        "ports": [
+            {
+                "protocol": "TCP",
+                "port": 6432,
+                "targetPort": 6432,
+                "nodePort": 0
+            }
+        ],
+        "selector": {
+            "name": "pgbouncer-replica"
+        }
+    },
+    "status": {
+        "loadBalancer": {}
+    }
+}
+
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pgbouncer-replica",
+        "labels": {
+            "name": "pgbouncer-replica"
+        }
+    },
+    "spec": {
+        "securityContext": {
+            $CCP_SECURITY_CONTEXT
+        },
+        "volumes": [
+            {
+                "name": "pgconf",
+                "emptyDir": {}
+            }
+        ],
+        "containers": [
+            {
+                "name": "pgbouncer",
+                "image": "$CCP_IMAGE_PREFIX/crunchy-pgbouncer:$CCP_IMAGE_TAG",
+                "ports": [
+                    {
+                        "containerPort": 6432,
+                        "protocol": "TCP"
+                    }
+                ],
+                "env": [
+                    {
+                        "name": "PGBOUNCER_PASSWORD",
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "name": "pgbouncer-secrets",
+                                "key": "pgbouncer-password"
+                            }
+                        }
+                    },
+                    {
+                        "name": "PG_SERVICE",
+                        "value": "pg-replica"
+                    }
+                ],
+                "volumeMounts": [
+                    {
+                        "mountPath": "/pgconf",
+                        "name": "pgconf",
+                        "readOnly": false
+                    }
+                ]
+            }
+        ]
+    }
+}

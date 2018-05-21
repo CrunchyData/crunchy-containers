@@ -19,12 +19,15 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-echo_info "Creating the example components.."
+${CCP_CLI?} create secret generic pgbouncer-secrets \
+    --from-literal=pgbouncer-password='password'
 
-${CCP_CLI?} create configmap pgbouncer-pgconf \
-    --from-file=./configs/pgbouncer.ini \
-    --from-file=./configs/users.txt
+${CCP_CLI?} create secret generic pgsql-secrets \
+    --from-literal=pg-primary-password='password' \
+    --from-literal=pg-password='password' \
+    --from-literal=pg-root-password='password'
 
 expenv -f $DIR/primary.json | ${CCP_CLI?} create -f -
 expenv -f $DIR/replica.json | ${CCP_CLI?} create -f -
-expenv -f $DIR/pgbouncer.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/pgbouncer-primary.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/pgbouncer-replica.json | ${CCP_CLI?} create -f -

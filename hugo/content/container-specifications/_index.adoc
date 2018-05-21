@@ -710,38 +710,45 @@ daylight-savings leap-ahead transitions will not be run!
 
 == crunchy-pgbouncer
 
-The crunchy-ppgbouncer container executes the Postgres pgbouncer
-utility and a failover watch script.
+Crunchy pgBouncer is a lightweight connection pooler for PostgreSQL databases.
 
 === Environment Variables
 
- * FAILOVER - This environment variable is no longer supported
- * OSE_PROJECT - This environment variable is no longer supported
- * PG_PRIMARY_USER - the value to use for the user ID created as
-   primaryuser.  The *primaryuser* has super user privileges.
- * SLEEP_TIME - This environment variable is no longer supported
- * PG_DATABASE - the database to use when checking the readiness of the primary
- * PG_PRIMARY_PORT - the PostgreSQL port to use when checking the primary
- * PG_PRIMARY_SERVICE - the name of the primary database container
- * PG_REPLICA_SERVICE - the name of the replica database container, this is
-   used to know which container to trigger the failover on
+==== REQUIRED ARGS
+
+ * PGBOUNCER_PASSWORD - the password of the pgbouncer role in PostgreSQL.  Must be also 
+   set on the primary database.
+ * PG_SERVICE - the hostname of the database service
+
+==== OPTIONAL/EXTENDED ARGS
+
+ * DEFAULT_POOL_SIZE - default 20, how many server connections to allow per user/database pair. 
+ * MAX_CLIENT_CONN - default 100, maximum number of client connections allowed.
+ * MAX_DB_CONNECTIONS - default unlimited, do not allow more than this many connections per-database.
+ * MIN_POOL_SIZE - default 0 (disabled), adds more server connections to pool if below this number.
+ * POOL_MODE - default `session`, specifies when a server connection can be reused by other clients.  
+   Possible values: `session`, `transaction` and `statement`.
+ * RESERVE_POOL_SIZE - default 0 (disabled), how many additional connections to allow to a pool.
+ * RESERVE_POOL_TIMEOUT - default 5, if a client has not been serviced in this many seconds, 
+   pgbouncer enables use of additional connections from reserve pool.  0 disables.
  * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
 === Features
 
-The following features are supported by the crunchy-postgres container:
+The following features are supported by the crunchy-pgbouncer container:
 
- * mount pgbouncer user.txt and pgbouncer.ini config files via /pgconf volume
- * ability to cause a failover on a configured replica container
- * ability to rewrite the pgbouncer.ini config file and reload pgbouncer
-   after a failover
+ * Crunchy pgBouncer uses `auth_query` to authenticate users.  This requires only the `pgbouncer` 
+   username and password in `users.txt`.  Automatically generated from environment variables.
+ * Mount a custom `users.txt` and `pgbouncer.ini` configurations for advanced usage.
+ * Tune pooling parameters via environment variables.
+ * Connect to the administration database in pgBouncer to view statistics of the target databases.
 
 === Restrictions
 
- * the name of the primary database in the pgbouncer.ini file is required
-   to be *primary*
- * for configuration, has to have users.txt and pgbouncer.ini files mounted in /pgconf
+ * OpenShift: If custom configurations aren't being mounted, an *emptydir* volume is required
+   to be mounted at `/pgconf`.
+ * `Superusers` cannot connect through the connection pooler.
 
 == crunchy-backrest-restore
 

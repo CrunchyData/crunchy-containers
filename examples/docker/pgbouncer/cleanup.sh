@@ -15,21 +15,7 @@
 
 echo "Cleaning up..."
 
-CONTAINER_NAME=pgbouncer
-PRIMARY_CONTAINER_NAME=pg-primary
-REPLICA_CONTAINER_NAME=pg-replica
-
-PRIMARY_VOLUME_NAME=${PRIMARY_CONTAINER_NAME}-pgdata
-REPLICA_VOLUME_NAME=${REPLICA_CONTAINER_NAME}-pgdata
-
-docker stop $CONTAINER_NAME
-docker rm -v $CONTAINER_NAME
-
-docker stop $PRIMARY_CONTAINER_NAME
-docker rm -v $PRIMARY_CONTAINER_NAME
-
-docker stop $REPLICA_CONTAINER_NAME
-docker rm -v $REPLICA_CONTAINER_NAME
-
-docker volume rm $PRIMARY_VOLUME_NAME
-docker volume rm $REPLICA_VOLUME_NAME
+docker stop pgbouncer-primary pgbouncer-replica pg-primary pg-replica
+docker rm -v pgbouncer-primary pgbouncer-replica pg-primary pg-replica
+docker network rm pgnet
+docker volume rm pg-primary pg-replica

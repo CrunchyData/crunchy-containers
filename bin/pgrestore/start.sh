@@ -29,7 +29,9 @@ EOF
 chmod 600 ${PGPASSFILE?}
 chown postgres:postgres ${PGPASSFILE?}
 
+set +e
 pgisready ${PGRESTORE_DB?} ${PGRESTORE_HOST?} ${PGRESTORE_PORT?} ${PGRESTORE_USER?}
+set -e
 
 PGRESTORE_BASE=/pgdata/${PGDUMP_BACKUP_HOST?}-backups
 if [[ -z ${PGRESTORE_BACKUP_TIMESTAMP?} ]]
