@@ -18,7 +18,7 @@ enable_debugging
 ose_hack
 
 PGBOUNCER_PID=/tmp/pgbouncer-script.pid
-CONF_DIR=/pgconf/bouncerconfig
+CONF_DIR=/pgconf
 
 # Cleanup previous deployments
 rm -rf /tmp/pgbouncer.pid
@@ -31,23 +31,41 @@ function trap_sigterm() {
 
 trap 'trap_sigterm' SIGINT SIGTERM
 
+touch /tmp/.pgpass
+chmod 600 /tmp/.pgpass
+
 if [[ -f ${CONF_DIR?}/users.txt ]]
 then
     echo_info "Custom users.txt file detected.."
+else
+    echo_info "No custom users.txt detected.  Apply default config.."
+    cp /opt/cpm/conf/users.txt ${CONF_DIR?}/users.txt
+    env_check_err "PGBOUNCER_PASSWORD"
+    sed -i "s/PGBOUNCER_PASSWORD/${PGBOUNCER_PASSWORD?}/g" ${CONF_DIR?}/users.txt
 fi
 
 if [[ -f ${CONF_DIR?}/pgbouncer.ini ]]
 then
     echo_info "Custom pgbouncer.ini file detected.."
 else
-    echo_info "No custom pgbouncer.ini detected. Applying default config.."
+    echo_info "No custom pgbouncer.ini detected.  Applying default config.."
     cp /opt/cpm/conf/pgbouncer.ini ${CONF_DIR?}/pgbouncer.ini
+
+    env_check_err "PG_SERVICE"
+    
+    sed -i "s/DEFAULT_POOL_SIZE/${DEFAULT_POOL_SIZE:-20}/g" ${CONF_DIR?}/pgbouncer.ini
+    sed -i "s/MAX_CLIENT_CONN/${MAX_CLIENT_CONN:-100}/g" ${CONF_DIR?}/pgbouncer.ini
+    sed -i "s/MAX_DB_CONNECTIONS/${MAX_DB_CONNECTIONS:-0}/g" ${CONF_DIR?}/pgbouncer.ini
+    sed -i "s/MIN_POOL_SIZE/${MIN_POOL_SIZE:-0}/g" ${CONF_DIR?}/pgbouncer.ini
+    sed -i "s/POOL_MODE/${POOL_MODE:-session}/g" ${CONF_DIR?}/pgbouncer.ini
+    sed -i "s/PG_SERVICE/${PG_SERVICE}/g" ${CONF_DIR?}/pgbouncer.ini
+    sed -i "s/RESERVE_POOL_SIZE/${RESERVE_POOL_SIZE:-0}/g" ${CONF_DIR?}/pgbouncer.ini
+    sed -i "s/RESERVE_POOL_TIMEOUT/${RESERVE_POOL_TIMEOUT:-5}/g" ${CONF_DIR?}/pgbouncer.ini
+
+    echo "${PG_SERVICE}:5432:*:pgbouncer:${PGBOUNCER_PASSWORD}" >> /tmp/.pgpass
 fi
 
-if [[ -v FAILOVER ]]
-then
-    echo_warn "FAILOVER environment variable set. Failover with pgBouncer is not supported."
-fi
+export PGPASSFILE=/tmp/.pgpass
 
 echo_info "Starting pgBouncer.."
 pgbouncer ${CONF_DIR?}/pgbouncer.ini -u daemon &

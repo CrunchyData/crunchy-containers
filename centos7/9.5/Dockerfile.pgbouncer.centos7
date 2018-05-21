@@ -19,13 +19,9 @@ ENV PGVERSION="9.5" PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
-# install docker from docker repo
-ADD conf/pgbouncer/docker-rhel.repo /etc/yum.repos.d/
-
 RUN yum -y update \
  && yum -y install epel-release \
  && yum -y install \
-      docker-engine \
       gettext \
       hostname  \
       nss_wrapper \
@@ -34,18 +30,18 @@ RUN yum -y update \
       procps-ng \
  && yum clean all -y
 
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgconf
 
 ADD bin/pgbouncer /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgbouncer /opt/cpm/conf
 
-RUN chown -R 2:2 /opt/cpm/bin
+RUN chown -R 2:2 /opt/cpm /pgconf
 
-EXPOSE 5432
+EXPOSE 6432
 
 VOLUME ["/pgconf"]
 
 USER 2
 
-CMD ["/opt/cpm/bin/startpgbouncer.sh"]
+CMD ["/opt/cpm/bin/start.sh"]

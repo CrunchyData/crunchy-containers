@@ -71,10 +71,6 @@ pgbadger: versiontest
 	docker tag crunchy-pgbadger $(CCP_IMAGE_PREFIX)/crunchy-pgbadger:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 pgbouncer: versiontest
-	cp `which oc` bin/pgbouncer
-	cp `which kubectl` bin/pgbouncer
-	cd bounce && godep go install bounce.go
-	cp $(GOBIN)/bounce bin/pgbouncer/
 	docker build -t crunchy-pgbouncer -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbouncer.$(CCP_BASEOS) .
 	docker tag crunchy-pgbouncer $(CCP_IMAGE_PREFIX)/crunchy-pgbouncer:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 

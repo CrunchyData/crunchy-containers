@@ -53,28 +53,33 @@
                 ],
                 "env": [
                     {
-                        "name": "PGHOST",
-                        "value": "/tmp"
-                    },
-                    {
-                        "name": "PG_PRIMARY_HOST",
-                        "value": "pg-primary"
-                    },
-                    {
                         "name": "PG_PRIMARY_USER",
                         "value": "primaryuser"
                     },
                     {
-                        "name": "PG_PRIMARY_PORT",
-                        "value": "5432"
+                        "name": "PGHOST",
+                        "value": "/tmp"
                     },
                     {
                         "name": "PG_MODE",
                         "value": "replica"
                     },
                     {
+                        "name": "PG_PRIMARY_HOST",
+                        "value": "pg-primary"
+                    },
+                    {
                         "name": "PG_PRIMARY_PASSWORD",
-                        "value": "password"
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "name": "pgsql-secrets",
+                                "key": "pg-primary-password"
+                            }
+                        }
+                    },
+                    {
+                        "name": "PG_PRIMARY_PORT",
+                        "value": "5432"
                     },
                     {
                         "name": "PG_USER",
@@ -82,7 +87,12 @@
                     },
                     {
                         "name": "PG_PASSWORD",
-                        "value": "password"
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "name": "pgsql-secrets",
+                                "key": "pg-password"
+                            }
+                        }
                     },
                     {
                         "name": "PG_DATABASE",
@@ -90,7 +100,12 @@
                     },
                     {
                         "name": "PG_ROOT_PASSWORD",
-                        "value": "password"
+                        "valueFrom": {
+                            "secretKeyRef": {
+                                "name": "pgsql-secrets",
+                                "key": "pg-root-password"
+                            }
+                        }
                     }
                 ],
                 "readinessProbe": {
