@@ -348,8 +348,7 @@ For a configuration examples, see  link:https://github.com/crunchydata/crunchy-c
 == crunchy-pgbadger
 
 The crunchy-pgbadger container executes the pgbadger utility.  A small
-http server is running on the container, when a request
-is made to:
+http server is running on the container, when a request is made to:
 
 ....
 http://<<ip address>>:10000/api/badgergenerate
@@ -357,9 +356,13 @@ http://<<ip address>>:10000/api/badgergenerate
 
 === Environment Variables
 
+*Optional:* 
+
  * BADGER_TARGET - only used in standalone mode to specify the
    name of the container, also used to find the location of the
    database log files in /pgdata/$BADGER_TARGET/pg_log/*.log
+ * BADGER_CUSTOM_OPTS - no default, set this value to provide custom flags to pgbadger.
+   For a list of optional flags, see the link:http://dalibo.github.io/pgbadger[official pgBadger documentation].
  * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
@@ -367,7 +370,9 @@ http://<<ip address>>:10000/api/badgergenerate
 
 The following features are supported by the crunchy-pgbadger container:
 
- * basic invocation of pgbadger against the database log files
+ * Generate a full report by default
+ * Optional custom options for more advanced use cases (such as `incremental` reports)
+ * Report persistence on a volume
 
 == crunchy-pgpool
 
