@@ -17,44 +17,28 @@ package main
 
 import (
 	"bytes"
-	"fmt"
-	"github.com/ant0ine/go-json-rest/rest"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"os/exec"
-	"strconv"
 )
 
-const REPORT = "/tmp/badger.html"
+const REPORT = "/report/index.html"
+
+func init() {
+	log.SetOutput(os.Stdout)
+	log.Println("BadgerServer starting..")
+}
 
 func main() {
-
-	var VERSION = os.Getenv("CCP_VERSION")
-
-	fmt.Println("badgerserver: " + VERSION + " starting")
-
-	api := rest.NewApi()
-	api.Use(rest.DefaultDevStack...)
-	router, err := rest.MakeRouter(
-		&rest.Route{"GET", "/badgergenerate", BadgerGenerate},
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-	api.SetApp(router)
-
-	http.Handle("/api/", http.StripPrefix("/api", api.MakeHandler()))
-	http.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir("/tmp"))))
-
+	http.HandleFunc("/api/badgergenerate", BadgerGenerate)
+	http.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir("/report"))))
 	log.Fatal(http.ListenAndServe(":10000", nil))
-	//log.Fatal(http.ListenAndServeTLS(":10000", "/var/cpm/keys/cert.pem", "/var/cpm/keys/key.pem", nil))
 }
 
 // BadgerGenerate perform a pgbadger to create the HTML output file
-func BadgerGenerate(w rest.ResponseWriter, r *rest.Request) {
-	fmt.Println("badgerserver: BadgerGenerate called")
+func BadgerGenerate(w http.ResponseWriter, r *http.Request) {
+	log.Println("Generating report..")
 
 	var cmd *exec.Cmd
 	cmd = exec.Command("badger-generate.sh")
@@ -64,25 +48,10 @@ func BadgerGenerate(w rest.ResponseWriter, r *rest.Request) {
 	cmd.Stderr = &stderr
 	err := cmd.Run()
 	if err != nil {
-		fmt.Println(err.Error())
-		rest.Error(w, err.Error(), 400)
+		log.Fatalf("Error running badger-generate: %s", err)
 		return
 	}
 
-	fmt.Println("badgerserver: BadgerGenerate run executed")
-
-	var buf []byte
-	buf, err = ioutil.ReadFile(REPORT)
-	if err != nil {
-		fmt.Println(err.Error())
-		rest.Error(w, err.Error(), 400)
-		return
-	}
-	var thing http.ResponseWriter
-	thing = w.(http.ResponseWriter)
-
-	thing.Header().Set("Content-Type", "text/html")
-	thing.Header().Set("Content-Length", strconv.Itoa(len(buf)))
-	thing.Write(buf)
-	fmt.Println("badgerserver: BadgerGenerate report written")
+	log.Println("Report generated.  Redirecting..")
+	http.Redirect(w, r, "/static", 301)
 }

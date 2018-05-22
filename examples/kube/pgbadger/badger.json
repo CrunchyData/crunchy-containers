@@ -115,6 +115,11 @@
                         "mountPath": "/pgdata",
                         "name": "pgdata",
                         "readOnly": true
+                    },
+                    {
+                        "mountPath": "/report",
+                        "name": "report",
+                        "readOnly": false
                     }
                 ]
             }
@@ -122,6 +127,10 @@
         "volumes": [
             {
                 "name": "pgdata",
+                "emptyDir": {}
+            },
+            {
+                "name": "report",
                 "emptyDir": {}
             }
         ]

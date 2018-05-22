@@ -45,18 +45,18 @@ RUN yum -y update \
 
 RUN groupadd -g 26 postgres && useradd -g 26 -u 26 postgres
 
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /report
 
 ADD conf/pgbadger /opt/cpm/conf
 ADD bin/common /opt/cpm/bin
 ADD bin/pgbadger /opt/cpm/bin
 
-RUN chown -R 26:26 /opt/cpm
+RUN chown -R 26:26 /opt/cpm /report
 
 # pgbadger port
 EXPOSE 10000
 
-VOLUME ["/pgdata"]
+VOLUME ["/pgdata", "/report"]
 
 USER 26
 

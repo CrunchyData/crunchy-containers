@@ -13,24 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo "Cleaning up..."
 
-$DIR/cleanup.sh
-
-CONTAINER_NAME=badger
-
-echo "Starting the ${CONTAINER_NAME} example..."
-
-DATABASE_CONTAINER=primary
-VOLUME_NAME=${DATABASE_CONTAINER}-pgdata
-
-docker run \
-	-p 14000:10000 \
-	--privileged=true \
-	--volume-driver=local \
-	-v $VOLUME_NAME:/pgdata:ro \
-	-e BADGER_TARGET=$DATABASE_CONTAINER \
-	--link $DATABASE_CONTAINER:$DATABASE_CONTAINER \
-	--name=$CONTAINER_NAME \
-	--hostname=$CONTAINER_NAME \
-	-d $CCP_IMAGE_PREFIX/crunchy-pgbadger:$CCP_IMAGE_TAG
+docker stop pg-primary pgbadger
+docker rm -v pg-primary pgbadger
+docker volume rm pg-primary report

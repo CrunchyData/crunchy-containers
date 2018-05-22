@@ -65,8 +65,10 @@ pgadmin4: versiontest
 	docker tag crunchy-pgadmin4 $(CCP_IMAGE_PREFIX)/crunchy-pgadmin4:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 pgbadger: versiontest
-	cd badger && godep go install badgerserver.go
-	cp $(GOBIN)/badgerserver bin/pgbadger
+	docker build -t $(CCP_IMAGE_PREFIX)/badgerserver:build -f $(CCP_BASEOS)/Dockerfile.badgerserver.$(CCP_BASEOS) .
+	docker create --name extract $(CCP_IMAGE_PREFIX)/badgerserver:build
+	docker cp extract:/go/src/github.com/crunchydata/badgerserver/badgerserver ./bin/pgbadger/badgerserver
+	docker rm -f extract
 	docker build -t crunchy-pgbadger -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbadger.$(CCP_BASEOS) .
 	docker tag crunchy-pgbadger $(CCP_IMAGE_PREFIX)/crunchy-pgbadger:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 

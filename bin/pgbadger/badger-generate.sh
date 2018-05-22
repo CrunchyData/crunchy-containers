@@ -16,12 +16,14 @@
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
 ose_hack
+export BADGER_CUSTOM_OPTS=${BADGER_CUSTOM_OPTS:-}
 
 TARGET=${HOSTNAME?}
-if [ -v BADGER_TARGET ]; then
+if [[ -v BADGER_TARGET ]]
+then
     echo_info "BADGER_TARGET environment variable set.  Setting PGDATA target.."
     TARGET=${BADGER_TARGET?}
 fi
 
 echo_info "Creating pgBadger output.."
-/bin/pgbadger -o /tmp/badger.html /pgdata/${TARGET?}/pg_log/*.log
+/bin/pgbadger ${BADGER_CUSTOM_OPTS} -o /report/index.html /pgdata/${TARGET?}/pg_log/*.log

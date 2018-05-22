@@ -1887,21 +1887,11 @@ ${CCP_CLI} describe pod pr-replica | grep Label
 
 pgbadger is a PostgreSQL tool that reads the log files from a specified database
 in order to produce a HTML report that shows various PostgreSQL statistics and graphs.
+
 This example runs the pgbadger HTTP server against a crunchy-postgres container and
 illustrates how to view the generated reports.
 
-The port utilized for this tool is port 14000 for Docker environments and port 10000
-for Kubernetes and OpenShift environments.
-
-A requirement to build this container from source is *golang*. On RHEL 7.2, golang
-is found in the 'server optional' repository which needs to be enabled in order to install
-this dependency.
-....
-sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
-....
-
-The container creates a default database called *userdb*, a default user called
-*testuser* and a default password of *password*.
+The port utilized for this tool is port 10000 in all examples.
 
 To shutdown the instance and remove the container for each example, run the following:
 ....
@@ -1912,7 +1902,7 @@ To shutdown the instance and remove the container for each example, run the foll
 
 Run the example as follows:
 ....
-cd $CCPROOT/examples/docker/badger
+cd $CCPROOT/examples/docker/pgbadger
 ./run.sh
 ....
 
@@ -1920,14 +1910,14 @@ After execution, the container will run and provide a simple HTTP
 command you can browse to view the report.  As you run queries against
 the database, you can invoke this URL to generate updated reports:
 ....
-curl http://127.0.0.1:14000/api/badgergenerate
+curl http://127.0.0.1:10000/api/badgergenerate
 ....
 
 ==== Kubernetes and OpenShift
 
 Running the example:
 ....
-cd $CCPROOT/examples/kube/badger
+cd $CCPROOT/examples/kube/pgbadger
 ./run.sh
 ....
 
