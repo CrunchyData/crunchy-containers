@@ -31,4 +31,13 @@ ${CCP_CLI?} create rolebinding pg-watcher-sa-edit \
   --serviceaccount=$CCP_NAMESPACE:pg-watcher \
   --namespace=$CCP_NAMESPACE
 
-envsubst < $DIR/watch.yaml | ${CCP_CLI?} create -f -
+#envsubst < $DIR/watch.yaml | ${CCP_CLI?} create -f -
+
+if [ "$CCP_CLI" = "oc" ]; then
+	echo "an openshift example..."
+expenv -f $DIR/watch-ocp.yaml | ${CCP_CLI?} create -f -
+else
+	echo "a kube example..."
+expenv -f $DIR/watch.yaml | ${CCP_CLI?} create -f -
+fi
+

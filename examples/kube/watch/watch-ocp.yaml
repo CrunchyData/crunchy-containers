@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: watch
+  labels:
+    name: crunchy-watch
+spec:
+  serviceAccount: pg-watcher
+  containers:
+    - name: watch
+      image: $CCP_IMAGE_PREFIX/crunchy-watch:$CCP_IMAGE_TAG
+      env:
+        - name: CRUNCHY_DEBUG
+          value: "true"
+        - name: CRUNCHY_WATCH_PLATFORM
+          value: openshift
+        - name: CRUNCHY_WATCH_OPENSHIFT_PROJECT
+          value: $CCP_NAMESPACE
+        - name: CRUNCHY_WATCH_OPENSHIFT_FAILOVER_STRATEGY
+          value: latest
+        - name: CRUNCHY_WATCH_PRIMARY
+          value: pr-primary
+        - name: CRUNCHY_WATCH_PRIMARY_PORT
+          value: "5432"
+        - name: CRUNCHY_WATCH_REPLICA
+          value: pr-replica
+        - name: CRUNCHY_WATCH_REPLICA_PORT
+          value: "5432"
+        - name: CRUNCHY_WATCH_USERNAME
+          value: primaryuser
+        - name: CRUNCHY_WATCH_PASSWORD
+          value: password
+        - name: CRUNCHY_WATCH_DATABASE
+          value: postgres
+        - name: CRUNCHY_WATCH_PRE_HOOK
+          value: /hooks/watch-pre-hook
+        - name: CRUNCHY_WATCH_POST_HOOK
+          value: /hooks/watch-post-hook
+        - name: CRUNCHY_WATCH_HEALTHCHECK_INTERVAL
+          value: 30s
+        - name: CRUNCHY_WATCH_FAILOVER_WAIT
+          value: 10s
+      volumeMounts:
+        - name: watch-hooks-volume
+          mountPath: /hooks
+  volumes:
+    - name: watch-hooks-volume
+      configMap:
+        name: watch-hooks-configmap
