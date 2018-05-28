@@ -5,20 +5,41 @@ draft: false
 weight: 3
 ---
 
-:toc:
-:toclevels: 1
 v1.8.3, {docdate}
 
 == Introduction
 
-In this document, we will describe each of the containers found
-within the Crunchy Containers for PostgreSQL.
+Each of the containers found within the Crunchy Container Suite for PostgreSQL
+are described in further detail within their respective pages.
 
-The containers and their relationships to the overall architecture
-are depicted below:
+The containers and their relationships to the overall architecture are depicted below:
 
 image::../containers.png[containers]
 
+<<<<<<< HEAD
+== Containers
+
+The following container images are provided with further information:
+
+    * link:/container-specifications/crunchy-postgres[crunchy-postgres]
+    * link:/container-specifications/crunchy-postgres-gis[crunchy-postgres-gis]
+    * link:/container-specifications/crunchy-backup[crunchy-backup]
+    * link:/container-specifications/crunchy-pgdump[crunchy-pgdump]
+    * link:/container-specifications/crunchy-collect[crunchy-collect]
+    * link:/container-specifications/crunchy-prometheus[crunchy-prometheus]
+    * link:/container-specifications/crunchy-grafana[crunchy-grafana]
+    * link:/container-specifications/crunchy-pgbadger[crunchy-pgbadger]
+    * link:/container-specifications/crunchy-pgpool[crunchy-pgpool]
+    * link:/container-specifications/crunchy-watch[crunchy-watch]
+    * link:/container-specifications/crunchy-vacuum[crunchy-vacuum]
+    * link:/container-specifications/crunchy-dba[crunchy-dba]
+    * link:/container-specifications/crunchy-pgbouncer[crunchy-pgbouncer]
+    * link:/container-specifications/crunchy-backrest-restore[crunchy-backrest-restore]
+    * link:/container-specifications/crunchy-pgadmin4[crunchy-pgadmin4]
+    * link:/container-specifications/crunchy-pgrestore[crunchy-pgrestore]
+    * link:/container-specifications/crunchy-upgrade[crunchy-upgrade]
+    * link:/container-specifications/crunchy-sim[crunchy-sim]
+=======
 == crunchy-postgres
 
 The crunchy-postgres container executes the Postgres database.
@@ -939,3 +960,4 @@ queries over a specified interval range.
 === Restrictions
 
 * Only one connection is created for all queries.
+>>>>>>> aae224745f5caf481c142b4ccbf3332ab4f45f8e

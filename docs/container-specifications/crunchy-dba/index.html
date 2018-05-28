@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Crunchy Data Container Suite Documentation</title>
+    
+      <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="generator" content="Hugo 0.40" />
+
+<title>crunchy-dba :: Crunchy Data Container Suite Documentation</title>
+<link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/favicon.ico" type="image/x-icon" />
+<link href="https://crunchydata.github.io/crunchy-containers/css/nucleus.css" rel="stylesheet">
+<link href="https://crunchydata.github.io/crunchy-containers/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://crunchydata.github.io/crunchy-containers/css/hybrid.css" rel="stylesheet">
+<link href="https://crunchydata.github.io/crunchy-containers/css/featherlight.min.css" rel="stylesheet">
+<link href="https://crunchydata.github.io/crunchy-containers/css/auto-complete.css" rel="stylesheet">
+<link href="https://crunchydata.github.io/crunchy-containers/theme-original/style.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://crunchydata.github.io/crunchy-containers/css/bootstrap.min.css">
+<script src="https://crunchydata.github.io/crunchy-containers/js/jquery-2.x.min.js"></script>
+<style type="text/css">
+  :root #header + #content > #left > #rlblock_left {
+    display:none !important;
+  }
+</style>
+<meta name="description" content="">
+
+
+    
+  </head>
+  <body data-url="/container-specifications/crunchy-dba/">
+    
+      <div id="headermain"></div>
+<nav id="sidebar" class="">
+
+
+
+<div class="highlightable">
+  <div id="header-wrapper">
+    <div id="header">
+      
+	
+  
+    <a class="baselink" href="https://crunchydata.github.io/crunchy-containers/">Crunchy Data Container Suite Documentation</a>
+  
+
+    </div>
+        <div class="searchbox">
+		    <label for="search-by"><i class="fa fa-search"></i></label>
+		    <input data-search-input id="search-by" type="text" placeholder="Search...">
+		    <span data-search-clear=""><i class="fa fa-close"></i></span>
+		</div>
+		<script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/js/lunr.min.js"></script>
+		<script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/js/auto-complete.js"></script>
+		<script type="text/javascript">
+        
+            var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/";
+        
+		</script>
+		<script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/js/search.js"></script>
+  </div>
+
+      <ul class="topics">
+            <li data-nav-id="/" class="dd-item">
+            <a href="https://crunchydata.github.io/crunchy-containers/"><i class="fa fa-fw fa-home"></i></a>
+            </li>
+    <li data-nav-id="/installation/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/installation/">Installation</a><i class="fa fa-angle-right fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="/installation/environment-setup/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/installation/environment-setup/">
+            Environment Setup
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/installation/build-the-containers/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/installation/build-the-containers/">
+            Build the Containers
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/installation/storage-configuration/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/installation/storage-configuration/">
+            Storage Configuration
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/getting-started/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/getting-started/">Getting Started</a><i class="fa fa-angle-right fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+    <li data-nav-id="/getting-started/openshift-templates/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/">Openshift Templates</a><i class="fa fa-angle-right fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="/getting-started/openshift-templates/single-primary/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/single-primary/">
+            Single Primary
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/getting-started/openshift-templates/primary-restore/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/primary-restore/">
+            Primary Restore
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/getting-started/openshift-templates/primary-restore-secret/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/primary-restore-secret/">
+            Primary Restore Secret
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/getting-started/openshift-templates/primary-backup/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/primary-backup/">
+            Primary Backup
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/getting-started/openshift-templates/primary-backup-secret/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/primary-backup-secret/">
+            Primary Backup Secret
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/getting-started/openshift-templates/postgres-replicated/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/postgres-replicated/">
+            Primary Replica
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/getting-started/openshift-templates/pgadmin4/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/pgadmin4/">
+            pgAdmin4
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/getting-started/kubernetes-and-openshift/" class="dd-item
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/getting-started/kubernetes-and-openshift/">Kubernetes and Openshift</a>
+
+      </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/container-specifications/" class="dd-item parent haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/">Container Specifications</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="/container-specifications/crunchy-postgres/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-postgres/">
+            crunchy-postgres
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-postgres-gis/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-postgres-gis/">
+            crunchy-postgres-gis
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-backup/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-backup/">
+            crunchy-backup
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-backrest-restore/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-backrest-restore/">
+            crunchy-backrest-restore
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-pgdump/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgdump/">
+            crunchy-pgdump
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-pgrestore/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgrestore/">
+            crunchy-pgrestore
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-collect/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-collect/">
+            crunchy-collect
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-prometheus/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-prometheus/">
+            crunchy-prometheus
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-grafana/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-grafana/">
+            crunchy-grafana
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-pgadmin4/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgadmin4/">
+            crunchy-pgadmin4
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-watch/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-watch/">
+            crunchy-watch
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-vacuum/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-vacuum/">
+            crunchy-vacuum
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-upgrade/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-upgrade/">
+            crunchy-upgrade
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-sim/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-sim/">
+            crunchy-sim
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-dba/" class="dd-item active">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-dba/">
+            crunchy-dba
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-pgbouncer/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgbouncer/">
+            crunchy-pgbouncer
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-pgpool/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgpool/">
+            crunchy-pgpool
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-pgbadger/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgbadger/">
+            crunchy-pgbadger
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="/contributing/" class="dd-item
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/contributing/">Contributing</a>
+
+      </div>
+    </li>
+
+
+
+        <section id="shortcuts">
+                <li class="" role=""><h3>More</h3><a href="https://github.com/CrunchyData/crunchy-containers" target="_blank" rel="noopener"><i class='fa fa-github'></i> <label>Github repo</label></a></li>
+                <li class="" role=""><a href="https://kubernetes.io/docs/" target="_blank" rel="noopener"><i class='fa fa-bookmark'></i> <label>Kubernetes Documentation</label></a></li>
+                <li class="" role=""><a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md" target="_blank" rel="noopener"><i class='fa fa-file'></i> <label>License</label></a></li>
+        </section>
+
+    <hr />
+    <li></li>
+
+    </ul>
+
+ <section id="footer">
+    </section>
+  </div>
+</nav>
+
+
+
+<section id="body">
+<div id="overlay"></div>
+<div class="padding highlightable">
+
+  <div id="top-bar">
+    
+      
+      
+      
+    <div id="top-github-link">
+      <a class="github-link" href="https://crunchydata.github.io/crunchy-containers/contributing/" target="blank">
+        <i class="fa fa-info-circle"></i>
+        How to contribute
+      </a>
+      <a class="github-link" href="https://github.com/CrunchyData/crunchy-containers/edit/master/hugo/content/container-specifications/crunchy-dba.md" target="blank">
+        <i class="fa fa-code-fork"></i>
+        Improve this page
+      </a>
+    </div><div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+        <span id="sidebar-toggle-span">
+          <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+            <i class="fa fa-bars"></i>
+          </a>
+        </span>
+        <span id="toc-menu"><i class="fa fa-list-alt"></i></span>
+        <span class="links">
+        
+
+
+
+
+
+
+
+ <a href='https://crunchydata.github.io/crunchy-containers/'>Crunchy Data Container Suite</a> > <a href='https://crunchydata.github.io/crunchy-containers/container-specifications/'>Container Specifications</a> > crunchy-dba
+
+
+
+
+
+
+        </span>
+    </div>
+
+    
+    <div class="progress">
+        <div class="wrapper">
+    <nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#packages">Packages</a></li>
+<li><a href="#environment-variables">Environment Variables</a>
+<ul>
+<li><a href="#general">General</a></li>
+<li><a href="#vacuum-job">Vacuum Job</a></li>
+<li><a href="#backup-job">Backup Job</a></li>
+</ul></li>
+<li><a href="#cron-expression-format">CRON Expression Format</a>
+<ul>
+<li><a href="#special-characters">Special Characters</a>
+<ul>
+<li><a href="#asterisk">Asterisk</a></li>
+<li><a href="#slash">Slash</a></li>
+<li><a href="#comma">Comma</a></li>
+<li><a href="#hyphen">Hyphen</a></li>
+<li><a href="#question-mark">Question mark</a></li>
+</ul></li>
+<li><a href="#predefined-schedules">Predefined schedules</a></li>
+<li><a href="#intervals">Intervals</a></li>
+<li><a href="#time-zones">Time zones</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+        </div>
+    </div>
+    
+
+  </div>
+
+
+<div id="body-inner">
+  
+    <h1>crunchy-dba</h1>
+  
+
+
+
+    
+    
+    
+    
+
+<p>The crunchy-dba container implements a cron scheduler.  The purpose
+of the crunchy-dba container is to offer a way to perform
+simple DBA tasks that occur on some form of schedule such as
+backup jobs or running a vacuum on a <em>single</em> PostgreSQL database container.</p>
+
+<p>You can either run the crunchy-dba container as a single pod or include
+the container within a database pod.</p>
+
+<p>The crunchy-dba container makes use of a Service Account to perform
+the startup of scheduled jobs.  The Kubernetes Job type is used to execute
+the scheduled jobs with a Restart policy of Never.</p>
+
+<h2 id="packages">Packages</h2>
+
+<p>The crunchy-dba Docker image contains the following packages:</p>
+
+<ul>
+<li>CentOS7 - publicly available</li>
+<li>RHEL7 - customers only</li>
+</ul>
+
+<h2 id="environment-variables">Environment Variables</h2>
+
+<h3 id="general">General</h3>
+
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Name</strong></th>
+<th align="left"><strong>Default</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><strong>OSE_PROJECT</strong></td>
+<td align="left">None</td>
+<td align="left">The OSE project name to log into.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>JOB_HOST</strong></td>
+<td align="left">None</td>
+<td align="left">The PostgreSQL container name the action will be taken against.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>VAC_SCHEDULE</strong></td>
+<td align="left">None</td>
+<td align="left">If set, this will start a vacuum job container. The setting value must be a valid cron expression as described below.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>BACKUP_SCHEDULE</strong></td>
+<td align="left">None</td>
+<td align="left">If set, this will start a backup job container. The setting value must be a valid cron expression as described below.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>CRUNCHY_DEBUG</strong></td>
+<td align="left">FALSE</td>
+<td align="left">Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="vacuum-job">Vacuum Job</h3>
+
+<p>For a vacuum job, you are required to supply the following environment variables:</p>
+
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Name</strong></th>
+<th align="left"><strong>Default</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><strong>JOB_HOST</strong></td>
+<td align="left">None</td>
+<td align="left">The PostgreSQL container name the action will be taken against.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PG_USER</strong></td>
+<td align="left">None</td>
+<td align="left">Username for the PostgreSQL role being used.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PG_PASSWORD</strong></td>
+<td align="left">None</td>
+<td align="left">Password for the PostgreSQL role being used.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PG_DATABASE</strong></td>
+<td align="left">postgres</td>
+<td align="left">Database host to connect to.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PG_PORT</strong></td>
+<td align="left">5432</td>
+<td align="left">Allows you to override the default value of 5432.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>VAC_ANALYZE</strong></td>
+<td align="left">TRUE</td>
+<td align="left">When set to true, adds the ANALYZE parameter to the VACUUM command.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>VAC_FULL</strong></td>
+<td align="left">TRUE</td>
+<td align="left">hen set to true, adds the FULL parameter to the VACUUM command.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>VAC_VERBOSE</strong></td>
+<td align="left">TRUE</td>
+<td align="left">When set to true, adds the VERBOSE parameter to the VACUUM command.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>VAC_FREEZE</strong></td>
+<td align="left">FALSE</td>
+<td align="left">When set to true, adds the FREEZE parameter to the VACUUM command.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>VAC_TABLE</strong></td>
+<td align="left">FALSE</td>
+<td align="left">When set to true, allows you to specify a single table to vacuum. When not specified, the entire database tables are vacuumed.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="backup-job">Backup Job</h3>
+
+<p>For a backup job, you are required to supply the following environment variables:</p>
+
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Name</strong></th>
+<th align="left"><strong>Default</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><strong>JOB_HOST</strong></td>
+<td align="left">None</td>
+<td align="left">The PostgreSQL container name the action will be taken against.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PG_USER</strong></td>
+<td align="left">None</td>
+<td align="left">Username for the PostgreSQL role being used.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PG_PASSWORD</strong></td>
+<td align="left">None</td>
+<td align="left">Password for the PostgreSQL role being used.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PG_PORT</strong></td>
+<td align="left">5432</td>
+<td align="left">Allows you to override the default value of 5432.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>BACKUP_PV_CAPACITY</strong></td>
+<td align="left">None</td>
+<td align="left">A value like 1Gi is used to define the PV storage capacity.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>BACKUP_PV_PATH</strong></td>
+<td align="left">None</td>
+<td align="left">The storage path used to build the PV.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>BACKUP_PV_HOST</strong></td>
+<td align="left">None</td>
+<td align="left">The storage host used to build the PV.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>BACKUP_PVC_STORAGE</strong></td>
+<td align="left">None</td>
+<td align="left">A value like 75M means to allow 75 megabytes for the PVC used in performing the backup.</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="cron-expression-format">CRON Expression Format</h2>
+
+<p>A cron expression represents a set of times, using 6 space-separated fields.</p>
+
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Field Name</strong></th>
+<th align="left"><strong>Mandatory?</strong></th>
+<th align="left"><strong>Allowed Values</strong></th>
+<th align="left"><strong>Allowed Special Characters</strong></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><strong>Seconds</strong></td>
+<td align="left">Yes</td>
+<td align="left">0-59</td>
+<td align="left">* / , -</td>
+</tr>
+
+<tr>
+<td align="left"><strong>Minutes</strong></td>
+<td align="left">Yes</td>
+<td align="left">0-59</td>
+<td align="left">* / , -</td>
+</tr>
+
+<tr>
+<td align="left"><strong>Hours</strong></td>
+<td align="left">Yes</td>
+<td align="left">0-23</td>
+<td align="left">* / , -</td>
+</tr>
+
+<tr>
+<td align="left"><strong>Day of month</strong></td>
+<td align="left">Yes</td>
+<td align="left">1-31</td>
+<td align="left">* / , - ?</td>
+</tr>
+
+<tr>
+<td align="left"><strong>Month</strong></td>
+<td align="left">Yes</td>
+<td align="left">1-12 or JAN-DEC</td>
+<td align="left">* / , -</td>
+</tr>
+
+<tr>
+<td align="left"><strong>Day of week</strong></td>
+<td align="left">Yes</td>
+<td align="left">0-6 or SUN-SAT</td>
+<td align="left">* / , - ?</td>
+</tr>
+</tbody>
+</table>
+
+<div class="notices tip" ><p>Month and Day-of-week field values are case insensitive.  &ldquo;SUN&rdquo;, &ldquo;Sun&rdquo;, and &ldquo;sun&rdquo; are equally accepted.</p>
+</div>
+
+
+<h3 id="special-characters">Special Characters</h3>
+
+<h4 id="asterisk">Asterisk</h4>
+
+<p>The asterisk indicates that the cron expression will match for all values
+of the field; e.g., using an asterisk in the 5th field (month) would
+indicate every month.</p>
+
+<h4 id="slash">Slash</h4>
+
+<p>Slashes are used to describe increments of ranges. For example 3-<sup>59</sup>&frasl;<sub>15</sub> in
+the 1st field (minutes) would indicate the 3rd minute of the hour and every
+15 minutes thereafter. The form &ldquo;*\/&hellip;&rdquo; is equivalent to the form
+&ldquo;first-last/&hellip;&rdquo;, that is, an increment over the largest possible range of
+the field.  The form &ldquo;N/&hellip;&rdquo; is accepted as meaning &ldquo;N-MAX/&hellip;&rdquo;, that is,
+starting at N, use the increment until the end of that specific range.
+It does not wrap around.</p>
+
+<h4 id="comma">Comma</h4>
+
+<p>Commas are used to separate items of a list. For example, using
+&ldquo;MON,WED,FRI&rdquo; in the 5th field (day of week) would mean Mondays,
+Wednesdays and Fridays.</p>
+
+<h4 id="hyphen">Hyphen</h4>
+
+<p>Hyphens are used to define ranges. For example, 9-17 would indicate every
+hour between 9am and 5pm inclusive.</p>
+
+<h4 id="question-mark">Question mark</h4>
+
+<p>Question mark may be used instead of &ldquo;*&rdquo; for leaving either day-of-month or
+day-of-week blank.</p>
+
+<h3 id="predefined-schedules">Predefined schedules</h3>
+
+<p>You may use one of several pre-defined schedules in place of a cron expression.</p>
+
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Entry</strong></th>
+<th align="left"><strong>Description</strong></th>
+<th align="left"><strong>Equivalent To</strong></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><strong>@yearly (or @annually)</strong></td>
+<td align="left">Run once a year, midnight, Jan. 1st</td>
+<td align="left">0 0 0 1 1 *</td>
+</tr>
+
+<tr>
+<td align="left"><strong>@monthly</strong></td>
+<td align="left">Run once a month, midnight, first of month</td>
+<td align="left">0 0 0 1 * *</td>
+</tr>
+
+<tr>
+<td align="left"><strong>@weekly</strong></td>
+<td align="left">Run once a week, midnight on Sunday</td>
+<td align="left">0 0 0 * * 0</td>
+</tr>
+
+<tr>
+<td align="left"><strong>@daily (or @midnight)</strong></td>
+<td align="left">Run once a day, midnight</td>
+<td align="left">0 0 0 * * *</td>
+</tr>
+
+<tr>
+<td align="left"><strong>@hourly</strong></td>
+<td align="left">Run once an hour, beginning of hour</td>
+<td align="left">0 0 * * * *</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="intervals">Intervals</h3>
+
+<p>You may also schedule a job to execute at fixed intervals.  This is
+supported by formatting the cron spec like this:</p>
+
+<pre><code>@every &lt;duration&gt;
+</code></pre>
+
+<p>where &ldquo;duration&rdquo; is a string accepted by time.ParseDuration
+(<a href="http://golang.org/pkg/time/#ParseDuration">http://golang.org/pkg/time/#ParseDuration</a>).</p>
+
+<p>For example, &ldquo;@every 1h30m10s&rdquo; would indicate a schedule that activates every
+1 hour, 30 minutes, 10 seconds.</p>
+
+<p>NOTE: The interval does not take the job runtime into account.  For example,
+if a job takes 3 minutes to run, and it is scheduled to run every 5 minutes,
+it will have only 2 minutes of idle time between each run.</p>
+
+<h3 id="time-zones">Time zones</h3>
+
+<p>All interpretation and scheduling is done in the machines local
+time zone (as provided by the Go time package
+(<a href="http://www.golang.org/pkg/time">http://www.golang.org/pkg/time</a>).</p>
+
+<div class="notices tip" ><p>Be aware that jobs scheduled during daylight-savings leap-ahead transitions will not be run.</p>
+</div>
+
+
+
+    
+    
+          <footer class=" footline" >
+	
+</footer>
+  </div>
+</div>
+
+<div id="navigation">
+<a class="nav nav-prev" href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-sim/" title="crunchy-sim"> <i class="fa fa-chevron-left"></i><label>crunchy-sim</label></a>
+    <a class="nav nav-next" href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgbouncer/" title="crunchy-pgbouncer" style="margin-right: 0px;"><label>crunchy-pgbouncer</label><i class="fa fa-chevron-right"></i></a></div>
+
+</section>
+<div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+  <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+</div>    
+
+<script src="https://crunchydata.github.io/crunchy-containers/js/clipboard.min.js"></script>
+<script src="https://crunchydata.github.io/crunchy-containers/js/featherlight.min.js"></script>
+<script src="https://crunchydata.github.io/crunchy-containers/js/html5shiv-printshiv.min.js"></script>
+
+<script src="https://crunchydata.github.io/crunchy-containers/js/modernizr.custom.71422.js"></script>
+<script src="https://crunchydata.github.io/crunchy-containers/js/docdock.js"></script>
+<script src="https://crunchydata.github.io/crunchy-containers/theme-original/script.js"></script>
+
+
+    
+
+    
+    
+
+    
+  </body>
+</html>
