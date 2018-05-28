@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="generator" content="Hugo 0.40" />
 
-<title>Primary Restore :: Crunchy Data Container Suite Documentation</title>
+<title>crunchy-collect :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/favicon.ico" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/css/nucleus.css" rel="stylesheet">
 <link href="https://crunchydata.github.io/crunchy-containers/css/font-awesome.min.css" rel="stylesheet">
@@ -28,7 +28,7 @@
 
     
   </head>
-  <body data-url="/getting-started/openshift-templates/primary-restore/">
+  <body data-url="/container-specifications/crunchy-collect/">
     
       <div id="headermain"></div>
 <nav id="sidebar" class="">
@@ -94,19 +94,17 @@
     </li>
         </ul>
     </li>
-    <li data-nav-id="/getting-started/" class="dd-item parent haschildren
+    <li data-nav-id="/getting-started/" class="dd-item haschildren
         ">
       <div>
-      <a href="https://crunchydata.github.io/crunchy-containers/getting-started/">Getting Started</a>
-            <i class="fa fa-angle-down fa-lg category-icon"></i>
+      <a href="https://crunchydata.github.io/crunchy-containers/getting-started/">Getting Started</a><i class="fa fa-angle-right fa-lg category-icon"></i>
 
       </div>
         <ul>
-    <li data-nav-id="/getting-started/openshift-templates/" class="dd-item parent haschildren
+    <li data-nav-id="/getting-started/openshift-templates/" class="dd-item haschildren
         ">
       <div>
-      <a href="https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/">Openshift Templates</a>
-            <i class="fa fa-angle-down fa-lg category-icon"></i>
+      <a href="https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/">Openshift Templates</a><i class="fa fa-angle-right fa-lg category-icon"></i>
 
       </div>
         <ul>
@@ -117,7 +115,7 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore/" class="dd-item active">
+      <li data-nav-id="/getting-started/openshift-templates/primary-restore/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/primary-restore/">
             Primary Restore
@@ -170,10 +168,11 @@
     </li>
         </ul>
     </li>
-    <li data-nav-id="/container-specifications/" class="dd-item haschildren
+    <li data-nav-id="/container-specifications/" class="dd-item parent haschildren
         ">
       <div>
-      <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/">Container Specifications</a><i class="fa fa-angle-right fa-lg category-icon"></i>
+      <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/">Container Specifications</a>
+            <i class="fa fa-angle-down fa-lg category-icon"></i>
 
       </div>
         <ul>
@@ -219,7 +218,7 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/container-specifications/crunchy-collect/" class="dd-item">
+      <li data-nav-id="/container-specifications/crunchy-collect/" class="dd-item active">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-collect/">
             crunchy-collect
@@ -347,7 +346,7 @@
         <i class="fa fa-info-circle"></i>
         How to contribute
       </a>
-      <a class="github-link" href="https://github.com/CrunchyData/crunchy-containers/edit/master/hugo/content/getting-started/openshift-templates/primary-restore.md" target="blank">
+      <a class="github-link" href="https://github.com/CrunchyData/crunchy-containers/edit/master/hugo/content/container-specifications/crunchy-collect.md" target="blank">
         <i class="fa fa-code-fork"></i>
         Improve this page
       </a>
@@ -367,12 +366,7 @@
 
 
 
-
-
-
- <a href='https://crunchydata.github.io/crunchy-containers/'>Crunchy Data Container Suite</a> > <a href='https://crunchydata.github.io/crunchy-containers/getting-started/'>Getting Started</a> > <a href='https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/'>Openshift Templates</a> > Primary Restore
-
-
+ <a href='https://crunchydata.github.io/crunchy-containers/'>Crunchy Data Container Suite</a> > <a href='https://crunchydata.github.io/crunchy-containers/container-specifications/'>Container Specifications</a> > crunchy-collect
 
 
 
@@ -389,9 +383,12 @@
 <ul>
 <li>
 <ul>
-<li><a href="#objects">Objects</a></li>
-<li><a href="#storage">Storage</a></li>
-<li><a href="#form-required">Form Required</a></li>
+<li><a href="#packages">Packages</a></li>
+<li><a href="#environment-variables">Environment Variables</a>
+<ul>
+<li><a href="#required">Required</a></li>
+<li><a href="#optional">Optional</a></li>
+</ul></li>
 </ul></li>
 </ul>
 </nav>
@@ -404,7 +401,7 @@
 
 <div id="body-inner">
   
-    <h1>Primary Restore</h1>
+    <h1>crunchy-collect</h1>
   
 
 
@@ -414,86 +411,66 @@
     
     
 
-<p>v1.8.3</p>
+<p>The crunchy-collect container provides real time metrics about the PostgreSQL database
+via an API. These metrics are scrapped and stored by a <a href="https://prometheus.io">Prometheus</a>
+time-series database and are then graphed and visualized through the open source data
+visualizer <a href="https://grafana.com/">Grafana</a>.</p>
 
-<p>The Crunchy PostgreSQL Primary Restore Template creates a single primary pod from a <code>pg_basebackup</code> physical backup.</p>
+<p>Custom queries to collect metrics can be specified by the user. By
+mounting a <strong>queries.yml</strong> file to <em>/conf</em> on the container, additional metrics
+can be specified for the API to collect. For an example of a queries.yml file, see
+<a href="https://github.com/crunchydata/crunchy-containers/blob/master/conf/collect/queries.yml">here</a>.</p>
 
-<h2 id="objects">Objects</h2>
+<h2 id="packages">Packages</h2>
 
-<p>The Crunchy PostreSQL Primary Template creates the following objects:</p>
+<p>The crunchy-collect Docker image contains the following packages (versions vary depending on PostgreSQL version):</p>
 
 <ul>
-<li>PostgreSQL Secret - usernames and passwords generated from the template</li>
-<li>PGData PVC - Volume where PostgreSQL database will be stored</li>
-<li>Primary Service - Service connected to the Primary Pod</li>
-<li>Primary Pod - Primary database pod</li>
+<li>PostgreSQL (9.5.13, 9.6.9 and 10.4)</li>
+<li>CentOS7 - publicly available</li>
+<li>RHEL7 - customers only</li>
+<li><a href="https://github.com/wrouesnel/postgres_exporter">PostgreSQL Exporter</a></li>
+<li><a href="https://github.com/prometheus/node_exporter">Node Exporter</a></li>
 </ul>
 
-<h2 id="storage">Storage</h2>
+<h2 id="environment-variables">Environment Variables</h2>
 
-<p>This template assumes <code>STORAGE_CLASS</code> volumes will be used.</p>
-
-<p>The template assumes a <strong>BACKUP PVC</strong> has been created and contains a backup.</p>
-
-<h2 id="form-required">Form Required</h2>
+<h3 id="required">Required</h3>
 
 <table>
 <thead>
 <tr>
 <th align="left"><strong>Name</strong></th>
+<th align="left"><strong>Default</strong></th>
 <th align="left"><strong>Description</strong></th>
 </tr>
 </thead>
 
 <tbody>
 <tr>
-<td align="left"><strong>VOLUME_STORAGE_CLASS</strong></td>
-<td align="left">Name of the Storage Class that provides persistence for the container.</td>
+<td align="left"><strong>DATA_SOURCE_NAME</strong></td>
+<td align="left">None</td>
+<td align="left">The URL for the PostgreSQL server&rsquo;s data source name. This is <em>required</em> to be in the form of <code>postgresql://</code>.</td>
 </tr>
+</tbody>
+</table>
 
+<h3 id="optional">Optional</h3>
+
+<table>
+<thead>
 <tr>
-<td align="left"><strong>BACKUP_PVC_NAME</strong></td>
-<td align="left">Name of the PVC where the physical backups are stored.</td>
+<th align="left"><strong>Name</strong></th>
+<th align="left"><strong>Default</strong></th>
+<th align="left"><strong>Description</strong></th>
 </tr>
+</thead>
 
+<tbody>
 <tr>
-<td align="left"><strong>BACKUP_DATE</strong></td>
-<td align="left">Timestamp of the backup to use from the Crunchy Backup job.</td>
-</tr>
-
-<tr>
-<td align="left"><strong>BACKUP_HOSTNAME</strong></td>
-<td align="left">Hostname of the backed up database.</td>
-</tr>
-
-<tr>
-<td align="left"><strong>PG_USER</strong></td>
-<td align="left">Username of the backed up database (can be retrieved from existing secrets generated by Crunchy PostgreSQL Templates).</td>
-</tr>
-
-<tr>
-<td align="left"><strong>PG_PASSWORD</strong></td>
-<td align="left">Password of the PG_USER from the backed up database (can be retrieved from existing secrets generated by Crunchy PostgreSQL Templates).</td>
-</tr>
-
-<tr>
-<td align="left"><strong>PG_DATABASE</strong></td>
-<td align="left">Database of the backed up database (can be retrieved from existing secrets generated by Crunchy PostgreSQL Templates).</td>
-</tr>
-
-<tr>
-<td align="left"><strong>PG_PRIMARY_USER</strong></td>
-<td align="left">Replication username of the backed up database (can be retrieved from existing secrets generated by Crunchy PostgreSQL Templates).</td>
-</tr>
-
-<tr>
-<td align="left"><strong>PG_PRIMARY_PASSWORD</strong></td>
-<td align="left">Replication username password of the backed up database (can be retrieved from existing secrets generated by Crunchy PostgreSQL Templates).</td>
-</tr>
-
-<tr>
-<td align="left"><strong>PG_PRIMARY_PASSWORD</strong></td>
-<td align="left">Superuser password of the backed up database (can be retrieved from existing secrets generated by Crunchy PostgreSQL Templates).**</td>
+<td align="left"><strong>CRUNCHY_DEBUG</strong></td>
+<td align="left">FALSE</td>
+<td align="left">Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.</td>
 </tr>
 </tbody>
 </table>
@@ -508,8 +485,8 @@
 </div>
 
 <div id="navigation">
-<a class="nav nav-prev" href="https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/single-primary/" title="Single Primary"> <i class="fa fa-chevron-left"></i><label>Single Primary</label></a>
-    <a class="nav nav-next" href="https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/primary-restore-secret/" title="Primary Restore Secret" style="margin-right: 0px;"><label>Primary Restore Secret</label><i class="fa fa-chevron-right"></i></a></div>
+<a class="nav nav-prev" href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgrestore/" title="crunchy-pgrestore"> <i class="fa fa-chevron-left"></i><label>crunchy-pgrestore</label></a>
+    <a class="nav nav-next" href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-prometheus/" title="crunchy-prometheus" style="margin-right: 0px;"><label>crunchy-prometheus</label><i class="fa fa-chevron-right"></i></a></div>
 
 </section>
 <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
