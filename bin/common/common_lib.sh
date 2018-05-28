@@ -60,7 +60,7 @@ function env_check_info() {
 }
 
 function dir_check_err() {
-    if [[ -d ${!1} ]]
+    if [[ ! -d ${!1} ]]
     then
         echo_err "The $1 directory does not exist and is required."
         exit 1

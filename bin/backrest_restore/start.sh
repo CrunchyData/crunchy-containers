@@ -31,17 +31,16 @@ env_check_err "STANZA"
 if [[ -v DELTA ]]
 then
     echo_info "Delta restore detected.  Enabling delta restore.."
-    restore='--delta restore'
+    restore_type='--delta'
 else
     echo_info "Full restore detected.  Enabling full restore.."
-    restore='restore'
 fi
 
 echo_info "Starting restore.."
 pgbackrest \
     --config=${BACKREST_CONF?} \
     --stanza=${STANZA?} \
-    ${restore?}
+    ${restore_type:-} ${BACKREST_CUSTOM_OPTS:-} restore
 
 echo_info "Restore completed.  Exiting.."
 
