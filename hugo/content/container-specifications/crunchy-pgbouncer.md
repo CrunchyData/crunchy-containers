@@ -49,4 +49,6 @@ The crunchy-pgbouncer Docker image contains the following packages (versions var
 **POOL_MODE**|Session|When a server connection can be reused by other clients. Possible values: `session`, `transaction` and `statement`.
 **RESERVE_POOL_SIZE**|0|How many additional connections to allow per pool. 0 disables.
 **RESERVE_POOL_TIMEOUT**|5|If a client has not been serviced in this many seconds, pgbouncer enables use of additional connections from reserve pool. 0 disables.
+**QUERY_TIMEOUT**|0|Queries running longer than that are canceled.
+**IGNORE_STARTUP_PARAMETERS**|extra_float_digits|Set to ignore particular parameters in startup packets.
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.
