@@ -116,6 +116,14 @@ upgrade: versiontest
 		docker tag crunchy-upgrade $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION) ;\
 	fi
 
+sample-app: versiontest
+	docker build -t $(CCP_IMAGE_PREFIX)/sample-app-build:build -f $(CCP_BASEOS)/Dockerfile.sample-app-build.$(CCP_BASEOS) .
+	docker create --name extract $(CCP_IMAGE_PREFIX)/sample-app-build:build
+	docker cp extract:/go/src/github.com/crunchydata/sample-app/sample-app ./bin/sample-app
+	docker rm -f extract
+	docker build -t crunchy-sample-app -f $(CCP_BASEOS)/Dockerfile.sample-app.$(CCP_BASEOS) .
+	docker tag crunchy-sample-app $(CCP_IMAGE_PREFIX)/crunchy-sample-app:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+
 vac: versiontest
 	cd vacuum && godep go install vacuum.go
 	cp $(GOBIN)/vacuum bin/vacuum

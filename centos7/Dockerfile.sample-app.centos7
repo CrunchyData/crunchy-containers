@@ -1,0 +1,45 @@
+FROM centos:7
+
+LABEL name="crunchydata/sample-app" \
+	vendor="crunchy data" \
+	version="7.3" \
+	release="1.8.3" \
+	build-date="2018-05-08" \
+	url="https://crunchydata.com" \
+	summary="Implements a cron scheduler." \
+	description="Sample application to connect to PostgreSQL containers" \
+	io.k8s.description="Sample App container" \
+	io.k8s.display-name="Crunchy Sample App container" \
+	io.openshift.expose-services="" \
+	io.openshift.tags="crunchy,database"
+
+ENV PGVERSION="10" PGDG_REPO="pgdg-centos10-10-2.noarch.rpm"
+
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y install \
+      bind-utils \
+      gettext \
+      hostname \
+      iproute \
+      nss_wrapper \
+      procps-ng \
+      psmisc \
+ && yum -y install postgresql10 \
+ && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+ADD bin/sample-app /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
+ADD conf/sample-app /opt/cpm/conf
+
+RUN chown -R 2:2 /opt/cpm
+
+EXPOSE 8000
+
+USER 2
+
+CMD ["/opt/cpm/bin/start.sh"]
