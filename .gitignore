@@ -7,3 +7,4 @@ bin/crunchy-sim
 node_exporter.tar.gz
 postgres_exporter
 postgres_exporter.tar.gz*
+bin/sample-app/sample-app
