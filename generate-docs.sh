@@ -27,11 +27,6 @@ cd ${CCPROOT?}/hugo/
 echo "Generating Hugo webpages..."
 hugo
 
-# Copy README into main GitHub directory for those accessing the repository
-echo "Copying README into main GitHub repository..."
-rm -f ${CCPROOT?}/README.adoc
-cp ${CCPROOT?}/hugo/content/_index.adoc ${CCPROOT?}/README.adoc
-
 # Add all changes and commit, push to GitHub
 echo "Updating GitHub repository..."
 git add --all && git commit -m "Publishing documentation"

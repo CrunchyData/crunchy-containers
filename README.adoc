@@ -1,67 +1,26 @@
----
-title: "Crunchy Data Container Suite"
-date: 2018-04-23T14:52:09-07:00
-draft: false
----
+image::crunchy_logo.png[Crunchy Data Logo]
 
-image::crunchy_logo.png[Crunchy Data Logo,width="25%",height="25%", align="center"]
-
-Latest Release: v1.8.3, {docdate}
+Latest Release: v1.8.4, {docdate}
 
 == General
-
-Please view the official Crunchy Data Container Suite documentation link:https://crunchydata.github.io/crunchy-containers/[here]. If you are
-interested in contributing or making an update to the documentation, please view the link:https://crunchydata.github.io/crunchy-containers/contributing/[Contributing Guidelines].
-
-Warning: The master branch is considered unstable. Please consult the link:https://github.com/CrunchyData/crunchy-containers/releases[tagged release]
-currently deployed in your environment.
-
-== What is the Container Suite?
 
 The Crunchy Container Suite provides Docker containers that enable
 rapid deployment of PostgreSQL, including administration and
 monitoring tools. Multiple styles of deploying PostgreSQL clusters
 are supported.
 
-=== Requirements
+Please view the official Crunchy Data Container Suite documentation
+link:https://crunchydata.github.io/crunchy-containers/[here]. If you
+are interested in contributing or making an update to the documentation,
+please view the
+link:https://crunchydata.github.io/crunchy-containers/contributing/[Contributing Guidelines].
 
-The containers will execute in the following environments:
+Warning: The master branch is considered unstable. Please consult the
+link:https://github.com/CrunchyData/crunchy-containers/releases[tagged release]
+currently deployed in your environment.
 
- * Docker 1.12 and above
- * Openshift 3.4 and above
- * Kubernetes 1.5 and above
-
-=== Containers
-
-The project includes the following containers:
-
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-postgres[crunchy-postgres] - executes Postgres
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-postgres-gis[crunchy-postgres-gis] - executes Postgres plus the PostGIS extensions
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-backup[crunchy-backup] - performs a full database backup
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgpool[crunchy-pgpool] - executes pgpool
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgbadger[crunchy-pgbadger] - executes pgbadger
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-watch[crunchy-watch] - performs a form of automated failover
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-collect[crunchy-collect] - collects Postgres metrics
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-prometheus[crunchy-prometheus] -stores Postgres metrics
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-grafana[crunchy-grafana] - graphs Postgres metrics
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgbouncer[crunchy-pgbouncer] - pgbouncer connection pooler and simple form of failover
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgadmin4[crunchy-pgadmin4] - pgadmin4 web application
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-dba[crunchy-dba] - implements a cron scheduler to perform simple DBA tasks
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-upgrade[crunchy-upgrade] - allows you to perform a major postgres upgrade using pg_upgrade
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-backrest-restore[crunchy-backrest-restore] - allows you to perform a pgbackrest restore
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-sim[crunchy-sim] - executes queries over a specified interval range for Postgres traffic simulation purposes
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgdump[crunchy-pgdump] - provides a means of performing either a pg_dump or pg_dumpall on a Postgres database
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgrestore[crunchy-pgrestore] - provides a means of performing a restore of a dump from pg_dump or pg_dumpall via psql or pg_restore to a Postgres container database
-
-image::containers.png?raw=true[]
-
-For Kubernetes users of these containers, there is an associated
-project worth taking a look at that uses the containers found
-in this repo and provides a higher level automation.
-That project is the link:https://github.com/crunchydata/postgres-operator[postgres-operator].
-
-Further descriptions of each of these containers and environment variables that can be used to tune them
-can be found in the link:https://crunchydata.github.io/crunchy-containers/container-specifications/[Container Specifications] document.
+[link=https://crunchydata.github.io/crunchy-containers/]
+image::btn.png[Official Documentation]
 
 == Getting Started
 
@@ -71,6 +30,9 @@ on a Centos 7 base image and use the community PostgreSQL RPMs.
 Crunchy provides a commercially supported version of these containers
 built upon RHEL 7 and the Crunchy supported PostgreSQL. Contact Crunchy
 for more details at http://www.crunchydata.com.
+
+Further descriptions of each of these containers and environment variables that can be used to tune them
+can be found in the link:https://crunchydata.github.io/crunchy-containers/container-specifications/[Container Specifications] document.
 
 == Usage
 
