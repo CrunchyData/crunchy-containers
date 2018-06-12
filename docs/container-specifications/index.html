@@ -394,7 +394,7 @@
     
 
 <div class="paragraph">
-<p>v1.8.3, 2018-05-27</p>
+<p>v1.8.3, 2018-06-11</p>
 </div>
 <div class="sect1">
 <h2 id="_introduction">Introduction</h2>
@@ -411,11 +411,10 @@ are described in further detail within their respective pages.</p>
 <img src="../containers.png" alt="containers">
 </div>
 </div>
+<div class="paragraph">
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+== Containers</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_containers">Containers</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>The following container images are provided with further information:</p>
 </div>
@@ -476,6 +475,1698 @@ are described in further detail within their respective pages.</p>
 <p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-sim">crunchy-sim</a></p>
 </li>
 </ul>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>== crunchy-postgres</p>
+</div>
+<div class="paragraph">
+<p>The crunchy-postgres container executes the Postgres database.</p>
+</div>
+<div class="paragraph">
+<p>=== Packages</p>
+</div>
+<div class="paragraph">
+<p>The container image is built using either the Crunchy Postgres release
+or the community version based upon a flag in the Makefile.</p>
+</div>
+<div class="paragraph">
+<p>The crunchy-postgres RPMs are available to Crunchy customers only.  The
+Crunchy release is meant for customers that require enterprise level
+support.</p>
+</div>
+<div class="paragraph">
+<p>The PGDG community RPMs can be used as well by simply commenting out
+the Crunchy yum repo within the Dockerfiles and uncommenting
+the PGDG yum repo.</p>
+</div>
+<div class="paragraph">
+<p>=== setup.sql</p>
+</div>
+<div class="paragraph">
+<p>The <strong>setup.sql</strong> script is used to define startup SQL commands that are
+executed when the database is first created.</p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>PG_MODE - either <strong>primary</strong>, <strong>replica</strong> or <strong>set</strong>, this value determines whether
+the database is set up as a primary or replica instance. In the
+case of <strong>set</strong>, it means the container is started within a StatefulSet
+in a Kubernetes cluster.</p>
+</li>
+<li>
+<p>PG_PRIMARY_USER - the value to use for the user ID created as
+primaryuser.  The <strong>primaryuser</strong> has super user privileges.</p>
+</li>
+<li>
+<p>PG_PRIMARY_PASSWORD - the password for the PG_PRIMARY_USER database user</p>
+</li>
+<li>
+<p>PG_USER - the value to use for the user ID created as a normal user.
+This user is created as part of the setup.sql script upon database
+creation and allows users to predefine an application user.</p>
+</li>
+<li>
+<p>PG_PASSWORD - the password for the PG_USER database user that is created</p>
+</li>
+<li>
+<p>PG_DATABASE - a database that is created upon database initialization</p>
+</li>
+<li>
+<p>PG_ROOT_PASSWORD - the PostgreSQL user password set up upon database
+initialization</p>
+</li>
+<li>
+<p>PG_LOCALE - if set, the locale you want to create the database with, if
+not set, the default locale is used</p>
+</li>
+<li>
+<p>SYNC_REPLICA - if set, this value is used to specify the application_name
+of a replica that will be used for a synchronous replication</p>
+</li>
+<li>
+<p>CHECKSUMS - if set, this value is used to enable the <strong>--data-checksums</strong>
+option when initdb is executed at initialization, if not set, the
+default is to <strong>not</strong> enable data checksums</p>
+</li>
+<li>
+<p>ARCHIVE_MODE - if set to <strong>on</strong>, will enable continuous WAL archiving
+by setting the value within the postgresql.conf file <strong>archive_mode</strong>
+setting, if not set, the default is <strong>off</strong></p>
+</li>
+<li>
+<p>ARCHIVE_TIMEOUT - if set to a number (in seconds) , will specify
+the postgresql.conf <strong>archive_timeout</strong> setting, if not set, the
+default value of <strong>60</strong> is used.</p>
+</li>
+<li>
+<p>PGAUDIT_ANALYZE - if set, will cause the container to also start the
+pgaudit_analyze program in the background</p>
+</li>
+<li>
+<p>PG_PRIMARY_HOST - for when PG_MODE is <strong>set</strong>, specifies the primary
+host for setting the primary label</p>
+</li>
+<li>
+<p>PG_REPLICA_HOST - for when PG_MODE is <strong>set</strong>, specifies the replica
+host for setting the replica label</p>
+</li>
+<li>
+<p>PGDATA_PATH_OVERRIDE - if set, will cause the container to use a /pgdata path
+name of your choosing rather than the hostname of the container which
+is the default. This is useful for a primary in a deployment.</p>
+</li>
+<li>
+<p>XLOGDIR - if set to true, will cause initdb to include --xlogdir=$PGWAL, this
+will cause a symlink to be created from /pgdata/containername/pg_wal (or pg_xlog if you&#8217;re running PG 9.5 or 9.6) to /pgwal/containername-wal</p>
+</li>
+<li>
+<p>TEMP_BUFFERS - default is 8MB, set this value to override this PostgreSQL configuration setting</p>
+</li>
+<li>
+<p>MAX_CONNECTIONS - default is 100, set this value to override this PostgreSQL configuration setting</p>
+</li>
+<li>
+<p>SHARED_BUFFERS - default is 128MB, set this value to override this PostgreSQL configuration setting</p>
+</li>
+<li>
+<p>WORK_MEM - default is 4MB, set this value to override this PostgreSQL configuration setting</p>
+</li>
+<li>
+<p>MAX_WAL_SENDERS - default is 6, set this value to override this PostgreSQL configuration setting</p>
+</li>
+<li>
+<p>ENABLE_SSHD- default is false, set this value to true to enable SSHD</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Features</p>
+</div>
+<div class="paragraph">
+<p>The following features are supported by the crunchy-postgres container:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>use of OpenShift secrets</p>
+</li>
+<li>
+<p>ability to restore from a database backup</p>
+</li>
+<li>
+<p>use of custom pg_hba.conf and postgresql.conf files</p>
+</li>
+<li>
+<p>ability to override postgresql.conf configuration parameters</p>
+</li>
+<li>
+<p>ability to override the default setup.sql script</p>
+</li>
+<li>
+<p>ability to set the database locale</p>
+</li>
+<li>
+<p>ability to specify a synchronous replica application_name</p>
+</li>
+<li>
+<p>ability to specify a recovery using PITR and WAL files</p>
+</li>
+<li>
+<p>ability to enable SSHD</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Locale Support</p>
+</div>
+<div class="paragraph">
+<p>Adding locale support to the container is accomplished by
+running 'yum reinstall glibc_common' within the container, this
+increases the size of the container image and can be removed if you
+do not require specific locale support.</p>
+</div>
+<div class="paragraph">
+<p>You can specify the PG_LOCALE env var which is passed to the initdb
+command when the initial data files are created, for example:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>"name": "PG_LOCALE",
+"value": "fr_BE.UTF-8"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default, no locale is specified when the initdb command is executed.</p>
+</div>
+<div class="paragraph">
+<p>== crunchy-postgres-gis</p>
+</div>
+<div class="paragraph">
+<p>This container is the same as the crunchy-postgres container except
+that it includes the following PostgreSQL extensions:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>postgis</p>
+</li>
+<li>
+<p>pl/r</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You can test the pl/r extension by running the following commands
+for example:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>create extension plr;
+SELECT * FROM plr_environ();
+SELECT load_r_typenames();
+SELECT * FROM r_typenames();
+SELECT plr_array_accum('{23,35}', 42);
+CREATE OR REPLACE FUNCTION plr_array (text, text)
+RETURNS text[]
+AS '$libdir/plr','plr_array'
+LANGUAGE 'c' WITH (isstrict);
+select plr_array('hello','world');</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>== crunchy-backup</p>
+</div>
+<div class="paragraph">
+<p>The crunchy-backup container executes a pg_basebackup against another
+database container.  The backup is a full backup using the standard
+utility included with PostgreSQL, pg_basebackup.</p>
+</div>
+<div class="paragraph">
+<p>=== Backup Location</p>
+</div>
+<div class="paragraph">
+<p>Backups are stored in a mounted backup volume location, using the
+database host name plus <strong>-backups</strong>  as a sub-directory, then followed by a unique
+backup directory based upon a date/timestamp.  It is left to the
+user to perform database backup archives in this current version
+of the container.  This backup location is referenced when performing
+a database restore.</p>
+</div>
+<div class="paragraph">
+<p>=== Dependencies</p>
+</div>
+<div class="paragraph">
+<p>The container is meant to be using NFS or a similar network file system
+to persist database backups.</p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>BACKUP_LABEL - when set, will set the label of the backup, if not
+set the default label used is <strong>crunchy-backup</strong></p>
+</li>
+<li>
+<p>BACKUP_HOST - required, this is the database we will be doing the
+backup for</p>
+</li>
+<li>
+<p>BACKUP_USER - required, this is the database user we will be doing the
+backup with</p>
+</li>
+<li>
+<p>BACKUP_PASS - required, this is the database password we will be doing the
+backup with</p>
+</li>
+<li>
+<p>BACKUP_PORT - required, this is the database port we will be doing the
+backup with</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>== crunchy-pgdump</p>
+</div>
+<div class="paragraph">
+<p>The crunchy-pgdump container executes either a pg_dump or pg_dumpall against another
+Postgres database.</p>
+</div>
+<div class="paragraph">
+<p>=== Dump Location</p>
+</div>
+<div class="paragraph">
+<p>Dumps are stored in a mounted backup volume location, using the
+database host name plus <strong>-backups</strong>  as a sub-directory, then followed by a unique
+backup directory based upon a date/timestamp.  It is left to the
+user to perform database dump archives in this current version
+of the container.</p>
+</div>
+<div class="paragraph">
+<p>=== Dependencies</p>
+</div>
+<div class="paragraph">
+<p>The container is meant to be using NFS or a similar network file system
+to persist database dumps.</p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="paragraph">
+<p>==== REQUIRED ARGS</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>PGDUMP_DB - Database to connect to</p>
+</li>
+<li>
+<p>PGDUMP_HOST - Hostname of the PostgreSQL database to connect to</p>
+</li>
+<li>
+<p>PGDUMP_PASS - Password of the PostgreSQL role used by the pgdump container</p>
+</li>
+<li>
+<p>PGDUMP_USER - PostgreSQL Role used by the pgdump container</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>==== OPTIONAL/EXTENDED ARGS
+ * PGDUMP_ALL - Run <code>pg_dump</code> instead of <code>pg_dumpall</code>.  Default is true, set to false to use <code>pg_dump</code>
+ * PGDUMP_CUSTOM_OPTS - Advanced options to pass into <code>pg_dump</code> or <code>pg_dumpall</code>.  Default is empty
+ * PGDUMP_FILENAME - Name of the file created by the <code>pgdump</code> container.  Default is <code>dump</code>
+ * PGDUMP_PORT - Port of the PostgreSQL database to connect to.  Default is 5432
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs
+   Note: this mode can reveal secrets in logs.</p>
+</div>
+<div class="paragraph">
+<p>Note: For a list of advanced options for configuring the <code>PGDUMP_CUSTOM_OPTS</code> variable, see the official documentation:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.postgresql.org/docs/current/static/app-pgdump.html" class="bare">https://www.postgresql.org/docs/current/static/app-pgdump.html</a></p>
+</li>
+<li>
+<p><a href="https://www.postgresql.org/docs/current/static/app-pg-dumpall.html" class="bare">https://www.postgresql.org/docs/current/static/app-pg-dumpall.html</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>== crunchy-collect</p>
+</div>
+<div class="paragraph">
+<p>=== Description</p>
+</div>
+<div class="paragraph">
+<p>Crunchy Collect container provides real time metrics about the PostgreSQL database
+via an API.  These metrics are scrapped and stored by Crunchy Prometheus time-series
+database and visualized by Crunchy Grafana.</p>
+</div>
+<div class="paragraph">
+<p>=== Requirements</p>
+</div>
+<div class="paragraph">
+<p>This container requires TCP access to the PostgreSQL database to run queries for
+collecting metrics.  The PostgreSQL database to be scrapped is specified by the
+<strong>DATA_SOURCE_NAME</strong> environment variable.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, custom queries to collect metrics can be specified by the user.  By
+mounting a <strong>queries.yml</strong> file to <strong>/conf</strong> on the container, additionally metrics
+can be specified for the API to collect.  For an example of a <strong>queries.yml</strong> file, see
+<a href="https://github.com/crunchydata/crunchy-containers/blob/master/conf/collect/queries.yml">here</a>.</p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="paragraph">
+<p><strong>Required:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>DATA_SOURCE_NAME - The URL for the PostgreSQL server&#8217;s data source name.
+This is <strong>required</strong> to be in the form of <strong>postgresql://</strong>.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Optional:</strong>
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.</p>
+</div>
+<div class="paragraph">
+<p>== crunchy-prometheus</p>
+</div>
+<div class="paragraph">
+<p>=== Description</p>
+</div>
+<div class="paragraph">
+<p>Prometheus is a multi-dimensional time series data model with an elastic query language. It is used in collaboration
+with Grafana in this metrics suite. Overall, it’s reliable, manageable, and operationally simple for efficiently
+storing and analyzing data for large-scale environments. It scraps metrics from exporters such as
+Crunchy Collect.</p>
+</div>
+<div class="paragraph">
+<p>The following port is exposed by the crunchy-prometheus container:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>crunchy-prometheus:9090 - the Prometheus web user interface</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Requirements</p>
+</div>
+<div class="paragraph">
+<p>The Crunchy Prometheus container must be able to reach the Crunchy Collect container
+to scrape metrics.</p>
+</div>
+<div class="paragraph">
+<p>By default, Crunchy Prometheus detects which environment its running on (Docker, Kube or OCP)
+and applies a default configuration.  If this container is running on Kube or OCP,
+it will use the Kubernetes API to discover pods with the label <strong>"crunchy-collect": "true"</strong>.
+Crunchy Collect container must have this label to be discovered.</p>
+</div>
+<div class="paragraph">
+<p>For Docker environments the Crunchy Collect hostname must be specified as an environment
+variable.</p>
+</div>
+<div class="paragraph">
+<p>A user may define a custom <strong>prometheus.yml</strong> file and mount to <strong>/conf</strong> for custom configuration.
+For a configuration examples, see  <a href="https://github.com/crunchydata/crunchy-containers/blob/master/conf/prometheus">here</a>.</p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="paragraph">
+<p><strong>Required:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>COLLECT_HOST - Hostname of Crunchy Collect container.  Only required in <strong>Docker</strong>
+environments.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Optional:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>SCRAPE_INTERVAL - default is "5s", set this value to the number of seconds to scrape
+metrics from exporters.</p>
+</li>
+<li>
+<p>SCRAPE_TIMEOUT - default is "5s", set this value to the number of seconds to timeout when scraping
+metrics from exporters.</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>== crunchy-grafana</p>
+</div>
+<div class="paragraph">
+<p>=== Description</p>
+</div>
+<div class="paragraph">
+<p>Visual dashboards are created from the collected and stored data that crunchy-collect and crunchy-prometheus
+provides with the crunchy-grafana container, which hosts a web-based graphing dashboard called Grafana.</p>
+</div>
+<div class="paragraph">
+<p>Grafana is an open-source platform which can then apply the defined metrics and visualize information through
+various tools. It is extremely flexible with a powerful query and transformation language, producing beautiful
+and easily understandable graphics to analyze and monitor your data.</p>
+</div>
+<div class="paragraph">
+<p>By default, Crunchy Grafana will register the Crunchy Prometheus datasource within
+Grafana and import a premade dashboard for PostgreSQL monitoring.</p>
+</div>
+<div class="paragraph">
+<p>The following port is exposed by the crunchy-grafana container:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>crunchy-grafana:3000 - the Grafana web user interface</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Requirements</p>
+</div>
+<div class="paragraph">
+<p>The Crunchy Grafana container must be able to reach the Crunchy Prometheus container.</p>
+</div>
+<div class="paragraph">
+<p>Users must specify an administrator user and password to provide basic authentication
+for the web frontend.</p>
+</div>
+<div class="paragraph">
+<p>Additionally the Prometheus Host and Port are required.  If Prometheus uses basic
+authentication, users must specify the username and password to access Prometheus
+via environment variables.</p>
+</div>
+<div class="paragraph">
+<p>Users may define a custom <strong>defaults.ini</strong> file and mount to <strong>/conf</strong> for custom configuration.
+For a configuration examples, see  <a href="https://github.com/crunchydata/crunchy-containers/blob/master/conf/grafana/defaults.ini">here</a>.</p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="paragraph">
+<p><strong>Required:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>ADMIN_USER - specifies the administrator user to be used when logging into the
+web frontend.</p>
+</li>
+<li>
+<p>ADMIN_PASS - specifies the administrator password to be used when logging into the
+web frontend.</p>
+</li>
+<li>
+<p>PROM_HOST - specifies the Prometheus container hostname for auto registering the
+prometheus datasource.</p>
+</li>
+<li>
+<p>PROM_PORT - specifies the Prometheus container port for auto registering the
+prometheus datasource.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Optional:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>PROM_USER - specifies the Prometheus username, if one is required.</p>
+</li>
+<li>
+<p>PROM_PASS - specifies the Prometheus password, if one is required.</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>== crunchy-pgbadger</p>
+</div>
+<div class="paragraph">
+<p>The crunchy-pgbadger container executes the pgbadger utility.  A small
+http server is running on the container, when a request is made to:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>http://&lt;&lt;ip address&gt;&gt;:10000/api/badgergenerate</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="paragraph">
+<p><strong>Optional:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>BADGER_TARGET - only used in standalone mode to specify the
+name of the container, also used to find the location of the
+database log files in /pgdata/$BADGER_TARGET/pg_log/*.log</p>
+</li>
+<li>
+<p>BADGER_CUSTOM_OPTS - no default, set this value to provide custom flags to pgbadger.
+For a list of optional flags, see the <a href="http://dalibo.github.io/pgbadger">official pgBadger documentation</a>.</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Features</p>
+</div>
+<div class="paragraph">
+<p>The following features are supported by the crunchy-pgbadger container:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Generate a full report by default</p>
+</li>
+<li>
+<p>Optional custom options for more advanced use cases (such as <code>incremental</code> reports)</p>
+</li>
+<li>
+<p>Report persistence on a volume</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>== crunchy-pgpool</p>
+</div>
+<div class="paragraph">
+<p>The crunchy-pgpool container executes the pgpool utility.  Pgpool can
+be used to provide a smart PostgreSQL-aware proxy to a PostgreSQL cluster,
+both primary and replica, so that applications can only have to work
+with a single database connection.</p>
+</div>
+<div class="paragraph">
+<p>Postgres replicas are read-only whereas a primary is both read and write
+capable.</p>
+</div>
+<div class="paragraph">
+<p>The default pgpool examples use a Secret to hold the set of pgpool
+configuration files used by the examples.  The Secret is mounted
+into the <strong>pgconf</strong> volume mount where the container will look to
+find configuration files.  If you do not specify your own
+configuration files via a Secret then you can specify environment
+variables to the container that it will attempt to use to
+configure pgpool, this is not recommended however for a real
+pgpool deployment.</p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>PG_USERNAME - user to connect to PostgreSQL</p>
+</li>
+<li>
+<p>PG_PASSWORD - user password to connect to PostgreSQL</p>
+</li>
+<li>
+<p>PG_PRIMARY_SERVICE_NAME - database host to connect to for the primary node</p>
+</li>
+<li>
+<p>PG_REPLICA_SERVICE_NAME - database host to connect to for the replica node</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Features</p>
+</div>
+<div class="paragraph">
+<p>The following features are supported by the crunchy-pgpool container:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>basic invocation of pgpool</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>== crunchy-watch</p>
+</div>
+<div class="paragraph">
+<p>crunchy-watch runs as a pod unto itself
+typically.  The watch container essentially does a health check
+on a primary database container and performs a failover sequence
+if the primary is not reached.</p>
+</div>
+<div class="paragraph">
+<p>The watch container has access to a service account that is used
+inside the container to issue commands to OpenShift.</p>
+</div>
+<div class="paragraph">
+<p>In Kube 1.5, if a policy file is being used for securing down the
+Kube cluster, you could possibly need to add a policy to allow
+the pg-watcher service account access to the Kube API as mentioned
+here: <a href="https://kubernetes.io/docs/admin/authorization/abac/#a-quick-note-on-service-accounts" class="bare">https://kubernetes.io/docs/admin/authorization/abac/#a-quick-note-on-service-accounts</a></p>
+</div>
+<div class="paragraph">
+<p>In Kube 1.6, an equivalent RBAC policy is also possibly required depending
+on your authorization/authentication configuration.  See this
+link for details on the new RBAC policy mechanism:
+<a href="https://kubernetes.io/docs/admin/authorization/rbac/" class="bare">https://kubernetes.io/docs/admin/authorization/rbac/</a></p>
+</div>
+<div class="paragraph">
+<p>For example, you can grant cluster-admin permissions on the pg-watcher service
+account, in the my-namespace namespace as follows:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>kubectl create clusterrolebinding pgwatcher-view-binding --clusterrole=cluster-admin --serviceaccount=my-namespace:pg-watcher</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>A less wide open policy would be applied like this on Kube 1.6 rbac:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>kubectl create rolebinding my-sa-binding --clusterrole=admin --serviceaccount=demo:pg-watcher --namespace=demo</pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+this kubectl command is only available in Kube 1.6, for prior
+Kube release such as 1.5 and the alpha RBAC, you will need to
+specify the role binding in a JSON/YAML file instead of using
+this command syntax above.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You then reference the SA within the POD spec.</p>
+</div>
+<div class="paragraph">
+<p>The oc/docker/kubectl commands are included into the container from the
+host when the container image is built.  These commands are used by
+the watch logic to interact with the replica containers.</p>
+</div>
+<div class="paragraph">
+<p>Starting with release 1.7.1 crunchy-watch source code is relocated
+to <a href="https://github.com/crunchydata/crunchy-watch" class="bare">https://github.com/crunchydata/crunchy-watch</a></p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>CRUNCHY_WATCH_HEALTHCHECK_INTERVAL - the time to sleep in seconds between checking on the primary</p>
+</li>
+<li>
+<p>CRUNCHY_WATCH_FAILOVER_WAIT - the time to sleep in seconds between triggering the failover and updating its label (default is 40 secs)</p>
+</li>
+<li>
+<p>PG_CONTAINER_NAME -  if set, the name of the container to refer to when doing an <strong>exec</strong>, this is required if you have more than 1 container in your database pod</p>
+</li>
+<li>
+<p>CRUNCHY_WATCH_PRIMARY -  the primary service name</p>
+</li>
+<li>
+<p>CRUNCHY_WATCH_REPLICA - the replica service name</p>
+</li>
+<li>
+<p>PG_PRIMARY_PORT - database port to use when checking the database</p>
+</li>
+<li>
+<p>CRUNCHY_WATCH_USERNAME -  database user account to use when checking the database
+using pg_isready utility</p>
+</li>
+<li>
+<p>CRUNCHY_WATCH_DATABASE - database to use when checking the database using pg_isready</p>
+</li>
+<li>
+<p>REPLICA_TO_TRIGGER_LABEL - the pod name of a replica that you
+want to choose as the new primary in a failover; this will override
+the normal replica selection</p>
+</li>
+<li>
+<p>CRUNCHY_WATCH_PRE_HOOK - path to an executable file to run before failover is processed.</p>
+</li>
+<li>
+<p>CRUNCHY_WATCH_POST_HOOK - path to an executable file to run after failover is processed.</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Logic</p>
+</div>
+<div class="paragraph">
+<p>The watch container will watch the primary, if the primary dies, then
+the watcher will:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>create the trigger file on the replica that will become the new primary</p>
+</li>
+<li>
+<p>change the labels on the replica to be those of the primary</p>
+</li>
+<li>
+<p>start watching the new primary in case that falls over next</p>
+</li>
+<li>
+<p>look for replicas that have the metadata label value of <strong>replicatype=trigger</strong> to prefer
+the failover to. If found, it will use the first replica with that label; if
+not found, it will use the first replica it finds.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Example of looking for the failover replica:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>oc get pod -l name=pg-replica-rc-dc
+NAME                     READY     STATUS    RESTARTS   AGE
+pg-replica-rc-dc           1/1       Running   2          16m
+pg-replica-rc-dc-1-96qs8   1/1       Running   1          16m
+
+oc get pod -l replicatype=trigger
+NAME             READY     STATUS    RESTARTS   AGE
+pg-replica-rc-dc   1/1       Running   2          16m</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>== crunchy-vacuum</p>
+</div>
+<div class="paragraph">
+<p>=== Description</p>
+</div>
+<div class="paragraph">
+<p>The crunchy-vacuum container allows you to perform a SQL VACUUM job against a PostgreSQL database container.
+You specify a database to vacuum using various environment variables which are listed below. It is possible
+to run different vacuum operations either manually or automatically through scheduling.</p>
+</div>
+<div class="paragraph">
+<p>The crunchy-vacuum image is executed, passed in the Postgres connection parameters to the single-primary
+PostgreSQL container. The type of vacuum performed is dictated by the environment variables passed into the job.</p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="paragraph">
+<p>The complete set of environment variables read by the crunchy-vacuum job include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>VAC_FULL - when set to true adds the FULL parameter to the VACUUM command</p>
+</li>
+<li>
+<p>VAC_TABLE - when set, allows you to specify a single table to vacuum, when not specified, the entire database tables are vacuumed</p>
+</li>
+<li>
+<p>JOB_HOST - required variable is the postgres host we connect to</p>
+</li>
+<li>
+<p>PG_USER - required variable is the postgres user we connect with</p>
+</li>
+<li>
+<p>PG_DATABASE - required variable is the postgres database we connect to</p>
+</li>
+<li>
+<p>PG_PASSWORD - required variable is the postgres user password we connect with</p>
+</li>
+<li>
+<p>PG_PORT - allows you to override the default value of 5432</p>
+</li>
+<li>
+<p>VAC_ANALYZE - when set to true adds the ANALYZE parameter to the VACUUM command</p>
+</li>
+<li>
+<p>VAC_VERBOSE - when set to true adds the VERBOSE parameter to the VACUUM command</p>
+</li>
+<li>
+<p>VAC_FREEZE - when set to true adds the FREEZE parameter to the VACUUM command</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>== crunchy-dba</p>
+</div>
+<div class="paragraph">
+<p>The crunchy-dba container implements a cron scheduler.  The purpose
+of the crunchy-dba container is to offer a way to perform
+simple DBA tasks that occur on some form of schedule such as
+backup jobs or running a vacuum on a <strong>single</strong> Postgres database container.</p>
+</div>
+<div class="paragraph">
+<p>You can either run the crunchy-dba container as a single pod or include
+the container within a database pod.</p>
+</div>
+<div class="paragraph">
+<p>The crunchy-dba container makes use of a Service Account to perform
+the startup of scheduled jobs.  The Kube Job type is used to execute
+the scheduled jobs with a Restart policy of Never.</p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="paragraph">
+<p>The following environment variables control the actions
+of crunchy-dba:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>OSE_PROJECT - required, the OSE project name to log into</p>
+</li>
+<li>
+<p>JOB_HOST - required, the PostgreSQL container name the action will be taken against</p>
+</li>
+<li>
+<p>VAC_SCHEDULE - if set, this will start a vacuum job container.  The
+setting value must be a valid cron expression as described below.</p>
+</li>
+<li>
+<p>BACKUP_SCHEDULE - if set, this will start a backup job container.  The
+setting value must be a valid cron expression as described below.</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For a vacuum job, you are required to supply the following
+environment variables:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>JOB_HOST</p>
+</li>
+<li>
+<p>PG_USER</p>
+</li>
+<li>
+<p>PG_PASSWORD</p>
+</li>
+<li>
+<p>PG_DATABASE - defaults to postgres when not specified</p>
+</li>
+<li>
+<p>PG_PORT - defaults to 5432 when not specified</p>
+</li>
+<li>
+<p>VAC_ANALYZE(optional) - defaults to true when not specified</p>
+</li>
+<li>
+<p>VAC_FULL(optional) - defaults to true when not specified</p>
+</li>
+<li>
+<p>VAC_VERBOSE(optional) - defaults to true when not specified</p>
+</li>
+<li>
+<p>VAC_FREEZE(optional) - defaults to false when not specified</p>
+</li>
+<li>
+<p>VAC_TABLE(optional) - defaults to all tables when not specified, or you can set this value to indicate a single table to vacuum</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For a backup job, you are required to supply the following
+environment variables:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>JOB_HOST</p>
+</li>
+<li>
+<p>PG_USER - database user used to perform the backup</p>
+</li>
+<li>
+<p>PG_PASSWORD - database user password used to perform the backup</p>
+</li>
+<li>
+<p>PG_PORT - port value used when connecting for a backup to the database</p>
+</li>
+<li>
+<p>BACKUP_PV_CAPACITY - a value like 1Gi is used to define the PV storage capacity</p>
+</li>
+<li>
+<p>BACKUP_PV_PATH - the storage path used to build the PV</p>
+</li>
+<li>
+<p>BACKUP_PV_HOST - the storage host used to build the PV</p>
+</li>
+<li>
+<p>BACKUP_PVC_STORAGE - a value like 75M means to allow 75 megabytes for the PVC used
+in performing the backup</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== CRON Expression Format</p>
+</div>
+<div class="paragraph">
+<p>A cron expression represents a set of times, using 6 space-separated fields.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 1. Table Fields</caption>
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Field name</th>
+<th class="tableblock halign-left valign-top">Mandatory?</th>
+<th class="tableblock halign-left valign-top">Allowed values</th>
+<th class="tableblock halign-left valign-top">Allowed special characters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Seconds</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0-59</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* / , -</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Minutes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0-59</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* / , -</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Hours</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0-23</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* / , -</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Day of month</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1-31</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* / , - ?</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Month</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">1-12 or JAN-DEC</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* / , -</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Day of week</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Yes</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0-6 or SUN-SAT</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">* / , - ?</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+Month and Day-of-week field values are case insensitive.  <code>SUN'', </code>Sun'',
+and ``sun'' are equally accepted.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>==== Special Characters</p>
+</div>
+<div class="paragraph">
+<p>===== Asterisk ( * )</p>
+</div>
+<div class="paragraph">
+<p>The asterisk indicates that the cron expression will match for all values
+of the field; e.g., using an asterisk in the 5th field (month) would
+indicate every month.</p>
+</div>
+<div class="paragraph">
+<p>===== Slash ( / )</p>
+</div>
+<div class="paragraph">
+<p>Slashes are used to describe increments of ranges. For example 3-59/15 in
+the 1st field (minutes) would indicate the 3rd minute of the hour and every
+15 minutes thereafter. The form <code>*\/&#8230;&#8203;'' is equivalent to the form
+</code>first-last/&#8230;&#8203;'', that is, an increment over the largest possible range of
+the field.  The form <code>N/&#8230;&#8203;'' is accepted as meaning </code>N-MAX/&#8230;&#8203;'', that is,
+starting at N, use the increment until the end of that specific range.
+It does not wrap around.</p>
+</div>
+<div class="paragraph">
+<p>===== Comma ( , )</p>
+</div>
+<div class="paragraph">
+<p>Commas are used to separate items of a list. For example, using
+``MON,WED,FRI'' in the 5th field (day of week) would mean Mondays,
+Wednesdays and Fridays.</p>
+</div>
+<div class="paragraph">
+<p>===== Hyphen ( - )</p>
+</div>
+<div class="paragraph">
+<p>Hyphens are used to define ranges. For example, 9-17 would indicate every
+hour between 9am and 5pm inclusive.</p>
+</div>
+<div class="paragraph">
+<p>===== Question mark ( ? )</p>
+</div>
+<div class="paragraph">
+<p>Question mark may be used instead of '*' for leaving either day-of-month or
+day-of-week blank.</p>
+</div>
+<div class="paragraph">
+<p>==== Predefined schedules</p>
+</div>
+<div class="paragraph">
+<p>You may use one of several pre-defined schedules in place of a cron expression.</p>
+</div>
+<table class="tableblock frame-all grid-all spread">
+<caption class="title">Table 2. Table Predefined Schedules</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Entry</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Equivalent To</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">@yearly (or @annually)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Run once a year, midnight, Jan. 1st</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0 0 0 1 1 *</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">@monthly</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Run once a month, midnight, first of month</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0 0 0 1 * *</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">@weekly</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Run once a week, midnight on Sunday</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0 0 0 * * 0</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">@daily (or @midnight)</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Run once a day, midnight</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0 0 0 * * *</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">@hourly</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Run once an hour, beginning of hour</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">0 0 * * * *</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>==== Intervals</p>
+</div>
+<div class="paragraph">
+<p>You may also schedule a job to execute at fixed intervals.  This is
+supported by formatting the cron spec like this:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>@every &lt;duration&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>where ``duration'' is a string accepted by time.ParseDuration
+(<a href="http://golang.org/pkg/time/#ParseDuration" class="bare">http://golang.org/pkg/time/#ParseDuration</a>).</p>
+</div>
+<div class="paragraph">
+<p>For example, ``@every 1h30m10s'' would indicate a schedule that activates every
+1 hour, 30 minutes, 10 seconds.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+The interval does not take the job runtime into account.  For example,
+if a job takes 3 minutes to run, and it is scheduled to run every 5 minutes,
+it will have only 2 minutes of idle time between each run.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>==== Time zones</p>
+</div>
+<div class="paragraph">
+<p>All interpretation and scheduling is done in the machines local
+time zone (as provided by the Go time package
+(<a href="http://www.golang.org/pkg/time" class="bare">http://www.golang.org/pkg/time</a>).  Be aware that jobs scheduled during
+daylight-savings leap-ahead transitions will not be run!</p>
+</div>
+<div class="paragraph">
+<p>== crunchy-pgbouncer</p>
+</div>
+<div class="paragraph">
+<p>Crunchy pgBouncer is a lightweight connection pooler for PostgreSQL databases.</p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="paragraph">
+<p>==== REQUIRED ARGS</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>PGBOUNCER_PASSWORD - the password of the pgbouncer role in PostgreSQL.  Must be also
+set on the primary database.</p>
+</li>
+<li>
+<p>PG_SERVICE - the hostname of the database service</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>==== OPTIONAL/EXTENDED ARGS</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>DEFAULT_POOL_SIZE - default 20, how many server connections to allow per user/database pair.</p>
+</li>
+<li>
+<p>MAX_CLIENT_CONN - default 100, maximum number of client connections allowed.</p>
+</li>
+<li>
+<p>MAX_DB_CONNECTIONS - default unlimited, do not allow more than this many connections per-database.</p>
+</li>
+<li>
+<p>MIN_POOL_SIZE - default 0 (disabled), adds more server connections to pool if below this number.</p>
+</li>
+<li>
+<p>POOL_MODE - default <code>session</code>, specifies when a server connection can be reused by other clients.
+Possible values: <code>session</code>, <code>transaction</code> and <code>statement</code>.</p>
+</li>
+<li>
+<p>RESERVE_POOL_SIZE - default 0 (disabled), how many additional connections to allow to a pool.</p>
+</li>
+<li>
+<p>RESERVE_POOL_TIMEOUT - default 5, if a client has not been serviced in this many seconds,
+pgbouncer enables use of additional connections from reserve pool.  0 disables.</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Features</p>
+</div>
+<div class="paragraph">
+<p>The following features are supported by the crunchy-pgbouncer container:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Crunchy pgBouncer uses <code>auth_query</code> to authenticate users.  This requires only the <code>pgbouncer</code>
+username and password in <code>users.txt</code>.  Automatically generated from environment variables.</p>
+</li>
+<li>
+<p>Mount a custom <code>users.txt</code> and <code>pgbouncer.ini</code> configurations for advanced usage.</p>
+</li>
+<li>
+<p>Tune pooling parameters via environment variables.</p>
+</li>
+<li>
+<p>Connect to the administration database in pgBouncer to view statistics of the target databases.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Restrictions</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>OpenShift: If custom configurations aren&#8217;t being mounted, an <strong>emptydir</strong> volume is required
+to be mounted at <code>/pgconf</code>.</p>
+</li>
+<li>
+<p><code>Superusers</code> cannot connect through the connection pooler.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>== crunchy-backrest-restore</p>
+</div>
+<div class="paragraph">
+<p>The crunchy-backrest-restore container executes the pgbackrest utility, allowing FULL and DELTA restore capability. See the pgbackrest guide for more details. <a href="https://github.com/pgbackrest/pgbackrest" class="bare">https://github.com/pgbackrest/pgbackrest</a></p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="paragraph">
+<p><strong>Required:</strong>
+ * STANZA - desired stanza to restore from.  For most cases this should be set to <code>db</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Optional:</strong>
+ * DELTA - when set to true, this will configure pgBackRest to do a delta restore.  Delta
+   restores do not require <code>pgdata</code> directoy to be empty.  This will only pull in differences
+   between pgdata and the backup.
+ * BACKREST_CUSTOM_OPTS - pass in custom parameters to pgBackRest for advanced use cases (such as
+   point in time recovery).
+ * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+   Note: this mode can reveal secrets in logs.</p>
+</div>
+<div class="paragraph">
+<p>=== Features</p>
+</div>
+<div class="paragraph">
+<p>The following features are supported by the crunchy-backrest-restore container:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>mount pgbackrest.conf config file via /pgconf volume</p>
+</li>
+<li>
+<p>mount the /backrestrepo for access to pgbackrest archives</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Restrictions</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>for configuration, has to have pgbackrest.conf files mounted in /pgconf</p>
+</li>
+<li>
+<p>must have valid pgbackrest archive directory mounted in /backrestrepo</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>== crunchy-pgadmin4</p>
+</div>
+<div class="paragraph">
+<p>The crunchy-ppgadmin4 container executes the pgadmin4 web application.</p>
+</div>
+<div class="paragraph">
+<p>The pgadmin4 project is found at the following location:
+<a href="https://www.pgadmin.org/" class="bare">https://www.pgadmin.org/</a></p>
+</div>
+<div class="paragraph">
+<p>pgadmin4 provides a web user interface to PostgreSQL databases.  A
+sample screenshot is below:</p>
+</div>
+<div class="imageblock" style="text-align: center">
+<div class="content">
+<img src="../pgadmin4-screenshot.png" alt="pgadmin screenshot">
+</div>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>PGADMIN_SETUP_EMAIL - required, set this value to the email address
+used for pgAdmin4 login.</p>
+</li>
+<li>
+<p>PGADMIN_SETUP_PASSWORD - required, set this value to a password used
+for pgAdmin4 login.  This should be a strong password.</p>
+</li>
+<li>
+<p>SERVER_PORT - default is 5050, set this value to a change the port
+pgAdmin4 listens on.</p>
+</li>
+<li>
+<p>ENABLE_TLS - default is false, set this value to true to enable HTTPS
+on the pgAdmin4 container.  This requires a <strong>server.key</strong> and <strong>server.crt</strong>
+to be mounted on the <strong>/certs</strong> directory.</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Features</p>
+</div>
+<div class="paragraph">
+<p>The following features are supported by the crunchy-pgadmin4 container:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>expose port (5050 by default) which is the web server port</p>
+</li>
+<li>
+<p>mount a certificate and key to the <strong>/certs</strong> directory and set <strong>ENABLE_TLS</strong> to true
+to activate HTTPS mode.</p>
+</li>
+<li>
+<p>Set username and password for login via environment variables.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Restrictions</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>An emptyDir, with write access, must be mounted to the <strong>/run/httpd</strong> directory in OpenShift.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>== crunchy-pgrestore</p>
+</div>
+<div class="paragraph">
+<p>The restore image provides a means of performing a restore
+of a dump from pg_dump or pg_dumpall via psql or pg_restore
+to a Postgres container database.</p>
+</div>
+<div class="paragraph">
+<p>=== Dump-file Input Location</p>
+</div>
+<div class="paragraph">
+<p>As the input files for crunchy-pgrestore, files generated by crunchy-pgdump
+are retrieved in a mounted backup volume location, using the
+database host name plus <strong>-backups</strong>  as a sub-directory, then followed by a unique
+backup directory based upon a date/timestamp.  It is left to the
+user to restore database dump archives in this current version
+of the container.</p>
+</div>
+<div class="paragraph">
+<p>=== Dependencies</p>
+</div>
+<div class="paragraph">
+<p>The container is meant to be using NFS or a similar network file system
+to retrieve database dumps to be restored via psql or pg_restore.</p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="paragraph">
+<p>==== REQUIRED ARGS</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>PGRESTORE_DB - Database to connect to</p>
+</li>
+<li>
+<p>PGRESTORE_HOST - Hostname of the PostgreSQL database to connect to</p>
+</li>
+<li>
+<p>PGRESTORE_PASS - Password of the PostgreSQL role used by the pgdump container</p>
+</li>
+<li>
+<p>PGRESTORE_USER - PostgreSQL Role used by the pgdump container</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>==== OPTIONAL/EXTENDED ARGS</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>PGDUMP_BACKUP_HOST - Hostname of the PostgreSQL server that was backed up by <code>pgdump</code> container.  Used when restoring a backup to a new host.</p>
+</li>
+<li>
+<p>PGRESTORE_BACKUP_TIMESTAMP - Timestamp of the backup to restore from.  Default is empty (restores from latest backup)</p>
+</li>
+<li>
+<p>PGRESTORE_CUSTOM_OPTS - Advanced options to pass into <code>pg_restore</code>. Default is empty</p>
+</li>
+<li>
+<p>PGRESTORE_PORT - Port of the PostgreSQL database to connect to.  Default is 5432</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Note: For a list of advanced options for configuring the <code>PGRESTORE_CUSTOM_OPTS</code> variable, see the official documentation:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.postgresql.org/docs/current/static/app-pgrestore.html" class="bare">https://www.postgresql.org/docs/current/static/app-pgrestore.html</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>== crunchy-upgrade</p>
+</div>
+<div class="paragraph">
+<p>The crunchy-upgrade container contains both the 9.5/9.6 and 9.6/10
+Postgres packages in order to perform a pg_upgrade from
+9.5 to 9.6 or 9.6 to 10 versions.</p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>OLD_DATABASE_NAME - required, refers to the database (pod) name
+that we want to convert</p>
+</li>
+<li>
+<p>NEW_DATABASE_NAME - required, refers to the database (pod) name
+that we give to the upgraded database</p>
+</li>
+<li>
+<p>OLD_VERSION - required, the Postgres version of the old database</p>
+</li>
+<li>
+<p>NEW_VERSION - required, the Postgres version of the new database</p>
+</li>
+<li>
+<p>PG_LOCALE - if set, the locale you want to create the database with, if
+not set, the default locale is used</p>
+</li>
+<li>
+<p>CHECKSUMS - if set, this value is used to enable the <strong>--data-checksums</strong>
+option when initdb is executed at initialization, if not set, the
+default is to <strong>not</strong> enable data checksums</p>
+</li>
+<li>
+<p>XLOGDIR - if set, initdb will use the specified directory for WAL</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Features</p>
+</div>
+<div class="paragraph">
+<p>The following features are supported by the crunchy-upgrade container:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>supports only a pg_upgrade of the Postgres database</p>
+</li>
+<li>
+<p>doesn&#8217;t alter the old database files</p>
+</li>
+<li>
+<p>creates the new database directory</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Restrictions</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>does NOT support a postgis upgrade currently</p>
+</li>
+<li>
+<p>all environment variables are required</p>
+</li>
+<li>
+<p>supports upgrades from 9.5/9.6 to 10</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>== crunchy-sim</p>
+</div>
+<div class="paragraph">
+<p>The crunchy-sim container is a simple traffic simulator for PostgreSQL.</p>
+</div>
+<div class="paragraph">
+<p>=== Environment Variables</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>PGSIM_HOST - required, the PostgreSQL host address</p>
+</li>
+<li>
+<p>PGSIM_PORT - required, the PostgreSQL host port</p>
+</li>
+<li>
+<p>PGSIM_USERNAME - required, the PostgreSQL username</p>
+</li>
+<li>
+<p>PGSIM_PASSWORD - required, the PostgreSQL password</p>
+</li>
+<li>
+<p>PGSIM_DATABASE - required, the database to connect</p>
+</li>
+<li>
+<p>PGSIM_INTERVAL - required, The units of the simulation interval</p>
+</li>
+<li>
+<p>PGSIM_MININTERVAL - required, the minimum interval value</p>
+</li>
+<li>
+<p>PGSIM_MAXINTERVAL - requited, the maximum interval value</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Valid values for PGSIM_INTERVAL are as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>millisecond</p>
+</li>
+<li>
+<p>second</p>
+</li>
+<li>
+<p>minute</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Features</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Creates a single connection to PostgreSQL and will execute
+queries over a specified interval range.</p>
+</li>
+<li>
+<p>Queries are specified through a simple YAML file. Each query is a name-value
+pair and can span multiple lines by utilizing scalar notation (<code>|'' or </code>&gt;'') as
+defined by the YAML spec.</p>
+</li>
+<li>
+<p>Queries are randomly chosen for execution.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>=== Restrictions</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Only one connection is created for all queries.
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; aae224745f5caf481c142b4ccbf3332ab4f45f8e</p>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 </div>
