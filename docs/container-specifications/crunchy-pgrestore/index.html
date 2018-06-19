@@ -389,6 +389,7 @@
 <li><a href="#required">Required</a></li>
 <li><a href="#optional">Optional</a></li>
 </ul></li>
+<li><a href="#volumes">Volumes</a></li>
 <li><a href="#dump-file-input-location">Dump-file Input Location</a></li>
 </ul></li>
 </ul>
@@ -513,6 +514,24 @@ to a PostgreSQL container database.</p>
 <div class="notices tip" ><p>For a list of advanced options for configuring the <code>PGRESTORE_CUSTOM_OPTS</code> variable, see the <a href="https://www.postgresql.org/docs/current/static/app-pgrestore.html">official documentation</a>.</p>
 </div>
 
+
+<h2 id="volumes">Volumes</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Name</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><strong>/pgdata</strong></td>
+<td align="left">Volume used to store the data directory contents for the PostgreSQL database.</td>
+</tr>
+</tbody>
+</table>
 
 <h2 id="dump-file-input-location">Dump-file Input Location</h2>
 
