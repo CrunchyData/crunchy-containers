@@ -423,7 +423,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>v1.8.3, 2018-06-22</p>
+<p>v1.8.3, 2018-06-26</p>
 </div>
 <div class="sect1">
 <h2 id="_requirements">Requirements</h2>
@@ -484,39 +484,21 @@ export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 export CCP_SECURITY_CONTEXT=""
 export CCP_CLI=kubectl
-export CCP_NAMESPACE=demo
-export CCP_STORAGE_PATH=/data
-export CCP_STORAGE_MODE=ReadWriteMany
-export CCP_STORAGE_CAPACITY=400M</pre>
+export CCP_NAMESPACE=demo</pre>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-the <code>CCP_SECURITY_CONTEXT</code> and <code>CCP_STORAGE_PATH</code> settings above indicate you
-intend to use <strong>HostPath</strong> storage.  NFS and dynamic storage are
-other options, see below for details on configuring storage.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
+<p>Please see the <a href="https://crunchydata.github.io/crunchy-containers/installation/storage-configuration/">Storage Configuration</a> document
+for configuring storage using environment variables set in .bashrc.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-the <code>CCP_CLI</code> setting above indicates you are running the
+<div class="paragraph">
+<p>Additionally, the <code>CCP_CLI</code> setting above indicates you are running the
 examples on a Kubernetes platform and not an OpenShift platform.  For
-OpenShift, use the value of <strong>oc</strong> as the <code>CCP_CLI</code> variable instead.
-</td>
-</tr>
-</table>
+OpenShift, use the value of <strong>oc</strong> as the <code>CCP_CLI</code> variable instead.</p>
+</div>
+</div>
+
 </div>
 <div class="paragraph">
 <p>It will be necessary to refresh your <code>.bashrc</code> file in order for the changes to take
@@ -532,7 +514,7 @@ effect.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin</pre>
+<pre>mkdir -p $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin</pre>
 </div>
 </div>
 </div>
@@ -556,20 +538,15 @@ git checkout 1.8.3
 go get github.com/blang/expenv</pre>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-If you are a Crunchy enterprise customer, you will place the Crunchy repository
+<div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
+<p>If you are a Crunchy enterprise customer, you will place the Crunchy repository
 key and yum repository file into the <code>$CCPROOT/conf</code> directory at this point. These
 files can be obtained through <a href="https://access.crunchydata.com/" class="bare">https://access.crunchydata.com/</a> on the downloads
-page.
-</td>
-</tr>
-</table>
+page.</p>
+</div>
+</div>
+
 </div>
 </div>
 <div class="sect2">
@@ -594,20 +571,15 @@ git checkout 1.8.3
 go get github.com/blang/expenv</pre>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-If you are a Crunchy enterprise customer, you will place the Crunchy repository
+<div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
+<p>If you are a Crunchy enterprise customer, you will place the Crunchy repository
 key and yum repository file into the <code>$CCPROOT/conf</code> directory at this point. These
 files can be obtained through <a href="https://access.crunchydata.com/" class="bare">https://access.crunchydata.com/</a> on the downloads
-page.
-</td>
-</tr>
-</table>
+page.</p>
+</div>
+</div>
+
 </div>
 </div>
 <div class="sect2">
