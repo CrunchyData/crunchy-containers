@@ -42,18 +42,16 @@ export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 export CCP_SECURITY_CONTEXT=""
 export CCP_CLI=kubectl
 export CCP_NAMESPACE=demo
-export CCP_STORAGE_PATH=/data
-export CCP_STORAGE_MODE=ReadWriteMany
-export CCP_STORAGE_CAPACITY=400M
 ....
 
-NOTE:  the `CCP_SECURITY_CONTEXT` and `CCP_STORAGE_PATH` settings above indicate you
-intend to use *HostPath* storage.  NFS and dynamic storage are
-other options, see below for details on configuring storage.
+{{% notice tip %}}
+Please see the link:/installation/storage-configuration/[Storage Configuration] document
+for configuring storage using environment variables set in .bashrc.
 
-NOTE:  the `CCP_CLI` setting above indicates you are running the
+Additionally, the `CCP_CLI` setting above indicates you are running the
 examples on a Kubernetes platform and not an OpenShift platform.  For
 OpenShift, use the value of *oc* as the `CCP_CLI` variable instead.
+{{% /notice %}}
 
 It will be necessary to refresh your `.bashrc` file in order for the changes to take
 effect.
@@ -64,7 +62,7 @@ effect.
 
 Next, set up a project directory structure and pull down the project:
 ....
-mkdir $HOME/cdev $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
+mkdir -p $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
 ....
 
 == Installing Requirements
@@ -83,10 +81,12 @@ git checkout 1.8.3
 go get github.com/blang/expenv
 ....
 
-NOTE: If you are a Crunchy enterprise customer, you will place the Crunchy repository
+{{% notice tip %}}
+If you are a Crunchy enterprise customer, you will place the Crunchy repository
 key and yum repository file into the `$CCPROOT/conf` directory at this point. These
 files can be obtained through https://access.crunchydata.com/ on the downloads
 page.
+{{% /notice %}}
 
 === RHEL 7
 
@@ -108,10 +108,12 @@ git checkout 1.8.3
 go get github.com/blang/expenv
 ....
 
-NOTE: If you are a Crunchy enterprise customer, you will place the Crunchy repository
+{{% notice tip %}}
+If you are a Crunchy enterprise customer, you will place the Crunchy repository
 key and yum repository file into the `$CCPROOT/conf` directory at this point. These
 files can be obtained through https://access.crunchydata.com/ on the downloads
 page.
+{{% /notice %}}
 
 === PostgreSQL
 

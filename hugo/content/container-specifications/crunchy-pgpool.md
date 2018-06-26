@@ -6,7 +6,7 @@ draft: false
 
 The crunchy-pgpool container executes the [pgPool II](http://www.pgpool.net/mediawiki/index.php/Main_Page)
 utility. pgPool can be used to provide a smart PostgreSQL-aware proxy to a PostgreSQL cluster, both primary
-and replica, so that applications can only have to work with a single database connection.
+and replica, so that applications only have to work with a single database connection.
 
 PostgreSQL replicas are read-only whereas a primary is capable of receiving both read and write actions.
 
