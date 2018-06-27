@@ -21,7 +21,7 @@ queries over a specified interval range.
 
 ## Packages
 
-The crunchy-pgrestore Docker image contains the following packages:
+The crunchy-sim Docker image contains the following packages:
 
 * CentOS7 - publicly available
 * RHEL7 - customers only
