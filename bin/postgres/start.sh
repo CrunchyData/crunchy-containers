@@ -40,31 +40,6 @@ source check-for-secrets.sh
 
 env_check_err "PG_MODE"
 
-if [ "$PG_MODE" = "master" ]; then
-    echo_warn "PG_MODE value of master is deprecated and will be removed in a future release. Use PG_MODE value of primary instead."
-    export PG_MODE=primary
-fi
-if [ "$PG_MODE" = "slave" ]; then
-    echo_warn "PG_MODE value of slave is deprecated and will be removed in a future release. Use PG_MODE value of replica instead."
-    export PG_MODE=replica
-fi
-if [ -v PG_MASTER_HOST ]; then
-    echo_warn "PG_MASTER_HOST is deprecated and will be removed in a future release. Replace with PG_PRIMARY_HOST."
-    export PG_PRIMARY_HOST=$PG_MASTER_HOST
-fi
-if [ -v PG_MASTER_USER ]; then
-    echo_warn "PG_MASTER_USER is deprecated and will be removed in a future release. Replace with PG_PRIMARY_USER."
-    export PG_PRIMARY_USER=$PG_MASTER_USER
-fi
-if [ -v PG_MASTER_PASSWORD ]; then
-    echo_warn "PG_MASTER_PASSWORD is deprecated and will be removed in a future release. Replace with PG_PRIMARY_PASSWORD."
-    export PG_PRIMARY_PASSWORD=$PG_MASTER_PASSWORD
-fi
-if [ -v PG_MASTER_PORT ]; then
-    echo_warn "PG_MASTER_PORT is deprecated and will be removed in a future release. Replace with PG_PRIMARY_PORT."
-    export PG_PRIMARY_PORT=$PG_MASTER_PORT
-fi
-
 if [ "$PG_MODE" = "replica" ]; then
     env_check_err "PG_PRIMARY_HOST"
 fi
