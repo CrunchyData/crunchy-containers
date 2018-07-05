@@ -19,13 +19,13 @@ echo_info "Cleaning up.."
 CONFDIR=$CCP_STORAGE_PATH/custom-config-ssl-pgconf
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-${CCP_CLI?} delete service custom-config-ssl
-${CCP_CLI?} delete pod custom-config-ssl
-${CCP_CLI?} delete secret custom-config-ssl-secrets
-${CCP_CLI?} delete pvc custom-config-ssl-pgdata
-${CCP_CLI?} delete pvc custom-config-ssl-backrestrepo
-${CCP_CLI?} delete pv custom-config-ssl-pgdata
-${CCP_CLI?} delete pv custom-config-ssl-backrestrepo
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service custom-config-ssl
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod custom-config-ssl
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret custom-config-ssl-secrets
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc custom-config-ssl-pgdata
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc custom-config-ssl-backrestrepo
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv custom-config-ssl-pgdata
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv custom-config-ssl-backrestrepo
 
 $CCPROOT/examples/waitforterm.sh custom-config-ssl ${CCP_CLI?}
 

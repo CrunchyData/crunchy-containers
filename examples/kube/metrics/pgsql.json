@@ -65,6 +65,20 @@
                         "protocol": "TCP"
                     }
                 ],
+                "readinessProbe": {
+                    "tcpSocket": {
+                        "port": 9187
+                    },
+                    "initialDelaySeconds": 20,
+                    "periodSeconds": 10
+                },
+                "livenessProbe": {
+                    "tcpSocket": {
+                        "port": 9187
+                    },
+                    "initialDelaySeconds": 15,
+                    "periodSeconds": 20
+                },
                 "env": [
                     {
                         "name": "DATA_SOURCE_NAME",
@@ -115,9 +129,6 @@
                         "value": "password"
                     }
                 ],
-                "securityContext": {
-                    $CCP_SECURITY_CONTEXT
-                },
                 "readinessProbe": {
                     "tcpSocket": {
                         "port": 5432

@@ -32,7 +32,8 @@ then
     exit 1
 fi
 
-certstrap init --common-name RootCA \
+certstrap --depot-path ${OUTPUT_DIR?}/out \
+    init --common-name RootCA \
   --key-bits 4096 \
   --organization "Crunchy Data" \
   --locality "Charleston" \
@@ -41,11 +42,11 @@ certstrap init --common-name RootCA \
   --passphrase "" \
   --years 1
 
-certstrap request-cert --passphrase '' --common-name ${SERVER?}
-certstrap sign ${SERVER?} --passphrase '' --CA RootCA --years 1
+certstrap --depot-path ${OUTPUT_DIR?}/out request-cert --passphrase '' --common-name ${SERVER?}
+certstrap --depot-path ${OUTPUT_DIR?}/out sign ${SERVER?} --passphrase '' --CA RootCA --years 1
 
-certstrap request-cert --passphrase '' --common-name ${USERNAME?}
-certstrap sign ${USERNAME?} --passphrase '' --CA RootCA --years 1
+certstrap --depot-path ${OUTPUT_DIR?}/out request-cert --passphrase '' --common-name ${USERNAME?}
+certstrap --depot-path ${OUTPUT_DIR?}/out sign ${USERNAME?} --passphrase '' --CA RootCA --years 1
 
 mkdir ${OUTPUT_DIR?}/certs
 

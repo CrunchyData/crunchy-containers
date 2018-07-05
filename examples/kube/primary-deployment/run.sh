@@ -25,9 +25,9 @@ then
     exit 1
 fi
 
-${CCP_CLI?} create configmap primary-deployment-pgconf \
-  --from-file=./configs/postgresql.conf \
-  --from-file=pghba=./configs/pg_hba.conf \
-  --from-file=./configs/setup.sql
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap primary-deployment-pgconf \
+  --from-file ${DIR?}/configs/postgresql.conf \
+  --from-file ${DIR?}/configs/pg_hba.conf \
+  --from-file ${DIR?}/configs/setup.sql
 
-expenv -f $DIR/primary-deployment.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/primary-deployment.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

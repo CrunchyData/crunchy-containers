@@ -14,36 +14,47 @@
             },
             "spec": {
                 "volumes": [],
-                "containers": [{
-                    "name": "vacuum",
-                    "image": "$CCP_IMAGE_PREFIX/crunchy-vacuum:$CCP_IMAGE_TAG",
-                    "volumeMounts": [],
-                    "env": [{
-                        "name": "VAC_FULL",
-                        "value": "true"
-                    }, {
-                        "name": "CCP_IMAGE_TAG",
-                        "value": "$CCP_IMAGE_TAG"
-                    }, {
-                        "name": "VAC_TABLE",
-                        "value": "testtable"
-                    }, {
-                        "name": "JOB_HOST",
-                        "value": "primary"
-                    }, {
-                        "name": "PG_USER",
-                        "value": "testuser"
-                    }, {
-                        "name": "PG_DATABASE",
-                        "value": "userdb"
-                    }, {
-                        "name": "PG_PASSWORD",
-                        "value": "password"
-                    }, {
-                        "name": "PG_PORT",
-                        "value": "5432"
-                    }]
-                }],
+                "containers": [
+                    {
+                        "name": "vacuum",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-vacuum:$CCP_IMAGE_TAG",
+                        "volumeMounts": [],
+                        "env": [
+                            {
+                                "name": "VAC_FULL",
+                                "value": "true"
+                            },
+                            {
+                                "name": "CCP_IMAGE_TAG",
+                                "value": "$CCP_IMAGE_TAG"
+                            },
+                            {
+                                "name": "VAC_TABLE",
+                                "value": "testtable"
+                            },
+                            {
+                                "name": "JOB_HOST",
+                                "value": "primary"
+                            },
+                            {
+                                "name": "PG_USER",
+                                "value": "testuser"
+                            },
+                            {
+                                "name": "PG_DATABASE",
+                                "value": "userdb"
+                            },
+                            {
+                                "name": "PG_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PG_PORT",
+                                "value": "5432"
+                            }
+                        ]
+                    }
+                ],
                 "restartPolicy": "Never"
             }
         }

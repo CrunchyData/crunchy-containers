@@ -6,7 +6,7 @@ import (
 	"time"
     "os"
 	"github.com/gorilla/mux"
-	pg "github.com/crunchydata/sample-app/data"
+	pg "github.com/crunchydata/crunchy-containers/tools/sample-app/data"
 )
 
 func init() {

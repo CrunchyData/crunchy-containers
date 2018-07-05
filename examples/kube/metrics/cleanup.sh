@@ -16,18 +16,18 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete clusterrolebinding prometheus-sa
-${CCP_CLI?} delete clusterrole prometheus-sa
-${CCP_CLI?} delete sa prometheus-sa
-${CCP_CLI?} delete pod metrics
-${CCP_CLI?} delete pod pgsql
-${CCP_CLI?} delete service metrics
-${CCP_CLI?} delete service pgsql
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} clusterrolebinding prometheus-sa
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} clusterrole prometheus-sa
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} sa prometheus-sa
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod metrics
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pgsql
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service metrics
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pgsql
 
-${CCP_CLI?} delete pvc metrics-prometheusdata
-${CCP_CLI?} delete pvc metrics-grafanadata
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc metrics-prometheusdata
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc metrics-grafanadata
 if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete pv metrics-prometheusdata metrics-grafanadata
+  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv metrics-prometheusdata metrics-grafanadata
 fi
 
 $CCPROOT/examples/waitforterm.sh metrics ${CCP_CLI?}

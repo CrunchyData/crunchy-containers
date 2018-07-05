@@ -15,4 +15,4 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete job vacuum
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} job vacuum

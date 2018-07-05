@@ -26,10 +26,10 @@ then
     exit 1
 fi
 
-${CCP_CLI?} create configmap custom-config-pgconf \
-    --from-file ./configs/pg_hba.conf \
-    --from-file ./configs/pgbackrest.conf \
-    --from-file ./configs/postgresql.conf \
-    --from-file ./configs/setup.sql
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap custom-config-pgconf \
+    --from-file ${DIR?}/configs/pg_hba.conf \
+    --from-file ${DIR?}/configs/pgbackrest.conf \
+    --from-file ${DIR?}/configs/postgresql.conf \
+    --from-file ${DIR?}/configs/setup.sql
 
-expenv -f $DIR/custom-config.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/custom-config.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

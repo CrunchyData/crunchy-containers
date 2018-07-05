@@ -15,8 +15,8 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete job upgrade
-${CCP_CLI?} delete pvc upgrade-pgolddata upgrade-pgnewdata
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} job upgrade
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc upgrade-pgolddata upgrade-pgnewdata
 if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete pv upgrade-pgolddata upgrade-pgnewdata
+  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv upgrade-pgolddata upgrade-pgnewdata
 fi

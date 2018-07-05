@@ -18,15 +18,15 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete pod restore-pitr
-${CCP_CLI?} delete pod pitr
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod restore-pitr
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pitr
 $CCPROOT/examples/waitforterm.sh pitr ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh restore-pitr ${CCP_CLI?}
-${CCP_CLI?} delete pvc recover-pvc restore-pitr-pgdata
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc recover-pvc restore-pitr-pgdata
 if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete pv recover-pv restore-pitr-pgdata
+  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv recover-pv restore-pitr-pgdata
 fi
-${CCP_CLI?} delete svc restore-pitr
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} svc restore-pitr
 
 create_storage "restore-pitr"
 if [[ $? -ne 0 ]]
@@ -35,4 +35,4 @@ then
     exit 1
 fi
 
-expenv -f $DIR/restore-pitr.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/restore-pitr.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

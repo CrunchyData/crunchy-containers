@@ -25,12 +25,12 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "custom-config-backrestrepo"
+        "name": "custom-config-br"
     },
     "spec": {
         "selector": {
           "matchLabels": {
-            "name": "custom-config-backrestrepo"
+            "name": "custom-config-br"
           }
         },
         "accessModes": [

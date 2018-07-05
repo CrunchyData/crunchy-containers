@@ -15,6 +15,6 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete job pgrestore
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} job pgrestore
 
 $CCPROOT/examples/waitforterm.sh pgrestore ${CCP_CLI?}

@@ -47,7 +47,7 @@
                             "/opt/cpm/bin/readiness.sh"
                         ]
                     },
-                    "initialDelaySeconds": 10,
+                    "initialDelaySeconds": 40,
                     "timeoutSeconds": 1
                 },
                 "livenessProbe": {
@@ -147,7 +147,7 @@
             {
                 "name": "backrestrepo",
                 "persistentVolumeClaim": {
-                    "claimName": "custom-config-backrestrepo"
+                    "claimName": "custom-config-br"
                 }
             },
             {

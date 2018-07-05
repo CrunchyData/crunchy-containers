@@ -15,7 +15,7 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete service pgpool
-${CCP_CLI?} delete deployment pgpool
-${CCP_CLI?} delete secret pgpool-secrets
-${CCP_CLI?} delete configmap pgpool-pgconf
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pgpool
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} deployment pgpool
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgpool-secrets
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap pgpool-pgconf

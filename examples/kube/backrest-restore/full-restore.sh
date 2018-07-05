@@ -18,4 +18,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ${DIR}/cleanup.sh
 
-expenv -f $DIR/full-restore.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/full-restore.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

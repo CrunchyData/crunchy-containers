@@ -114,6 +114,20 @@
                         "protocol": "TCP"
                     }
                 ],
+                "readinessProbe": {
+                    "tcpSocket": {
+                        "port": 9090
+                    },
+                    "initialDelaySeconds": 20,
+                    "periodSeconds": 10
+                },
+                "livenessProbe": {
+                    "tcpSocket": {
+                        "port": 9090
+                    },
+                    "initialDelaySeconds": 15,
+                    "periodSeconds": 20
+                },
                 "env": [],
                 "volumeMounts": [
                     {
@@ -132,6 +146,20 @@
                         "protocol": "TCP"
                     }
                 ],
+                "readinessProbe": {
+                    "tcpSocket": {
+                        "port": 3000
+                    },
+                    "initialDelaySeconds": 20,
+                    "periodSeconds": 10
+                },
+                "livenessProbe": {
+                    "tcpSocket": {
+                        "port": 3000
+                    },
+                    "initialDelaySeconds": 25,
+                    "periodSeconds": 20
+                },
                 "env": [
                     {
                         "name": "ADMIN_USER",
