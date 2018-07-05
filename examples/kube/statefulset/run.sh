@@ -29,11 +29,11 @@ fi
 # a label command. For this example, we open up wide permissions
 # for all serviceaccounts. This is NOT for production!
 
-${CCP_CLI?} create clusterrolebinding statefulset-sa \
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} clusterrolebinding statefulset-sa \
   --clusterrole=cluster-admin \
   --user=admin \
   --user=kubelet \
   --group=system:serviceaccounts \
   --namespace=$CCP_NAMESPACE
 
-expenv -f $DIR/statefulset.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/statefulset.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

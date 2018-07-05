@@ -15,9 +15,9 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete service primary-upgrade
-${CCP_CLI?} delete pod primary-upgrade
-${CCP_CLI?} delete pvc primary-upgrade-pgdata
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service primary-upgrade
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod primary-upgrade
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc primary-upgrade-pgdata
 if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete pv primary-upgrade-pgdata
+  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv primary-upgrade-pgdata
 fi

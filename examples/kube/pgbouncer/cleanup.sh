@@ -16,12 +16,12 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete pod pg-primary pg-replica
-${CCP_CLI?} delete pod pgbouncer-primary pgbouncer-replica
-${CCP_CLI?} delete service pg-primary pg-replica
-${CCP_CLI?} delete service pgbouncer-primary pgbouncer-replica
-${CCP_CLI?} delete secret pgbouncer-secrets
-${CCP_CLI?} delete secret pgsql-secrets
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pg-primary pg-replica
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pgbouncer-primary pgbouncer-replica
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pg-primary pg-replica
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pgbouncer-primary pgbouncer-replica
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgbouncer-secrets
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgsql-secrets
 
 $CCPROOT/examples/waitforterm.sh pgbouncer-primary ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh pgbouncer-replica ${CCP_CLI?}

@@ -54,6 +54,13 @@
                         "protocol": "TCP"
                     }
                 ],
+                "readinessProbe": {
+                    "tcpSocket": {
+                        "port": 6432
+                    },
+                    "initialDelaySeconds": 20,
+                    "periodSeconds": 10
+                },
                 "env": [
                     {
                         "name": "PGBOUNCER_PASSWORD",

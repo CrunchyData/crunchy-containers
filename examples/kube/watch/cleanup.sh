@@ -15,11 +15,11 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete pod watch
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod watch
 ../../waitforterm.sh watch ${CCP_CLI?}
 
-${CCP_CLI?} delete sa pg-watcher
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} sa pg-watcher
 
-${CCP_CLI?} delete rolebinding pg-watcher-sa-edit
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} rolebinding pg-watcher-sa-edit
 
-${CCP_CLI?} delete configmap watch-hooks-configmap
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap watch-hooks-configmap

@@ -13,18 +13,20 @@
 # limitations under the License.
 
 source ${CCPROOT}/examples/common.sh
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete service pgadmin4-https
-${CCP_CLI?} delete pod pgadmin4-https
-${CCP_CLI?} delete secret pgadmin4-https-secrets
-${CCP_CLI?} delete secret pgadmin4-https-tls
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pgadmin4-https
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pgadmin4-https
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgadmin4-https-secrets
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgadmin4-https-tls
 
-${CCP_CLI?} delete pvc pgadmin4-https-data
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc pgadmin4-https-data
 if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete pv pgadmin4-https-data
+  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv pgadmin4-https-data
 fi
 
-rm -f ./server.crt ./server.key ./privkey.pem
+rm -f ${DIR?}/server.crt ${DIR?}/server.key ${DIR?}/privkey.pem
 
 $CCPROOT/examples/waitforterm.sh pgadmin4-https ${CCP_CLI?}

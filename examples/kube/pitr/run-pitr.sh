@@ -25,4 +25,4 @@ then
     exit 1
 fi
 
-expenv -f $DIR/pitr.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/pitr.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

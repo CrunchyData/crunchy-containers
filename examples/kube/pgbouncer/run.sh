@@ -19,15 +19,15 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-${CCP_CLI?} create secret generic pgbouncer-secrets \
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgbouncer-secrets \
     --from-literal=pgbouncer-password='password'
 
-${CCP_CLI?} create secret generic pgsql-secrets \
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgsql-secrets \
     --from-literal=pg-primary-password='password' \
     --from-literal=pg-password='password' \
     --from-literal=pg-root-password='password'
 
-expenv -f $DIR/primary.json | ${CCP_CLI?} create -f -
-expenv -f $DIR/replica.json | ${CCP_CLI?} create -f -
-expenv -f $DIR/pgbouncer-primary.json | ${CCP_CLI?} create -f -
-expenv -f $DIR/pgbouncer-replica.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/primary.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+expenv -f $DIR/replica.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+expenv -f $DIR/pgbouncer-primary.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+expenv -f $DIR/pgbouncer-replica.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

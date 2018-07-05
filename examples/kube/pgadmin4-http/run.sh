@@ -25,8 +25,8 @@ then
     exit 1
 fi
 
-${CCP_CLI?} create secret generic pgadmin4-http-secrets \
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgadmin4-http-secrets \
     --from-literal=pgadmin-email='admin@admin.com' \
     --from-literal=pgadmin-password='password'
 
-expenv -f $DIR/pgadmin4-http.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/pgadmin4-http.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

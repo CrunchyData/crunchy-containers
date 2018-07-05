@@ -21,7 +21,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "custom-config-backrestrepo"
+        "name": "custom-config-br"
     },
     "spec": {
       "accessModes": [
