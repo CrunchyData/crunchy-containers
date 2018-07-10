@@ -2916,6 +2916,13 @@ directory.  Portions of the <code>setup.sql</code> file are required for the con
 to work; please see comments within the sample <code>setup.sql</code> file.</p>
 </div>
 <div class="paragraph">
+<p>Additionally, pre- and post-start "hooks" will be executed if they exist. To add the hook, 
+place a <code>pre-start-hook.sh</code> and/or
+<code>post-start-hook.sh</code> file within the <code>/pgconf</code> mounted volume
+directory.  If either or both files exist, they will be executed. Please see comments within 
+the sample <code>pre-start-hook.sh</code> and <code>post-start-hook.sh</code> files.</p>
+</div>
+<div class="paragraph">
 <p>If you mount a <code>/pgconf</code> volume, crunchy-postgres will look at that directory
 for <code>postgresql.conf</code>, <code>pg_hba.conf</code>, <code>pg_ident.conf</code>, SSL server/ca certificates and <code>setup.sql</code>.
 If it finds one of them it will use that file instead of the default files.</p>
