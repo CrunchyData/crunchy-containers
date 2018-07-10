@@ -15,6 +15,8 @@ This harness can be run both in and out of a Kubernetes cluster.
   the harness.  Pulling images over the network may be slow and cause timeouts with the 
   harness. 
 * The `kubeconfig` should be found in `$HOME/.kube/config`
+* [Mercurial Version Control installed](https://www.mercurial-scm.org/wiki/Download) (installed in `install-deps.sh` if 
+  you're using CentOS7)
 * `GOMAXPROCS` env should be set to the amount of cores the test harness should use (parallization 
   option)
 
