@@ -46,6 +46,24 @@
                   "protocol":"TCP"
                }
             ],
+            "readinessProbe": {
+                "exec": {
+                    "command": [
+                        "/opt/cpm/bin/readiness.sh"
+                    ]
+                },
+                "initialDelaySeconds": 40,
+                "timeoutSeconds": 1
+            },
+            "livenessProbe": {
+                "exec": {
+                    "command": [
+                        "/opt/cpm/bin/liveness.sh"
+                    ]
+                },
+                "initialDelaySeconds": 40,
+                "timeoutSeconds": 1
+            },
             "env":[
                {
                   "name":"VOLUME_NAME",
