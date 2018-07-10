@@ -392,10 +392,9 @@ esac
 
 source /opt/cpm/bin/custom-configs.sh
 
-# Run pre start hook
-if [ -x /pgconf/pre-start-hook.sh ]
+# Run pre-start hook if it exists
+if [ -f /pgconf/pre-start-hook.sh ]
 then
-	echo_info "Executing pre start hook..."
 	source /pgconf/pre-start-hook.sh 
 fi
 
@@ -422,11 +421,10 @@ then
     fi
 fi
 
-# Run post start hook
-if [ -x /pgconf/post-start-hook.sh ]
+# Run post start hook if it exists
+if [ -f /pgconf/post-start-hook.sh ]
 then
-	echo_info "Executing post start hook..."
-	source /pgconf/post-start-hook.sh 
+	source /pgconf/post-start-hook.sh
 fi
 
 
