@@ -28,7 +28,7 @@ RUN yum -y update && yum -y install epel-release \
     openssl \
     procps-ng \
     mod_wsgi mod_ssl \
- && yum -y install postgresql10-devel postgresql10-server pgadmin4-v2-web \
+ && yum -y install postgresql10-devel postgresql10-server pgadmin4-web \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"

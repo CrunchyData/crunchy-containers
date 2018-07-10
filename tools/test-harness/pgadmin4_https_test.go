@@ -10,9 +10,7 @@ func TestPGAdminHTTPS(t *testing.T) {
 	t.Log("Testing the 'pgadmin4-http' example...")
 
 	harness := setup(t, timeout, true)
-	env := []string{
-		"CCP_IMAGE_TAG=$CCP_BASEOS-10.3-1.8.2",
-	}
+	env := []string{}
 	_, err := harness.runExample("examples/kube/pgadmin4-https/run.sh", env, t)
 	if err != nil {
 		t.Fatalf("Could not run example: %s", err)
