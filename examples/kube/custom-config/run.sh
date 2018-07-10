@@ -31,7 +31,7 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap custom-config-pgconf 
     --from-file ${DIR?}/configs/pgbackrest.conf \
     --from-file ${DIR?}/configs/postgresql.conf \
     --from-file ${DIR?}/configs/setup.sql \
-    --from-file ./configs/pre-start-hook.sh \
-    --from-file ./configs/post-start-hook.sh
+    --from-file ${DIR?}/configs/pre-start-hook.sh \
+    --from-file ${DIR?}/configs/post-start-hook.sh
 
 expenv -f $DIR/custom-config.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
