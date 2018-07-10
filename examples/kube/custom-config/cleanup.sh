@@ -19,6 +19,10 @@ echo_info "Cleaning up.."
 ${CCP_CLI?} delete service custom-config
 ${CCP_CLI?} delete pod custom-config
 ${CCP_CLI?} delete pvc custom-config-pgdata
+${CCP_CLI?} delete pvc custom-config-pgwal
+${CCP_CLI?} delete pv custom-config-pgwal
+${CCP_CLI?} delete pvc custom-config-backrestrepo
+${CCP_CLI?} delete pv custom-config-backrestrepo
 ${CCP_CLI?} delete configmap custom-config-pgconf
 
 if [[ -z "$CCP_STORAGE_CLASS" ]]

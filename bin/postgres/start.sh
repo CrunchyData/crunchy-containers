@@ -416,6 +416,14 @@ case "$PG_MODE" in
 esac
 
 source /opt/cpm/bin/custom-configs.sh
+
+# Run pre start hook
+if [ -x /pgconf/pre-start-hook.sh ]
+then
+	echo_info "Executing pre start hook..."
+	source /pgconf/pre-start-hook.sh 
+fi
+
 echo_info "Starting PostgreSQL.."
 postgres -D $PGDATA &
 
@@ -438,6 +446,14 @@ then
         source /opt/cpm/bin/pgbouncer.sh
     fi
 fi
+
+# Run post start hook
+if [ -x /pgconf/post-start-hook.sh ]
+then
+	echo_info "Executing post start hook..."
+	source /pgconf/post-start-hook.sh 
+fi
+
 
 # We will wait indefinitely until "docker stop [container_id]"
 # When that happens, we route to the "trap_sigterm" function above

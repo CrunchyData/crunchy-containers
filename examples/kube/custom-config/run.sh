@@ -31,5 +31,7 @@ ${CCP_CLI?} create configmap custom-config-pgconf \
     --from-file ./configs/pgbackrest.conf \
     --from-file ./configs/postgresql.conf \
     --from-file ./configs/setup.sql
+#    --from-file ./configs/pre-start-hook.sh \
+#    --from-file ./configs/post-start-hook.sh
 
 expenv -f $DIR/custom-config.json | ${CCP_CLI?} create -f -
