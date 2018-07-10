@@ -11,11 +11,7 @@ func TestPGAdminHTTP(t *testing.T) {
 
 	harness := setup(t, timeout, true)
 
-	// This example does not have the latest image, so we
-	// inject the last image published
-	env := []string{
-		"CCP_IMAGE_TAG=$CCP_BASEOS-10.3-1.8.2",
-	}
+	env := []string{}
 	_, err := harness.runExample("examples/kube/pgadmin4-http/run.sh", env, t)
 	if err != nil {
 		t.Fatalf("Could not run example: %s", err)

@@ -44,7 +44,7 @@ RUN yum -y update \
     openssl \
     procps-ng \
     mod_wsgi mod_ssl \
- && yum --enablerepo rhel-7-server-extras-rpms -y install pgadmin4-v2-web \
+ && yum --enablerepo rhel-7-server-extras-rpms -y install pgadmin4-web \
  && yum -y install postgresql10-devel postgresql10-server \
  && yum -y clean all
 
