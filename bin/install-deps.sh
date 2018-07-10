@@ -18,6 +18,7 @@ PROMETHEUS_VERSION=2.2.0
 GRAFANA_VERSION=4.6.3
 POSTGRES_EXPORTER_VERSION=0.4.4
 NODE_EXPORTER_VERSION=0.15.2
+MERCURIAL_RPM='https://www.mercurial-scm.org/release/centos7/RPMS/x86_64/mercurial-4.6.1-1.x86_64.rpm'
 
 sudo yum -y install net-tools bind-utils wget unzip git
 
@@ -65,7 +66,10 @@ fi
 
 # install expenv binary for running examples
 go get github.com/blang/expenv
+go get github.com/square/certstrap
 
 # pull in godeps and the dependencies for the golang code
 go get github.com/tools/godep
+sudo yum -y install ${MERCURIAL_RPM?}
+
 godep restore
