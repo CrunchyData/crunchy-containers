@@ -15,10 +15,10 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete pod dba
-${CCP_CLI?} delete service dba
-${CCP_CLI?} delete serviceaccount dba-sa
-${CCP_CLI?} delete clusterrolebinding dba-sa
-${CCP_CLI?} delete clusterrole dba-sa
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod dba
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service dba
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} serviceaccount dba-sa
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} clusterrolebinding dba-sa
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} clusterrole dba-sa
 
 $CCPROOT/examples/waitforterm.sh dba ${CCP_CLI?}

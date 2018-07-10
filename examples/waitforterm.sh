@@ -20,11 +20,11 @@
 echo "waiting on " $1
 POD=$1
 CMD=$2
+NS=${CCP_NAMESPACE?}
 
 while true; do
-	$CMD get pod $POD > /dev/null
+	$CMD get pod $POD --namespace=$NS > /dev/null
 	rc=$?
-#	echo $rc " is the rc"
 	if   [ $rc -ne 0 ]; then
 		echo "dead " $?
 		break

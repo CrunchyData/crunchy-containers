@@ -8,12 +8,14 @@
         }
     },
     "spec": {
-        "ports": [{
-            "protocol": "TCP",
-            "port": 5432,
-            "targetPort": 5432,
-            "nodePort": 0
-        }],
+        "ports": [
+            {
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }
+        ],
         "selector": {
             "name": "pgpool"
         },
@@ -40,27 +42,48 @@
                 }
             },
             "spec": {
-
-                "containers": [{
-                    "name": "pgpool",
-                    "image": "$CCP_IMAGE_PREFIX/crunchy-pgpool:$CCP_IMAGE_TAG",
-                    "ports": [{
-                        "containerPort": 5432,
-                        "protocol": "TCP"
-                    }],
-                    "env": [],
-                    "volumeMounts": [{
-                    "name": "pgpool-pgconf",
-                    "mountPath": "/pgconf/pgpoolconfigdir",
-                    "readOnly": false
-                    }]
-                }],
-                "volumes": [{
-                "name": "pgpool-pgconf",
-                  "secret": {
-                      "secretName": "pgpool-secrets"
-                  }
-                }],
+                "containers": [
+                    {
+                        "name": "pgpool",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-pgpool:$CCP_IMAGE_TAG",
+                        "ports": [
+                            {
+                                "containerPort": 5432,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "tcpSocket": {
+                                "port": 5432
+                            },
+                            "initialDelaySeconds": 20,
+                            "periodSeconds": 10
+                        },
+                        "livenessProbe": {
+                            "tcpSocket": {
+                                "port": 5432
+                            },
+                            "initialDelaySeconds": 15,
+                            "periodSeconds": 20
+                        },
+                        "env": [],
+                        "volumeMounts": [
+                            {
+                                "name": "pgpool-pgconf",
+                                "mountPath": "/pgconf/pgpoolconfigdir",
+                                "readOnly": false
+                            }
+                        ]
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "pgpool-pgconf",
+                        "secret": {
+                            "secretName": "pgpool-secrets"
+                        }
+                    }
+                ],
                 "restartPolicy": "Always",
                 "dnsPolicy": "ClusterFirst"
             }

@@ -20,7 +20,7 @@ CONTAINER_NAME='custom-config-ssl'
 
 ${DIR?}/cleanup.sh
 
-${DIR?}/../../ssl-creator.sh "testuser@crunchydata.com" "${CONTAINER_NAME?}" "$(pwd)"
+${DIR?}/../../ssl-creator.sh "testuser@crunchydata.com" "${CONTAINER_NAME?}" "${DIR}"
 if [[ $? -ne 0 ]]
 then
     echo_err "Failed to create certs, exiting.."
@@ -37,7 +37,7 @@ then
     exit 1
 fi
 
-${CCP_CLI?} create secret generic ${CONTAINER_NAME?}-secrets \
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic ${CONTAINER_NAME?}-secrets \
     --from-file=ca-crt=${DIR?}/configs/ca.crt \
     --from-file=ca-crl=${DIR?}/configs/ca.crl \
     --from-file=server-crt=${DIR?}/configs/server.crt \
@@ -47,7 +47,7 @@ ${CCP_CLI?} create secret generic ${CONTAINER_NAME?}-secrets \
     --from-file=pg-ident-conf=${DIR?}/configs/pg_ident.conf \
     --from-file=postgresql-conf=${DIR?}/configs/postgresql.conf
 
-expenv -f $DIR/custom-config-ssl.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/custom-config-ssl.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 
 echo ""
 echo "To connect via SSL, run the following once the DB is ready: "

@@ -20,4 +20,4 @@ $DIR/cleanup.sh
 
 echo_info "Creating the example components.."
 
-PLATFORM='OSE_PROJECT' expenv -f $DIR/dba-vac.json | ${CCP_CLI?} create -f -
+PLATFORM='OSE_PROJECT' expenv -f $DIR/dba-vac.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

@@ -43,17 +43,17 @@ function create_storage {
 
     if [ ! -z "$CCP_STORAGE_CLASS" ]; then
         echo_info "CCP_STORAGE_CLASS is set. Using the existing storage class for the PV."
-        expenv -f $DIR/$1-pvc-sc.json | ${CCP_CLI?} create -f -
+        expenv -f $DIR/$1-pvc-sc.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
         echo_info "Creating the example components.."
     elif [ ! -z "$CCP_NFS_IP" ]; then
         echo_info "CCP_NFS_IP is set. Creating NFS based storage volumes."
-        expenv -f $DIR/$1-pv-nfs.json | ${CCP_CLI?} create -f -
-        expenv -f $DIR/$1-pvc.json | ${CCP_CLI?} create -f -
+        expenv -f $DIR/$1-pv-nfs.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+        expenv -f $DIR/$1-pvc.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
         echo_info "Creating the example components.."
     else
         echo_info "CCP_NFS_IP and CCP_STORAGE_CLASS not set. Creating HostPath based storage volumes."
-        expenv -f $DIR/$1-pv.json | ${CCP_CLI?} create -f -
-        expenv -f $DIR/$1-pvc.json | ${CCP_CLI?} create -f -
+        expenv -f $DIR/$1-pv.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+        expenv -f $DIR/$1-pvc.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
         echo_info "Creating the example components.."
     fi
 }

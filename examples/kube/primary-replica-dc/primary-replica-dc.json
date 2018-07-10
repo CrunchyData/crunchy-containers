@@ -8,12 +8,14 @@
         }
     },
     "spec": {
-        "ports": [{
-            "protocol": "TCP",
-            "port": 5432,
-            "targetPort": 5432,
-            "nodePort": 0
-        }],
+        "ports": [
+            {
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }
+        ],
         "selector": {
             "name": "primary-dc"
         },
@@ -32,12 +34,14 @@
         }
     },
     "spec": {
-        "ports": [{
-            "protocol": "TCP",
-            "port": 5432,
-            "targetPort": 5432,
-            "nodePort": 0
-        }],
+        "ports": [
+            {
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }
+        ],
         "selector": {
             "name": "replica-dc"
         },
@@ -56,64 +60,99 @@
         }
     },
     "spec": {
-        "containers": [{
-            "name": "postgres",
-            "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
-            "ports": [{
-                "containerPort": 5432,
-                "protocol": "TCP"
-            }],
-            "env": [{
-                "name": "PG_PRIMARY_USER",
-                "value": "primaryuser"
-            }, {
-                "name": "PG_PRIMARY_PORT",
-                "value": "5432"
-            }, {
-                "name": "PG_MODE",
-                "value": "primary"
-            }, {
-                "name": "PG_PRIMARY_PASSWORD",
-                "value": "password"
-            }, {
-                "name": "PG_USER",
-                "value": "testuser"
-            }, {
-                "name": "PG_PASSWORD",
-                "value": "password"
-            }, {
-                "name": "PG_DATABASE",
-                "value": "userdb"
-            }, {
-                "name": "PG_ROOT_PASSWORD",
-                "value": "password"
-            }, {
-                "name": "PGHOST",
-                "value": "/tmp"
-            }],
-            "volumeMounts": [
-              {
-                "mountPath": "/pgdata",
-                "name": "pgdata",
-                "readOnly": false
-              },
-              {
-                "mountPath": "/backup",
-                "name": "backup",
-                "readOnly": true
-              }
-            ]
-          }],
-          "volumes": [
-              {
+        "securityContext": {
+            $CCP_SECURITY_CONTEXT
+        },
+        "containers": [
+            {
+                "name": "postgres",
+                "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
+                "ports": [
+                    {
+                        "containerPort": 5432,
+                        "protocol": "TCP"
+                    }
+                ],
+                "readinessProbe": {
+                    "exec": {
+                        "command": [
+                            "/opt/cpm/bin/readiness.sh"
+                        ]
+                    },
+                    "initialDelaySeconds": 40,
+                    "timeoutSeconds": 1
+                },
+                "livenessProbe": {
+                    "exec": {
+                        "command": [
+                            "/opt/cpm/bin/liveness.sh"
+                        ]
+                    },
+                    "initialDelaySeconds": 40,
+                    "timeoutSeconds": 1
+                },
+                "env": [
+                    {
+                        "name": "PG_PRIMARY_USER",
+                        "value": "primaryuser"
+                    },
+                    {
+                        "name": "PG_PRIMARY_PORT",
+                        "value": "5432"
+                    },
+                    {
+                        "name": "PG_MODE",
+                        "value": "primary"
+                    },
+                    {
+                        "name": "PG_PRIMARY_PASSWORD",
+                        "value": "password"
+                    },
+                    {
+                        "name": "PG_USER",
+                        "value": "testuser"
+                    },
+                    {
+                        "name": "PG_PASSWORD",
+                        "value": "password"
+                    },
+                    {
+                        "name": "PG_DATABASE",
+                        "value": "userdb"
+                    },
+                    {
+                        "name": "PG_ROOT_PASSWORD",
+                        "value": "password"
+                    },
+                    {
+                        "name": "PGHOST",
+                        "value": "/tmp"
+                    }
+                ],
+                "volumeMounts": [
+                    {
+                        "mountPath": "/pgdata",
+                        "name": "pgdata",
+                        "readOnly": false
+                    },
+                    {
+                        "mountPath": "/backup",
+                        "name": "backup",
+                        "readOnly": true
+                    }
+                ]
+            }
+        ],
+        "volumes": [
+            {
                 "name": "pgdata",
                 "emptyDir": {}
-              },
-              {
+            },
+            {
                 "name": "backup",
                 "emptyDir": {}
-              }
-          ]
+            }
+        ]
     }
 }
 
@@ -140,67 +179,103 @@
                 }
             },
             "spec": {
-                "containers": [{
-                    "name": "postgres",
-                    "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
-                    "env": [{
-                        "name": "PG_PRIMARY_HOST",
-                        "value": "primary-dc"
-                    }, {
-                        "name": "PG_PRIMARY_SERVICE_NAME",
-                        "value": "primary-dc"
-                    }, {
-                        "name": "PG_PRIMARY_PORT",
-                        "value": "5432"
-                    }, {
-                        "name": "PG_MODE",
-                        "value": "replica"
-                    }, {
-                        "name": "PG_PRIMARY_USER",
-                        "value": "primaryuser"
-                    }, {
-                        "name": "PG_PRIMARY_PASSWORD",
-                        "value": "password"
-                    }, {
-                        "name": "PG_USER",
-                        "value": "testuser"
-                    }, {
-                        "name": "PG_PASSWORD",
-                        "value": "password"
-                    }, {
-                        "name": "PG_DATABASE",
-                        "value": "userdb"
-                    }, {
-                        "name": "PG_ROOT_PASSWORD",
-                        "value": "password"
-                    }, {
-                        "name": "PGHOST",
-                        "value": "/tmp"
-                    }],
-                    "volumeMounts": [{
-                        "mountPath": "/pgdata",
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                },
+                "containers": [
+                    {
+                        "name": "postgres",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
+                        "readinessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/opt/cpm/bin/readiness.sh"
+                                ]
+                            },
+                            "initialDelaySeconds": 40,
+                            "timeoutSeconds": 1
+                        },
+                        "livenessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/opt/cpm/bin/liveness.sh"
+                                ]
+                            },
+                            "initialDelaySeconds": 40,
+                            "timeoutSeconds": 1
+                        },
+                        "env": [
+                            {
+                                "name": "PG_PRIMARY_HOST",
+                                "value": "primary-dc"
+                            },
+                            {
+                                "name": "PG_PRIMARY_SERVICE_NAME",
+                                "value": "primary-dc"
+                            },
+                            {
+                                "name": "PG_PRIMARY_PORT",
+                                "value": "5432"
+                            },
+                            {
+                                "name": "PG_MODE",
+                                "value": "replica"
+                            },
+                            {
+                                "name": "PG_PRIMARY_USER",
+                                "value": "primaryuser"
+                            },
+                            {
+                                "name": "PG_PRIMARY_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PG_USER",
+                                "value": "testuser"
+                            },
+                            {
+                                "name": "PG_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PG_DATABASE",
+                                "value": "userdb"
+                            },
+                            {
+                                "name": "PG_ROOT_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PGHOST",
+                                "value": "/tmp"
+                            }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": false
+                            }
+                        ],
+                        "ports": [
+                            {
+                                "containerPort": 5432,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {},
+                        "imagePullPolicy": "IfNotPresent"
+                    }
+                ],
+                "volumes": [
+                    {
                         "name": "pgdata",
-                        "readOnly": false
-                    }],
-
-                    "ports": [{
-                        "containerPort": 5432,
-                        "protocol": "TCP"
-                    }],
-                    "resources": {},
-                    "imagePullPolicy": "IfNotPresent"
-                }],
-                "volumes": [{
-                    "name": "pgdata",
-                    "emptyDir": {}
-                }],
-
+                        "emptyDir": {}
+                    }
+                ],
                 "restartPolicy": "Always",
                 "terminationGracePeriodSeconds": 30,
-                "dnsPolicy": "ClusterFirst",
-                "securityContext": {
-			$CCP_SECURITY_CONTEXT
-                }
+                "dnsPolicy": "ClusterFirst"
             }
         },
         "strategy": {

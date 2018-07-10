@@ -26,5 +26,5 @@ then
     exit 1
 fi
 
-expenv -f $DIR/metrics.json | ${CCP_CLI?} create -f -
-expenv -f $DIR/pgsql.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/metrics.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+expenv -f $DIR/pgsql.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

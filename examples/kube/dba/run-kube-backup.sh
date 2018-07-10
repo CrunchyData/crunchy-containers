@@ -20,4 +20,4 @@ $DIR/cleanup.sh
 
 echo_info "Creating the example components.."
 
-PLATFORM='KUBE_PROJECT' expenv -f $DIR/dba-backup.json | ${CCP_CLI?} create -f -
+PLATFORM='KUBE_PROJECT' expenv -f $DIR/dba-backup.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

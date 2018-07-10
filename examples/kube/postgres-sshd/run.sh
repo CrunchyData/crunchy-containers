@@ -32,16 +32,16 @@ ssh-keygen -t ecdsa -f ${DIR?}/keys/ssh_host_ecdsa_key -N ''
 ssh-keygen -t ed25519 -f ${DIR?}/keys/ssh_host_ed25519_key -N ''
 cp ${DIR?}/keys/id_rsa.pub ${DIR?}/keys/authorized_keys
 
-${CCP_CLI?} create secret generic postgres-sshd-secrets\
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic postgres-sshd-secrets\
     --from-file=ssh-host-rsa=${DIR?}/keys/ssh_host_rsa_key \
     --from-file=ssh-host-ecdsa=${DIR?}/keys/ssh_host_ecdsa_key \
     --from-file=ssh-host-ed25519=${DIR?}/keys/ssh_host_ecdsa_key
 
-${CCP_CLI?} create configmap postgres-sshd-pgconf \
-    --from-file ./configs/pgbackrest.conf \
-    --from-file ./configs/pg_hba.conf \
-    --from-file ./configs/postgresql.conf \
-    --from-file ./configs/sshd_config \
-    --from-file ./keys/authorized_keys
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap postgres-sshd-pgconf \
+    --from-file ${DIR?}/configs/pgbackrest.conf \
+    --from-file ${DIR?}/configs/pg_hba.conf \
+    --from-file ${DIR?}/configs/postgresql.conf \
+    --from-file ${DIR?}/configs/sshd_config \
+    --from-file ${DIR?}/keys/authorized_keys
 
-expenv -f $DIR/postgres-sshd.json | ${CCP_CLI?} create -f -
+expenv -f $DIR/postgres-sshd.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

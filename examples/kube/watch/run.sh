@@ -20,24 +20,21 @@ $DIR/cleanup.sh
 
 echo_info "Creating the example components.."
 
-${CCP_CLI?} create configmap watch-hooks-configmap \
-                --from-file=./hooks/watch-pre-hook \
-                --from-file=./hooks/watch-post-hook
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap watch-hooks-configmap \
+    --from-file=./hooks/watch-pre-hook \
+    --from-file=./hooks/watch-post-hook
 
-${CCP_CLI?} create -f $DIR/watch-sa.json
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f $DIR/watch-sa.json
 
-${CCP_CLI?} create rolebinding pg-watcher-sa-edit \
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} rolebinding pg-watcher-sa-edit \
   --clusterrole=edit \
-  --serviceaccount=$CCP_NAMESPACE:pg-watcher \
-  --namespace=$CCP_NAMESPACE
-
-#envsubst < $DIR/watch.yaml | ${CCP_CLI?} create -f -
+  --serviceaccount=$CCP_NAMESPACE:pg-watcher
 
 if [ "$CCP_CLI" = "oc" ]; then
 	echo "an openshift example..."
-expenv -f $DIR/watch-ocp.yaml | ${CCP_CLI?} create -f -
+    expenv -f $DIR/watch-ocp.yaml | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 else
 	echo "a kube example..."
-expenv -f $DIR/watch.yaml | ${CCP_CLI?} create -f -
+    expenv -f $DIR/watch.yaml | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 fi
 

@@ -12,13 +12,12 @@
             "name": "pgadmin4-http",
             "protocol": "TCP",
             "port": 5050,
-            "targetPort": 5050,
-            "nodePort": 30000
+            "targetPort": 5050
         }],
         "selector": {
             "name": "pgadmin4-http"
         },
-        "type": "NodePort",
+        "type": "ClusterIP",
         "sessionAffinity": "None"
     }
 }
@@ -58,6 +57,20 @@
                         "protocol": "TCP"
                     }
                 ],
+                "readinessProbe": {
+                    "tcpSocket": {
+                        "port": 5050
+                    },
+                    "initialDelaySeconds": 20,
+                    "periodSeconds": 10
+                },
+                "livenessProbe": {
+                    "tcpSocket": {
+                        "port": 5050
+                    },
+                    "initialDelaySeconds": 15,
+                    "periodSeconds": 20
+                },
                 "env": [
                     {
                         "name": "PGADMIN_SETUP_EMAIL",
