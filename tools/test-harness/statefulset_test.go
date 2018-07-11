@@ -33,6 +33,10 @@ func TestStatefulSet(t *testing.T) {
 		t.Fatal(err)
 	}
 
+    if len(pods) == 0 {
+        t.Fatal("No pods found in stateful set")
+    }
+
 	t.Log("Checking if pods are ready to use...")
 	if err := harness.Client.CheckPods(harness.Namespace, pods); err != nil {
 		t.Fatal(err)
