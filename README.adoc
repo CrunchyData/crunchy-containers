@@ -1,6 +1,6 @@
 image::crunchy_logo.png[Crunchy Data Logo]
 
-Latest Release: v1.8.4, {docdate}
+Latest Release: v2.0, {docdate}
 
 == General
 

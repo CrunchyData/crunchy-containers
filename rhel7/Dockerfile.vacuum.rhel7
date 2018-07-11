@@ -5,7 +5,7 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 LABEL name="crunchydata/vacuum" \
         vendor="crunchy data" \
         version="7.3" \
-        release="1.8.3" \
+        release="2.0" \
         #build-date="2017-05-11" \
         url="https://crunchydata.com" \
         summary="Provides a simple SQL VACUUM execution for a PostgreSQL table" \
