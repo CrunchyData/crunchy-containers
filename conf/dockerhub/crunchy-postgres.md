@@ -27,7 +27,7 @@ $ docker run \
     --env=PG_USER=testuser \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
-    --detach crunchydata/crunchy-postgres:centos7-10.4-1.8.3
+    --detach crunchydata/crunchy-postgres:centos7-10.4-2.0
 ```
 
 ### Connect via `psql`
