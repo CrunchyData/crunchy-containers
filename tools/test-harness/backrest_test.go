@@ -25,7 +25,11 @@ func TestBackrest(t *testing.T) {
 	}
 
 	t.Log("Running full backup...")
-	cmd := []string{"/usr/bin/pgbackrest", "--stanza=db", "backup", "--type=full"}
+	// Required for OCP - backrest gets confused when random UIDs aren't found in PAM.
+	// Exec doesn't load bashrc or bash_profile, so we need to set this explicitly.
+	nsswrapper := []string{"env", "LD_PRELOAD=/usr/lib64/libnss_wrapper.so", "NSS_WRAPPER_PASSWD=/tmp/passwd", "NSS_WRAPPER_GROUP=/tmp/group"}
+	fullBackup := []string{"/usr/bin/pgbackrest", "--stanza=db", "backup", "--type=full"}
+	cmd := append(nsswrapper, fullBackup...)
 	_, stderr, err := harness.Client.Exec(harness.Namespace, "backrest", "backrest", cmd)
 	if err != nil {
 		t.Logf("\n%s", stderr)
@@ -33,7 +37,8 @@ func TestBackrest(t *testing.T) {
 	}
 
 	t.Log("Running diff backup...")
-	cmd = []string{"/usr/bin/pgbackrest", "--stanza=db", "backup", "--type=diff"}
+	diffBackup := []string{"/usr/bin/pgbackrest", "--stanza=db", "backup", "--type=full"}
+	cmd = append(nsswrapper, diffBackup...)
 	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", cmd)
 	if err != nil {
 		t.Logf("\n%s", stderr)
