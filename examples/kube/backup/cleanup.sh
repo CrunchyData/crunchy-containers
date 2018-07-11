@@ -17,7 +17,6 @@ echo_info "Cleaning up.."
 
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} job backup
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc backup-pgdata
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc primary-pgdata
 if [ -z "$CCP_STORAGE_CLASS" ]; then
   ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv backup-pgdata
 fi
