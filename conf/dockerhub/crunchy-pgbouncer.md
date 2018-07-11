@@ -49,7 +49,7 @@ docker run \
     --env=PG_USER=testuser \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
-    --detach crunchydata/crunchy-postgres:centos7-10.4-2.0
+    --detach crunchydata/crunchy-postgres:centos7-10.4-1.8.3
 
 docker run \
     --name=replica \
@@ -64,7 +64,7 @@ docker run \
     --env=PG_USER=testuser \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
-    --detach crunchydata/crunchy-postgres:centos7-10.4-2.0
+    --detach crunchydata/crunchy-postgres:centos7-10.4-1.8.3
 
 docker run \
     --name=pgbouncer \
@@ -72,7 +72,7 @@ docker run \
     --publish=5432:5432 \
     --volume=/tmp/pgbouncer/configs:/pgconf/bouncerconfig:z \
     --network="pgnet" \
-    --detach crunchydata/crunchy-pgbouncer:centos7-10.4-2.0
+    --detach crunchydata/crunchy-pgbouncer:centos7-10.4-1.8.3
 ```
 
 ### Using with `psql`

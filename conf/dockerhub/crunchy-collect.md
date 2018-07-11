@@ -28,7 +28,7 @@ docker run \
     --env=PG_USER=testuser \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
-    --detach crunchydata/crunchy-postgres:centos7-10.4-2.0
+    --detach crunchydata/crunchy-postgres:centos7-10.4-1.8.3
 
 docker run \
     --name=collect \
@@ -37,7 +37,7 @@ docker run \
     --publish=9187:9187 \
     --publish=9100:9100 \
     --env=DATA_SOURCE_NAME=postgresql://testuser:password@primary:5432/postgres?sslmode=disable \
-    --detach crunchydata/crunchy-collect:centos7-10.4-2.0
+    --detach crunchydata/crunchy-collect:centos7-10.4-1.8.3
 
 docker run \
     --name=prometheus \
@@ -47,7 +47,7 @@ docker run \
     --env=COLLECT_HOST=collect \
     --env=SCRAPE_INTERVAL=5s \
     --env=SCRAPE_TIMEOUT=5s \
-    --detach crunchydata/crunchy-prometheus:centos7-10.4-2.0
+    --detach crunchydata/crunchy-prometheus:centos7-10.4-1.8.3
 ```
 
 ### Using Collect
