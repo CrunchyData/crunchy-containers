@@ -35,7 +35,7 @@ docker run \
     --env=PG_USER=testuser \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
-    --detach crunchydata/crunchy-postgres:centos7-9.6.9-1.8.3
+    --detach crunchydata/crunchy-postgres:centos7-9.6.9-2.0
 
 sleep 10
 
@@ -53,7 +53,7 @@ docker run \
     --env=NEW_DATABASE_NAME=primary10 \
     --env=OLD_VERSION=9.6 \
     --env=NEW_VERSION=10 \
-    --detach crunchydata/crunchy-upgrade:centos7-10.4-1.8.3
+    --detach crunchydata/crunchy-upgrade:centos7-10.4-2.0
 
 sleep 20
 
@@ -73,7 +73,7 @@ docker run \
     --env=PG_USER=testuser \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
-    --detach crunchydata/crunchy-postgres:centos7-10.4-1.8.3
+    --detach crunchydata/crunchy-postgres:centos7-10.4-2.0
     
 ```
 
