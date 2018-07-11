@@ -6,7 +6,7 @@ weight: 2
 ---
 
 :toc:
-v1.8.3, {docdate}
+v2.0, {docdate}
 
 == Build the Containers
 

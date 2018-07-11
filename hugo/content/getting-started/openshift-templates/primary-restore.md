@@ -4,7 +4,7 @@ date: 2018-05-15T07:22:51-07:00
 draft: false
 ---
 
-v1.8.3
+v2.0
 
 The Crunchy PostgreSQL Primary Restore Template creates a single primary pod from a `pg_basebackup` physical backup.
 

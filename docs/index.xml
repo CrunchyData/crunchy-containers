@@ -28,7 +28,7 @@ Features The following features are supported by the crunchy-postgres container:
       <pubDate>Tue, 08 May 2018 08:52:09 -0700</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/installation/environment-setup/</guid>
-      <description>Table of Contents Requirements Project Environment Installing Requirements CentOS 7 RHEL 7 PostgreSQL Docker OpenShift Kubernetes Helm   Creating a Demo Namespace Kubernetes OpenShift   Next Steps   v1.8.3, 2018-06-26
+      <description>Table of Contents Requirements Project Environment Installing Requirements CentOS 7 RHEL 7 PostgreSQL Docker OpenShift Kubernetes Helm   Creating a Demo Namespace Kubernetes OpenShift   Next Steps   v2.0, 2018-07-11
  Requirements The Crunchy Container Suite can run on different environments including:
    Docker 1.12+
   OpenShift Container Platform 3.6+
@@ -51,7 +51,7 @@ Features The following features are supported by the crunchy-postgres container:
       <pubDate>Tue, 08 May 2018 08:52:16 -0700</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/installation/build-the-containers/</guid>
-      <description>Table of Contents Build the Containers Next Steps   v1.8.3, 2018-06-26
+      <description>Table of Contents Build the Containers Next Steps   v2.0, 2018-07-11
  Build the Containers At this point, you have a decision to make - either download prebuilt containers from Dockerhub, or build the containers on your local host.
  To download the prebuilt containers, make sure you can login to Dockerhub, and then run the following:
  docker login cd $CCPROOT ./bin/pull-from-dockerhub.sh   Or if you&amp;#8217;d rather build the containers from source, perform a container build as follows:</description>
@@ -75,7 +75,7 @@ Features The following features are supported by the crunchy-backup container:
       <pubDate>Tue, 08 May 2018 08:52:46 -0700</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/installation/storage-configuration/</guid>
-      <description>Table of Contents Available Storage Types HostPath NFS Dynamic Storage Next Steps   v1.8.3, 2018-06-26
+      <description>Table of Contents Available Storage Types HostPath NFS Dynamic Storage Next Steps   v2.0, 2018-07-11
  Available Storage Types The Container Suite is tested on 3 different storage backends:
    hostPath (single node testing)
   NFS (single and multi-node testing)
@@ -249,7 +249,7 @@ Features The following features are supported by the crunchy-pgbadger container:
       <pubDate>Tue, 15 May 2018 07:22:59 -0700</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/single-primary/</guid>
-      <description>v1.8.3
+      <description>v2.0
 The Crunchy PostgreSQL Primary Template creates a single primary pod.
 Objects The Crunchy PostreSQL Primary Template creates the following objects:
  PostgreSQL Secret - usernames and passwords generated from the template PGData PVC - Volume where PostgreSQL database will be stored Primary Service - Service connected to the Primary Pod Primary Pod - Primary database pod  Storage This template assumes STORAGE_CLASS volumes will be used.
@@ -262,7 +262,7 @@ Form Required    Name Description     VOLUME_STORAGE_CLASS Name of the Storage C
       <pubDate>Tue, 15 May 2018 07:22:51 -0700</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/primary-restore/</guid>
-      <description>v1.8.3
+      <description>v2.0
 The Crunchy PostgreSQL Primary Restore Template creates a single primary pod from a pg_basebackup physical backup.
 Objects The Crunchy PostreSQL Primary Template creates the following objects:
  PostgreSQL Secret - usernames and passwords generated from the template PGData PVC - Volume where PostgreSQL database will be stored Primary Service - Service connected to the Primary Pod Primary Pod - Primary database pod  Storage This template assumes STORAGE_CLASS volumes will be used.</description>
@@ -274,7 +274,7 @@ Objects The Crunchy PostreSQL Primary Template creates the following objects:
       <pubDate>Tue, 15 May 2018 07:22:45 -0700</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/primary-restore-secret/</guid>
-      <description>v1.8.3
+      <description>v2.0
 The Crunchy PostgreSQL Primary Restore Template creates a single primary pod from a pg_basebackup physical backup.
 Objects The Crunchy PostreSQL Primary Template creates the following objects:
  PGData PVC - Volume where PostgreSQL database will be stored Primary Service - Service connected to the Primary Pod Primary Pod - Primary database pod  Storage This template assumes STORAGE_CLASS volumes will be used.
@@ -287,7 +287,7 @@ The template assumes a BACKUP PVC has been created and contains a backup.</descr
       <pubDate>Tue, 15 May 2018 07:22:27 -0700</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/primary-backup/</guid>
-      <description>v1.8.3
+      <description>v2.0
 The Crunchy Backup template takes a pg_basebackup of the target database.
 Objects The Crunchy Backup Template creates the following objects:
  Backup PVC - Volume where pg_basebackup physical backups will be stored. Backup Job - Short lived pod that creates a physical backup using pg_basebackup.  Storage This template assumes STORAGE_CLASS volumes will be used.
@@ -300,7 +300,7 @@ Form Required    Name Description     VOLUME_STORAGE_CLASS Name of the Storage C
       <pubDate>Tue, 15 May 2018 07:22:20 -0700</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/primary-backup-secret/</guid>
-      <description>v1.8.3
+      <description>v2.0
 The Crunchy Backup Secrets template takes a pg_basebackup of the target database using a pre-existing OpenShift secret to retrieve usernames and passwords for backup purposes.
 Objects The Crunchy Backup Template creates the following objects:
  Backup PVC - Volume where pg_basebackup physical backups will be stored. Backup Job - Short lived pod that creates a physical backup using pg_basebackup.  Storage This template assumes STORAGE_CLASS volumes will be used.</description>
@@ -312,7 +312,7 @@ Objects The Crunchy Backup Template creates the following objects:
       <pubDate>Tue, 15 May 2018 07:22:10 -0700</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/postgres-replicated/</guid>
-      <description>v1.8.3
+      <description>v2.0
 The Crunchy PostgreSQL Primary/Replica Template creates a primary pod with replica statefulsets to provide a database cluster with streaming replication.
 Objects The Crunchy PostreSQL Primary/Replica Template creates the following objects:
  PostgreSQL Secret - usernames and passwords generated from the template PGData PVC - Volume where PostgreSQL database will be stored Backup PVC - Volume where pg_basebackup physical backups will be stored Backrestrepo PVC - Volume where pgBackRest physical backups will be stored Primary Service - Service connected to the Primary Pod Replica Service - Service connected to the Replica Pods Primary Pod - Primary database pod Replica Statefulset - Replica database pods  Storage This template assumes STORAGE_CLASS volumes will be used.</description>
@@ -324,7 +324,7 @@ Objects The Crunchy PostreSQL Primary/Replica Template creates the following obj
       <pubDate>Tue, 15 May 2018 07:22:02 -0700</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/getting-started/openshift-templates/pgadmin4/</guid>
-      <description>v1.8.3
+      <description>v2.0
 Crunchy pgAdmin4 Template provides a feature rich, GUI Open Source administration and development platform for PostgreSQL.
 Objects The Crunchy pgAdmin4 Template creates the following objects:
  pgAdmin4 Secret - email and password for login pgAdmin4 PVC - Volume where pgAdmin4 data will be stored pgAdmin4 Service - Service connected to the pgAdmin4 pod pgAdmin4 Pod - pgAdmin4 web application  Storage This template assumes STORAGE_CLASS volumes will be used.</description>

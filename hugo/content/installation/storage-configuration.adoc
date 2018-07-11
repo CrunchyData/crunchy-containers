@@ -6,7 +6,7 @@ weight: 3
 ---
 
 :toc:
-v1.8.3, {docdate}
+v2.0, {docdate}
 
 == Available Storage Types
 
