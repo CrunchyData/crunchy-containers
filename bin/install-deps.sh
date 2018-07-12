@@ -31,19 +31,6 @@ wget -O $CCPROOT/grafana.tar.gz https://s3-us-west-2.amazonaws.com/grafana-relea
 wget -O $CCPROOT/postgres_exporter.tar.gz https://github.com/wrouesnel/postgres_exporter/releases/download/v${POSTGRES_EXPORTER_VERSION?}/postgres_exporter_v${POSTGRES_EXPORTER_VERSION?}_linux-amd64.tar.gz
 wget -O $CCPROOT/node_exporter.tar.gz https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
 
-#
-# this set is required to build the docs with a2x
-#
-sudo yum -y install asciidoc ruby
-sudo yum -y install lynx dblatex
-
-wget -O $HOME/bootstrap-4.5.0.zip http://laurent-laville.org/asciidoc/bootstrap/bootstrap-4.5.0.zip
-asciidoc --backend install $HOME/bootstrap-4.5.0.zip
-mkdir -p $HOME/.asciidoc/backends/bootstrap/js
-cp $GOPATH/src/github.com/crunchydata/crunchy-containers/docs/bootstrap.js \
-$HOME/.asciidoc/backends/bootstrap/js/
-unzip $HOME/bootstrap-4.5.0.zip  $HOME/.asciidoc/backends/bootstrap/
-
 rpm -q atomic-openshift-clients
 if [ $? -ne 0 ]; then
     echo "atomic-openshift-clients is NOT installed"
