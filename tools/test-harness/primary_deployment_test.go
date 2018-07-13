@@ -20,7 +20,7 @@ func TestPrimaryDeployment(t *testing.T) {
 		defer harness.runExample("examples/kube/primary-deployment/cleanup.sh", env, t)
 	}
 
-	t.Log("Checking if priary deployment is ready...")
+	t.Log("Checking if primary deployment is ready...")
 	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "primary-deployment"); !ok {
 		t.Fatal(err)
 	}
