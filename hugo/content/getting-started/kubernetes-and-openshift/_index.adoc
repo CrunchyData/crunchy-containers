@@ -1890,7 +1890,7 @@ To shutdown the instance and remove the container for each example, run the foll
 
 Run the example as follows:
 ....
-cd $CCPROOT/examples/docker/badger
+cd $CCPROOT/examples/docker/pgbadger
 ./run.sh
 ....
 
@@ -1905,7 +1905,7 @@ curl http://127.0.0.1:14000/api/badgergenerate
 
 Running the example:
 ....
-cd $CCPROOT/examples/kube/badger
+cd $CCPROOT/examples/kube/pgbadger
 ./run.sh
 ....
 
@@ -1918,8 +1918,8 @@ curl http://badger:10000/api/badgergenerate
 
 You can view the database container logs using these commands:
 ....
-${CCP_CLI} logs badger -c badger
-${CCP_CLI} logs badger -c postgres
+${CCP_CLI} logs pgbadger -c pgbadger
+${CCP_CLI} logs pgbadger -c postgres
 ....
 
 === Metrics Collection

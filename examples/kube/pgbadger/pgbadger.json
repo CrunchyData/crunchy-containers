@@ -2,9 +2,9 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "badger",
+        "name": "pgbadger",
         "labels": {
-            "name": "badger"
+            "name": "pgbadger"
         }
     },
     "spec": {
@@ -17,7 +17,7 @@
                 "nodePort": 0
             },
             {
-                "name": "badger",
+                "name": "pgbadger",
                 "protocol": "TCP",
                 "port": 10000,
                 "targetPort": 10000,
@@ -25,7 +25,7 @@
             }
         ],
         "selector": {
-            "name": "badger"
+            "name": "pgbadger"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -36,9 +36,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "badger",
+        "name": "pgbadger",
         "labels": {
-            "name": "badger"
+            "name": "pgbadger"
         }
     },
     "spec": {
@@ -120,7 +120,7 @@
                 ]
             },
             {
-                "name": "badger",
+                "name": "pgbadger",
                 "image": "$CCP_IMAGE_PREFIX/crunchy-pgbadger:$CCP_IMAGE_TAG",
                 "ports": [
                     {
