@@ -518,7 +518,7 @@ Examine the `/backrestrepo` location to view the archive directory and ensure WA
 
 You can create a backup using backrest using this command within the container:
 ....
-docker exec -it backrest bash
+${CCP_CLI} exec -it backrest bash
 pgbackrest --stanza=db backup
 ....
 
@@ -714,7 +714,7 @@ cd $CCPROOT/examples/kube/backup
 The Kubernetes Job type executes a pod and then the pod exits.  You can
 view the Job status using this command:
 ....
-${CCP-CLI} get job
+${CCP_CLI} get job
 ....
 
 When you're ready to restore, a *restore* example is provided.
@@ -729,7 +729,7 @@ Wed May  9 20:32:00 UTC 2018 INFO: BACKUP_PATH is set to /pgdata/primary-backups
 BACKUP_PATH can also be discovered by looking at the backup mount directly (if access
 to the storage is available to the user).
 
-An example of BACKUP_PATH is as followed:
+An example of BACKUP_PATH defined as a variable within the JSON script is as follows:
 ....
 "name": "BACKUP_PATH",
 "value": "primary-backups/2018-05-09-20-32-00"
@@ -1395,22 +1395,6 @@ using Helm link:https://github.com/CrunchyData/crunchy-containers/blob/master/ex
 This example deploys a PostgreSQL cluster with a primary, a synchronous replica, and
 an asynchronous replica. The two replicas share the same service.
 
-Connect to the *primarysync* and *replicasync* databases as follows for both the
-Kubernetes and OpenShift environments:
-....
-psql -h primarysync -U postgres postgres -c 'create table test (id int)'
-psql -h primarysync -U postgres postgres -c 'insert into test values (1)'
-psql -h primarysync -U postgres postgres -c 'table pg_stat_replication'
-psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
-psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
-psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
-....
-
-This set of queries will show you the IP address of the PostgreSQL replica
-container. Note the changing IP address due to the round-robin service proxy
-being used for both replicas.  The example queries also show that both
-replicas are replicating successfully from the primary.
-
 To shutdown the instance and remove the container for each example, run the following:
 ....
 ./cleanup.sh
@@ -1449,6 +1433,22 @@ Running the example:
 cd $CCPROOT/examples/kube/sync
 ./run.sh
 ....
+
+Connect to the *primarysync* and *replicasync* databases as follows for both the
+Kubernetes and OpenShift environments:
+....
+psql -h primarysync -U postgres postgres -c 'create table test (id int)'
+psql -h primarysync -U postgres postgres -c 'insert into test values (1)'
+psql -h primarysync -U postgres postgres -c 'table pg_stat_replication'
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
+....
+
+This set of queries will show you the IP address of the PostgreSQL replica
+container. Note the changing IP address due to the round-robin service proxy
+being used for both replicas.  The example queries also show that both
+replicas are replicating successfully from the primary.
 
 === Statefulsets
 
