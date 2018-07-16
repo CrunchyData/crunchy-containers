@@ -423,7 +423,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>v2.0, 2018-07-11</p>
+<p>v2.0, 2018-07-16</p>
 </div>
 <div class="sect1">
 <h2 id="_requirements">Requirements</h2>
@@ -964,6 +964,16 @@ so by running the following:</p>
 <div class="content">
 <pre>$ oc project demo
 Now using project "demo" on server "https://127.0.0.1:8443".</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, you will want to ensure the proper privileges are added to the user in order to
+have the ability to create persistent volumes. A command similar to the following can be
+used to accomplish this, by adding the cluster-admin role to the <strong>demo</strong> user:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>oc adm policy add-cluster-role-to-user cluster-admin demo</pre>
 </div>
 </div>
 </div>
