@@ -51,6 +51,11 @@ expenv -f $DIR/custom-config-ssl.json | ${CCP_CLI?} create --namespace=${CCP_NAM
 
 echo ""
 echo "To connect via SSL, run the following once the DB is ready: "
-echo "source ./env.sh"
 echo "psql "postgresql://${CONTAINER_NAME?}:5432/postgres?sslmode=verify-full" -U testuser"
 echo ""
+
+echo -e "${YELLOW?}"
+echo "Note: The SSL certificates generated are not in the default location, it is required to "
+echo "source the env.sh script in this directory prior to running psql:"
+echo "source ${CCPROOT?}/examples/kube/custom-config-ssl/env.sh"
+echo -e "${RESET?}"
