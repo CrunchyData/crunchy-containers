@@ -23,6 +23,7 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgadmin4-https-secrets
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgadmin4-https-tls
 
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc pgadmin4-https-data
+
 if [ -z "$CCP_STORAGE_CLASS" ]; then
   ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv pgadmin4-https-data
 fi
@@ -30,3 +31,12 @@ fi
 rm -f ${DIR?}/server.crt ${DIR?}/server.key ${DIR?}/privkey.pem
 
 $CCPROOT/examples/waitforterm.sh pgadmin4-https ${CCP_CLI?}
+
+file_check_rm "access_log"
+file_check_rm "config_local.py"
+file_check_rm "error_log"
+file_check_rm "pgadmin4.db"
+file_check_rm "pgadmin4.conf"
+file_check_rm "pgadmin.log"
+file_check_rm "sessions"
+file_check_rm "storage"
