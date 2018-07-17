@@ -34,6 +34,12 @@ godep restore ./...
 *Note*: It's recommended to disable the `go test` timeout (it defaults to 10 minutes which 
 is not enough time to run all tests):
 
+#### Go `1.9`
+
+`go test -timeout 100m` (100 minutes)
+
+#### Go `1.10+`
+
 `go test -timeout 0`
 
 ### All Tests
@@ -53,4 +59,14 @@ meaning it won't match on say `TestPrimaryReplica`)
 ```bash
 cd $CCPROOT/tools/test-harness
 go test -v -run TestPrimary$
+```
+
+### Manual Cleanup
+
+If for some reason the test-harness crashes, it's possible the test-harness namespaces 
+have not been cleaned up correctly.  To manually delete the test harness namespaces, 
+run the following script:
+
+```bash
+${CCPROOT?}/tools/test-harness/test-harness-manual-cleanup.sh
 ```

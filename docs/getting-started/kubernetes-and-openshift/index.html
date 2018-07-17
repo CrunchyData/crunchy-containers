@@ -459,7 +459,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>v2.0, 2018-07-11</p>
+<p>v2.0, 2018-07-16</p>
 </div>
 <div class="sect1">
 <h2 id="_getting_started">Getting Started</h2>
@@ -1235,7 +1235,7 @@ out to the <code>/backrestrepo</code> mount point.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>docker exec -it backrest bash
+<pre>${CCP_CLI} exec -it backrest bash
 pgbackrest --stanza=db backup</pre>
 </div>
 </div>
@@ -1583,7 +1583,7 @@ view the Job status using this command:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>${CCP-CLI} get job</pre>
+<pre>${CCP_CLI} get job</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1604,7 +1604,7 @@ Wed May  9 20:32:00 UTC 2018 INFO: BACKUP_PATH is set to /pgdata/primary-backups
 to the storage is available to the user).</p>
 </div>
 <div class="paragraph">
-<p>An example of BACKUP_PATH is as followed:</p>
+<p>An example of BACKUP_PATH defined as a variable within the JSON script is as follows:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2627,26 +2627,6 @@ using Helm <a href="https://github.com/CrunchyData/crunchy-containers/blob/maste
 an asynchronous replica. The two replicas share the same service.</p>
 </div>
 <div class="paragraph">
-<p>Connect to the <strong>primarysync</strong> and <strong>replicasync</strong> databases as follows for both the
-Kubernetes and OpenShift environments:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>psql -h primarysync -U postgres postgres -c 'create table test (id int)'
-psql -h primarysync -U postgres postgres -c 'insert into test values (1)'
-psql -h primarysync -U postgres postgres -c 'table pg_stat_replication'
-psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
-psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
-psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This set of queries will show you the IP address of the PostgreSQL replica
-container. Note the changing IP address due to the round-robin service proxy
-being used for both replicas.  The example queries also show that both
-replicas are replicating successfully from the primary.</p>
-</div>
-<div class="paragraph">
 <p>To shutdown the instance and remove the container for each example, run the following:</p>
 </div>
 <div class="literalblock">
@@ -2701,6 +2681,26 @@ psql -h 127.0.0.1 -p 12012 -U postgres postgres -c 'table foo'</pre>
 <pre>cd $CCPROOT/examples/kube/sync
 ./run.sh</pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Connect to the <strong>primarysync</strong> and <strong>replicasync</strong> databases as follows for both the
+Kubernetes and OpenShift environments:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>psql -h primarysync -U postgres postgres -c 'create table test (id int)'
+psql -h primarysync -U postgres postgres -c 'insert into test values (1)'
+psql -h primarysync -U postgres postgres -c 'table pg_stat_replication'
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'
+psql -h replicasync -U postgres postgres -c 'select inet_server_addr(), * from test'</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This set of queries will show you the IP address of the PostgreSQL replica
+container. Note the changing IP address due to the round-robin service proxy
+being used for both replicas.  The example queries also show that both
+replicas are replicating successfully from the primary.</p>
 </div>
 </div>
 </div>
@@ -2914,13 +2914,6 @@ database are created.</p>
 <p>This works by placing a file named <code>setup.sql</code> within the <code>/pgconf</code> mounted volume
 directory.  Portions of the <code>setup.sql</code> file are required for the container
 to work; please see comments within the sample <code>setup.sql</code> file.</p>
-</div>
-<div class="paragraph">
-<p>Additionally, pre- and post-start "hooks" will be executed if they exist. To add the hook, 
-place a <code>pre-start-hook.sh</code> and/or
-<code>post-start-hook.sh</code> file within the <code>/pgconf</code> mounted volume
-directory.  If either or both files exist, they will be executed. Please see comments within 
-the sample <code>pre-start-hook.sh</code> and <code>post-start-hook.sh</code> files.</p>
 </div>
 <div class="paragraph">
 <p>If you mount a <code>/pgconf</code> volume, crunchy-postgres will look at that directory
