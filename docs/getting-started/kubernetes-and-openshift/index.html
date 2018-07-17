@@ -459,7 +459,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>v2.0, 2018-07-16</p>
+<p>v2.0, 2018-07-17</p>
 </div>
 <div class="sect1">
 <h2 id="_getting_started">Getting Started</h2>
@@ -3329,7 +3329,7 @@ this dependency.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>cd $CCPROOT/examples/docker/badger
+<pre>cd $CCPROOT/examples/docker/pgbadger
 ./run.sh</pre>
 </div>
 </div>
@@ -3340,7 +3340,7 @@ the database, you can invoke this URL to generate updated reports:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>curl http://127.0.0.1:14000/api/badgergenerate</pre>
+<pre>curl -L http://127.0.0.1:14000/api/badgergenerate</pre>
 </div>
 </div>
 </div>
@@ -3351,7 +3351,7 @@ the database, you can invoke this URL to generate updated reports:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>cd $CCPROOT/examples/kube/badger
+<pre>cd $CCPROOT/examples/kube/pgbadger
 ./run.sh</pre>
 </div>
 </div>
@@ -3362,7 +3362,7 @@ the database, you can invoke this URL to generate updated reports:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>curl http://badger:10000/api/badgergenerate</pre>
+<pre>curl -L http://badger:10000/api/badgergenerate</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3370,8 +3370,8 @@ the database, you can invoke this URL to generate updated reports:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>${CCP_CLI} logs badger -c badger
-${CCP_CLI} logs badger -c postgres</pre>
+<pre>${CCP_CLI} logs pgbadger -c pgbadger
+${CCP_CLI} logs pgbadger -c postgres</pre>
 </div>
 </div>
 </div>
