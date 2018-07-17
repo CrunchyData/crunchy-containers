@@ -42,6 +42,9 @@
         }
     },
     "spec": {
+        "securityContext": {
+           $CCP_SECURITY_CONTEXT
+        	},
         "containers": [
             {
                 "name": "postgres",
@@ -108,9 +111,6 @@
                         "value": "password"
                     }
                 ],
-                "securityContext": {
-                    $CCP_SECURITY_CONTEXT
-                },
                 "volumeMounts": [
                     {
                         "mountPath": "/pgdata",
@@ -143,9 +143,6 @@
                     "periodSeconds": 20
                 },
                 "env": [],
-                "securityContext": {
-                    $CCP_SECURITY_CONTEXT
-                },
                 "volumeMounts": [
                     {
                         "mountPath": "/pgdata",
