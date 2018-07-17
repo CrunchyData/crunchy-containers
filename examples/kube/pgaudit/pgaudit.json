@@ -34,12 +34,12 @@
         }
     },
     "spec": {
+        "securityContext": {
+            $CCP_SECURITY_CONTEXT
+            },
         "containers": [
             {
                 "name": "postgres",
-                "securityContext": {
-                    $CCP_SECURITY_CONTEXT
-                },
                 "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
                 "readinessProbe": {
                     "exec": {
