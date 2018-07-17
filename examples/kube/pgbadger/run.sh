@@ -20,4 +20,4 @@ ${DIR}/cleanup.sh
 
 echo_info "Creating the example components.."
 
-expenv -f $DIR/badger.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+expenv -f $DIR/pgbadger.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

@@ -15,6 +15,6 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod badger
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service badger
-$CCPROOT/examples/waitforterm.sh badger ${CCP_CLI?}
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pgbadger
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pgbadger
+$CCPROOT/examples/waitforterm.sh pgbadger ${CCP_CLI?}
