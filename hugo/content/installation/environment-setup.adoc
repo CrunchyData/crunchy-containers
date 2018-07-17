@@ -269,6 +269,22 @@ You should see a single IP address returned from this command:
 hostname --ip-address
 ....
 
+When running the containers in GKE Role Based Account Control will need to be set up. 
+....
+kubectl create clusterrolebinding cluster-admin-binding \
+--clusterrole cluster-admin --user $(gcloud config get-value account)
+....
+
+If more than one user will be running on the same kubernetes cluster in GKE, from the above command cluster-admin-binding will need to be unique and is the name that is added to the clusterrolebidings.  The example below will add another user to the clusterrolebinding with a unique value.
+....
+$ ACCOUNT=$(gcloud info --format='value(config.account)')
+$ kubectl create clusterrolebinding <unique>-cluster-admin-binding \
+    --clusterrole cluster-admin \
+    --user $ACCOUNT
+
+ACCOUNT is just your google gcloud acount login, ie username@google.com
+....
+
 === Helm
 
 Some Kubernetes Helm examples are provided in the following directory as one
