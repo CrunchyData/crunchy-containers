@@ -24,3 +24,5 @@ if [ -z "$CCP_STORAGE_CLASS" ]; then
 fi
 
 $CCPROOT/examples/waitforterm.sh primary ${CCP_CLI?}
+
+dir_check_rm "primary"

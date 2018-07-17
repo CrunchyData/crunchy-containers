@@ -30,3 +30,8 @@ fi
 
 $CCPROOT/examples/waitforterm.sh postgres-sshd ${CCP_CLI?}
 rm -rf ${DIR?}/keys
+
+dir_check_rm "archive"
+dir_check_rm "backup"
+dir_check_rm "postgres-sshd"
+file_check_rm "db-stanza-create.log"
