@@ -36,6 +36,8 @@ chown postgres:postgres ${PGDUMP_PATH?}
 
 output_opts="-f ${PGDUMP_PATH?}/${PGDUMP_FILENAME?}"
 
+echo_info "Dumping to ${output_opts} "
+
 if [[ ${PGDUMP_ALL:-true} == "true" ]]
 then
     echo_info "Taking logical backup of all databases.."
