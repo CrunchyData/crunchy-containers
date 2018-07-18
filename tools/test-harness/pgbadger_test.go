@@ -21,7 +21,7 @@ func TestPGBadger(t *testing.T) {
 		defer harness.runExample("examples/kube/pgbadger/cleanup.sh", env, t)
 	}
 
-	pods := []string{"badger"}
+	pods := []string{"pgbadger"}
 	t.Log("Checking if pods are ready to use...")
 	if err := harness.Client.CheckPods(harness.Namespace, pods); err != nil {
 		t.Fatal(err)
