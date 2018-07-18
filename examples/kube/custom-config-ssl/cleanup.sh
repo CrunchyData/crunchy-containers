@@ -22,12 +22,19 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service custom-config-ssl
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod custom-config-ssl
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret custom-config-ssl-secrets
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc custom-config-ssl-pgdata
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc custom-config-ssl-backrestrepo
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv custom-config-ssl-pgdata
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv custom-config-ssl-backrestrepo
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc custom-config-ssl-pgdata custom-config-ssl-backrestrepo
+
+if [[ -z "$CCP_STORAGE_CLASS" ]]
+then
+    ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv custom-config-ssl-pgdata custom-config-pgwal custom-config-ssl-backrestrepo
+fi
 
 $CCPROOT/examples/waitforterm.sh custom-config-ssl ${CCP_CLI?}
+
+dir_check_rm "archive"
+dir_check_rm "backup"
+dir_check_rm "custom-config-ssl"
+file_check_rm "db-stanza-create.log"
 
 rm -rf ${DIR?}/certs
 rm -rf ${DIR?}/out
