@@ -423,7 +423,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>v2.0, 2018-07-17</p>
+<p>v2.0, 2018-07-19</p>
 </div>
 <div class="sect1">
 <h2 id="_requirements">Requirements</h2>
@@ -813,6 +813,28 @@ with installation can occur unless you have a resolving hostname.</p>
 <div class="literalblock">
 <div class="content">
 <pre>hostname --ip-address</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When running the containers in GKE Role Based Account Control will need to be set up.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>kubectl create clusterrolebinding cluster-admin-binding \
+--clusterrole cluster-admin --user $(gcloud config get-value account)</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If more than one user will be running on the same kubernetes cluster in GKE, from the above command cluster-admin-binding will need to be unique and is the name that is added to the clusterrolebidings.  The example below will add another user to the clusterrolebinding with a unique value.</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ ACCOUNT=$(gcloud info --format='value(config.account)')
+$ kubectl create clusterrolebinding &lt;unique&gt;-cluster-admin-binding \
+    --clusterrole cluster-admin \
+    --user $ACCOUNT
+
+ACCOUNT is just your google gcloud acount login, ie username@google.com</pre>
 </div>
 </div>
 </div>
