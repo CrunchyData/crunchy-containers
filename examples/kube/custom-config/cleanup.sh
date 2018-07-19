@@ -16,12 +16,10 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service custom-config
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod custom-config
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc custom-config-pgdata custom-config-pgwal custom-config-br
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap custom-config-pgconf
-
 
 if [[ -z "$CCP_STORAGE_CLASS" ]]
 then
@@ -29,3 +27,9 @@ then
 fi
 
 $CCPROOT/examples/waitforterm.sh custom-config ${CCP_CLI?}
+
+dir_check_rm "archive"
+dir_check_rm "backup"
+dir_check_rm "custom-config"
+dir_check_rm "custom-config-wal"
+file_check_rm "db-stanza-create.log"

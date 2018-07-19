@@ -19,8 +19,18 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pgadmin4-http
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pgadmin4-http
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgadmin4-http-secrets
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc pgadmin4-http-data
+
 if [ -z "$CCP_STORAGE_CLASS" ]; then
   ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv pgadmin4-http-data
 fi
 
 $CCPROOT/examples/waitforterm.sh pgadmin4-http ${CCP_CLI?}
+
+dir_check_rm "sessions"
+dir_check_rm "storage"
+file_check_rm "access_log"
+file_check_rm "config_local.py"
+file_check_rm "error_log"
+file_check_rm "pgadmin4.db"
+file_check_rm "pgadmin4.conf"
+file_check_rm "pgadmin.log"
