@@ -40,14 +40,14 @@ function env_check_err() {
 function dir_check_rm() {
     if [[ -d ${CCP_STORAGE_PATH?}/${1?} ]]
     then
-        rm -rf ${CCP_STORAGE_PATH?}/${1?} && echo_info "Deleted ${1?} from the data directory." || echo_err "${1?} was not successfully deleted from the data directory."
+        sudo rm -rf ${CCP_STORAGE_PATH?}/${1?} && echo_info "Deleted ${1?} from the data directory." || echo_err "${1?} was not successfully deleted from the data directory."
     fi
 }
 
 function file_check_rm() {
     if [[ -f ${CCP_STORAGE_PATH?}/${1?} ]]
     then
-        rm -f ${CCP_STORAGE_PATH?}/${1?} && echo_info "Deleted ${1?} from the data directory." || echo_err "${1?} was not successfully deleted from the data directory."
+        sudo rm -f ${CCP_STORAGE_PATH?}/${1?} && echo_info "Deleted ${1?} from the data directory." || echo_err "${1?} was not successfully deleted from the data directory."
     fi
 }
 
