@@ -2,18 +2,14 @@
 
 ![](https://raw.githubusercontent.com/CrunchyData/crunchy-containers/master/images/crunchy_logo.png)
 
-The Crunchy DBA docker image contains a Golang application that orchestrates DBA task such as:
+The crunchy-dba container implements a cron scheduler. The purpose of the crunchy-dba container is to offer a way to perform simple DBA tasks that occur on some form of schedule such as backup jobs or running a vacuum on a single PostgreSQL database container.
 
-* backups
-* vacuum
+**Note**: This container only works on Kubernetes or OpenShift.
 
-**Note**: This container only works on Kubernetes or OpenShift.  For examples on using this container, see the 
-[official Crunchy Containers GitHub repository](https://github.com/CrunchyData/crunchy-containers/tree/master/examples).
+## Container Specifications
 
-### Environment Variables
+See the [official documentation](https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-dba/) for more details regarding how the container operates and is customized.
 
-See the [official documentation](https://github.com/CrunchyData/crunchy-containers/blob/master/docs/containers.adoc#crunchy-dba) for a list of environment variables available for this container.
+## Examples
 
-## More Examples
-
-For more examples, see the [official Crunchy Containers GitHub repository](https://github.com/CrunchyData/crunchy-containers/tree/master/examples/docker).
+For examples regarding the use of the container, see the [official Crunchy Containers GitHub repository](https://github.com/CrunchyData/crunchy-containers/tree/master/examples/docker).

@@ -2,26 +2,12 @@
 
 ![](https://raw.githubusercontent.com/CrunchyData/crunchy-containers/master/images/crunchy_logo.png)
 
-The Crunchy <NAME> docker image contains the following packages:
+General description here...
 
-*
+## Container Specifications
 
-### Start <NAME> Instance
+See the [official documentation](<LINK>) for more details regarding how the container operates and is customized.
 
-The following starts a <NAME> container:
+## Examples
 
-```bash
-
-```
-
-### Environment Variables
-
-See the [official documentation](<LINK>) for a list of environment variables available for this container.
-
-### Configuration
-
-CONFIG HERE
-
-## More Examples
-
-For more examples, see the [official Crunchy Containers GitHub repository](https://github.com/CrunchyData/crunchy-containers/tree/master/examples/docker).
+For examples regarding the use of the container, see the [official Crunchy Containers GitHub repository](https://github.com/CrunchyData/crunchy-containers/tree/master/examples/docker).

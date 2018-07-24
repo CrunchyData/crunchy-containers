@@ -2,61 +2,12 @@
 
 ![](https://raw.githubusercontent.com/CrunchyData/crunchy-containers/master/images/crunchy_logo.png)
 
-The Crunchy Postgres GIS docker image contains the following packages (versions vary depending on PostgreSQL version):
+[PostgreSQL](https://www.postgresql.org/) (pronounced “post-gress-Q-L”) is an open source, ACID compliant, relational database management system (RDBMS) developed by a worldwide team of volunteers. The crunchy-postgres-gis container image is unmodified, open source PostgreSQL packaged and maintained by professionals. This image is identical to the crunchy-postgres image except it includes the open source geospatial extension [PostGIS](https://postgis.net/) for PostgreSQL in addition to the language extension PL/R which allows for writing functions in the R statistical computing language.
 
-* PostgreSQL (9.5, 9.6 and 10)
-* PostGIS (2.2, 2.3 and 2.4)
-* PostGIS SFCGAL
-* Postgis Tiger Geocoder
-* Postgis Topology
-* PL/R
-* pgBackRest
+## Container Specifications
 
-## Using the Image
+See the [official documentation](https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-postgres-gis/) for more details regarding how the container operates and is customized.
 
-### Start PostGIS Instance
+## Examples
 
-The following starts a PostGIS container:
-
-```bash
-$ docker run \
-    --name=postgis \
-    --hostname=postgis \
-    --publish=5432:5432 \
-    --env=PG_MODE=primary \
-    --env=PG_PRIMARY_USER=primaryuser \
-    --env=PG_PRIMARY_PASSWORD=password \
-    --env=PG_PRIMARY_HOST=localhost \
-    --env=PG_PRIMARY_PORT=5432 \
-    --env=PG_DATABASE=userdb \
-    --env=PG_USER=testuser \
-    --env=PG_PASSWORD=password \
-    --env=PG_ROOT_PASSWORD=password \
-    --detach crunchydata/crunchy-postgres-gis:centos7-10.4-2.0
-```
-
-### Connect via `psql`
-
-```bash
-$ docker exec -ti postgis psql -U postgres -d postgres -h 0.0.0.0
-```
-
-### Environment Variables
-
-See the [official documentation](https://github.com/CrunchyData/crunchy-containers/blob/master/docs/containers.adoc#environment-variables) for a list of environment 
-variables available for this container.
-
-### Configuration
-
-The following files can be mounted to `/pgdata` to apply custom configuration:
-
-* `postgresql.conf`
-* `pg_hba.conf`
-* `pgbackrest.conf`
-
-In addition to configuration files, custom SQL can be executed by mounting a `setup.sql` 
-file to `/pgdata`.
-
-## More Examples
-
-For more examples, see the [official Crunchy Containers GitHub repository](https://github.com/CrunchyData/crunchy-containers/tree/master/examples/docker).
+For examples regarding the use of the container, see the [official Crunchy Containers GitHub repository](https://github.com/CrunchyData/crunchy-containers/tree/master/examples/docker).

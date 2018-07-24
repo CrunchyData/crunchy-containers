@@ -2,13 +2,14 @@
 
 ![](https://raw.githubusercontent.com/CrunchyData/crunchy-containers/master/images/crunchy_logo.png)
 
-The Crunchy Watch docker image contains the following packages:
-  * Crunchy-Watch Golang App
+The crunchy-watch container essentially does a health check on a primary database container and performs a failover sequence if the primary is not reached. The watch container has access to a service account that is used inside the container to issue commands to OpenShift.
 
 **Note**: Crunchy Watch currently only works on Kubernetes and OpenShift.
 
-For more details on Crunchy Watch and its capabilities, see the [official Crunchy Watch GitHub repository](https://github.com/CrunchyData/crunchy-watch).
+## Container Specifications
 
-## Using Crunchy Watch
+See the [official documentation](https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-watch/) for more details regarding how the container operates and is customized.
 
-For examples on using Crunchy Watch with Kubernetes and OpenShift, see the [official Crunchy Containers GitHub repository](https://github.com/CrunchyData/crunchy-containers/tree/master/examples).
+## Examples
+
+For examples regarding the use of the container, see the [official Crunchy Containers GitHub repository](https://github.com/CrunchyData/crunchy-containers/tree/master/examples/docker).
