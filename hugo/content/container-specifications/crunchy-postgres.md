@@ -37,6 +37,7 @@ The crunchy-postgres Docker image contains the following packages (versions vary
 **PG_PRIMARY_USER**|None|Set this value to specify the username of the replication user
 **PG_ROOT_PASSWORD**|None|Set this value to specify the password of the superuser role
 **PG_USER**|None|Set this value to specify the username of the general user account
+**PG_PRIMARY_PORT**|5432|Allows you to override the default value of 5432.
 
 ### Optional
 **Name**|**Default**|**Description**
