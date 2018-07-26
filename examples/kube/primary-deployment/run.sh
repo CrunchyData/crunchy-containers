@@ -31,3 +31,10 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap primary-deployment-pg
   --from-file ${DIR?}/configs/setup.sql
 
 expenv -f $DIR/primary-deployment.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+
+if [[ ! -z ${CCP_STORAGE_CLASS} ]]
+then
+    expenv -f $DIR/replica-statefulset-sc.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+else
+    expenv -f $DIR/replica-statefulset.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+fi
