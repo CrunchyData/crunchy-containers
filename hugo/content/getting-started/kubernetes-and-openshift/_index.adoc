@@ -1928,7 +1928,7 @@ You can collect various PostgreSQL metrics from your database
 container by running a crunchy-collect container that points
 to your database container.
 
-This example starts up 4 containers:
+This example starts up 5 containers:
 
  * Collect (crunchy-collect)
  * Grafana (crunchy-grafana)
@@ -1943,6 +1943,9 @@ and applies a default configuration. If this container is running on Kubernetes 
 it will use the Kubernetes API to discover pods with the label `"crunchy-collect": "true"`.
 
 The collect container *must* have this label to be discovered in these environments.
+Additionally, the collect container uses a special PostgreSQL role `ccp_monitoring`.
+This user is created by setting the `PGMONITOR_PASSWORD` environment variable on the
+PostgreSQL container.
 
 Discovering pods requires a cluster role service account.  See the
 link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/kube/metrics/metrics.json[Kubernetes and OpenShift]
@@ -1970,7 +1973,7 @@ web addresses:
  * Grafana (http://0.0.0.0:3000)
  * Prometheus (http://0.0.0.0:9090)
 
-The crunchy-postgres container is accessible on port *12015*.
+The crunchy-postgres container is accessible on port *5432*.
 
 ==== Kubernetes and OpenShift
 
@@ -1990,8 +1993,10 @@ You can view the container logs using these command:
 ....
 ${CCP_CLI} logs -c grafana metrics
 ${CCP_CLI} logs -c prometheus metrics
-${CCP_CLI} logs -c collect pgsql
-${CCP_CLI} logs -c postgres pgsql
+${CCP_CLI} logs -c collect primary
+${CCP_CLI} logs -c postgres primary
+${CCP_CLI} logs -c collect replica
+${CCP_CLI} logs -c postgres replica
 ....
 
 === pg_audit

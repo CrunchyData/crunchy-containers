@@ -20,7 +20,35 @@ func TestMetrics(t *testing.T) {
 		defer harness.runExample("examples/kube/metrics/cleanup.sh", env, t)
 	}
 
-	pods := []string{"metrics", "pgsql"}
+	t.Log("Checking if primary deployment is ready...")
+	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "primary"); !ok {
+		t.Fatal(err)
+	}
+
+	t.Log("Checking if replica deployment is ready...")
+	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "replica"); !ok {
+		t.Fatal(err)
+	}
+
+	primary, err := harness.Client.GetDeploymentPods(harness.Namespace, "primary")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	replica, err := harness.Client.GetDeploymentPods(harness.Namespace, "replica")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	pods := []string{"metrics"}
+	for _, pod := range primary {
+		pods = append(pods, pod)
+	}
+
+	for _, pod := range replica {
+		pods = append(pods, pod)
+	}
+
 	t.Log("Checking if pods are ready to use...")
 	if err := harness.Client.CheckPods(harness.Namespace, pods); err != nil {
 		t.Fatal(err)
@@ -41,14 +69,15 @@ func TestMetrics(t *testing.T) {
 	defer grafProx.Close()
 
 	nodeLocal, nodeRemote := randomPort(), 9100
-	nodeProx, err := harness.setupProxy("pgsql", nodeLocal, nodeRemote)
+
+	nodeProx, err := harness.setupProxy(primary[0], nodeLocal, nodeRemote)
 	if err != nil {
 		t.Fatal(err)
 	}
 	defer nodeProx.Close()
 
 	pgxpLocal, pgxpRemote := randomPort(), 9187
-	pgxpProx, err := harness.setupProxy("pgsql", pgxpLocal, pgxpRemote)
+	pgxpProx, err := harness.setupProxy(primary[0], pgxpLocal, pgxpRemote)
 	if err != nil {
 		t.Fatal(err)
 	}
