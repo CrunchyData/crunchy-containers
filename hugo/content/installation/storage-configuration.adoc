@@ -108,7 +108,7 @@ class names are determined by the Kubernetes administrator and can vary.
 
 Setting up a Gluster cluster will offer you the ability to use
 dynamic storage provisioning in the examples.  A set of example
-Gluster configuration files is found at `$CCPROOT/docs/gluster`.
+Gluster configuration files is found at `$CCPROOT/examples/gluster`.
 This configuration is for a 3 node Gluster cluster which runs
 on a Centos7 Minimal VM deployment.
 
