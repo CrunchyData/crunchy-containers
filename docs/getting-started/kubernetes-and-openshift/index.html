@@ -5,7 +5,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.40" />
+<meta name="generator" content="Hugo 0.44" />
 
 <title>Kubernetes and Openshift :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/favicon.ico" type="image/x-icon" />
@@ -459,7 +459,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>v2.0, 2018-07-19</p>
+<p>v2.0, 2018-07-30</p>
 </div>
 <div class="sect1">
 <h2 id="_getting_started">Getting Started</h2>
@@ -549,7 +549,7 @@ supplied, you can inspect the primary pod as follows:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>${CCP-CLI} get pod pr-primary -o json | grep -C 1 'PG_USER\|PG_PASSWORD\|PG_DATABASE'</pre>
+<pre>${CCP_CLI} get pod pr-primary -o json | grep -C 1 'PG_USER\|PG_PASSWORD\|PG_DATABASE'</pre>
 </div>
 </div>
 <div class="paragraph">
