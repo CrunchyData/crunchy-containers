@@ -55,7 +55,7 @@ by the OpenShift `process` command.  To inspect what value is
 supplied, you can inspect the primary pod as follows:
 
 ....
-${CCP-CLI} get pod pr-primary -o json | grep -C 1 'PG_USER\|PG_PASSWORD\|PG_DATABASE'
+${CCP_CLI} get pod pr-primary -o json | grep -C 1 'PG_USER\|PG_PASSWORD\|PG_DATABASE'
 ....
 
 This will give you the environment variable values for the database created by default
