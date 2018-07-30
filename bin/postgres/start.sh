@@ -395,7 +395,7 @@ source /opt/cpm/bin/custom-configs.sh
 # Run pre-start hook if it exists
 if [ -f /pgconf/pre-start-hook.sh ]
 then
-	source /pgconf/pre-start-hook.sh 
+	source /pgconf/pre-start-hook.sh
 fi
 
 echo_info "Starting PostgreSQL.."
@@ -411,13 +411,21 @@ if [[ ${ENABLE_SSHD} == "true" ]]; then
     source /opt/cpm/bin/sshd.sh
     start_sshd
 fi
-        
+
 if [[ -v PGBOUNCER_PASSWORD ]]
 then
     if [[ ${PG_MODE?} == "primary" ]] || [[ ${PG_MODE?} == "master" ]]
     then
         echo_info "pgBouncer Password detected.  Setting up pgBouncer.."
         source /opt/cpm/bin/pgbouncer.sh
+    fi
+fi
+
+if [[ -v PGMONITOR_PASSWORD ]]
+then
+    if [[ ${PG_MODE?} == "primary" ]] || [[ ${PG_MODE?} == "master" ]]
+    then
+        source /opt/cpm/bin/pgmonitor/pgmonitor.sh
     fi
 fi
 

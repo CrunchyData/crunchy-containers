@@ -22,6 +22,12 @@ export NODE_EXP_HOME=$(find /opt/cpm/bin/ -type d -name 'node_exporter*')
 export PG_DIR=$(find /usr/ -type d -name 'pgsql-*')
 POSTGRES_EXPORTER_PIDFILE=/tmp/postgres_exporter.pid
 NODE_EXPORTER_PIDFILE=/tmp/node_exporter.pid
+CONFIG_DIR='/opt/cpm/conf'
+QUERIES=(
+    queries_common
+    queries_per_db
+    queries_pg_stat_statements
+)
 
 function trap_sigterm() {
     echo_info "Doing trap logic.."
@@ -34,17 +40,6 @@ function trap_sigterm() {
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
-
-if [[ -f /conf/queries.yml ]]
-then
-    echo_info "Custom queries configuration detected.."
-    CONFIG_DIR='/conf'
-else
-    echo_info "No custom queries detected. Applying default configuration.."
-    CONFIG_DIR='/opt/cpm/conf'
-fi
-
-PG_OPTIONS="--extend.query-path=${CONFIG_DIR?}/queries.yml"
 
 echo_info "Starting node-exporter.."
 ${NODE_EXP_HOME?}/node_exporter >>/dev/stdout 2>&1 &
@@ -62,12 +57,57 @@ done
 
 echo_info "Checking if PostgreSQL is accepting queries.."
 while true; do
-    ${PG_DIR?}/bin/psql "${DATA_SOURCE_NAME}" -c "SELECT now();" 
+    ${PG_DIR?}/bin/psql "${DATA_SOURCE_NAME}" -c "SELECT now();"
     if [ $? -eq 0 ]; then
         break
     fi
     sleep 2
 done
+
+if [[ -f /conf/queries.yml ]]
+then
+    echo_info "Custom queries configuration detected.."
+    QUERY_DIR='/conf'
+else
+    echo_info "No custom queries detected. Applying default configuration.."
+    QUERY_DIR='/tmp'
+
+    touch ${QUERY_DIR?}/queries.yml && > ${QUERY_DIR?}/queries.yml
+    for query in "${QUERIES[@]}"
+    do
+        if [[ -f ${CONFIG_DIR?}/${query?}.yml ]]
+        then
+            cat ${CONFIG_DIR?}/${query?}.yml >> /tmp/queries.yml
+        else
+            echo_err "Custom Query file ${query?}.yml does not exist (it should).."
+            exit 1
+        fi
+    done
+
+    VERSION=$(${PG_DIR?}/bin/psql "${DATA_SOURCE_NAME}" -qtAX -c "SELECT current_setting('server_version_num')")
+    if (( ${VERSION?} > 90500 )) && (( ${VERSION?} < 100000 ))
+    then
+        if [[ -f ${CONFIG_DIR?}/queries_pg92-96.yml ]]
+        then
+            cat ${CONFIG_DIR?}/queries_pg92-96.yml >> /tmp/queries.yml
+        else
+            echo_err "Custom Query file queries_pg92-96.yml does not exist (it should).."
+        fi
+    elif (( ${VERSION?} >= 100000 )) && (( ${VERSION?} < 110000 ))
+    then
+        if [[ -f ${CONFIG_DIR?}/queries_pg10.yml ]]
+        then
+            cat ${CONFIG_DIR?}/queries_pg10.yml >> /tmp/queries.yml
+        else
+            echo_err "Custom Query file queries_pg10.yml does not exist (it should).."
+        fi
+    else
+        echo_err "Unknown or unsupported version of PostgreSQL.  Exiting.."
+        exit 1
+    fi
+fi
+
+PG_OPTIONS="--extend.query-path=${QUERY_DIR?}/queries.yml"
 
 echo_info "Starting postgres-exporter.."
 ${PG_EXP_HOME?}/postgres_exporter ${PG_OPTIONS?} >>/dev/stdout 2>&1 &

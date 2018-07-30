@@ -34,6 +34,7 @@ RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
 ADD postgres_exporter.tar.gz /opt/cpm/bin
 ADD node_exporter.tar.gz /opt/cpm/bin
+ADD tools/pgmonitor/exporter/postgres /opt/cpm/conf
 ADD bin/collect /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/collect /opt/cpm/conf

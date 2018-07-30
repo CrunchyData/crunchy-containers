@@ -21,6 +21,15 @@ export PATH=$PATH:/opt/cpm/bin
 export GRAFANA_HOME=$(find /opt/cpm/bin/ -type d -name 'grafana-[1-9].*')
 export CONFIG_DIR='/opt/cpm/conf'
 
+ls -la /opt/cpm/bin
+
+DASHBOARDS=(
+    CRUD_Details
+    PostgreSQL
+    PostgreSQLDetails
+    TableSize_Detail
+)
+
 function trap_sigterm() {
     echo_info "Doing trap logic.."
     echo_warn "Clean shutdown of Grafana.."
@@ -31,60 +40,7 @@ function trap_sigterm() {
     fi
 }
 
-register_dashboards() {
-    curl -Ssl "http://${ADMIN_USER?}:${ADMIN_PASS?}@localhost:3000/api/dashboards/import" \
-        -X POST \
-        -H 'Content-Type: application/json;charset=UTF-8' \
-        --data-binary \
-        "{\"dashboard\": $(cat ${CONFIG_DIR?}/dashboard.json),
-          \"overwrite\": true,
-          \"inputs\": [{
-              \"name\":     \"DS_PROMETHEUS\",
-              \"type\":     \"datasource\",
-              \"pluginId\": \"prometheus\",
-              \"value\":    \"PROMETHEUS\"
-          }]}"
-    echo ""
-}
-
-register_datasource() {
-    curl -Ssl "http://${ADMIN_USER?}:${ADMIN_PASS?}@localhost:3000/api/datasources" \
-        -X POST \
-        -H 'Content-Type: application/json;charset=UTF-8' \
-        --data-binary \
-        "$(create_datasource_json_blob)"
-    echo ""
-}
-
-create_datasource_json_blob() {
-  auth='true'
-  if [ -z "${PROM_USER}" ] || [ -z "${PROM_PASS}" ]
-  then
-      auth='false'
-  fi
-
-  cat <<EOF
-  {
-    "name": "PROMETHEUS",
-    "type": "prometheus",
-    "url": "http://${PROM_HOST?}:${PROM_PORT?}",
-    "access": "proxy",
-    "isDefault": true,
-    "basicAuth": ${auth?},
-    "basicAuthUser": "${PROM_USER}",
-    "basicAuthPassword": "${PROM_PASS}"
-  }
-EOF
-}
-
 trap 'trap_sigterm' SIGINT SIGTERM
-
-env_check_err "ADMIN_USER"
-env_check_err "ADMIN_PASS"
-env_check_err "PROM_HOST"
-env_check_err "PROM_PORT"
-env_check_warn "PROM_USER"
-env_check_warn "PROM_PASS"
 
 if [[ -f /conf/defaults.ini ]]
 then
@@ -92,9 +48,60 @@ then
     cp /conf/defaults.ini /data/defaults.ini
 else
     echo_info "No custom configuration detected.  Applying default config.."
+    env_check_err "ADMIN_USER"
+    env_check_err "ADMIN_PASS"
+    env_check_err "PROM_HOST"
+    env_check_err "PROM_PORT"
+    env_check_warn "PROM_USER"
+    env_check_warn "PROM_PASS"
+
     cp ${CONFIG_DIR?}/defaults.ini /data/defaults.ini
-    sed -i -e 's|^admin_user = ADMIN_USER$|admin_user = '${ADMIN_USER}'|' /data/defaults.ini
-    sed -i -e 's|^admin_password = ADMIN_PASS$|admin_password = '${ADMIN_PASS}'|' /data/defaults.ini
+    sed -i -e "s|^admin_user = ADMIN_USER$|admin_user = '${ADMIN_USER}'|" /data/defaults.ini
+    sed -i -e "s|^admin_password = ADMIN_PASS$|admin_password = '${ADMIN_PASS}'|" /data/defaults.ini
+
+    PROVISION_DIR='/data/grafana/provisioning'
+    DASHBOARD_DIR="${PROVISION_DIR?}/dashboards"
+    DATASOURCE_DIR="${PROVISION_DIR?}/datasources"
+    mkdir -p ${PROVISION_DIR?} ${DASHBOARD_DIR?} ${DATASOURCE_DIR?}
+
+    # Datasource setup
+    cp ${CONFIG_DIR?}/prometheus_datasource.yml \
+        ${DATASOURCE_DIR?}/crunchy_grafana_datasource.yml
+    sed -i -e "s|url: http://PROM_HOST:PROM_PORT|url: http://${PROM_HOST?}:${PROM_PORT?}|" \
+        ${DATASOURCE_DIR?}/crunchy_grafana_datasource.yml
+    sed -i -e "s|basicAuthUser: PROM_USER|basicAuthUser: ${PROM_USER:-}|"  \
+        ${DATASOURCE_DIR?}/crunchy_grafana_datasource.yml
+    sed -i -e "s|basicAuthPassword: PROM_PASS|basicAuthPassword: ${PROM_PASS:-}|"  \
+        ${DATASOURCE_DIR?}/crunchy_grafana_datasource.yml
+
+    if [[ -z ${PROM_USER:-} ]]
+    then
+        BASIC_AUTH='false'
+    fi
+    sed -i -e "s|basicAuth: BASIC_AUTH|basicAuth: ${BASIC_AUTH:-true}|" \
+        ${DATASOURCE_DIR?}/crunchy_grafana_datasource.yml
+
+    # Dashboard setup
+    cp ${CONFIG_DIR?}/crunchy_grafana_dashboards.yml \
+        ${DASHBOARD_DIR?}/crunchy_grafana_dashboards.yml
+
+    sed -i -e "s|/etc/grafana/crunchy_dashboards|${DASHBOARD_DIR?}|" \
+        ${DASHBOARD_DIR?}/crunchy_grafana_dashboards.yml
+
+    for dashboard in "${DASHBOARDS[@]}"
+    do
+        if [[ -f ${CONFIG_DIR?}/${dashboard?}.json ]]
+        then
+            cp ${CONFIG_DIR?}/${dashboard?}.json ${DASHBOARD_DIR?}
+        else
+            echo_err "Dashboard ${dashboard?}.json does not exist (it should).."
+            exit 1
+        fi
+    done
+
+    # Set time resolution to 5m so data appears in graphs
+    # pgMonitor defaults to 2 days
+    sed -i 's/now-2d/now-5m/g' ${DASHBOARD_DIR?}/*.json
 fi
 
 echo_info "Starting grafana-server.."
@@ -103,23 +110,5 @@ ${GRAFANA_HOME?}/bin/grafana-server \
     --config=/data/defaults.ini \
     --homepath=${GRAFANA_HOME?} \
     web &
-
-while true
-do
-    echo_info "Checking if Grafana API is ready.."
-    ok=$(curl -Ssl http://${ADMIN_USER?}:${ADMIN_PASS?}@localhost:3000/api/health)
-    if grep --quiet "ok" <<< ${ok}
-    then
-        echo_info "Grafana API is ready!"
-        break
-    fi
-    sleep 5
-done
-
-echo_info "Registering Prometheus datasource in Grafana.."
-register_datasource
-
-echo_info "Importing Grafana dashboards.."
-register_dashboards
 
 wait
