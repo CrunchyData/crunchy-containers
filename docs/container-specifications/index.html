@@ -5,7 +5,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.40" />
+<meta name="generator" content="Hugo 0.44" />
 
 <title>Container Specifications :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/favicon.ico" type="image/x-icon" />
@@ -394,7 +394,7 @@
     
 
 <div class="paragraph">
-<p>v2.0, 2018-07-19</p>
+<p>v2.0, 2018-07-30</p>
 </div>
 <div class="sect1">
 <h2 id="_introduction">Introduction</h2>
@@ -411,10 +411,11 @@ are described in further detail within their respective pages.</p>
 <img src="../containers.png" alt="containers">
 </div>
 </div>
-<div class="paragraph">
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
-== Containers</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_containers">Containers</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The following container images are provided with further information:</p>
 </div>
@@ -476,17 +477,16 @@ are described in further detail within their respective pages.</p>
 </li>
 </ul>
 </div>
-<div class="exampleblock">
-<div class="content">
-<div class="paragraph">
-<p>== crunchy-postgres</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_postgres">crunchy-postgres</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The crunchy-postgres container executes the Postgres database.</p>
 </div>
-<div class="paragraph">
-<p>=== Packages</p>
-</div>
+<div class="sect2">
+<h3 id="_packages">Packages</h3>
 <div class="paragraph">
 <p>The container image is built using either the Crunchy Postgres release
 or the community version based upon a flag in the Makefile.</p>
@@ -501,16 +501,16 @@ support.</p>
 the Crunchy yum repo within the Dockerfiles and uncommenting
 the PGDG yum repo.</p>
 </div>
-<div class="paragraph">
-<p>=== setup.sql</p>
 </div>
+<div class="sect2">
+<h3 id="_setup_sql">setup.sql</h3>
 <div class="paragraph">
 <p>The <strong>setup.sql</strong> script is used to define startup SQL commands that are
 executed when the database is first created.</p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
 </div>
+<div class="sect2">
+<h3 id="_environment_variables">Environment Variables</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -609,9 +609,9 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Features</p>
 </div>
+<div class="sect2">
+<h3 id="_features">Features</h3>
 <div class="paragraph">
 <p>The following features are supported by the crunchy-postgres container:</p>
 </div>
@@ -646,9 +646,9 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Locale Support</p>
 </div>
+<div class="sect2">
+<h3 id="_locale_support">Locale Support</h3>
 <div class="paragraph">
 <p>Adding locale support to the container is accomplished by
 running 'yum reinstall glibc_common' within the container, this
@@ -668,9 +668,12 @@ command when the initial data files are created, for example:</p>
 <div class="paragraph">
 <p>By default, no locale is specified when the initdb command is executed.</p>
 </div>
-<div class="paragraph">
-<p>== crunchy-postgres-gis</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_postgres_gis">crunchy-postgres-gis</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>This container is the same as the crunchy-postgres container except
 that it includes the following PostgreSQL extensions:</p>
@@ -703,17 +706,18 @@ LANGUAGE 'c' WITH (isstrict);
 select plr_array('hello','world');</pre>
 </div>
 </div>
-<div class="paragraph">
-<p>== crunchy-backup</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_backup">crunchy-backup</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The crunchy-backup container executes a pg_basebackup against another
 database container.  The backup is a full backup using the standard
 utility included with PostgreSQL, pg_basebackup.</p>
 </div>
-<div class="paragraph">
-<p>=== Backup Location</p>
-</div>
+<div class="sect2">
+<h3 id="_backup_location">Backup Location</h3>
 <div class="paragraph">
 <p>Backups are stored in a mounted backup volume location, using the
 database host name plus <strong>-backups</strong>  as a sub-directory, then followed by a unique
@@ -722,16 +726,16 @@ user to perform database backup archives in this current version
 of the container.  This backup location is referenced when performing
 a database restore.</p>
 </div>
-<div class="paragraph">
-<p>=== Dependencies</p>
 </div>
+<div class="sect2">
+<h3 id="_dependencies">Dependencies</h3>
 <div class="paragraph">
 <p>The container is meant to be using NFS or a similar network file system
 to persist database backups.</p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
 </div>
+<div class="sect2">
+<h3 id="_environment_variables_2">Environment Variables</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -760,16 +764,18 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>== crunchy-pgdump</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_pgdump">crunchy-pgdump</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The crunchy-pgdump container executes either a pg_dump or pg_dumpall against another
 Postgres database.</p>
 </div>
-<div class="paragraph">
-<p>=== Dump Location</p>
-</div>
+<div class="sect2">
+<h3 id="_dump_location">Dump Location</h3>
 <div class="paragraph">
 <p>Dumps are stored in a mounted backup volume location, using the
 database host name plus <strong>-backups</strong>  as a sub-directory, then followed by a unique
@@ -777,19 +783,18 @@ backup directory based upon a date/timestamp.  It is left to the
 user to perform database dump archives in this current version
 of the container.</p>
 </div>
-<div class="paragraph">
-<p>=== Dependencies</p>
 </div>
+<div class="sect2">
+<h3 id="_dependencies_2">Dependencies</h3>
 <div class="paragraph">
 <p>The container is meant to be using NFS or a similar network file system
 to persist database dumps.</p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
 </div>
-<div class="paragraph">
-<p>==== REQUIRED ARGS</p>
-</div>
+<div class="sect2">
+<h3 id="_environment_variables_3">Environment Variables</h3>
+<div class="sect3">
+<h4 id="_required_args">REQUIRED ARGS</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -806,14 +811,28 @@ to persist database dumps.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>==== OPTIONAL/EXTENDED ARGS
- * PGDUMP_ALL - Run <code>pg_dump</code> instead of <code>pg_dumpall</code>.  Default is true, set to false to use <code>pg_dump</code>
- * PGDUMP_CUSTOM_OPTS - Advanced options to pass into <code>pg_dump</code> or <code>pg_dumpall</code>.  Default is empty
- * PGDUMP_FILENAME - Name of the file created by the <code>pgdump</code> container.  Default is <code>dump</code>
- * PGDUMP_PORT - Port of the PostgreSQL database to connect to.  Default is 5432
- * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs
-   Note: this mode can reveal secrets in logs.</p>
+</div>
+<div class="sect3">
+<h4 id="_optionalextended_args">OPTIONAL/EXTENDED ARGS</h4>
+<div class="ulist">
+<ul>
+<li>
+<p>PGDUMP_ALL - Run <code>pg_dump</code> instead of <code>pg_dumpall</code>.  Default is true, set to false to use <code>pg_dump</code></p>
+</li>
+<li>
+<p>PGDUMP_CUSTOM_OPTS - Advanced options to pass into <code>pg_dump</code> or <code>pg_dumpall</code>.  Default is empty</p>
+</li>
+<li>
+<p>PGDUMP_FILENAME - Name of the file created by the <code>pgdump</code> container.  Default is <code>dump</code></p>
+</li>
+<li>
+<p>PGDUMP_PORT - Port of the PostgreSQL database to connect to.  Default is 5432</p>
+</li>
+<li>
+<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs
+Note: this mode can reveal secrets in logs.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>Note: For a list of advanced options for configuring the <code>PGDUMP_CUSTOM_OPTS</code> variable, see the official documentation:</p>
@@ -828,20 +847,23 @@ to persist database dumps.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>== crunchy-collect</p>
 </div>
-<div class="paragraph">
-<p>=== Description</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_collect">crunchy-collect</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_description">Description</h3>
 <div class="paragraph">
 <p>Crunchy Collect container provides real time metrics about the PostgreSQL database
 via an API.  These metrics are scrapped and stored by Crunchy Prometheus time-series
 database and visualized by Crunchy Grafana.</p>
 </div>
-<div class="paragraph">
-<p>=== Requirements</p>
 </div>
+<div class="sect2">
+<h3 id="_requirements">Requirements</h3>
 <div class="paragraph">
 <p>This container requires TCP access to the PostgreSQL database to run queries for
 collecting metrics.  The PostgreSQL database to be scrapped is specified by the
@@ -853,9 +875,9 @@ mounting a <strong>queries.yml</strong> file to <strong>/conf</strong> on the co
 can be specified for the API to collect.  For an example of a <strong>queries.yml</strong> file, see
 <a href="https://github.com/crunchydata/crunchy-containers/blob/master/conf/collect/queries.yml">here</a>.</p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
 </div>
+<div class="sect2">
+<h3 id="_environment_variables_4">Environment Variables</h3>
 <div class="paragraph">
 <p><strong>Required:</strong></p>
 </div>
@@ -872,12 +894,14 @@ This is <strong>required</strong> to be in the form of <strong>postgresql://</st
  * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.</p>
 </div>
-<div class="paragraph">
-<p>== crunchy-prometheus</p>
 </div>
-<div class="paragraph">
-<p>=== Description</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_prometheus">crunchy-prometheus</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_description_2">Description</h3>
 <div class="paragraph">
 <p>Prometheus is a multi-dimensional time series data model with an elastic query language. It is used in collaboration
 with Grafana in this metrics suite. Overall, it’s reliable, manageable, and operationally simple for efficiently
@@ -894,9 +918,9 @@ Crunchy Collect.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Requirements</p>
 </div>
+<div class="sect2">
+<h3 id="_requirements_2">Requirements</h3>
 <div class="paragraph">
 <p>The Crunchy Prometheus container must be able to reach the Crunchy Collect container
 to scrape metrics.</p>
@@ -915,9 +939,9 @@ variable.</p>
 <p>A user may define a custom <strong>prometheus.yml</strong> file and mount to <strong>/conf</strong> for custom configuration.
 For a configuration examples, see  <a href="https://github.com/crunchydata/crunchy-containers/blob/master/conf/prometheus">here</a>.</p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
 </div>
+<div class="sect2">
+<h3 id="_environment_variables_5">Environment Variables</h3>
 <div class="paragraph">
 <p><strong>Required:</strong></p>
 </div>
@@ -948,12 +972,14 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>== crunchy-grafana</p>
 </div>
-<div class="paragraph">
-<p>=== Description</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_grafana">crunchy-grafana</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_description_3">Description</h3>
 <div class="paragraph">
 <p>Visual dashboards are created from the collected and stored data that crunchy-collect and crunchy-prometheus
 provides with the crunchy-grafana container, which hosts a web-based graphing dashboard called Grafana.</p>
@@ -977,9 +1003,9 @@ Grafana and import a premade dashboard for PostgreSQL monitoring.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Requirements</p>
 </div>
+<div class="sect2">
+<h3 id="_requirements_3">Requirements</h3>
 <div class="paragraph">
 <p>The Crunchy Grafana container must be able to reach the Crunchy Prometheus container.</p>
 </div>
@@ -996,9 +1022,9 @@ via environment variables.</p>
 <p>Users may define a custom <strong>defaults.ini</strong> file and mount to <strong>/conf</strong> for custom configuration.
 For a configuration examples, see  <a href="https://github.com/crunchydata/crunchy-containers/blob/master/conf/grafana/defaults.ini">here</a>.</p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
 </div>
+<div class="sect2">
+<h3 id="_environment_variables_6">Environment Variables</h3>
 <div class="paragraph">
 <p><strong>Required:</strong></p>
 </div>
@@ -1039,9 +1065,12 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>== crunchy-pgbadger</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_pgbadger">crunchy-pgbadger</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The crunchy-pgbadger container executes the pgbadger utility.  A small
 http server is running on the container, when a request is made to:</p>
@@ -1051,9 +1080,8 @@ http server is running on the container, when a request is made to:</p>
 <pre>http://&lt;&lt;ip address&gt;&gt;:10000/api/badgergenerate</pre>
 </div>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
-</div>
+<div class="sect2">
+<h3 id="_environment_variables_7">Environment Variables</h3>
 <div class="paragraph">
 <p><strong>Optional:</strong></p>
 </div>
@@ -1074,9 +1102,9 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Features</p>
 </div>
+<div class="sect2">
+<h3 id="_features_2">Features</h3>
 <div class="paragraph">
 <p>The following features are supported by the crunchy-pgbadger container:</p>
 </div>
@@ -1093,9 +1121,12 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>== crunchy-pgpool</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_pgpool">crunchy-pgpool</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The crunchy-pgpool container executes the pgpool utility.  Pgpool can
 be used to provide a smart PostgreSQL-aware proxy to a PostgreSQL cluster,
@@ -1116,9 +1147,8 @@ variables to the container that it will attempt to use to
 configure pgpool, this is not recommended however for a real
 pgpool deployment.</p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
-</div>
+<div class="sect2">
+<h3 id="_environment_variables_8">Environment Variables</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1139,9 +1169,9 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Features</p>
 </div>
+<div class="sect2">
+<h3 id="_features_3">Features</h3>
 <div class="paragraph">
 <p>The following features are supported by the crunchy-pgpool container:</p>
 </div>
@@ -1152,9 +1182,12 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>== crunchy-watch</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_watch">crunchy-watch</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>crunchy-watch runs as a pod unto itself
 typically.  The watch container essentially does a health check
@@ -1221,9 +1254,8 @@ the watch logic to interact with the replica containers.</p>
 <p>Starting with release 1.7.1 crunchy-watch source code is relocated
 to <a href="https://github.com/crunchydata/crunchy-watch" class="bare">https://github.com/crunchydata/crunchy-watch</a></p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
-</div>
+<div class="sect2">
+<h3 id="_environment_variables_9">Environment Variables</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1268,9 +1300,9 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Logic</p>
 </div>
+<div class="sect2">
+<h3 id="_logic">Logic</h3>
 <div class="paragraph">
 <p>The watch container will watch the primary, if the primary dies, then
 the watcher will:</p>
@@ -1308,12 +1340,14 @@ NAME             READY     STATUS    RESTARTS   AGE
 pg-replica-rc-dc   1/1       Running   2          16m</pre>
 </div>
 </div>
-<div class="paragraph">
-<p>== crunchy-vacuum</p>
 </div>
-<div class="paragraph">
-<p>=== Description</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_vacuum">crunchy-vacuum</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_description_4">Description</h3>
 <div class="paragraph">
 <p>The crunchy-vacuum container allows you to perform a SQL VACUUM job against a PostgreSQL database container.
 You specify a database to vacuum using various environment variables which are listed below. It is possible
@@ -1323,9 +1357,9 @@ to run different vacuum operations either manually or automatically through sche
 <p>The crunchy-vacuum image is executed, passed in the Postgres connection parameters to the single-primary
 PostgreSQL container. The type of vacuum performed is dictated by the environment variables passed into the job.</p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
 </div>
+<div class="sect2">
+<h3 id="_environment_variables_10">Environment Variables</h3>
 <div class="paragraph">
 <p>The complete set of environment variables read by the crunchy-vacuum job include:</p>
 </div>
@@ -1367,9 +1401,12 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>== crunchy-dba</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_dba">crunchy-dba</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The crunchy-dba container implements a cron scheduler.  The purpose
 of the crunchy-dba container is to offer a way to perform
@@ -1385,9 +1422,8 @@ the container within a database pod.</p>
 the startup of scheduled jobs.  The Kube Job type is used to execute
 the scheduled jobs with a Restart policy of Never.</p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
-</div>
+<div class="sect2">
+<h3 id="_environment_variables_11">Environment Variables</h3>
 <div class="paragraph">
 <p>The following environment variables control the actions
 of crunchy-dba:</p>
@@ -1485,13 +1521,13 @@ in performing the backup</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== CRON Expression Format</p>
 </div>
+<div class="sect2">
+<h3 id="_cron_expression_format">CRON Expression Format</h3>
 <div class="paragraph">
 <p>A cron expression represents a set of times, using 6 space-separated fields.</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Table Fields</caption>
 <colgroup>
 <col style="width: 25%;">
@@ -1559,20 +1595,18 @@ and ``sun'' are equally accepted.
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>==== Special Characters</p>
-</div>
-<div class="paragraph">
-<p>===== Asterisk ( * )</p>
-</div>
+<div class="sect3">
+<h4 id="_special_characters">Special Characters</h4>
+<div class="sect4">
+<h5 id="_asterisk">Asterisk ( * )</h5>
 <div class="paragraph">
 <p>The asterisk indicates that the cron expression will match for all values
 of the field; e.g., using an asterisk in the 5th field (month) would
 indicate every month.</p>
 </div>
-<div class="paragraph">
-<p>===== Slash ( / )</p>
 </div>
+<div class="sect4">
+<h5 id="_slash">Slash ( / )</h5>
 <div class="paragraph">
 <p>Slashes are used to describe increments of ranges. For example 3-59/15 in
 the 1st field (minutes) would indicate the 3rd minute of the hour and every
@@ -1582,35 +1616,36 @@ the field.  The form <code>N/&#8230;&#8203;'' is accepted as meaning </code>N-MA
 starting at N, use the increment until the end of that specific range.
 It does not wrap around.</p>
 </div>
-<div class="paragraph">
-<p>===== Comma ( , )</p>
 </div>
+<div class="sect4">
+<h5 id="_comma">Comma ( , )</h5>
 <div class="paragraph">
 <p>Commas are used to separate items of a list. For example, using
 ``MON,WED,FRI'' in the 5th field (day of week) would mean Mondays,
 Wednesdays and Fridays.</p>
 </div>
-<div class="paragraph">
-<p>===== Hyphen ( - )</p>
 </div>
+<div class="sect4">
+<h5 id="_hyphen">Hyphen ( - )</h5>
 <div class="paragraph">
 <p>Hyphens are used to define ranges. For example, 9-17 would indicate every
 hour between 9am and 5pm inclusive.</p>
 </div>
-<div class="paragraph">
-<p>===== Question mark ( ? )</p>
 </div>
+<div class="sect4">
+<h5 id="_question_mark">Question mark ( ? )</h5>
 <div class="paragraph">
 <p>Question mark may be used instead of '*' for leaving either day-of-month or
 day-of-week blank.</p>
 </div>
-<div class="paragraph">
-<p>==== Predefined schedules</p>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_predefined_schedules">Predefined schedules</h4>
 <div class="paragraph">
 <p>You may use one of several pre-defined schedules in place of a cron expression.</p>
 </div>
-<table class="tableblock frame-all grid-all spread">
+<table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 2. Table Predefined Schedules</caption>
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1652,9 +1687,9 @@ day-of-week blank.</p>
 </tr>
 </tbody>
 </table>
-<div class="paragraph">
-<p>==== Intervals</p>
 </div>
+<div class="sect3">
+<h4 id="_intervals">Intervals</h4>
 <div class="paragraph">
 <p>You may also schedule a job to execute at fixed intervals.  This is
 supported by formatting the cron spec like this:</p>
@@ -1686,27 +1721,29 @@ it will have only 2 minutes of idle time between each run.
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>==== Time zones</p>
 </div>
+<div class="sect3">
+<h4 id="_time_zones">Time zones</h4>
 <div class="paragraph">
 <p>All interpretation and scheduling is done in the machines local
 time zone (as provided by the Go time package
 (<a href="http://www.golang.org/pkg/time" class="bare">http://www.golang.org/pkg/time</a>).  Be aware that jobs scheduled during
 daylight-savings leap-ahead transitions will not be run!</p>
 </div>
-<div class="paragraph">
-<p>== crunchy-pgbouncer</p>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_pgbouncer">crunchy-pgbouncer</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>Crunchy pgBouncer is a lightweight connection pooler for PostgreSQL databases.</p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
-</div>
-<div class="paragraph">
-<p>==== REQUIRED ARGS</p>
-</div>
+<div class="sect2">
+<h3 id="_environment_variables_12">Environment Variables</h3>
+<div class="sect3">
+<h4 id="_required_args_2">REQUIRED ARGS</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1718,9 +1755,9 @@ set on the primary database.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>==== OPTIONAL/EXTENDED ARGS</p>
 </div>
+<div class="sect3">
+<h4 id="_optionalextended_args_2">OPTIONAL/EXTENDED ARGS</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1752,9 +1789,10 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Features</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_features_4">Features</h3>
 <div class="paragraph">
 <p>The following features are supported by the crunchy-pgbouncer container:</p>
 </div>
@@ -1775,9 +1813,9 @@ username and password in <code>users.txt</code>.  Automatically generated from e
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Restrictions</p>
 </div>
+<div class="sect2">
+<h3 id="_restrictions">Restrictions</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1789,15 +1827,17 @@ to be mounted at <code>/pgconf</code>.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>== crunchy-backrest-restore</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_backrest_restore">crunchy-backrest-restore</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The crunchy-backrest-restore container executes the pgbackrest utility, allowing FULL and DELTA restore capability. See the pgbackrest guide for more details. <a href="https://github.com/pgbackrest/pgbackrest" class="bare">https://github.com/pgbackrest/pgbackrest</a></p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
-</div>
+<div class="sect2">
+<h3 id="_environment_variables_13">Environment Variables</h3>
 <div class="paragraph">
 <p><strong>Required:</strong>
  * STANZA - desired stanza to restore from.  For most cases this should be set to <code>db</code>.</p>
@@ -1812,9 +1852,9 @@ to be mounted at <code>/pgconf</code>.</p>
  * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.</p>
 </div>
-<div class="paragraph">
-<p>=== Features</p>
 </div>
+<div class="sect2">
+<h3 id="_features_5">Features</h3>
 <div class="paragraph">
 <p>The following features are supported by the crunchy-backrest-restore container:</p>
 </div>
@@ -1828,9 +1868,9 @@ to be mounted at <code>/pgconf</code>.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Restrictions</p>
 </div>
+<div class="sect2">
+<h3 id="_restrictions_2">Restrictions</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1841,9 +1881,12 @@ to be mounted at <code>/pgconf</code>.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>== crunchy-pgadmin4</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_pgadmin4">crunchy-pgadmin4</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The crunchy-ppgadmin4 container executes the pgadmin4 web application.</p>
 </div>
@@ -1860,9 +1903,8 @@ sample screenshot is below:</p>
 <img src="../pgadmin4-screenshot.png" alt="pgadmin screenshot">
 </div>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
-</div>
+<div class="sect2">
+<h3 id="_environment_variables_14">Environment Variables</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1888,9 +1930,9 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Features</p>
 </div>
+<div class="sect2">
+<h3 id="_features_6">Features</h3>
 <div class="paragraph">
 <p>The following features are supported by the crunchy-pgadmin4 container:</p>
 </div>
@@ -1908,9 +1950,9 @@ to activate HTTPS mode.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Restrictions</p>
 </div>
+<div class="sect2">
+<h3 id="_restrictions_3">Restrictions</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1918,17 +1960,19 @@ to activate HTTPS mode.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>== crunchy-pgrestore</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_pgrestore">crunchy-pgrestore</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The restore image provides a means of performing a restore
 of a dump from pg_dump or pg_dumpall via psql or pg_restore
 to a Postgres container database.</p>
 </div>
-<div class="paragraph">
-<p>=== Dump-file Input Location</p>
-</div>
+<div class="sect2">
+<h3 id="_dump_file_input_location">Dump-file Input Location</h3>
 <div class="paragraph">
 <p>As the input files for crunchy-pgrestore, files generated by crunchy-pgdump
 are retrieved in a mounted backup volume location, using the
@@ -1937,19 +1981,18 @@ backup directory based upon a date/timestamp.  It is left to the
 user to restore database dump archives in this current version
 of the container.</p>
 </div>
-<div class="paragraph">
-<p>=== Dependencies</p>
 </div>
+<div class="sect2">
+<h3 id="_dependencies_3">Dependencies</h3>
 <div class="paragraph">
 <p>The container is meant to be using NFS or a similar network file system
 to retrieve database dumps to be restored via psql or pg_restore.</p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
 </div>
-<div class="paragraph">
-<p>==== REQUIRED ARGS</p>
-</div>
+<div class="sect2">
+<h3 id="_environment_variables_15">Environment Variables</h3>
+<div class="sect3">
+<h4 id="_required_args_3">REQUIRED ARGS</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1966,9 +2009,9 @@ to retrieve database dumps to be restored via psql or pg_restore.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>==== OPTIONAL/EXTENDED ARGS</p>
 </div>
+<div class="sect3">
+<h4 id="_optionalextended_args_3">OPTIONAL/EXTENDED ARGS</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1999,17 +2042,20 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>== crunchy-upgrade</p>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_upgrade">crunchy-upgrade</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The crunchy-upgrade container contains both the 9.5/9.6 and 9.6/10
 Postgres packages in order to perform a pg_upgrade from
 9.5 to 9.6 or 9.6 to 10 versions.</p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
-</div>
+<div class="sect2">
+<h3 id="_environment_variables_16">Environment Variables</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -2044,9 +2090,9 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Features</p>
 </div>
+<div class="sect2">
+<h3 id="_features_7">Features</h3>
 <div class="paragraph">
 <p>The following features are supported by the crunchy-upgrade container:</p>
 </div>
@@ -2063,9 +2109,9 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Restrictions</p>
 </div>
+<div class="sect2">
+<h3 id="_restrictions_4">Restrictions</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -2079,15 +2125,17 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>== crunchy-sim</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_crunchy_sim">crunchy-sim</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The crunchy-sim container is a simple traffic simulator for PostgreSQL.</p>
 </div>
-<div class="paragraph">
-<p>=== Environment Variables</p>
-</div>
+<div class="sect2">
+<h3 id="_environment_variables_17">Environment Variables</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -2136,9 +2184,9 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Features</p>
 </div>
+<div class="sect2">
+<h3 id="_features_8">Features</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -2155,9 +2203,9 @@ defined by the YAML spec.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>=== Restrictions</p>
 </div>
+<div class="sect2">
+<h3 id="_restrictions_5">Restrictions</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -2165,7 +2213,6 @@ defined by the YAML spec.</p>
 &gt;&gt;&gt;&gt;&gt;&gt;&gt; aae224745f5caf481c142b4ccbf3332ab4f45f8e</p>
 </li>
 </ul>
-</div>
 </div>
 </div>
 </div>

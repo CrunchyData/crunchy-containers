@@ -17,7 +17,7 @@
       <pubDate>Tue, 08 May 2018 08:52:09 -0700</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/installation/environment-setup/</guid>
-      <description>Table of Contents Requirements Project Environment Installing Requirements CentOS 7 RHEL 7 PostgreSQL Docker OpenShift Kubernetes Helm   Creating a Demo Namespace Kubernetes OpenShift   Next Steps   v2.0, 2018-07-19
+      <description>Table of Contents Requirements Project Environment Installing Requirements CentOS 7 RHEL 7 PostgreSQL Docker OpenShift Kubernetes Helm   Creating a Demo Namespace Kubernetes OpenShift   Next Steps   v2.0, 2018-07-30
  Requirements The Crunchy Container Suite can run on different environments including:
    Docker 1.12+
   OpenShift Container Platform 3.6+
@@ -31,7 +31,7 @@
       <pubDate>Tue, 08 May 2018 08:52:16 -0700</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/installation/build-the-containers/</guid>
-      <description>Table of Contents Build the Containers Next Steps   v2.0, 2018-07-19
+      <description>Table of Contents Build the Containers Next Steps   v2.0, 2018-07-30
  Build the Containers At this point, you have a decision to make - either download prebuilt containers from Dockerhub, or build the containers on your local host.
  To download the prebuilt containers, make sure you can login to Dockerhub, and then run the following:
  docker login cd $CCPROOT ./bin/pull-from-dockerhub.sh   Or if you&amp;#8217;d rather build the containers from source, perform a container build as follows:</description>
@@ -43,7 +43,7 @@
       <pubDate>Tue, 08 May 2018 08:52:46 -0700</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/installation/storage-configuration/</guid>
-      <description>Table of Contents Available Storage Types HostPath NFS Dynamic Storage Next Steps   v2.0, 2018-07-19
+      <description>Table of Contents Available Storage Types HostPath NFS Dynamic Storage Next Steps   v2.0, 2018-07-30
  Available Storage Types The Container Suite is tested on 3 different storage backends:
    hostPath (single node testing)
   NFS (single and multi-node testing)

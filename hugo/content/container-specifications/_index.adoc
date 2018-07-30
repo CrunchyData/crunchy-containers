@@ -16,7 +16,6 @@ The containers and their relationships to the overall architecture are depicted 
 
 image::../containers.png[containers]
 
-<<<<<<< HEAD
 == Containers
 
 The following container images are provided with further information:
@@ -39,7 +38,7 @@ The following container images are provided with further information:
     * link:/container-specifications/crunchy-pgrestore[crunchy-pgrestore]
     * link:/container-specifications/crunchy-upgrade[crunchy-upgrade]
     * link:/container-specifications/crunchy-sim[crunchy-sim]
-=======
+
 == crunchy-postgres
 
 The crunchy-postgres container executes the Postgres database.
