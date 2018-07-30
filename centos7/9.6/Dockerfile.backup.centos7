@@ -6,7 +6,6 @@ LABEL name="crunchydata/backup" \
       	PostgresFullVersion="9.6.9" \
         version="7.3" \
         release="2.0" \
-        build-date="2018-07-11" \
         url="https://crunchydata.com" \
         summary="Performs a pg_basebackup full database backup on a database container" \
         description="Meant to be executed upon demand, this container will run pg_basebackup against a running database container and write the backup files to a mounted directory." \
