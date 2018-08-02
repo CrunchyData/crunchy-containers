@@ -1,0 +1,35 @@
+# config file version
+apiVersion: 1
+
+# list of datasources to insert/update depending
+# what's available in the database
+datasources:
+  # <string, required> name of the datasource. Required
+- name: PROMETHEUS
+  # <string, required> datasource type. Required
+  type: prometheus
+  # <string, required> access mode. proxy or direct (Server or Browser in the UI). Required
+  access: proxy
+  # <int> org id. will default to orgId 1 if not specified
+  orgId: 1
+  # <string> url
+  url: http://PROM_HOST:PROM_PORT
+  # <string> database password, if used
+  password:
+  # <string> database user, if used
+  user:
+  # <string> database name, if used
+  database:
+  # <bool> enable/disable basic auth
+  basicAuth: BASIC_AUTH
+  # <string> basic auth username
+  basicAuthUser: PROM_USER
+  # <string> basic auth password
+  basicAuthPassword: PROM_PASS
+  # <bool> enable/disable with credentials headers
+  withCredentials:
+  # <bool> mark as default datasource. Max one per org
+  isDefault: true
+  version: 1
+  # <bool> allow users to edit datasources from the UI.
+  editable: true

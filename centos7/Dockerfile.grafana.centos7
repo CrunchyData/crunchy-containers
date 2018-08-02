@@ -25,6 +25,7 @@ RUN yum -y update \
 RUN mkdir -p /data /opt/cpm/bin /opt/cpm/conf
 
 ADD grafana.tar.gz /opt/cpm/bin
+ADD tools/pgmonitor/grafana /opt/cpm/conf
 ADD bin/grafana /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/grafana /opt/cpm/conf

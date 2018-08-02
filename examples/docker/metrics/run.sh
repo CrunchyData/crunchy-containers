@@ -26,7 +26,7 @@ echo "Starting the PostgreSQL container..."
 docker run \
     --name="crunchy-pgsql" \
     --hostname="crunchy-pgsql" \
-    -p 12015:5432 \
+    -p 5432:5432 \
     -v pgsql-pgdata:/pgdata \
     --network="pgnet" \
     --env-file=./env/pgsql.list \
