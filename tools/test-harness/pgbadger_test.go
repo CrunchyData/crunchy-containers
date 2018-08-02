@@ -28,7 +28,7 @@ func TestPGBadger(t *testing.T) {
 	}
 
 	local, remote := randomPort(), 10000
-	proxy, err := harness.setupProxy("badger", local, remote)
+	proxy, err := harness.setupProxy("pgbadger", local, remote)
 	if err != nil {
 		t.Fatal(err)
 	}
