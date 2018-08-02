@@ -112,7 +112,8 @@ function initdb_logic() {
             fi
         fi
   fi
-    if [[ -v CHECKSUMS ]]; then
+    if [[ ${CHECKSUMS?} == 'true' ]]
+    then
         cmd+=" --data-checksums"
     fi
     cmd+=" > /tmp/initdb.log &> /tmp/initdb.err"
@@ -395,7 +396,7 @@ source /opt/cpm/bin/custom-configs.sh
 # Run pre-start hook if it exists
 if [ -f /pgconf/pre-start-hook.sh ]
 then
-	source /pgconf/pre-start-hook.sh 
+	source /pgconf/pre-start-hook.sh
 fi
 
 echo_info "Starting PostgreSQL.."
@@ -411,7 +412,7 @@ if [[ ${ENABLE_SSHD} == "true" ]]; then
     source /opt/cpm/bin/sshd.sh
     start_sshd
 fi
-        
+
 if [[ -v PGBOUNCER_PASSWORD ]]
 then
     if [[ ${PG_MODE?} == "primary" ]] || [[ ${PG_MODE?} == "master" ]]

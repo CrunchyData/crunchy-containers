@@ -27,6 +27,7 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
+ose_hack
 
 function trap_sigterm() {
     echo_warn "Signal trap triggered, beginning shutdown.." >> $PGDATA/trap.output
@@ -41,13 +42,14 @@ env_check_err "NEW_VERSION"
 env_check_err "OLD_DATABASE_NAME"
 env_check_err "NEW_DATABASE_NAME"
 
-export PGDATAOLD=/pgolddata/$OLD_DATABASE_NAME
-dir_check_err "PGDATAOLD"
+export CHECKSUMS=${CHECKSUMS:-true}
 
-export PGDATANEW=/pgnewdata/$NEW_DATABASE_NAME
-dir_check_err "PGDATANEW"
+export PGDATAOLD=/pgolddata/${OLD_DATABASE_NAME?}
+dir_check_err "${PGDATAOLD?}"
 
-ose_hack
+export PGDATANEW=/pgnewdata/${NEW_DATABASE_NAME?}
+mkdir -p ${PGDATANEW?}
+dir_check_err "${PGDATANEW?}"
 
 # Set the postgres binary to match the NEW_VERSION
 
@@ -103,7 +105,9 @@ if [[ -v XLOGDIR ]]; then
         echo_info "XLOGDIR not found. Using default pg_wal directory.."
     fi
 fi
-if [[ -v CHECKSUMS ]]; then
+
+if [[ ${CHECKSUMS?} == 'true' ]]
+then
     options+=" --data-checksums"
 fi
 
@@ -130,9 +134,3 @@ else
 fi
 
 exit $rc
-
-#while true; do
-#	sleep 1000
-#done
-
-#wait
