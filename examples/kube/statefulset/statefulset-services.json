@@ -1,0 +1,82 @@
+{
+  "apiVersion": "v1",
+  "kind": "ServiceAccount",
+  "metadata": {
+    "name": "statefulset-sa"
+  }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "Service",
+    "metadata": {
+        "name": "statefulset",
+        "labels": {
+            "app": "statefulset"
+        }
+    },
+    "spec": {
+        "ports": [
+            {
+                "port": 5432,
+                "name": "web"
+            }
+        ],
+        "clusterIP": "None",
+        "selector": {
+            "app": "statefulset"
+        }
+    }
+}
+
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "statefulset-primary",
+        "labels": {
+            "name": "statefulset-primary"
+        }
+    },
+    "spec": {
+        "ports": [
+            {
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }
+        ],
+        "selector": {
+            "name": "statefulset-primary"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+    }
+}
+
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "statefulset-replica",
+        "labels": {
+            "name": "statefulset-replica"
+        }
+    },
+    "spec": {
+        "ports": [
+            {
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }
+        ],
+        "selector": {
+            "name": "statefulset-replica"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+    }
+}

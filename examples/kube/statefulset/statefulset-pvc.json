@@ -2,21 +2,19 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "statefulset-pgdata"
+        "name": "statefulset-pgdata",
+        "labels": {
+            "name": "statefulset-pgdata"
+        }
     },
     "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "statefulset-pgdata"
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      },
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
-        }
-      }
     }
 }

@@ -21,10 +21,11 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap primary-deployment-pg
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgprimary-secret
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service primary-deployment replica-deployment
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc primary-deployment-pgdata replica-deployment-pgdata replica2-deployment-pgdata
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc -l name=replica-deployment
 
 if [ -z "$CCP_STORAGE_CLASS" ]
 then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv primary-deployment-pgdata replica-deployment-pgdata
+  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv primary-deployment-pgdata replica-deployment-pgdata replica2-deployment-pgdata
 fi
 
 dir_check_rm "primary-deployment"
