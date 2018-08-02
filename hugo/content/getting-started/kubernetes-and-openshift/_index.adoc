@@ -219,8 +219,14 @@ sure the variable references a PG 9.6 image such as `centos7-9.6.9-2.0`.
 This will create the following in your Kubernetes environment:
 
  * a Kubernetes Job running the *crunchy-upgrade* container
- * a new data directory name *upgrade* found in the *pgnewdata*
- PVC
+ * a new data directory name *upgrade* found in the *pgnewdata* PVC
+
+{{% notice tip %}}
+Data checksums on the Crunchy PostgreSQL container were enabled by default in version 2.1.0.
+When trying to upgrade, it's required that both the old database and the new database
+have the same data checksums setting.  Prior to upgrade, check if `data_checksums`
+were enabled on the database by running the following SQL: `SHOW data_checksums`
+{{% /notice %}}
 
 ==== Kubernetes and OpenShift
 

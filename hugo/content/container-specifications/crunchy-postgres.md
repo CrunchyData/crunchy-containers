@@ -44,7 +44,7 @@ The crunchy-postgres Docker image contains the following packages (versions vary
 :-----|:-----|:-----
 **ARCHIVE_MODE**|Off|Set this value to `on` to enable continuous WAL archiving
 **ARCHIVE_TIMEOUT**|60|Set to a number (in seconds) to configure `archive_timeout` in `postgresql.conf`
-**CHECKSUMS**|Off|Enables `data-checksums` during initialization of the database.  Can only be set during initial database creation.
+**CHECKSUMS**|true|Enables `data-checksums` during initialization of the database.  Can only be set during initial database creation.  Set to `false` to disable data checksums.
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.
 **ENABLE_SSHD**|FALSE|Set this value to true to enable SSHD. See SSHD Documentation for detailed setup instructions
 **MAX_CONNECTIONS**|100|Sets the `max_connections` value in `postgresql.conf`

@@ -22,6 +22,7 @@ echo_info "Setting PGROOT to ${PGROOT?}."
 
 export PGDATA=/pgdata/$HOSTNAME
 export PGWAL=/pgwal/$HOSTNAME-wal
+export CHECKSUMS=${CHECKSUMS:-true}
 
 if [[ -v PGDATA_PATH_OVERRIDE ]]; then
     export PGDATA=/pgdata/$PGDATA_PATH_OVERRIDE

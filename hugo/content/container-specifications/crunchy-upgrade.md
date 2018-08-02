@@ -43,6 +43,13 @@ The crunchy-upgrade Docker image contains the following packages (versions vary 
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PG_LOCALE**|Default locale|If set, the locale you want to create the database with.
-**CHECKSUMS**|Disabled|If set, this value is used to enable the `--data-checksums` option when initdb is executed at initialization.
+**CHECKSUMS**|true|Enables `data-checksums` during initialization of the database.  Can only be set during initial database creation.  Set to `false` to disable data checksums.
 **XLOGDIR**|None|If set, initdb will use the specified directory for WAL.
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.
+
+{{% notice tip %}}
+Data checksums on the Crunchy PostgreSQL container were enabled by default in version 2.1.0.
+When trying to upgrade, it's required that both the old database and the new database
+have the same data checksums setting.  Prior to upgrade, check if `data_checksums`
+were enabled on the database by running the following SQL: `SHOW data_checksums`
+{{% /notice %}}
