@@ -67,6 +67,6 @@ if [[ -d ${CCPROOT?}/tools/pgmonitor ]]
 then
     rm -rf ${CCPROOT?}/tools/pgmonitor
 fi
-git clone git@github.com:crunchydata/pgmonitor.git ${CCPROOT?}/tools/pgmonitor
+git clone https://github.com/CrunchyData/pgmonitor.git ${CCPROOT?}/tools/pgmonitor
 cd ${CCPROOT?}/tools/pgmonitor
 git checkout ${PGMONITOR_COMMIT?}
