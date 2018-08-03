@@ -3,22 +3,22 @@ FROM registry.access.redhat.com/rhel7
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/pgpool" \
+  vendor="crunchy data" \
 	PostgresVersion="9.5" \
 	PostgresFullVersion="9.5.13" \
-        vendor="crunchy data" \
-        version="7.3" \
-        release="2.0" \
-        #build-date="2018-07-11" \
-        url="https://crunchydata.com" \
-        summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
-        description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the primary and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \
-        run="" \
-        start="" \
-        stop="" \
-        io.k8s.description="pgpool container" \
-        io.k8s.display-name="Crunchy pgpool container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
+  version="7.3" \
+  release="2.0" \
+  #build-date="2018-07-11" \
+  url="https://crunchydata.com" \
+  summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
+  description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the primary and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \
+  run="" \
+  start="" \
+  stop="" \
+  io.k8s.description="pgpool container" \
+  io.k8s.display-name="Crunchy pgpool container" \
+  io.openshift.expose-services="" \
+  io.openshift.tags="crunchy,database"
 
 COPY conf/atomic/pgpool/help.1 /help.1
 COPY conf/atomic/pgpool/help.md /help.md
