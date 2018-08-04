@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2017 - 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,6 +19,8 @@ source /opt/cpm/bin/common_lib.sh
 enable_debugging
 ose_hack
 
+env_check_err "STANZA"
+
 BACKREST_CONF='/pgconf/pgbackrest.conf'
 if [[ ! -f ${BACKREST_CONF?} ]]
 then
@@ -26,22 +28,36 @@ then
     exit 1
 fi
 
-env_check_err "STANZA"
-
-if [[ -v DELTA ]]
+if [[ -v PG_HOSTNAME ]]
 then
-    echo_info "Delta restore detected.  Enabling delta restore.."
-    restore_type='--delta'
-else
-    echo_info "Full restore detected.  Enabling full restore.."
+    if [[ ! -d /pgdata/${PG_HOSTNAME?} ]]
+    then
+        mkdir -p /pgdata/${PG_HOSTNAME?}
+    fi
 fi
 
 echo_info "Starting restore.."
-pgbackrest \
-    --config=${BACKREST_CONF?} \
-    --stanza=${STANZA?} \
-    ${restore_type:-} ${BACKREST_CUSTOM_OPTS:-} restore
+if [[ -v PITR_TARGET ]]
+then
+    echo_info "Point In Time Recovery restore detected.  Enabling PITR restore.."
+    pgbackrest \
+        --config=${BACKREST_CONF?} \
+        --stanza=${STANZA?} \
+        --delta --type=time "--target=${PITR_TARGET?}" restore
+else
+    if [[ -v DELTA ]]
+    then
+        echo_info "Delta restore detected.  Enabling delta restore.."
+        restore_type='--delta'
+    else
+        echo_info "Full restore detected.  Enabling full restore.."
+    fi
+
+    pgbackrest \
+        --config=${BACKREST_CONF?} \
+        --stanza=${STANZA?} \
+        ${restore_type:-} ${BACKREST_CUSTOM_OPTS:-} restore
+fi
 
 echo_info "Restore completed.  Exiting.."
-
 exit 0

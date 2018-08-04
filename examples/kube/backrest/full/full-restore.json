@@ -1,0 +1,76 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "name": "backrest-full-restore-job"
+    },
+    "spec": {
+        "template": {
+            "metadata": {
+                "name": "backrest-full-restore-job",
+                "labels": {
+                    "app": "backrest-full-restore-job"
+                }
+            },
+            "spec": {
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                },
+                "containers": [
+                    {
+                        "name": "backrest-restore",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-backrest-restore:$CCP_IMAGE_TAG",
+                        "env": [
+                            {
+                                "name": "STANZA",
+                                "value": "db"
+                            },
+                            {
+                                "name": "PG_HOSTNAME",
+				"value": "backrest-full-restored"
+                            }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/pgconf",
+                                "name": "pgconf",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/backrestrepo",
+                                "name": "backrestrepo",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "pgconf",
+                        "configMap": {
+                            "name": "br-full-restore-pgconf"
+                        }
+                    },
+                    {
+                        "name": "backrestrepo",
+                        "persistentVolumeClaim": {
+                            "claimName": "br-backups"
+                        }
+                    },
+                    {
+                        "name": "pgdata",
+                        "persistentVolumeClaim": {
+                            "claimName": "br-new-pgdata"
+                        }
+                    }
+                ],
+                "restartPolicy": "Never"
+            }
+        }
+    }
+}

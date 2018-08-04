@@ -1,0 +1,80 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "name": "backrest-pitr-restore-job"
+    },
+    "spec": {
+        "template": {
+            "metadata": {
+                "name": "backrest-pitr-restore-job",
+                "labels": {
+                    "app": "backrest-pitr-restore-job"
+                }
+            },
+            "spec": {
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                },
+                "containers": [
+                    {
+                        "name": "backrest-restore",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-backrest-restore:$CCP_IMAGE_TAG",
+                        "env": [
+                            {
+                                "name": "STANZA",
+                                "value": "db"
+                            },
+                            {
+                                "name": "PG_HOSTNAME",
+                                "value": "backrest"
+                            },
+                            {
+                                "name": "PITR_TARGET",
+                                "value": "$PITR_TARGET"
+                            }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/pgconf",
+                                "name": "pgconf",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/backrestrepo",
+                                "name": "backrestrepo",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "pgconf",
+                        "configMap": {
+                            "name": "br-pitr-restore-pgconf"
+                        }
+                    },
+                    {
+                        "name": "backrestrepo",
+                        "persistentVolumeClaim": {
+                            "claimName": "br-backups"
+                        }
+                    },
+                    {
+                        "name": "pgdata",
+                        "persistentVolumeClaim": {
+                            "claimName": "br-pgdata"
+                        }
+                    }
+                ],
+                "restartPolicy": "Never"
+            }
+        }
+    }
+}

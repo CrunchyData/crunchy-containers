@@ -66,7 +66,7 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
 
 # Link pgbackrest.conf to default location for convenience
 # Remove nologin file to prevent sshd from being blocked
-RUN ln -sf /pgconf/pgbackrest.conf /etc/pgbackrest.conf \
+RUN ln -sf /tmp/pgbackrest.conf /etc/pgbackrest.conf \
   && rm -f /run/nologin
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
