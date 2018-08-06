@@ -1,6 +1,6 @@
 FROM centos:7
 
-LABEL Release="0.0.1" Vendor="Crunchy Data Solutions"
+LABEL Release="2.1.0"
 
 ADD build/crunchy-sim /usr/bin
 

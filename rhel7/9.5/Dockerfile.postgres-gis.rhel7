@@ -4,10 +4,10 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/postgres-gis" \
         vendor="crunchy data" \
-      	PostgresVersion="9.5" \
-      	PostgresFullVersion="9.5.13" \
-        version="7.3" \
-        release="2.0" \
+	PostgresVersion="9.5" \
+	PostgresFullVersion="9.5.13" \
+	Version="7.5" \
+	Release="2.1.0" \
         url="https://crunchydata.com" \
         summary="Includes PostGIS extensions on top of crunchy-postgres" \
         description="An identical image of crunchy-postgres with the extra PostGIS and pgrouting packages added for users that require PostGIS." \
@@ -24,7 +24,7 @@ COPY conf/atomic/postgres-gis/help.md /help.md
 COPY conf/licenses /licenses
 
 # PGDG Postgres repo
-#RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
+#RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-3.noarch.rpm
 
 # if you ever need to install package docs inside the container, uncomment
 #RUN sed -i '/nodocs/d' /etc/yum.conf

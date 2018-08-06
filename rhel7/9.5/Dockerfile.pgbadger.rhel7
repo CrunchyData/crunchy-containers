@@ -6,8 +6,8 @@ LABEL name="crunchydata/pgbadger" \
         vendor="crunchy data" \
 	PostgresVersion="9.5" \
 	PostgresFullVersion="9.5.13" \
-        version="7.3" \
-        release="2.0" \
+	Version="7.5" \
+	Release="2.1.0" \
         url="https://crunchydata.com" \
         summary="HTTP wrapper around the PGBadger PostgreSQL utility" \
         description="Has an HTTP REST interface. You GET http://host:10000/api/badgergenerate, and it will generate a pgbadger report on a database container's log files." \
@@ -24,7 +24,7 @@ COPY conf/atomic/pgbadger/help.md /help.md
 COPY conf/licenses /licenses
 
 # PGDG Postgres repo
-#RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
+#RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-3.noarch.rpm
 
 # Crunchy repo
 ADD conf/CRUNCHY-GPG-KEY.public  /

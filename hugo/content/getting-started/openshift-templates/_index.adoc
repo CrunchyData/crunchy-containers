@@ -4,7 +4,7 @@ date: 2018-05-15T08:35:00-07:00
 draft: false
 ---
 
-v2.0, {docdate}
+Latest Release: 2.1.0 {docdate}
 
 The OpenShift template examples referenced in this documentation are located at the following
 directory:

@@ -4,10 +4,10 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/pgbouncer" \
         vendor="crunchy data" \
-        version="7.3" \
-      	PostgresVersion="9.6" \
-      	PostgresFullVersion="9.6.9" \
-        release="2.0" \
+	Version="7.5" \
+	PostgresVersion="9.6" \
+	PostgresFullVersion="9.6.9" \
+	Release="2.1.0" \
         url="https://crunchydata.com" \
         summary="Lightweight connection pooler for crunchy-postgres" \
         description="The aim of crunchy-pgbouncer is to lower the performance impact of opening new connections to PostgreSQL; clients connect through this service. It offers session, transaction and statement pooling." \

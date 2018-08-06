@@ -4,7 +4,7 @@ date: 2018-05-15T07:22:27-07:00
 draft: false
 ---
 
-v2.0
+v2.1.0
 
 The Crunchy Backup template takes a `pg_basebackup` of the target database.
 

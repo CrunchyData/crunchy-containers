@@ -4,10 +4,10 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/postgres-gis" \
         vendor="crunchy data" \
-      	PostgresVersion="9.6" \
-      	PostgresFullVersion="9.6.9" \
-        version="7.3" \
-        release="2.0" \
+	PostgresVersion="9.6" \
+	PostgresFullVersion="9.6.9" \
+	Version="7.5" \
+	Release="2.1.0" \
         url="https://crunchydata.com" \
         summary="Includes PostGIS extensions on top of crunchy-postgres" \
         description="An identical image of crunchy-postgres with the extra PostGIS and pgrouting packages added for users that require PostGIS." \

@@ -2,10 +2,10 @@ FROM centos:7
 
 LABEL name="crunchydata/pgdump" \
         vendor="crunchy data" \
-      	PostgresVersion="9.6" \
-      	PostgresFullVersion="9.6.9" \
-        version="7.3" \
-        release="2.0" \
+	PostgresVersion="9.6" \
+	PostgresFullVersion="9.6.9" \
+	Version="7.5" \
+	Release="2.1.0" \
         url="https://crunchydata.com" \
         summary="Performs a pg_dump on a database container" \
         description="Meant to be executed upon demand, this container will run pg_dump against a running database container and write the backup files to a mounted directory." \

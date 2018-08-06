@@ -466,7 +466,7 @@
         {
             "displayName": "Container Image Tag",
             "name": "CCP_IMAGE_TAG",
-            "value": "centos7-10.4-2.0",
+            "value": "centos7-10.4-2.1.0",
             "description": "Image version to pull",
             "required": true
         },

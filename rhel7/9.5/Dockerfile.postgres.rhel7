@@ -4,12 +4,12 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
-      	PostgresVersion="9.5" \
-      	PostgresFullVersion="9.5.13" \
-        version="7.3" \
-        release="2.0" \
+	PostgresVersion="9.5" \
+	PostgresFullVersion="9.5.13" \
+	Version="7.5" \
+	Release="2.1.0" \
         url="https://crunchydata.com" \
-        summary="PostgreSQL 9.5 (PGDG) on a RHEL7 base image" \
+	summary="PostgreSQL 9.5.13 (PGDG) on a RHEL7 base image" \
         description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
         run="" \
         start="" \
@@ -24,7 +24,7 @@ COPY conf/atomic/postgres/help.md /help.md
 COPY conf/licenses /licenses
 
 # PGDG Postgres repo
-#RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-2.noarch.rpm
+#RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-3.noarch.rpm
 
 # if you ever need to install package docs inside the container, uncomment
 #RUN sed -i '/nodocs/d' /etc/yum.conf
