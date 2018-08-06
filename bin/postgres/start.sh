@@ -308,12 +308,7 @@ function initialize_primary() {
             sleep 2
         done
 
-        BACKREST_CONF='/pgconf/pgbackrest.conf'
-        if [[ -f ${BACKREST_CONF?} ]]; then
-            echo_info "Creating stanza.."
-            pgbackrest --stanza=db stanza-create
-        fi
-
+    
         echo_info "Loading setup.sql.." >> /tmp/start-db.log
         cp /opt/cpm/bin/setup.sql /tmp
         if [ -f /pgconf/setup.sql ]; then
@@ -391,6 +386,7 @@ case "$PG_MODE" in
     ;;
 esac
 
+source /opt/cpm/bin/pgbackrest.sh
 source /opt/cpm/bin/custom-configs.sh
 
 # Run pre-start hook if it exists

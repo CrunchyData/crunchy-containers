@@ -51,7 +51,7 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
 	/pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
 # Link pgbackrest.conf to default location for convenience
-RUN ln -sf /pgconf/pgbackrest.conf /etc/pgbackrest.conf
+RUN ln -sf /tmp/pgbackrest.conf /etc/pgbackrest.conf
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
 # add volumes to allow backup of postgres files
