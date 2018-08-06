@@ -5,7 +5,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.44" />
+<meta name="generator" content="Hugo 0.45.1" />
 
 <title>crunchy-upgrade :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/favicon.ico" type="image/x-icon" />
@@ -439,7 +439,7 @@ PostgreSQL packages in order to perform a pg_upgrade from
 <p>The crunchy-upgrade Docker image contains the following packages (versions vary depending on PostgreSQL version):</p>
 
 <ul>
-<li>PostgreSQL (9.5.13, 9.6.9 and 10.4)</li>
+<li>PostgreSQL (10.4, 9.6.9 and 9.5.13)</li>
 <li>CentOS7 - publicly available</li>
 <li>RHEL7 - customers only</li>
 </ul>
@@ -504,8 +504,8 @@ PostgreSQL packages in order to perform a pg_upgrade from
 
 <tr>
 <td align="left"><strong>CHECKSUMS</strong></td>
-<td align="left">Disabled</td>
-<td align="left">If set, this value is used to enable the <code>--data-checksums</code> option when initdb is executed at initialization.</td>
+<td align="left">true</td>
+<td align="left">Enables <code>data-checksums</code> during initialization of the database.  Can only be set during initial database creation.  Set to <code>false</code> to disable data checksums.</td>
 </tr>
 
 <tr>
@@ -521,6 +521,13 @@ PostgreSQL packages in order to perform a pg_upgrade from
 </tr>
 </tbody>
 </table>
+
+<div class="notices tip" ><p>Data checksums on the Crunchy PostgreSQL container were enabled by default in version 2.1.0.
+When trying to upgrade, it&rsquo;s required that both the old database and the new database
+have the same data checksums setting.  Prior to upgrade, check if <code>data_checksums</code>
+were enabled on the database by running the following SQL: <code>SHOW data_checksums</code></p>
+</div>
+
 
 
     

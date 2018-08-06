@@ -5,7 +5,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.44" />
+<meta name="generator" content="Hugo 0.45.1" />
 
 <title>Kubernetes and Openshift :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/favicon.ico" type="image/x-icon" />
@@ -459,7 +459,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>v2.0, 2018-07-30</p>
+<p>Latest Release: 2.1.0 2018-08-06</p>
 </div>
 <div class="sect1">
 <h2 id="_getting_started">Getting Started</h2>
@@ -782,7 +782,7 @@ you perform a pg_upgrade either from a PostgreSQL version 9.5 database to
 </div>
 <div class="paragraph">
 <p>This example assumes you have run <strong>primary</strong> using a PG 9.5 or 9.6 image
-such as <code>centos7-9.5.13-2.0</code> prior to running this upgrade.</p>
+such as <code>centos7-9.5.13-2.1.0</code> prior to running this upgrade.</p>
 </div>
 <div class="paragraph">
 <p>Prior to starting this example, shut down the <strong>primary</strong> database
@@ -792,7 +792,7 @@ using the <code>examples/kube/primary/cleanup.sh</code> script.</p>
 <p>Prior to running this example, make sure your <code>CCP_IMAGE_TAG</code>
 environment variable is using the next major version of PostgreSQL that you
 want to upgrade to. For example, if you&#8217;re upgrading from 9.5 to 9.6, make
-sure the variable references a PG 9.6 image such as <code>centos7-9.6.9-2.0</code>.</p>
+sure the variable references a PG 9.6 image such as <code>centos7-9.6.9-2.1.0</code>.</p>
 </div>
 <div class="paragraph">
 <p>This will create the following in your Kubernetes environment:</p>
@@ -803,10 +803,19 @@ sure the variable references a PG 9.6 image such as <code>centos7-9.6.9-2.0</cod
 <p>a Kubernetes Job running the <strong>crunchy-upgrade</strong> container</p>
 </li>
 <li>
-<p>a new data directory name <strong>upgrade</strong> found in the <strong>pgnewdata</strong>
-PVC</p>
+<p>a new data directory name <strong>upgrade</strong> found in the <strong>pgnewdata</strong> PVC</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
+<p>Data checksums on the Crunchy PostgreSQL container were enabled by default in version 2.1.0.
+When trying to upgrade, it&#8217;s required that both the old database and the new database
+have the same data checksums setting.  Prior to upgrade, check if <code>data_checksums</code>
+were enabled on the database by running the following SQL: <code>SHOW data_checksums</code></p>
+</div>
+</div>
+
 </div>
 <div class="sect3">
 <h4 id="_kubernetes_and_openshift_3">Kubernetes and OpenShift</h4>
@@ -3384,7 +3393,7 @@ container by running a crunchy-collect container that points
 to your database container.</p>
 </div>
 <div class="paragraph">
-<p>This example starts up 4 containers:</p>
+<p>This example starts up 5 containers:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -3412,7 +3421,10 @@ and applies a default configuration. If this container is running on Kubernetes 
 it will use the Kubernetes API to discover pods with the label <code>"crunchy-collect": "true"</code>.</p>
 </div>
 <div class="paragraph">
-<p>The collect container <strong>must</strong> have this label to be discovered in these environments.</p>
+<p>The collect container <strong>must</strong> have this label to be discovered in these environments.
+Additionally, the collect container uses a special PostgreSQL role <code>ccp_monitoring</code>.
+This user is created by setting the <code>PGMONITOR_PASSWORD</code> environment variable on the
+PostgreSQL container.</p>
 </div>
 <div class="paragraph">
 <p>Discovering pods requires a cluster role service account.  See the
@@ -3457,7 +3469,7 @@ web addresses:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>The crunchy-postgres container is accessible on port <strong>12015</strong>.</p>
+<p>The crunchy-postgres container is accessible on port <strong>5432</strong>.</p>
 </div>
 </div>
 <div class="sect3">
@@ -3492,8 +3504,10 @@ web addresses:</p>
 <div class="content">
 <pre>${CCP_CLI} logs -c grafana metrics
 ${CCP_CLI} logs -c prometheus metrics
-${CCP_CLI} logs -c collect pgsql
-${CCP_CLI} logs -c postgres pgsql</pre>
+${CCP_CLI} logs -c collect primary
+${CCP_CLI} logs -c postgres primary
+${CCP_CLI} logs -c collect replica
+${CCP_CLI} logs -c postgres replica</pre>
 </div>
 </div>
 </div>
