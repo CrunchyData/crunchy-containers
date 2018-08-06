@@ -2,11 +2,10 @@ FROM centos:7
 
 LABEL name="crunchydata/restore" \
         vendor="crunchy data" \
-      	PostgresVersion="9.5" \
+	PostgresVersion="9.5" \
       	PostgresFullRelease="9.5.13" \
-        version="7.3" \
-        release="2.0" \
-        build-date="2018-07-11" \
+	Version="7.5" \
+	Release="2.1.0" \
         url="https://crunchydata.com" \
         summary="Performs a pg_restore on a database container" \
         description="Meant to be executed upon demand, this container will run pg_restore against a running database container and write the backup files to a mounted directory." \

@@ -4,9 +4,8 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/prometheus" \
         vendor="crunchy data" \
-        version="7.3" \
-        release="2.0" \
-        #build-date="2018-07-11" \
+	Version="7.5" \
+	Release="2.1.0" \
         url="https://crunchydata.com" \
         summary="Prometheus server that stores metrics for crunchy-postgres" \
         description="PostgreSQL collected metrics are stored here as defined by the Crunchy Container Suite.  Prometheus will scrape metrics from Crunchy Collect. Works in conjunction with crunchy-collect and crunchy-grafana." \

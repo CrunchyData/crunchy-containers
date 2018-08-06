@@ -12,7 +12,7 @@ PostgreSQL database.
 
 The crunchy-pgdump Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (9.5.13, 9.6.9 and 10.4)
+* PostgreSQL (10.4, 9.6.9 and 9.5.13)
 * CentOS7 - publicly available
 * RHEL7 - customers only
 

@@ -4,11 +4,10 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/pgpool" \
         vendor="crunchy data" \
-        version="7.3" \
-      	PostgresVersion="9.6" \
-      	PostgresFullVersion="9.6.9" \
-        release="2.0" \
-        #build-date="2018-07-11" \
+	Version="7.5" \
+	PostgresVersion="9.6" \
+	PostgresFullVersion="9.6.9" \
+	Release="2.1.0" \
         url="https://crunchydata.com" \
         summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
         description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the primary and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \

@@ -1,19 +1,18 @@
 FROM centos:7
 
 LABEL name="crunchydata/collect" \
+	vendor="crunchy data" \
 	PostgresVersion="9.5" \
 	PostgresFullVersion="9.5.13" \
-        vendor="crunchy data" \
-        version="7.3" \
-        release="2.0" \
-        build-date="2018-07-11" \
-        url="https://crunchydata.com" \
-        summary="Provides metrics for crunchy-postgres" \
-        description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus and crunchy-grafana." \
-        io.k8s.description="collect container" \
-        io.k8s.display-name="Crunchy collect container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
+	Version="7.5" \
+	Release="2.1.0" \
+  url="https://crunchydata.com" \
+  summary="Provides metrics for crunchy-postgres" \
+  description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus and crunchy-grafana." \
+  io.k8s.description="collect container" \
+  io.k8s.display-name="Crunchy collect container" \
+  io.openshift.expose-services="" \
+  io.openshift.tags="crunchy,database"
 
 ENV PGVERSION="9.5" PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
 
