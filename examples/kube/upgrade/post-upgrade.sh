@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,14 +13,7 @@
 # limitations under the License.
 
 source ${CCPROOT}/examples/common.sh
-echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service primary-upgrade
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod primary-upgrade
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc primary-upgrade-pgdata
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv primary-upgrade-pgdata
-fi
-
-dir_check_rm "primary-upgrade"
+expenv -f $DIR/primary-upgraded.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

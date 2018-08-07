@@ -199,17 +199,16 @@ cd $CCPROOT/examples/kube/pgadmin4-https
 An emptyDir with write access must be mounted to the `/run/httpd` directory in OpenShift.
 {{% /notice %}}
 
-=== pg_upgrade
+=== Upgrade
 
-Starting in release 1.3.1, the upgrade container will let
-you perform a pg_upgrade either from a PostgreSQL version 9.5 database to
-9.6 or from 9.6 to 10.
-
+{{% notice tip %}}
 This example assumes you have run *primary* using a PG 9.5 or 9.6 image
 such as `centos7-9.5.13-2.1.0` prior to running this upgrade.
+{{% /notice %}}
 
-Prior to starting this example, shut down the *primary* database
-using the `examples/kube/primary/cleanup.sh` script.
+Starting in release 1.3.1, the upgrade container will let
+you perform a `pg_upgrade` either from a PostgreSQL version 9.5 database to
+9.6 or from 9.6 to 10.
 
 Prior to running this example, make sure your `CCP_IMAGE_TAG`
 environment variable is using the next major version of PostgreSQL that you
@@ -243,10 +242,9 @@ ${CCP_CLI} get pod -a -l job-name=upgrade-job
 ${CCP_CLI} logs -l job-name=upgrade-job
 ....
 
-You can verify the upgraded database by running the
-`examples/kube/primary-upgrade` example. This example will mount the newly created
-and upgraded database files. Database tables and data that were in the *primary*
-test database should be found in the *primary-upgrade* database.
+You can verify the upgraded database by running the `post-upgrade.sh` script in the 
+`examples/kube/upgrade` directory.  This will create a PostgreSQL pod that mounts the 
+upgraded volume.
 
 === Cron Scheduler
 
