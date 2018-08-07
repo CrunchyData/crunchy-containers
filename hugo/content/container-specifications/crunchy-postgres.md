@@ -31,12 +31,13 @@ The crunchy-postgres Docker image contains the following packages (versions vary
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PG_DATABASE**|None|Set this value to create an initial database
+**PG_PORT**|None|Set this value to specify the container port postgres will start on
 **PG_MODE**|None|Set to `primary`, `replica` or `set` to specify the mode of the database
-**PG_PASSWORD**|None|Set this value to specify the password of the user role
-**PG_PRIMARY_PASSWORD**|None|Set this value to specify the password of the replication user
-**PG_PRIMARY_USER**|None|Set this value to specify the username of the replication user
-**PG_ROOT_PASSWORD**|None|Set this value to specify the password of the superuser role
 **PG_USER**|None|Set this value to specify the username of the general user account
+**PG_PASSWORD**|None|Set this value to specify the password of the user role
+**PG_PRIMARY_USER**|None|Set this value to specify the username of the replication user
+**PG_PRIMARY_PASSWORD**|None|Set this value to specify the password of the replication user
+**PG_ROOT_PASSWORD**|None|Set this value to specify the password of the superuser role
 
 ### Optional
 **Name**|**Default**|**Description**
