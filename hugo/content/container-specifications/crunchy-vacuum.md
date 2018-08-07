@@ -26,10 +26,10 @@ The crunchy-vacuum Docker image contains the following packages:
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **JOB_HOST**|None|The PostgreSQL host the VACUUM should be performed against.
-**PG_USER**|None|Username for the PostgreSQL role being used.
 **PG_DATABASE**|None|The PostgreSQL database the VACUUM should be performed against.
-**PG_PASSWORD**|None|Password for the PostgreSQL role being used.
 **PG_PORT**|5432|Allows you to override the default value of 5432.
+**PG_USER**|None|Username for the PostgreSQL role being used.
+**PG_PASSWORD**|None|Password for the PostgreSQL role being used.
 
 ### Optional
 **Name**|**Default**|**Description**
