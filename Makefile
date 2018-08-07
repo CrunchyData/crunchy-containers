@@ -30,7 +30,7 @@ gendeps:
 	github.com/crunchydata/crunchy-containers/badger
 
 docbuild:
-	cd docs && ./build-docs.sh
+	cd $CCPROOT && ./generate-docs.sh
 
 #=============================================
 # Targets that generate images (alphabetized)
