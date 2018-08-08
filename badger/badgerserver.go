@@ -53,5 +53,5 @@ func BadgerGenerate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println("Report generated.  Redirecting..")
-	http.Redirect(w, r, "/static", 301)
+	http.Redirect(w, r, "/static", 302)
 }
