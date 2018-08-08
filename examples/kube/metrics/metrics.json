@@ -72,21 +72,19 @@
                 "name": "prometheus",
                 "protocol": "TCP",
                 "port": 9090,
-                "targetPort": 9090,
-                "nodePort": 30002
+                "targetPort": 9090
             },
             {
                 "name": "grafana",
                 "protocol": "TCP",
                 "port": 3000,
-                "targetPort": 3000,
-                "nodePort": 30001
+                "targetPort": 3000
             }
         ],
         "selector": {
             "name": "metrics"
         },
-        "type": "NodePort",
+        "type": "ClusterIP",
         "sessionAffinity": "None"
     }
 }

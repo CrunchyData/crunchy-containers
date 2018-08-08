@@ -2272,11 +2272,16 @@ cd $CCPROOT/examples/kube/metrics
 ./run.sh
 ....
 
-You will be able to access the Grafana and Prometheus services from the following
-web addresses:
+It's required to use `port-forward` to access the Grafana dashboard.  To start the
+port-forward, run the following command:
 
- * Grafana (http://NODE_IP_ADDRESS:30001)
- * Prometheus (http://NODE_IP_ADDRESS:30002)
+....
+${CCP_CLI} port-forward metrics 3000:3000
+${CCP_CLI} port-forward metrics 9090:9090
+....
+
+ * Grafana dashboard can be then accessed from `http://127.0.0.01:3000`
+ * Prometheus dashboard can be then accessed from `http://127.0.0.01:9090`
 
 You can view the container logs using these command:
 ....
