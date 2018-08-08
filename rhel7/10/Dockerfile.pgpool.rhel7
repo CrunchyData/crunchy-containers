@@ -3,10 +3,10 @@ FROM registry.access.redhat.com/rhel7
 MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/pgpool" \
-        vendor="crunchy data" \
-	Version="7.5" \
+	vendor="crunchy data" \
 	PostgresVersion="10" \
 	PostgresFullVersion="10.4" \
+	Version="7.5" \
 	Release="2.1.0" \
         url="https://crunchydata.com" \
         summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \

@@ -4,7 +4,7 @@ MAINTAINER Crunchy Data <support@crunchydata.com>
 
 LABEL name="crunchydata/grafana" \
         vendor="crunchy data" \
-        version="7.3" \
+        Version="7.5" \
         url="https://crunchydata.com" \
         summary="Provides a Grafana web dashboard to view collected PostgreSQL metrics" \
         description="Connect this container to the crunchy-prometheus container as a data source, then use the metrics to build dashboards. Works in conjunction with crunchy-collect and crunchy-prometheus." \

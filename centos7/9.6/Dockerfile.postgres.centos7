@@ -1,7 +1,7 @@
 FROM centos:7
 
 LABEL name="crunchydata/postgres" \
-vendor="crunchy data" \
+	vendor="crunchy data" \
 	PostgresVersion="9.6" \
 	PostgresFullVersion="9.6.9" \
 	Version="7.5" \
