@@ -1327,59 +1327,81 @@ The storage portions of this example can all be found under `$CCP_STORAGE_PATH`.
 
 === pgBouncer
 
-The pgBouncer utility can be used to provide a connection pool
-to PostgreSQL databases.
+Crunchy pgBouncer is a lightweight connection pooler for PostgreSQL databases.
 
-This example configures pgBouncer to provide connection pooling
-for the pg-primary and pg-replica databases.
+The following examples create the following containers:
+  * pgBouncer Primary
+  * pgBouncer Replica
+  * PostgreSQL Primary
+  * PostgreSQL Replica
 
-On Docker, Kubernetes, and OpenShift, the example will deploy a *primary-replica* equivalent set of pods and related services.
+In Kubernetes and OpenShift, this example will also create:
+  * pgBouncer Primary Service
+  * pgBouncer Replica Service
+  * Primary Service
+  * Replica Service
+  * PostgreSQL Secrets
+  * pgBouncer Secrets
 
-A storage filesystem is required to mount the pgBouncer configuration files which are
-then mounted to `/pgconf` in the crunchy-pgbouncer container.
+To cleanup the objects created by this example, run the following in the `pgbouncer` example directory:
 
-If you mount a `/pgconf` volume, crunchy-postgres will look at that directory
-for `postgresql.conf`, `pg_hba.conf`, and `setup.sql`.  If it finds one of them it
-will use that file instead of the default files.
-
-To shutdown the instance and remove the container for each example, run the following:
 ....
 ./cleanup.sh
 ....
 
+{{% notice tip %}}
+For more information on `pgBouncer`, see the link:https://pgbouncer.github.io[official website].
+{{% /notice %}}
+
 ==== Docker
 
-The pgbouncer example is run as follows:
+Run the `pgbouncer` example:
 ....
 cd $CCPROOT/examples/docker/pgbouncer
 ./run.sh
 ....
 
-To log into the databases from the pgBouncer connection pool
-you would enter the following using the default password *password*:
+Once all containers have deployed and are ready for use, `psql` to the target
+databases through `pgBouncer`:
+
 ....
-psql -h localhost -p 6543 -U testuser pg-primary
-psql -h localhost -p 6543 -U testuser pg-replica
+psql -d userdb -h 0.0.0.0 -p 6432 -U testuser
+psql -d userdb -h 0.0.0.0 -p 6433 -U testuser
+....
+
+To connect to the administration database within `pgbouncer`, connect using `psql`:
+
+....
+psql -d pgbouncer -h 0.0.0.0 -p 6432 -U pgbouncer
+psql -d pgbouncer -h 0.0.0.0 -p 6433 -U pgbouncer
 ....
 
 ==== Kubernetes and OpenShift
 
-Running the example:
+{{% notice tip %}}
+OpenShift: If custom configurations aren't being mounted, an *emptydir* volume is required
+to be mounted at `/pgconf`.
+{{% /notice %}}
+
+Run the `pgbouncer` example:
 ....
 cd $CCPROOT/examples/kube/pgbouncer
 ./run.sh
 ....
 
-To log into the database from the pgBouncer connection pool
-you would enter the following using the default password *password*:
+Once all containers have deployed and are ready for use, `psql` to the target
+databases through `pgBouncer`:
+
 ....
-psql -h pgbouncer -U postgres pg-primary -p 6543
-psql -h pgbouncer -U postgres pg-replica -p 6543
+psql -d userdb -h pgbouncer-primary -p 6432 -U testuser
+psql -d userdb -h pgbouncer-replica -p 6432 -U testuser
 ....
 
-View the pgBouncer log as follows:
+To connect to the administration database within `pgbouncer`, connect using `psql`:
+
 ....
-${CCP_CLI} log pgbouncer
+psql -d pgbouncer -h pgbouncer-primary -p 6432 -U pgbouncer -c "SHOW SERVERS"
+psql -d pgbouncer -h pgbouncer-replica -p 6432 -U pgbouncer -c "SHOW SERVERS"
 ....
 
 === pgPool II
