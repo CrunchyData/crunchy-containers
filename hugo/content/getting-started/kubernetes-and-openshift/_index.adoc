@@ -203,7 +203,7 @@ An emptyDir with write access must be mounted to the `/run/httpd` directory in O
 
 {{% notice tip %}}
 This example assumes you have run *primary* using a PG 9.5 or 9.6 image
-such as `centos7-9.5.13-2.1.0` prior to running this upgrade.
+such as `centos7-9.5.14-2.1.0` prior to running this upgrade.
 {{% /notice %}}
 
 Starting in release 1.3.1, the upgrade container will let
@@ -213,7 +213,7 @@ you perform a `pg_upgrade` either from a PostgreSQL version 9.5 database to
 Prior to running this example, make sure your `CCP_IMAGE_TAG`
 environment variable is using the next major version of PostgreSQL that you
 want to upgrade to. For example, if you're upgrading from 9.5 to 9.6, make
-sure the variable references a PG 9.6 image such as `centos7-9.6.9-2.1.0`.
+sure the variable references a PG 9.6 image such as `centos7-9.6.10-2.1.0`.
 
 This will create the following in your Kubernetes environment:
 
