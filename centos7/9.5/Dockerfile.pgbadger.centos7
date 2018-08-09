@@ -1,9 +1,9 @@
 FROM centos:7
 
 LABEL name="crunchydata/pgbadger" \
+	vendor="crunchy data" \
 	PostgresVersion="9.5" \
 	PostgresFullVersion="9.5.13" \
-        vendor="crunchy data" \
 	Version="7.5" \
 	Release="2.1.0" \
         url="https://crunchydata.com" \

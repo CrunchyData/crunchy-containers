@@ -1,10 +1,10 @@
 FROM centos:7
 
 LABEL name="crunchydata/pgbouncer" \
-        vendor="crunchy data" \
-	Version="7.5" \
+	vendor="crunchy data" \
 	PostgresVersion="10" \
 	PostgresFullVersion="10.4" \
+	Version="7.5" \
 	Release="2.1.0" \
         url="https://crunchydata.com" \
         summary="Lightweight connection pooler for crunchy-postgres" \

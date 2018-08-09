@@ -1,10 +1,10 @@
 FROM centos:7
 
 LABEL name="crunchydata/pgpool" \
-        vendor="crunchy data" \
-	Version="7.5" \
+	vendor="crunchy data" \
 	PostgresVersion="9.6" \
 	PostgresFullVersion="9.6.9" \
+	Version="7.5" \
 	Release="2.1.0" \
         url="https://crunchydata.com" \
         summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
