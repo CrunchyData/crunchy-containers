@@ -23,7 +23,7 @@ can be specified for the API to collect. For an example of a queries.yml file, s
 
 The crunchy-collect Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (10.4, 9.6.9 and 9.5.13)
+* PostgreSQL (10.5, 9.6.10 and 9.5.14)
 * CentOS7 - publicly available
 * RHEL7 - customers only
 * [PostgreSQL Exporter](https://github.com/wrouesnel/postgres_exporter)

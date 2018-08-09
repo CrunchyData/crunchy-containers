@@ -13,11 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if [[ $(git status -s) ]]
-then
-    echo "The working directory is dirty. Please commit any pending changes."
-    exit 1;
-fi
+# if [[ $(git status -s) ]]
+# then
+#     echo "The working directory is dirty. Please commit any pending changes."
+#     exit 1;
+# fi
 
 echo "Moving to the Hugo subdirectory..."
 # Navigate to directory containing Hugo files
@@ -29,6 +29,6 @@ hugo
 
 # Add all changes and commit, push to GitHub
 echo "Updating GitHub repository..."
-git add --all && git commit -m "Publishing documentation"
+# git add --all && git commit -m "Publishing documentation"
 
 echo "Next Steps: Push your commits to your working repository and submit a pull request."
