@@ -14,52 +14,58 @@
             },
             "spec": {
                 "volumes": [
-{
-                    "name": "pgolddata",
-                    "persistentVolumeClaim": {
-                        "claimName": "upgrade-pgolddata"
-                    }
-                },
-{
-                    "name": "pgnewdata",
-                    "persistentVolumeClaim": {
-                        "claimName": "upgrade-pgnewdata"
-                    }
-                }
-],
-                "securityContext": {
-			$CCP_SECURITY_CONTEXT
-                },
-                "containers": [{
-                    "name": "upgrade",
-                    "image": "$CCP_IMAGE_PREFIX/crunchy-upgrade:$CCP_IMAGE_TAG",
-                    "volumeMounts": [
-{
-                        "mountPath": "/pgolddata",
+                    {
                         "name": "pgolddata",
-                        "readOnly": false
+                        "persistentVolumeClaim": {
+                            "claimName": "primary-pgdata"
+                        }
                     },
-{
-                        "mountPath": "/pgnewdata",
+                    {
                         "name": "pgnewdata",
-                        "readOnly": false
+                        "persistentVolumeClaim": {
+                            "claimName": "upgrade-pgnewdata"
+                        }
                     }
-],
-                    "env": [{
-                        "name": "OLD_DATABASE_NAME",
-                        "value": "primary"
-                    }, {
-                        "name": "NEW_DATABASE_NAME",
-                        "value": "primary-upgrade"
-                    }, {
-                        "name": "OLD_VERSION",
-                        "value": "9.5"
-                    }, {
-                        "name": "NEW_VERSION",
-                        "value": "9.6"
+                ],
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                },
+                "containers": [
+                    {
+                        "name": "upgrade",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-upgrade:$CCP_IMAGE_TAG",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgolddata",
+                                "name": "pgolddata",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/pgnewdata",
+                                "name": "pgnewdata",
+                                "readOnly": false
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "OLD_DATABASE_NAME",
+                                "value": "primary"
+                            },
+                            {
+                                "name": "NEW_DATABASE_NAME",
+                                "value": "primary-upgrade"
+                            },
+                            {
+                                "name": "OLD_VERSION",
+                                "value": "9.5"
+                            },
+                            {
+                                "name": "NEW_VERSION",
+                                "value": "10"
+                            }
+                        ]
                     }
-                    ]
-                }],
+                ],
                 "restartPolicy": "Never"
             }
         }
