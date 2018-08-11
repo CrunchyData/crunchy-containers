@@ -1328,12 +1328,14 @@ The storage portions of this example can all be found under `$CCP_STORAGE_PATH`.
 Crunchy pgBouncer is a lightweight connection pooler for PostgreSQL databases.
 
 The following examples create the following containers:
+
   * pgBouncer Primary
   * pgBouncer Replica
   * PostgreSQL Primary
   * PostgreSQL Replica
 
 In Kubernetes and OpenShift, this example will also create:
+
   * pgBouncer Primary Service
   * pgBouncer Replica Service
   * Primary Service
