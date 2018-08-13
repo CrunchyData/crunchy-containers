@@ -589,13 +589,14 @@ If WAL resides on PGDATA, use: `spool-path=/pgdata/HOSTNAME-spool`
 ==== Restore
 
 There are three options to choose from when performing a restore:
+
  * Delta - only restore missing files from PGDATA
  * Full - restore all files, pgdata must be empty
  * Point in Time Recovery (PITR) - delta restore to a certain point in time
 
 ===== PITR
 
-{{% notice notice %}}
+{{% notice tip %}}
 This example uses the `backrest/backup` example.  It should be left running and a
 pgBackRest backup has been created.
 {{% /notice %}}
@@ -628,7 +629,7 @@ cd $CCPROOT/examples/kube/backrest/pitr
 
 ===== Full
 
-{{% notice notice %}}
+{{% notice tip %}}
 This example uses the `backrest/backup` example.  It does not need to be running but a
 pgBackRest backup is required.
 {{% /notice %}}
@@ -656,7 +657,7 @@ cd $CCPROOT/examples/kube/backrest/full
 
 ===== Delta
 
-{{% notice notice %}}
+{{% notice tip %}}
 This example uses the `backrest/backup` example.  It does not need to be running but a
 pgBackRest backup is required.
 {{% /notice %}}
@@ -746,7 +747,7 @@ If WAL resides on PGDATA, use: `spool-path=/pgdata/HOSTNAME-spool`
 
 ===== PITR
 
-{{% notice notice %}}
+{{% notice tip %}}
 This example uses the `backrest/backup` example.  It should be left running and a
 pgBackRest backup has been created.
 {{% /notice %}}
@@ -778,7 +779,7 @@ cd $CCPROOT/examples/docker/backrest/pitr
 
 ===== Full
 
-{{% notice notice %}}
+{{% notice tip %}}
 This example uses the `backrest/backup` example.  It does not need to be running but a
 pgBackRest backup is required.
 {{% /notice %}}
@@ -805,7 +806,7 @@ cd $CCPROOT/examples/docker/backrest/full
 
 ===== Delta
 
-{{% notice notice %}}
+{{% notice tip %}}
 This example uses the `backrest/backup` example.  It does not need to be running but a
 pgBackRest backup is required.
 {{% /notice %}}
