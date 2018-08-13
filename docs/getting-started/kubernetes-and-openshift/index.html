@@ -5,7 +5,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.45.1" />
+<meta name="generator" content="Hugo 0.40" />
 
 <title>Kubernetes and Openshift :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/favicon.ico" type="image/x-icon" />
@@ -459,7 +459,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Latest Release: 2.1.0 2018-08-09</p>
+<p>Latest Release: 2.1.0 2018-08-13</p>
 </div>
 <div class="sect1">
 <h2 id="_getting_started">Getting Started</h2>
@@ -820,6 +820,14 @@ were enabled on the database by running the following SQL: <code>SHOW data_check
 <div class="sect3">
 <h4 id="_kubernetes_and_openshift_3">Kubernetes and OpenShift</h4>
 <div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
+<p>Before running the example, ensure you edit <code>upgrade.json</code> and update the <code>OLD_VERSION</code>
+and <code>NEW_VERSION</code> parameters to the ones relevant to your situation.</p>
+</div>
+</div>
+
+</div>
+<div class="paragraph">
 <p>Start the upgrade as follows:</p>
 </div>
 <div class="literalblock">
@@ -834,8 +842,8 @@ the results of the Job by examining the Job&#8217;s pod log:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>${CCP_CLI} get pod -a -l job-name=upgrade-job
-${CCP_CLI} logs -l job-name=upgrade-job</pre>
+<pre>${CCP_CLI} get pod -l job-name=upgrade
+${CCP_CLI} logs -l job-name=upgrade</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1325,7 +1333,7 @@ used for async archiving.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>${CCP_CLI} exec -it backrest /bin/bash
+<pre>${CCP_CLI} exec -it backrest-async-archive /bin/bash
 pgbackrest --stanza=db backup</pre>
 </div>
 </div>
@@ -1347,15 +1355,25 @@ If WAL resides on PGDATA, use: <code>spool-path=/pgdata/HOSTNAME-spool</code></p
 <div class="sect3">
 <h4 id="_restore">Restore</h4>
 <div class="paragraph">
-<p>There are three options to choose from when performing a restore:
- * Delta - only restore missing files from PGDATA
- * Full - restore all files, pgdata must be empty
- * Point in Time Recovery (PITR) - delta restore to a certain point in time</p>
+<p>There are three options to choose from when performing a restore:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Delta - only restore missing files from PGDATA</p>
+</li>
+<li>
+<p>Full - restore all files, pgdata must be empty</p>
+</li>
+<li>
+<p>Point in Time Recovery (PITR) - delta restore to a certain point in time</p>
+</li>
+</ul>
 </div>
 <div class="sect4">
 <h5 id="_pitr">PITR</h5>
 <div class="paragraph">
-<div class="notices notice" ><div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
 <p>This example uses the <code>backrest/backup</code> example.  It should be left running and a
 pgBackRest backup has been created.</p>
 </div>
@@ -1407,7 +1425,7 @@ a compliant timestamp, PostgreSQL can be queried using the following SQL:</p>
 <div class="sect4">
 <h5 id="_full">Full</h5>
 <div class="paragraph">
-<div class="notices notice" ><div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
 <p>This example uses the <code>backrest/backup</code> example.  It does not need to be running but a
 pgBackRest backup is required.</p>
 </div>
@@ -1455,7 +1473,7 @@ pgBackRest backup is required.</p>
 <div class="sect4">
 <h5 id="_delta">Delta</h5>
 <div class="paragraph">
-<div class="notices notice" ><div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
 <p>This example uses the <code>backrest/backup</code> example.  It does not need to be running but a
 pgBackRest backup is required.</p>
 </div>
@@ -1610,7 +1628,7 @@ If WAL resides on PGDATA, use: <code>spool-path=/pgdata/HOSTNAME-spool</code></p
 <div class="sect4">
 <h5 id="_pitr_2">PITR</h5>
 <div class="paragraph">
-<div class="notices notice" ><div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
 <p>This example uses the <code>backrest/backup</code> example.  It should be left running and a
 pgBackRest backup has been created.</p>
 </div>
@@ -1659,7 +1677,7 @@ a compliant timestamp, PostgreSQL can be queried using the following SQL:</p>
 <div class="sect4">
 <h5 id="_full_2">Full</h5>
 <div class="paragraph">
-<div class="notices notice" ><div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
 <p>This example uses the <code>backrest/backup</code> example.  It does not need to be running but a
 pgBackRest backup is required.</p>
 </div>
@@ -1704,7 +1722,7 @@ pgBackRest backup is required.</p>
 <div class="sect4">
 <h5 id="_delta_2">Delta</h5>
 <div class="paragraph">
-<div class="notices notice" ><div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
 <p>This example uses the <code>backrest/backup</code> example.  It does not need to be running but a
 pgBackRest backup is required.</p>
 </div>
@@ -2505,20 +2523,48 @@ you remove the <code>RECOVERY_TARGET_NAME</code> environment variable completely
 <p>Crunchy pgBouncer is a lightweight connection pooler for PostgreSQL databases.</p>
 </div>
 <div class="paragraph">
-<p>The following examples create the following containers:
-  * pgBouncer Primary
-  * pgBouncer Replica
-  * PostgreSQL Primary
-  * PostgreSQL Replica</p>
+<p>The following examples create the following containers:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>pgBouncer Primary</p>
+</li>
+<li>
+<p>pgBouncer Replica</p>
+</li>
+<li>
+<p>PostgreSQL Primary</p>
+</li>
+<li>
+<p>PostgreSQL Replica</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>In Kubernetes and OpenShift, this example will also create:
-  * pgBouncer Primary Service
-  * pgBouncer Replica Service
-  * Primary Service
-  * Replica Service
-  * PostgreSQL Secrets
-  * pgBouncer Secrets</p>
+<p>In Kubernetes and OpenShift, this example will also create:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>pgBouncer Primary Service</p>
+</li>
+<li>
+<p>pgBouncer Replica Service</p>
+</li>
+<li>
+<p>Primary Service</p>
+</li>
+<li>
+<p>Replica Service</p>
+</li>
+<li>
+<p>PostgreSQL Secrets</p>
+</li>
+<li>
+<p>pgBouncer Secrets</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>To cleanup the objects created by this example, run the following in the <code>pgbouncer</code> example directory:</p>
@@ -3840,7 +3886,7 @@ the database, you can invoke this URL to generate updated reports:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>curl -L http://badger:10000/api/badgergenerate</pre>
+<pre>curl -L http://pgbadger:10000/api/badgergenerate</pre>
 </div>
 </div>
 <div class="paragraph">
