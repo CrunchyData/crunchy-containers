@@ -30,7 +30,7 @@
     "spec": {
         "selector": {
           "matchLabels": {
-            "name": "br-backups"
+            "name": "br-aa-backups"
           }
         },
         "accessModes": [
