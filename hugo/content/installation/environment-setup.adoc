@@ -6,7 +6,7 @@ weight: 1
 ---
 
 :toc:
-v2.0, {docdate}
+Latest Release: 2.1.0 {docdate}
 
 == Requirements
 
@@ -34,8 +34,8 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
 export CCP_PGVERSION=10
-export CCP_PG_FULLVERSION=10.4
-export CCP_VERSION=2.0.0
+export CCP_PG_FULLVERSION=10.5
+export CCP_VERSION=2.1.0
 export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
@@ -77,7 +77,7 @@ mkdir crunchydata
 cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 2.0
+git checkout 2.1.0
 go get github.com/blang/expenv
 ....
 
@@ -104,7 +104,7 @@ mkdir crunchydata
 cd crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 2.0
+git checkout 2.1.0
 go get github.com/blang/expenv
 ....
 
@@ -269,7 +269,7 @@ You should see a single IP address returned from this command:
 hostname --ip-address
 ....
 
-When running the containers in GKE Role Based Account Control will need to be set up. 
+When running the containers in GKE Role Based Account Control will need to be set up.
 ....
 kubectl create clusterrolebinding cluster-admin-binding \
 --clusterrole cluster-admin --user $(gcloud config get-value account)

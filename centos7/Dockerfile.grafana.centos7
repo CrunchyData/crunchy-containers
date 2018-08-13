@@ -2,9 +2,8 @@ FROM centos:7
 
 LABEL name="crunchydata/grafana" \
         vendor="crunchy data" \
-        version="7.3" \
-        release="2.0" \
-        build-date="2018-07-11" \
+	Version="7.5" \
+	Release="2.1.0" \
         url="https://crunchydata.com" \
         summary="Provides a Grafana web dashboard to view collected PostgreSQL metrics" \
         description="Connect this container to the crunchy-prometheus container as a data source, then use the metrics to build dashboards. Works in conjunction with crunchy-collect and crunchy-prometheus." \
@@ -25,6 +24,7 @@ RUN yum -y update \
 RUN mkdir -p /data /opt/cpm/bin /opt/cpm/conf
 
 ADD grafana.tar.gz /opt/cpm/bin
+ADD tools/pgmonitor/grafana /opt/cpm/conf
 ADD bin/grafana /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/grafana /opt/cpm/conf

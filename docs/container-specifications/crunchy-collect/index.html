@@ -5,7 +5,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.40" />
+<meta name="generator" content="Hugo 0.45.1" />
 
 <title>crunchy-collect :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/favicon.ico" type="image/x-icon" />
@@ -416,17 +416,21 @@ via an API. These metrics are scrapped and stored by a <a href="https://promethe
 time-series database and are then graphed and visualized through the open source data
 visualizer <a href="https://grafana.com/">Grafana</a>.</p>
 
+<p>The crunchy-collect container uses <a href="https://github.com/CrunchyData/pgmonitor">pgMonitor</a> for advanced metric collection.
+It is required that the <code>crunchy-postgres</code> container has the <code>PGMONITOR_PASSWORD</code> environment
+variable to create the appropriate user (<code>ccp_monitoring</code>) to collect metrics.</p>
+
 <p>Custom queries to collect metrics can be specified by the user. By
 mounting a <strong>queries.yml</strong> file to <em>/conf</em> on the container, additional metrics
 can be specified for the API to collect. For an example of a queries.yml file, see
-<a href="https://github.com/crunchydata/crunchy-containers/blob/master/conf/collect/queries.yml">here</a>.</p>
+<a href="https://github.com/CrunchyData/pgmonitor/blob/master/exporter/postgres/queries_common.yml">here</a></p>
 
 <h2 id="packages">Packages</h2>
 
 <p>The crunchy-collect Docker image contains the following packages (versions vary depending on PostgreSQL version):</p>
 
 <ul>
-<li>PostgreSQL (9.5.13, 9.6.9 and 10.4)</li>
+<li>PostgreSQL (10.5, 9.6.10 and 9.5.14)</li>
 <li>CentOS7 - publicly available</li>
 <li>RHEL7 - customers only</li>
 <li><a href="https://github.com/wrouesnel/postgres_exporter">PostgreSQL Exporter</a></li>
@@ -450,7 +454,7 @@ can be specified for the API to collect. For an example of a queries.yml file, s
 <tr>
 <td align="left"><strong>DATA_SOURCE_NAME</strong></td>
 <td align="left">None</td>
-<td align="left">The URL for the PostgreSQL server&rsquo;s data source name. This is <em>required</em> to be in the form of <code>postgresql://</code>.</td>
+<td align="left">The URL for the PostgreSQL server&rsquo;s data source name. This is <em>required</em> to be in the form of <code>postgresql://</code>.  The user should be <code>ccp_monitoring</code> and use the <code>PGMONITOR_PASSWORD</code> value set in the <code>PostgreSQL</code> container.</td>
 </tr>
 </tbody>
 </table>

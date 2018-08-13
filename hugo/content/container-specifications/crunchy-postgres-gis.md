@@ -22,8 +22,8 @@ The following features are supported by the `crunchy-postgres-gis` container:
 
 The crunchy-postgres-gis Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (9.5.13, 9.6.9 and 10.4)
-* [pgBackRest](https://pgbackrest.org/) (2.0)
+* PostgreSQL (10.5, 9.6.10 and 9.5.14)
+* [pgBackRest](https://pgbackrest.org/) (2.x)
 * CentOS7 - publicly available
 * RHEL7 - customers only
 
@@ -33,12 +33,13 @@ The crunchy-postgres-gis Docker image contains the following packages (versions 
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PG_DATABASE**|None|Set this value to create an initial database
+**PG_PRIMARY_PORT**|None|Set this value to configure the primary PostgreSQL port.  It is recommended to use 5432.
 **PG_MODE**|None|Set to `primary`, `replica` or `set` to specify the mode of the database
-**PG_PASSWORD**|None|Set this value to specify the password of the user role
-**PG_PRIMARY_PASSWORD**|None|Set this value to specify the password of the replication user
-**PG_PRIMARY_USER**|None|Set this value to specify the username of the replication user
-**PG_ROOT_PASSWORD**|None|Set this value to specify the password of the superuser role
 **PG_USER**|None|Set this value to specify the username of the general user account
+**PG_PASSWORD**|None|Set this value to specify the password of the user role
+**PG_PRIMARY_USER**|None|Set this value to specify the username of the replication user
+**PG_PRIMARY_PASSWORD**|None|Set this value to specify the password of the replication user
+**PG_ROOT_PASSWORD**|None|Set this value to specify the password of the superuser role
 
 ### Optional
 **Name**|**Default**|**Description**

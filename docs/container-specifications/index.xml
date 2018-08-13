@@ -40,7 +40,7 @@ Features The following features are supported by the crunchy-postgres container:
       <description>The crunchy-backup container executes a full backup against another database container using the standard pg_basebackup utility that is included with PostgreSQL.
 Features The following features are supported by the crunchy-backup container:
  Backup and restoration from: pg_basebackup  Packages The crunchy-backup Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (9.5.13, 9.6.9 and 10.4) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     BACKUP_LABEL crunchy-backup The label for the backup.</description>
+ PostgreSQL (10.5, 9.6.10 and 9.5.14) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     BACKUP_LABEL crunchy-backup The label for the backup.</description>
     </item>
     
     <item>
@@ -52,7 +52,7 @@ Features The following features are supported by the crunchy-backup container:
       <description>The crunchy-backrest-restore container executes the pgBackRest utility, allowing FULL and DELTA restore capability. See the pgBackRest guide for more details.
 Features The following features are supported and required by the crunchy-backrest-restore container:
  Mounted pgbackrest.conf configuration file via the /pgconf volume Mounted /backrestrepo for access to pgBackRest archives  Packages The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (9.5.13, 9.6.9 and 10.</description>
+ PostgreSQL (10.5, 9.6.10 and 9.</description>
     </item>
     
     <item>
@@ -63,7 +63,7 @@ Features The following features are supported and required by the crunchy-backre
       <guid>https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgdump/</guid>
       <description>The crunchy-pgdump container executes either a pg_dump or pg_dumpall database backup against another PostgreSQL database.
 Packages The crunchy-pgdump Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (9.5.13, 9.6.9 and 10.4) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGDUMP_DB None Name of the database the backup is being performed on.</description>
+ PostgreSQL (10.5, 9.6.10 and 9.5.14) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGDUMP_DB None Name of the database the backup is being performed on.</description>
     </item>
     
     <item>
@@ -74,7 +74,7 @@ Packages The crunchy-pgdump Docker image contains the following packages (versio
       <guid>https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgrestore/</guid>
       <description>The restore image provides a means of performing a restore of a dump from pg_dump or pg_dumpall via psql or pg_restore to a PostgreSQL container database.
 Packages The crunchy-pgrestore Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (9.5.13, 9.6.9 and 10.4) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGRESTORE_DB None Name of the database to connect to.</description>
+ PostgreSQL (10.5, 9.6.10 and 9.5.14) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGRESTORE_DB None Name of the database to connect to.</description>
     </item>
     
     <item>
@@ -84,7 +84,8 @@ Packages The crunchy-pgrestore Docker image contains the following packages (ver
       
       <guid>https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-collect/</guid>
       <description>The crunchy-collect container provides real time metrics about the PostgreSQL database via an API. These metrics are scrapped and stored by a Prometheus time-series database and are then graphed and visualized through the open source data visualizer Grafana.
-Custom queries to collect metrics can be specified by the user. By mounting a queries.yml file to /conf on the container, additional metrics can be specified for the API to collect. For an example of a queries.</description>
+The crunchy-collect container uses pgMonitor for advanced metric collection. It is required that the crunchy-postgres container has the PGMONITOR_PASSWORD environment variable to create the appropriate user (ccp_monitoring) to collect metrics.
+Custom queries to collect metrics can be specified by the user.</description>
     </item>
     
     <item>

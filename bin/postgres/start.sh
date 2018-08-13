@@ -112,7 +112,8 @@ function initdb_logic() {
             fi
         fi
   fi
-    if [[ -v CHECKSUMS ]]; then
+    if [[ ${CHECKSUMS?} == 'true' ]]
+    then
         cmd+=" --data-checksums"
     fi
     cmd+=" > /tmp/initdb.log &> /tmp/initdb.err"
@@ -307,12 +308,7 @@ function initialize_primary() {
             sleep 2
         done
 
-        BACKREST_CONF='/pgconf/pgbackrest.conf'
-        if [[ -f ${BACKREST_CONF?} ]]; then
-            echo_info "Creating stanza.."
-            pgbackrest --stanza=db stanza-create
-        fi
-
+    
         echo_info "Loading setup.sql.." >> /tmp/start-db.log
         cp /opt/cpm/bin/setup.sql /tmp
         if [ -f /pgconf/setup.sql ]; then
@@ -390,12 +386,13 @@ case "$PG_MODE" in
     ;;
 esac
 
+source /opt/cpm/bin/pgbackrest.sh
 source /opt/cpm/bin/custom-configs.sh
 
 # Run pre-start hook if it exists
 if [ -f /pgconf/pre-start-hook.sh ]
 then
-	source /pgconf/pre-start-hook.sh 
+	source /pgconf/pre-start-hook.sh
 fi
 
 echo_info "Starting PostgreSQL.."
@@ -411,13 +408,21 @@ if [[ ${ENABLE_SSHD} == "true" ]]; then
     source /opt/cpm/bin/sshd.sh
     start_sshd
 fi
-        
+
 if [[ -v PGBOUNCER_PASSWORD ]]
 then
     if [[ ${PG_MODE?} == "primary" ]] || [[ ${PG_MODE?} == "master" ]]
     then
         echo_info "pgBouncer Password detected.  Setting up pgBouncer.."
         source /opt/cpm/bin/pgbouncer.sh
+    fi
+fi
+
+if [[ -v PGMONITOR_PASSWORD ]]
+then
+    if [[ ${PG_MODE?} == "primary" ]] || [[ ${PG_MODE?} == "master" ]]
+    then
+        source /opt/cpm/bin/pgmonitor/pgmonitor.sh
     fi
 fi
 

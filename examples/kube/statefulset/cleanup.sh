@@ -18,7 +18,7 @@ echo_info "Cleaning up.."
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} statefulset statefulset
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} sa statefulset-sa
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} clusterrolebinding statefulset-sa
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc -l 'app=statefulset'
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc -l 'name=statefulset-pgdata'
 if [ -z "$CCP_STORAGE_CLASS" ]; then
   ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv -l 'name=statefulset-pgdata'
 fi
@@ -28,3 +28,4 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod statefulset-0 statefulset-1
 
 dir_check_rm "statefulset-0"
 dir_check_rm "statefulset-1"
+dir_check_rm "statefulset-2"

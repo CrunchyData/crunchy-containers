@@ -14,11 +14,12 @@
 # limitations under the License.
 
 # Dependency Versions
-PROMETHEUS_VERSION=2.2.0
-GRAFANA_VERSION=4.6.3
-POSTGRES_EXPORTER_VERSION=0.4.4
-NODE_EXPORTER_VERSION=0.15.2
+PROMETHEUS_VERSION=2.3.1
+GRAFANA_VERSION=5.2.1
+POSTGRES_EXPORTER_VERSION=0.4.6
+NODE_EXPORTER_VERSION=0.16.0
 MERCURIAL_RPM='https://www.mercurial-scm.org/release/centos7/RPMS/x86_64/mercurial-4.6.1-1.x86_64.rpm'
+PGMONITOR_COMMIT='dffb2b5eb04ba13ee47ae81950410738d15e8c76'
 
 sudo yum -y install net-tools bind-utils wget unzip git
 
@@ -27,7 +28,7 @@ sudo yum -y install net-tools bind-utils wget unzip git
 #
 
 wget -O $CCPROOT/prometheus.tar.gz https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-amd64.tar.gz
-wget -O $CCPROOT/grafana.tar.gz https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-${GRAFANA_VERSION}.linux-x64.tar.gz
+wget -O $CCPROOT/grafana.tar.gz https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-${GRAFANA_VERSION}.linux-amd64.tar.gz
 wget -O $CCPROOT/postgres_exporter.tar.gz https://github.com/wrouesnel/postgres_exporter/releases/download/v${POSTGRES_EXPORTER_VERSION?}/postgres_exporter_v${POSTGRES_EXPORTER_VERSION?}_linux-amd64.tar.gz
 wget -O $CCPROOT/node_exporter.tar.gz https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
 
@@ -60,3 +61,12 @@ go get github.com/tools/godep
 sudo yum -y install ${MERCURIAL_RPM?}
 
 godep restore
+
+# pgMonitor Setup
+if [[ -d ${CCPROOT?}/tools/pgmonitor ]]
+then
+    rm -rf ${CCPROOT?}/tools/pgmonitor
+fi
+git clone https://github.com/CrunchyData/pgmonitor.git ${CCPROOT?}/tools/pgmonitor
+cd ${CCPROOT?}/tools/pgmonitor
+git checkout ${PGMONITOR_COMMIT?}

@@ -3,3 +3,4 @@ ADMIN_USER=admin
 ADMIN_PASS=password
 PROM_HOST=crunchy-prometheus
 PROM_PORT=9090
+CRUNCHY_DEBUG=true

@@ -18,8 +18,8 @@ The following features are supported and required by the crunchy-backrest-restor
 
 The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (9.5.13, 9.6.9 and 10.4)
-* [pgBackRest](https://pgbackrest.org/) (2.0)
+* PostgreSQL (10.5, 9.6.10 and 9.5.14)
+* [pgBackRest](https://pgbackrest.org/) (2.x)
 * CentOS7 - publicly available
 * RHEL7 - customers only
 
@@ -34,4 +34,6 @@ The crunchy-backrest-restore Docker image contains the following packages (versi
 ### Optional
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
+**PG_HOSTNAME**|None|When restoring a backup to a new volume, this volume should be set to the hostname of the PostgreSQL container that will mount the restored volume.  Required for full restores to new volumes.
+**PITR_TARGET**|None|PostgreSQL timestamp used when restoring up to a point in time.  Required for PITR delta restores.
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.

@@ -5,7 +5,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.40" />
+<meta name="generator" content="Hugo 0.45.1" />
 
 <title>Kubernetes and Openshift :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/favicon.ico" type="image/x-icon" />
@@ -409,7 +409,7 @@
 <li><a href="#_kubernetes_secrets">Kubernetes Secrets</a></li>
 <li><a href="#_pgadmin4">pgAdmin4</a></li>
 <li><a href="#_pgadmin4_with_tls">pgAdmin4 with TLS</a></li>
-<li><a href="#_pg_upgrade">pg_upgrade</a></li>
+<li><a href="#_upgrade">Upgrade</a></li>
 <li><a href="#_cron_scheduler">Cron Scheduler</a></li>
 <li><a href="#_vacuum">Vacuum</a></li>
 <li><a href="#_systemd">systemd</a></li>
@@ -459,7 +459,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>v2.0, 2018-07-19</p>
+<p>Latest Release: 2.1.0 2018-08-09</p>
 </div>
 <div class="sect1">
 <h2 id="_getting_started">Getting Started</h2>
@@ -549,7 +549,7 @@ supplied, you can inspect the primary pod as follows:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>${CCP-CLI} get pod pr-primary -o json | grep -C 1 'PG_USER\|PG_PASSWORD\|PG_DATABASE'</pre>
+<pre>${CCP_CLI} get pod pr-primary -o json | grep -C 1 'PG_USER\|PG_PASSWORD\|PG_DATABASE'</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -774,25 +774,25 @@ OpenShift, replace <strong>127.0.0.1:5050</strong> with the &lt;NODE_IP&gt;:3000
 </div>
 </div>
 <div class="sect2">
-<h3 id="_pg_upgrade">pg_upgrade</h3>
+<h3 id="_upgrade">Upgrade</h3>
+<div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
+<p>This example assumes you have run <strong>primary</strong> using a PG 9.5 or 9.6 image
+such as <code>centos7-9.5.14-2.1.0</code> prior to running this upgrade.</p>
+</div>
+</div>
+
+</div>
 <div class="paragraph">
 <p>Starting in release 1.3.1, the upgrade container will let
-you perform a pg_upgrade either from a PostgreSQL version 9.5 database to
+you perform a <code>pg_upgrade</code> either from a PostgreSQL version 9.5 database to
 9.6 or from 9.6 to 10.</p>
-</div>
-<div class="paragraph">
-<p>This example assumes you have run <strong>primary</strong> using a PG 9.5 or 9.6 image
-such as <code>centos7-9.5.13-2.0</code> prior to running this upgrade.</p>
-</div>
-<div class="paragraph">
-<p>Prior to starting this example, shut down the <strong>primary</strong> database
-using the <code>examples/kube/primary/cleanup.sh</code> script.</p>
 </div>
 <div class="paragraph">
 <p>Prior to running this example, make sure your <code>CCP_IMAGE_TAG</code>
 environment variable is using the next major version of PostgreSQL that you
 want to upgrade to. For example, if you&#8217;re upgrading from 9.5 to 9.6, make
-sure the variable references a PG 9.6 image such as <code>centos7-9.6.9-2.0</code>.</p>
+sure the variable references a PG 9.6 image such as <code>centos7-9.6.10-2.1.0</code>.</p>
 </div>
 <div class="paragraph">
 <p>This will create the following in your Kubernetes environment:</p>
@@ -803,10 +803,19 @@ sure the variable references a PG 9.6 image such as <code>centos7-9.6.9-2.0</cod
 <p>a Kubernetes Job running the <strong>crunchy-upgrade</strong> container</p>
 </li>
 <li>
-<p>a new data directory name <strong>upgrade</strong> found in the <strong>pgnewdata</strong>
-PVC</p>
+<p>a new data directory name <strong>upgrade</strong> found in the <strong>pgnewdata</strong> PVC</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
+<p>Data checksums on the Crunchy PostgreSQL container were enabled by default in version 2.1.0.
+When trying to upgrade, it&#8217;s required that both the old database and the new database
+have the same data checksums setting.  Prior to upgrade, check if <code>data_checksums</code>
+were enabled on the database by running the following SQL: <code>SHOW data_checksums</code></p>
+</div>
+</div>
+
 </div>
 <div class="sect3">
 <h4 id="_kubernetes_and_openshift_3">Kubernetes and OpenShift</h4>
@@ -830,10 +839,9 @@ ${CCP_CLI} logs -l job-name=upgrade-job</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>You can verify the upgraded database by running the
-<code>examples/kube/primary-upgrade</code> example. This example will mount the newly created
-and upgraded database files. Database tables and data that were in the <strong>primary</strong>
-test database should be found in the <strong>primary-upgrade</strong> database.</p>
+<p>You can verify the upgraded database by running the <code>post-upgrade.sh</code> script in the
+<code>examples/kube/upgrade</code> directory.  This will create a PostgreSQL pod that mounts the
+upgraded volume.</p>
 </div>
 </div>
 </div>
@@ -1187,21 +1195,46 @@ the <code>pgbackrest.conf</code> file is located:</p>
 </div>
 </div>
 <div class="paragraph">
+<div class="notices warning" ><div class="paragraph">
 <p>This requires you use a pgbackrest stanza name of <strong>db</strong> within the
 <code>pgbackrest.conf</code> file you mount.</p>
 </div>
+</div>
+
+</div>
 <div class="paragraph">
 <p>When set, WAL files generated by the database will be written
-out to the <code>/backrestrepo</code> mount point.</p>
+out to the <code>/backrestrepo/HOSTNAME-backups</code> mount point.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, the Crunchy Postgres container can templatize <code>pgbackrest.conf</code> files
+by searching for the HOSTNAME values in a mounted <code>pgbackrest.conf</code> file.</p>
+</div>
+<div class="paragraph">
+<p>For example, <code>db-path=/pgdata/HOSTNAME</code> will render to <code>db-path=/pgdata/primary</code> if
+the container&#8217;s hostname is primary.  HOSTNAME will be replaced with the value of
+<code>PGDATA_PATH_OVERRIDE</code> when working with deployments/replicasets.</p>
+</div>
+<div class="paragraph">
+<div class="notices warning" ><div class="paragraph">
+<p>The templating example above works for <code>db-path</code> settings, however, <code>repo-path</code> should
+follow the convention <code>repo-path=/backrestrepo/HOSTNAME-backups</code> in cases where
+volumes are being mounted to a single mount point (such as hostPath or NFS).  Without
+the additional <code>-backups</code> the backups will populate in the <code>pgdata</code> directory.</p>
+</div>
+</div>
+
 </div>
 <div class="sect3">
 <h4 id="_kubernetes_and_openshift_8">Kubernetes and OpenShift</h4>
+<div class="sect4">
+<h5 id="_backup">Backup</h5>
 <div class="paragraph">
 <p>Start the example as follows:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>cd $CCPROOT/examples/kube/backrest
+<pre>cd $CCPROOT/examples/kube/backrest/backup
 ./run.sh</pre>
 </div>
 </div>
@@ -1211,19 +1244,19 @@ out to the <code>/backrestrepo</code> mount point.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>configMap named backrest-pgconf which contains the pgbackrest.conf file</p>
+<p>configMap containing <code>pgbackrest.conf</code></p>
 </li>
 <li>
-<p>backrest pod with pgbackrest archive enabled and an initial stanza db created on initialization</p>
+<p>PostgreSQL pod with pgBackRest configured</p>
 </li>
 <li>
-<p>backrest service</p>
+<p>PostgreSQL service</p>
 </li>
 <li>
-<p>backrest-pgdata PVC which is used for <code>/pgdata</code></p>
+<p>PVC for the PGDATA directory</p>
 </li>
 <li>
-<p>backrest-backrestrepo PVC which is used for <code>/backrestrepo</code></p>
+<p>PVC for the BackRest Backups and Archives directory</p>
 </li>
 </ul>
 </div>
@@ -1235,59 +1268,480 @@ out to the <code>/backrestrepo</code> mount point.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>${CCP_CLI} exec -it backrest bash
+<pre>${CCP_CLI} exec -it backrest /bin/bash
+pgbackrest --stanza=db backup --type=full</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_async_archiving">Async Archiving</h5>
+<div class="paragraph">
+<p>pgBackRest supports asyncronous archiving to pull and push Write Ahead Logs.
+Asynchronous operation is more efficient because it can reuse connections and take
+advantage of parallelism.  For more information on async archiving, see the pgBackRest
+<a href="https://pgbackrest.org/user-guide.html#async-archiving">official documentation</a>.</p>
+</div>
+<div class="paragraph">
+<p>This will create the following in your Kubernetes environment:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>configMap containing <code>pgbackrest.conf</code></p>
+</li>
+<li>
+<p>PostgreSQL pod with pgBackRest configured and archiving asynchronously.</p>
+</li>
+<li>
+<p>PostgreSQL service</p>
+</li>
+<li>
+<p>PVC for the PGDATA directory</p>
+</li>
+<li>
+<p>PVC for the BackRest Backups and Archives directory</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Start the example as follows:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/kube/backrest/async-archiving
+./run.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Examine the <code>/backrestrepo/HOSTNAME-backups</code> location to view the archive directory
+and ensure WAL archiving is working.</p>
+</div>
+<div class="paragraph">
+<p>Examine the <code>/pgdata/HOSTNAME-spool</code> location to view the transient directory
+used for async archiving.</p>
+</div>
+<div class="paragraph">
+<p>You can create a backup using backrest using this command within the container:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>${CCP_CLI} exec -it backrest /bin/bash
 pgbackrest --stanza=db backup</pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="notices warning" ><div class="paragraph">
+<p>A spooling directory is automatically created in both <code>/pgdata</code> and <code>/pgwal</code>.  It is
+advised to configure pgBackRest to use the spooling location closest to the Write Ahead Log.</p>
+</div>
+<div class="paragraph">
+<p>If the PostgreSQL container was created using the <code>XLOGDIR</code> variable, the <code>/pgwal/HOSTNAME-spool</code>
+directory should be configured in <code>pgbackrest.conf</code> as such: <code>spool-path=/pgwal/HOSTNAME-spool</code>.
+If WAL resides on PGDATA, use: <code>spool-path=/pgdata/HOSTNAME-spool</code></p>
+</div>
+</div>
+
 </div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_restore">Restore</h4>
 <div class="paragraph">
-<p>There are two options to choose from when performing a restore, DELTA and FULL. A FULL is the default; a DELTA will only occur if the environment variable DELTA is specified in the restore-job spec. Consult the pgbackrest user guide to determine which is best suited to run.</p>
+<p>There are three options to choose from when performing a restore:
+ * Delta - only restore missing files from PGDATA
+ * Full - restore all files, pgdata must be empty
+ * Point in Time Recovery (PITR) - delta restore to a certain point in time</p>
+</div>
+<div class="sect4">
+<h5 id="_pitr">PITR</h5>
+<div class="paragraph">
+<div class="notices notice" ><div class="paragraph">
+<p>This example uses the <code>backrest/backup</code> example.  It should be left running and a
+pgBackRest backup has been created.</p>
+</div>
+</div>
+
 </div>
 <div class="paragraph">
-<p>Steps for FULL restore</p>
+<p>Start the example as follows:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/kube/backrest/pitr
+./run.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will create the following in your Kubernetes environment:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Delete the backrest pod, if still running using</p>
+<p>configMap containing <code>pgbackrest.conf</code></p>
 </li>
 <li>
-<p>Empty the PGDATA directory (remove all files)</p>
-</li>
-<li>
-<p>Navigate to the backrest-restore examples directory. Execute the <code>full-restore.sh</code> script.</p>
-</li>
-<li>
-<p>Check the restore logs for the container to verify success. You can also view the logs of the completed job pod with <code>${CCP_CLI} get pod -a</code></p>
-</li>
-<li>
-<p>Re-create the backrest pod in the backrest examples directory. The database will recover.</p>
+<p>Backrest-Restore pod with pgBackRest configured for PITR restore</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Steps for DELTA restore</p>
+<p>pgBackRest will restore the <code>pgdata</code> volume mounted to the restore container
+to the point in time specified by the <code>PITR_TARGET</code> environment variable.  To get
+a compliant timestamp, PostgreSQL can be queried using the following SQL:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>psql -U postgres -Atc 'select current_timestamp'</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After a successful restore, run the following to start the restored PostgreSQL container:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/kube/backrest/pitr
+./post-restore.sh</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_full">Full</h5>
+<div class="paragraph">
+<div class="notices notice" ><div class="paragraph">
+<p>This example uses the <code>backrest/backup</code> example.  It does not need to be running but a
+pgBackRest backup is required.</p>
+</div>
+</div>
+
+</div>
+<div class="paragraph">
+<p>Start the example as follows:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/kube/backrest/full
+./run.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will create the following in your Kubernetes environment:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Delete the backrest pod, if still running</p>
+<p>configMap containing <code>pgbackrest.conf</code></p>
 </li>
 <li>
-<p>rm postmaster.pid from PGDATA.</p>
+<p>Backrest-Restore pod with pgBackRest configured for full restore</p>
 </li>
 <li>
-<p>Navigate to the backrest-restore examples directory. Execute the <code>delta-restore.sh</code> script.</p>
-</li>
-<li>
-<p>Check the restore logs for the container to verify success. You can also view the logs of the completed job pod with <code>${CCP_CLI} get pod -a</code></p>
-</li>
-<li>
-<p>Re-create the backrest pod in the backrest examples directory. The database will recover only files that have changed from the last backup.</p>
+<p>New PVC for the PGDATA directory (full restores require PGDATA to be empty)</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>pgBackRest will restore all files to the <code>pgdata</code> volume mounted to the restore container.</p>
+</div>
+<div class="paragraph">
+<p>After a successful restore, run the following to start the restored PostgreSQL container:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/kube/backrest/full
+./post-restore.sh</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_delta">Delta</h5>
+<div class="paragraph">
+<div class="notices notice" ><div class="paragraph">
+<p>This example uses the <code>backrest/backup</code> example.  It does not need to be running but a
+pgBackRest backup is required.</p>
+</div>
+</div>
+
+</div>
+<div class="paragraph">
+<p>Start the example as follows:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/kube/backrest/delta
+./run.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will create the following in your Kubernetes environment:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>configMap containing <code>pgbackrest.conf</code></p>
+</li>
+<li>
+<p>Backrest-Restore pod with pgBackRest configured for full restore</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>pgBackRest will restore files missing to the <code>pgdata</code> volume mounted to the restore container.</p>
+</div>
+<div class="paragraph">
+<p>After a successful restore, run the following to start the restored PostgreSQL container:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/kube/backrest/delta
+./post-restore.sh</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_docker_6">Docker</h4>
+<div class="sect4">
+<h5 id="_backup_2">Backup</h5>
+<div class="paragraph">
+<p>Start the example as follows:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/docker/backrest/backup
+./run.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will create the following in your Docker environment:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>PostgreSQL container with pgBackRest configured</p>
+</li>
+<li>
+<p>Volume for the PGDATA directory</p>
+</li>
+<li>
+<p>Volume for the <code>pgbackrest.conf</code> configuration</p>
+</li>
+<li>
+<p>Volume for the BackRest Backups and Archives directory</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Examine the <code>/backrestrepo</code> location to view the archive directory and ensure WAL archiving is working.</p>
+</div>
+<div class="paragraph">
+<p>You can create a backup using backrest using this command within the container:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker exec -it backrest /bin/bash
+pgbackrest --stanza=db backup --type=full</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_async_archiving_2">Async Archiving</h5>
+<div class="paragraph">
+<p>This will create the following in your Docker environment:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>PostgreSQL container with pgBackRest configured</p>
+</li>
+<li>
+<p>Volume for the PGDATA directory</p>
+</li>
+<li>
+<p>Volume for the <code>pgbackrest.conf</code> configuration</p>
+</li>
+<li>
+<p>Volume for the BackRest Backups and Archives directory</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Start the example as follows:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/docker/backrest/async-archiving
+./run.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Examine the <code>/backrestrepo/HOSTNAME-backups</code> location to view the archive directory
+and ensure WAL archiving is working.</p>
+</div>
+<div class="paragraph">
+<p>Examine the <code>/pgdata/HOSTNAME-spool</code> location to view the transient directory
+used for async archiving.</p>
+</div>
+<div class="paragraph">
+<p>You can create a backup using backrest using this command within the container:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>docker exec -it backrest /bin/bash
+pgbackrest --stanza=db backup</pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="notices warning" ><div class="paragraph">
+<p>A spooling directory is automatically created in both <code>/pgdata</code> and <code>/pgwal</code>.  It is
+advised to configure pgBackRest to use the spooling location closest to the Write Ahead Log.</p>
+</div>
+<div class="paragraph">
+<p>If the PostgreSQL container was created using the <code>XLOGDIR</code> variable, the <code>/pgwal/HOSTNAME-spool</code>
+directory should be configured in <code>pgbackrest.conf</code> as such: <code>spool-path=/pgwal/HOSTNAME-spool</code>.
+If WAL resides on PGDATA, use: <code>spool-path=/pgdata/HOSTNAME-spool</code></p>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_restore_2">Restore</h4>
+<div class="sect4">
+<h5 id="_pitr_2">PITR</h5>
+<div class="paragraph">
+<div class="notices notice" ><div class="paragraph">
+<p>This example uses the <code>backrest/backup</code> example.  It should be left running and a
+pgBackRest backup has been created.</p>
+</div>
+</div>
+
+</div>
+<div class="paragraph">
+<p>Start the example as follows:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/docker/backrest/pitr
+./run.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will create the following in your Docker environment:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Backrest-Restore container with pgBackRest configured for PITR restore</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>pgBackRest will restore the <code>pgdata</code> volume mounted to the restore container
+to the point in time specified by the <code>PITR_TARGET</code> environment variable.  To get
+a compliant timestamp, PostgreSQL can be queried using the following SQL:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>psql -U postgres -Atc 'select current_timestamp'</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>After a successful restore, run the following to start the restored PostgreSQL container:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/docker/backrest/pitr
+./post-restore.sh</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_full_2">Full</h5>
+<div class="paragraph">
+<div class="notices notice" ><div class="paragraph">
+<p>This example uses the <code>backrest/backup</code> example.  It does not need to be running but a
+pgBackRest backup is required.</p>
+</div>
+</div>
+
+</div>
+<div class="paragraph">
+<p>Start the example as follows:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/docker/backrest/full
+./run.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will create the following in your Docker environment:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Backrest-Restore pod with pgBackRest configured for full restore</p>
+</li>
+<li>
+<p>New Volume for the PGDATA directory (full restores require PGDATA to be empty)</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>pgBackRest will restore all files to the <code>pgdata</code> volume mounted to the restore container.</p>
+</div>
+<div class="paragraph">
+<p>After a successful restore, run the following to start the restored PostgreSQL container:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/docker/backrest/full
+./post-restore.sh</pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_delta_2">Delta</h5>
+<div class="paragraph">
+<div class="notices notice" ><div class="paragraph">
+<p>This example uses the <code>backrest/backup</code> example.  It does not need to be running but a
+pgBackRest backup is required.</p>
+</div>
+</div>
+
+</div>
+<div class="paragraph">
+<p>Start the example as follows:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/kube/backrest/delta
+./run.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will create the following in your Docker environment:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Backrest-Restore pod with pgBackRest configured for full restore</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>pgBackRest will restore files missing to the <code>pgdata</code> volume mounted to the restore container.</p>
+</div>
+<div class="paragraph">
+<p>After a successful restore, run the following to start the restored PostgreSQL container:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/kube/backrest/delta
+./post-restore.sh</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1356,7 +1810,7 @@ StrictModes no</pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_6">Docker</h4>
+<h4 id="_docker_7">Docker</h4>
 <div class="paragraph">
 <p>Start the example as follows:</p>
 </div>
@@ -1520,7 +1974,7 @@ data to this new container and then launch PostgreSQL using the original backed-
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_7">Docker</h4>
+<h4 id="_docker_8">Docker</h4>
 <div class="paragraph">
 <p>Run the backup with this command:</p>
 </div>
@@ -1750,7 +2204,7 @@ for a long time could fill up your /tmp directory.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_8">Docker</h4>
+<h4 id="_docker_9">Docker</h4>
 <div class="paragraph">
 <p>Create a database container as follows:</p>
 </div>
@@ -2048,37 +2502,43 @@ you remove the <code>RECOVERY_TARGET_NAME</code> environment variable completely
 <div class="sect2">
 <h3 id="_pgbouncer">pgBouncer</h3>
 <div class="paragraph">
-<p>The pgBouncer utility can be used to provide a connection pool
-to PostgreSQL databases.</p>
+<p>Crunchy pgBouncer is a lightweight connection pooler for PostgreSQL databases.</p>
 </div>
 <div class="paragraph">
-<p>This example configures pgBouncer to provide connection pooling
-for the pg-primary and pg-replica databases.</p>
+<p>The following examples create the following containers:
+  * pgBouncer Primary
+  * pgBouncer Replica
+  * PostgreSQL Primary
+  * PostgreSQL Replica</p>
 </div>
 <div class="paragraph">
-<p>On Docker, Kubernetes, and OpenShift, the example will deploy a <strong>primary-replica</strong> equivalent set of pods and related services.</p>
+<p>In Kubernetes and OpenShift, this example will also create:
+  * pgBouncer Primary Service
+  * pgBouncer Replica Service
+  * Primary Service
+  * Replica Service
+  * PostgreSQL Secrets
+  * pgBouncer Secrets</p>
 </div>
 <div class="paragraph">
-<p>A storage filesystem is required to mount the pgBouncer configuration files which are
-then mounted to <code>/pgconf</code> in the crunchy-pgbouncer container.</p>
-</div>
-<div class="paragraph">
-<p>If you mount a <code>/pgconf</code> volume, crunchy-postgres will look at that directory
-for <code>postgresql.conf</code>, <code>pg_hba.conf</code>, and <code>setup.sql</code>.  If it finds one of them it
-will use that file instead of the default files.</p>
-</div>
-<div class="paragraph">
-<p>To shutdown the instance and remove the container for each example, run the following:</p>
+<p>To cleanup the objects created by this example, run the following in the <code>pgbouncer</code> example directory:</p>
 </div>
 <div class="literalblock">
 <div class="content">
 <pre>./cleanup.sh</pre>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_docker_9">Docker</h4>
 <div class="paragraph">
-<p>The pgbouncer example is run as follows:</p>
+<div class="notices tip" ><div class="paragraph">
+<p>For more information on <code>pgBouncer</code>, see the <a href="https://pgbouncer.github.io">official website</a>.</p>
+</div>
+</div>
+
+</div>
+<div class="sect3">
+<h4 id="_docker_10">Docker</h4>
+<div class="paragraph">
+<p>Run the <code>pgbouncer</code> example:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2087,20 +2547,37 @@ will use that file instead of the default files.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>To log into the databases from the pgBouncer connection pool
-you would enter the following using the default password <strong>password</strong>:</p>
+<p>Once all containers have deployed and are ready for use, <code>psql</code> to the target
+databases through <code>pgBouncer</code>:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>psql -h localhost -p 6543 -U testuser pg-primary
-psql -h localhost -p 6543 -U testuser pg-replica</pre>
+<pre>psql -d userdb -h 0.0.0.0 -p 6432 -U testuser
+psql -d userdb -h 0.0.0.0 -p 6433 -U testuser</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To connect to the administration database within <code>pgbouncer</code>, connect using <code>psql</code>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>psql -d pgbouncer -h 0.0.0.0 -p 6432 -U pgbouncer
+psql -d pgbouncer -h 0.0.0.0 -p 6433 -U pgbouncer</pre>
 </div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_kubernetes_and_openshift_11">Kubernetes and OpenShift</h4>
 <div class="paragraph">
-<p>Running the example:</p>
+<div class="notices tip" ><div class="paragraph">
+<p>OpenShift: If custom configurations aren&#8217;t being mounted, an <strong>emptydir</strong> volume is required
+to be mounted at <code>/pgconf</code>.</p>
+</div>
+</div>
+
+</div>
+<div class="paragraph">
+<p>Run the <code>pgbouncer</code> example:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -2109,21 +2586,22 @@ psql -h localhost -p 6543 -U testuser pg-replica</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>To log into the database from the pgBouncer connection pool
-you would enter the following using the default password <strong>password</strong>:</p>
+<p>Once all containers have deployed and are ready for use, <code>psql</code> to the target
+databases through <code>pgBouncer</code>:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>psql -h pgbouncer -U postgres pg-primary -p 6543
-psql -h pgbouncer -U postgres pg-replica -p 6543</pre>
+<pre>psql -d userdb -h pgbouncer-primary -p 6432 -U testuser
+psql -d userdb -h pgbouncer-replica -p 6432 -U testuser</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>View the pgBouncer log as follows:</p>
+<p>To connect to the administration database within <code>pgbouncer</code>, connect using <code>psql</code>:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>${CCP_CLI} log pgbouncer</pre>
+<pre>psql -d pgbouncer -h pgbouncer-primary -p 6432 -U pgbouncer -c "SHOW SERVERS"
+psql -d pgbouncer -h pgbouncer-replica -p 6432 -U pgbouncer -c "SHOW SERVERS"</pre>
 </div>
 </div>
 </div>
@@ -2160,7 +2638,7 @@ will be sent round-robin to both the primary and replica.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_10">Docker</h4>
+<h4 id="_docker_11">Docker</h4>
 <div class="paragraph">
 <p>Create the container as follows:</p>
 </div>
@@ -2261,7 +2739,7 @@ and a default password of <strong>password</strong>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_11">Docker</h4>
+<h4 id="_docker_12">Docker</h4>
 <div class="paragraph">
 <p>To create the example and run the container:</p>
 </div>
@@ -2361,7 +2839,7 @@ PostgreSQL database pod</p>
 hold the passwords</p>
 </li>
 <li>
-<p>Volume mount for <code>/pgbackrest</code> and <code>/pgwal</code></p>
+<p>Volume mount for <code>/backrestrepo</code> and <code>/pgwal</code></p>
 </li>
 </ul>
 </div>
@@ -2463,7 +2941,7 @@ it works out of the same <code>/pgdata/primary-deployment</code> data directory.
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_12">Docker</h4>
+<h4 id="_docker_13">Docker</h4>
 <div class="paragraph">
 <p>To create the example and run the container:</p>
 </div>
@@ -2635,7 +3113,7 @@ an asynchronous replica. The two replicas share the same service.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_13">Docker</h4>
+<h4 id="_docker_14">Docker</h4>
 <div class="paragraph">
 <p>To run this example, run the following:</p>
 </div>
@@ -2870,7 +3348,7 @@ longitude and latitude through this command.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_14">Docker</h4>
+<h4 id="_docker_15">Docker</h4>
 <div class="paragraph">
 <p>Create the container as follows:</p>
 </div>
@@ -2921,7 +3399,7 @@ for <code>postgresql.conf</code>, <code>pg_hba.conf</code>, <code>pg_ident.conf<
 If it finds one of them it will use that file instead of the default files.</p>
 </div>
 <div class="sect3">
-<h4 id="_docker_15">Docker</h4>
+<h4 id="_docker_16">Docker</h4>
 <div class="paragraph">
 <p>This example can be run as follows for the Docker environment:</p>
 </div>
@@ -3058,7 +3536,7 @@ have the same name:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>psql (10.4)
+<pre>psql (10.5)
 SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
 Type "help" for help.
 
@@ -3128,7 +3606,7 @@ a constraint of <code>node.labels.type != primary</code> to have the replica
 always placed on a node that is not hosting the primary service.</p>
 </div>
 <div class="sect3">
-<h4 id="_docker_16">Docker</h4>
+<h4 id="_docker_17">Docker</h4>
 <div class="paragraph">
 <p>After you set up the Swarm cluster, you can then run this example as follows on the <strong>Swarm Manager Node</strong>:</p>
 </div>
@@ -3198,7 +3676,7 @@ file permissions of <code>/run/docker.sock</code> accordingly.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_17">Docker</h4>
+<h4 id="_docker_18">Docker</h4>
 <div class="paragraph">
 <p>Run the example as follows:</p>
 </div>
@@ -3323,7 +3801,7 @@ this dependency.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_18">Docker</h4>
+<h4 id="_docker_19">Docker</h4>
 <div class="paragraph">
 <p>Run the example as follows:</p>
 </div>
@@ -3384,7 +3862,7 @@ container by running a crunchy-collect container that points
 to your database container.</p>
 </div>
 <div class="paragraph">
-<p>This example starts up 4 containers:</p>
+<p>This example starts up 5 containers:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -3412,7 +3890,10 @@ and applies a default configuration. If this container is running on Kubernetes 
 it will use the Kubernetes API to discover pods with the label <code>"crunchy-collect": "true"</code>.</p>
 </div>
 <div class="paragraph">
-<p>The collect container <strong>must</strong> have this label to be discovered in these environments.</p>
+<p>The collect container <strong>must</strong> have this label to be discovered in these environments.
+Additionally, the collect container uses a special PostgreSQL role <code>ccp_monitoring</code>.
+This user is created by setting the <code>PGMONITOR_PASSWORD</code> environment variable on the
+PostgreSQL container.</p>
 </div>
 <div class="paragraph">
 <p>Discovering pods requires a cluster role service account.  See the
@@ -3432,7 +3913,7 @@ variable.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_19">Docker</h4>
+<h4 id="_docker_20">Docker</h4>
 <div class="paragraph">
 <p>To start this set of containers, run the following:</p>
 </div>
@@ -3457,7 +3938,7 @@ web addresses:</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>The crunchy-postgres container is accessible on port <strong>12015</strong>.</p>
+<p>The crunchy-postgres container is accessible on port <strong>5432</strong>.</p>
 </div>
 </div>
 <div class="sect3">
@@ -3472,16 +3953,22 @@ web addresses:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>You will be able to access the Grafana and Prometheus services from the following
-web addresses:</p>
+<p>It&#8217;s required to use <code>port-forward</code> to access the Grafana dashboard.  To start the
+port-forward, run the following command:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>${CCP_CLI} port-forward metrics 3000:3000
+${CCP_CLI} port-forward metrics 9090:9090</pre>
+</div>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Grafana (<a href="http://NODE_IP_ADDRESS:30001" class="bare">http://NODE_IP_ADDRESS:30001</a>)</p>
+<p>Grafana dashboard can be then accessed from <code><a href="http://127.0.0.01:3000" class="bare">http://127.0.0.01:3000</a></code></p>
 </li>
 <li>
-<p>Prometheus (<a href="http://NODE_IP_ADDRESS:30002" class="bare">http://NODE_IP_ADDRESS:30002</a>)</p>
+<p>Prometheus dashboard can be then accessed from <code><a href="http://127.0.0.01:9090" class="bare">http://127.0.0.01:9090</a></code></p>
 </li>
 </ul>
 </div>
@@ -3492,8 +3979,10 @@ web addresses:</p>
 <div class="content">
 <pre>${CCP_CLI} logs -c grafana metrics
 ${CCP_CLI} logs -c prometheus metrics
-${CCP_CLI} logs -c collect pgsql
-${CCP_CLI} logs -c postgres pgsql</pre>
+${CCP_CLI} logs -c collect primary
+${CCP_CLI} logs -c postgres primary
+${CCP_CLI} logs -c collect replica
+${CCP_CLI} logs -c postgres replica</pre>
 </div>
 </div>
 </div>
@@ -3520,7 +4009,7 @@ need to define your own custom file and mount it to override the
 default <code>postgresql.conf</code> file.</p>
 </div>
 <div class="sect3">
-<h4 id="_docker_20">Docker</h4>
+<h4 id="_docker_21">Docker</h4>
 <div class="paragraph">
 <p>Run the following to create a database container:</p>
 </div>

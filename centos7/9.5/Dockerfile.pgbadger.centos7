@@ -1,12 +1,11 @@
 FROM centos:7
 
 LABEL name="crunchydata/pgbadger" \
+	vendor="crunchy data" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.13" \
-        vendor="crunchy data" \
-        version="7.3" \
-        release="2.0" \
-        build-date="2018-07-11" \
+	PostgresFullVersion="9.5.14" \
+	Version="7.5" \
+	Release="2.1.0" \
         url="https://crunchydata.com" \
         summary="HTTP wrapper around the PGBadger PostgreSQL utilityr" \
         description="Has an HTTP REST interface. You GET http://host:10000/api/badgergenerate, and it will generate a pgbadger report on a database container's log files." \

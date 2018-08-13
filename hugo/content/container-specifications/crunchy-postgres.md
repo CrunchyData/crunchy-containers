@@ -20,8 +20,8 @@ The following features are supported by the `crunchy-postgres` container:
 
 The crunchy-postgres Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (9.5.13, 9.6.9 and 10.4)
-* [pgBackRest](https://pgbackrest.org/) (2.0)
+* PostgreSQL (10.5, 9.6.10 and 9.5.14)
+* [pgBackRest](https://pgbackrest.org/) (2.x)
 * CentOS7 - publicly available
 * RHEL7 - customers only
 
@@ -31,19 +31,20 @@ The crunchy-postgres Docker image contains the following packages (versions vary
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PG_DATABASE**|None|Set this value to create an initial database
+**PG_PRIMARY_PORT**|None|Set this value to configure the primary PostgreSQL port.  It is recommended to use 5432.
 **PG_MODE**|None|Set to `primary`, `replica` or `set` to specify the mode of the database
-**PG_PASSWORD**|None|Set this value to specify the password of the user role
-**PG_PRIMARY_PASSWORD**|None|Set this value to specify the password of the replication user
-**PG_PRIMARY_USER**|None|Set this value to specify the username of the replication user
-**PG_ROOT_PASSWORD**|None|Set this value to specify the password of the superuser role
 **PG_USER**|None|Set this value to specify the username of the general user account
+**PG_PASSWORD**|None|Set this value to specify the password of the user role
+**PG_PRIMARY_USER**|None|Set this value to specify the username of the replication user
+**PG_PRIMARY_PASSWORD**|None|Set this value to specify the password of the replication user
+**PG_ROOT_PASSWORD**|None|Set this value to specify the password of the superuser role
 
 ### Optional
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **ARCHIVE_MODE**|Off|Set this value to `on` to enable continuous WAL archiving
 **ARCHIVE_TIMEOUT**|60|Set to a number (in seconds) to configure `archive_timeout` in `postgresql.conf`
-**CHECKSUMS**|Off|Enables `data-checksums` during initialization of the database.  Can only be set during initial database creation.
+**CHECKSUMS**|true|Enables `data-checksums` during initialization of the database.  Can only be set during initial database creation.  Set to `false` to disable data checksums.
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.
 **ENABLE_SSHD**|FALSE|Set this value to true to enable SSHD. See SSHD Documentation for detailed setup instructions
 **MAX_CONNECTIONS**|100|Sets the `max_connections` value in `postgresql.conf`
@@ -53,6 +54,7 @@ The crunchy-postgres Docker image contains the following packages (versions vary
 **PG_REPLICA_HOST**|None|Set this value to specify the replica host label.  Note; used when `PG_MODE` is `set`
 **PGAUDIT_ANALYZE**|None|Set this to enable `pgaudit_analyze`
 **PGBOUNCER_PASSWORD**|None|Set this to enable `pgBouncer` support by creating a special `pgbouncer` user for authentication through the connection pooler.
+**PGMONITOR_PASSWORD**|None|Set this to enable `pgMonitor` support by creating a special `ccp_monitoring` user for collecting metrics from PostgreSQL servers.  Required for the `crunchy-collect` container.
 **PGDATA_PATH_OVERRIDE**|None|Set this value to override the `/pgdata` directory name.  By default `/pgdata` uses `hostname` of the container.  In some cases it may be required to override this with a custom name (such as in a Statefulset)
 **SHARED_BUFFERS**|128MB|Set this value to configure `shared_buffers` in `postgresql.conf`
 **SYNC_REPLICA**|None|Set this value to specify the names of replicas that should use synchronized replication

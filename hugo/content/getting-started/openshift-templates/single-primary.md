@@ -4,7 +4,7 @@ date: 2018-05-15T07:22:59-07:00
 draft: false
 ---
 
-v2.0
+v2.1.0
 
 The Crunchy PostgreSQL Primary Template creates a single primary pod.
 

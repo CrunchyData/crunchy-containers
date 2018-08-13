@@ -2,11 +2,10 @@ FROM centos:7
 
 LABEL name="crunchydata/collect" \
         vendor="crunchy data" \
-      	PostgresVersion="9.6" \
-      	PostgresFullVersion="9.6.9" \
-        version="7.3" \
-        release="2.0" \
-        build-date="2018-07-11" \
+	PostgresVersion="9.6" \
+	PostgresFullVersion="9.6.10" \
+	Version="7.5" \
+	Release="2.1.0" \
         url="https://crunchydata.com" \
         summary="Provides metrics for crunchy-postgres" \
         description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus and crunchy-grafana." \
@@ -34,6 +33,7 @@ RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
 ADD postgres_exporter.tar.gz /opt/cpm/bin
 ADD node_exporter.tar.gz /opt/cpm/bin
+ADD tools/pgmonitor/exporter/postgres /opt/cpm/conf
 ADD bin/collect /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/collect /opt/cpm/conf

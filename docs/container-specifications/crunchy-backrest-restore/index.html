@@ -5,7 +5,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.40" />
+<meta name="generator" content="Hugo 0.45.1" />
 
 <title>crunchy-backrest-restore :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/favicon.ico" type="image/x-icon" />
@@ -428,8 +428,8 @@
 <p>The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):</p>
 
 <ul>
-<li>PostgreSQL (9.5.13, 9.6.9 and 10.4)</li>
-<li><a href="https://pgbackrest.org/">pgBackRest</a> (2.0)</li>
+<li>PostgreSQL (10.5, 9.6.10 and 9.5.14)</li>
+<li><a href="https://pgbackrest.org/">pgBackRest</a> (2.x)</li>
 <li>CentOS7 - publicly available</li>
 <li>RHEL7 - customers only</li>
 </ul>
@@ -474,6 +474,18 @@
 </thead>
 
 <tbody>
+<tr>
+<td align="left"><strong>PG_HOSTNAME</strong></td>
+<td align="left">None</td>
+<td align="left">When restoring a backup to a new volume, this volume should be set to the hostname of the PostgreSQL container that will mount the restored volume.  Required for full restores to new volumes.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PITR_TARGET</strong></td>
+<td align="left">None</td>
+<td align="left">PostgreSQL timestamp used when restoring up to a point in time.  Required for PITR delta restores.</td>
+</tr>
+
 <tr>
 <td align="left"><strong>CRUNCHY_DEBUG</strong></td>
 <td align="left">FALSE</td>

@@ -5,7 +5,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.40" />
+<meta name="generator" content="Hugo 0.45.1" />
 
 <title>crunchy-postgres :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/favicon.ico" type="image/x-icon" />
@@ -432,8 +432,8 @@
 <p>The crunchy-postgres Docker image contains the following packages (versions vary depending on PostgreSQL version):</p>
 
 <ul>
-<li>PostgreSQL (9.5.13, 9.6.9 and 10.4)</li>
-<li><a href="https://pgbackrest.org/">pgBackRest</a> (2.0)</li>
+<li>PostgreSQL (10.5, 9.6.10 and 9.5.14)</li>
+<li><a href="https://pgbackrest.org/">pgBackRest</a> (2.x)</li>
 <li>CentOS7 - publicly available</li>
 <li>RHEL7 - customers only</li>
 </ul>
@@ -459,9 +459,21 @@
 </tr>
 
 <tr>
+<td align="left"><strong>PG_PRIMARY_PORT</strong></td>
+<td align="left">None</td>
+<td align="left">Set this value to configure the primary PostgreSQL port.  It is recommended to use 5432.</td>
+</tr>
+
+<tr>
 <td align="left"><strong>PG_MODE</strong></td>
 <td align="left">None</td>
 <td align="left">Set to <code>primary</code>, <code>replica</code> or <code>set</code> to specify the mode of the database</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PG_USER</strong></td>
+<td align="left">None</td>
+<td align="left">Set this value to specify the username of the general user account</td>
 </tr>
 
 <tr>
@@ -471,27 +483,21 @@
 </tr>
 
 <tr>
-<td align="left"><strong>PG_PRIMARY_PASSWORD</strong></td>
-<td align="left">None</td>
-<td align="left">Set this value to specify the password of the replication user</td>
-</tr>
-
-<tr>
 <td align="left"><strong>PG_PRIMARY_USER</strong></td>
 <td align="left">None</td>
 <td align="left">Set this value to specify the username of the replication user</td>
 </tr>
 
 <tr>
-<td align="left"><strong>PG_ROOT_PASSWORD</strong></td>
+<td align="left"><strong>PG_PRIMARY_PASSWORD</strong></td>
 <td align="left">None</td>
-<td align="left">Set this value to specify the password of the superuser role</td>
+<td align="left">Set this value to specify the password of the replication user</td>
 </tr>
 
 <tr>
-<td align="left"><strong>PG_USER</strong></td>
+<td align="left"><strong>PG_ROOT_PASSWORD</strong></td>
 <td align="left">None</td>
-<td align="left">Set this value to specify the username of the general user account</td>
+<td align="left">Set this value to specify the password of the superuser role</td>
 </tr>
 </tbody>
 </table>
@@ -522,8 +528,8 @@
 
 <tr>
 <td align="left"><strong>CHECKSUMS</strong></td>
-<td align="left">Off</td>
-<td align="left">Enables <code>data-checksums</code> during initialization of the database.  Can only be set during initial database creation.</td>
+<td align="left">true</td>
+<td align="left">Enables <code>data-checksums</code> during initialization of the database.  Can only be set during initial database creation.  Set to <code>false</code> to disable data checksums.</td>
 </tr>
 
 <tr>
@@ -578,6 +584,12 @@
 <td align="left"><strong>PGBOUNCER_PASSWORD</strong></td>
 <td align="left">None</td>
 <td align="left">Set this to enable <code>pgBouncer</code> support by creating a special <code>pgbouncer</code> user for authentication through the connection pooler.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGMONITOR_PASSWORD</strong></td>
+<td align="left">None</td>
+<td align="left">Set this to enable <code>pgMonitor</code> support by creating a special <code>ccp_monitoring</code> user for collecting metrics from PostgreSQL servers.  Required for the <code>crunchy-collect</code> container.</td>
 </tr>
 
 <tr>

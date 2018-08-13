@@ -2,9 +2,8 @@ FROM centos:7
 
 LABEL name="crunchydata/sample-app" \
 	vendor="crunchy data" \
-	version="7.3" \
-	release="2.0" \
-	build-date="2018-07-11" \
+	Version="7.5" \
+	Release="2.1.0" \
 	url="https://crunchydata.com" \
 	summary="Implements a cron scheduler." \
 	description="Sample application to connect to PostgreSQL containers" \
