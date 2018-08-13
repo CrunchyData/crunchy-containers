@@ -21,7 +21,7 @@ $DIR/cleanup.sh
 echo_info "Creating the example components.."
 
 expenv -f $DIR/pgaudit.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE} -f -
-echo_info "Sleeping for 20 seconds to allow time for the pod to get into a ready state."
-sleep 20
+echo_info "Sleeping for 50 seconds to allow time for the pod to get into a ready state."
+sleep 50
 
 $DIR/test-pgaudit.sh
