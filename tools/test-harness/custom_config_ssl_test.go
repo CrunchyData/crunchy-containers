@@ -55,6 +55,17 @@ func TestCustomConfigSSL(t *testing.T) {
 		t.Fatalf("extensions less then 1, it shouldn't be: %d", len(extensions))
 	}
 
+    settings, err := db.Settings()
+    if err != nil {
+        t.Fatal(err)
+    }
+
+    for _, setting := range settings {
+        if setting.Name == "log_timezone" && setting.Value != "UTC" {
+            t.Fatalf("log_timezone isn't UTC, it should be: %s = %s", setting.Name, setting.Value)
+        }
+    }
+
 	report, err := harness.createReport()
 	if err != nil {
 		t.Fatal(err)
