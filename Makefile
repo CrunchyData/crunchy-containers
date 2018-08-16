@@ -2,10 +2,10 @@ ifndef CCPROOT
 	export CCPROOT=$(GOPATH)/src/github.com/crunchydata/crunchy-containers
 endif
 
-.PHONY:	all versiontest
+.PHONY:	all versiontest 
 
 # Default target
-all:    backup backrestrestore collect dbaserver grafana pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis prometheus upgrade vac
+all:    commands backup backrestrestore collect dbaserver grafana pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis prometheus upgrade vac
 
 versiontest:
 ifndef CCP_BASEOS
@@ -31,6 +31,16 @@ gendeps:
 
 docbuild:
 	cd $CCPROOT && ./generate-docs.sh
+
+#=============================================
+# Targets that generate commands (alphabetized)
+#=============================================
+
+commands: pgc
+
+pgc: 
+	cd $(CCPROOT)/commands/pgc && go build pgc.go && mv pgc $(GOBIN)/pgc
+
 
 #=============================================
 # Targets that generate images (alphabetized)
