@@ -18,7 +18,6 @@ import (
 	// "encoding/json"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
-	// msgs "github.com/crunchydata/postgres-operator/apiservermsgs"
 	"github.com/spf13/cobra"
 	// "net/http"
 	// "os"
@@ -74,9 +73,7 @@ func init() {
 
 	labelCmd.Flags().BoolVarP(&Overwrite, "overwrite", "o", false, "--overwrite forces an existing label to be overwritten")
 	labelCmd.Flags().StringVarP(&Pod, "pods", "", "", "Specify the name of the pod to apply label to")
-	labelCmd.MarkFlagRequired("pods")
 	labelCmd.Flags().StringVarP(&LabelCmdLabel, "label", "l", "", "The new label to apply for specified resource")
-	labelCmd.MarkFlagRequired("label")
 
 	RootCmd.AddCommand(labelCmd)
 
@@ -88,7 +85,7 @@ func labelResource(args []string) {
 
 
 fmt.Println("Args: ", args)
-fmt.Println("Pod: ", Pod)
+fmt.Println("Pod	: ", Pod)
 fmt.Println("Label: ", LabelCmdLabel)
 
 }
