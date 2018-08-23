@@ -14,13 +14,11 @@ package cmd
 */
 
 import (
-	// "bytes"
-	// "encoding/json"
 	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/cobra"
-	// "net/http"
-	// "os"
+	"strings"
+
 )
 
 var LabelCmdLabel string
@@ -36,7 +34,12 @@ A valid label value consists of letters and/or numbers with a max length of  63 
 existing labels can be overwritten, otherwise attempting to overwrite an existing label will result in an error.
 
 Usage:
-  pgc label [--overwrite] TYPE NAME KEY_1=VAL_1 ... KEY_N=VAL_N
+  pgc label [--overwrite] TYPE NAME KEY=VALUE
+
+  TYPE - resource type, currently only 'pod' is supported
+  NAME - the name of the resource to apply the label against
+  KEY - the name of the label to be applied
+  VALUE- the value to be associated with the label KEY
 
 Example:
 
@@ -52,40 +55,69 @@ Example:
 			inValid = true
 		}
 
-		// if Pod == "" {
-		// 	fmt.Println("No pod specified")
-		// 	inValid = true
-		// }
-
-		if LabelCmdLabel == "" {
-			log.Error(`You must specify the label to apply.`)
-			inValid = true
-		} 
 
 		if (inValid) {
 			return
 		}
-		labelResource(args)
+
+		resources, labels := parseAndClassifyArgs(args)
+
+		labelResource(resources, labels)
 	},
 }
 
 func init() {
 
 	labelCmd.Flags().BoolVarP(&Overwrite, "overwrite", "o", false, "--overwrite forces an existing label to be overwritten")
-	labelCmd.Flags().StringVarP(&Pod, "pods", "", "", "Specify the name of the pod to apply label to")
-	labelCmd.Flags().StringVarP(&LabelCmdLabel, "label", "l", "", "The new label to apply for specified resource")
 
 	RootCmd.AddCommand(labelCmd)
 
 }
 
-func labelResource(args []string) {
-	// var err error
+func labelResource(resources map[string]string, labels map[string]string) {
+	
+	fmt.Printf("Resources: \n")
+	for k, v := range resources { 
+		fmt.Printf("	%s:%s\n", k, v)
+	}
+
+	fmt.Printf("Labels: \n")
+	for k, v := range labels { 
+		fmt.Printf("	%s:%s\n", k, v)
+	}
+
+fmt.Println("Overwrite: ", Overwrite)
+
+}
+
+func parseAndClassifyArgs(args []string)(map[string]string, map[string]string ) {
+
+
+	labels := map[string]string{}
+	resources := map[string]string{}
+	resType := ""	// placeholder for resource type 
+	
+	for _, item := range args {
+	
+		if strings.Contains(item, "=") {
+			// processing a label
+			splitLabel := strings.Split(item, "=")
+			labels[splitLabel[0]] = splitLabel[1]
+
+		} else {
+			// processing part of a resource pair
+			if len(resType) > 0 {
+				resources[resType] = item
+				resType = ""
+				
+			} else {
+				resType = item
+			}
+
+		}
+	}
 
 
 
-fmt.Println("Args: ", args)
-fmt.Println("Pod	: ", Pod)
-fmt.Println("Label: ", LabelCmdLabel)
-
+	return resources, labels
 }
