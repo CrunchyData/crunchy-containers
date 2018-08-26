@@ -18,6 +18,9 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"strings"
+	"k8s.io/api/core/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"github.com/crunchydata/crunchy-containers/commands/kubeapi"
 
 )
 
@@ -75,30 +78,34 @@ func init() {
 }
 
 func labelResource(resources map[string]string, labels map[string]string) {
-	
-	fmt.Printf("Resources: \n")
-	for k, v := range resources { 
-		fmt.Printf("	%s:%s\n", k, v)
-	}
 
-	fmt.Printf("Labels: \n")
-	for k, v := range labels { 
-		fmt.Printf("	%s:%s\n", k, v)
-	}
+	dumpParsedArgs(resources, labels)
 
-fmt.Println("Overwrite: ", Overwrite)
+	// change this line to GetClientConfigWC for within cluster operation. - not written yet
+	clientset, err := kubeapi.GetClientConfigOOC()
+
+	pods, err := clientset.CoreV1().Pods("").List(metav1.ListOptions{})
+	if err != nil {
+		panic(err.Error())
+	}
+	fmt.Printf("There are %d pods in the cluster\n", len(pods.Items))
+
+	dumpPodInfo(pods.Items)
+
 
 }
 
-func parseAndClassifyArgs(args []string)(map[string]string, map[string]string ) {
+func parseAndClassifyArgs(args []string)(resources map[string]string, labels map[string]string ) {
 
 
-	labels := map[string]string{}
-	resources := map[string]string{}
+	labels = map[string]string{}
+	resources = map[string]string{}
 	resType := ""	// placeholder for resource type 
 	
 	for _, item := range args {
 	
+		// there is an assumption here that labels appear with = and resources
+		// separated by a space in pairs. Minimal works for now.
 		if strings.Contains(item, "=") {
 			// processing a label
 			splitLabel := strings.Split(item, "=")
@@ -120,4 +127,36 @@ func parseAndClassifyArgs(args []string)(map[string]string, map[string]string ) 
 
 
 	return resources, labels
+}
+
+func dumpParsedArgs(resources map[string]string, labels map[string]string) {
+
+	
+	fmt.Printf("Resources: \n")
+	for k, v := range resources { 
+		fmt.Printf("	%s:%s\n", k, v)
+	}
+
+	fmt.Printf("Labels: \n")
+	for k, v := range labels { 
+		fmt.Printf("	%s:%s\n", k, v)
+	}
+
+fmt.Println("Overwrite: ", Overwrite)
+
+}
+
+func dumpPodInfo(pods []v1.Pod ) {
+
+	for _, pod := range pods {
+
+		podLabels := pod.ObjectMeta.Labels
+		fmt.Printf("Pod: %s\n", pod.ObjectMeta.Name) 
+		fmt.Printf("Labels: \n")
+		for k,v := range podLabels {
+			fmt.Printf("	%s:%s\n", k, v)
+		}
+
+	}
+	
 }
