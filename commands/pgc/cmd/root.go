@@ -33,6 +33,7 @@ var Labelselector string
 var DebugFlag bool
 var Pod string
 var Overwrite bool
+var Debug bool
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{

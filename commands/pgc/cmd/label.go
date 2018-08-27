@@ -65,33 +65,65 @@ Example:
 
 		resources, labels := parseAndClassifyArgs(args)
 
-		labelResource(resources, labels)
+		namespace := "demo" // replace with getActiveNamespace or something like that.
+
+		labelResource(namespace, resources, labels)
 	},
 }
 
 func init() {
 
 	labelCmd.Flags().BoolVarP(&Overwrite, "overwrite", "o", false, "--overwrite forces an existing label to be overwritten")
+	labelCmd.Flags().BoolVarP(&Debug, "debug", "d", false, "--debug turns on useful debug information to be output while command executes")
 
 	RootCmd.AddCommand(labelCmd)
 
 }
 
-func labelResource(resources map[string]string, labels map[string]string) {
+func labelResource(namespace string, resources map[string]string, labels map[string]string) {
 
 	dumpParsedArgs(resources, labels)
 
 	// change this line to GetClientConfigWC for within cluster operation. - not written yet
-	clientset, err := kubeapi.GetClientConfigOOC()
+	clientset, _ := kubeapi.GetClientConfigOOC()
 
-	pods, err := clientset.CoreV1().Pods("").List(metav1.ListOptions{})
-	if err != nil {
-		panic(err.Error())
+	for _, podName := range resources {
+
+		fmt.Printf("Pod: %s\n", podName)
+
+		podClient := clientset.CoreV1().Pods(namespace)
+
+		thePod, podErr := podClient.Get(podName, metav1.GetOptions{})
+
+		// pods, err := clientset.CoreV1().Pods(podName).List(metav1.ListOptions{})
+		if podErr != nil {
+			panic(podErr.Error())
+		}
+
+
+		podLabels := thePod.GetLabels()
+
+		newLabels := map[string]string{}
+
+		// add current labels to new labels - TODO: check for overwrite
+		for k,v := range podLabels {
+			newLabels[k] = v
+		}
+
+		for k,v := range labels {
+			newLabels[k] = v
+		}
+
+		fmt.Println("New Labels: ")
+		for k,v := range newLabels {
+			fmt.Printf("	%s:%s\n", k, v)
+		}
+
+		thePod.SetLabels(newLabels)
+
+		podClient.Update(thePod)
+
 	}
-	fmt.Printf("There are %d pods in the cluster\n", len(pods.Items))
-
-	dumpPodInfo(pods.Items)
-
 
 }
 
@@ -130,19 +162,6 @@ func parseAndClassifyArgs(args []string)(resources map[string]string, labels map
 }
 
 
-func updateLabels(pod v1.Pod, newLabels map[string]string ) {
-
-	podLabels := pod.GetLabels()
-
-	// add current labels to new labels - TODO: check for overwrite
-	for k,v := range podLabels {
-		newLabels[k] = v
-	}
-
-	pod.SetLabels(newLabels)
-}
-
-
 
 func dumpParsedArgs(resources map[string]string, labels map[string]string) {
 
@@ -158,6 +177,7 @@ func dumpParsedArgs(resources map[string]string, labels map[string]string) {
 	}
 
 fmt.Println("Overwrite: ", Overwrite)
+fmt.Println("")
 
 }
 
