@@ -129,6 +129,21 @@ func parseAndClassifyArgs(args []string)(resources map[string]string, labels map
 	return resources, labels
 }
 
+
+func updateLabels(pod v1.Pod, newLabels map[string]string ) {
+
+	podLabels := pod.GetLabels()
+
+	// add current labels to new labels - TODO: check for overwrite
+	for k,v := range podLabels {
+		newLabels[k] = v
+	}
+
+	pod.SetLabels(newLabels)
+}
+
+
+
 func dumpParsedArgs(resources map[string]string, labels map[string]string) {
 
 	
@@ -150,12 +165,13 @@ func dumpPodInfo(pods []v1.Pod ) {
 
 	for _, pod := range pods {
 
-		podLabels := pod.ObjectMeta.Labels
+		podLabels := pod.GetLabels()
 		fmt.Printf("Pod: %s\n", pod.ObjectMeta.Name) 
 		fmt.Printf("Labels: \n")
 		for k,v := range podLabels {
 			fmt.Printf("	%s:%s\n", k, v)
 		}
+		fmt.Printf("\n")
 
 	}
 	
