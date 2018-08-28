@@ -87,7 +87,7 @@ func labelResource(namespace string, resources map[string]string, labels map[str
 	}
 
 	// change this line to GetClientConfigWC for within cluster operation. - not written yet
-	clientset, _ := kubeapi.GetClientConfigOOC()
+	clientset, _ := kubeapi.GetClientConfig()
 
 	for _, podName := range resources {
 

@@ -80,14 +80,12 @@ function role_discovery() {
     ordinal=${HOSTNAME##*-}
     echo_info "Ordinal is set to ${ordinal?}."
     if [ $ordinal -eq 0 ]; then
-        kubectl label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST
-        oc label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST
+        pgc label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST
         echo_info "Setting PG_MODE to primary."
         export PG_MODE=primary
     else
         echo_info "Setting PG_MODE to replica."
-        kubectl label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST
-        oc label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST
+        pgc label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST
         export PG_MODE=replica
     fi
 }

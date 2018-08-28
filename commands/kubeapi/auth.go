@@ -13,12 +13,17 @@ import (
 // "k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/clientset"
 )
 
-func GetClientConfigOOC ()(* kubernetes.Clientset, error) {
+func GetClientConfig ()(* kubernetes.Clientset, error) {
 
 	var kubeconfig *string
 	var config *rest.Config 
 	var err error
-	if home := homeDir(); home != "" {
+
+
+
+	if inAContainer() {
+		config, err = rest.InClusterConfig()
+	} else if home := homeDir(); home != "" {
 		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "")
 		// use the current context in kubeconfig
 		config, err = clientcmd.BuildConfigFromFlags("", *kubeconfig)
@@ -29,7 +34,8 @@ func GetClientConfigOOC ()(* kubernetes.Clientset, error) {
 
 	} else {
 		// kubeconfig = flag.String("kubeconfig", "", "/etc/origin/master/admin.kubeconfig")
-		config, err = rest.InClusterConfig()
+		//	config, err = rest.InClusterConfig()
+		panic("Unable to obtain a cluster configuration. Exiting.")
 	}
 	flag.Parse()
 
@@ -49,4 +55,11 @@ func homeDir() string {
 		return h
 	}
 	return os.Getenv("USERPROFILE") // windows
+}
+
+func inAContainer() bool {
+	if e := os.Getenv("container"); e != "" {
+		return true
+	}
+	return false
 }

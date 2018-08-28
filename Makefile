@@ -60,8 +60,7 @@ collect: versiontest
 	docker tag crunchy-collect $(CCP_IMAGE_PREFIX)/crunchy-collect:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 dbaserver:
-	cp `which oc` bin/dba
-	cp `which kubectl` bin/dba
+	cp $(GOBIN)/pgc bin/postgres
 	cd dba && godep go install dbaserver.go
 	cp $(GOBIN)/dbaserver bin/dba
 	docker build -t crunchy-dba -f $(CCP_BASEOS)/Dockerfile.dba.$(CCP_BASEOS) .
@@ -106,14 +105,12 @@ pgsim:
 	docker tag crunchy-sim $(CCP_IMAGE_PREFIX)/crunchy-sim:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 postgres: versiontest
-	cp `which kubectl` bin/postgres
-	cp `which oc` bin/postgres
+	cp $(GOBIN)/pgc bin/postgres
 	docker build -t crunchy-postgres -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres.$(CCP_BASEOS) .
 	docker tag crunchy-postgres $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 postgres-gis: versiontest
-	cp `which kubectl` bin/postgres
-	cp `which oc` bin/postgres
+	cp $(GOBIN)/pgc bin/postgres
 	docker build -t crunchy-postgres-gis -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS) .
 	docker tag crunchy-postgres-gis $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
