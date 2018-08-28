@@ -14,7 +14,6 @@ package cmd
 */
 
 import (
-	"fmt"
 	log "github.com/Sirupsen/logrus"
 	"github.com/fatih/color"
 	"github.com/spf13/cobra"
@@ -48,7 +47,6 @@ var RootCmd = &cobra.Command{
 // Execute adds all child commands to the root command sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	fmt.Println("Execute called")
 
 	if err := RootCmd.Execute(); err != nil {
 		log.Debug(err.Error())

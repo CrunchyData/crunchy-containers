@@ -82,22 +82,25 @@ func init() {
 
 func labelResource(namespace string, resources map[string]string, labels map[string]string) {
 
-	dumpParsedArgs(resources, labels)
+	if DebugFlag {
+		dumpParsedArgs(resources, labels)
+	}
 
 	// change this line to GetClientConfigWC for within cluster operation. - not written yet
 	clientset, _ := kubeapi.GetClientConfigOOC()
 
 	for _, podName := range resources {
 
-		fmt.Printf("Pod: %s\n", podName)
-
 		podClient := clientset.CoreV1().Pods(namespace)
 
 		thePod, podErr := podClient.Get(podName, metav1.GetOptions{})
 
-		// pods, err := clientset.CoreV1().Pods(podName).List(metav1.ListOptions{})
 		if podErr != nil {
-			panic(podErr.Error())
+			log.WithFields(log.Fields {
+				"pod": podName,
+				}).Error("Pod not found.")
+			continue
+			// panic(podErr.Error())
 		}
 
 
@@ -114,9 +117,11 @@ func labelResource(namespace string, resources map[string]string, labels map[str
 			newLabels[k] = v
 		}
 
-		fmt.Println("New Labels: ")
-		for k,v := range newLabels {
-			fmt.Printf("	%s:%s\n", k, v)
+		if DebugFlag {
+			fmt.Println("New Labels: ")
+			for k,v := range newLabels {
+				fmt.Printf("	%s:%s\n", k, v)
+			}
 		}
 
 		thePod.SetLabels(newLabels)
