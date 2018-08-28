@@ -62,7 +62,7 @@ func init() {
 	GREEN = color.New(color.FgGreen).SprintFunc()
 	RED = color.New(color.FgRed).SprintFunc()
 
-	RootCmd.PersistentFlags().BoolVar(&DebugFlag, "debug", false, "enable debug with true")
+	RootCmd.PersistentFlags().BoolVarP(&DebugFlag, "debug", "d", false, "enable debug with true")
 
 }
 

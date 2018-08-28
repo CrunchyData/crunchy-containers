@@ -74,7 +74,7 @@ Example:
 func init() {
 
 	labelCmd.Flags().BoolVarP(&Overwrite, "overwrite", "o", false, "--overwrite forces an existing label to be overwritten")
-	labelCmd.Flags().BoolVarP(&Debug, "debug", "d", false, "--debug turns on useful debug information to be output while command executes")
+	// labelCmd.Flags().BoolVarP(&DebugFlag, "debug", "d", false, "--debug turns on useful debug information to be output while command executes")
 
 	RootCmd.AddCommand(labelCmd)
 
@@ -104,18 +104,19 @@ func labelResource(namespace string, resources map[string]string, labels map[str
 		}
 
 
-		podLabels := thePod.GetLabels()
+		podLabels := thePod.GetLabels() // get current labels assigned to pod
 
 		newLabels := map[string]string{}
 
-		// add current labels to new labels - TODO: check for overwrite
-		for k,v := range podLabels {
-			newLabels[k] = v
+		// Leverage last in wins, for overwrite during merge.
+		if Overwrite {
+			mergeLabels(podLabels, newLabels)
+			mergeLabels(labels, newLabels)
+		} else {
+			mergeLabels(labels, newLabels)
+			mergeLabels(podLabels, newLabels)
 		}
 
-		for k,v := range labels {
-			newLabels[k] = v
-		}
 
 		if DebugFlag {
 			fmt.Println("New Labels: ")
@@ -130,6 +131,14 @@ func labelResource(namespace string, resources map[string]string, labels map[str
 
 	}
 
+}
+
+// given two maps, assign all key value pairs found in source to dest
+func mergeLabels(source map[string]string, dest map[string]string) {
+
+	for k,v := range source {
+		dest[k] = v
+	}
 }
 
 func parseAndClassifyArgs(args []string)(resources map[string]string, labels map[string]string ) {
