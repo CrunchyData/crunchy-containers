@@ -65,9 +65,7 @@ Example:
 
 		resources, labels := parseAndClassifyArgs(args)
 
-		namespace := "demo" // replace with getActiveNamespace or something like that.
-
-		labelResource(namespace, resources, labels)
+		labelResource(resources, labels)
 	},
 }
 
@@ -80,14 +78,14 @@ func init() {
 
 }
 
-func labelResource(namespace string, resources map[string]string, labels map[string]string) {
+func labelResource(resources map[string]string, labels map[string]string) {
 
 	if DebugFlag {
 		dumpParsedArgs(resources, labels)
 	}
 
 	// change this line to GetClientConfigWC for within cluster operation. - not written yet
-	clientset, _ := kubeapi.GetClientConfig()
+	clientset, namespace, _ := kubeapi.GetClientConfig()
 
 	for _, podName := range resources {
 
@@ -98,7 +96,8 @@ func labelResource(namespace string, resources map[string]string, labels map[str
 		if podErr != nil {
 			log.WithFields(log.Fields {
 				"pod": podName,
-				}).Error("Pod not found.")
+				"namespace" : namespace,
+				}).Error("Pod not found in namespace.")
 			continue
 			// panic(podErr.Error())
 		}

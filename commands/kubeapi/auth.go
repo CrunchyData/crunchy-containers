@@ -13,7 +13,7 @@ import (
 // "k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/clientset"
 )
 
-func GetClientConfig ()(* kubernetes.Clientset, error) {
+func GetClientConfig ()(* kubernetes.Clientset,  string, error) {
 
 	var kubeconfig *string
 	var config *rest.Config 
@@ -47,7 +47,10 @@ func GetClientConfig ()(* kubernetes.Clientset, error) {
 		panic(err.Error())
 	}
 
-	return clientset, err
+	namespace := getNamespace()
+
+
+	return clientset, namespace, err
 }
 
 func homeDir() string {
@@ -62,4 +65,15 @@ func inAContainer() bool {
 		return true
 	}
 	return false
+}
+
+
+func getNamespace() string {
+
+	if ns := os.Getenv("CCP_NAMESPACE"); ns != "" {
+		return ns
+	}
+	return "default"
+
+
 }

@@ -132,7 +132,14 @@
                {
                   "name":"CONTAINER_NAME",
                   "value":"postgres-gis"
-               }
+               },{
+                "name": "CCP_NAMESPACE",
+                "valueFrom": {
+                    "fieldRef": {
+                        "fieldPath": "metadata.namespace"
+                    }
+                }
+            }
             ],
             "volumeMounts":[
                {
