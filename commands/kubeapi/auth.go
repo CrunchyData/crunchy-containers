@@ -4,13 +4,13 @@ import (
 "flag"
 "path/filepath"
 "os"
+"strings"
+"bufio"
+"fmt"
 
-// "k8s.io/apimachinery/pkg/api/errors"
-// metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 "k8s.io/client-go/kubernetes"
 "k8s.io/client-go/tools/clientcmd"
 "k8s.io/client-go/rest"
-// "k8s.io/kubernetes/pkg/client/clientset_generated/internalclientset/clientset"
 )
 
 func GetClientConfig ()(* kubernetes.Clientset,  string, error) {
@@ -61,11 +61,38 @@ func homeDir() string {
 }
 
 func inAContainer() bool {
-	if e := os.Getenv("container"); e != "" {
+
+	// based on this post 
+	// https://stackoverflow.com/questions/20010199/how-to-determine-if-a-process-runs-inside-lxc-docker
+
+
+	var cgroupFile = "/proc/1/cgroup"
+	// if e := os.Getenv("container"); e != "" {
+	// 	return true
+	// }
+	// return false
+
+	inFile, _ := os.Open(cgroupFile)
+
+	defer inFile.Close()
+	scanner := bufio.NewScanner(inFile)
+	scanner.Split(bufio.ScanLines) 
+  
+	scanner.Scan() // read one line.
+	pieces := strings.Split(scanner.Text(), ":")
+
+	fmt.Printf("Cgroup root: %s \n", pieces[2])
+	fmt.Printf("Length of cgroup root: %d\n", len(pieces[2] ) )
+
+	if len(pieces[2]) > 1 {
+		fmt.Println("Running inside of container.")
 		return true
 	}
+	fmt.Println("Running outside of container")
 	return false
 }
+
+
 
 
 func getNamespace() string {
@@ -77,3 +104,4 @@ func getNamespace() string {
 
 
 }
+
