@@ -27,8 +27,7 @@ setup:
 gendeps:
 	godep save \
 	github.com/crunchydata/crunchy-containers/dba \
-	github.com/crunchydata/crunchy-containers/badger \
-	github.com/crunchydata/crunchy-containers/commands/kubeapi/auth
+	github.com/crunchydata/crunchy-containers/badger 
 
 docbuild:
 	cd $CCPROOT && ./generate-docs.sh
