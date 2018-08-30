@@ -6,7 +6,6 @@ import (
 "os"
 "strings"
 "bufio"
-"fmt"
 
 "k8s.io/client-go/kubernetes"
 "k8s.io/client-go/tools/clientcmd"
@@ -62,33 +61,25 @@ func homeDir() string {
 
 func inAContainer() bool {
 
-	// based on this post 
+	// based on this post for how to determine if running inside a container.
 	// https://stackoverflow.com/questions/20010199/how-to-determine-if-a-process-runs-inside-lxc-docker
 
-
 	var cgroupFile = "/proc/1/cgroup"
-	// if e := os.Getenv("container"); e != "" {
-	// 	return true
-	// }
-	// return false
 
 	inFile, _ := os.Open(cgroupFile)
-
 	defer inFile.Close()
+
+	// read first line, determine cgroup structure
 	scanner := bufio.NewScanner(inFile)
 	scanner.Split(bufio.ScanLines) 
-  
-	scanner.Scan() // read one line.
+	scanner.Scan()
 	pieces := strings.Split(scanner.Text(), ":")
 
-	fmt.Printf("Cgroup root: %s \n", pieces[2])
-	fmt.Printf("Length of cgroup root: %d\n", len(pieces[2] ) )
-
+	// if the 3rd piece is more than a single "/", we are in a container
 	if len(pieces[2]) > 1 {
-		fmt.Println("Running inside of container.")
 		return true
 	}
-	fmt.Println("Running outside of container")
+
 	return false
 }
 
