@@ -15,7 +15,7 @@
 
 # Dependency Versions
 PROMETHEUS_VERSION=2.3.1
-GRAFANA_VERSION=5.2.1
+GRAFANA_VERSION=5.2.3
 POSTGRES_EXPORTER_VERSION=0.4.6
 NODE_EXPORTER_VERSION=0.16.0
 MERCURIAL_RPM='https://www.mercurial-scm.org/release/centos7/RPMS/x86_64/mercurial-4.6.1-1.x86_64.rpm'
