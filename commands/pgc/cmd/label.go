@@ -51,20 +51,13 @@ Example:
 .`,
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Debug("label called")
-		var inValid bool = false
 
 		if len(args) == 0  {
 			log.Error("A resource type and name must be specified.")
-			inValid = true
-		}
-
-
-		if (inValid) {
 			return
 		}
 
 		resources, labels := parseAndClassifyArgs(args)
-
 		labelResource(resources, labels)
 	},
 }
@@ -72,8 +65,6 @@ Example:
 func init() {
 
 	labelCmd.Flags().BoolVarP(&Overwrite, "overwrite", "o", false, "--overwrite forces an existing label to be overwritten")
-	// labelCmd.Flags().BoolVarP(&DebugFlag, "debug", "d", false, "--debug turns on useful debug information to be output while command executes")
-
 	RootCmd.AddCommand(labelCmd)
 
 }
@@ -84,8 +75,9 @@ func labelResource(resources map[string]string, labels map[string]string) {
 		dumpParsedArgs(resources, labels)
 	}
 
-	// change this line to GetClientConfigWC for within cluster operation. - not written yet
-	clientset, namespace, _ := kubeapi.GetClientConfig()
+	// oocFlag := RootCmd.PersistentFlags().Lookup("remote").Value
+
+	clientset, namespace, _ := kubeapi.GetClientConfig(OOCFlag, Namespace)
 
 	for _, podName := range resources {
 
@@ -99,7 +91,6 @@ func labelResource(resources map[string]string, labels map[string]string) {
 				"namespace" : namespace,
 				}).Error("Pod not found in namespace.")
 			continue
-			// panic(podErr.Error())
 		}
 
 
@@ -109,11 +100,11 @@ func labelResource(resources map[string]string, labels map[string]string) {
 
 		// Leverage last in wins, for overwrite during merge.
 		if Overwrite {
-			mergeLabels(podLabels, newLabels)
-			mergeLabels(labels, newLabels)
+			mergeMaps(podLabels, newLabels)
+			mergeMaps(labels, newLabels)
 		} else {
-			mergeLabels(labels, newLabels)
-			mergeLabels(podLabels, newLabels)
+			mergeMaps(labels, newLabels)
+			mergeMaps(podLabels, newLabels)
 		}
 
 
@@ -133,7 +124,8 @@ func labelResource(resources map[string]string, labels map[string]string) {
 }
 
 // given two maps, assign all key value pairs found in source to dest
-func mergeLabels(source map[string]string, dest map[string]string) {
+// identical keys will get overwritten
+func mergeMaps(source map[string]string, dest map[string]string) {
 
 	for k,v := range source {
 		dest[k] = v

@@ -32,13 +32,14 @@ var Labelselector string
 var DebugFlag bool
 var Pod string
 var Overwrite bool
-var Debug bool
+var OOCFlag bool 
+var Namespace string
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
 	Use:   "pgc",
 	Short: "The Crunchy Postgres Container Client",
-	Long: "The pgc command allows you to modify resources in an Kubenetes Cluster, including Openshift",
+	Long: "Allows you to modify stateful set resources in a postgres cluster.",
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
@@ -63,6 +64,8 @@ func init() {
 	RED = color.New(color.FgRed).SprintFunc()
 
 	RootCmd.PersistentFlags().BoolVarP(&DebugFlag, "debug", "d", false, "enable debug with true")
+	RootCmd.PersistentFlags().BoolVarP(&OOCFlag, "remote", "r", false, "execute remotely, from outside of cluster")
+	RootCmd.PersistentFlags().StringVarP(&Namespace, "namespace", "n", "", "specify namespace pod is in")
 
 }
 
@@ -73,6 +76,13 @@ func initConfig() {
 	}
 
 	log.Debug("initConfig() called.")
+
+	// if not operating in a "set" cluster, bail immediately
+	if pgm := os.Getenv("PG_MODE"); pgm != "set" && !OOCFlag {
+		log.Error("PG_MODE must be specified as 'set'.")
+		os.Exit(-1)
+	}
+	
 }
 
 func generateBashCompletion() {

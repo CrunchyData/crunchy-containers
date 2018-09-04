@@ -18,24 +18,30 @@ import (
 "flag"
 "path/filepath"
 "os"
-"strings"
-"bufio"
-
+log "github.com/Sirupsen/logrus"
 "k8s.io/client-go/kubernetes"
 "k8s.io/client-go/tools/clientcmd"
 "k8s.io/client-go/rest"
 )
 
-func GetClientConfig ()(* kubernetes.Clientset,  string, error) {
+func GetClientConfig (oocFlag bool, namespaceFlag string)(* kubernetes.Clientset,  string, error) {
 
 	var kubeconfig *string
 	var config *rest.Config 
 	var err error
 
 
+	namespace := getNamespace(oocFlag, namespaceFlag) // this may call os.Exit(non-zero)
 
-	if inAContainer() {
+	if !oocFlag {
 		config, err = rest.InClusterConfig()
+
+		if err != nil {
+			log.Error(err.Error())
+			log.Info("If running outside of container, use [ -r | --remote ] flag")
+			os.Exit(-1)
+		}
+
 	} else if home := homeDir(); home != "" {
 		kubeconfig = flag.String("kubeconfig", filepath.Join(home, ".kube", "config"), "")
 		// use the current context in kubeconfig
@@ -46,8 +52,6 @@ func GetClientConfig ()(* kubernetes.Clientset,  string, error) {
 		}
 
 	} else {
-		// kubeconfig = flag.String("kubeconfig", "", "/etc/origin/master/admin.kubeconfig")
-		//	config, err = rest.InClusterConfig()
 		panic("Unable to obtain a cluster configuration. Exiting.")
 	}
 	flag.Parse()
@@ -60,9 +64,6 @@ func GetClientConfig ()(* kubernetes.Clientset,  string, error) {
 		panic(err.Error())
 	}
 
-	namespace := getNamespace()
-
-
 	return clientset, namespace, err
 }
 
@@ -73,40 +74,21 @@ func homeDir() string {
 	return os.Getenv("USERPROFILE") // windows
 }
 
-func inAContainer() bool {
 
-	// based on this post for how to determine if running inside a container.
-	// https://stackoverflow.com/questions/20010199/how-to-determine-if-a-process-runs-inside-lxc-docker
+func getNamespace(outOfContainer bool, namespaceFlag string) string {
 
-	var cgroupFile = "/proc/1/cgroup"
-
-	inFile, _ := os.Open(cgroupFile)
-	defer inFile.Close()
-
-	// read first line, determine cgroup structure
-	scanner := bufio.NewScanner(inFile)
-	scanner.Split(bufio.ScanLines) 
-	scanner.Scan()
-	pieces := strings.Split(scanner.Text(), ":")
-
-	// if the 3rd piece is more than a single "/", we are in a container
-	if len(pieces[2]) > 1 {
-		return true
+	if namespaceFlag != "" {
+		return namespaceFlag
 	}
 
-	return false
-}
-
-
-
-
-func getNamespace() string {
-
-	if ns := os.Getenv("CCP_NAMESPACE"); ns != "" {
+	if ns := os.Getenv("CCP_NAMESPACE"); ns != "" || outOfContainer {
 		return ns
 	}
-	return "default"
 
+	log.Error("CCP_NAMESPACE must be set.")
+	// if namespace not set, exit
+	os.Exit(-1)
 
+	return "" // make compiler happy - never executed
 }
 
