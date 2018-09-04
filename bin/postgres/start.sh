@@ -81,11 +81,21 @@ function role_discovery() {
     echo_info "Ordinal is set to ${ordinal?}."
     if [ $ordinal -eq 0 ]; then
         pgc label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST
+        rc=$?;
+        if [[ $rc != 0 ]]; then 
+            echo_err "Unable to set mode on pod, label command failed."
+            exit $rc; 
+        fi
         echo_info "Setting PG_MODE to primary."
         export PG_MODE=primary
     else
         echo_info "Setting PG_MODE to replica."
         pgc label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST
+        rc=$?;
+        if [[ $rc != 0 ]]; then 
+            echo_err "Unable to set mode on pod, label command failed."
+            exit $rc; 
+        fi
         export PG_MODE=replica
     fi
 }
