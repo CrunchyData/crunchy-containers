@@ -26,7 +26,6 @@ RUN yum -y update \
     hostname \
     nss_wrapper \
     openssh-server \
-    kubernetes-client \
     procps-ng  \
     rsync \
  && yum -y install postgresql10-server postgresql10-contrib postgresql10 \
