@@ -18,7 +18,7 @@ import (
 "flag"
 "path/filepath"
 "os"
-log "github.com/Sirupsen/logrus"
+log "github.com/sirupsen/logrus"
 "k8s.io/client-go/kubernetes"
 "k8s.io/client-go/tools/clientcmd"
 "k8s.io/client-go/rest"
