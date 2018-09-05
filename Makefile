@@ -58,8 +58,9 @@ collect: versiontest
 	docker build -t crunchy-collect -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.collect.$(CCP_BASEOS) .
 	docker tag crunchy-collect $(CCP_IMAGE_PREFIX)/crunchy-collect:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-dbaserver: commands 
-	cp $(GOBIN)/pgc bin/postgres
+dbaserver:  
+	cp `which oc` bin/dba
+	cp `which kubectl` bin/dba
 	cd dba && godep go install dbaserver.go
 	cp $(GOBIN)/dbaserver bin/dba
 	docker build -t crunchy-dba -f $(CCP_BASEOS)/Dockerfile.dba.$(CCP_BASEOS) .
