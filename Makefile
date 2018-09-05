@@ -2,10 +2,10 @@ ifndef CCPROOT
 	export CCPROOT=$(GOPATH)/src/github.com/crunchydata/crunchy-containers
 endif
 
-.PHONY:	all versiontest
+.PHONY:	all versiontest 
 
 # Default target
-all:    backup backrestrestore collect dbaserver grafana pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis prometheus upgrade vac
+all:    commands backup backrestrestore collect dbaserver grafana pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis prometheus upgrade vac
 
 versiontest:
 ifndef CCP_BASEOS
@@ -27,10 +27,20 @@ setup:
 gendeps:
 	godep save \
 	github.com/crunchydata/crunchy-containers/dba \
-	github.com/crunchydata/crunchy-containers/badger
+	github.com/crunchydata/crunchy-containers/badger 
 
 docbuild:
 	cd $CCPROOT && ./generate-docs.sh
+
+#=============================================
+# Targets that generate commands (alphabetized)
+#=============================================
+
+commands: pgc
+
+pgc: 
+	cd $(CCPROOT)/commands/pgc && go build pgc.go && mv pgc $(GOBIN)/pgc
+
 
 #=============================================
 # Targets that generate images (alphabetized)
@@ -48,7 +58,7 @@ collect: versiontest
 	docker build -t crunchy-collect -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.collect.$(CCP_BASEOS) .
 	docker tag crunchy-collect $(CCP_IMAGE_PREFIX)/crunchy-collect:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-dbaserver:
+dbaserver:  
 	cp `which oc` bin/dba
 	cp `which kubectl` bin/dba
 	cd dba && godep go install dbaserver.go
@@ -94,15 +104,13 @@ pgsim:
 	docker build -t crunchy-sim -f $(CCP_BASEOS)/Dockerfile.sim.$(CCP_BASEOS) .
 	docker tag crunchy-sim $(CCP_IMAGE_PREFIX)/crunchy-sim:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-postgres: versiontest
-	cp `which kubectl` bin/postgres
-	cp `which oc` bin/postgres
+postgres: versiontest commands
+	cp $(GOBIN)/pgc bin/postgres
 	docker build -t crunchy-postgres -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres.$(CCP_BASEOS) .
 	docker tag crunchy-postgres $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-postgres-gis: versiontest
-	cp `which kubectl` bin/postgres
-	cp `which oc` bin/postgres
+postgres-gis: versiontest commands 
+	cp $(GOBIN)/pgc bin/postgres
 	docker build -t crunchy-postgres-gis -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS) .
 	docker tag crunchy-postgres-gis $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
