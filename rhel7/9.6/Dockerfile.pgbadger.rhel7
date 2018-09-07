@@ -58,4 +58,8 @@ VOLUME ["/pgdata", "/report"]
 
 USER 26
 
+ENV LD_PRELOAD="/usr/lib64/libnss_wrapper.so" \
+    NSS_WRAPPER_PASSWD="/tmp/passwd" \
+    NSS_WRAPPER_GROUP="/tmp/group"
+    
 CMD ["/opt/cpm/bin/start-pgbadger.sh"]
