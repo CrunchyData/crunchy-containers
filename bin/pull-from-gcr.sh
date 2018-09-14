@@ -21,7 +21,6 @@ IMAGES=(
     crunchy-pgrestore
     crunchy-upgrade
     crunchy-vacuum
-    crunchy-watch
 )
 
 function echo_green() {
