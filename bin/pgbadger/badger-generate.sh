@@ -26,4 +26,4 @@ then
 fi
 
 echo_info "Creating pgBadger output.."
-/bin/pgbadger ${BADGER_CUSTOM_OPTS} -o /report/index.html /pgdata/${TARGET?}/pg_log/*.log
+/bin/pgbadger -f stderr ${BADGER_CUSTOM_OPTS} -o /report/index.html /pgdata/${TARGET?}/pg_log/*.log
