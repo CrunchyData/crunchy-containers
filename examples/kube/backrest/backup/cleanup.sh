@@ -26,5 +26,3 @@ fi
 $CCPROOT/examples/waitforterm.sh backrest ${CCP_CLI?}
 
 dir_check_rm "backrest"
-dir_check_rm "backrest-backups"
-dir_check_rm "backrest-spool"

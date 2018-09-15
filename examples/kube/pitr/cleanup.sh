@@ -30,6 +30,3 @@ if [ -z "$CCP_STORAGE_CLASS" ]; then
 fi
 
 dir_check_rm "pitr"
-dir_check_rm "pitr-wal"
-dir_check_rm "pitr-backups"
-dir_check_rm "restore-pitr"

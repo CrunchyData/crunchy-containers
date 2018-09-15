@@ -13,7 +13,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH",
+            "path": "$CCP_STORAGE_PATH/statefulset",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"
@@ -35,7 +35,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH",
+            "path": "$CCP_STORAGE_PATH/statefulset",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"
@@ -57,7 +57,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH",
+            "path": "$CCP_STORAGE_PATH/statefulset",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"

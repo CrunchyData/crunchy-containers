@@ -25,5 +25,3 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap br-full-restore-pgcon
 $CCPROOT/examples/waitforterm.sh backrest ${CCP_CLI?}
 
 dir_check_rm "backrest-full-restored"
-dir_check_rm "backrest-full-restored-backups"
-dir_check_rm "backrest-full-restored-spool"
