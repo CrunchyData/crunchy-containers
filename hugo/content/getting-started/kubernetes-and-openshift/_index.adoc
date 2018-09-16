@@ -2316,3 +2316,68 @@ on the Kubernetes instance and then execute a SQL file which
 contains pg_audit configuration statements as well as some
 basic SQL commands.  These SQL commands will cause pg_audit to create
 log messages in the `pg_log` file created by the database container.
+
+=== EFK Stack
+
+Additional logging capabilities can be enabled through Kubernetes and OpenShift’s
+native support for the open source technologies Elasticsearch, Fluentd, and Kibana.
+This combination of software is otherwise known as the EFK stack.
+
+Elasticsearch is a powerful search engine that manages document-oriented or
+semi-structured data through a schema-less database. It’s responsible for storing
+the PostgreSQL and Kubernetes/OpenShift logs to allow for querying. Fluentd is
+considered to be a unified logging layer or open source data aggregation system;
+it transports the data from the Kubernetes pods over to Elasticsearch. Finally,
+you have Kibana, which is a visualization tool for graphically viewing data
+collected from Elasticsearch through browser-based customizable dashboards that
+are dynamically updated in real-time.
+
+==== Installation
+
+Please ensure you have at least three available nodes for installation; it will
+not work otherwise.
+
+===== Default Kubernetes Integration
+
+EFK can be enabled by default when installing Kubernetes by following the instructions
+link:https://kubernetes.io/docs/tasks/debug-application-cluster/logging-elasticsearch-kibana/[here]
+from the official Kubernetes documentation.
+
+===== Add-on Kubernetes Integration
+
+You can additionally enable EFK as an add-on after your Kubernetes cluster has
+initialized by installing the official Kubernetes add-on package
+link:https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/fluentd-elasticsearch[here].
+It should be noted that using this method to install the EFK stack is suitable only
+for development environments without implementing further configuration from consulting
+the link:https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/fluentd-elasticsearch#security[Security]
+and link:https://github.com/kubernetes/kubernetes/tree/master/cluster/addons/fluentd-elasticsearch#storage[Storage]
+Kubernetes documentation pages.
+
+If using the add-on method, after cloning the directory, the files within the
+fluentd-elasticsearch directory can be created as follows:
+
+....
+kubectl create -f es-statefulset.yaml
+kubectl create -f es-service.yaml
+kubectl create -f fluentd-es-configmap.yaml
+kubectl create -f fluentd-es-ds.yaml
+kubectl create -f kibana-deployment.yaml
+kubectl create -f kibana-service.yaml
+....
+
+Additionally, after initialization, you will find it necessary to port-forward
+the Kibana pod in order to access it from your browser with a command similar
+to the following:
+
+....
+kubectl port-forward efk-kibana 5601 -n logging
+....
+
+Finally, in order to enable the PostgreSQL container to forward logs to the EFK
+stack, it will be necessary to set the following parameters within postgresql.conf:
+
+....
+log_destination = 'stderr'
+log_collector = 'off'
+....
