@@ -51,6 +51,9 @@ ADD bin/pgbadger /opt/cpm/bin
 
 RUN chown -R 26:26 /opt/cpm /report
 
+# placeholder files to allow NSS_WRAPPER to preload without errors.
+ADD tmp /tmp 
+
 # pgbadger port
 EXPOSE 10000
 

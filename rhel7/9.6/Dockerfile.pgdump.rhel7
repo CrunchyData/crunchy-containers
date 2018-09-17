@@ -46,6 +46,9 @@ ADD bin/common /opt/cpm/bin
 ADD conf/pgdump/ /opt/cpm/conf
 RUN chown -R 26:26 /opt/cpm /pgdata
 
+# placeholder files to allow NSS_WRAPPER to preload without errors.
+ADD tmp /tmp 
+
 VOLUME ["/pgdata"]
 
 USER 26
