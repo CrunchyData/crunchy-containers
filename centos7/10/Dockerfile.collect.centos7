@@ -38,7 +38,10 @@ ADD bin/collect /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/collect /opt/cpm/conf
 
-RUN chown -R 2:2 /opt/cpm/bin /opt/cpm/conf
+# placeholder files to allow NSS_WRAPPER to preload without errors.
+ADD tmp /tmp 
+
+RUN chown -R 2:2 /opt/cpm/bin /opt/cpm/conf /tmp
 
 VOLUME ["/conf"]
 

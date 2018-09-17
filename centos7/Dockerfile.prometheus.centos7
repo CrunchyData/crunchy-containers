@@ -27,6 +27,9 @@ ADD bin/prometheus /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/prometheus /opt/cpm/conf
 
+# placeholder files to allow NSS_WRAPPER to preload without errors.
+ADD tmp /tmp 
+
 RUN chown -R 2:2 /opt/cpm /data /conf
 
 EXPOSE 9090

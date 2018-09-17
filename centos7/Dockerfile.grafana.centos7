@@ -29,7 +29,10 @@ ADD bin/grafana /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/grafana /opt/cpm/conf
 
-RUN chown -R 2:2 /opt/cpm /data
+# placeholder files to allow NSS_WRAPPER to preload without errors.
+ADD tmp /tmp 
+
+RUN chown -R 2:2 /opt/cpm /data /tmp
 
 VOLUME ["/data", "/conf"]
 EXPOSE 3000

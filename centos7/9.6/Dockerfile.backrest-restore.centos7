@@ -52,6 +52,11 @@ ADD bin/backrest_restore /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/backrest_restore /opt/cpm/conf
 
+# placeholder files to allow NSS_WRAPPER to preload without errors.
+ADD tmp /tmp 
+
+RUN chown -R 26:26 /tmp
+
 USER 26
 
 ENV LD_PRELOAD="/usr/lib64/libnss_wrapper.so" \

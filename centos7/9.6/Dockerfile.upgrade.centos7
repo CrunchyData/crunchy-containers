@@ -39,6 +39,12 @@ ADD bin/common /opt/cpm/bin
 ADD conf/upgrade/ /opt/cpm/conf
 RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata
 
+
+# placeholder files to allow NSS_WRAPPER to preload without errors.
+ADD tmp /tmp 
+
+RUN chown -R 26:26 /tmp
+
 VOLUME /pgolddata /pgnewdata
 
 USER 26

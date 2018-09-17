@@ -35,7 +35,10 @@ ADD bin/pgbouncer /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgbouncer /opt/cpm/conf
 
-RUN chown -R 2:2 /opt/cpm /pgconf
+# placeholder files to allow NSS_WRAPPER to preload without errors.
+ADD tmp /tmp 
+
+RUN chown -R 2:2 /opt/cpm /pgconf /tmp
 
 EXPOSE 6432
 

@@ -72,6 +72,11 @@ ADD bin/common /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
 ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/pgmonitor
 
+# placeholder files to allow NSS_WRAPPER to preload without errors.
+ADD tmp /tmp 
+
+RUN chown -R 26:26 /tmp
+
 USER 26
 
 ENV LD_PRELOAD="/usr/lib64/libnss_wrapper.so" \

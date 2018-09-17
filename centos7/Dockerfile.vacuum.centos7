@@ -28,7 +28,10 @@ ADD bin/vacuum /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/vacuum /opt/cpm/conf
 
-RUN chown -R 2:2 /opt/cpm
+# placeholder files to allow NSS_WRAPPER to preload without errors.
+ADD tmp /tmp 
+
+RUN chown -R 2:2 /opt/cpm /tmp
 
 USER 2
 
