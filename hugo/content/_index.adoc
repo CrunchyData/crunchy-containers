@@ -40,7 +40,6 @@ The project includes the following containers:
  * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-backup[crunchy-backup] - performs a full database backup
  * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgpool[crunchy-pgpool] - executes pgpool
  * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgbadger[crunchy-pgbadger] - executes pgbadger
- * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-watch[crunchy-watch] - performs a form of automated failover
  * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-collect[crunchy-collect] - collects Postgres metrics
  * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-prometheus[crunchy-prometheus] -stores Postgres metrics
  * link:https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-grafana[crunchy-grafana] - graphs Postgres metrics

@@ -2115,77 +2115,14 @@ You should see a row for each replica along with its replication status.
 
 === Watch
 
-This example shows how to run the crunchy-watch container
-to perform an automated failover.  For the example to
-work, the host on which you are running needs to allow
-read-write access to `/run/docker.sock`.  The crunchy-watch
-container runs as the *postgres* user, so adjust the
-file permissions of `/run/docker.sock` accordingly.
+Crunchy Watch is an application wrapped in a container that watches a PostgreSQL
+primary database and waits for a failure to occur, at which point a failover is
+performed to promote a replica.
 
-The *primary-replica* example is required to be run before this example.
-
-To shutdown the instance and remove the container for each example, run the following:
-....
-./cleanup.sh
-....
-
-==== Docker
-
-Run the example as follows:
-....
-cd $CCPROOT/examples/docker/watch
-./run.sh
-....
-
-This will start the watch container which tests every few seconds
-whether the primary database is running, if not, it will
-trigger a failover using `docker exec` on the replica host.
-
-Test it out by stopping the primary:
-....
-docker stop primary
-docker logs watch
-....
-
-Look at the watch container logs to see it perform the failover.
-
-==== Kubernetes and OpenShift
-
-Running the example:
-....
-cd $CCPROOT/examples/kube/watch
-./run.sh
-....
-
-Check out the log of the watch container as follows:
-....
-${CCP_CLI} log watch
-....
-
-Then trigger a failover using this command:
-....
-${CCP_CLI} delete pod pr-primary
-....
-
-Resume watching the watch container's log and verify that it
-detects the primary is not reachable and performs a failover
-on the replica.
-
-A final test is to see if the old replica is now a fully functioning
-primary by inserting some test data into it as follows:
-....
-psql -h pr-primary -U postgres postgres -c 'create table failtest (id int)'
-....
-
-The above command still works because the watch container has
-changed the labels of the replica to make it a primary, so the primary
-service will still work and route now to the new primary even though
-the pod is named replica.
-
-You can view the labels on a pod with this command:
-....
-${CCP_CLI} describe pod pr-replica | grep Label
-....
+The crunchy-watch container, while originally part of the Container Suite, has been
+split out into its own project. More information on the Watch container and it's
+capabilities can be found in the new project repository located at
+https://github.com/CrunchyData/crunchy-watch.
 
 == Metrics and Performance
 
