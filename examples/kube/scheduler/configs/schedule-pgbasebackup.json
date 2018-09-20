@@ -1,0 +1,16 @@
+{
+    "version": "v1",
+    "name": "primary-backup-pgbasebackup",
+    "created": "2018-09-04T18:25:43.511Z",
+    "schedule": "* * * * *",
+    "namespace": "demo",
+    "type": "pgbasebackup",
+    "pgbasebackup": {
+        "backupHost": "primary-deployment",
+        "backupPort": "5432",
+        "backupVolume": "primary-deployment-backup",
+        "imagePrefix": "crunchydata",
+        "imageTag": "centos7-10.5-2.1.0",
+        "secret": "pgprimary-secret"
+    }
+}

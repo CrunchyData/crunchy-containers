@@ -25,5 +25,5 @@ docker push  $CCP_IMAGE_PREFIX/crunchy-postgres-gis:$CCP_IMAGE_TAG
 docker push  $CCP_IMAGE_PREFIX/crunchy-pgbouncer:$CCP_IMAGE_TAG
 docker push  $CCP_IMAGE_PREFIX/crunchy-pgadmin4:$CCP_IMAGE_TAG
 docker push  $CCP_IMAGE_PREFIX/crunchy-vacuum:$CCP_IMAGE_TAG
-docker push  $CCP_IMAGE_PREFIX/crunchy-dba:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-scheduler:$CCP_IMAGE_TAG
 docker push $CCP_IMAGE_PREFIX/crunchy-upgrade:$CCP_IMAGE_TAG

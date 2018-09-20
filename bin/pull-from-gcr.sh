@@ -8,7 +8,7 @@ IMAGES=(
     crunchy-backrest-restore
     crunchy-backup
     crunchy-collect
-    crunchy-dba
+    crunchy-scheduler
     crunchy-pgdump
     crunchy-grafana
     crunchy-pgadmin4
