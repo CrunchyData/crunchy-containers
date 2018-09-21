@@ -142,7 +142,12 @@
                     "initialDelaySeconds": 15,
                     "periodSeconds": 20
                 },
-                "env": [],
+                "env": [
+                    {
+                        "name": "BADGER_CUSTOM_OPTS",
+                        "value": "-f stderr"
+                    }
+                ],
                 "volumeMounts": [
                     {
                         "mountPath": "/pgdata",

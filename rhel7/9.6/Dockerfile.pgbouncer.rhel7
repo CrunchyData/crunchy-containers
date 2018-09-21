@@ -51,10 +51,17 @@ ADD conf/pgbouncer /opt/cpm/conf
 
 RUN chown -R 2:2 /opt/cpm /pgconf
 
+# placeholder files to allow NSS_WRAPPER to preload without errors.
+ADD tmp /tmp 
+
 EXPOSE 6432
 
 VOLUME ["/pgconf"]
 
 USER 2
 
+ENV LD_PRELOAD="/usr/lib64/libnss_wrapper.so" \
+    NSS_WRAPPER_PASSWD="/tmp/passwd" \
+    NSS_WRAPPER_GROUP="/tmp/group"
+    
 CMD ["/opt/cpm/bin/start.sh"]

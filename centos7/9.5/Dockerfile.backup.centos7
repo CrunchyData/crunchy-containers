@@ -26,8 +26,17 @@ ADD bin/common /opt/cpm/bin
 ADD conf/backup/ /opt/cpm/conf
 RUN chown -R postgres:postgres /opt/cpm /pgdata
 
+# placeholder files to allow NSS_WRAPPER to preload without errors.
+ADD tmp /tmp 
+
+RUN chown -R 26:26 /tmp
+
 VOLUME ["/pgdata"]
 
 USER 26
+
+ENV LD_PRELOAD="/usr/lib64/libnss_wrapper.so" \
+    NSS_WRAPPER_PASSWD="/tmp/passwd" \
+    NSS_WRAPPER_GROUP="/tmp/group"
 
 CMD ["/opt/cpm/bin/start-backupjob.sh"]

@@ -38,6 +38,9 @@ ADD bin/pgadmin4/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgadmin4/ /opt/cpm/conf
 
+# placeholder files to allow NSS_WRAPPER to preload without errors.
+ADD tmp /tmp 
+
 RUN cp /opt/cpm/conf/httpd.conf /etc/httpd/conf/httpd.conf \
   && rm /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/ssl.conf
 
@@ -47,10 +50,16 @@ RUN chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
 RUN ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
   && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf
 
+RUN chown -R 2:2 /tmp
+
 EXPOSE 5050
 
 VOLUME ["/var/lib/pgadmin", "/certs", "/run/httpd"]
 
 USER 2
+
+ENV LD_PRELOAD="/usr/lib64/libnss_wrapper.so" \
+    NSS_WRAPPER_PASSWD="/tmp/passwd" \
+    NSS_WRAPPER_GROUP="/tmp/group"
 
 CMD ["/opt/cpm/bin/start-pgadmin4.sh"]

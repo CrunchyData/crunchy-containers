@@ -37,10 +37,13 @@ ADD bin/pgpool /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgpool /opt/cpm/conf
 
+# placeholder files to allow NSS_WRAPPER to preload without errors.
+ADD tmp /tmp 
+
 RUN ln -sf /opt/cpm/conf/pool_hba.conf /etc/pgpool-II-95/pool_hba.conf \
   && ln -sf /opt/cpm/conf/pgpool/pool_passwd /etc/pgpool-II-95/pool_passwd
 
-RUN chown -R 2:2 /opt/cpm
+RUN chown -R 2:2 /opt/cpm /tmp
 
 # open up the postgres port
 EXPOSE 5432
@@ -49,5 +52,9 @@ EXPOSE 5432
 VOLUME ["/pgconf"]
 
 USER 2
+
+ENV LD_PRELOAD="/usr/lib64/libnss_wrapper.so" \
+    NSS_WRAPPER_PASSWD="/tmp/passwd" \
+    NSS_WRAPPER_GROUP="/tmp/group"
 
 CMD ["/opt/cpm/bin/startpgpool.sh"]
