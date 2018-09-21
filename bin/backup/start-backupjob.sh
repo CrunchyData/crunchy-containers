@@ -27,7 +27,6 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 BACKUPBASE=/pgdata/$BACKUP_HOST-backups
 if [ ! -d "$BACKUPBASE" ]; then

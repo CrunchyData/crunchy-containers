@@ -39,7 +39,6 @@ RUN yum install -y epel-release \
     gettext \
     postgresql10 \
     postgresql10-libs \
-    nss_wrapper \
     hostname \
   && yum -y clean all
 
