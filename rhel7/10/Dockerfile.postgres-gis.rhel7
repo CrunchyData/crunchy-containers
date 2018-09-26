@@ -38,7 +38,6 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
     gettext \
     hostname \
     R-core libRmath texinfo-tex texlive-epsf \
-    nss_wrapper \
     openssh-server \
     procps-ng \
     rsync \
@@ -63,8 +62,11 @@ ADD conf/.bashrc /
 # set up cpm directory
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd
 
-RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
+RUN chgrp -R 0 /opt/cpm /var/lib/pgsql \
+    /pgdata /pgwal /pgconf /backup /recover /backrestrepo && \
+    chmod -R g=u /opt/cpm /var/lib/pgsql \
     /pgdata /pgwal /pgconf /backup /recover /backrestrepo
+    
 
 # Link pgbackrest.conf to default location for convenience
 # Remove nologin file to prevent sshd from being blocked
@@ -89,6 +91,9 @@ ADD bin/postgres-gis /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
 ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/pgmonitor
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 
 USER 26
 
