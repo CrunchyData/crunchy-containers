@@ -262,52 +262,99 @@ You can verify the upgraded database by running the `post-upgrade.sh` script in 
 `examples/kube/upgrade` directory.  This will create a PostgreSQL pod that mounts the
 upgraded volume.
 
-=== Cron Scheduler
+=== Crunchy Scheduler
 
-The crunchy-dba container implements a cron scheduler. The purpose of the crunchy-dba
-container is to offer a way to perform simple DBA tasks that occur on some form of
-schedule such as backup jobs or running a vacuum on a single PostgreSQL database container
-(such as the *primary* example).
+The Crunchy Scheduler container implements a cronlike microservice within a namespace
+to automate backups of a PostgreSQL database.
 
-You can either run the crunchy-dba container as a single pod or include the container
-within a database pod.
+Currently Crunchy Scheduler only supports two types of tasks:
+* pgBackRest
+* pgBaseBackup
 
-The crunchy-dba container makes use of a Service Account to perform the startup of
-scheduled jobs. The Kubernetes Job type is used to execute the scheduled jobs with a Restart
-policy of Never.
+This service watches Kubernetes for config maps with the label `crunchy-scheduler=true`.
+If found the scheduler will parse the data found in the config map (json object) and
+convert it to a scheduled task.  If the config map is removed, the scheduler will
+delete the task.
 
-To shutdown the instance and remove the container for each example, run the following:
-....
-./cleanup.sh
-....
+See the following examples for creating config maps that Crunchy Scheduler can parse:
+* link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-backrest-diff.json[pgBackRest Diff Backup]
+* link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-backrest-full.json[pgBackRest Full Backup]
+* link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-pgbasebackup.json[pgBaseBackup Backup]
+
+The Crunchy Scheduler requires a Service Account to create jobs (pgBaseBackup) and to
+exec (pgBackRest).  See the link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/scheduler-sa.json[scheduler example]
+for the required permissions on this account.
+
+==== pgBackRest Schedules
+
+To configure Crunchy Scheduler to create pgBackRest backups the following is required:
+  * pgBackRest schedule definition requires a deployment name.  The PostgreSQL pod should be created by a deployment.
+
+==== pgBaseBackup Schedules
+
+To configure Crunchy Scheduler to create pgBaseBackup scheduled backups, the following is required:
+  * The name of the secret that contains the username and password the Scheduler will use to
+    configure the job template.  See link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/primary/secret.json[the primary secret example].
+    for the structure required by the Scheduler.
+  * The name of the PVC created for the backups.  This should be created by the user prior to scheduling the task.
 
 ==== Kubernetes and OpenShift
 
-The script to schedule vacuum on a regular schedule is executed through the following
-commands:
+First, start the PostgreSQL example created for the Scheduler by running the following commands:
+
 ....
 # Kubernetes
-cd $CCPROOT/examples/kube/dba
-./run-kube-vac.sh
-
-# OpenShift
-cd $CCPROOT/examples/kube/dba
-./run-ocp-vac.sh
+cd $CCPROOT/examples/kube/scheduler/primary
+./run.sh
 ....
 
-To run the script for scheduled backups, run the following in the same directory:
+The pod created should show a ready status before proceeding.
+
+Next, start the scheduler by running the following command:
+
 ....
 # Kubernetes
-cd $CCPROOT/examples/kube/dba
-./run-kube-backup.sh
-
-# OpenShift
-cd $CCPROOT/examples/kube/dba
-./run-ocp-backup.sh
+cd $CCPROOT/examples/kube/scheduler
+./run.sh
 ....
 
-Individual parameters for both can be modified within their respective JSON files;
-please see the link:/container-specifications/[Container Specifications] document for a full list of what can be modified.
+Once the scheduler is deployed, register the backup tasks by running the following command:
+
+....
+# Kubernetes
+cd $CCPROOT/examples/kube/scheduler
+./add-tasks.sh
+....
+
+The scheduled tasks will (these are just for fast results, not recommended for production):
+  * take a backup every minute using pgBaseBackup
+  * take a full pgBackRest backup every even minute
+  * take a diff pgBackRest backup every odd minute
+
+View the logs for the `scheduler` pod until the tasks run:
+
+....
+${CCP_CLI?} logs scheduler -f
+....
+
+View the `pgBaseBackup` pods results after the backup completes:
+
+....
+${CCP_CLI?} logs <basebackup job name>
+....
+
+View the `pgBackRest` backups via exec after the backup completes:
+
+....
+${CCP_CLI?} exec -ti <primary deployment pod name> -- pgbackrest info
+....
+
+Clean up the examples by running the following commands:
+
+....
+$CCPROOT/examples/kube/scheduler/primary/cleanup.sh
+$CCPROOT/examples/kube/scheduler/cleanup.sh
+....
 
 === Vacuum
 

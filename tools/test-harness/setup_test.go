@@ -5,7 +5,7 @@ import (
 	"time"
 
 	pg "github.com/crunchydata/crunchy-containers/tools/test-harness/data"
-	"github.com/crunchydata/crunchy-containers/tools/test-harness/kubeapi"
+	"github.com/crunchydata/crunchy-containers/tools/kubeapi"
 	"github.com/crunchydata/crunchy-containers/tools/test-harness/runner"
 )
 
