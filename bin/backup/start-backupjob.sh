@@ -25,6 +25,8 @@
 # $BACKUP_PASS pg user password we are connecting with
 # $BACKUP_PORT pg port we are connecting to
 
+set -e
+
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
 ose_hack
