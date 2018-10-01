@@ -1,0 +1,7 @@
+FROM golang:1.9.1
+WORKDIR /go/src/github.com/crunchydata/crunchy-containers
+ADD . .
+RUN go get github.com/tools/godep \
+ && godep restore \
+ && go get gopkg.in/robfig/cron.v2
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o scheduler ./tools/scheduler

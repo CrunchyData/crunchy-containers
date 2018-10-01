@@ -183,57 +183,10 @@ to run Docker commands from your user account.
 su - someuser
 ....
 
-You can ensure your *someuser* account is added correctly by running the following
-command and ensuring `docker` appears as one of the results:
-....
-groups
-....
-
-Before you start Docker, you might consider configuring Docker storage:
-This is described if you run:
-....
-man docker-storage-setup
-....
-
-Follow the instructions available link:https://docs.openshift.com/container-platform/3.4/install_config/install/host_preparation.html#configuring-docker-storage[on the main OpenShift documentation page]
-to configure Docker storage appropriately.
-
-These steps are illustrative of a typical process for setting up Docker storage. You will need to run these commands as root.
-
-First, add an extra virtual hard disk to your virtual machine (see link:http://catlingmindswipe.blogspot.com/2012/02/how-to-create-new-virtual-disks-in.html[this blog post] for tips on how to do so).
-
-Run this command to format the drive, where `/dev/sd?` is the new hard drive that was added:
-
-....
-fdisk /dev/sd?
-....
-
-Next, create a volume group on the new drive partition within the `fdisk` utility:
-
-....
-vgcreate docker-vg /dev/sd?
-....
-
-Then, you'll need to edit the `docker-storage-setup` configuration file in order to override default options. Add these two lines to `/etc/sysconfig/docker-storage-setup`:
-
-....
-DEVS=/dev/sd?
-VG=docker-vg
-....
-
-Finally, run the command `docker-storage-setup` to use that new volume group. The results should state that the physical volume `/dev/sd?` and the volume group `docker-vg` have both been successfully created.
-
 Next, we enable and start up Docker:
 ....
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
-....
-
-Verify that Docker version 1.12.6 was installed, as per the OpenShift 3.6
-link:https://docs.openshift.com/container-platform/3.6/install_config/install/host_preparation.html#installing-docker[requirements.]
-
-....
-docker version
 ....
 
 === OpenShift
@@ -241,16 +194,7 @@ docker version
 See the OpenShift installation guide for details on how to install
 OpenShift Enterprise on your host. The main instructions are here:
 
-https://docs.openshift.com/container-platform/3.6/install_config/install/quick_install.html
-
-NOTE: If you install OpenShift Enterprise on a server with less than `16GB` memory and `40GB`
-of disk, the following Ansible variables need to be added to `~/.config/openshift/installer.cfg.yml`
-prior to installation:
-
-....
-openshift_check_min_host_disk_gb: '10' # min 10gb disk
-openshift_check_min_host_memory_gb: '3' # min 3gb memory
-....
+https://docs.openshift.com/container-platform/3.10/install/index.html
 
 === Kubernetes
 

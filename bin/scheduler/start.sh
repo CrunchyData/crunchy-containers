@@ -10,15 +10,17 @@
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permi -fssions and
+# See the License for the specific language governing permissions and
 # limitations under the License.
 
-for i in \
-restore pgdump postgres-gis prometheus grafana collect pgbadger pgpool \
-watch backup postgres pgbouncer pgadmin4 vacuum scheduler upgrade backrest-restore
-do
-	docker rmi -f  $CCP_IMAGE_PREFIX/crunchy-$i:$CCP_IMAGE_TAG
-	docker rmi -f  crunchy-$i
-#	docker rmi -f  registry.crunchydata.openshift.com/jeff-project/crunchy-$i:$CCP_IMAGE_TAG
-done
-exit
+source /opt/cpm/bin/common_lib.sh
+enable_debugging
+
+
+export TEMPLATE_DIR='/opt/cpm/conf/backup-template.json'
+if [[ -f '/configs/backup-template.json' ]]
+then
+    export TEMPLATE_DIR='/configs/backup-template.json'
+fi
+
+/opt/cpm/bin/scheduler
