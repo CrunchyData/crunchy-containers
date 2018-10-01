@@ -3,7 +3,6 @@
 source /opt/cpm/bin/common_lib.sh
 export PGHOST="${PGHOST:-/tmp}"
 enable_debugging
-ose_hack
 
 pgisready 'postgres' ${PGHOST?} 5432 'postgres'
 

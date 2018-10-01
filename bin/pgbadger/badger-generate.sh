@@ -15,7 +15,6 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 export BADGER_CUSTOM_OPTS=${BADGER_CUSTOM_OPTS:-}
 
 TARGET=${HOSTNAME?}
@@ -26,4 +25,4 @@ then
 fi
 
 echo_info "Creating pgBadger output.."
-/bin/pgbadger ${BADGER_CUSTOM_OPTS} -o /report/index.html /pgdata/${TARGET?}/pg_log/*.log
+/bin/pgbadger -f stderr ${BADGER_CUSTOM_OPTS} -o /report/index.html /pgdata/${TARGET?}/pg_log/*.log

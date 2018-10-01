@@ -15,11 +15,10 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 env_check_err "PG_USER"
 env_check_err "PG_PASSWORD"
 env_check_err "JOB_HOST"
 
-echo_info "Starting vacuum job.."
+echo_info "Starting vacuum job..."
 /opt/cpm/bin/vacuum

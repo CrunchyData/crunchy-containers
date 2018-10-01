@@ -15,7 +15,7 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
+
 
 export PATH=$PATH:/opt/cpm/bin
 export TOKEN="$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)"

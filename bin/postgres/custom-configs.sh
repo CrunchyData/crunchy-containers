@@ -2,7 +2,6 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 function custom_config() {
     src=${1?}
@@ -13,8 +12,8 @@ function custom_config() {
     then 
         echo_info "Custom ${src?} detected.  Applying custom configuration.."
         cp ${src?} ${dest?}
-        chown ${owner?} ${dest?}
-        chmod ${mode?} ${dest?}
+        # chown ${owner?} ${dest?}
+        # chmod ${mode?} ${dest?}
     fi
 }
 

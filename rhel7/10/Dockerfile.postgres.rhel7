@@ -92,7 +92,7 @@ ADD conf/postgres /opt/cpm/conf
 ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/pgmonitor
 
 RUN chmod g=u /etc/passwd
-ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
+ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 
 
 USER 26

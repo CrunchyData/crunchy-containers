@@ -18,6 +18,4 @@ enable_debugging
 
 source /opt/cpm/bin/setenv.sh
 
-ose_hack
-
 $PGROOT/bin/pg_isready -h $HOSTNAME --dbname=postgres --username=$PG_USER

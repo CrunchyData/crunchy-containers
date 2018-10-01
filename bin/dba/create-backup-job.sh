@@ -15,7 +15,6 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 BACKUP_TEMPLATE=${1?}
 BACKUP_PVC_TEMPLATE=${2?}

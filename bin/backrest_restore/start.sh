@@ -17,7 +17,6 @@ set -e
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-# ose_hack
 
 env_check_err "STANZA"
 

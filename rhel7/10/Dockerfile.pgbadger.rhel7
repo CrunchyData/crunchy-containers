@@ -48,8 +48,8 @@ ADD conf/pgbadger /opt/cpm/conf
 ADD bin/common /opt/cpm/bin
 ADD bin/pgbadger /opt/cpm/bin
 
-RUN chgrp -R 0 /opt/cpm /report && \
-        chmod -R g=u /opt/cpm /report
+RUN chgrp -R 0 /opt/cpm /report /bin && \
+        chmod -R g=u /opt/cpm /report /bin
 
 # pgbadger port
 EXPOSE 10000
@@ -58,6 +58,8 @@ VOLUME ["/pgdata", "/report"]
 
 RUN chmod g=u /etc/passwd
 ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
+
+RUN chgrp -R 0 /pgdata && chmod -R g=u /pgdata
 
 USER 26
 

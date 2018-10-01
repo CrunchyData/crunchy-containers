@@ -15,7 +15,7 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
+
 
 TEMP_FILE=${1?}
 JOB_HOST=${2?}

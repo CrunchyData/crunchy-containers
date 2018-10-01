@@ -15,7 +15,6 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 export PATH=$PATH:/opt/cpm/bin
 export PGROOT=$(find /usr/ -type d -name 'pgsql-*')
