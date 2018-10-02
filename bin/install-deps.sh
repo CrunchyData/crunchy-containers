@@ -18,7 +18,6 @@ PROMETHEUS_VERSION=2.3.1
 GRAFANA_VERSION=5.2.1
 POSTGRES_EXPORTER_VERSION=0.4.6
 NODE_EXPORTER_VERSION=0.16.0
-MERCURIAL_RPM='https://www.mercurial-scm.org/release/centos7/RPMS/x86_64/mercurial-4.6.1-1.x86_64.rpm'
 PGMONITOR_COMMIT='dffb2b5eb04ba13ee47ae81950410738d15e8c76'
 
 sudo yum -y install net-tools bind-utils wget unzip git
@@ -52,15 +51,12 @@ if [ $? -ne 0 ]; then
 
 fi
 
+# Install dep
+go get github.com/golang/dep/cmd/dep
+
 # install expenv binary for running examples
 go get github.com/blang/expenv
 go get github.com/square/certstrap
-
-# pull in godeps and the dependencies for the golang code
-go get github.com/tools/godep
-sudo yum -y install ${MERCURIAL_RPM?}
-
-godep restore
 
 # pgMonitor Setup
 if [[ -d ${CCPROOT?}/tools/pgmonitor ]]

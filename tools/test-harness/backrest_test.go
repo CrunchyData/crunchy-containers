@@ -94,9 +94,15 @@ func TestBackrestDeltaRestore(t *testing.T) {
 		defer harness.runExample("examples/kube/backrest/delta/cleanup.sh", env, t)
 	}
 
-	if ok, err := harness.Client.IsJobComplete(harness.Namespace, "backrest-delta-restore-job"); !ok {
-		t.Fatal(err)
-	}
+        t.Log("Checking if job has completed...")
+        job, err := harness.Client.GetJob(harness.Namespace, "backrest-delta-restore-job")
+        if err != nil {
+                t.Fatal(err)
+        }
+
+        if err := harness.Client.IsJobComplete(harness.Namespace, job); err != nil {
+                t.Fatal(err)
+        }
 
 	_, err = harness.runExample("examples/kube/backrest/delta/post-restore.sh", env, t)
 	if err != nil {
@@ -157,9 +163,15 @@ func TestBackrestFullRestore(t *testing.T) {
 		defer harness.runExample("examples/kube/backrest/full/cleanup.sh", env, t)
 	}
 
-	if ok, err := harness.Client.IsJobComplete(harness.Namespace, "backrest-full-restore-job"); !ok {
-		t.Fatal(err)
-	}
+        t.Log("Checking if job has completed...")
+        job, err := harness.Client.GetJob(harness.Namespace, "backrest-full-restore-job")
+        if err != nil {
+                t.Fatal(err)
+        }
+
+        if err := harness.Client.IsJobComplete(harness.Namespace, job); err != nil {
+                t.Fatal(err)
+        }
 
 	_, err = harness.runExample("examples/kube/backrest/full/post-restore.sh", env, t)
 	if err != nil {
@@ -221,9 +233,15 @@ func TestBackrestPITRRestore(t *testing.T) {
 		defer harness.runExample("examples/kube/backrest/pitr/cleanup.sh", env, t)
 	}
 
-	if ok, err := harness.Client.IsJobComplete(harness.Namespace, "backrest-pitr-restore-job"); !ok {
-		t.Fatal(err)
-	}
+        t.Log("Checking if job has completed...")
+        job, err := harness.Client.GetJob(harness.Namespace, "backrest-pitr-restore-job")
+        if err != nil {
+                t.Fatal(err)
+        }
+
+        if err := harness.Client.IsJobComplete(harness.Namespace, job); err != nil {
+                t.Fatal(err)
+        }
 
 	_, err = harness.runExample("examples/kube/backrest/pitr/post-restore.sh", env, t)
 	if err != nil {

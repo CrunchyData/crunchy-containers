@@ -36,10 +36,15 @@ func TestVacuum(t *testing.T) {
 		defer harness.runExample("examples/kube/vacuum/cleanup.sh", env, t)
 	}
 
-	t.Log("Checking if job has completed...")
-	if ok, err := harness.Client.IsJobComplete(harness.Namespace, "vacuum"); !ok {
-		t.Fatal(err)
-	}
+        t.Log("Checking if job has completed...")
+        job, err := harness.Client.GetJob(harness.Namespace, "vacuum")
+        if err != nil {
+                t.Fatal(err)
+        }
+
+        if err := harness.Client.IsJobComplete(harness.Namespace, job); err != nil {
+                t.Fatal(err)
+        }
 
 	report, err := harness.createReport()
 	if err != nil {
