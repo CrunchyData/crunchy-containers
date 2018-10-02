@@ -51,6 +51,9 @@ if [ $? -ne 0 ]; then
 
 fi
 
+# Install dep
+go get github.com/golang/dep/cmd/dep
+
 # install expenv binary for running examples
 go get github.com/blang/expenv
 go get github.com/square/certstrap
