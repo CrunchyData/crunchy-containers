@@ -12,8 +12,8 @@ Latest Release: 2.1.0 {docdate}
 
 The Crunchy Container Suite can run on different environments including:
 
- * *Docker 1.12+*
- * *OpenShift Container Platform 3.6+*
+ * *Docker 1.13+*
+ * *OpenShift Container Platform 3.10+*
  * *Kubernetes 1.8+*
 
 In this document we list the basic installation steps required for these
@@ -299,7 +299,7 @@ oc login -u someuser
 For our development purposes only, we typically specify the OCP
 Authorization policy of `AllowAll` as documented here:
 
-https://docs.openshift.com/container-platform/3.7/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider
+https://docs.openshift.com/container-platform/3.10/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider
 
 We do not recommend this authentication policy for a production
 deployment of OCP.
