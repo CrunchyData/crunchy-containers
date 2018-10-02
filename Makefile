@@ -24,10 +24,6 @@ endif
 setup:
 	$(CCPROOT)/bin/install-deps.sh
 
-gendeps:
-	godep save \
-	github.com/crunchydata/crunchy-containers/badger
-
 docbuild:
 	cd $CCPROOT && ./generate-docs.sh
 
@@ -68,7 +64,7 @@ pgadmin4: versiontest
 pgbadger: versiontest
 	docker build -t $(CCP_IMAGE_PREFIX)/badgerserver:build -f $(CCP_BASEOS)/Dockerfile.badgerserver.$(CCP_BASEOS) .
 	docker create --name extract $(CCP_IMAGE_PREFIX)/badgerserver:build
-	docker cp extract:/go/src/github.com/crunchydata/badgerserver/badgerserver ./bin/pgbadger/badgerserver
+	docker cp extract:/go/src/github.com/crunchydata/crunchy-containers/badgerserver ./bin/pgbadger/badgerserver
 	docker rm -f extract
 	docker build -t crunchy-pgbadger -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbadger.$(CCP_BASEOS) .
 	docker tag crunchy-pgbadger $(CCP_IMAGE_PREFIX)/crunchy-pgbadger:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
@@ -132,7 +128,7 @@ upgrade: versiontest
 	fi
 
 vac: versiontest
-	cd vacuum && godep go install vacuum.go
+	cd vacuum && go install vacuum.go
 	cp $(GOBIN)/vacuum bin/vacuum
 	docker build -t crunchy-vacuum -f $(CCP_BASEOS)/Dockerfile.vacuum.$(CCP_BASEOS) .
 	docker tag crunchy-vacuum $(CCP_IMAGE_PREFIX)/crunchy-vacuum:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)

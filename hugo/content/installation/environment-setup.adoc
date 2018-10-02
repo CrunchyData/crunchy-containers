@@ -71,7 +71,6 @@ mkdir -p $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
 ....
 cd $GOPATH
 sudo yum -y install golang git docker
-go get github.com/tools/godep
 cd src/github.com
 mkdir crunchydata
 cd crunchydata
@@ -98,7 +97,6 @@ cd $GOPATH
 sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
 sudo yum-config-manager --enable rhel-7-server-extras-rpms
 sudo yum -y install git golang
-go get github.com/tools/godep
 cd src/github.com
 mkdir crunchydata
 cd crunchydata
