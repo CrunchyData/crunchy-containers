@@ -60,8 +60,6 @@ ADD conf/.bashrc /
 # set up cpm directory
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd
 
-# RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
-#     /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
 RUN chgrp -R 0 /opt/cpm /var/lib/pgsql \
     /pgdata /pgwal /pgconf /backup /recover /backrestrepo &&  \

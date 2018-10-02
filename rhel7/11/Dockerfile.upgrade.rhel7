@@ -38,7 +38,6 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  && yum install -y bind-utils \
 	gettext \
 	hostname \
- 	nss_wrapper \
 	procps-ng \
 	unzip \
  && yum -y install \
@@ -52,9 +51,14 @@ RUN mkdir -p /opt/cpm/bin /pgolddata /pgnewdata /opt/cpm/conf
 ADD bin/upgrade/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/upgrade/ /opt/cpm/conf
-RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata
+
+RUN chgrp -R 0 /opt/cpm /pgolddata /pgnewdata && \
+        chmod -R g=u /opt/cpm /pgolddata /pgnewdata
 
 VOLUME /pgolddata /pgnewdata
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 
 USER 26
 

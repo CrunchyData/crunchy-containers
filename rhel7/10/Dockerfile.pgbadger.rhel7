@@ -40,7 +40,6 @@ RUN yum -y update \
       pgbadger \
  && yum clean all -y
 
-# RUN groupadd -g 26 postgres && useradd -g 26 -u 26 postgres
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /report
 
