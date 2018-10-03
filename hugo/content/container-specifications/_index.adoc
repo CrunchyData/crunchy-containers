@@ -881,4 +881,3 @@ queries over a specified interval range.
 === Restrictions
 
 * Only one connection is created for all queries.
->>>>>>> aae224745f5caf481c142b4ccbf3332ab4f45f8e

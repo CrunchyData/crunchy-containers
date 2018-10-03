@@ -25,7 +25,6 @@ Or if you'd rather build the containers from source, perform a container
 build as follows:
 
 ....
-godep restore
 cd $CCPROOT
 make setup
 make all

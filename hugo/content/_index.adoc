@@ -27,9 +27,9 @@ are supported.
 
 The containers will execute in the following environments:
 
- * Docker 1.12 and above
- * Openshift 3.4 and above
- * Kubernetes 1.5 and above
+ * Docker 1.13+
+ * Openshift 3.10+
+ * Kubernetes 1.8+
 
 === Containers
 
