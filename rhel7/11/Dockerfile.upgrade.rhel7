@@ -26,12 +26,14 @@ COPY conf/licenses /licenses
 ENV PGVERSION="11"
 
 # Crunchy Postgres repo
-ADD conf/RPM-GPG-KEY-crunchydata  /
-ADD conf/crunchypg11.repo /etc/yum.repos.d/
+ADD conf/CRUNCHY-GPG-KEY.public  /
+RUN rpm --import CRUNCHY-GPG-KEY.public
 ADD conf/crunchypg10.repo /etc/yum.repos.d/
 ADD conf/crunchypg96.repo /etc/yum.repos.d/
 ADD conf/crunchypg95.repo /etc/yum.repos.d/
+ADD conf/RPM-GPG-KEY-crunchydata  /
 RUN rpm --import RPM-GPG-KEY-crunchydata
+ADD conf/crunchypg11.repo /etc/yum.repos.d/
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
  && yum -y update && yum -y update glibc-common \
