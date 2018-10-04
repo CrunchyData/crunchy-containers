@@ -27,7 +27,7 @@ services:
       placement:
         constraints:
         - node.labels.type == primary
-        - node.role == worker
+        - node.role == primary
   replica:
     image: crunchydata/crunchy-postgres:centos7-10.5-2.1.0
     environment:
