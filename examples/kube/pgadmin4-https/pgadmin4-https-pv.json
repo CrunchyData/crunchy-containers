@@ -13,7 +13,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH"
+            "path": "$CCP_STORAGE_PATH/pgadmin4-https"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }
