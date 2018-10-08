@@ -41,6 +41,10 @@
                                 "value": "primary"
                             },
                             {
+                                "name": "BACKUP_OPTS",
+                                "value": "--progress"
+                            },
+                            {
                                 "name": "BACKUP_USER",
                                 "value": "primaryuser"
                             },

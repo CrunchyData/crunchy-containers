@@ -45,6 +45,7 @@ BACKUP_PATH=$BACKUPBASE/$TS
 mkdir $BACKUP_PATH
 
 echo_info "BACKUP_PATH is set to ${BACKUP_PATH}."
+echo_info "BACKUP_OPTS is set to ${BACKUP_OPTS}."
 
 export PGPASSFILE=/tmp/pgpass
 
@@ -56,7 +57,7 @@ chown $UID:$UID $PGPASSFILE
 
 # cat $PGPASSFILE
 
-pg_basebackup --label=$BACKUP_LABEL -X fetch --pgdata $BACKUP_PATH --host=$BACKUP_HOST --port=$BACKUP_PORT -U $BACKUP_USER
+pg_basebackup --label=$BACKUP_LABEL -X fetch --pgdata $BACKUP_PATH --host=$BACKUP_HOST --port=$BACKUP_PORT -U $BACKUP_USER  $BACKUP_OPTS
 
 chown -R $UID:$UID $BACKUP_PATH
 
