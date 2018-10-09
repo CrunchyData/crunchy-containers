@@ -1673,41 +1673,6 @@ psql -h localhost -p 12007 -U testuser -W userdb
 psql -h localhost -p 12008 -U testuser -W userdb
 ....
 
-==== Docker-Compose
-
-Running the example:
-....
-cd $CCPROOT/examples/compose/primary-replica
-docker-compose up
-....
-
-To deploy more than one replica, run the following:
-....
-docker-compose up --scale db-replica=3
-....
-
-To connect to the created database containers, first identify the ports exposed
-on the containers:
-
-....
-docker ps
-....
-
-Next, using psql, connect to the service:
-....
-psql -d userdb -h 0.0.0.0 -p <CONTAINER_PORT> -U testuser
-....
-
-{{% notice tip %}}
-See `PG_PASSWORD` in `docker-compose.yml` for the user password.
-{{% /notice %}}
-
-To tear down the example, run the following:
-....
-docker-compose stop
-docker-compose rm
-....
-
 ==== Kubernetes and OpenShift
 
 Run the following command to deploy a primary and replica database cluster:
