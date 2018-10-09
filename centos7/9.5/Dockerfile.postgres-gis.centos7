@@ -23,7 +23,6 @@ RUN yum -y update && yum -y install epel-release \
  && yum -y install bind-utils \
     gettext \
     hostname \
-    nss_wrapper \
     openssh-server \
     procps-ng  \
     rsync \
@@ -48,8 +47,11 @@ ADD conf/.bashrc /
 # set up cpm directory
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd
 
-RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
-	/pgdata /pgwal /pgconf /backup /recover /backrestrepo
+RUN chgrp -R 0 /opt/cpm /var/lib/pgsql \
+    /pgdata /pgwal /pgconf /backup /recover /backrestrepo && \
+    chmod -R g=u /opt/cpm /var/lib/pgsql \
+    /pgdata /pgwal /pgconf /backup /recover /backrestrepo
+    
 
 # Link pgbackrest.conf to default location for convenience
 RUN ln -sf /tmp/pgbackrest.conf /etc/pgbackrest.conf
@@ -72,6 +74,9 @@ ADD bin/postgres-gis /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
 ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/pgmonitor
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 
 USER 26
 
