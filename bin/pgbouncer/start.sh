@@ -70,7 +70,7 @@ fi
 export PGPASSFILE=/tmp/.pgpass
 
 echo_info "Starting pgBouncer.."
-pgbouncer ${CONF_DIR?}/pgbouncer.ini -u default &
+pgbouncer ${CONF_DIR?}/pgbouncer.ini &
 echo $! > ${PGBOUNCER_PID?}
 
 wait
