@@ -4,7 +4,7 @@ date: 2018-05-15T07:22:10-07:00
 draft: false
 ---
 
-v2.1.0
+v2.2.0
 
 The Crunchy PostgreSQL Primary/Replica Template creates a primary pod with replica statefulsets to provide a database cluster with streaming replication.
 

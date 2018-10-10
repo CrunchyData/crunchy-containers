@@ -19,7 +19,7 @@ The following features are supported by the `crunchy-backup` container:
 
 The crunchy-backup Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (10.5, 9.6.10 and 9.5.14)
+* PostgreSQL (11.0, 10.5, 9.6.10 and 9.5.14)
 * CentOS7 - publicly available
 * RHEL7 - customers only
 

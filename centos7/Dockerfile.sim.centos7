@@ -1,7 +1,7 @@
 FROM centos:7
 
 LABEL  Vendor="Crunchy Data Solutions" \
-	Release="2.1.0" \
+	Release="2.2.0" \
 
 ADD bin/crunchy-sim /usr/bin
 ADD bin/common /opt/cpm/bin
