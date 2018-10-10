@@ -9,7 +9,7 @@ VERSION=$(psql -d postgres -qtAX -c "SELECT current_setting('server_version_num'
 if (( ${VERSION?} > 90500 )) && (( ${VERSION?} < 100000 ))
 then
     psql -U postgres -d postgres < /opt/cpm/bin/pgmonitor/functions_pg92-96.sql > /dev/null 2>&1
-elif (( ${VERSION?} >= 100000 )) && (( ${VERSION?} < 110000 ))
+elif (( ${VERSION?} >= 100000 )) && (( ${VERSION?} < 120000 ))
 then
     psql -U postgres -d postgres < /opt/cpm/bin/pgmonitor/functions_pg10.sql > /dev/null 2>&1
 else

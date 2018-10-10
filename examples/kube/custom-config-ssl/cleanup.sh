@@ -31,10 +31,7 @@ fi
 
 $CCPROOT/examples/waitforterm.sh custom-config-ssl ${CCP_CLI?}
 
-dir_check_rm "archive"
-dir_check_rm "backup"
 dir_check_rm "custom-config-ssl"
-file_check_rm "db-stanza-create.log"
 
 rm -rf ${DIR?}/certs
 rm -rf ${DIR?}/out

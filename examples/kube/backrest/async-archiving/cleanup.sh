@@ -26,5 +26,3 @@ fi
 $CCPROOT/examples/waitforterm.sh backrest-async-archive ${CCP_CLI?}
 
 dir_check_rm "backrest-async-archive"
-dir_check_rm "backrest-async-archive-spool"
-dir_check_rm "backrest-async-archive-backups"

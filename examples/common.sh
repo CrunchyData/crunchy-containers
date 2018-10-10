@@ -44,13 +44,6 @@ function dir_check_rm() {
     fi
 }
 
-function file_check_rm() {
-    if [[ -f ${CCP_STORAGE_PATH}/${1?} ]]
-    then
-        sudo rm -f ${CCP_STORAGE_PATH?}/${1?} && echo_info "Deleted ${1?} from the data directory." || echo_err "${1?} was not successfully deleted from the data directory."
-    fi
-}
-
 function create_storage {
     env_check_err "CCP_STORAGE_CAPACITY"
     env_check_err "CCP_STORAGE_MODE"
@@ -63,9 +56,13 @@ function create_storage {
     elif [[ ! -z ${CCP_NFS_IP} ]]
     then
         echo_info "CCP_NFS_IP is set. Creating NFS based storage volumes."
+        sudo mkdir -p ${CCP_STORAGE_PATH?}/${1?}
+        sudo chmod -R 777 ${CCP_STORAGE_PATH?}/${1?}
         PV="${1?}-pv-nfs.json"
     else
         echo_info "CCP_NFS_IP and CCP_STORAGE_CLASS not set. Creating HostPath based storage volumes."
+        sudo mkdir -p ${CCP_STORAGE_PATH?}/${1?}
+        sudo chmod -R 777 ${CCP_STORAGE_PATH?}/${1?}
         PV="${1?}-pv.json"
     fi
 

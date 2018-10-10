@@ -29,4 +29,3 @@ then
 fi
 
 dir_check_rm "primary-deployment"
-dir_check_rm "replica-deployment"

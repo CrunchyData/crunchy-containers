@@ -33,8 +33,4 @@ $CCPROOT/examples/waitforterm.sh metrics ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh primary ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh replica ${CCP_CLI?}
 
-dir_check_rm "grafana"
-dir_check_rm "wal"
-file_check_rm "defaults.ini"
-file_check_rm "lock"
-file_check_rm "prometheus.yml"
+dir_check_rm "metrics"

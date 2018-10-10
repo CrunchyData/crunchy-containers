@@ -27,6 +27,4 @@ fi
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service statefulset statefulset-primary statefulset-replica
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod statefulset-0 statefulset-1
 
-dir_check_rm "statefulset-0"
-dir_check_rm "statefulset-1"
-dir_check_rm "statefulset-2"
+dir_check_rm "statefulset"
