@@ -23,19 +23,23 @@ RUN yum -y update && yum install -y epel-release \
  && yum install -y bind-utils \
 	gettext \
 	hostname \
- 	nss_wrapper \
 	procps-ng \
 	unzip \
  && yum -y install postgresql11 postgresql11-server \
  && yum clean all -y
 
-RUN mkdir -p /opt/cpm/bin /pgdata /opt/cpm/conf
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
 ADD bin/pgdump/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgdump/ /opt/cpm/conf
-RUN chown -R 26:26 /opt/cpm /pgdata
+
+RUN chgrp -R 0 /opt/cpm /pgdata && \
+    chmod -R g=u /opt/cpm /pgdata 
 
 VOLUME ["/pgdata"]
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 
 USER 26
 
