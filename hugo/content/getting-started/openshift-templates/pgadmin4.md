@@ -4,7 +4,7 @@ date: 2018-05-15T07:22:02-07:00
 draft: false
 ---
 
-v2.1.0
+v2.2.0
 
 Crunchy pgAdmin4 Template provides a feature rich, GUI Open Source administration and development platform for PostgreSQL.
 

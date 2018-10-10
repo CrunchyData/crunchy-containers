@@ -2,7 +2,7 @@ FROM centos:7
 
 LABEL name="crunchydata/restore" \
         vendor="crunchy data" \
-	PostgresVersion="11.0" \
+	PostgresVersion="11" \
 	PostgresFullVersion="11.0" \
 	Version="7.5" \
 	Release="2.2.0" \
