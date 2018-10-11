@@ -15,7 +15,7 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
+
 
 export TEMPLATE_DIR='/opt/cpm/conf/backup-template.json'
 if [[ -f '/configs/backup-template.json' ]]

@@ -18,7 +18,6 @@ RUN yum -y update \
       gettext \
       hostname \
       iproute \
-      nss_wrapper \
       procps-ng \
  && yum clean all -y
 
@@ -28,7 +27,11 @@ ADD bin/vacuum /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/vacuum /opt/cpm/conf
 
-RUN chown -R 2:2 /opt/cpm
+RUN chgrp -R 0 /opt/cpm && \
+        chmod -R g=u /opt/cpm
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["/opt/cpm/bin/uid_daemon.sh"]
 
 USER 2
 

@@ -15,7 +15,6 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 export PATH=$PATH:/usr/pgsql-*/bin
 PGADMIN_DIR='/usr/lib/python2.7/site-packages/pgadmin4-web'

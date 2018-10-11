@@ -15,7 +15,6 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 export PG_EXP_HOME=$(find /opt/cpm/bin/ -type d -name 'postgres_exporter*')
 export NODE_EXP_HOME=$(find /opt/cpm/bin/ -type d -name 'node_exporter*')

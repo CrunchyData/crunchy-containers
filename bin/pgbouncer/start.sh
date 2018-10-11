@@ -15,7 +15,7 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
+
 
 PGBOUNCER_PID=/tmp/pgbouncer-script.pid
 CONF_DIR=/pgconf
@@ -70,7 +70,7 @@ fi
 export PGPASSFILE=/tmp/.pgpass
 
 echo_info "Starting pgBouncer.."
-pgbouncer ${CONF_DIR?}/pgbouncer.ini -u daemon &
+pgbouncer ${CONF_DIR?}/pgbouncer.ini &
 echo $! > ${PGBOUNCER_PID?}
 
 wait
