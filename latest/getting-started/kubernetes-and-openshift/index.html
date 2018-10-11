@@ -886,9 +886,17 @@ upgraded volume.</p>
 to automate backups of a PostgreSQL database.</p>
 </div>
 <div class="paragraph">
-<p>Currently Crunchy Scheduler only supports two types of tasks:
-* pgBackRest
-* pgBaseBackup</p>
+<p>Currently Crunchy Scheduler only supports two types of tasks:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>pgBackRest</p>
+</li>
+<li>
+<p>pgBaseBackup</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>This service watches Kubernetes for config maps with the label <code>crunchy-scheduler=true</code>.
@@ -897,10 +905,20 @@ convert it to a scheduled task.  If the config map is removed, the scheduler wil
 delete the task.</p>
 </div>
 <div class="paragraph">
-<p>See the following examples for creating config maps that Crunchy Scheduler can parse:
-* <a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-backrest-diff.json">pgBackRest Diff Backup</a>
-* <a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-backrest-full.json">pgBackRest Full Backup</a>
-* <a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-pgbasebackup.json">pgBaseBackup Backup</a></p>
+<p>See the following examples for creating config maps that Crunchy Scheduler can parse:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-backrest-diff.json">pgBackRest Diff Backup</a></p>
+</li>
+<li>
+<p><a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-backrest-full.json">pgBackRest Full Backup</a></p>
+</li>
+<li>
+<p><a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-pgbasebackup.json">pgBaseBackup Backup</a></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>The Crunchy Scheduler requires a Service Account to create jobs (pgBaseBackup) and to
@@ -910,18 +928,32 @@ for the required permissions on this account.</p>
 <div class="sect3">
 <h4 id="_pgbackrest_schedules">pgBackRest Schedules</h4>
 <div class="paragraph">
-<p>To configure Crunchy Scheduler to create pgBackRest backups the following is required:
-  * pgBackRest schedule definition requires a deployment name.  The PostgreSQL pod should be created by a deployment.</p>
+<p>To configure Crunchy Scheduler to create pgBackRest backups the following is required:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>pgBackRest schedule definition requires a deployment name.  The PostgreSQL pod should be created by a deployment.</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_pgbasebackup_schedules">pgBaseBackup Schedules</h4>
 <div class="paragraph">
-<p>To configure Crunchy Scheduler to create pgBaseBackup scheduled backups, the following is required:
-  * The name of the secret that contains the username and password the Scheduler will use to
-    configure the job template.  See <a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/primary/secret.json">the primary secret example</a>.
-    for the structure required by the Scheduler.
-  * The name of the PVC created for the backups.  This should be created by the user prior to scheduling the task.</p>
+<p>To configure Crunchy Scheduler to create pgBaseBackup scheduled backups, the following is required:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The name of the secret that contains the username and password the Scheduler will use to
+configure the job template.  See <a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/primary/secret.json">the primary secret example</a>.
+for the structure required by the Scheduler.</p>
+</li>
+<li>
+<p>The name of the PVC created for the backups.  This should be created by the user prior to scheduling the task.</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect3">
@@ -960,10 +992,20 @@ cd $CCPROOT/examples/kube/scheduler
 </div>
 </div>
 <div class="paragraph">
-<p>The scheduled tasks will (these are just for fast results, not recommended for production):
-  * take a backup every minute using pgBaseBackup
-  * take a full pgBackRest backup every even minute
-  * take a diff pgBackRest backup every odd minute</p>
+<p>The scheduled tasks will (these are just for fast results, not recommended for production):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>take a backup every minute using pgBaseBackup</p>
+</li>
+<li>
+<p>take a full pgBackRest backup every even minute</p>
+</li>
+<li>
+<p>take a diff pgBackRest backup every odd minute</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>View the logs for the <code>scheduler</code> pod until the tasks run:</p>
