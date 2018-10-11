@@ -37,11 +37,9 @@ RUN yum -y update \
  && yum -y install \
       gettext \
       hostname \
-      nss_wrapper \
       pgbadger \
  && yum clean all -y
 
-RUN groupadd -g 26 postgres && useradd -g 26 -u 26 postgres
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /report
 
@@ -49,12 +47,18 @@ ADD conf/pgbadger /opt/cpm/conf
 ADD bin/common /opt/cpm/bin
 ADD bin/pgbadger /opt/cpm/bin
 
-RUN chown -R 26:26 /opt/cpm /report
+RUN chgrp -R 0 /opt/cpm /report /bin && \
+        chmod -R g=u /opt/cpm /report /bin
 
 # pgbadger port
 EXPOSE 10000
 
 VOLUME ["/pgdata", "/report"]
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
+
+RUN chgrp -R 0 /pgdata && chmod -R g=u /pgdata
 
 USER 26
 

@@ -17,6 +17,4 @@ source /opt/cpm/bin/common_lib.sh
 enable_debugging
 source /opt/cpm/bin/setenv.sh
 
-ose_hack
-
 $PGROOT/bin/psql -f /opt/cpm/bin/readiness.sql -U $PG_USER postgres

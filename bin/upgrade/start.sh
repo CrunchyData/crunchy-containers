@@ -27,7 +27,6 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 function trap_sigterm() {
     echo_warn "Signal trap triggered, beginning shutdown.." >> $PGDATA/trap.output

@@ -15,7 +15,6 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 export BADGER_CUSTOM_OPTS=${BADGER_CUSTOM_OPTS:-}
 
 TARGET=${HOSTNAME?}

@@ -15,7 +15,6 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 CONF_DIR=/opt/cpm/conf
 CONFIGS=/tmp

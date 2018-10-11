@@ -4,7 +4,7 @@ set -e
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
+
 
 export PGROOT=$(find /usr/ -type d -name 'pgsql-*')
 export PGPASSFILE=/tmp/pgpass
@@ -27,7 +27,7 @@ cat >> "${PGPASSFILE?}" <<-EOF
 EOF
 
 chmod 600 ${PGPASSFILE?}
-chown postgres:postgres ${PGPASSFILE?}
+# chown postgres:postgres ${PGPASSFILE?}
 
 set +e
 pgisready ${PGRESTORE_DB?} ${PGRESTORE_HOST?} ${PGRESTORE_PORT?} ${PGRESTORE_USER?}
