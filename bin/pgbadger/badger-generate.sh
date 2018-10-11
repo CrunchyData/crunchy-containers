@@ -25,4 +25,12 @@ then
 fi
 
 echo_info "Creating pgBadger output.."
-/bin/pgbadger -f stderr ${BADGER_CUSTOM_OPTS} -o /report/index.html /pgdata/${TARGET?}/pg_log/*.log
+
+if [[ -v BADGER_LOG_PREFIX ]]
+then
+    /bin/pgbadger -f stderr --prefix "${BADGER_LOG_PREFIX?}" ${BADGER_CUSTOM_OPTS} \
+        -o /report/index.html /pgdata/${TARGET?}/pg_log/*.log
+else
+    /bin/pgbadger -f stderr ${BADGER_CUSTOM_OPTS} \
+        -o /report/index.html /pgdata/${TARGET?}/pg_log/*.log
+fi
