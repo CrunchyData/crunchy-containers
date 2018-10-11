@@ -1,0 +1,331 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "primary-deployment",
+        "labels": {
+            "k8s-app": "postgres-cluster",
+            "name": "primary-deployment"
+        }
+    },
+    "spec": {
+        "ports": [
+            {
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }
+        ],
+        "selector": {
+            "name": "primary-deployment"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+    }
+}
+
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "replica-deployment",
+        "labels": {
+            "k8s-app": "postgres-cluster",
+            "name": "replica-deployment"
+        }
+    },
+    "spec": {
+        "ports": [
+            {
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432,
+                "nodePort": 0
+            }
+        ],
+        "selector": {
+            "name": "replica-deployment"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+    }
+}
+
+{
+    "kind": "Deployment",
+    "apiVersion": "extensions/v1beta1",
+    "metadata": {
+        "name": "primary-deployment",
+        "labels": {
+            "k8s-app": "postgres-cluster",
+            "name": "primary-deployment"
+        }
+    },
+    "spec": {
+        "replicas": 1,
+        "template": {
+            "metadata": {
+                "labels": {
+                    "k8s-app": "postgres-cluster",
+                    "name": "primary-deployment"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "name": "postgres",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
+                        "readinessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/opt/cpm/bin/readiness.sh"
+                                ]
+                            },
+                            "initialDelaySeconds": 40,
+                            "timeoutSeconds": 1
+                        },
+                        "livenessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/opt/cpm/bin/liveness.sh"
+                                ]
+                            },
+                            "initialDelaySeconds": 40,
+                            "timeoutSeconds": 1
+                        },
+                        "env": [
+                            {
+                                "name": "PG_PRIMARY_PORT",
+                                "value": "5432"
+                            },
+                            {
+                                "name": "PG_MODE",
+                                "value": "primary"
+                            },
+                            {
+                                "name": "PGDATA_PATH_OVERRIDE",
+                                "value": "primary-deployment"
+                            },
+                            {
+                                "name": "PGHOST",
+                                "value": "/tmp"
+                            },
+                            {
+                                "name": "PG_USER",
+                                "value": "testuser"
+                            },
+                            {
+                                "name": "PG_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PG_PRIMARY_USER",
+                                "value": "primaryuser"
+                            },
+                            {
+                                "name": "PG_PRIMARY_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PG_ROOT_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PG_DATABASE",
+                                "value": "userdb"
+                            }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/pgconf",
+                                "name": "primary-deployment-pgconf"
+                            }
+                        ],
+                        "ports": [
+                            {
+                                "containerPort": 5432,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {},
+                        "imagePullPolicy": "IfNotPresent"
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "pgdata",
+                        "persistentVolumeClaim": {
+                            "claimName": "primary-deployment-pgdata"
+                        }
+                    },
+                    {
+                        "name": "primary-deployment-pgconf",
+                        "configMap": {
+                            "name": "postgres-cluster-pgconf"
+                        }
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                }
+            }
+        },
+        "strategy": {
+            "type": "RollingUpdate",
+            "rollingUpdate": {
+                "maxUnavailable": 1,
+                "maxSurge": 1
+            }
+        }
+    }
+}
+
+{
+    "kind": "Deployment",
+    "apiVersion": "extensions/v1beta1",
+    "metadata": {
+        "name": "replica-deployment",
+        "labels": {
+            "k8s-app": "postgres-cluster",
+            "name": "replica-deployment"
+        }
+    },
+    "spec": {
+        "replicas": 1,
+        "template": {
+            "metadata": {
+                "labels": {
+                    "k8s-app": "postgres-cluster",
+                    "name": "replica-deployment"
+                }
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "name": "postgres",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
+                        "readinessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/opt/cpm/bin/readiness.sh"
+                                ]
+                            },
+                            "initialDelaySeconds": 40,
+                            "timeoutSeconds": 1
+                        },
+                        "livenessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/opt/cpm/bin/liveness.sh"
+                                ]
+                            },
+                            "initialDelaySeconds": 40,
+                            "timeoutSeconds": 1
+                        },
+                        "env": [
+                            {
+                                "name": "PG_PRIMARY_HOST",
+                                "value": "primary-deployment"
+                            },
+                            {
+                                "name": "PG_PRIMARY_PORT",
+                                "value": "5432"
+                            },
+                            {
+                                "name": "PG_MODE",
+                                "value": "replica"
+                            },
+                            {
+                                "name": "PGDATA_PATH_OVERRIDE",
+                                "value": "replica-deployment"
+                            },
+                            {
+                                "name": "PGHOST",
+                                "value": "/tmp"
+                            },
+                            {
+                                "name": "PG_USER",
+                                "value": "testuser"
+                            },
+                            {
+                                "name": "PG_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PG_PRIMARY_USER",
+                                "value": "primaryuser"
+                            },
+                            {
+                                "name": "PG_PRIMARY_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PG_ROOT_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PG_DATABASE",
+                                "value": "userdb"
+                            }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/pgconf",
+                                "name": "replica-deployment-pgconf"
+                            }
+                        ],
+                        "ports": [
+                            {
+                                "containerPort": 5432,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {},
+                        "imagePullPolicy": "IfNotPresent"
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "pgdata",
+                        "persistentVolumeClaim": {
+                            "claimName": "replica-deployment-pgdata"
+                        }
+                    },
+                    {
+                        "name": "replica-deployment-pgconf",
+                        "configMap": {
+                            "name": "postgres-cluster-pgconf"
+                        }
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                }
+            }
+        },
+        "strategy": {
+            "type": "RollingUpdate",
+            "rollingUpdate": {
+                "maxUnavailable": 1,
+                "maxSurge": 1
+            }
+        }
+    }
+}
