@@ -26,13 +26,9 @@ The crunchy-badger Docker image contains the following packages:
 
 ## Environment Variables
 
-### Required
-**Name**|**Default**|**Description**
-:-----|:-----|:-----
-**BADGER_TARGET**|None|Only used in standalone mode to specify the name of the container. Also used to find the location of the database log files in `/pgdata/$BADGER_TARGET/pg_log/*.log`.
-
 ### Optional
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
+**BADGER_TARGET**|None|Only used in standalone mode to specify the name of the container. Also used to find the location of the database log files in `/pgdata/$BADGER_TARGET/pg_log/*.log`.
 **BADGER_CUSTOM_OPTS**|None|For a list of optional flags, see the [official pgBadger documentation](http://dalibo.github.io/pgbadger).
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.
