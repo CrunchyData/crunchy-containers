@@ -108,55 +108,6 @@
 
       </div>
         <ul>
-      <li data-nav-id="/getting-started/openshift-templates/single-primary/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/getting-started/openshift-templates/single-primary/">
-            Single Primary
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/getting-started/openshift-templates/primary-restore/">
-            Primary Restore
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/getting-started/openshift-templates/primary-restore-secret/">
-            Primary Restore Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/getting-started/openshift-templates/primary-backup/">
-            Primary Backup
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/getting-started/openshift-templates/primary-backup-secret/">
-            Primary Backup Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/postgres-replicated/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/getting-started/openshift-templates/postgres-replicated/">
-            Primary Replica
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/pgadmin4/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/getting-started/openshift-templates/pgadmin4/">
-            pgAdmin4
-          </a>
-        </div>
-    </li>
         </ul>
     </li>
     <li data-nav-id="/getting-started/kubernetes-and-openshift/" class="dd-item
@@ -387,7 +338,6 @@
 <li><a href="#packages">Packages</a></li>
 <li><a href="#environment-variables">Environment Variables</a>
 <ul>
-<li><a href="#required">Required</a></li>
 <li><a href="#optional">Optional</a></li>
 </ul></li>
 </ul></li>
@@ -438,7 +388,7 @@ report can be accessed through the URL <strong>http://&lt;<ip address>&gt;:10000
 
 <h2 id="environment-variables">Environment Variables</h2>
 
-<h3 id="required">Required</h3>
+<h3 id="optional">Optional</h3>
 
 <table>
 <thead>
@@ -455,21 +405,7 @@ report can be accessed through the URL <strong>http://&lt;<ip address>&gt;:10000
 <td align="left">None</td>
 <td align="left">Only used in standalone mode to specify the name of the container. Also used to find the location of the database log files in <code>/pgdata/$BADGER_TARGET/pg_log/*.log</code>.</td>
 </tr>
-</tbody>
-</table>
 
-<h3 id="optional">Optional</h3>
-
-<table>
-<thead>
-<tr>
-<th align="left"><strong>Name</strong></th>
-<th align="left"><strong>Default</strong></th>
-<th align="left"><strong>Description</strong></th>
-</tr>
-</thead>
-
-<tbody>
 <tr>
 <td align="left"><strong>BADGER_CUSTOM_OPTS</strong></td>
 <td align="left">None</td>
