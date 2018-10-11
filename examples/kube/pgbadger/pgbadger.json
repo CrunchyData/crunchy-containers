@@ -42,9 +42,7 @@
         }
     },
     "spec": {
-        "securityContext": {
-           $CCP_SECURITY_CONTEXT
-        	},
+        "securityContext": {},
         "containers": [
             {
                 "name": "postgres",
@@ -142,7 +140,12 @@
                     "initialDelaySeconds": 15,
                     "periodSeconds": 20
                 },
-                "env": [],
+                "env": [
+                    {
+                        "name": "BADGER_CUSTOM_OPTS",
+                        "value": "--incremental --prefix='%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h'"
+                    }
+                ],
                 "volumeMounts": [
                     {
                         "mountPath": "/pgdata",
