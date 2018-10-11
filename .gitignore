@@ -10,3 +10,4 @@ postgres_exporter.tar.gz*
 bin/sample-app/sample-app
 tools/test-harness/vendor
 tools/pgmonitor/
+public
