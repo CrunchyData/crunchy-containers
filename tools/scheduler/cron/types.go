@@ -7,12 +7,6 @@ import (
 	cv2 "gopkg.in/robfig/cron.v2"
 )
 
-var nsswrapper = []string{"env",
-	"LD_PRELOAD=/usr/lib64/libnss_wrapper.so",
-	"NSS_WRAPPER_PASSWD=/tmp/passwd",
-	"NSS_WRAPPER_GROUP=/tmp/group",
-}
-
 type Cron struct {
 	entries       map[string]cv2.EntryID
 	kubeClient    *kubeapi.KubeAPI

@@ -39,12 +39,11 @@ func (b BackRestBackupJob) Run() {
 
 	contextLogger.Info("Running pgBackRest backup")
 
-	backup := []string{
+	cmd := []string{
 		"/usr/bin/pgbackrest",
 		fmt.Sprintf("--stanza=%s", b.stanza),
 		"backup", fmt.Sprintf("--type=%s", b.backupType),
 	}
-	cmd := append(nsswrapper, backup...)
 
 	if b.label != "" {
 		deployments, err := b.client.ListDeployments(b.namespace, b.label)
