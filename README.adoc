@@ -27,7 +27,7 @@ on a Centos 7 base image and use the community PostgreSQL RPMs.
 
 Crunchy provides a commercially supported version of these containers
 built upon RHEL 7 and the Crunchy supported PostgreSQL. Contact Crunchy
-for more details at http://www.crunchydata.com.
+for more details at https://www.crunchydata.com.
 
 Further descriptions of each of these containers and environment variables that can be used to tune them
 can be found in the link:https://crunchydata.github.io/crunchy-containers/stable/container-specifications/[Container Specifications] document.
