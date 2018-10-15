@@ -92,7 +92,7 @@ else
         else
             echo_err "Custom Query file queries_pg92-96.yml does not exist (it should).."
         fi
-    elif (( ${VERSION?} >= 100000 )) && (( ${VERSION?} < 110000 ))
+    elif (( ${VERSION?} >= 100000 )) && (( ${VERSION?} < 120000 ))
     then
         if [[ -f ${CONFIG_DIR?}/queries_pg10.yml ]]
         then
