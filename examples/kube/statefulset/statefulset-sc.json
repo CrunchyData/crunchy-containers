@@ -90,6 +90,14 @@
                             {
                                 "name": "PG_ROOT_PASSWORD",
                                 "value": "password"
+                            },
+                            {
+                                "name": "CCP_NAMESPACE",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
                             }
                         ],
                         "volumeMounts": [
