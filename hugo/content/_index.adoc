@@ -10,11 +10,16 @@ Latest Release: 2.2.0 {docdate}
 
 == General
 
-Please view the official Crunchy Data Container Suite documentation link:https://crunchydata.github.io/crunchy-containers/[here]. If you are
-interested in contributing or making an update to the documentation, please view the link:https://crunchydata.github.io/crunchy-containers/contributing/[Contributing Guidelines].
+The Crunchy Container Suite provides Docker containers that enable
+rapid deployment of PostgreSQL, including administration and
+monitoring tools. Multiple styles of deploying PostgreSQL clusters
+are supported.
 
 Warning: The master branch is considered unstable. Please consult the link:https://github.com/CrunchyData/crunchy-containers/releases[tagged release]
 currently deployed in your environment.
+
+If you are looking for the latest documentation, please see the develop branch which is considered unstable. The development
+documentation can be reviewed link:https://crunchydata.github.io/crunchy-containers/latest/[here].
 
 == What is the Container Suite?
 
@@ -60,11 +65,11 @@ in this repo and provides a higher level automation.
 That project is the link:https://github.com/crunchydata/postgres-operator[postgres-operator].
 
 Further descriptions of each of these containers and environment variables that can be used to tune them
-can be found in the link:https://crunchydata.github.io/crunchy-containers/container-specifications/[Container Specifications] document.
+can be found in the link:/container-specifications/[Container Specifications] document.
 
 == Getting Started
 
-Complete build and install documentation is found link:https://crunchydata.github.io/crunchy-containers/installation/[here].  The provided Dockerfiles build the containers
+Complete build and install documentation is found link:/installation/[here].  The provided Dockerfiles build the containers
 on a Centos 7 base image and use the community PostgreSQL RPMs.
 
 Crunchy provides a commercially supported version of these containers
@@ -73,8 +78,8 @@ for more details at http://www.crunchydata.com.
 
 == Usage
 
-Various examples are provided in link:https://crunchydata.github.io/crunchy-containers/getting-started/[the Getting Started documentation] for running in Docker,
+Various examples are provided in link:/getting-started/[the Getting Started documentation] for running in Docker,
 Kubernetes, and OpenShift environments.
 
-You will need to set up your environment as per the link:https://crunchydata.github.io/crunchy-containers/installation/[Installation documentation] in order to
+You will need to set up your environment as per the link:/installation/[Installation documentation] in order to
 execute the examples.
