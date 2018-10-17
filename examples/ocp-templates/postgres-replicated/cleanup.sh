@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete template crunchy-postgres-primary-replica-template
+oc delete template crunchy-postgres-primary-replica-template --namespace=${CCP_NAMESPACE?}
