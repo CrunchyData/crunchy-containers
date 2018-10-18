@@ -9,11 +9,11 @@ function custom_config() {
     mode=${3?}
     owner=${4?}
     if [[ -f ${src?} ]]
-    then 
+    then
         echo_info "Custom ${src?} detected.  Applying custom configuration.."
         cp ${src?} ${dest?}
-        # chown ${owner?} ${dest?}
-        # chmod ${mode?} ${dest?}
+        chown ${owner?} ${dest?}
+        chmod ${mode?} ${dest?}
     fi
 }
 
