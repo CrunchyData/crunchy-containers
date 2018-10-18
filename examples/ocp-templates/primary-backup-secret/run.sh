@@ -16,4 +16,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
-oc create -f $DIR/backup-job.json
+oc create -f $DIR/backup-job.json --namespace=${CCP_NAMESPACE?}

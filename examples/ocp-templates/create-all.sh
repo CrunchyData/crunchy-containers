@@ -15,20 +15,18 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-$DIR/backup/run.sh
-$DIR/badger/run.sh
-$DIR/collect/run.sh
-$DIR/primary-collect-badger/run.sh
-$DIR/primary-replica-dc/run.sh
-$DIR/primary-replica/run.sh
-$DIR/primary-restore/run.sh
-$DIR/metrics/run.sh
-$DIR/pgadmin4/run.sh
-$DIR/pgbouncer/run.sh
-$DIR/pgpool/run.sh
-$DIR/replica-dc/run.sh
-$DIR/secret/run.sh
-$DIR/single-primary/run.sh
-$DIR/single-replica/run.sh
-$DIR/sync/run.sh
-$DIR/watch/run.sh
+${DIR?}/pgadmin4/run.sh
+${DIR?}/pgbadger/run.sh
+${DIR?}/pgbouncer/run.sh
+${DIR?}/pgpool/run.sh
+${DIR?}/plans/create-all.sh
+${DIR?}/postgis-replicated/run.sh
+${DIR?}/postgres-replicated/run.sh
+${DIR?}/postgres-replicated-sync/run.sh
+${DIR?}/primary-backup/run.sh
+${DIR?}/primary-backup-secret/run.sh
+${DIR?}/primary-restore/run.sh
+${DIR?}/primary-restore-secret/run.sh
+${DIR?}/replica-statefulset/run.sh
+${DIR?}/replica-statefulset-secret/run.sh
+${DIR?}/single-primary/run.sh

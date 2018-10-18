@@ -13,4 +13,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete template crunchy-postgres-with-pgbouncer-template
+oc delete template crunchy-postgres-with-pgbouncer-template --namespace=${CCP_NAMESPACE?}

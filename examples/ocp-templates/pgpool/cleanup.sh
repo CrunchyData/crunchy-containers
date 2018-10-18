@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete template crunchy-postgres-with-pgpool-template
+oc delete template crunchy-postgres-with-pgpool-template --namespace=${CCP_NAMESPACE?}

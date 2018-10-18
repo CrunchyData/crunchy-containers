@@ -12,4 +12,4 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-oc delete template crunchy-postgis-replicated-template
+oc delete template crunchy-postgis-replicated-template --namespace=${CCP_NAMESPACE?}
