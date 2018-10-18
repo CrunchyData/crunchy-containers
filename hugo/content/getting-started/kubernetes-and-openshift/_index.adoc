@@ -471,7 +471,14 @@ logging_collector = off
 Changes to logging settings require a restart of the PostgreSQL container to take effect.
 {{% /notice %}}
 
-==== Deploying the EFK Stack
+==== Deploying the EFK Stack On OpenShift Container Platform
+
+OpenShift Container Platform can be installed with an EFK stack.  For more information about
+configuring OpenShift to create an EFK stack, see the official documentation:
+
+* https://docs.openshift.com/container-platform/3.10/install_config/aggregate_logging.html
+
+==== Deploying the EFK Stack On Kubernetes
 
 First, deploy the EFK stack by running the example using the following commands:
 
