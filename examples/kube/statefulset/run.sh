@@ -37,4 +37,10 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} clusterrolebinding statefulset-
   --namespace=$CCP_NAMESPACE
 
 expenv -f $DIR/statefulset-services.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
-expenv -f $DIR/statefulset.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+
+if [[ -v CCP_STORAGE_CLASS ]]
+then
+    expenv -f $DIR/statefulset-sc.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+else
+    expenv -f $DIR/statefulset.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+fi
