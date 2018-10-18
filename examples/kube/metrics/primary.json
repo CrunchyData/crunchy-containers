@@ -158,6 +158,10 @@
                             {
                                 "name": "PGHOST",
                                 "value": "/tmp"
+                            },
+                            {
+                                "name": "PGDATA_PATH_OVERRIDE",
+                                "value": "primary"
                             }
                         ],
                         "volumeMounts": [
