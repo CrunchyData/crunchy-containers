@@ -47,14 +47,20 @@ For testing with NFS, in your *.bashrc* file, include
 the following variables that are unique to your NFS environment:
 ....
 export CCP_SECURITY_CONTEXT='"supplementalGroups": [65534]'
-export CCP_STORAGE_PATH=/mnt/nfsfileshare
-export CCP_NFS_IP=192.168.0.118
+export CCP_STORAGE_PATH=/nfsfileshare
+export CCP_NFS_IP=<IP OF NFS SERVER>
 export CCP_STORAGE_MODE=ReadWriteMany
 export CCP_STORAGE_CAPACITY=400M
 ....
 
 In this example above the group ownership of the NFS mount is assumed to be
 *nfsnobody* or *65534*.
+
+{{% notice warning %}}
+The examples in the Crunchy Container suite need access to the NFS export to create
+the directories used by the examples.  The NFS export should be mounted locally so
+the example `run.sh` scripts can do proper setup.
+{{% /notice %}}
 
 {{%expand "Configuration Notes for NFS" %}}
 
@@ -71,7 +77,7 @@ Detailed instructions that you can use for setting up a NFS server on Centos 7 a
 
 http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html
 
-if you are running your client on a VM, you will need to
+If you are running your client on a VM, you will need to
 add 'insecure' to the exportfs file on the NFS server due to the way port
 translation is done between the VM host and the VM instance.
 
