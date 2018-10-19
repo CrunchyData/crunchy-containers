@@ -36,5 +36,6 @@
  - Operating System:
  - Container Image Tag:
  - PostgreSQL Version:
+ - Storage (NFS, hostpath, storage class):
  - Platform (Docker, Kubernetes, OpenShift):
  - Platform Version:
