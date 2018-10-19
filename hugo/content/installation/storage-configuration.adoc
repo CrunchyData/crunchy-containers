@@ -104,19 +104,14 @@ look into the link:https://www.novell.com/support/kb/doc.php?id=7010210[noac mou
 
 == Dynamic Storage
 
-Dynamic storage classes can be used for the examples.  Gluster
-is only one example of a storage type that supports dynamic storage
-classes.  The environment variable `CCP_STORAGE_CLASS` is used
+Dynamic storage classes can be used for the examples.  There
+are various providers and solutions for dynamic storage, see the Kubernetes
+documentation on supported storage choices.
+The environment variable `CCP_STORAGE_CLASS` is used
 in the examples to determine whether or not to create a PersistentVolume
 manually or that it will be created dynamically using a StorageClass.  In
 the case of GKE, the default StorageClass is named *default*.   Storage
 class names are determined by the Kubernetes administrator and can vary.
-
-Setting up a Gluster cluster will offer you the ability to use
-dynamic storage provisioning in the examples.  A set of example
-Gluster configuration files is found at `$CCPROOT/examples/gluster`.
-This configuration is for a 3 node Gluster cluster which runs
-on a Centos7 Minimal VM deployment.
 
 Using block storage requires a security context to be set
 as follows:
