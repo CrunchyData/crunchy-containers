@@ -30,10 +30,11 @@ are supported.
 
 === Requirements
 
-The containers will execute in the following environments:
+The containers will execute and are tested in the following environments:
 
+ * RHEL/Centos 7
  * Docker 1.13+
- * Openshift 3.10+
+ * Openshift 3.9+
  * Kubernetes 1.8+
 
 === Containers
