@@ -20,3 +20,5 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc pgdump-pgdata
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv pgdump-pgdata
 
 $CCPROOT/examples/waitforterm.sh pgdump ${CCP_CLI?}
+
+dir_check_rm "pgdump"
