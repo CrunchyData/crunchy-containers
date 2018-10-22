@@ -18,12 +18,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc backup-pitr-pgdata
-if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv backup-pitr-pgdata
-fi
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} job backup-pitr
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc backup-pitr-pgdata
+if [[ -z "$CCP_STORAGE_CLASS" ]]
+then
+    ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv backup-pitr-pgdata
+fi
 
+dir_check_rm "backup-pitr"
 create_storage "backup-pitr"
 if [[ $? -ne 0 ]]
 then

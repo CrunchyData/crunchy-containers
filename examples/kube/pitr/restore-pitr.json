@@ -113,11 +113,11 @@
                     },
                     {
                         "name": "BACKUP_PATH",
-                        "value": "pitr-backups/2018-05-05-00-50-49"
+                        "value": "pitr-backups/TIMESTAMP_HERE"
                     },
                     {
                         "name": "RECOVERY_TARGET_NAME",
-                        "value": "afterchanges"
+                        "value": "beforechanges"
                     },
                     {
                         "name": "PGHOST",
