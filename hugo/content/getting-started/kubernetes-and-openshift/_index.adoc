@@ -2278,13 +2278,6 @@ illustrates how to view the generated reports.
 The port utilized for this tool is port 14000 for Docker environments and port 10000
 for Kubernetes and OpenShift environments.
 
-A requirement to build this container from source is *golang*. On RHEL 7.2, golang
-is found in the 'server optional' repository which needs to be enabled in order to install
-this dependency.
-....
-sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
-....
-
 The container creates a default database called *userdb*, a default user called
 *testuser* and a default password of *password*.
 
