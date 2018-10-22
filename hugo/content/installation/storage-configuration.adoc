@@ -53,8 +53,10 @@ export CCP_STORAGE_MODE=ReadWriteMany
 export CCP_STORAGE_CAPACITY=400M
 ....
 
-In this example above the group ownership of the NFS mount is assumed to be
-*nfsnobody* or *65534*.
+In the example above the group ownership of the NFS mount is assumed to be
+*nfsnobody* or *65534*.  Additionally, it is recommended that root not be squashed on 
+the NFS share (`no_root_squash`) in order to ensure the proper directories can be 
+created, modified and removed as needed for the various container examples.
 
 {{% notice warning %}}
 The examples in the Crunchy Container suite need access to the NFS export to create
