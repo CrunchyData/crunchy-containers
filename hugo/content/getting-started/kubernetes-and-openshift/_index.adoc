@@ -2405,10 +2405,10 @@ You can view the container logs using these command:
 ....
 ${CCP_CLI} logs -c grafana metrics
 ${CCP_CLI} logs -c prometheus metrics
-${CCP_CLI} logs -c collect primary
-${CCP_CLI} logs -c postgres primary
-${CCP_CLI} logs -c collect replica
-${CCP_CLI} logs -c postgres replica
+${CCP_CLI} logs -c collect primary-metrics
+${CCP_CLI} logs -c postgres primary-metrics
+${CCP_CLI} logs -c collect replica-metrics
+${CCP_CLI} logs -c postgres replica-metrics
 ....
 
 === pg_audit
