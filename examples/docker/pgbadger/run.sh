@@ -18,6 +18,9 @@ ${DIR?}/cleanup.sh
 
 docker network create --driver bridge pgnet
 
+docker volume create --driver local --name=pg-primary
+docker volume create --driver local --name=report
+
 docker run \
     -p 5432:5432 \
     -v pg-primary:/pgdata \
