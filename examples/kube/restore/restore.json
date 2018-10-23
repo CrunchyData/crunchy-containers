@@ -41,6 +41,24 @@
             {
                 "name": "postgres",
                 "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
+                "readinessProbe": {
+                    "exec": {
+                        "command": [
+                            "/opt/cpm/bin/readiness.sh"
+                        ]
+                    },
+                    "initialDelaySeconds": 40,
+                    "timeoutSeconds": 1
+                },
+                "livenessProbe": {
+                    "exec": {
+                        "command": [
+                            "/opt/cpm/bin/liveness.sh"
+                        ]
+                    },
+                    "initialDelaySeconds": 40,
+                    "timeoutSeconds": 1
+                },
                 "ports": [
                     {
                         "containerPort": 5432,
@@ -83,6 +101,10 @@
                     {
                         "name": "PG_ROOT_PASSWORD",
                         "value": "password"
+                    },
+                    {
+                        "name": "PGHOST",
+                        "value": "/tmp"
                     }
                 ],
                 "volumeMounts": [
