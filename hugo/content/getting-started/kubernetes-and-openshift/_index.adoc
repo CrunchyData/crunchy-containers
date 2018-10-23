@@ -2103,18 +2103,6 @@ and client) for the example: `$CCPROOT/examples/ssl-creator.sh`.
 The example creates a client certificate for the user `testuser`.  Furthermore,
 the server certificate is created for the server name `custom-config-ssl`.
 
-If as a client it's required to confirm the identity of the server, `verify-full` can be
-specified in the connection string.  This will check if the server and the server certificate
-have the same name:
-....
-psql postgresql://custom-config-ssl:5432/postgres?sslmode=verify-full -U testuser"
-....
-
-To connect via IP, `sslmode` can be changed to `require`.
-....
-psql postgresql://IP_OF_PGSQL:5432/postgres?sslmode=require -U testuser"
-....
-
 This example can be run as follows for the Docker environment:
 ....
 cd $CCPROOT/examples/docker/custom-config-ssl
@@ -2148,26 +2136,35 @@ names to resolve to the PostgreSQL service name and generate
 server certificates using the DNS names instead of the example
 name `custom-config-ssl`.
 
-In order to connect via certificate, environment variables must be set that point
-to the client certificates.  Source the `env.sh` file to set environment varaibles
-for the example:
-
-....
-source env.sh
-....
-
 If as a client it's required to confirm the identity of the server, `verify-full` can be
-specified in the connection string.  This will check if the server and the server certificate
-have the same name:
+specified for `ssl-mode` in the connection string.  This will check if the server and the
+server certificate have the same name.  Additionally, the proper connection parameters 
+must be specified in the connection string for the certificate information required to 
+trust and verify the identity of the server (`sslrootcert` and `sslcrl`), and to 
+authenticate the client using a certificate (`sslcert` and `sslkey`):
 
 ....
-psql postgresql://custom-config-ssl:5432/userdb?sslmode=verify-full -U testuser"
+psql "postgresql://testuser@custom-config-ssl:5432/userdb?\
+sslmode=verify-full&\
+sslrootcert=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crt&\
+sslcrl=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crl&\
+sslcert=$CCPROOT/examples/kube/custom-config-ssl/certs/client.crt&\
+sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key"
 ....
 
-To connect via IP, `sslmode` can be changed to `require`.
+To connect via IP, `sslmode` can be changed to `require`.  This will verify the server 
+by checking the certificate chain up to the trusted certificate authority, but will not
+verify that the hostname matches the certificate, as occurs with `verify-full`.  The same
+connection parameters as above can be then provided for the client and server certificate
+information.
 
 ....
-psql postgresql://IP_OF_PGSQL:5432/userdb?sslmode=require -U testuser"
+psql "postgresql://testuser@IP_OF_PGSQL:5432/userdb?\
+sslmode=require&\
+sslrootcert=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crt&\
+sslcrl=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crl&\
+sslcert=$CCPROOT/examples/kube/custom-config-ssl/certs/client.crt&\
+sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key"
 ....
 
 You should see a connection that looks like the following:
