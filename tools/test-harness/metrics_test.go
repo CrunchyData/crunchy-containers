@@ -21,21 +21,21 @@ func TestMetrics(t *testing.T) {
 	}
 
 	t.Log("Checking if primary deployment is ready...")
-	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "primary"); !ok {
+	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "primary-metrics"); !ok {
 		t.Fatal(err)
 	}
 
 	t.Log("Checking if replica deployment is ready...")
-	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "replica"); !ok {
+	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "replica-metrics"); !ok {
 		t.Fatal(err)
 	}
 
-	primary, err := harness.Client.GetDeploymentPods(harness.Namespace, "primary")
+	primary, err := harness.Client.GetDeploymentPods(harness.Namespace, "primary-metrics")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	replica, err := harness.Client.GetDeploymentPods(harness.Namespace, "replica")
+	replica, err := harness.Client.GetDeploymentPods(harness.Namespace, "replica-metrics")
 	if err != nil {
 		t.Fatal(err)
 	}
