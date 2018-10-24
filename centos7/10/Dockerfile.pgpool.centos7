@@ -37,7 +37,7 @@ ADD bin/common /opt/cpm/bin
 ADD conf/pgpool /opt/cpm/conf
 
 RUN ln -sf /opt/cpm/conf/pool_hba.conf /etc/pgpool-II-10/pool_hba.conf \
-  && ln -sf /opt/cpm/conf/pgpool/pool_passwd /etc/pgpool-II-10/pool_passwd
+  && ln -sf /opt/cpm/conf/pool_passwd /etc/pgpool-II-10/pool_passwd
 
 RUN chgrp -R 0 /opt/cpm && \
     chmod -R g=u /opt/cpm
