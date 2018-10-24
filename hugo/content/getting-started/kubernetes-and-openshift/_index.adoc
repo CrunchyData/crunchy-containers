@@ -2138,9 +2138,9 @@ name `custom-config-ssl`.
 
 If as a client it's required to confirm the identity of the server, `verify-full` can be
 specified for `ssl-mode` in the connection string.  This will check if the server and the
-server certificate have the same name.  Additionally, the proper connection parameters 
-must be specified in the connection string for the certificate information required to 
-trust and verify the identity of the server (`sslrootcert` and `sslcrl`), and to 
+server certificate have the same name.  Additionally, the proper connection parameters
+must be specified in the connection string for the certificate information required to
+trust and verify the identity of the server (`sslrootcert` and `sslcrl`), and to
 authenticate the client using a certificate (`sslcert` and `sslkey`):
 
 ....
@@ -2152,7 +2152,7 @@ sslcert=$CCPROOT/examples/kube/custom-config-ssl/certs/client.crt&\
 sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key"
 ....
 
-To connect via IP, `sslmode` can be changed to `require`.  This will verify the server 
+To connect via IP, `sslmode` can be changed to `require`.  This will verify the server
 by checking the certificate chain up to the trusted certificate authority, but will not
 verify that the hostname matches the certificate, as occurs with `verify-full`.  The same
 connection parameters as above can be then provided for the client and server certificate
@@ -2443,8 +2443,19 @@ cd $CCPROOT/examples/kube/pgaudit
 ./run.sh
 ....
 
-The script will create the pg_audit pod (running the crunchy-postgres container)
-on the Kubernetes instance and then execute a SQL file which
-contains pg_audit configuration statements as well as some
-basic SQL commands.  These SQL commands will cause pg_audit to create
-log messages in the `pg_log` file created by the database container.
+This script will create a PostgreSQL pod with the pgAudit extension configured and ready
+to use
+
+Once the pod is deployed successfully run the following command to test the extension:
+
+....
+cd $CCPROOT/examples/kube/pgaudit
+./test-pgaudit.sh
+....
+
+This example has been configured to log directly to stdout of the pod.  To view the PostgreSQL logs
+run the following:
+
+....
+$CCP_CLI logs pgaudit
+....
