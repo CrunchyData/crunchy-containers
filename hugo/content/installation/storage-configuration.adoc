@@ -19,6 +19,17 @@ The Container Suite is tested on 3 different storage backends:
 Other storage backends work as well including GCE, EBS, ScaleIO, and
 others, but may require you to modify various examples or configuration.
 
+Crunchy Containers are tested, developed, and examples provided
+that use the various storage types listed above.  This insures 
+that customers have a high degree of choices when it comes to 
+choosing a volume type.  HostPath and NFS allow precise host path 
+choices for where database volumes are persisted.  HostPath and NFS 
+also allow governance models where volume creation is performed 
+by an administrator instead of the application/developer team.
+
+Where customers desire a dynamic form of volume creation (e.g. self service), 
+storage classes are also supported within the example set.
+
 Environment variables are set to determine how and what storage
 is to be used.
 
