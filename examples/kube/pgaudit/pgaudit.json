@@ -47,7 +47,7 @@
                             "/opt/cpm/bin/readiness.sh"
                         ]
                     },
-                    "initialDelaySeconds": 10,
+                    "initialDelaySeconds": 40,
                     "timeoutSeconds": 1
                 },
                 "livenessProbe": {
@@ -56,7 +56,7 @@
                             "/opt/cpm/bin/liveness.sh"
                         ]
                     },
-                    "initialDelaySeconds": 120,
+                    "initialDelaySeconds": 40,
                     "timeoutSeconds": 1
                 },
                 "ports": [
@@ -113,6 +113,11 @@
                         "mountPath": "/backup",
                         "name": "backup",
                         "readOnly": true
+                    },
+                    {
+                        "mountPath": "/pgconf",
+                        "name": "pgconf",
+                        "readOnly": true
                     }
                 ]
             }
@@ -125,6 +130,12 @@
             {
                 "name": "backup",
                 "emptyDir": {}
+            },
+            {
+                "name": "pgconf",
+                "configMap": {
+                    "name": "pgaudit-pgconf"
+                }
             }
         ]
     }

@@ -2,15 +2,15 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "replica",
+        "name": "replica-metrics",
         "labels": {
-            "name": "replica"
+            "name": "replica-metrics"
         }
     },
     "spec": {
         "ports": [
             {
-                "name": "replica",
+                "name": "replica-metrics",
                 "protocol": "TCP",
                 "port": 5432,
                 "targetPort": 5432,
@@ -32,7 +32,7 @@
             }
         ],
         "selector": {
-            "name": "replica"
+            "name": "replica-metrics"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -43,9 +43,9 @@
     "kind": "Deployment",
     "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "replica",
+        "name": "replica-metrics",
         "labels": {
-            "name": "replica"
+            "name": "replica-metrics"
         }
     },
     "spec": {
@@ -53,7 +53,7 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "replica",
+                    "name": "replica-metrics",
                     "crunchy_collect": "true"
                 }
             },
@@ -133,7 +133,7 @@
                             },
                             {
                                 "name": "PG_PRIMARY_HOST",
-                                "value": "primary"
+                                "value": "primary-metrics"
                             },
                             {
                                 "name": "PG_USER",
@@ -161,7 +161,7 @@
                             },
                             {
                                 "name": "PGDATA_PATH_OVERRIDE",
-                                "value": "replica"
+                                "value": "replica-metrics"
                             }
                         ],
                         "volumeMounts": [
@@ -189,10 +189,7 @@
                 ],
                 "restartPolicy": "Always",
                 "terminationGracePeriodSeconds": 30,
-                "dnsPolicy": "ClusterFirst",
-                "securityContext": {
-                    $CCP_SECURITY_CONTEXT
-                }
+                "dnsPolicy": "ClusterFirst"
             }
         },
         "strategy": {

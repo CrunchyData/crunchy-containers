@@ -9,6 +9,13 @@ Latest Release: 2.2.0 {docdate}
 
 == Getting Started
 
+{{% notice warning %}}
+The Kubernetes and OpenShift examples provided on this page have been designed using single-node Kubernetes/OCP clusters
+whose host machines provide any required supporting infrastructure or services (e.g. local hostPath storage or access
+to an NFS share). Therefore, for the best results when running these examples, it is recommended that you utilize a 
+single-node architecture as well.
+{{% /notice %}}
+
 {{% notice tip %}}
 The examples located in the *kube* directory work on both Kubernetes and OpenShift. Ensure the `CCP_CLI` environment variable
 is set to the correct binary for your environment.
@@ -1728,12 +1735,9 @@ The container creates a default database called *userdb*, a default user called
 
 This example will create the following in your Kubernetes and OpenShift environments:
 
- * primary-deployment service which uses a PVC to persist PostgreSQL data
- * replica-deployment service, uses emptyDir persistence
- * primary-deployment deployment of replica count 1 for the primary
-   PostgreSQL database pod
- * replica-deployment deployment of replica count 1 for the replica
- * replica2-deployment deployment of replica count 1 for the 2nd replica
+ * primary and replica services
+ * primary-deployment deployment
+ * replica-deployment statefulset
  * ConfigMap to hold a custom `postgresql.conf`, `setup.sql`, and
    `pg_hba.conf` files
  * Secrets for the primary user, superuser, and normal user to
@@ -1757,6 +1761,18 @@ Start the example as follows:
 cd $CCPROOT/examples/kube/primary-deployment
 ./run.sh
 ....
+
+To scale the replica statefulset, run the following command:
+
+....
+${CCP_CLI?} scale --replicas=2 statefulset replica-deployment
+....
+
+{{% notice warning %}}
+This example only creates enough Persistent Volumes for a maximum of 2 replicas.
+If you are not using storage classes, the maximum amount of replicas this example can
+be scaled to is 2.
+{{% /notice %}}
 
 === Replication
 
@@ -1806,6 +1822,7 @@ psql -h localhost -p 12008 -U testuser -W userdb
 ==== Kubernetes and OpenShift
 
 Run the following command to deploy a primary and replica database cluster:
+
 ....
 cd $CCPROOT/examples/kube/primary-replica
 ./run.sh
@@ -1814,25 +1831,30 @@ cd $CCPROOT/examples/kube/primary-replica
 It takes about a minute for the replica to begin replicating with the
 primary.  To test out replication, see if replication is underway
 with this command:
+
 ....
-psql -h pr-primary -U postgres postgres -c 'table pg_stat_replication'
+${CCP_CLI?} exec -ti pr-primary -- psql -d postgres -c 'table pg_stat_replication'
 ....
 
 If you see a line returned from that query it means the primary is replicating
 to the replica.  Try creating some data on the primary:
+
 ....
-psql -h pr-primary -U postgres postgres -c 'create table foo (id int)'
-psql -h pr-primary -U postgres postgres -c 'insert into foo values (1)'
+
+${CCP_CLI?} exec -ti pr-primary -- psql -d postgres -c 'create table foo (id int)'
+${CCP_CLI?} exec -ti pr-primary -- psql -d postgres -c 'insert into foo values (1)'
 ....
 
 Then verify that the data is replicated to the replica:
+
 ....
-psql -h pr-replica -U postgres postgres -c 'table foo'
+${CCP_CLI?} exec -ti pr-replica -- psql -d postgres -c 'table foo'
 ....
 
 *primary-replica-dc*
 
 If you wanted to experiment with scaling up the number of replicas, you can run the following example:
+
 ....
 cd $CCPROOT/examples/kube/primary-replica-dc
 ./run.sh
@@ -1840,19 +1862,8 @@ cd $CCPROOT/examples/kube/primary-replica-dc
 
 You can verify that replication is working using the same commands as above.
 
-This example creates 2 replicas when it initially starts.  To scale
-up the number of replicas and view what the deployment looks like before and after, run these commands:
 ....
-${CCP_CLI} get deployment
-${CCP_CLI} scale --current-replicas=2 --replicas=3 deployment/replica-dc
-${CCP_CLI} get deployment
-${CCP_CLI} get pod
-....
-
-You can verify that you now have 3 replicas by running this query
-on the primary:
-....
-psql -h primary-dc -U postgres postgres -c 'table pg_stat_replication'
+${CCP_CLI?} exec -ti primary-dc -- psql -d postgres -c 'table pg_stat_replication'
 ....
 
 ==== Helm
@@ -2103,18 +2114,6 @@ and client) for the example: `$CCPROOT/examples/ssl-creator.sh`.
 The example creates a client certificate for the user `testuser`.  Furthermore,
 the server certificate is created for the server name `custom-config-ssl`.
 
-If as a client it's required to confirm the identity of the server, `verify-full` can be
-specified in the connection string.  This will check if the server and the server certificate
-have the same name:
-....
-psql postgresql://custom-config-ssl:5432/postgres?sslmode=verify-full -U testuser"
-....
-
-To connect via IP, `sslmode` can be changed to `require`.
-....
-psql postgresql://IP_OF_PGSQL:5432/postgres?sslmode=require -U testuser"
-....
-
 This example can be run as follows for the Docker environment:
 ....
 cd $CCPROOT/examples/docker/custom-config-ssl
@@ -2148,26 +2147,35 @@ names to resolve to the PostgreSQL service name and generate
 server certificates using the DNS names instead of the example
 name `custom-config-ssl`.
 
-In order to connect via certificate, environment variables must be set that point
-to the client certificates.  Source the `env.sh` file to set environment varaibles
-for the example:
-
-....
-source env.sh
-....
-
 If as a client it's required to confirm the identity of the server, `verify-full` can be
-specified in the connection string.  This will check if the server and the server certificate
-have the same name:
+specified for `ssl-mode` in the connection string.  This will check if the server and the
+server certificate have the same name.  Additionally, the proper connection parameters
+must be specified in the connection string for the certificate information required to
+trust and verify the identity of the server (`sslrootcert` and `sslcrl`), and to
+authenticate the client using a certificate (`sslcert` and `sslkey`):
 
 ....
-psql postgresql://custom-config-ssl:5432/userdb?sslmode=verify-full -U testuser"
+psql "postgresql://testuser@custom-config-ssl:5432/userdb?\
+sslmode=verify-full&\
+sslrootcert=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crt&\
+sslcrl=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crl&\
+sslcert=$CCPROOT/examples/kube/custom-config-ssl/certs/client.crt&\
+sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key"
 ....
 
-To connect via IP, `sslmode` can be changed to `require`.
+To connect via IP, `sslmode` can be changed to `require`.  This will verify the server
+by checking the certificate chain up to the trusted certificate authority, but will not
+verify that the hostname matches the certificate, as occurs with `verify-full`.  The same
+connection parameters as above can be then provided for the client and server certificate
+information.
 
 ....
-psql postgresql://IP_OF_PGSQL:5432/userdb?sslmode=require -U testuser"
+psql "postgresql://testuser@IP_OF_PGSQL:5432/userdb?\
+sslmode=require&\
+sslrootcert=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crt&\
+sslcrl=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crl&\
+sslcert=$CCPROOT/examples/kube/custom-config-ssl/certs/client.crt&\
+sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key"
 ....
 
 You should see a connection that looks like the following:
@@ -2277,13 +2285,6 @@ illustrates how to view the generated reports.
 
 The port utilized for this tool is port 14000 for Docker environments and port 10000
 for Kubernetes and OpenShift environments.
-
-A requirement to build this container from source is *golang*. On RHEL 7.2, golang
-is found in the 'server optional' repository which needs to be enabled in order to install
-this dependency.
-....
-sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
-....
 
 The container creates a default database called *userdb*, a default user called
 *testuser* and a default password of *password*.
@@ -2405,10 +2406,10 @@ You can view the container logs using these command:
 ....
 ${CCP_CLI} logs -c grafana metrics
 ${CCP_CLI} logs -c prometheus metrics
-${CCP_CLI} logs -c collect primary
-${CCP_CLI} logs -c postgres primary
-${CCP_CLI} logs -c collect replica
-${CCP_CLI} logs -c postgres replica
+${CCP_CLI} logs -c collect primary-metrics
+${CCP_CLI} logs -c postgres primary-metrics
+${CCP_CLI} logs -c collect replica-metrics
+${CCP_CLI} logs -c postgres replica-metrics
 ....
 
 === pg_audit
@@ -2453,8 +2454,19 @@ cd $CCPROOT/examples/kube/pgaudit
 ./run.sh
 ....
 
-The script will create the pg_audit pod (running the crunchy-postgres container)
-on the Kubernetes instance and then execute a SQL file which
-contains pg_audit configuration statements as well as some
-basic SQL commands.  These SQL commands will cause pg_audit to create
-log messages in the `pg_log` file created by the database container.
+This script will create a PostgreSQL pod with the pgAudit extension configured and ready
+to use
+
+Once the pod is deployed successfully run the following command to test the extension:
+
+....
+cd $CCPROOT/examples/kube/pgaudit
+./test-pgaudit.sh
+....
+
+This example has been configured to log directly to stdout of the pod.  To view the PostgreSQL logs
+run the following:
+
+....
+$CCP_CLI logs pgaudit
+....
