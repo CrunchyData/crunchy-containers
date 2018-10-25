@@ -189,10 +189,7 @@
                 ],
                 "restartPolicy": "Always",
                 "terminationGracePeriodSeconds": 30,
-                "dnsPolicy": "ClusterFirst",
-                "securityContext": {
-                    $CCP_SECURITY_CONTEXT
-                }
+                "dnsPolicy": "ClusterFirst"
             }
         },
         "strategy": {
