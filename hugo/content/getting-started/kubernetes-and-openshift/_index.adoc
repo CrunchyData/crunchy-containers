@@ -1735,12 +1735,9 @@ The container creates a default database called *userdb*, a default user called
 
 This example will create the following in your Kubernetes and OpenShift environments:
 
- * primary-deployment service which uses a PVC to persist PostgreSQL data
- * replica-deployment service, uses emptyDir persistence
- * primary-deployment deployment of replica count 1 for the primary
-   PostgreSQL database pod
- * replica-deployment deployment of replica count 1 for the replica
- * replica2-deployment deployment of replica count 1 for the 2nd replica
+ * primary and replica services
+ * primary-deployment deployment
+ * replica-deployment statefulset
  * ConfigMap to hold a custom `postgresql.conf`, `setup.sql`, and
    `pg_hba.conf` files
  * Secrets for the primary user, superuser, and normal user to
@@ -1764,6 +1761,18 @@ Start the example as follows:
 cd $CCPROOT/examples/kube/primary-deployment
 ./run.sh
 ....
+
+To scale the replica statefulset, run the following command:
+
+....
+${CCP_CLI?} scale --replicas=2 statefulset replica-deployment
+....
+
+{{% notice warning %}}
+This example only creates enough Persistent Volumes for a maximum of 2 replicas.
+If you are not using storage classes, the maximum amount of replicas this example can
+be scaled to is 2.
+{{% /notice %}}
 
 === Replication
 
@@ -1813,6 +1822,7 @@ psql -h localhost -p 12008 -U testuser -W userdb
 ==== Kubernetes and OpenShift
 
 Run the following command to deploy a primary and replica database cluster:
+
 ....
 cd $CCPROOT/examples/kube/primary-replica
 ./run.sh
@@ -1821,25 +1831,30 @@ cd $CCPROOT/examples/kube/primary-replica
 It takes about a minute for the replica to begin replicating with the
 primary.  To test out replication, see if replication is underway
 with this command:
+
 ....
-psql -h pr-primary -U postgres postgres -c 'table pg_stat_replication'
+${CCP_CLI?} exec -ti pr-primary -- psql -d postgres -c 'table pg_stat_replication'
 ....
 
 If you see a line returned from that query it means the primary is replicating
 to the replica.  Try creating some data on the primary:
+
 ....
-psql -h pr-primary -U postgres postgres -c 'create table foo (id int)'
-psql -h pr-primary -U postgres postgres -c 'insert into foo values (1)'
+
+${CCP_CLI?} exec -ti pr-primary -- psql -d postgres -c 'create table foo (id int)'
+${CCP_CLI?} exec -ti pr-primary -- psql -d postgres -c 'insert into foo values (1)'
 ....
 
 Then verify that the data is replicated to the replica:
+
 ....
-psql -h pr-replica -U postgres postgres -c 'table foo'
+${CCP_CLI?} exec -ti pr-replica -- psql -d postgres -c 'table foo'
 ....
 
 *primary-replica-dc*
 
 If you wanted to experiment with scaling up the number of replicas, you can run the following example:
+
 ....
 cd $CCPROOT/examples/kube/primary-replica-dc
 ./run.sh
@@ -1847,19 +1862,8 @@ cd $CCPROOT/examples/kube/primary-replica-dc
 
 You can verify that replication is working using the same commands as above.
 
-This example creates 2 replicas when it initially starts.  To scale
-up the number of replicas and view what the deployment looks like before and after, run these commands:
 ....
-${CCP_CLI} get deployment
-${CCP_CLI} scale --current-replicas=2 --replicas=3 deployment/replica-dc
-${CCP_CLI} get deployment
-${CCP_CLI} get pod
-....
-
-You can verify that you now have 3 replicas by running this query
-on the primary:
-....
-psql -h primary-dc -U postgres postgres -c 'table pg_stat_replication'
+${CCP_CLI?} exec -ti primary-dc -- psql -d postgres -c 'table pg_stat_replication'
 ....
 
 ==== Helm

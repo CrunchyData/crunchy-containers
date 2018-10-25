@@ -60,9 +60,6 @@
         }
     },
     "spec": {
-        "securityContext": {
-            $CCP_SECURITY_CONTEXT
-        },
         "containers": [
             {
                 "name": "postgres",
@@ -166,7 +163,7 @@
         }
     },
     "spec": {
-        "replicas": 2,
+        "replicas": 1,
         "selector": {
             "matchLabels": {
                 "name": "replica-dc"
@@ -179,9 +176,6 @@
                 }
             },
             "spec": {
-                "securityContext": {
-                    $CCP_SECURITY_CONTEXT
-                },
                 "containers": [
                     {
                         "name": "postgres",
