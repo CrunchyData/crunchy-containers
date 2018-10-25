@@ -9,6 +9,13 @@ Latest Release: 2.2.0 {docdate}
 
 == Getting Started
 
+{{% notice warning %}}
+The Kubernetes and OpenShift examples provided on this page have been designed using single-node Kubernetes/OCP clusters
+whose host machines provide any required supporting infrastructure or services (e.g. local hostPath storage or access
+to an NFS share). Therefore, for the best results when running these examples, it is recommended that you utilize a 
+single-node architecture as well.
+{{% /notice %}}
+
 {{% notice tip %}}
 The examples located in the *kube* directory work on both Kubernetes and OpenShift. Ensure the `CCP_CLI` environment variable
 is set to the correct binary for your environment.
