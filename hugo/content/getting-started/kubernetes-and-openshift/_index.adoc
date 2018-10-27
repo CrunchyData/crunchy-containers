@@ -2344,7 +2344,11 @@ This example starts up 5 containers:
  * Prometheus (crunchy-prometheus)
 
 Every 5 seconds by default, Prometheus will scrape the Collect container
-for metrics.  These metrics will then be visualized by Grafana.
+for metrics.  These metrics will then be visualized by Grafana, which by default can be accessed
+with the following credentials:
+
+* Username : *admin*
+* Password: *password*
 
 By default, Prometheus detects which environment its running on (Docker, Kubernetes, or OpenShift Container Platform)
 and applies a default configuration. If this container is running on Kubernetes or OpenShift Container Platform,
