@@ -32,10 +32,10 @@ fi
 export PATH=/opt/cpm/bin:$PGROOT/bin:$PATH
 export LD_LIBRARY_PATH=$PGROOT/lib
 
-# if [[ -d ${PGDATA} ]]; then
-#     chown postgres:postgres ${PGDATA?}
-# fi
+if [[ -d ${PGDATA} ]]; then
+    chown postgres:postgres ${PGDATA?}
+fi
 
-# if [[ -d ${PGWAL} ]]; then
-#     chown postgres:postgres ${PGWAL?}
-# fi
+if [[ -d ${PGWAL} ]]; then
+    chown postgres:postgres ${PGWAL?}
+fi
