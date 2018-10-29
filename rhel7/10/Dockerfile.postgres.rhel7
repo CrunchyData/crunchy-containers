@@ -64,8 +64,7 @@ RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
     /pgdata /pgwal /pgconf /backup /recover /backrestrepo &&  \
     chmod -R g=u /opt/cpm /var/lib/pgsql \
-    /pgdata /pgwal /pgconf /backup /recover /backrestrepo 
-
+    /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
 # Link pgbackrest.conf to default location for convenience
 # Remove nologin file to prevent sshd from being blocked
@@ -94,7 +93,6 @@ RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
 	
 ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
-
 
 USER 26
 
