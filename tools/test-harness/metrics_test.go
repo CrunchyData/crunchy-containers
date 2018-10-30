@@ -35,9 +35,17 @@ func TestMetrics(t *testing.T) {
 		t.Fatal(err)
 	}
 
+	if len(primary) == 0 {
+		t.Fatal("No primary pods founds")
+	}
+
 	replica, err := harness.Client.GetDeploymentPods(harness.Namespace, "replica-metrics")
 	if err != nil {
 		t.Fatal(err)
+	}
+
+	if len(replica) == 0 {
+		t.Fatal("No replica pods founds")
 	}
 
 	pods := []string{"metrics"}
@@ -69,7 +77,6 @@ func TestMetrics(t *testing.T) {
 	defer grafProx.Close()
 
 	nodeLocal, nodeRemote := randomPort(), 9100
-
 	nodeProx, err := harness.setupProxy(primary[0], nodeLocal, nodeRemote)
 	if err != nil {
 		t.Fatal(err)

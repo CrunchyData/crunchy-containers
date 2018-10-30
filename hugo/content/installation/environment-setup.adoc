@@ -62,18 +62,15 @@ effect.
 
 Next, set up a project directory structure and pull down the project:
 ....
-mkdir -p $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin
+mkdir -p $HOME/cdev/src/github.com/crunchydata $HOME/cdev/pkg $HOME/cdev/bin
 ....
 
 == Installing Requirements
 
 === CentOS 7
 ....
-cd $GOPATH
 sudo yum -y install golang git docker
-cd src/github.com
-mkdir crunchydata
-cd crunchydata
+cd $GOPATH/src/github.com/crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
 git checkout 2.2.0
@@ -93,13 +90,10 @@ When setting up the environment on RHEL 7, there are slightly different steps th
 need to be taken.
 
 ....
-cd $GOPATH
 sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
 sudo yum-config-manager --enable rhel-7-server-extras-rpms
 sudo yum -y install git golang
-cd src/github.com
-mkdir crunchydata
-cd crunchydata
+cd $GOPATH/src/github.com/crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
 git checkout 2.2.0
