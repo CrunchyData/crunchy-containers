@@ -720,6 +720,11 @@ the additional `-backups` the backups will populate in the `pgdata` directory.
 
 ==== Kubernetes and OpenShift
 
+{{% notice tip %}}
+The BackRest examples on Kubernetes/OpenShift can be configured to use the PostGIS images
+by setting the following environment variable: `export CCP_PG_IMAGE='-gis'`
+{{% /notice %}}
+
 ===== Backup
 
 Start the example as follows:
