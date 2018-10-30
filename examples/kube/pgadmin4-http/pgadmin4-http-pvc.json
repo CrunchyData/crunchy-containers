@@ -7,7 +7,7 @@
     "spec": {
         "selector": {
           "matchLabels": {
-            "name": "pgadmin4-http-data"
+            "name": "$CCP_NAMESPACE-pgadmin4-http-data"
           }
         },
         "accessModes": [

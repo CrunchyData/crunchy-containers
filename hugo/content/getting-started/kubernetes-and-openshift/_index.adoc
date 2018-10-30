@@ -12,7 +12,7 @@ Latest Release: 2.2.0 {docdate}
 {{% notice warning %}}
 The Kubernetes and OpenShift examples provided on this page have been designed using single-node Kubernetes/OCP clusters
 whose host machines provide any required supporting infrastructure or services (e.g. local hostPath storage or access
-to an NFS share). Therefore, for the best results when running these examples, it is recommended that you utilize a 
+to an NFS share). Therefore, for the best results when running these examples, it is recommended that you utilize a
 single-node architecture as well.
 {{% /notice %}}
 
@@ -1039,7 +1039,7 @@ in the link:/installation/storage-configuration/[Storage Configuration documenta
 include its use of persistent volumes and volume claims to store the backup data files.
 
 A successful backup will perform `pg_basebackup` on the *primary* container and store
-the backup in the `$CCP_STORAGE_PATH` volume under a directory named `primary-backups`. Each
+the backup in the `$CCP_STORAGE_PATH` volume under a directory named `$CCP_NAMESPACE-primary-backups`. Each
 backup will be stored in a subdirectory with a timestamp as the name, allowing any number of backups to be kept.
 
 The backup script will do the following:
@@ -1427,7 +1427,7 @@ mode.
 Lastly, you can test a full recovery using *all* of the WAL files, if
 you remove the `RECOVERY_TARGET_NAME` environment variable completely.
 
-The storage portions of this example can all be found under `$CCP_STORAGE_PATH`.
+The storage portions of this example can all be found under `$CCP_STORAGE_PATH/$CCP_NAMESPACE-restore-pitr`.
 
 == Connection Pooling
 

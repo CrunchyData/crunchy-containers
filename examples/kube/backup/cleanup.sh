@@ -20,7 +20,7 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc backup-pgdata
 
 if [[ -z "$CCP_STORAGE_CLASS" ]]
 then
-    ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv backup-pgdata
+    ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-backup-pgdata
 fi
 
 dir_check_rm "backup"

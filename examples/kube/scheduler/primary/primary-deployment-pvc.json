@@ -7,7 +7,7 @@
     "spec": {
       "selector": {
         "matchLabels": {
-          "name": "primary-deployment-pgdata"
+          "name": "$CCP_NAMESPACE-primary-deployment-pgdata"
         }
       },
       "accessModes": [
@@ -30,7 +30,7 @@
     "spec": {
       "selector": {
         "matchLabels": {
-          "name": "primary-deployment-br"
+          "name": "$CCP_NAMESPACE-primary-deployment-br"
         }
       },
       "accessModes": [
@@ -53,7 +53,7 @@
     "spec": {
       "selector": {
         "matchLabels": {
-          "name": "primary-deployment-backup"
+          "name": "$CCP_NAMESPACE-primary-deployment-backup"
         }
       },
       "accessModes": [

@@ -7,7 +7,7 @@
     "spec": {
         "selector": {
           "matchLabels": {
-            "name": "restore-pgdata"
+            "name": "$CCP_NAMESPACE-restore-pgdata"
           }
         },
         "accessModes": [

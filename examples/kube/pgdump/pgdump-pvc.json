@@ -7,7 +7,7 @@
     "spec": {
         "selector": {
           "matchLabels": {
-            "name": "pgdump-pgdata"
+            "name": "$CCP_NAMESPACE-pgdump-pgdata"
           }
         },
         "accessModes": [

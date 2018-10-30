@@ -18,7 +18,7 @@ echo_info "Cleaning up.."
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service backrest backrest-full-restored
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod backrest backrest-full-restored
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc br-new-pgdata
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv br-new-pgdata
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-br-new-pgdata
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} job backrest-full-restore-job
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap br-full-restore-pgconf
 

@@ -20,7 +20,7 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod backrest
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap br-pgconf
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc br-pgdata br-backups
 if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv br-pgdata br-backups
+  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-br-pgdata $CCP_NAMESPACE-br-backups
 fi
 
 $CCPROOT/examples/waitforterm.sh backrest ${CCP_CLI?}
