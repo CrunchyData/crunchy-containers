@@ -20,7 +20,7 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service restore
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc restore-pgdata
 
 if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv restore-pgdata
+  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-restore-pgdata
 fi
 
 $CCPROOT/examples/waitforterm.sh restore ${CCP_CLI?}

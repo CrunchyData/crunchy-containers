@@ -7,7 +7,7 @@
     "spec": {
       "selector": {
         "matchLabels": {
-          "name": "backup-pitr-pgdata"
+          "name": "$CCP_NAMESPACE-backup-pitr-pgdata"
         }
       },
       "accessModes": [

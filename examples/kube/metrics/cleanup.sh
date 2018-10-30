@@ -26,7 +26,7 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service metrics primary-metrics
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc metrics-prometheusdata metrics-grafanadata
 
 if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv metrics-prometheusdata metrics-grafanadata
+  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-metrics-prometheusdata $CCP_NAMESPACE-metrics-grafanadata
 fi
 
 $CCPROOT/examples/waitforterm.sh metrics ${CCP_CLI?}

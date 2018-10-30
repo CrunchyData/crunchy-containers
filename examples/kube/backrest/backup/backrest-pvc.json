@@ -7,7 +7,7 @@
     "spec": {
         "selector": {
           "matchLabels": {
-            "name": "br-pgdata"
+            "name": "$CCP_NAMESPACE-br-pgdata"
           }
         },
         "accessModes": [
@@ -30,7 +30,7 @@
     "spec": {
         "selector": {
           "matchLabels": {
-            "name": "br-backups"
+            "name": "$CCP_NAMESPACE-br-backups"
           }
         },
         "accessModes": [
