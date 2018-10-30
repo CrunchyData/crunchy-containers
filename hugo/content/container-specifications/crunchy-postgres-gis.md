@@ -49,6 +49,8 @@ The crunchy-postgres-gis Docker image contains the following packages (versions 
 **CHECKSUMS**|Off|Enables `data-checksums` during initialization of the database.  Can only be set during initial database creation.
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.
 **ENABLE_SSHD**|FALSE|Set this value to true to enable SSHD. See SSHD Documentation for detailed setup instructions
+**LOG_STATEMENT**|none|Sets the `log_statement` value in `postgresql.conf`
+**LOG_MIN_DURATION_STATEMENT**|60000|Sets the `log_min_duration_statement` value in `postgresql.conf`
 **MAX_CONNECTIONS**|100|Sets the `max_connections` value in `postgresql.conf`
 **MAX_WAL_SENDERS**|6|Set this value to configure the max number of WAL senders (replication)
 **PG_LOCALE**|UTF-8|Set the locale of the database
