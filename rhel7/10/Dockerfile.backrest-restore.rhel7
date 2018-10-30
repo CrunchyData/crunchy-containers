@@ -77,7 +77,6 @@ ADD bin/backrest_restore /opt/cpm/bin
 
 ADD conf/backrest_restore /opt/cpm/conf
 
-# Removed to rely on nss_wrapper for now
 #RUN chmod g=u /etc/passwd && \
 #	chmod g=u /etc/group
 #
