@@ -414,12 +414,6 @@ if [[ -v PGAUDIT_ANALYZE ]]; then
     pgaudit_analyze $PGDATA/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
 fi
 
-if [[ ${ENABLE_SSHD} == "true" ]]; then
-    echo_info "Applying SSHD.."
-    source /opt/cpm/bin/sshd.sh
-    start_sshd
-fi
-
 if [[ -v PGBOUNCER_PASSWORD ]]
 then
     if [[ ${PG_MODE?} == "primary" ]] || [[ ${PG_MODE?} == "master" ]]

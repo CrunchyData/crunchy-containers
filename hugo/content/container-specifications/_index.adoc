@@ -105,7 +105,6 @@ executed when the database is first created.
  * SHARED_BUFFERS - default is 128MB, set this value to override this PostgreSQL configuration setting
  * WORK_MEM - default is 4MB, set this value to override this PostgreSQL configuration setting
  * MAX_WAL_SENDERS - default is 6, set this value to override this PostgreSQL configuration setting
- * ENABLE_SSHD- default is false, set this value to true to enable SSHD
  * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
@@ -121,7 +120,6 @@ The following features are supported by the crunchy-postgres container:
  * ability to set the database locale
  * ability to specify a synchronous replica application_name
  * ability to specify a recovery using PITR and WAL files
- * ability to enable SSHD
 
 === Locale Support
 
