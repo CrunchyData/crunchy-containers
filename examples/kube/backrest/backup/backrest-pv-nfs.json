@@ -2,9 +2,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "br-pgdata",
+        "name": "$CCP_NAMESPACE-br-pgdata",
         "labels": {
-            "name": "br-pgdata"
+            "name": "$CCP_NAMESPACE-br-pgdata"
         }
     },
     "spec": {
@@ -13,7 +13,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH/backrest",
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-backrest",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"
@@ -24,9 +24,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "br-backups",
+        "name": "$CCP_NAMESPACE-br-backups",
         "labels": {
-            "name": "br-backups"
+            "name": "$CCP_NAMESPACE-br-backups"
         }
     },
     "spec": {
@@ -35,7 +35,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH/backrest",
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-backrest",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"

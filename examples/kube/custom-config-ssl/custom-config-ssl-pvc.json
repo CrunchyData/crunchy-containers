@@ -7,7 +7,7 @@
     "spec": {
       "selector": {
         "matchLabels": {
-          "name": "custom-config-ssl-pgdata"
+          "name": "$CCP_NAMESPACE-custom-config-ssl-pgdata"
         }
       },
       "accessModes": [
@@ -30,7 +30,7 @@
     "spec": {
       "selector": {
         "matchLabels": {
-          "name": "custom-config-ssl-backrestrepo"
+          "name": "$CCP_NAMESPACE-custom-config-ssl-backrestrepo"
         }
       },
       "accessModes": [

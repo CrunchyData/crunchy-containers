@@ -7,7 +7,7 @@
       "spec": {
         "selector": {
           "matchLabels": {
-            "name": "metrics-prometheusdata"
+            "name": "$CCP_NAMESPACE-metrics-prometheusdata"
           }
         },
         "accessModes": [
@@ -30,7 +30,7 @@
     "spec": {
         "selector": {
           "matchLabels": {
-            "name": "metrics-grafanadata"
+            "name": "$CCP_NAMESPACE-metrics-grafanadata"
           }
         },
         "accessModes": [

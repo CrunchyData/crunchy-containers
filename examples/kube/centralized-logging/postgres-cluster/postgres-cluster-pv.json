@@ -2,10 +2,10 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "primary-deployment-pgdata",
+        "name": "$CCP_NAMESPACE-primary-deployment-pgdata",
         "labels":{
            "k8s-app": "postgres-cluster",
-            "name": "primary-deployment-pgdata"
+            "name": "$CCP_NAMESPACE-primary-deployment-pgdata"
         }
     },
     "spec": {
@@ -14,7 +14,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH/primary-deployment"
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-primary-deployment"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }
@@ -24,10 +24,10 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "replica-deployment-pgdata",
+        "name": "$CCP_NAMESPACE-replica-deployment-pgdata",
         "labels":{
            "k8s-app": "postgres-cluster",
-            "name": "replica-deployment-pgdata"
+            "name": "$CCP_NAMESPACE-replica-deployment-pgdata"
         }
     },
     "spec": {
@@ -36,7 +36,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH/replica-deployment"
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-replica-deployment"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }

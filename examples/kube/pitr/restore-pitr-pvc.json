@@ -7,7 +7,7 @@
     "spec": {
       "selector": {
         "matchLabels": {
-          "name": "restore-pitr-pgdata"
+          "name": "$CCP_NAMESPACE-restore-pitr-pgdata"
         }
       },
       "accessModes": [
@@ -29,10 +29,10 @@
     },
     "spec": {
         "selector": {
-        "matchLabels": {
-            "name": "recover-pv"
-        }
-  },
+          "matchLabels": {
+            "name": "$CCP_NAMESPACE-recover-pv"
+          }
+        },
         "accessModes": [
             "$CCP_STORAGE_MODE"
         ],

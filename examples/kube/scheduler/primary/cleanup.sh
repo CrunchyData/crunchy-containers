@@ -25,7 +25,7 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc primary-deployment-pgdata p
 
 if [ -z "$CCP_STORAGE_CLASS" ]
 then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv primary-deployment-pgdata primary-deployment-br primary-deployment-backup
+  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-primary-deployment-pgdata $CCP_NAMESPACE-primary-deployment-br $CCP_NAMESPACE-primary-deployment-backup
 fi
 
 dir_check_rm "primary-deployment"

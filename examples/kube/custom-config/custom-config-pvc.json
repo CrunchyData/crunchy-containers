@@ -7,7 +7,7 @@
     "spec": {
         "selector": {
           "matchLabels": {
-            "name": "custom-config-pgdata"
+            "name": "$CCP_NAMESPACE-custom-config-pgdata"
           }
         },
         "accessModes": [
@@ -30,7 +30,7 @@
     "spec": {
         "selector": {
           "matchLabels": {
-            "name": "custom-config-br"
+            "name": "$CCP_NAMESPACE-custom-config-br"
           }
         },
         "accessModes": [
@@ -53,7 +53,7 @@
     "spec": {
         "selector": {
           "matchLabels": {
-            "name": "custom-config-pgwal"
+            "name": "$CCP_NAMESPACE-custom-config-pgwal"
           }
         },
         "accessModes": [

@@ -7,7 +7,7 @@
     "spec": {
         "selector": {
           "matchLabels": {
-            "name": "br-new-pgdata"
+            "name": "$CCP_NAMESPACE-br-new-pgdata"
           }
         },
         "accessModes": [
