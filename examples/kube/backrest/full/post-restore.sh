@@ -16,4 +16,8 @@ source ${CCPROOT}/examples/common.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# This var lets us change the image to gis by setting
+# CCP_PG_IMAGE='-gis'.
+export CCP_PG_IMAGE=${CCP_PG_IMAGE:-}
+
 expenv -f $DIR/backrest-restored.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
