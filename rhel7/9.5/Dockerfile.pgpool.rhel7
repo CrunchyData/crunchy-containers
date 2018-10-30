@@ -58,7 +58,7 @@ RUN ln -sf /opt/cpm/conf/pool_hba.conf /etc/pgpool-II-95/pool_hba.conf \
 
 RUN chgrp -R 0 /opt/cpm && \
     chmod -R g=u /opt/cpm
-    
+
 
 # open up the postgres port
 EXPOSE 5432

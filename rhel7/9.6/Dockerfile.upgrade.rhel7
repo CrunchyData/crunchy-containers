@@ -48,12 +48,14 @@ ADD bin/upgrade/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/upgrade/ /opt/cpm/conf
 
-RUN chgrp -R 0 /opt/cpm /pgolddata /pgnewdata && \
+RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata && \
         chmod -R g=u /opt/cpm /pgolddata /pgnewdata
 
 VOLUME /pgolddata /pgnewdata
 
-RUN chmod g=u /etc/passwd
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+	
 ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 
 USER 26
