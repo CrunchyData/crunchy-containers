@@ -18,7 +18,6 @@ LABEL name="crunchydata/pgadmin4" \
         io.k8s.display-name="Crunchy pgadmin4 container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
-
 COPY conf/atomic/pgadmin4/help.1 /help.1
 COPY conf/atomic/pgadmin4/help.md /help.md
 COPY conf/licenses /licenses
