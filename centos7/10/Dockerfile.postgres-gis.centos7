@@ -23,7 +23,6 @@ RUN yum -y update && yum -y install epel-release \
  && yum -y install bind-utils \
     gettext \
     hostname \
-    openssh-server \
     procps-ng  \
     rsync \
  && yum -y install postgresql10-server postgresql10-contrib postgresql10 \
@@ -44,8 +43,7 @@ ADD conf/.bashrc /var/lib/pgsql
 ADD conf/.bash_profile /
 ADD conf/.bashrc /
 
-# set up cpm directory
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
     /pgdata /pgwal /pgconf /backup /recover /backrestrepo &&  \
@@ -61,9 +59,8 @@ RUN ln -sf /tmp/pgbackrest.conf /etc/pgbackrest.conf
 # add volumes to allow storage of postgres WAL segment files
 # add volumes to locate WAL files to recover with
 # add volumes for pgbackrest to write to
-# add volumes for sshd host keys
 
-VOLUME ["/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo", "/sshd"]
+VOLUME ["/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo"]
 
 # open up the postgres port
 EXPOSE 5432

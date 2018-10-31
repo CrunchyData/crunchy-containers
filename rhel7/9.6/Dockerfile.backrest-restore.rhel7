@@ -37,9 +37,8 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  	procps-ng  \
  && yum -y clean all
 
-# Doing these separately so postgres user exists when crunchy-backrest is installed.
-RUN yum -y install postgresql96-server &&  \
-    yum -y install crunchy-backrest \
+RUN yum -y install postgresql96-server  \
+        crunchy-backrest \
  && yum -y clean all
 
 ENV	PGROOT="/usr/pgsql-${PGVERSION}"
@@ -51,16 +50,12 @@ ADD conf/.bash_profile /var/lib/pgsql/
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgconf /backrestrepo \
 	/var/lib/pgsql /var/log/pgbackrest
 
-RUN chown -R postgres:postgres /opt/cpm  \
+RUN chgrp -R 0 /opt/cpm  \
+	/pgdata /pgconf /backrestrepo  \
+	/var/lib/pgsql /var/log/pgbackrest && \
+    chmod -R g=u /opt/cpm  \
 	/pgdata /pgconf /backrestrepo  \
 	/var/lib/pgsql /var/log/pgbackrest
-
-#RUN chgrp -R 0 /opt/cpm  \
-#	/pgdata /pgconf /backrestrepo  \
-#	/var/lib/pgsql /var/log/pgbackrest && \
-#    chmod -R g=u /opt/cpm  \
-#	/pgdata /pgconf /backrestrepo  \
-#	/var/lib/pgsql /var/log/pgbackrest
 
 
 # volume pgconf to store pgbackrest.conf
@@ -69,18 +64,11 @@ RUN chown -R postgres:postgres /opt/cpm  \
 VOLUME /pgconf /pgdata /backrestrepo
 
 ADD bin/backrest_restore /opt/cpm/bin
-
-#removed to allow separate version of common_lib.sh for this container only. Its in
-# the bin/backrest_restore directory.
-#ADD bin/common /opt/cpm/bin
-
+ADD bin/common /opt/cpm/bin
 ADD conf/backrest_restore /opt/cpm/conf
 
-# Removed to rely on nss_wrapper for now
-#RUN chmod g=u /etc/passwd && \
-#	chmod g=u /etc/group
-#
-#ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["opt/cpm/bin/uid_entrypoint.sh"]
 
 
 USER 26
