@@ -54,6 +54,8 @@ then
     exit 1
 fi
 
+echo_info "Restore will be attempted using backup ${BACKUP_FILE?}"
+
 # Plain pg_dump backups are restored via psql - any kind of custom backup
 # (tar, directory, custom) are restored via pg_restore
 BACKUP_TYPE=$(file ${BACKUP_FILE?})
