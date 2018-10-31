@@ -16,6 +16,10 @@ source ${CCPROOT}/examples/common.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# This var lets us change the image to gis by setting
+# CCP_PG_IMAGE='-gis'.
+export CCP_PG_IMAGE=${CCP_PG_IMAGE:-}
+
 ${DIR}/cleanup.sh
 
 create_storage "backrest-async-archive"

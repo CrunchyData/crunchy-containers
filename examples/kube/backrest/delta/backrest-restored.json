@@ -40,7 +40,7 @@
         "containers": [
             {
                 "name": "backrest",
-                "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
+                "image": "$CCP_IMAGE_PREFIX/crunchy-postgres$CCP_PG_IMAGE:$CCP_IMAGE_TAG",
                 "readinessProbe": {
                     "exec": {
                         "command": [

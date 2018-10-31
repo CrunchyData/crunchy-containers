@@ -18,6 +18,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ${DIR}/cleanup.sh
 
+# This var lets us change the image to gis by setting
+# CCP_PG_IMAGE='-gis'.
+export CCP_PG_IMAGE=${CCP_PG_IMAGE:-}
+
 create_storage "backrest"
 if [[ $? -ne 0 ]]
 then

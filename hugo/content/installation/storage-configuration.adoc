@@ -20,14 +20,14 @@ Other storage backends work as well including GCE, EBS, ScaleIO, and
 others, but may require you to modify various examples or configuration.
 
 Crunchy Containers are tested, developed, and examples provided
-that use the various storage types listed above.  This insures 
-that customers have a high degree of choices when it comes to 
-choosing a volume type.  HostPath and NFS allow precise host path 
-choices for where database volumes are persisted.  HostPath and NFS 
-also allow governance models where volume creation is performed 
+that use the various storage types listed above.  This insures
+that customers have a high degree of choices when it comes to
+choosing a volume type.  HostPath and NFS allow precise host path
+choices for where database volumes are persisted.  HostPath and NFS
+also allow governance models where volume creation is performed
 by an administrator instead of the application/developer team.
 
-Where customers desire a dynamic form of volume creation (e.g. self service), 
+Where customers desire a dynamic form of volume creation (e.g. self service),
 storage classes are also supported within the example set.
 
 Environment variables are set to determine how and what storage
@@ -49,6 +49,13 @@ export CCP_STORAGE_CAPACITY=400M
 NOTE: It may be necessary to grant your user in OpenShift or Kubernetes the
 rights to modify the hostaccess SCC. This can be done with the command: `oadm policy add-scc-to-user hostaccess $(oc whoami)`
 
+{{% notice tip %}}
+When running examples against HostPath storage, the run scripts provided in the
+examples will create directories using the following pattern:
+
+`$CCP_STORAGE_PATH/$CCP_NAMESPACE-<EXAMPLE_NAME>`
+{{% /notice %}}
+
 == NFS
 
 NFS can also be used as a storage mechanism.  Instructions
@@ -65,14 +72,21 @@ export CCP_STORAGE_CAPACITY=400M
 ....
 
 In the example above the group ownership of the NFS mount is assumed to be
-*nfsnobody* or *65534*.  Additionally, it is recommended that root not be squashed on 
-the NFS share (`no_root_squash`) in order to ensure the proper directories can be 
+*nfsnobody* or *65534*.  Additionally, it is recommended that root not be squashed on
+the NFS share (`no_root_squash`) in order to ensure the proper directories can be
 created, modified and removed as needed for the various container examples.
 
 {{% notice warning %}}
 The examples in the Crunchy Container suite need access to the NFS export to create
 the directories used by the examples.  The NFS export should be mounted locally so
 the example `run.sh` scripts can do proper setup.
+{{% /notice %}}
+
+{{% notice tip %}}
+NWhen running examples against NFS storage, the run scripts provided in the
+examples will create directories using the following pattern:
+
+`$CCP_STORAGE_PATH/$CCP_NAMESPACE-<EXAMPLE_NAME>`
 {{% /notice %}}
 
 {{%expand "Configuration Notes for NFS" %}}

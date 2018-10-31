@@ -7,7 +7,7 @@
     "spec": {
       "selector": {
         "matchLabels": {
-          "name": "pitr-pgwal"
+          "name": "$CCP_NAMESPACE-pitr-pgwal"
         }
       },
       "accessModes": [
@@ -30,7 +30,7 @@
     "spec": {
       "selector": {
         "matchLabels": {
-          "name": "pitr-pgdata"
+          "name": "$CCP_NAMESPACE-pitr-pgdata"
         }
       },
       "accessModes": [

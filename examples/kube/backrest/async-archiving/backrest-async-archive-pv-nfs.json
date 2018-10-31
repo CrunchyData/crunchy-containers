@@ -2,9 +2,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "br-aa-pgdata",
+        "name": "$CCP_NAMESPACE-br-aa-pgdata",
         "labels": {
-            "name": "br-aa-pgdata"
+            "name": "$CCP_NAMESPACE-br-aa-pgdata"
         }
     },
     "spec": {
@@ -13,7 +13,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH/backrest-async-archive",
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-backrest-async-archive",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"
@@ -24,9 +24,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "br-aa-backups",
+        "name": "$CCP_NAMESPACE-br-aa-backups",
         "labels": {
-            "name": "br-aa-backups"
+            "name": "$CCP_NAMESPACE-br-aa-backups"
         }
     },
     "spec": {
@@ -35,7 +35,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH/backrest-async-archive",
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-backrest-async-archive",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"

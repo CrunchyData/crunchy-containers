@@ -25,7 +25,7 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgadmin4-https-tls
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc pgadmin4-https-data
 
 if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv pgadmin4-https-data
+  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-pgadmin4-https-data
 fi
 
 rm -f ${DIR?}/server.crt ${DIR?}/server.key ${DIR?}/privkey.pem
