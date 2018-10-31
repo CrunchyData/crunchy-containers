@@ -20,17 +20,19 @@ RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/r
 
 RUN yum -y update && yum install -y epel-release && yum install -y gettext procps-ng postgresql95 postgresql95-server unzip hostname bind-utils && yum clean all -y
 
-RUN mkdir -p /opt/cpm/bin /pgdata /opt/cpm/conf
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
 ADD bin/backup/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/backup/ /opt/cpm/conf
 
-RUN chgrp -R  0  /opt/cpm /pgdata && \
+RUN chown -R postgres:postgres  /opt/cpm /pgdata && \
         chmod -R g=u /opt/cpm /pgdata 
 
 VOLUME ["/pgdata"]
 
-RUN chmod g=u /etc/passwd
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+	
 ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 
 USER 26

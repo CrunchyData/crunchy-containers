@@ -38,13 +38,13 @@ ENV PGROOT="/usr/pgsql-${PGVERSION}"
 # bashrc to set permissions in OCP when using exec
 # HOME is / in OCP
 ADD conf/.bash_profile /var/lib/pgsql/
+ADD conf/.bashrc /var/lib/pgsql
 ADD conf/.bash_profile /
 ADD conf/.bashrc /
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
-
-RUN chgrp -R 0 /opt/cpm /var/lib/pgsql \
+RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
     /pgdata /pgwal /pgconf /backup /recover /backrestrepo &&  \
     chmod -R g=u /opt/cpm /var/lib/pgsql \
     /pgdata /pgwal /pgconf /backup /recover /backrestrepo
@@ -69,9 +69,10 @@ ADD bin/common /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
 ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/pgmonitor
 
-RUN chmod g=u /etc/passwd
-ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
 
+ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 
 USER 26
 
