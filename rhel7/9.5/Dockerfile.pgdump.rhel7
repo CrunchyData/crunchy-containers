@@ -52,7 +52,9 @@ RUN chgrp -R 0 /opt/cpm /pgdata && \
 
 VOLUME ["/pgdata"]
 
-RUN chmod g=u /etc/passwd
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+	
 ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 
 USER 26
