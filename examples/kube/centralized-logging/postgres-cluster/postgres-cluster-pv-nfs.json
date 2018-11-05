@@ -14,7 +14,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-primary-deployment",
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-postgres-cluster",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"
@@ -37,7 +37,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-replica-deployment",
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-postgres-cluster",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"

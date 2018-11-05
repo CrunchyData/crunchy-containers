@@ -17,5 +17,4 @@ echo_info "Cleaning up.."
 
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} deployment,statefulset,pod,configmap,secret,service,pvc,pv --selector=k8s-app=postgres-cluster
 
-dir_check_rm "primary-deployment"
-dir_check_rm "replica-deployment"
+dir_check_rm "postgres-cluster"
