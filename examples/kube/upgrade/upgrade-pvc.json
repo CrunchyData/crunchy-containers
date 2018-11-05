@@ -2,7 +2,7 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "$CCP_NAMESPACE-upgrade-pgnewdata"
+      "name": "upgrade-pgnewdata"
     },
     "spec": {
       "selector": {
