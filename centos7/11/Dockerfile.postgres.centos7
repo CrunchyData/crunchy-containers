@@ -27,7 +27,7 @@ RUN yum -y update \
     procps-ng  \
     rsync \
  && yum -y install postgresql11-server postgresql11-contrib postgresql11 \
-    pgaudit12_11 \
+    pgaudit13_11 \
     pgbackrest \
  && yum -y clean all
 
