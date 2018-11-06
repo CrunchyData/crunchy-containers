@@ -1875,7 +1875,6 @@ container and the other (statefulset-replica) to the replica containers.
 $ ${CCP_CLI} get service
 NAME            CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
 kubernetes      10.96.0.1       <none>        443/TCP    22h
-statefulset           None            <none>        5432/TCP   1h
 statefulset-primary    10.97.168.138   <none>        5432/TCP   1h
 statefulset-replica   10.97.218.221   <none>        5432/TCP   1h
 ....
