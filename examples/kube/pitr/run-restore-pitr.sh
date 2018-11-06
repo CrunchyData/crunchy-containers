@@ -27,7 +27,7 @@ $CCPROOT/examples/waitforterm.sh restore-pitr ${CCP_CLI?}
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc recover-pvc restore-pitr-pgdata
 if [[ -z "$CCP_STORAGE_CLASS" ]]
 then
-    ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv recover-pv restore-pitr-pgdata
+    ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv ${CCP_NAMESPACE?}-recover-pv ${CCP_NAMESPACE?}-restore-pitr-pgdata
 fi
 
 dir_check_rm "restore-pitr"
