@@ -1,6 +1,7 @@
 package kubeapi
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -39,7 +40,7 @@ func (k *KubeAPI) IsJobComplete(namespace string, job *v1batch.Job) error {
 				return err
 			}
 			if j.Status.Failed != 0 {
-				return fmt.Errorf("job failed to run: %s", job)
+				return errors.New("job failed to run")
 			}
 			if j.Status.Succeeded != 0 {
 				return nil

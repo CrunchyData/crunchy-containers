@@ -20,6 +20,25 @@ This harness can be run both in and out of a Kubernetes cluster.
 * `GOMAXPROCS` env should be set to the amount of cores the test harness should use (parallization
   option)
 
+## Configuration
+
+The following environment variables can be used to configure the test harness:
+
+| Name                     | Default | Description                                                             |
+|--------------------------|---------|-------------------------------------------------------------------------|
+| `CCP_HARNESS_CLEANUP`    | true    | Configures the harness to run cleanup scripts after tests are complete. |
+| `CCP_HARNESS_DEBUG`      | true    | Configures the harness to log the output of the scripts being executed. |
+| `CCP_HARNESS_IN_CLUSTER` | false   | Configures the harness to run in/out of a Kubernetes cluster.           |
+
+
+To export these environment variables, run the following commands:
+
+```bash
+export CCP_HARNESS_CLEANUP=true
+export CCP_HARNESS_DEBUG=true
+export CCP_HARNESS_IN_CLUSTER=false
+```
+
 ## Running
 
 *Note*: It's recommended to disable the `go test` timeout (it defaults to 10 minutes which
