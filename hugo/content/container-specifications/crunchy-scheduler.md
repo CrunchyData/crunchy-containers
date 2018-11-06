@@ -25,6 +25,7 @@ The Crunchy Scheduler Docker image contains the following packages:
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **NAMESPACE**|None|The namespace the microservice should watch.  Crunchy Scheduler only works in a single namespace.
+**TIMEOUT**|300|The time (in seconds) the scheduler should wait before timing out on a backup job.
 
 ### Optional
 **Name**|**Default**|**Description**
