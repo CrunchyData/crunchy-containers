@@ -2263,10 +2263,20 @@ with the following credentials:
 * Password: *password*
 
 By default, Prometheus detects which environment its running on (Docker, Kubernetes, or OpenShift Container Platform)
-and applies a default configuration. If this container is running on Kubernetes or OpenShift Container Platform,
-it will use the Kubernetes API to discover pods with the label `"crunchy-collect": "true"`.
+and applies a default configuration. 
 
-The collect container *must* have this label to be discovered in these environments.
+When running in Kuberenetes and OpenShift, the following two labels are required by 
+the deployments:
+
+ * `"crunchy_collect": "true"`
+ * `"name": "some-pod-name-here"`
+
+The `crunchy_collect` label allows Prometheus to find all pods that are serving metrics 
+to be scraped for storage.
+
+The `name` label allows Prometheus to rewrite the name of the pod so if it changes there's not 
+duplicate entries.
+
 Additionally, the collect container uses a special PostgreSQL role `ccp_monitoring`.
 This user is created by setting the `PGMONITOR_PASSWORD` environment variable on the
 PostgreSQL container.
