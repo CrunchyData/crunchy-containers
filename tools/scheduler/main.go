@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -14,13 +15,16 @@ import (
 const (
 	schedulerLabel = "crunchy-scheduler=true"
 	namespaceEnv   = "NAMESPACE"
-	timeout        = time.Second * 30
+	timeoutEnv     = "TIMEOUT"
 	inCluster      = true
 )
 
 var namespace string
+var timeout time.Duration
+var seconds int
 
 func init() {
+	var err error
 	log.SetLevel(log.InfoLevel)
 	log.SetFormatter(&log.TextFormatter{
 		FullTimestamp:   true,
@@ -31,6 +35,20 @@ func init() {
 	if namespace == "" {
 		log.WithFields(log.Fields{}).Fatalf("Failed to get namespace environment: %s", namespaceEnv)
 	}
+
+	seconds = 300
+	secondsStr := os.Getenv(timeoutEnv)
+	if secondsStr == "" {
+		log.WithFields(log.Fields{}).Info("No timeout set, defaulting to 300 seconds")
+	} else {
+		seconds, err = strconv.Atoi(secondsStr)
+		if err != nil {
+			log.WithFields(log.Fields{}).Fatalf("Failed to convert timeout env to seconds: %s", err)
+		}
+	}
+
+	log.WithFields(log.Fields{}).Infof("Setting timeout to: %d", seconds)
+	timeout = time.Second * time.Duration(seconds)
 }
 
 func main() {

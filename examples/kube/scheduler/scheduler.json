@@ -10,9 +10,6 @@
     },
     "spec": {
         "serviceAccountName": "scheduler-sa",
-        "securityContext": {
-            $CCP_SECURITY_CONTEXT
-        },
         "containers": [
             {
                 "name": "scheduler",
@@ -25,6 +22,10 @@
                                 "fieldPath": "metadata.namespace"
                             }
                         }
+                    },
+                    {
+                        "name": "TIMEOUT",
+                        "value": "600"
                     }
                 ],
                 "volumeMounts": []
