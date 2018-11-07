@@ -24,6 +24,7 @@ ls -la /opt/cpm/bin
 
 DASHBOARDS=(
     CRUD_Details
+    FilesystemDetailsKube
     PostgreSQL
     PostgreSQLDetails
     TableSize_Detail

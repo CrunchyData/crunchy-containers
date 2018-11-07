@@ -91,6 +91,23 @@
                                 "name": "DATA_SOURCE_NAME",
                                 "value": "postgresql://ccp_monitoring:password@127.0.0.1:5432/postgres?sslmode=disable"
                             }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/pgwal",
+                                "name": "pgwal",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/backrestrepo",
+                                "name": "backrestrepo",
+                                "readOnly": true
+                            }
                         ]
                     },
                     {
@@ -162,12 +179,35 @@
                             {
                                 "name": "PGDATA_PATH_OVERRIDE",
                                 "value": "replica-metrics"
+                            },
+                            {
+                                "name": "ARCHIVE_TIMEOUT",
+                                "value": "60"
+                            },
+                            {
+                                "name": "XLOGDIR",
+                                "value": "true"
                             }
                         ],
                         "volumeMounts": [
                             {
                                 "mountPath": "/pgdata",
                                 "name": "pgdata",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/pgconf",
+                                "name": "pgconf",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/pgwal",
+                                "name": "pgwal",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/backrestrepo",
+                                "name": "backrestrepo",
                                 "readOnly": false
                             }
                         ],
@@ -184,6 +224,20 @@
                 "volumes": [
                     {
                         "name": "pgdata",
+                        "emptyDir": {}
+                    },
+                    {
+                        "name": "pgwal",
+                        "emptyDir": {}
+                    },
+                    {
+                        "name": "pgconf",
+                        "configMap": {
+                            "name": "metrics-pgconf"
+                        }
+                    },
+                    {
+                        "name": "backrestrepo",
                         "emptyDir": {}
                     }
                 ],
