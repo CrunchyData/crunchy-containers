@@ -24,7 +24,6 @@ cat >> "${PGPASSFILE?}" <<-EOF
 EOF
 
 chmod 600 ${PGPASSFILE?}
-chgrp -R 0 ${PGPASSFILE?}
 
 pgisready ${PGDUMP_DB?} ${PGDUMP_HOST?} ${PGDUMP_PORT?} ${PGDUMP_USER?}
 
