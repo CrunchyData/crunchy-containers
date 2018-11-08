@@ -401,7 +401,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Latest Release: 2.2.0 2018-11-01</p>
+<p>Latest Release: 2.2.0 2018-11-08</p>
 </div>
 <div class="sect1">
 <h2 id="_getting_started">Getting Started</h2>
@@ -3324,7 +3324,6 @@ container and the other (statefulset-replica) to the replica containers.</p>
 <pre>$ ${CCP_CLI} get service
 NAME            CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
 kubernetes      10.96.0.1       &lt;none&gt;        443/TCP    22h
-statefulset           None            &lt;none&gt;        5432/TCP   1h
 statefulset-primary    10.97.168.138   &lt;none&gt;        5432/TCP   1h
 statefulset-replica   10.97.218.221   &lt;none&gt;        5432/TCP   1h</pre>
 </div>
@@ -3882,12 +3881,32 @@ with the following credentials:</p>
 </div>
 <div class="paragraph">
 <p>By default, Prometheus detects which environment its running on (Docker, Kubernetes, or OpenShift Container Platform)
-and applies a default configuration. If this container is running on Kubernetes or OpenShift Container Platform,
-it will use the Kubernetes API to discover pods with the label <code>"crunchy-collect": "true"</code>.</p>
+and applies a default configuration.</p>
 </div>
 <div class="paragraph">
-<p>The collect container <strong>must</strong> have this label to be discovered in these environments.
-Additionally, the collect container uses a special PostgreSQL role <code>ccp_monitoring</code>.
+<p>When running in Kuberenetes and OpenShift, the following two labels are required by
+the deployments:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>"crunchy_collect": "true"</code></p>
+</li>
+<li>
+<p><code>"name": "some-pod-name-here"</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>crunchy_collect</code> label allows Prometheus to find all pods that are serving metrics
+to be scraped for storage.</p>
+</div>
+<div class="paragraph">
+<p>The <code>name</code> label allows Prometheus to rewrite the name of the pod so if it changes there&#8217;s not
+duplicate entries.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, the collect container uses a special PostgreSQL role <code>ccp_monitoring</code>.
 This user is created by setting the <code>PGMONITOR_PASSWORD</code> environment variable on the
 PostgreSQL container.</p>
 </div>
