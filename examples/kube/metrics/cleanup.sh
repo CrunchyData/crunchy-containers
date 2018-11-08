@@ -22,6 +22,7 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} sa prometheus-sa
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod metrics
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} deployment primary-metrics replica-metrics
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service metrics primary-metrics replica-metrics
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap metrics-pgconf
 
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc metrics-prometheusdata metrics-grafanadata
 
