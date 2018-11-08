@@ -34,6 +34,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  && yum -y update && yum -y install  \
 	hostname \
 	gettext \
+        nss_wrapper \
  	procps-ng  \
  && yum -y clean all
 
