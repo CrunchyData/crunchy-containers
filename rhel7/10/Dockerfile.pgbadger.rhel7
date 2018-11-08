@@ -34,7 +34,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 
 RUN yum -y update \
  && yum -y install epel-release \
- && yum -y install \
+ && yum -y install --enablerepo="rhel-7-server-optional-rpms" \
       gettext \
       hostname \
       pgbadger \
@@ -58,7 +58,7 @@ VOLUME ["/pgdata", "/report"]
 
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
-	
+
 ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 
 
