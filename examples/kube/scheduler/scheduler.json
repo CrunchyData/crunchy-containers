@@ -28,9 +28,22 @@
                         "value": "600"
                     }
                 ],
-                "volumeMounts": []
+                "volumeMounts": [
+                    {
+                        "mountPath": "/configs",
+                        "name": "configs",
+                        "readOnly": true
+                    }
+                ]
             }
         ],
-        "volumes": []
+        "volumes": [
+            {
+                "name": "configs",
+                "configMap": {
+                    "name": "scheduler-backup-template"
+                }
+            }
+        ]
     }
 }
