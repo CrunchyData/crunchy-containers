@@ -347,7 +347,7 @@ grant you the access required to run them yourself.
 {{% /notice %}}
 
 ....
-$ oc create clusterrole crunchytester --verb="create,delete" --resource=persistentvolumes
+$ oc create clusterrole crunchytester --verb="list,create,delete" --resource=persistentvolumes
 clusterrole "crunchytester" created
 
 $ oc adm policy add-cluster-role-to-user crunchytester someuser
