@@ -16,8 +16,7 @@ source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} statefulset statefulset
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} sa statefulset-sa
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} clusterrolebinding statefulset-sa
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} sa,role,rolebindings statefulset-sa
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc -l 'app=statefulset'
 
 if [[ -z "$CCP_STORAGE_CLASS" ]]

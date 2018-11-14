@@ -8,7 +8,7 @@ import (
 func TestStatefulSet(t *testing.T) {
 	t.Parallel()
 	t.Log("Testing the 'statefulset' example...")
-	// This example deploys replicas after primary is ready, 
+	// This example deploys replicas after primary is ready,
 	// so extra time in the timeout is allocated
 	harness := setup(t, time.Duration(time.Second*240), true)
 
@@ -33,9 +33,9 @@ func TestStatefulSet(t *testing.T) {
 		t.Fatal(err)
 	}
 
-    if len(pods) == 0 {
-        t.Fatal("No pods found in stateful set")
-    }
+	if len(pods) == 0 {
+		t.Fatal("No pods found in stateful set")
+	}
 
 	t.Log("Checking if pods are ready to use...")
 	if err := harness.Client.CheckPods(harness.Namespace, pods); err != nil {
