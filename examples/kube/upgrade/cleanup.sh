@@ -22,3 +22,5 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc upgrade-pgnewdata
 if [ -z "$CCP_STORAGE_CLASS" ]; then
   ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-upgrade-pgnewdata
 fi
+
+dir_check_rm "upgrade"
