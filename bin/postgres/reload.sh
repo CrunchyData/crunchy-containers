@@ -17,5 +17,5 @@ source /opt/cpm/bin/common_lib.sh
 enable_debugging
 
 source /opt/cpm/bin/setenv.sh
-source /opt/cpm/bin/custom-configs.sh
+# source /opt/cpm/bin/custom-configs.sh
 pg_ctl reload

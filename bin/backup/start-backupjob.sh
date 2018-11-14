@@ -52,13 +52,13 @@ echo "*:*:*:"$BACKUP_USER":"$BACKUP_PASS  >> $PGPASSFILE
 
 chmod 600 $PGPASSFILE
 
-chown $UID:$UID $PGPASSFILE
+# chown $UID:$UID $PGPASSFILE
 
 # cat $PGPASSFILE
 
 pg_basebackup --label=$BACKUP_LABEL -X fetch --pgdata $BACKUP_PATH --host=$BACKUP_HOST --port=$BACKUP_PORT -U $BACKUP_USER  $BACKUP_OPTS
 
-chown -R $UID:$UID $BACKUP_PATH
+# chown -R $UID:$UID $BACKUP_PATH
 
 # Open up permissions for the OSE Dedicated random UID scenario
 chmod -R o+rx $BACKUP_PATH
