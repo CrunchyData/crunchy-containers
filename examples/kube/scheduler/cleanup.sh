@@ -16,6 +16,7 @@ source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap -l crunchy-scheduler=true
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap scheduler-backup-template
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} job primary-backup-pgbasebackup
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod scheduler
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret primary-primaryuser-secret

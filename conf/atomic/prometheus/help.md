@@ -29,7 +29,7 @@ The registry location and name of the image. For example, Name="crunchydata/prom
 
 `Version=`
 
-The Red Hat Enterprise Linux version from which the container was built. For example, Version="7.5"
+The Red Hat Enterprise Linux version from which the container was built. For example, Version="7.6"
 
 `Release=`
 

@@ -2,7 +2,7 @@ FROM centos:7
 
 LABEL name="crunchydata/sample-app" \
 	vendor="crunchy data" \
-	Version="7.5" \
+	Version="7.6" \
 	Release="2.2.0" \
 	url="https://crunchydata.com" \
 	summary="Implements a cron scheduler." \

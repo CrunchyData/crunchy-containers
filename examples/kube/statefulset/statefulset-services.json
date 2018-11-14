@@ -1,12 +1,4 @@
 {
-  "apiVersion": "v1",
-  "kind": "ServiceAccount",
-  "metadata": {
-    "name": "statefulset-sa"
-  }
-}
-
-{
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {

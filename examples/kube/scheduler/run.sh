@@ -18,5 +18,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ${DIR}/cleanup.sh
 
+expenv -f $DIR/configs/backup-template.json > /tmp/backup-template.json
+
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap scheduler-backup-template \
+    --from-file /tmp/backup-template.json
+
 expenv -f $DIR/scheduler-sa.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 expenv -f $DIR/scheduler.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

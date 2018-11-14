@@ -1,0 +1,52 @@
+{
+    "apiVersion": "rbac.authorization.k8s.io/v1beta1",
+    "kind": "Role",
+    "metadata": {
+        "name": "statefulset-sa",
+        "namespace": "$CCP_NAMESPACE"
+    },
+    "rules": [
+        {
+            "apiGroups": [
+                ""
+            ],
+            "resources": [
+                "pods"
+            ],
+            "verbs": [
+                "get",
+                "list",
+                "update"
+            ]
+        }
+    ]
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "ServiceAccount",
+    "metadata": {
+        "name": "statefulset-sa",
+        "namespace": "$CCP_NAMESPACE"
+    }
+}
+
+{
+    "apiVersion": "rbac.authorization.k8s.io/v1beta1",
+    "kind": "RoleBinding",
+    "metadata": {
+        "name": "statefulset-sa"
+    },
+    "roleRef": {
+        "apiGroup": "rbac.authorization.k8s.io",
+        "kind": "Role",
+        "name": "statefulset-sa"
+    },
+    "subjects": [
+        {
+            "kind": "ServiceAccount",
+            "name": "statefulset-sa",
+            "namespace": "$CCP_NAMESPACE"
+        }
+    ]
+}

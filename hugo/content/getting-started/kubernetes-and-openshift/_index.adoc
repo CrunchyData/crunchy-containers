@@ -221,7 +221,7 @@ An emptyDir with write access must be mounted to the `/run/httpd` directory in O
 
 {{% notice tip %}}
 This example assumes you have run *primary* using a PG 9.5 or 9.6 image
-such as `centos7-9.5.14-2.2.0` prior to running this upgrade.
+such as `centos7-9.5.15-2.2.0` prior to running this upgrade.
 {{% /notice %}}
 
 Starting in release 1.3.1, the upgrade container will let
@@ -231,7 +231,7 @@ you perform a `pg_upgrade` either from a PostgreSQL version 9.5 database to
 Prior to running this example, make sure your `CCP_IMAGE_TAG`
 environment variable is using the next major version of PostgreSQL that you
 want to upgrade to. For example, if you're upgrading from 9.5 to 9.6, make
-sure the variable references a PG 9.6 image such as `centos7-9.6.10-2.2.0`.
+sure the variable references a PG 9.6 image such as `centos7-9.6.11-2.2.0`.
 
 This will create the following in your Kubernetes environment:
 
@@ -286,9 +286,9 @@ delete the task.
 
 See the following examples for creating config maps that Crunchy Scheduler can parse:
 
-* link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-backrest-diff.json[pgBackRest Diff Backup]
-* link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-backrest-full.json[pgBackRest Full Backup]
-* link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-pgbasebackup.json[pgBaseBackup Backup]
+* link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-diff.json[pgBackRest Diff Backup]
+* link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-full.json[pgBackRest Full Backup]
+* link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-pgbasebackup.json[pgBaseBackup Backup]
 
 The Crunchy Scheduler requires a Service Account to create jobs (pgBaseBackup) and to
 exec (pgBackRest).  See the link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/scheduler-sa.json[scheduler example]
@@ -308,6 +308,14 @@ To configure Crunchy Scheduler to create pgBaseBackup scheduled backups, the fol
   configure the job template.  See link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/primary/secret.json[the primary secret example].
   for the structure required by the Scheduler.
 * The name of the PVC created for the backups.  This should be created by the user prior to scheduling the task.
+
+{{% notice tip %}}
+When using pgBaseBackup schedules, it may be required to apply specific `supplementalGroups` or an `fsGroup` 
+to the backup job created by the scheduler.  To apply a specific `securityContext` for your 
+storage provider, mount a `backup-template.json` to `/configs` on the scheduler pod.
+
+For an example of applying a custom template, link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler[see the schedule example].
+{{% /notice %}}
 
 ==== Kubernetes and OpenShift
 
@@ -1886,7 +1894,7 @@ To shutdown the instance and remove the container for each example, run the foll
 
 ==== Kubernetes and OpenShift
 
-Start the example as follows:
+First, start the example with the following command:
 ....
 cd $CCPROOT/examples/kube/statefulset
 ./run.sh
@@ -2091,7 +2099,7 @@ sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key"
 
 You should see a connection that looks like the following:
 ....
-psql (10.5)
+psql (10.6)
 SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
 Type "help" for help.
 
