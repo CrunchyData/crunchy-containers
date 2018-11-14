@@ -1886,7 +1886,7 @@ To shutdown the instance and remove the container for each example, run the foll
 
 ==== Kubernetes and OpenShift
 
-Start the example as follows:
+First, start the example with the following command:
 ....
 cd $CCPROOT/examples/kube/statefulset
 ./run.sh
