@@ -3,8 +3,8 @@ FROM centos:7
 LABEL name="crunchydata/pgbadger" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.5" \
-	Version="7.5" \
+	PostgresFullVersion="10.6" \
+	Version="7.6" \
 	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="HTTP wrapper around the PGBadger PostgreSQL utility" \

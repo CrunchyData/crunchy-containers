@@ -3,8 +3,8 @@ FROM centos:7
 LABEL name="crunchydata/pgadmin4" \
         vendor="crunchy data" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.14" \
-	Version="7.5" \
+	PostgresFullVersion="9.5.15" \
+	Version="7.6" \
 	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="Crunchy Data pgAdmin4 GUI utility" \
