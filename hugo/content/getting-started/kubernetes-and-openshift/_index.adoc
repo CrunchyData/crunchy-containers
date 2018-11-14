@@ -286,9 +286,9 @@ delete the task.
 
 See the following examples for creating config maps that Crunchy Scheduler can parse:
 
-* link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-backrest-diff.json[pgBackRest Diff Backup]
-* link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-backrest-full.json[pgBackRest Full Backup]
-* link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/configs/schedule-pgbasebackup.json[pgBaseBackup Backup]
+* link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-diff.json[pgBackRest Diff Backup]
+* link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-full.json[pgBackRest Full Backup]
+* link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-pgbasebackup.json[pgBaseBackup Backup]
 
 The Crunchy Scheduler requires a Service Account to create jobs (pgBaseBackup) and to
 exec (pgBackRest).  See the link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/scheduler-sa.json[scheduler example]
