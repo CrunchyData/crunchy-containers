@@ -202,23 +202,46 @@ with installation can occur unless you have a resolving hostname.
 
 You should see a single IP address returned from this command:
 ....
-hostname --ip-address
+$ hostname --ip-address
 ....
 
-When running the containers in GKE Role Based Account Control will need to be set up.
+In order to run the various examples, Role Based Account Control will need to be set up.
+Specifically, the **cluster-admin** role will need to be assigned to the Kubernetes user 
+that will be utilized to run the examples.  This is done by creating the proper
+**ClusterRoleBinding**:
+
 ....
-kubectl create clusterrolebinding cluster-admin-binding \
+$ kubectl create clusterrolebinding cluster-admin-binding \
+--clusterrole cluster-admin --user someuser
+....
+
+If you are running on GKE, the following command can be utilized to auto-populate the **user** 
+option with the account that is currently logged into Google Cloud:
+
+....
+$ kubectl create clusterrolebinding cluster-admin-binding \
 --clusterrole cluster-admin --user $(gcloud config get-value account)
 ....
 
-If more than one user will be running on the same kubernetes cluster in GKE, from the above command cluster-admin-binding will need to be unique and is the name that is added to the clusterrolebidings.  The example below will add another user to the clusterrolebinding with a unique value.
+If more than one user will be running the examples on the same Kubernetes cluster, a unique name 
+will need to be provided for each new **ClusterRoleBinding** created in order to assign the 
+**cluster-admin** role to every user.  The example below will create a **ClusterRoleBinding** with a
+unique value:
+
 ....
-$ ACCOUNT=$(gcloud info --format='value(config.account)')
 $ kubectl create clusterrolebinding <unique>-cluster-admin-binding \
     --clusterrole cluster-admin \
-    --user $ACCOUNT
+    --user someuser
+....
 
-ACCOUNT is just your google gcloud acount login, ie username@google.com
+If you are running on GKE, the following can be utilized to create a unique **ClusterRoleBinding**
+for each user, with the user's Google Cloud account prepended to the name of each new
+**ClusterRoleBinding**:
+
+....
+$ kubectl create clusterrolebinding "$(gcloud config get-value account)-cluster-admin-binding" \
+    --clusterrole cluster-admin \
+    --user $(gcloud config get-value account)
 ....
 
 === Helm
@@ -287,7 +310,7 @@ $ kubectl config view | grep namespace:
 This section assumes you are first logging into OpenShift as a normal
 user such as:
 ....
-oc login -u someuser
+$ oc login -u someuser
 ....
 
 {{% notice tip %}}
