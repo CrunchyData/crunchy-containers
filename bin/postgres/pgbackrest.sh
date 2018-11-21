@@ -11,6 +11,12 @@ fi
 
 if [[ -f ${BACKREST_CONF?} ]]
 then
+    cp ${BACKREST_CONF?} /tmp/pgbackrest.conf
+    sed -i -e "s|HOSTNAME|${NAMESPACE?}|" /tmp/pgbackrest.conf
+fi
+
+if [[ -f ${BACKREST_CONF?} ]] || [[ -v PGBACKREST_REPO_PATH ]]
+then
     # Spooling directories for async archiving
     if [[ ! -d /pgdata/${NAMESPACE?}-spool ]]
     then
@@ -28,13 +34,23 @@ then
         mkdir -p /backrestrepo/${NAMESPACE?}-backups
     fi
 
-    cp ${BACKREST_CONF?} /tmp/pgbackrest.conf
-    sed -i -e "s|HOSTNAME|${NAMESPACE?}|" /tmp/pgbackrest.conf
-
-    stanza_exists=$(pgbackrest info | grep 'No stanzas exist')
-    if [[ $? -eq 0 ]]
+    if [[ -f ${BACKREST_CONF?} ]]
     then
-        echo_info "pgBackRest: Creating stanza.."
-        pgbackrest --stanza=db stanza-create --no-online
+        stanza_exists=$(pgbackrest info | grep 'No stanzas exist')
+        if [[ $? -eq 0 ]]
+        then
+            echo_info "pgBackRest: Creating stanza.."
+            pgbackrest --stanza=db stanza-create --no-online
+        fi
+    fi
+
+    if [[ -v PGBACKREST_REPO_PATH ]]
+    then
+        stanza_exists=$(pgbackrest info | grep 'missing stanza path')
+        if [[ $? -eq 0 ]]
+        then
+            echo_info "pgBackRest: Creating stanza.."
+            pgbackrest --stanza=db stanza-create --no-online
+        fi
     fi
 fi
