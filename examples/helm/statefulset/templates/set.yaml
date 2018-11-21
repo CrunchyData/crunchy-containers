@@ -46,6 +46,10 @@ spec:
           value: userdb
         - name: PG_ROOT_PASSWORD
           value: "{{.Values.credentials.root}}"
+        - name: CCP_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         resources:
           requests:
             cpu: {{ .Values.resources.cpu }}

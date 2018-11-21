@@ -17,7 +17,11 @@ source /opt/cpm/bin/common_lib.sh
 enable_debugging
 
 source /opt/cpm/bin/setenv.sh
+hostname=${HOSTNAME?}
 
-ose_hack
+if [[ -v PGHOST ]]
+then
+    hostname=${PGHOST}
+fi
 
-$PGROOT/bin/pg_isready -h $HOSTNAME --dbname=postgres --username=$PG_USER
+$PGROOT/bin/pg_isready -h ${hostname?} --dbname=postgres --username=$PG_USER

@@ -1,0 +1,49 @@
+{
+    "kind": "Pod",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "scheduler",
+        "namespace": "$CCP_NAMESPACE",
+        "labels": {
+            "name": "scheduler"
+        }
+    },
+    "spec": {
+        "serviceAccountName": "scheduler-sa",
+        "containers": [
+            {
+                "name": "scheduler",
+                "image": "$CCP_IMAGE_PREFIX/crunchy-scheduler:$CCP_IMAGE_TAG",
+                "env": [
+                    {
+                        "name": "NAMESPACE",
+                        "valueFrom": {
+                            "fieldRef": {
+                                "fieldPath": "metadata.namespace"
+                            }
+                        }
+                    },
+                    {
+                        "name": "TIMEOUT",
+                        "value": "600"
+                    }
+                ],
+                "volumeMounts": [
+                    {
+                        "mountPath": "/configs",
+                        "name": "configs",
+                        "readOnly": true
+                    }
+                ]
+            }
+        ],
+        "volumes": [
+            {
+                "name": "configs",
+                "configMap": {
+                    "name": "scheduler-backup-template"
+                }
+            }
+        ]
+    }
+}

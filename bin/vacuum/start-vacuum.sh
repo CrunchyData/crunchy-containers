@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,13 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -e
+
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 env_check_err "PG_USER"
 env_check_err "PG_PASSWORD"
 env_check_err "JOB_HOST"
 
-echo_info "Starting vacuum job.."
+echo_info "Starting vacuum job..."
 /opt/cpm/bin/vacuum

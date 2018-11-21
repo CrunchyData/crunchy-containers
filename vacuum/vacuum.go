@@ -43,14 +43,14 @@ func main() {
 	if err != nil {
 		logger.Println("could not connect to " + parms.JOB_HOST)
 		logger.Println(err.Error())
-		os.Exit(0)
+		os.Exit(1)
 	}
 	defer conn.Close()
 	err = vacuumCommand(parms, conn)
 	if err != nil {
 		logger.Println(err.Error())
 		logger.Println("error performing query")
-		os.Exit(0)
+		os.Exit(1)
 	}
 
 }

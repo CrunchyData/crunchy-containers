@@ -2,9 +2,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "pitr-pgdata",
+        "name": "$CCP_NAMESPACE-pitr-pgdata",
         "labels": {
-            "name": "pitr-pgdata"
+            "name": "$CCP_NAMESPACE-pitr-pgdata"
         }
     },
     "spec": {
@@ -13,7 +13,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH"
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-pitr"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }
@@ -23,9 +23,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "pitr-pgwal",
+        "name": "$CCP_NAMESPACE-pitr-pgwal",
         "labels": {
-            "name": "pitr-pgwal"
+            "name": "$CCP_NAMESPACE-pitr-pgwal"
         }
     },
     "spec": {
@@ -34,7 +34,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH"
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-pitr"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }

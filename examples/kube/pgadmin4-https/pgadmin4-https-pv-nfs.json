@@ -2,9 +2,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "pgadmin4-https-data",
+        "name": "$CCP_NAMESPACE-pgadmin4-https-data",
         "labels": {
-            "name": "pgadmin4-https-data"
+            "name": "$CCP_NAMESPACE-pgadmin4-https-data"
         }
     },
     "spec": {
@@ -13,7 +13,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH",
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-pgadmin4-https",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"

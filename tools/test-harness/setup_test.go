@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/crunchydata/crunchy-containers/tools/kubeapi"
 	pg "github.com/crunchydata/crunchy-containers/tools/test-harness/data"
-	"github.com/crunchydata/crunchy-containers/tools/test-harness/kubeapi"
 	"github.com/crunchydata/crunchy-containers/tools/test-harness/runner"
 )
 
@@ -16,19 +16,21 @@ type harness struct {
 	Cleanup   bool
 	Client    *kubeapi.KubeAPI
 	InCluster bool
+	Debug     bool
 }
 
 func setup(t *testing.T, timeout time.Duration, cleanup bool) *harness {
 	var test harness
-	test.Cleanup = true
-	test.InCluster = false
-	test.Namespace = "default"
+	test.Cleanup = envCheckBool("CCP_HARNES_CLEANUP", true)
+	test.Debug = envCheckBool("CCP_HARNESS_DEBUG", true)
+	test.InCluster = envCheckBool("CCP_HARNESS_IN_CLUSTER", false)
 
 	t.Log("Running Initialization Checks...")
 	envs := []string{
 		"CCPROOT", "CCP_BASEOS", "CCP_PGVERSION",
 		"CCP_IMAGE_PREFIX", "CCP_IMAGE_TAG",
 		"CCP_STORAGE_MODE", "CCP_STORAGE_CAPACITY", "CCP_CLI"}
+
 	if err := runner.GetEnv(envs); err != nil {
 		t.Fatal(err)
 	}

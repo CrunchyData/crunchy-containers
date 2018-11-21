@@ -1,13 +1,13 @@
 FROM registry.access.redhat.com/rhel7
 
-MAINTAINER Crunchy Data <support@crunchydata.com>
+MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/collect" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.5" \
-	Version="7.5" \
-	Release="2.1.0" \
+	PostgresFullVersion="10.6" \
+	Version="7.6" \
+	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="Provides metrics for crunchy-postgres" \
         description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus and crunchy-grafana." \
@@ -39,7 +39,6 @@ RUN yum install -y epel-release \
     gettext \
     postgresql10 \
     postgresql10-libs \
-    nss_wrapper \
     hostname \
   && yum -y clean all
 
@@ -52,7 +51,8 @@ ADD bin/collect /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/collect /opt/cpm/conf
 
-RUN chown -R 2:2 /opt/cpm/bin /opt/cpm/conf
+RUN chgrp -R 0 /opt/cpm/bin /opt/cpm/conf && \
+    chmod -R g=u /opt/cpm/bin/ opt/cpm/conf
 
 VOLUME ["/conf"]
 
@@ -60,6 +60,10 @@ VOLUME ["/conf"]
 EXPOSE 9187
 # node exporter
 EXPOSE 9100
+
+RUN chmod g=u /etc/passwd
+
+ENTRYPOINT ["/opt/cpm/bin/uid_daemon.sh"]
 
 USER 2
 

@@ -2,15 +2,15 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary",
+        "name": "primary-metrics",
         "labels": {
-            "name": "primary"
+            "name": "primary-metrics"
         }
     },
     "spec": {
         "ports": [
             {
-                "name": "primary",
+                "name": "primary-metrics",
                 "protocol": "TCP",
                 "port": 5432,
                 "targetPort": 5432,
@@ -32,7 +32,7 @@
             }
         ],
         "selector": {
-            "name": "primary"
+            "name": "primary-metrics"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -43,9 +43,9 @@
     "kind": "Deployment",
     "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "primary",
+        "name": "primary-metrics",
         "labels": {
-            "name": "primary"
+            "name": "primary-metrics"
         }
     },
     "spec": {
@@ -53,7 +53,7 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "primary",
+                    "name": "primary-metrics",
                     "crunchy_collect": "true"
                 }
             },
@@ -93,7 +93,24 @@
                             },
                             {
                                 "name": "JOB_NAME",
-                                "value": "primary"
+                                "value": "primary-metrics"
+                            }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/pgwal",
+                                "name": "pgwal",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/backrestrepo",
+                                "name": "backrestrepo",
+                                "readOnly": true
                             }
                         ]
                     },
@@ -158,12 +175,39 @@
                             {
                                 "name": "PGHOST",
                                 "value": "/tmp"
+                            },
+                            {
+                                "name": "PGDATA_PATH_OVERRIDE",
+                                "value": "primary-metrics"
+                            },
+                            {
+                                "name": "ARCHIVE_TIMEOUT",
+                                "value": "60"
+                            },
+                            {
+                                "name": "XLOGDIR",
+                                "value": "true"
                             }
                         ],
                         "volumeMounts": [
                             {
                                 "mountPath": "/pgdata",
                                 "name": "pgdata",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/pgconf",
+                                "name": "pgconf",
+                                "readOnly": true
+                            },
+                            {
+                                "mountPath": "/pgwal",
+                                "name": "pgwal",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/backrestrepo",
+                                "name": "backrestrepo",
                                 "readOnly": false
                             }
                         ],
@@ -181,14 +225,25 @@
                     {
                         "name": "pgdata",
                         "emptyDir": {}
+                    },
+                    {
+                        "name": "pgwal",
+                        "emptyDir": {}
+                    },
+                    {
+                        "name": "pgconf",
+                        "configMap": {
+                            "name": "metrics-pgconf"
+                        }
+                    },
+                    {
+                        "name": "backrestrepo",
+                        "emptyDir": {}
                     }
                 ],
                 "restartPolicy": "Always",
                 "terminationGracePeriodSeconds": 30,
-                "dnsPolicy": "ClusterFirst",
-                "securityContext": {
-                    $CCP_SECURITY_CONTEXT
-                }
+                "dnsPolicy": "ClusterFirst"
             }
         },
         "strategy": {

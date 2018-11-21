@@ -1,15 +1,15 @@
 FROM registry.access.redhat.com/rhel7
 
-MAINTAINER Crunchy Data <support@crunchydata.com>
+MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.5" \
-	Version="7.5" \
-	Release="2.1.0" \
+	PostgresFullVersion="10.6" \
+	Version="7.6" \
+	Release="2.2.0" \
         url="https://crunchydata.com" \
-	summary="PostgreSQL 10.5 (PGDG) on a RHEL7 base image" \
+	summary="PostgreSQL 10.6 (PGDG) on a RHEL7 base image" \
         description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
         run="" \
         start="" \
@@ -37,14 +37,12 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  && yum -y update && yum -y install bind-utils \
     gettext \
     hostname \
-    nss_wrapper \
-    openssh-server \
     procps-ng \
     rsync \
  && yum -y reinstall glibc-common \
  && yum -y install postgresql10 postgresql10-contrib postgresql10-server \
     pgaudit10 pgaudit10_set_user \
-    crunchy-backrest \
+ && yum -y install crunchy-backrest \
  && yum -y --setopt=tsflags='' install pgaudit_analyze \
  && yum -y clean all
 
@@ -55,19 +53,20 @@ ENV PGROOT="/usr/pgsql-${PGVERSION}"
 # bashrc to set permissions in OCP when using exec
 # HOME is / in OCP
 ADD conf/.bash_profile /var/lib/pgsql/
+ADD conf/.bashrc /var/lib/pgsql
 ADD conf/.bash_profile /
 ADD conf/.bashrc /
 
 # set up cpm directory
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
+    /pgdata /pgwal /pgconf /backup /recover /backrestrepo &&  \
+    chmod -R g=u /opt/cpm /var/lib/pgsql \
     /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
 # Link pgbackrest.conf to default location for convenience
-# Remove nologin file to prevent sshd from being blocked
-RUN ln -sf /tmp/pgbackrest.conf /etc/pgbackrest.conf \
-  && rm -f /run/nologin
+RUN ln -sf /tmp/pgbackrest.conf /etc/pgbackrest.conf
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
 # add volumes to allow backup of postgres files
@@ -75,9 +74,8 @@ RUN ln -sf /tmp/pgbackrest.conf /etc/pgbackrest.conf \
 # add volumes to allow storage of postgres WAL segment files
 # add volumes to locate WAL files to recover with
 # add volumes for pgbackrest to write to
-# add volumes for sshd host keys
 
-VOLUME ["/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo", "/sshd"]
+VOLUME ["/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo"]
 
 # open up the postgres port
 EXPOSE 5432
@@ -86,6 +84,11 @@ ADD bin/postgres /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
 ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/pgmonitor
+
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+	
+ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 
 USER 26
 

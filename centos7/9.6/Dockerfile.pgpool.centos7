@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/pgpool" \
 	vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.10" \
-	Version="7.5" \
-	Release="2.1.0" \
+	PostgresFullVersion="9.6.11" \
+	Version="7.6" \
+	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
         description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the primary and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \
@@ -23,7 +23,6 @@ RUN yum -y update \
  && yum -y install \
       gettext \
       hostname \
-      nss_wrapper \
       procps-ng \
  && yum -y install \
       postgresql96 \
@@ -40,13 +39,18 @@ ADD conf/pgpool /opt/cpm/conf
 RUN ln -sf /opt/cpm/conf/pool_hba.conf /etc/pgpool-II-96/pool_hba.conf \
   && ln -sf /opt/cpm/conf/pgpool/pool_passwd /etc/pgpool-II-96/pool_passwd
 
-RUN chown -R 2:2 /opt/cpm
+RUN chgrp -R 0 /opt/cpm && \
+    chmod -R g=u /opt/cpm
+
 
 # open up the postgres port
 EXPOSE 5432
 
 # add volumes to allow override of pgpool config files
 VOLUME ["/pgconf"]
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["opt/cpm/bin/uid_daemon.sh"]
 
 USER 2
 

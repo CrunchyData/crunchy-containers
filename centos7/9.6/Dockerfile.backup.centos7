@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/backup" \
         vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.10" \
-	Version="7.5" \
-	Release="2.1.0" \
+	PostgresFullVersion="9.6.11" \
+	Version="7.6" \
+	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="Performs a pg_basebackup full database backup on a database container" \
         description="Meant to be executed upon demand, this container will run pg_basebackup against a running database container and write the backup files to a mounted directory." \
@@ -24,19 +24,25 @@ RUN yum -y update && yum install -y epel-release \
  && yum install -y bind-utils \
 	gettext \
 	hostname \
- 	nss_wrapper \
 	procps-ng \
 	unzip \
  && yum -y install postgresql96 postgresql96-server \
  && yum clean all -y
 
-RUN mkdir -p /opt/cpm/bin /pgdata /opt/cpm/conf
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
 ADD bin/backup/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/backup/ /opt/cpm/conf
-RUN chown -R postgres:postgres /opt/cpm /pgdata
+
+RUN chown -R postgres:postgres  /opt/cpm /pgdata && \
+        chmod -R g=u /opt/cpm /pgdata 
 
 VOLUME ["/pgdata"]
+
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+	
+ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 
 USER 26
 

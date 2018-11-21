@@ -2,9 +2,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "backup-pitr-pgdata",
+        "name": "$CCP_NAMESPACE-backup-pitr-pgdata",
         "labels": {
-            "name": "backup-pitr-pgdata"
+            "name": "$CCP_NAMESPACE-backup-pitr-pgdata"
         }
     },
     "spec": {
@@ -13,7 +13,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH"
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-backup-pitr"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }

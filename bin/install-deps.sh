@@ -15,11 +15,12 @@
 
 # Dependency Versions
 PROMETHEUS_VERSION=2.3.1
-GRAFANA_VERSION=5.2.3
-POSTGRES_EXPORTER_VERSION=0.4.6
+GRAFANA_VERSION=5.2.1
+POSTGRES_EXPORTER_VERSION=0.4.7
 NODE_EXPORTER_VERSION=0.16.0
-MERCURIAL_RPM='https://www.mercurial-scm.org/release/centos7/RPMS/x86_64/mercurial-4.6.1-1.x86_64.rpm'
 PGMONITOR_COMMIT='dffb2b5eb04ba13ee47ae81950410738d15e8c76'
+OPENSHIFT_CLIENT='https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz'
+CERTSTRAP_VERSION=1.1.1
 
 sudo yum -y install net-tools bind-utils wget unzip git
 
@@ -39,12 +40,11 @@ if [ $? -ne 0 ]; then
     if [ $? -ne 0 ]; then
         echo atomic-openshift-clients package is NOT found
         sudo yum -y install kubernetes-client
-        FILE=openshift-origin-client-tools-v3.7.0-7ed6862-linux-64bit.tar.gz
-        wget -O /tmp/$FILE \
-        https://github.com/openshift/origin/releases/download/v3.7.0/$FILE
 
-        tar xvzf /tmp/$FILE  -C /tmp
-        sudo cp /tmp/openshift-origin-client-tools-v3.7.0-7ed6862-linux-64bit/oc /usr/bin/oc
+        FILE='openshift-origin-client.tgz'
+        wget -O /tmp/${FILE?} ${OPENSHIFT_CLIENT?}
+        tar xvzf /tmp/${FILE?} -C /tmp
+        sudo cp /tmp/openshift-*/oc /usr/bin/oc
     else
         echo atomic-openshift-clients package IS found
         sudo yum -y install atomic-openshift-clients
@@ -52,15 +52,16 @@ if [ $? -ne 0 ]; then
 
 fi
 
+# Install dep
+go get github.com/golang/dep/cmd/dep
+
 # install expenv binary for running examples
 go get github.com/blang/expenv
-go get github.com/square/certstrap
 
-# pull in godeps and the dependencies for the golang code
-go get github.com/tools/godep
-sudo yum -y install ${MERCURIAL_RPM?}
-
-godep restore
+# manually install certstrap into $GOBIN for running the SSL examples
+wget -O $CCPROOT/certstrap https://github.com/square/certstrap/releases/download/v${CERTSTRAP_VERSION}/certstrap-v${CERTSTRAP_VERSION}-linux-amd64 && \
+    mv $CCPROOT/certstrap $GOBIN && \
+    chmod +x $GOBIN/certstrap
 
 # pgMonitor Setup
 if [[ -d ${CCPROOT?}/tools/pgmonitor ]]

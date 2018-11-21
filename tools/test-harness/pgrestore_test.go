@@ -37,10 +37,15 @@ func TestPGRestore(t *testing.T) {
 		defer harness.runExample("examples/kube/pgdump/cleanup.sh", env, t)
 	}
 
-	t.Log("Checking if job is completed..")
-	if ok, err := harness.Client.IsJobComplete(harness.Namespace, "pgdump"); !ok {
-		t.Fatal(err)
-	}
+        t.Log("Checking if job has completed...")
+        job, err := harness.Client.GetJob(harness.Namespace, "pgdump")
+        if err != nil {
+                t.Fatal(err)
+        }
+
+        if err := harness.Client.IsJobComplete(harness.Namespace, job); err != nil {
+                t.Fatal(err)
+        }
 
 	t.Log("Running the 'pgrestore' example...")
 	_, err = harness.runExample("examples/kube/pgrestore/run.sh", env, t)
@@ -52,10 +57,15 @@ func TestPGRestore(t *testing.T) {
 		defer harness.runExample("examples/kube/pgrestore/cleanup.sh", env, t)
 	}
 
-	t.Log("Checking if job is completed..")
-	if ok, err := harness.Client.IsJobComplete(harness.Namespace, "pgrestore"); !ok {
-		t.Fatal(err)
-	}
+        t.Log("Checking if job has completed...")
+        restoreJob, err := harness.Client.GetJob(harness.Namespace, "pgrestore")
+        if err != nil {
+                t.Fatal(err)
+        }
+
+        if err := harness.Client.IsJobComplete(harness.Namespace, restoreJob); err != nil {
+                t.Fatal(err)
+        }
 
 	report, err := harness.createReport()
 	if err != nil {

@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/pgbouncer" \
 	vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.5" \
-	Version="7.5" \
-	Release="2.1.0" \
+	PostgresFullVersion="10.6" \
+	Version="7.6" \
+	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="Lightweight connection pooler for crunchy-postgres" \
         description="The aim of crunchy-pgbouncer is to lower the performance impact of opening new connections to PostgreSQL; clients connect through this service. It offers session, transaction and statement pooling." \
@@ -23,7 +23,6 @@ RUN yum -y update \
  && yum -y install \
       gettext \
       hostname  \
-      nss_wrapper \
       pgbouncer \
       postgresql10 \
       procps-ng \
@@ -35,11 +34,15 @@ ADD bin/pgbouncer /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgbouncer /opt/cpm/conf
 
-RUN chown -R 2:2 /opt/cpm /pgconf
+RUN chgrp -R 0 /opt/cpm /pgconf && \
+        chmod -R g=u /opt/cpm /pgconf
 
 EXPOSE 6432
 
 VOLUME ["/pgconf"]
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["opt/cpm/bin/uid_daemon.sh"]
 
 USER 2
 

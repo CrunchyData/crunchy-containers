@@ -33,6 +33,7 @@ func init() {
 func main() {
 	http.HandleFunc("/api/badgergenerate", BadgerGenerate)
 	http.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir("/report"))))
+	http.HandleFunc("/", RootPathRedirect)
 	log.Fatal(http.ListenAndServe(":10000", nil))
 }
 
@@ -53,5 +54,13 @@ func BadgerGenerate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Println("Report generated.  Redirecting..")
-	http.Redirect(w, r, "/static", 301)
+	http.Redirect(w, r, "/static", 302)
+}
+
+func RootPathRedirect(w http.ResponseWriter, r *http.Request) {
+	redirect_url := "/static/"
+	if _, err := os.Stat(REPORT); os.IsNotExist(err) {
+		redirect_url = "/api/badgergenerate"
+	}
+	http.Redirect(w, r, redirect_url, 302)
 }

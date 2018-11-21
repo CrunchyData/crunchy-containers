@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/crunchydata/crunchy-containers/tools/test-harness/kubeapi"
+	"github.com/crunchydata/crunchy-containers/tools/kubeapi"
 	"github.com/crunchydata/crunchy-containers/tools/test-harness/runner"
 )
 
@@ -18,6 +18,9 @@ func (h *harness) runExample(dir string, env []string, t *testing.T) (string, er
 	run := fmt.Sprintf("${CCPROOT}/%s", dir)
 	env = append(env, fmt.Sprintf("CCP_NAMESPACE=%s", h.Namespace))
 	out, err := runner.Run(os.ExpandEnv(run), env)
+	if h.Debug {
+		t.Logf("Output from script: %s\n%s", run, out)
+	}
 	return out, err
 }
 
@@ -129,4 +132,15 @@ func randomPort() int {
 	seed := rand.NewSource(time.Now().UnixNano())
 	r := rand.New(seed)
 	return r.Intn(max-min) + min
+}
+
+func envCheckBool(env string, defaultValue bool) bool {
+	value := os.Getenv(env)
+	if value == "" {
+		return defaultValue
+	}
+	if value == "true" {
+		return true
+	}
+	return false
 }

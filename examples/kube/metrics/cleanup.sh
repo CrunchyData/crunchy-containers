@@ -20,21 +20,18 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} clusterrolebinding prometheus-s
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} clusterrole prometheus-sa
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} sa prometheus-sa
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod metrics
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} deployment primary replica
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service metrics primary replica
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} deployment primary-metrics replica-metrics
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service metrics primary-metrics replica-metrics
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap metrics-pgconf
 
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc metrics-prometheusdata metrics-grafanadata
 
 if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv metrics-prometheusdata metrics-grafanadata
+  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-metrics-prometheusdata $CCP_NAMESPACE-metrics-grafanadata
 fi
 
 $CCPROOT/examples/waitforterm.sh metrics ${CCP_CLI?}
-$CCPROOT/examples/waitforterm.sh primary ${CCP_CLI?}
-$CCPROOT/examples/waitforterm.sh replica ${CCP_CLI?}
+$CCPROOT/examples/waitforterm.sh primary-metrics ${CCP_CLI?}
+$CCPROOT/examples/waitforterm.sh replica-metrics ${CCP_CLI?}
 
-dir_check_rm "grafana"
-dir_check_rm "wal"
-file_check_rm "defaults.ini"
-file_check_rm "lock"
-file_check_rm "prometheus.yml"
+dir_check_rm "metrics"

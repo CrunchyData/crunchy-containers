@@ -8,13 +8,15 @@ theme = "docdock"
 #themesdir = "themes/"
 pygmentsCodeFences = true
 pygmentsStyle = "monokailight"
-publishDir = "../docs"
+publishDir = "../public"
 canonifyurls = true
 
 defaultContentLanguage = "en"
 defaultContentLanguageInSubdir= false
 enableMissingTranslationPlaceholders = false
 
+# Set timeout for generating page contents
+timeout=20000
 
 # [Languages]
 # [Languages.en]

@@ -2,9 +2,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "custom-config-pgdata",
+        "name": "$CCP_NAMESPACE-custom-config-pgdata",
         "labels": {
-            "name": "custom-config-pgdata"
+            "name": "$CCP_NAMESPACE-custom-config-pgdata"
         }
     },
     "spec": {
@@ -13,7 +13,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH"
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-custom-config"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }
@@ -23,9 +23,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "custom-config-br",
+        "name": "$CCP_NAMESPACE-custom-config-br",
         "labels": {
-            "name": "custom-config-br"
+            "name": "$CCP_NAMESPACE-custom-config-br"
         }
     },
     "spec": {
@@ -34,7 +34,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH"
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-custom-config"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }
@@ -44,9 +44,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "custom-config-pgwal",
+        "name": "$CCP_NAMESPACE-custom-config-pgwal",
         "labels": {
-            "name": "custom-config-pgwal"
+            "name": "$CCP_NAMESPACE-custom-config-pgwal"
         }
     },
     "spec": {
@@ -55,7 +55,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH"
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-custom-config"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }

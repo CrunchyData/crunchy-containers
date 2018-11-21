@@ -25,8 +25,8 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc -l name=replica-deployment
 
 if [ -z "$CCP_STORAGE_CLASS" ]
 then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv primary-deployment-pgdata replica-deployment-pgdata replica2-deployment-pgdata
+  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-primary-deployment-pgdata \
+    $CCP_NAMESPACE-replica-deployment-pgdata $CCP_NAMESPACE-replica2-deployment-pgdata
 fi
 
 dir_check_rm "primary-deployment"
-dir_check_rm "replica-deployment"

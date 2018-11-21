@@ -410,7 +410,7 @@ log_rotation_size = 0			# Automatic rotation of logfiles will
 					#   fatal
 					#   panic (effectively off)
 
-log_min_duration_statement = 0	# -1 is disabled, 0 logs all statements
+log_min_duration_statement = LOG_MIN_DURATION_STATEMENT	# -1 is disabled, 0 logs all statements
 					# and their durations, > 0 logs only
 					# statements running at least this number
 					# of milliseconds
@@ -425,7 +425,7 @@ log_min_duration_statement = 0	# -1 is disabled, 0 logs all statements
 log_checkpoints = on
 log_connections = on
 log_disconnections = on
-#log_duration = off
+log_duration = on
 #log_error_verbosity = default		# terse, default, or verbose messages
 #log_hostname = off
 log_line_prefix = '%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h'			# special values:
@@ -450,12 +450,12 @@ log_line_prefix = '%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h'			# special v
 					#   %% = '%'
 					# e.g. '<%u%%%d> '
 log_lock_waits = on			# log lock waits >= deadlock_timeout
-#log_statement = 'none'			# none, ddl, mod, all
+log_statement = 'LOG_STATEMENT'		# none, ddl, mod, all
 #log_replication_commands = off
 #log_temp_files = -1			# log temporary files equal or larger
 					# than the specified size in kilobytes;
 					# -1 disables, 0 logs all temp files
-log_timezone = 'US/Eastern'
+log_timezone = 'UTC'
 
 
 # - Process Title -
@@ -551,7 +551,7 @@ log_autovacuum_min_duration = 0	# -1 disables, 0 logs all actions and
 
 datestyle = 'iso, mdy'
 #intervalstyle = 'postgres'
-timezone = 'US/Eastern'
+timezone = 'UTC'
 #timezone_abbreviations = 'Default'     # Select the set of available time zone
 					# abbreviations.  Currently, there are
 					#   Default

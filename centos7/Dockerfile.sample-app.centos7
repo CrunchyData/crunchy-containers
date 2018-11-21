@@ -2,8 +2,8 @@ FROM centos:7
 
 LABEL name="crunchydata/sample-app" \
 	vendor="crunchy data" \
-	Version="7.5" \
-	Release="2.1.0" \
+	Version="7.6" \
+	Release="2.2.0" \
 	url="https://crunchydata.com" \
 	summary="Implements a cron scheduler." \
 	description="Sample application to connect to PostgreSQL containers" \
@@ -12,7 +12,7 @@ LABEL name="crunchydata/sample-app" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="10" PGDG_REPO="pgdg-centos10-10-2.noarch.rpm"
+ENV PGVERSION="11" PGDG_REPO="pgdg-centos10-10-2.noarch.rpm"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
@@ -23,7 +23,6 @@ RUN yum -y update \
       gettext \
       hostname \
       iproute \
-      nss_wrapper \
       procps-ng \
       psmisc \
  && yum -y install postgresql10 \
@@ -35,9 +34,13 @@ ADD bin/sample-app /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/sample-app /opt/cpm/conf
 
-RUN chown -R 2:2 /opt/cpm
+RUN chgrp -R 0 /opt/cpm  && \
+    chmod -R g=u /opt/cpm
 
 EXPOSE 8000
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["opt/cpm/bin/uid_daemon.sh"]
 
 USER 2
 

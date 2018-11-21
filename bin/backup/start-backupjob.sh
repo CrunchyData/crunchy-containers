@@ -25,9 +25,10 @@
 # $BACKUP_PASS pg user password we are connecting with
 # $BACKUP_PORT pg port we are connecting to
 
+set -e
+
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 BACKUPBASE=/pgdata/$BACKUP_HOST-backups
 if [ ! -d "$BACKUPBASE" ]; then
@@ -43,6 +44,7 @@ BACKUP_PATH=$BACKUPBASE/$TS
 mkdir $BACKUP_PATH
 
 echo_info "BACKUP_PATH is set to ${BACKUP_PATH}."
+echo_info "BACKUP_OPTS is set to ${BACKUP_OPTS}."
 
 export PGPASSFILE=/tmp/pgpass
 
@@ -50,13 +52,13 @@ echo "*:*:*:"$BACKUP_USER":"$BACKUP_PASS  >> $PGPASSFILE
 
 chmod 600 $PGPASSFILE
 
-chown $UID:$UID $PGPASSFILE
+# chown $UID:$UID $PGPASSFILE
 
 # cat $PGPASSFILE
 
-pg_basebackup --label=$BACKUP_LABEL -X fetch --pgdata $BACKUP_PATH --host=$BACKUP_HOST --port=$BACKUP_PORT -U $BACKUP_USER
+pg_basebackup --label=$BACKUP_LABEL -X fetch --pgdata $BACKUP_PATH --host=$BACKUP_HOST --port=$BACKUP_PORT -U $BACKUP_USER  $BACKUP_OPTS
 
-chown -R $UID:$UID $BACKUP_PATH
+# chown -R $UID:$UID $BACKUP_PATH
 
 # Open up permissions for the OSE Dedicated random UID scenario
 chmod -R o+rx $BACKUP_PATH

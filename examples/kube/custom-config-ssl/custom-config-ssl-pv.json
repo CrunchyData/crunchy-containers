@@ -2,9 +2,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "custom-config-ssl-pgdata",
+        "name": "$CCP_NAMESPACE-custom-config-ssl-pgdata",
         "labels": {
-            "name": "custom-config-ssl-pgdata"
+            "name": "$CCP_NAMESPACE-custom-config-ssl-pgdata"
         }
     },
     "spec": {
@@ -13,7 +13,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH"
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-custom-config-ssl"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }
@@ -23,9 +23,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "custom-config-ssl-backrestrepo",
+        "name": "$CCP_NAMESPACE-custom-config-ssl-backrestrepo",
         "labels": {
-            "name": "custom-config-ssl-backrestrepo"
+            "name": "$CCP_NAMESPACE-custom-config-ssl-backrestrepo"
         }
     },
     "spec": {
@@ -34,7 +34,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH"
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-custom-config-ssl"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }

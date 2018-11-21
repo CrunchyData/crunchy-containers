@@ -4,7 +4,7 @@ set -e
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
+
 
 export PGROOT=$(find /usr/ -type d -name 'pgsql-*')
 export PGPASSFILE=/tmp/pgpass
@@ -27,7 +27,7 @@ cat >> "${PGPASSFILE?}" <<-EOF
 EOF
 
 chmod 600 ${PGPASSFILE?}
-chown postgres:postgres ${PGPASSFILE?}
+# chown postgres:postgres ${PGPASSFILE?}
 
 set +e
 pgisready ${PGRESTORE_DB?} ${PGRESTORE_HOST?} ${PGRESTORE_PORT?} ${PGRESTORE_USER?}
@@ -53,6 +53,8 @@ then
     echo_err "Backup file does not exist: ${BACKUP_FILE?}"
     exit 1
 fi
+
+echo_info "Restore will be attempted using backup ${BACKUP_FILE?}"
 
 # Plain pg_dump backups are restored via psql - any kind of custom backup
 # (tar, directory, custom) are restored via pg_restore

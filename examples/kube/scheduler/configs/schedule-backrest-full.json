@@ -1,0 +1,13 @@
+{
+    "version": "v1",
+    "name": "backrest-full",
+    "created": "2018-09-04T18:25:43.511Z",
+    "schedule": "*/2 * * * *",
+    "namespace": "${CCP_NAMESPACE}",
+    "type": "pgbackrest",
+    "pgbackrest": {
+        "deployment": "primary-deployment",
+        "container": "postgres",
+        "type": "full"
+    }
+}

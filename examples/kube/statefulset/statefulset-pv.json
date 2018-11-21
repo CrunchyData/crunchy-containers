@@ -4,7 +4,7 @@
     "metadata": {
         "name": "statefulset-pgdata-0",
         "labels": {
-            "name": "statefulset-pgdata"
+            "name": "$CCP_NAMESPACE-statefulset-pgdata"
         }
     },
     "spec": {
@@ -13,7 +13,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH"
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-statefulset"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }
@@ -25,7 +25,7 @@
     "metadata": {
         "name": "statefulset-pgdata-1",
         "labels": {
-            "name": "statefulset-pgdata"
+            "name": "$CCP_NAMESPACE-statefulset-pgdata"
         }
     },
     "spec": {
@@ -34,7 +34,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH"
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-statefulset"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }
@@ -46,7 +46,7 @@
     "metadata": {
         "name": "statefulset-pgdata-2",
         "labels": {
-            "name": "statefulset-pgdata"
+            "name": "$CCP_NAMESPACE-statefulset-pgdata"
         }
     },
     "spec": {
@@ -55,7 +55,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH"
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-statefulset"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }

@@ -1,6 +1,6 @@
 FROM registry.access.redhat.com/rhel7
 
-MAINTAINER Crunchy Data <support@crunchydata.com>
+MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/grafana" \
         vendor="crunchy data" \
@@ -27,7 +27,6 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
     bind-utils \
     gettext \
     hostname \
-    nss_wrapper \
     procps-ng \
   && yum clean all -y
 
@@ -39,10 +38,14 @@ ADD bin/grafana /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/grafana /opt/cpm/conf
 
-RUN chown -R 2:2 /opt/cpm /data
+RUN chgrp -R 0 /opt/cpm /data && \
+    chmod -R g=u /opt/cpm /data
 
 VOLUME ["/data", "/conf"]
 EXPOSE 3000
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["opt/cpm/bin/uid_daemon.sh"]
 
 USER 2
 

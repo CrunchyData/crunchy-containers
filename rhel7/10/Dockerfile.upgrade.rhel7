@@ -1,13 +1,13 @@
 FROM registry.access.redhat.com/rhel7
 
-MAINTAINER Crunchy Data <support@crunchydata.com>
+MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/upgrade" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.5" \
-	Version="7.5" \
-	Release="2.1.0" \
+	PostgresFullVersion="10.6" \
+	Version="7.6" \
+	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
         description="Provides a means to perform a major PostgreSQL upgrade from 9.5 to 9.6 and 9.6 to 10. Old data files are left intact." \
@@ -37,7 +37,6 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  && yum install -y bind-utils \
 	gettext \
 	hostname \
- 	nss_wrapper \
 	procps-ng \
 	unzip \
  && yum -y install \
@@ -50,9 +49,16 @@ RUN mkdir -p /opt/cpm/bin /pgolddata /pgnewdata /opt/cpm/conf
 ADD bin/upgrade/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/upgrade/ /opt/cpm/conf
-RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata
+
+RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata && \
+        chmod -R g=u /opt/cpm /pgolddata /pgnewdata
 
 VOLUME /pgolddata /pgnewdata
+
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+	
+ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 
 USER 26
 

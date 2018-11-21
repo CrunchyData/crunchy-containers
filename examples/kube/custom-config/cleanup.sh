@@ -23,13 +23,9 @@ ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap custom-config-pgconf
 
 if [[ -z "$CCP_STORAGE_CLASS" ]]
 then
-    ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv custom-config-pgdata custom-config-pgwal custom-config-br
+    ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-custom-config-pgdata $CCP_NAMESPACE-custom-config-pgwal $CCP_NAMESPACE-custom-config-br
 fi
 
 $CCPROOT/examples/waitforterm.sh custom-config ${CCP_CLI?}
 
-dir_check_rm "archive"
-dir_check_rm "backup"
 dir_check_rm "custom-config"
-dir_check_rm "custom-config-wal"
-file_check_rm "db-stanza-create.log"

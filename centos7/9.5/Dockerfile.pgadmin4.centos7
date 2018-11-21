@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/pgadmin4" \
         vendor="crunchy data" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.14" \
-	Version="7.5" \
-	Release="2.1.0" \
+	PostgresFullVersion="9.5.15" \
+	Version="7.6" \
+	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="Crunchy Data pgAdmin4 GUI utility" \
         description="Provides GUI for the pgAdmin utility." \
@@ -23,7 +23,6 @@ RUN yum -y update && yum -y install epel-release \
  && yum -y install gcc \
         gettext \
         hostname \
-        nss_wrapper \
         openssl \
         procps-ng \
         mod_wsgi mod_ssl \
@@ -41,8 +40,11 @@ ADD conf/pgadmin4/ /opt/cpm/conf
 RUN cp /opt/cpm/conf/httpd.conf /etc/httpd/conf/httpd.conf \
   && rm /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/ssl.conf
 
-RUN chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
-  && chown -R 2:0 /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd
+
+RUN chgrp -R 0 /usr/lib/python2.7/site-packages/pgadmin4-web \
+   /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd && \
+    chmod -R g=u /usr/lib/python2.7/site-packages/pgadmin4-web \
+   /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd
 
 RUN ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
   && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf
@@ -50,6 +52,9 @@ RUN ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pga
 EXPOSE 5050
 
 VOLUME ["/var/lib/pgadmin", "/certs", "/run/httpd"]
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["opt/cpm/bin/uid_daemon.sh"]
 
 USER 2
 

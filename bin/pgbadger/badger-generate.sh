@@ -15,7 +15,6 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 export BADGER_CUSTOM_OPTS=${BADGER_CUSTOM_OPTS:-}
 
 TARGET=${HOSTNAME?}
@@ -25,5 +24,18 @@ then
     TARGET=${BADGER_TARGET?}
 fi
 
+# The following command build-up is to avoid a bug where
+# BADGER_CUSTOM_OPTS might have quotes in the value.  Bash does
+# automatic escaping of quotes when found in a value which
+# breaks pgBadger.
+if [[ -f /tmp/cmd ]]
+then
+    rm -f /tmp/cmd
+fi
+
+echo -n "/bin/pgbadger -f stderr " >> /tmp/cmd
+echo -n "${BADGER_CUSTOM_OPTS?} " >> /tmp/cmd
+echo -n "-o /report/index.html /pgdata/${TARGET?}/pg_log/*.log"  >> /tmp/cmd
+
 echo_info "Creating pgBadger output.."
-/bin/pgbadger ${BADGER_CUSTOM_OPTS} -o /report/index.html /pgdata/${TARGET?}/pg_log/*.log
+source /tmp/cmd

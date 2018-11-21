@@ -5,7 +5,7 @@ draft: false
 weight: 3
 ---
 
-Latest Release: 2.1.0 {docdate}
+Latest Release: 2.2.0 {docdate}
 
 == Introduction
 
@@ -29,7 +29,6 @@ The following container images are provided with further information:
     * link:/container-specifications/crunchy-grafana[crunchy-grafana]
     * link:/container-specifications/crunchy-pgbadger[crunchy-pgbadger]
     * link:/container-specifications/crunchy-pgpool[crunchy-pgpool]
-    * link:/container-specifications/crunchy-watch[crunchy-watch]
     * link:/container-specifications/crunchy-vacuum[crunchy-vacuum]
     * link:/container-specifications/crunchy-dba[crunchy-dba]
     * link:/container-specifications/crunchy-pgbouncer[crunchy-pgbouncer]
@@ -106,7 +105,6 @@ executed when the database is first created.
  * SHARED_BUFFERS - default is 128MB, set this value to override this PostgreSQL configuration setting
  * WORK_MEM - default is 4MB, set this value to override this PostgreSQL configuration setting
  * MAX_WAL_SENDERS - default is 6, set this value to override this PostgreSQL configuration setting
- * ENABLE_SSHD- default is false, set this value to true to enable SSHD
  * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
@@ -122,7 +120,6 @@ The following features are supported by the crunchy-postgres container:
  * ability to set the database locale
  * ability to specify a synchronous replica application_name
  * ability to specify a recovery using PITR and WAL files
- * ability to enable SSHD
 
 === Locale Support
 
@@ -376,7 +373,7 @@ http://<<ip address>>:10000/api/badgergenerate
 
 === Environment Variables
 
-*Optional:* 
+*Optional:*
 
  * BADGER_TARGET - only used in standalone mode to specify the
    name of the container, also used to find the location of the
@@ -430,91 +427,14 @@ The following features are supported by the crunchy-pgpool container:
 
 == crunchy-watch
 
-crunchy-watch runs as a pod unto itself
-typically.  The watch container essentially does a health check
-on a primary database container and performs a failover sequence
-if the primary is not reached.
+Crunchy Watch is an application wrapped in a container that watches a PostgreSQL
+primary database and waits for a failure to occur, at which point a failover is
+performed to promote a replica.
 
-The watch container has access to a service account that is used
-inside the container to issue commands to OpenShift.
-
-In Kube 1.5, if a policy file is being used for securing down the
-Kube cluster, you could possibly need to add a policy to allow
-the pg-watcher service account access to the Kube API as mentioned
-here: https://kubernetes.io/docs/admin/authorization/abac/#a-quick-note-on-service-accounts
-
-In Kube 1.6, an equivalent RBAC policy is also possibly required depending
-on your authorization/authentication configuration.  See this
-link for details on the new RBAC policy mechanism:
-https://kubernetes.io/docs/admin/authorization/rbac/
-
-For example, you can grant cluster-admin permissions on the pg-watcher service
-account, in the my-namespace namespace as follows:
-....
-kubectl create clusterrolebinding pgwatcher-view-binding --clusterrole=cluster-admin --serviceaccount=my-namespace:pg-watcher
-....
-
-A less wide open policy would be applied like this on Kube 1.6 rbac:
-....
-kubectl create rolebinding my-sa-binding --clusterrole=admin --serviceaccount=demo:pg-watcher --namespace=demo
-....
-
-NOTE:  this kubectl command is only available in Kube 1.6, for prior
-Kube release such as 1.5 and the alpha RBAC, you will need to
-specify the role binding in a JSON/YAML file instead of using
-this command syntax above.
-
-You then reference the SA within the POD spec.
-
-The oc/docker/kubectl commands are included into the container from the
-host when the container image is built.  These commands are used by
-the watch logic to interact with the replica containers.
-
-Starting with release 1.7.1 crunchy-watch source code is relocated
-to https://github.com/crunchydata/crunchy-watch
-
-=== Environment Variables
-
- * CRUNCHY_WATCH_HEALTHCHECK_INTERVAL - the time to sleep in seconds between checking on the primary
- * CRUNCHY_WATCH_FAILOVER_WAIT - the time to sleep in seconds between triggering the failover and updating its label (default is 40 secs)
- * PG_CONTAINER_NAME -  if set, the name of the container to refer to when doing an *exec*, this is required if you have more than 1 container in your database pod
- * CRUNCHY_WATCH_PRIMARY -  the primary service name
- * CRUNCHY_WATCH_REPLICA - the replica service name
- * PG_PRIMARY_PORT - database port to use when checking the database
- * CRUNCHY_WATCH_USERNAME -  database user account to use when checking the database
-   using pg_isready utility
- * CRUNCHY_WATCH_DATABASE - database to use when checking the database using pg_isready
- * REPLICA_TO_TRIGGER_LABEL - the pod name of a replica that you
-   want to choose as the new primary in a failover; this will override
-   the normal replica selection
- * CRUNCHY_WATCH_PRE_HOOK - path to an executable file to run before failover is processed.
- * CRUNCHY_WATCH_POST_HOOK - path to an executable file to run after failover is processed.
- * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
-   Note: this mode can reveal secrets in logs.
-
-=== Logic
-
-The watch container will watch the primary, if the primary dies, then
-the watcher will:
-
- * create the trigger file on the replica that will become the new primary
- * change the labels on the replica to be those of the primary
- * start watching the new primary in case that falls over next
- * look for replicas that have the metadata label value of *replicatype=trigger* to prefer
-   the failover to. If found, it will use the first replica with that label; if
-   not found, it will use the first replica it finds.
-
-Example of looking for the failover replica:
-....
-oc get pod -l name=pg-replica-rc-dc
-NAME                     READY     STATUS    RESTARTS   AGE
-pg-replica-rc-dc           1/1       Running   2          16m
-pg-replica-rc-dc-1-96qs8   1/1       Running   1          16m
-
-oc get pod -l replicatype=trigger
-NAME             READY     STATUS    RESTARTS   AGE
-pg-replica-rc-dc   1/1       Running   2          16m
-....
+The crunchy-watch container, while originally part of the Container Suite, has been
+split out into its own project. More information on the Watch container and it's
+capabilities can be found in the new project repository located at
+https://github.com/CrunchyData/crunchy-watch.
 
 == crunchy-vacuum
 
@@ -741,20 +661,20 @@ Crunchy pgBouncer is a lightweight connection pooler for PostgreSQL databases.
 
 ==== REQUIRED ARGS
 
- * PGBOUNCER_PASSWORD - the password of the pgbouncer role in PostgreSQL.  Must be also 
+ * PGBOUNCER_PASSWORD - the password of the pgbouncer role in PostgreSQL.  Must be also
    set on the primary database.
  * PG_SERVICE - the hostname of the database service
 
 ==== OPTIONAL/EXTENDED ARGS
 
- * DEFAULT_POOL_SIZE - default 20, how many server connections to allow per user/database pair. 
+ * DEFAULT_POOL_SIZE - default 20, how many server connections to allow per user/database pair.
  * MAX_CLIENT_CONN - default 100, maximum number of client connections allowed.
  * MAX_DB_CONNECTIONS - default unlimited, do not allow more than this many connections per-database.
  * MIN_POOL_SIZE - default 0 (disabled), adds more server connections to pool if below this number.
- * POOL_MODE - default `session`, specifies when a server connection can be reused by other clients.  
+ * POOL_MODE - default `session`, specifies when a server connection can be reused by other clients.
    Possible values: `session`, `transaction` and `statement`.
  * RESERVE_POOL_SIZE - default 0 (disabled), how many additional connections to allow to a pool.
- * RESERVE_POOL_TIMEOUT - default 5, if a client has not been serviced in this many seconds, 
+ * RESERVE_POOL_TIMEOUT - default 5, if a client has not been serviced in this many seconds,
    pgbouncer enables use of additional connections from reserve pool.  0 disables.
  * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
@@ -763,7 +683,7 @@ Crunchy pgBouncer is a lightweight connection pooler for PostgreSQL databases.
 
 The following features are supported by the crunchy-pgbouncer container:
 
- * Crunchy pgBouncer uses `auth_query` to authenticate users.  This requires only the `pgbouncer` 
+ * Crunchy pgBouncer uses `auth_query` to authenticate users.  This requires only the `pgbouncer`
    username and password in `users.txt`.  Automatically generated from environment variables.
  * Mount a custom `users.txt` and `pgbouncer.ini` configurations for advanced usage.
  * Tune pooling parameters via environment variables.
@@ -785,11 +705,11 @@ The crunchy-backrest-restore container executes the pgbackrest utility, allowing
  * STANZA - desired stanza to restore from.  For most cases this should be set to `db`.
 
 *Optional:*
- * DELTA - when set to true, this will configure pgBackRest to do a delta restore.  Delta 
-   restores do not require `pgdata` directoy to be empty.  This will only pull in differences 
+ * DELTA - when set to true, this will configure pgBackRest to do a delta restore.  Delta
+   restores do not require `pgdata` directoy to be empty.  This will only pull in differences
    between pgdata and the backup.
- * BACKREST_CUSTOM_OPTS - pass in custom parameters to pgBackRest for advanced use cases (such as 
-   point in time recovery). 
+ * BACKREST_CUSTOM_OPTS - pass in custom parameters to pgBackRest for advanced use cases (such as
+   point in time recovery).
  * CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
    Note: this mode can reveal secrets in logs.
 
@@ -959,4 +879,3 @@ queries over a specified interval range.
 === Restrictions
 
 * Only one connection is created for all queries.
->>>>>>> aae224745f5caf481c142b4ccbf3332ab4f45f8e

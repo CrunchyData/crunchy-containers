@@ -19,6 +19,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
 docker network create --driver bridge pgnet
+docker volume create --driver local --name=primary-pgdata
 
 docker run \
     -p 5432:5432 \

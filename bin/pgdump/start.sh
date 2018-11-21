@@ -4,7 +4,6 @@ set -e
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 export PGROOT=$(find /usr/ -type d -name 'pgsql-*')
 export PGDUMP_PORT=${PGDUMP_PORT:-5432}
@@ -25,14 +24,13 @@ cat >> "${PGPASSFILE?}" <<-EOF
 EOF
 
 chmod 600 ${PGPASSFILE?}
-chown postgres:postgres ${PGPASSFILE?}
 
 pgisready ${PGDUMP_DB?} ${PGDUMP_HOST?} ${PGDUMP_PORT?} ${PGDUMP_USER?}
 
 PGDUMP_BASE=/pgdata/${PGDUMP_HOST?}-backups
 PGDUMP_PATH=${PGDUMP_BASE?}/$(date +%Y-%m-%d-%H-%M-%S)
 mkdir -p ${PGDUMP_PATH?}
-chown postgres:postgres ${PGDUMP_PATH?}
+
 
 output_opts="-f ${PGDUMP_PATH?}/${PGDUMP_FILENAME?}"
 

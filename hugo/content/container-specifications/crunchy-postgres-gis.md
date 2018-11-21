@@ -22,7 +22,7 @@ The following features are supported by the `crunchy-postgres-gis` container:
 
 The crunchy-postgres-gis Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (10.5, 9.6.10 and 9.5.14)
+* PostgreSQL (11.1, 10.6, 9.6.11 and 9.5.15)
 * [pgBackRest](https://pgbackrest.org/) (2.x)
 * CentOS7 - publicly available
 * RHEL7 - customers only
@@ -48,7 +48,8 @@ The crunchy-postgres-gis Docker image contains the following packages (versions 
 **ARCHIVE_TIMEOUT**|60|Set to a number (in seconds) to configure `archive_timeout` in `postgresql.conf`
 **CHECKSUMS**|Off|Enables `data-checksums` during initialization of the database.  Can only be set during initial database creation.
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.
-**ENABLE_SSHD**|FALSE|Set this value to true to enable SSHD. See SSHD Documentation for detailed setup instructions
+**LOG_STATEMENT**|none|Sets the `log_statement` value in `postgresql.conf`
+**LOG_MIN_DURATION_STATEMENT**|60000|Sets the `log_min_duration_statement` value in `postgresql.conf`
 **MAX_CONNECTIONS**|100|Sets the `max_connections` value in `postgresql.conf`
 **MAX_WAL_SENDERS**|6|Set this value to configure the max number of WAL senders (replication)
 **PG_LOCALE**|UTF-8|Set the locale of the database
@@ -73,7 +74,6 @@ The crunchy-postgres-gis Docker image contains the following packages (versions 
 **/pgdata**|Volume used to store the data directory contents for the PostgreSQL database.
 **/pgwal**|Volume used to store Write Ahead Log (WAL) when `XLOGDIR` environment variable is set to `true.`
 **/recover**|Volume used for Point In Time Recovery (PITR) during startup of the PostgreSQL database.
-**/sshd**|Volume used to store SSHD requirements (sshd_config and server key).
 
 ## Custom Configuration
 

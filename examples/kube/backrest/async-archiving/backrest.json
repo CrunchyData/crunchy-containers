@@ -43,14 +43,14 @@
                 "securityContext": {
                     "privileged": false
                 },
-                "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
+                "image": "$CCP_IMAGE_PREFIX/crunchy-postgres$CCP_PG_IMAGE:$CCP_IMAGE_TAG",
                 "readinessProbe": {
                     "exec": {
                         "command": [
                             "/opt/cpm/bin/readiness.sh"
                         ]
                     },
-                    "initialDelaySeconds": 40,
+                    "initialDelaySeconds": 70,
                     "timeoutSeconds": 1
                 },
                 "livenessProbe": {
@@ -59,7 +59,7 @@
                             "/opt/cpm/bin/liveness.sh"
                         ]
                     },
-                    "initialDelaySeconds": 40,
+                    "initialDelaySeconds": 70,
                     "timeoutSeconds": 1
                 },
                 "ports": [

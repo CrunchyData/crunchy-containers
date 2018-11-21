@@ -20,7 +20,7 @@ The following features are supported by the crunchy-pgbouncer container:
 
 The crunchy-pgbouncer Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (10.5, 9.6.10 and 9.5.14)
+* PostgreSQL (11.1, 10.6, 9.6.11 and 9.5.15)
 * [pgBouncer](https://pgbouncer.github.io/)
 * CentOS7 - publicly available
 * RHEL7 - customers only

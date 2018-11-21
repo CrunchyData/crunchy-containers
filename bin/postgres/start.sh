@@ -15,7 +15,6 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 function trap_sigterm() {
     echo_warn "Signal trap triggered, beginning shutdown.." >> $PGDATA/trap.output
@@ -80,14 +79,22 @@ function role_discovery() {
     ordinal=${HOSTNAME##*-}
     echo_info "Ordinal is set to ${ordinal?}."
     if [ $ordinal -eq 0 ]; then
-        kubectl label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST
-        oc label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST
+        pgc label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST
+        rc=$?;
+        if [[ $rc != 0 ]]; then 
+            echo_err "Unable to set mode on pod, label command failed."
+            exit $rc; 
+        fi
         echo_info "Setting PG_MODE to primary."
         export PG_MODE=primary
     else
         echo_info "Setting PG_MODE to replica."
-        kubectl label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST
-        oc label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST
+        pgc label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST
+        rc=$?;
+        if [[ $rc != 0 ]]; then 
+            echo_err "Unable to set mode on pod, label command failed."
+            exit $rc; 
+        fi
         export PG_MODE=replica
     fi
 }
@@ -104,7 +111,7 @@ function initdb_logic() {
         if [ $XLOGDIR = "true" ]; then
             echo_info "XLOGDIR found."
             mkdir $PGWAL
-            chown postgres:postgres $PGWAL
+            
             if [ -d "$PGWAL" ]; then
             cmd+=" -X "$PGWAL
             else
@@ -183,6 +190,8 @@ function check_for_pitr() {
 
 function fill_conf_file() {
     env_check_info "TEMP_BUFFERS" "Setting TEMP_BUFFERS to ${TEMP_BUFFERS:-8MB}."
+    env_check_info "LOG_MIN_DURATION_STATEMENT" "Setting LOG_MIN_DURATION_STATEMENT to ${LOG_MIN_DURATION_STATEMENT:-60000}."
+    env_check_info "LOG_STATEMENT" "Setting LOG_STATEMENT to ${LOG_STATEMENT:-none}."
     env_check_info "MAX_CONNECTIONS" "Setting MAX_CONNECTIONS to ${MAX_CONNECTIONS:-100}."
     env_check_info "SHARED_BUFFERS" "Setting SHARED_BUFFERS to ${SHARED_BUFFERS:-128MB}."
     env_check_info "WORK_MEM" "Setting WORK_MEM to ${WORK_MEM:-4MB}."
@@ -205,6 +214,8 @@ function fill_conf_file() {
     fi
 
     sed -i "s/TEMP_BUFFERS/${TEMP_BUFFERS:-8MB}/g" /tmp/postgresql.conf
+    sed -i "s/LOG_MIN_DURATION_STATEMENT/${LOG_MIN_DURATION_STATEMENT:-60000}/g" /tmp/postgresql.conf
+    sed -i "s/LOG_STATEMENT/${LOG_STATEMENT:-none}/g" /tmp/postgresql.conf
     sed -i "s/MAX_CONNECTIONS/${MAX_CONNECTIONS:-100}/g" /tmp/postgresql.conf
     sed -i "s/SHARED_BUFFERS/${SHARED_BUFFERS:-128MB}/g" /tmp/postgresql.conf
     sed -i "s/WORK_MEM/${WORK_MEM:-4MB}/g" /tmp/postgresql.conf
@@ -401,12 +412,6 @@ postgres -D $PGDATA &
 if [[ -v PGAUDIT_ANALYZE ]]; then
     echo_info "Starting pgaudit_analyze.."
     pgaudit_analyze $PGDATA/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
-fi
-
-if [[ ${ENABLE_SSHD} == "true" ]]; then
-    echo_info "Applying SSHD.."
-    source /opt/cpm/bin/sshd.sh
-    start_sshd
 fi
 
 if [[ -v PGBOUNCER_PASSWORD ]]

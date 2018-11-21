@@ -2,9 +2,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "metrics-grafanadata",
+        "name": "$CCP_NAMESPACE-metrics-grafanadata",
         "labels": {
-            "name": "metrics-grafanadata"
+            "name": "$CCP_NAMESPACE-metrics-grafanadata"
         }
     },
     "spec": {
@@ -13,7 +13,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH",
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-metrics",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"
@@ -24,9 +24,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "metrics-prometheusdata",
+        "name": "$CCP_NAMESPACE-metrics-prometheusdata",
         "labels": {
-            "name": "metrics-prometheusdata"
+            "name": "$CCP_NAMESPACE-metrics-prometheusdata"
         }
     },
     "spec": {
@@ -35,7 +35,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH",
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-metrics",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"

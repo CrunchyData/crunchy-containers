@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/upgrade" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.5" \
-	Version="7.5" \
-	Release="2.1.0" \
+	PostgresFullVersion="10.6" \
+	Version="7.6" \
+	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
         description="Provides a means to perform a major PostgreSQL upgrade from 9.5 to 9.6 or 9.6 to 10. Old data files are left intact." \
@@ -14,16 +14,19 @@ LABEL name="crunchydata/upgrade" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-7-x86_64/pgdg-centos95-9.5-3.noarch.rpm
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/pgdg-centos96-9.6-3.noarch.rpm
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
+ENV PGDG_95_REPO="pgdg-centos95-9.5-3.noarch.rpm" \
+    PGDG_96_REPO="pgdg-centos96-9.6-3.noarch.rpm" \
+    PGDG_10_REPO="pgdg-centos10-10-2.noarch.rpm"
+
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/9.5/redhat/rhel-7-x86_64/${PGDG_95_REPO}
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-7-x86_64/${PGDG_96_REPO}
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/${PGDG_10_REPO}
 
 RUN yum -y update && yum install -y epel-release \
  && yum -y update glibc-common \
  && yum install -y bind-utils \
 	gettext \
 	hostname \
- 	nss_wrapper \
 	procps-ng \
 	unzip \
  && yum -y install \
@@ -36,9 +39,16 @@ RUN mkdir -p /opt/cpm/bin /pgolddata /pgnewdata /opt/cpm/conf
 ADD bin/upgrade/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/upgrade/ /opt/cpm/conf
-RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata
+
+RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata && \
+        chmod -R g=u /opt/cpm /pgolddata /pgnewdata
 
 VOLUME /pgolddata /pgnewdata
+
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+	
+ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 
 USER 26
 

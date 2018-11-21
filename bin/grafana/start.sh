@@ -15,7 +15,6 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 export PATH=$PATH:/opt/cpm/bin
 export GRAFANA_HOME=$(find /opt/cpm/bin/ -type d -name 'grafana-[1-9].*')
@@ -25,6 +24,7 @@ ls -la /opt/cpm/bin
 
 DASHBOARDS=(
     CRUD_Details
+    FilesystemDetailsKube
     PostgreSQL
     PostgreSQLDetails
     TableSize_Detail

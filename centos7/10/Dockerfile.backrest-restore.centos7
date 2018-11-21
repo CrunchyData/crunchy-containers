@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.5" \
-	Version="7.5" \
-	Release="2.1.0" \
+	PostgresFullVersion="10.6" \
+	Version="7.6" \
+	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="Executes the pgbackrest utility, allowing FULL & DELTA restore capability." \
         description="Executes pgbackrest utility, allowing FULL & DELTA restore capability. Capable of mounting the pgbackrest.conf config file via /pgconf volume in addition to mounting the /backrestrepo for access to pgbackrest archives." \
@@ -16,8 +16,7 @@ LABEL name="crunchydata/postgres" \
 
 ENV PGVERSION="10" PGDG_REPO="pgdg-centos10-10-2.noarch.rpm"
 
-#RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/${PGDG_REPO}
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 RUN yum -y update && yum -y install epel-release \
  && yum -y install  \
@@ -28,7 +27,7 @@ RUN yum -y update && yum -y install epel-release \
  && yum -y clean all
 
 RUN yum -y install postgresql10-server  \
-        pgbackrest \
+ && yum -y install pgbackrest \
  && yum -y clean all
 
 ENV	PGROOT="/usr/pgsql-${PGVERSION}"
@@ -44,15 +43,33 @@ RUN chown -R postgres:postgres /opt/cpm  \
 	/pgdata /pgconf /backrestrepo  \
 	/var/lib/pgsql /var/log/pgbackrest
 
+#RUN chgrp -R 0 /opt/cpm  \
+#	/pgdata /pgconf /backrestrepo  \
+#	/var/lib/pgsql /var/log/pgbackrest && \
+#    chmod -R g=u /opt/cpm  \
+#	/pgdata /pgconf /backrestrepo  \
+#	/var/lib/pgsql /var/log/pgbackrest
+
+
 # volume pgconf to store pgbackrest.conf
 # volume backrestrepo for pgbackrest to restore from and log
 
 VOLUME /pgconf /pgdata /backrestrepo
 
 ADD bin/backrest_restore /opt/cpm/bin
-ADD bin/common /opt/cpm/bin
+
+#removed to allow separate version of common_lib.sh for this container only. Its in
+# the bin/backrest_restore directory.
+#ADD bin/common /opt/cpm/bin
+
 ADD conf/backrest_restore /opt/cpm/conf
 
-USER 26
+# Removed to rely on nss_wrapper for now
+#RUN chmod g=u /etc/passwd && \
+#	chmod g=u /etc/group
+#
+#ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 
+
+USER 26
 CMD ["/opt/cpm/bin/start.sh"]

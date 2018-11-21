@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/postgres-gis" \
         vendor="crunchy data" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.14" \
-	Version="7.5" \
-	Release="2.1.0" \
+	PostgresFullVersion="9.5.15" \
+	Version="7.6" \
+	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="Includes PostGIS extensions on top of crunchy-postgres" \
         description="An identical image of crunchy-postgres with the extra PostGIS packages added for users that require PostGIS." \
@@ -23,8 +23,6 @@ RUN yum -y update && yum -y install epel-release \
  && yum -y install bind-utils \
     gettext \
     hostname \
-    nss_wrapper \
-    openssh-server \
     procps-ng  \
     rsync \
  && yum -y install postgresql95-server postgresql95-contrib postgresql95 \
@@ -41,14 +39,17 @@ ENV	PGROOT="/usr/pgsql-${PGVERSION}"
 # bashrc to set permissions in OCP when using exec
 # HOME is / in OCP
 ADD conf/.bash_profile /var/lib/pgsql/
+ADD conf/.bashrc /var/lib/pgsql
 ADD conf/.bash_profile /
 ADD conf/.bashrc /
 
 # set up cpm directory
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo /sshd
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
-	/pgdata /pgwal /pgconf /backup /recover /backrestrepo
+    /pgdata /pgwal /pgconf /backup /recover /backrestrepo &&  \
+    chmod -R g=u /opt/cpm /var/lib/pgsql \
+    /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
 # Link pgbackrest.conf to default location for convenience
 RUN ln -sf /tmp/pgbackrest.conf /etc/pgbackrest.conf
@@ -59,9 +60,8 @@ RUN ln -sf /tmp/pgbackrest.conf /etc/pgbackrest.conf
 # add volumes to allow storage of postgres WAL segment files
 # add volumes to locate WAL files to recover with
 # add volumes for pgbackrest to write to
-# add volumes for sshd host keys
 
-VOLUME ["/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo", "/sshd"]
+VOLUME ["/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo"]
 
 # open up the postgres port
 EXPOSE 5432
@@ -71,6 +71,12 @@ ADD bin/postgres-gis /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
 ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/pgmonitor
+
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+	
+ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
+
 
 USER 26
 

@@ -2,8 +2,8 @@ FROM centos:7
 
 LABEL name="crunchydata/prometheus" \
         vendor="crunchy data" \
-	Version="7.5" \
-	Release="2.1.0" \
+	Version="7.6" \
+	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="Prometheus server that stores metrics for crunchy-postgres" \
         io.k8s.description="prometheus container" \
@@ -14,7 +14,6 @@ LABEL name="crunchydata/prometheus" \
 RUN yum -y update \
  && yum -y install epel-release \
  && yum -y install bind-utils \
-    nss_wrapper \
     procps-ng \
     hostname  \
     gettext \
@@ -27,10 +26,14 @@ ADD bin/prometheus /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/prometheus /opt/cpm/conf
 
-RUN chown -R 2:2 /opt/cpm /data /conf
+RUN chgrp -R 0 /opt/cpm /data /conf && \
+    chmod -R g=u /opt/cpm /data 
 
 EXPOSE 9090
 VOLUME ["/data", "/conf"]
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["opt/cpm/bin/uid_daemon.sh"]
 
 USER 2
 

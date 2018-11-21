@@ -7,7 +7,7 @@
     "spec": {
       "selector": {
         "matchLabels": {
-          "name": "upgrade-pgnewdata"
+          "name": "$CCP_NAMESPACE-upgrade-pgnewdata"
         }
       },
       "accessModes": [

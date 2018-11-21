@@ -37,9 +37,14 @@ func TestBackup(t *testing.T) {
 	}
 
 	t.Log("Checking if job has completed...")
-	if ok, err := harness.Client.IsJobComplete(harness.Namespace, "backup"); !ok {
-		t.Fatal(err)
-	}
+        job, err := harness.Client.GetJob(harness.Namespace, "backup")
+        if err != nil {
+                t.Fatal(err)
+        }
+
+        if err := harness.Client.IsJobComplete(harness.Namespace, job); err != nil {
+                t.Fatal(err)
+        }
 
 	report, err := harness.createReport()
 	if err != nil {

@@ -1,0 +1,59 @@
+FROM registry.access.redhat.com/rhel7
+
+MAINTAINER Crunchy Data <info@crunchydata.com>
+
+LABEL name="crunchydata/backup" \
+        vendor="crunchy data" \
+	PostgresVersion="11" \
+	PostgresFullVersion="11.1" \
+	Version="7.6" \
+	Release="2.2.0" \
+        url="https://crunchydata.com" \
+        summary="Performs a pg_basebackup full database backup on a database container" \
+        description="Meant to be executed upon demand, this container will run pg_basebackup against a running database container and write the backup files to a mounted directory." \
+        run="" \
+        start="" \
+        stop="" \
+        io.k8s.description="backup container" \
+        io.k8s.display-name="Crunchy backup container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY conf/atomic/backup/help.1 /help.1
+COPY conf/atomic/backup/help.md /help.md
+COPY conf/licenses /licenses
+
+ENV PGVERSION="11"
+
+# Crunchy Postgres repo
+ADD conf/RPM-GPG-KEY-crunchydata  /
+ADD conf/crunchypg11.repo /etc/yum.repos.d/
+RUN rpm --import RPM-GPG-KEY-crunchydata
+
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+ && yum -y update && yum install -y bind-utils \
+	gettext \
+	hostname \
+	procps-ng \
+	unzip \
+ && yum -y install postgresql11 postgresql11-server \
+ && yum clean all -y
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
+ADD bin/backup/ /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
+ADD conf/backup/ /opt/cpm/conf
+
+RUN chown -R postgres:postgres  /opt/cpm /pgdata && \
+        chmod -R g=u /opt/cpm /pgdata 
+
+VOLUME ["/pgdata"]
+
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+	
+ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
+
+USER 26
+
+CMD ["/opt/cpm/bin/start-backupjob.sh"]

@@ -1,0 +1,45 @@
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "$CCP_NAMESPACE-primary-deployment-pgdata",
+        "labels":{
+           "k8s-app": "postgres-cluster",
+           "name": "$CCP_NAMESPACE-primary-deployment-pgdata"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "nfs": {
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-postgres-cluster",
+            "server": "$CCP_NFS_IP"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
+
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "$CCP_NAMESPACE-replica-deployment-pgdata",
+        "labels":{
+           "k8s-app": "postgres-cluster",
+           "name": "$CCP_NAMESPACE-replica-deployment-pgdata"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": ["$CCP_STORAGE_MODE"],
+        "nfs": {
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-postgres-cluster",
+            "server": "$CCP_NFS_IP"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}

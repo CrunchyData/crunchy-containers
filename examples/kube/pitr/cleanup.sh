@@ -16,20 +16,17 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod restore-pitr
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service restore-pitr
-sudo CCP_STORAGE_PATH=$CCP_STORAGE_PATH rm -rf $CCP_STORAGE_PATH/restore-pitr
-
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pitr
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pitr
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod restore-pitr pitr
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service restore-pitr pitr
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} job backup-pitr
 
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc pitr-pgdata pitr-pgwal backup-pitr-pgdata restore-pitr-pgdata recover-pvc
 if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv pitr-pgdata pitr-pgwal backup-pitr-pgdata restore-pitr-pgdata recover-pv
+  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-pitr-pgdata \
+    $CCP_NAMESPACE-pitr-pgwal $CCP_NAMESPACE-backup-pitr-pgdata \
+    $CCP_NAMESPACE-restore-pitr-pgdata $CCP_NAMESPACE-recover-pv
 fi
 
 dir_check_rm "pitr"
-dir_check_rm "pitr-wal"
-dir_check_rm "pitr-backups"
+dir_check_rm "backup-pitr"
 dir_check_rm "restore-pitr"

@@ -6,7 +6,7 @@ weight: 3
 ---
 
 :toc:
-Latest Release: 2.1.0 {docdate}
+Latest Release: 2.2.0 {docdate}
 
 == Available Storage Types
 
@@ -18,6 +18,17 @@ The Container Suite is tested on 3 different storage backends:
 
 Other storage backends work as well including GCE, EBS, ScaleIO, and
 others, but may require you to modify various examples or configuration.
+
+Crunchy Containers are tested, developed, and examples provided
+that use the various storage types listed above.  This insures
+that customers have a high degree of choices when it comes to
+choosing a volume type.  HostPath and NFS allow precise host path
+choices for where database volumes are persisted.  HostPath and NFS
+also allow governance models where volume creation is performed
+by an administrator instead of the application/developer team.
+
+Where customers desire a dynamic form of volume creation (e.g. self service),
+storage classes are also supported within the example set.
 
 Environment variables are set to determine how and what storage
 is to be used.
@@ -38,6 +49,13 @@ export CCP_STORAGE_CAPACITY=400M
 NOTE: It may be necessary to grant your user in OpenShift or Kubernetes the
 rights to modify the hostaccess SCC. This can be done with the command: `oadm policy add-scc-to-user hostaccess $(oc whoami)`
 
+{{% notice tip %}}
+When running examples against HostPath storage, the run scripts provided in the
+examples will create directories using the following pattern:
+
+`$CCP_STORAGE_PATH/$CCP_NAMESPACE-<EXAMPLE_NAME>`
+{{% /notice %}}
+
 == NFS
 
 NFS can also be used as a storage mechanism.  Instructions
@@ -47,14 +65,29 @@ For testing with NFS, in your *.bashrc* file, include
 the following variables that are unique to your NFS environment:
 ....
 export CCP_SECURITY_CONTEXT='"supplementalGroups": [65534]'
-export CCP_STORAGE_PATH=/mnt/nfsfileshare
-export CCP_NFS_IP=192.168.0.118
+export CCP_STORAGE_PATH=/nfsfileshare
+export CCP_NFS_IP=<IP OF NFS SERVER>
 export CCP_STORAGE_MODE=ReadWriteMany
 export CCP_STORAGE_CAPACITY=400M
 ....
 
-In this example above the group ownership of the NFS mount is assumed to be
-*nfsnobody* or *65534*.
+In the example above the group ownership of the NFS mount is assumed to be
+*nfsnobody* or *65534*.  Additionally, it is recommended that root not be squashed on
+the NFS share (`no_root_squash`) in order to ensure the proper directories can be
+created, modified and removed as needed for the various container examples.
+
+{{% notice warning %}}
+The examples in the Crunchy Container suite need access to the NFS export to create
+the directories used by the examples.  The NFS export should be mounted locally so
+the example `run.sh` scripts can do proper setup.
+{{% /notice %}}
+
+{{% notice tip %}}
+NWhen running examples against NFS storage, the run scripts provided in the
+examples will create directories using the following pattern:
+
+`$CCP_STORAGE_PATH/$CCP_NAMESPACE-<EXAMPLE_NAME>`
+{{% /notice %}}
 
 {{%expand "Configuration Notes for NFS" %}}
 
@@ -71,7 +104,7 @@ Detailed instructions that you can use for setting up a NFS server on Centos 7 a
 
 http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html
 
-if you are running your client on a VM, you will need to
+If you are running your client on a VM, you will need to
 add 'insecure' to the exportfs file on the NFS server due to the way port
 translation is done between the VM host and the VM instance.
 
@@ -98,19 +131,14 @@ look into the link:https://www.novell.com/support/kb/doc.php?id=7010210[noac mou
 
 == Dynamic Storage
 
-Dynamic storage classes can be used for the examples.  Gluster
-is only one example of a storage type that supports dynamic storage
-classes.  The environment variable `CCP_STORAGE_CLASS` is used
+Dynamic storage classes can be used for the examples.  There
+are various providers and solutions for dynamic storage, see the Kubernetes
+documentation on supported storage choices.
+The environment variable `CCP_STORAGE_CLASS` is used
 in the examples to determine whether or not to create a PersistentVolume
 manually or that it will be created dynamically using a StorageClass.  In
 the case of GKE, the default StorageClass is named *default*.   Storage
 class names are determined by the Kubernetes administrator and can vary.
-
-Setting up a Gluster cluster will offer you the ability to use
-dynamic storage provisioning in the examples.  A set of example
-Gluster configuration files is found at `$CCPROOT/examples/gluster`.
-This configuration is for a 3 node Gluster cluster which runs
-on a Centos7 Minimal VM deployment.
 
 Using block storage requires a security context to be set
 as follows:

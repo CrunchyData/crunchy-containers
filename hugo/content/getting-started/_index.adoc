@@ -5,10 +5,7 @@ draft: false
 weight: 2
 ---
 
-Latest Release: 2.1.0 {docdate}
+Latest Release: 2.2.0 {docdate}
 
 Examples are provided for the Kubernetes, OpenShift, and Docker environments in the
 link:/getting-started/kubernetes-and-openshift/[Kubernetes and OpenShift] document.
-
-For documentation relating to  OpenShift Templates examples, visit the link:/getting-started/openshift-templates/[OpenShift Templates]
-document.

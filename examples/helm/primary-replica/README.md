@@ -102,10 +102,10 @@ See `values.yaml` for configuration notes. Specify each parameter using the `--s
 
 ```console
 $ helm install primary-replica --name primary-replica \
-  --set Image.tag=centos7-9.6.10-2.1.0
+  --set Image.tag=centos7-9.6.11-2.2.0
 ```
 
-The above command changes the image tag of the container from the default of `centos7-10.5-2.1.0` to `centos7-9.6.10-2.1.0`.
+The above command changes the image tag of the container from the default of `centos7-10.6-2.2.0` to `centos7-9.6.11-2.2.0`.
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
 
@@ -121,7 +121,7 @@ The above command changes the image tag of the container from the default of `ce
 | `.serviceType`      | The type of service      | `ClusterIP`               
 | `.image.repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
 | `.image.container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
-| `.image.tag` | The image tag to be used.    | `centos7-10.5-2.1.0`                                                    |
+| `.image.tag` | The image tag to be used.    | `centos7-10.6-2.2.0`                                                    |
 | `.pv.storage` | Size of persistent volume     | 400M                                                    |
 | `.pv.name` | Name of persistent volume    | `primary-pv`                                                    |
 | `.pv.mode` | The storage mode for the persistent volume    | `ReadWriteMany`                                                    |

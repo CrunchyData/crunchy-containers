@@ -19,7 +19,7 @@ The following features are supported by the `crunchy-backup` container:
 
 The crunchy-backup Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (10.5, 9.6.10 and 9.5.14)
+* PostgreSQL (11.1, 10.6, 9.6.11 and 9.5.15)
 * CentOS7 - publicly available
 * RHEL7 - customers only
 
@@ -38,6 +38,7 @@ The crunchy-backup Docker image contains the following packages (versions vary d
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.
+**BACKUP_OPTS**|None|Optional parameters to pass to pg_basebackup.
 
 ## Volumes
 

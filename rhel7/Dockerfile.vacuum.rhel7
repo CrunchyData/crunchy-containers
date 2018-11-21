@@ -1,11 +1,11 @@
 FROM registry.access.redhat.com/rhel7
 
-MAINTAINER Crunchy Data <support@crunchydata.com>
+MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/vacuum" \
         vendor="crunchy data" \
-	Version="7.5" \
-	Release="2.1.0" \
+	Version="7.6" \
+	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="Provides a simple SQL VACUUM execution for a PostgreSQL table" \
         description="The crunchy-vacuum container runs a SQL VACUUM statement against a database table(s). You can pass in environment variables to determine how it functions, such as the tables to run the vacuum against and if the ANALYZE is to be performed." \
@@ -29,7 +29,6 @@ RUN yum -y update \
       gettext \
       hostname \
       iproute \
-      nss_wrapper \
       procps-ng \
  && yum clean all -y
 
@@ -39,7 +38,11 @@ ADD bin/vacuum /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/vacuum /opt/cpm/conf
 
-RUN chown -R 2:2 /opt/cpm
+RUN chgrp -R 0 /opt/cpm && \
+        chmod -R g=u /opt/cpm
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["/opt/cpm/bin/uid_daemon.sh"]
 
 USER 2
 

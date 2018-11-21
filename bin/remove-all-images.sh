@@ -14,8 +14,8 @@
 # limitations under the License.
 
 for i in \
-restore pgdump postgres-gis prometheus grafana collect pgbadger pgpool \
-watch backup postgres pgbouncer pgadmin4 vacuum dba upgrade backrest-restore
+restore pgdump pgrestore postgres-gis prometheus grafana collect pgbadger pgpool \
+watch backup postgres pgbouncer pgadmin4 vacuum scheduler upgrade backrest-restore
 do
 	docker rmi -f  $CCP_IMAGE_PREFIX/crunchy-$i:$CCP_IMAGE_TAG
 	docker rmi -f  crunchy-$i

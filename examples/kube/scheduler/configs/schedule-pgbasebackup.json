@@ -1,0 +1,16 @@
+{
+    "version": "v1",
+    "name": "primary-backup-pgbasebackup",
+    "created": "2018-09-04T18:25:43.511Z",
+    "schedule": "* * * * *",
+    "namespace": "${CCP_NAMESPACE}",
+    "type": "pgbasebackup",
+    "pgbasebackup": {
+        "backupHost": "primary-deployment",
+        "backupPort": "5432",
+        "backupVolume": "primary-deployment-backup",
+        "imagePrefix": "${CCP_IMAGE_PREFIX}",
+        "imageTag": "${CCP_IMAGE_TAG}",
+        "secret": "pgprimary-secret"
+    }
+}

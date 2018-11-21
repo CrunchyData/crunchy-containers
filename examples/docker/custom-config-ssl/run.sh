@@ -55,6 +55,10 @@ docker run \
 
 echo ""
 echo "To connect via SSL, run the following once the DB is ready: "
-echo "source ./env.sh"
-echo "psql postgresql://0.0.0.0:5432/postgres?sslmode=require -U testuser"
+echo "psql \"postgresql://testuser@${CONTAINER_NAME?}:5432/userdb?\
+sslmode=verify-full&\
+sslrootcert=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crt&\
+sslcrl=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crl&\
+sslcert=$CCPROOT/examples/kube/custom-config-ssl/certs/client.crt&\
+sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key\""
 echo ""

@@ -27,10 +27,8 @@ func TestBackrestAsyncArchive(t *testing.T) {
 	t.Log("Running full backup...")
 	// Required for OCP - backrest gets confused when random UIDs aren't found in PAM.
 	// Exec doesn't load bashrc or bash_profile, so we need to set this explicitly.
-	nsswrapper := []string{"env", "LD_PRELOAD=/usr/lib64/libnss_wrapper.so", "NSS_WRAPPER_PASSWD=/tmp/passwd", "NSS_WRAPPER_GROUP=/tmp/group"}
 	fullBackup := []string{"/usr/bin/pgbackrest", "--stanza=db", "backup", "--type=full"}
-	cmd := append(nsswrapper, fullBackup...)
-	_, stderr, err := harness.Client.Exec(harness.Namespace, "backrest-async-archive", "backrest", cmd)
+	_, stderr, err := harness.Client.Exec(harness.Namespace, "backrest-async-archive", "backrest", fullBackup)
 	if err != nil {
 		t.Logf("\n%s", stderr)
 		t.Fatalf("Error execing into container: %s", err)
@@ -38,8 +36,7 @@ func TestBackrestAsyncArchive(t *testing.T) {
 
 	t.Log("Running diff backup...")
 	diffBackup := []string{"/usr/bin/pgbackrest", "--stanza=db", "backup", "--type=full"}
-	cmd = append(nsswrapper, diffBackup...)
-	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest-async-archive", "backrest", cmd)
+	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest-async-archive", "backrest", diffBackup)
 	if err != nil {
 		t.Logf("\n%s", stderr)
 		t.Fatalf("Error execing into container: %s", err)
@@ -76,10 +73,8 @@ func TestBackrestDeltaRestore(t *testing.T) {
 	t.Log("Running full backup...")
 	// Required for OCP - backrest gets confused when random UIDs aren't found in PAM.
 	// Exec doesn't load bashrc or bash_profile, so we need to set this explicitly.
-	nsswrapper := []string{"env", "LD_PRELOAD=/usr/lib64/libnss_wrapper.so", "NSS_WRAPPER_PASSWD=/tmp/passwd", "NSS_WRAPPER_GROUP=/tmp/group"}
 	fullBackup := []string{"/usr/bin/pgbackrest", "--stanza=db", "backup", "--type=full"}
-	cmd := append(nsswrapper, fullBackup...)
-	_, stderr, err := harness.Client.Exec(harness.Namespace, "backrest", "backrest", cmd)
+	_, stderr, err := harness.Client.Exec(harness.Namespace, "backrest", "backrest", fullBackup)
 	if err != nil {
 		t.Logf("\n%s", stderr)
 		t.Fatalf("Error execing into container: %s", err)
@@ -94,9 +89,15 @@ func TestBackrestDeltaRestore(t *testing.T) {
 		defer harness.runExample("examples/kube/backrest/delta/cleanup.sh", env, t)
 	}
 
-	if ok, err := harness.Client.IsJobComplete(harness.Namespace, "backrest-delta-restore-job"); !ok {
-		t.Fatal(err)
-	}
+        t.Log("Checking if job has completed...")
+        job, err := harness.Client.GetJob(harness.Namespace, "backrest-delta-restore-job")
+        if err != nil {
+                t.Fatal(err)
+        }
+
+        if err := harness.Client.IsJobComplete(harness.Namespace, job); err != nil {
+                t.Fatal(err)
+        }
 
 	_, err = harness.runExample("examples/kube/backrest/delta/post-restore.sh", env, t)
 	if err != nil {
@@ -139,10 +140,8 @@ func TestBackrestFullRestore(t *testing.T) {
 	t.Log("Running full backup...")
 	// Required for OCP - backrest gets confused when random UIDs aren't found in PAM.
 	// Exec doesn't load bashrc or bash_profile, so we need to set this explicitly.
-	nsswrapper := []string{"env", "LD_PRELOAD=/usr/lib64/libnss_wrapper.so", "NSS_WRAPPER_PASSWD=/tmp/passwd", "NSS_WRAPPER_GROUP=/tmp/group"}
 	fullBackup := []string{"/usr/bin/pgbackrest", "--stanza=db", "backup", "--type=full"}
-	cmd := append(nsswrapper, fullBackup...)
-	_, stderr, err := harness.Client.Exec(harness.Namespace, "backrest", "backrest", cmd)
+	_, stderr, err := harness.Client.Exec(harness.Namespace, "backrest", "backrest", fullBackup)
 	if err != nil {
 		t.Logf("\n%s", stderr)
 		t.Fatalf("Error execing into container: %s", err)
@@ -157,9 +156,15 @@ func TestBackrestFullRestore(t *testing.T) {
 		defer harness.runExample("examples/kube/backrest/full/cleanup.sh", env, t)
 	}
 
-	if ok, err := harness.Client.IsJobComplete(harness.Namespace, "backrest-full-restore-job"); !ok {
-		t.Fatal(err)
-	}
+        t.Log("Checking if job has completed...")
+        job, err := harness.Client.GetJob(harness.Namespace, "backrest-full-restore-job")
+        if err != nil {
+                t.Fatal(err)
+        }
+
+        if err := harness.Client.IsJobComplete(harness.Namespace, job); err != nil {
+                t.Fatal(err)
+        }
 
 	_, err = harness.runExample("examples/kube/backrest/full/post-restore.sh", env, t)
 	if err != nil {
@@ -203,10 +208,8 @@ func TestBackrestPITRRestore(t *testing.T) {
 	t.Log("Running full backup...")
 	// Required for OCP - backrest gets confused when random UIDs aren't found in PAM.
 	// Exec doesn't load bashrc or bash_profile, so we need to set this explicitly.
-	nsswrapper := []string{"env", "LD_PRELOAD=/usr/lib64/libnss_wrapper.so", "NSS_WRAPPER_PASSWD=/tmp/passwd", "NSS_WRAPPER_GROUP=/tmp/group"}
 	fullBackup := []string{"/usr/bin/pgbackrest", "--stanza=db", "backup", "--type=full"}
-	cmd := append(nsswrapper, fullBackup...)
-	_, stderr, err := harness.Client.Exec(harness.Namespace, "backrest", "backrest", cmd)
+	_, stderr, err := harness.Client.Exec(harness.Namespace, "backrest", "backrest", fullBackup)
 	if err != nil {
 		t.Logf("\n%s", stderr)
 		t.Fatalf("Error execing into container: %s", err)
@@ -221,9 +224,15 @@ func TestBackrestPITRRestore(t *testing.T) {
 		defer harness.runExample("examples/kube/backrest/pitr/cleanup.sh", env, t)
 	}
 
-	if ok, err := harness.Client.IsJobComplete(harness.Namespace, "backrest-pitr-restore-job"); !ok {
-		t.Fatal(err)
-	}
+        t.Log("Checking if job has completed...")
+        job, err := harness.Client.GetJob(harness.Namespace, "backrest-pitr-restore-job")
+        if err != nil {
+                t.Fatal(err)
+        }
+
+        if err := harness.Client.IsJobComplete(harness.Namespace, job); err != nil {
+                t.Fatal(err)
+        }
 
 	_, err = harness.runExample("examples/kube/backrest/pitr/post-restore.sh", env, t)
 	if err != nil {

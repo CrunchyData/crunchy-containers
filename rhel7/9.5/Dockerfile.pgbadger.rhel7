@@ -1,13 +1,13 @@
 FROM registry.access.redhat.com/rhel7
 
-MAINTAINER Crunchy Data <support@crunchydata.com>
+MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/pgbadger" \
         vendor="crunchy data" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.14" \
-	Version="7.5" \
-	Release="2.1.0" \
+	PostgresFullVersion="9.5.15" \
+	Version="7.6" \
+	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="HTTP wrapper around the PGBadger PostgreSQL utility" \
         description="Has an HTTP REST interface. You GET http://host:10000/api/badgergenerate, and it will generate a pgbadger report on a database container's log files." \
@@ -23,6 +23,8 @@ COPY conf/atomic/pgbadger/help.1 /help.1
 COPY conf/atomic/pgbadger/help.md /help.md
 COPY conf/licenses /licenses
 
+ENV PGVERSION="9.5"
+
 # PGDG Postgres repo
 #RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-3.noarch.rpm
 
@@ -35,10 +37,9 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 
 RUN yum -y update \
  && yum -y install epel-release \
- && yum -y install \
+ && yum -y install --enablerepo="rhel-7-server-optional-rpms" \
       gettext \
       hostname \
-      nss_wrapper \
       pgbadger \
  && yum clean all -y
 
@@ -50,12 +51,19 @@ ADD conf/pgbadger /opt/cpm/conf
 ADD bin/common /opt/cpm/bin
 ADD bin/pgbadger /opt/cpm/bin
 
-RUN chown -R 26:26 /opt/cpm /report
+RUN chown -R postgres:postgres /opt/cpm /report /bin && \
+        chmod -R g=u /opt/cpm /report /bin
 
 # pgbadger port
 EXPOSE 10000
 
 VOLUME ["/pgdata", "/report"]
+
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+
+ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
+
 
 USER 26
 

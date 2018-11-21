@@ -47,6 +47,9 @@
                 }
             },
             "spec": {
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                },
                 "containers": [
                     {
                         "name": "postgres",
@@ -146,10 +149,6 @@
                             {
                                 "name": "PGHOST",
                                 "value": "/tmp"
-                            },
-                            {
-                                "name": "PGDATA_PATH_OVERRIDE",
-                                "value": "replica-deployment"
                             }
                         ],
                         "resources": {},

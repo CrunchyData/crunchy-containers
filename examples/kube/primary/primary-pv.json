@@ -2,9 +2,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "primary-pgdata",
+        "name": "$CCP_NAMESPACE-primary-pgdata",
         "labels": {
-            "name": "primary-pgdata"
+            "name": "$CCP_NAMESPACE-primary-pgdata"
         }
     },
     "spec": {
@@ -13,7 +13,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "hostPath": {
-            "path": "$CCP_STORAGE_PATH"
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-primary"
         },
         "persistentVolumeReclaimPolicy": "Retain"
     }

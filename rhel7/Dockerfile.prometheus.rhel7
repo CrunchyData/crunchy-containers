@@ -1,11 +1,11 @@
 FROM registry.access.redhat.com/rhel7
 
-MAINTAINER Crunchy Data <support@crunchydata.com>
+MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/prometheus" \
         vendor="crunchy data" \
-	Version="7.5" \
-	Release="2.1.0" \
+	Version="7.6" \
+	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="Prometheus server that stores metrics for crunchy-postgres" \
         description="PostgreSQL collected metrics are stored here as defined by the Crunchy Container Suite.  Prometheus will scrape metrics from Crunchy Collect. Works in conjunction with crunchy-collect and crunchy-grafana." \
@@ -27,7 +27,6 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
     bind-utils \
     gettext \
     hostname \
-    nss_wrapper \
     procps-ng \
   && yum clean all -y
 
@@ -38,10 +37,14 @@ ADD bin/prometheus /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/prometheus /opt/cpm/conf
 
-RUN chown -R 2:2 /opt/cpm /data /conf
+RUN chgrp -R 0 /opt/cpm /data /conf && \
+    chmod -R g=u /opt/cpm /data 
 
 EXPOSE 9090
 VOLUME ["/data", "/conf"]
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["opt/cpm/bin/uid_daemon.sh"]
 
 USER 2
 

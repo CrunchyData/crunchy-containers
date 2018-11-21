@@ -18,6 +18,9 @@ ${DIR?}/cleanup.sh
 
 docker network create --driver bridge pgnet
 
+docker volume create --driver local --name=pg-primary
+docker volume create --driver local --name=report
+
 docker run \
     -p 5432:5432 \
     -v pg-primary:/pgdata \
@@ -32,7 +35,7 @@ docker run \
     -v pg-primary:/pgdata:ro \
     -v report:/report \
     --env=BADGER_TARGET='pg-primary' \
-    --env=BADGER_CUSTOM_OPTS='--incremental' \
+    --env=BADGER_CUSTOM_OPTS='--incremental --prefix="%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h"' \
     --network=pgnet \
     --name='pgbadger' \
     --hostname='pgbadger' \

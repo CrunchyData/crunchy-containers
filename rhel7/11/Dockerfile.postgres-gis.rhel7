@@ -1,0 +1,99 @@
+FROM registry.access.redhat.com/rhel7
+
+MAINTAINER Crunchy Data <info@crunchydata.com>
+
+LABEL name="crunchydata/postgres-gis" \
+        vendor="crunchy data" \
+	PostgresVersion="11" \
+	PostgresFullVersion="11.1" \
+	Version="7.6" \
+	Release="2.2.0" \
+        url="https://crunchydata.com" \
+        summary="Includes PostGIS extensions on top of crunchy-postgres" \
+        description="An identical image of crunchy-postgres with the extra PostGIS and pgrouting packages added for users that require PostGIS." \
+        run="" \
+        start="" \
+        stop="" \
+        io.k8s.description="postgres-gis container" \
+        io.k8s.display-name="Crunchy postgres-gis container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY conf/atomic/postgres-gis/help.1 /help.1
+COPY conf/atomic/postgres-gis/help.md /help.md
+COPY conf/licenses /licenses
+
+ENV PGVERSION="11"
+
+# if you ever need to install package docs inside the container, uncomment
+#RUN sed -i '/nodocs/d' /etc/yum.conf
+
+# Crunchy Postgres repo
+ADD conf/RPM-GPG-KEY-crunchydata  /
+ADD conf/crunchypg11.repo /etc/yum.repos.d/
+RUN rpm --import RPM-GPG-KEY-crunchydata
+
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+ && yum -y update && yum --enablerepo=epel --enablerepo="rhel-7-server-optional-rpms" -y install bind-utils \
+    gettext \
+    hostname \
+    R-core libRmath texinfo-tex texlive-epsf \
+    procps-ng \
+    rsync \
+ && yum -y reinstall glibc-common \
+ && yum -y install postgresql11 postgresql11-contrib postgresql11-server \
+    pgaudit11 pgaudit11_set_user \
+    crunchy-backrest plr11 \
+    postgis24_11 postgis24_11-client pgrouting_11 \
+ && yum -y --setopt=tsflags='' install pgaudit_analyze \
+ && yum -y clean all
+
+ENV PGROOT="/usr/pgsql-${PGVERSION}"
+
+# add path settings for postgres user
+# bash_profile is loaded in login, but not with exec
+# bashrc to set permissions in OCP when using exec
+# HOME is / in OCP
+ADD conf/.bash_profile /var/lib/pgsql/
+ADD conf/.bashrc /var/lib/pgsql
+ADD conf/.bash_profile /
+ADD conf/.bashrc /
+
+# set up cpm directory
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo
+
+RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
+    /pgdata /pgwal /pgconf /backup /recover /backrestrepo &&  \
+    chmod -R g=u /opt/cpm /var/lib/pgsql \
+    /pgdata /pgwal /pgconf /backup /recover /backrestrepo
+
+# Link pgbackrest.conf to default location for convenience
+RUN ln -sf /tmp/pgbackrest.conf /etc/pgbackrest.conf
+
+# add volumes to allow override of pg_hba.conf and postgresql.conf
+# add volumes to allow backup of postgres files
+# add volumes to offer a restore feature
+# add volumes to allow storage of postgres WAL segment files
+# add volumes to locate WAL files to recover with
+# add volumes for pgbackrest to write to
+
+VOLUME ["/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo"]
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin/postgres /opt/cpm/bin
+ADD bin/postgres-gis /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
+ADD conf/postgres /opt/cpm/conf
+ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/pgmonitor
+
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+	
+ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
+
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]

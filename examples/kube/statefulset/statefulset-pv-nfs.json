@@ -2,9 +2,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "statefulset-pgdata-0",
+        "name": "$CCP_NAMESPACE-statefulset-pgdata-0",
         "labels": {
-            "name": "statefulset-pgdata"
+            "name": "$CCP_NAMESPACE-statefulset-pgdata"
         }
     },
     "spec": {
@@ -13,7 +13,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH",
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-statefulset",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"
@@ -24,9 +24,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "statefulset-pgdata-1",
+        "name": "$CCP_NAMESPACE-statefulset-pgdata-1",
         "labels": {
-            "name": "statefulset-pgdata"
+            "name": "$CCP_NAMESPACE-statefulset-pgdata"
         }
     },
     "spec": {
@@ -35,7 +35,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH",
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-statefulset",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"
@@ -46,9 +46,9 @@
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
-        "name": "statefulset-pgdata-2",
+        "name": "$CCP_NAMESPACE-statefulset-pgdata-2",
         "labels": {
-            "name": "statefulset-pgdata"
+            "name": "$CCP_NAMESPACE-statefulset-pgdata"
         }
     },
     "spec": {
@@ -57,7 +57,7 @@
         },
         "accessModes": ["$CCP_STORAGE_MODE"],
         "nfs": {
-            "path": "$CCP_STORAGE_PATH",
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-statefulset",
             "server": "$CCP_NFS_IP"
         },
         "persistentVolumeReclaimPolicy": "Retain"

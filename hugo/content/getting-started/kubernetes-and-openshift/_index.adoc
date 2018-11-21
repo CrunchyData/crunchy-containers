@@ -5,9 +5,16 @@ draft: false
 ---
 
 :toc:
-Latest Release: 2.1.0 {docdate}
+Latest Release: 2.2.0 {docdate}
 
 == Getting Started
+
+{{% notice warning %}}
+The Kubernetes and OpenShift examples provided on this page have been designed using single-node Kubernetes/OCP clusters
+whose host machines provide any required supporting infrastructure or services (e.g. local hostPath storage or access
+to an NFS share). Therefore, for the best results when running these examples, it is recommended that you utilize a
+single-node architecture as well.
+{{% /notice %}}
 
 {{% notice tip %}}
 The examples located in the *kube* directory work on both Kubernetes and OpenShift. Ensure the `CCP_CLI` environment variable
@@ -116,16 +123,22 @@ This example deploys the pgadmin4 v2 web user interface
 for PostgreSQL without TLS.
 
 After running the example, you should be able to browse to http://127.0.0.1:5050
-and log into the web application using a user ID of *admin@admin.com*
-and password of *password*.
+and log into the web application with the following configured credentials:
+
+ * Username : *admin@admin.com*
+ * Password: *password*
 
 If you are running this example using Kubernetes or
-OpenShift, replace *127.0.0.1:5050* with the <NODE_IP>:30000.
+OpenShift, it is required to use a port-forward proxy to access the dashboard.
 
-To get the node IP, run the following:
+To start the port-forward proxy run the following:
+
 ....
-${CCP_CLI} describe pod pgadmin4-http | grep Node:
+${CCP_CLI} port-forward pgadmin4-http 5050:5050
 ....
+
+To access the pgAdmin4 dashboard through the proxy, navigate to *http://127.0.0.1:5050*
+in a browser.
 
 See the link:http://pgadmin.org[pgAdmin4 documentation] for more details.
 
@@ -160,17 +173,22 @@ This example deploys the pgadmin4 v2 web user interface
 for PostgreSQL with TLS.
 
 After running the example, you should be able to browse to https://127.0.0.1:5050
-and log into the web application using a user ID of *admin@admin.com*
-and password of *password*.
+and log into the web application with the following configured credentials:
+
+ * Username : *admin@admin.com*
+ * Password: *password*
 
 If you are running this example using Kubernetes or
-OpenShift, replace *127.0.0.1:5050* with the <NODE_IP>:30000.
+OpenShift, it is required to use a port-forward proxy to access the dashboard.
 
-To get the node IP, run the following:
+To start the port-forward proxy run the following:
 
 ....
-${CCP_CLI} describe pod pgadmin4-https | grep Node:
+${CCP_CLI} port-forward pgadmin4-https 5050:5050
 ....
+
+To access the pgAdmin4 dashboard through the proxy, navigate to *https://127.0.0.1:5050*
+in a browser.
 
 See the link:http://pgadmin.org[pgadmin4 documentation] for more details.
 
@@ -203,7 +221,7 @@ An emptyDir with write access must be mounted to the `/run/httpd` directory in O
 
 {{% notice tip %}}
 This example assumes you have run *primary* using a PG 9.5 or 9.6 image
-such as `centos7-9.5.14-2.1.0` prior to running this upgrade.
+such as `centos7-9.5.15-2.2.0` prior to running this upgrade.
 {{% /notice %}}
 
 Starting in release 1.3.1, the upgrade container will let
@@ -213,7 +231,7 @@ you perform a `pg_upgrade` either from a PostgreSQL version 9.5 database to
 Prior to running this example, make sure your `CCP_IMAGE_TAG`
 environment variable is using the next major version of PostgreSQL that you
 want to upgrade to. For example, if you're upgrading from 9.5 to 9.6, make
-sure the variable references a PG 9.6 image such as `centos7-9.6.10-2.1.0`.
+sure the variable references a PG 9.6 image such as `centos7-9.6.11-2.2.0`.
 
 This will create the following in your Kubernetes environment:
 
@@ -251,52 +269,112 @@ You can verify the upgraded database by running the `post-upgrade.sh` script in 
 `examples/kube/upgrade` directory.  This will create a PostgreSQL pod that mounts the
 upgraded volume.
 
-=== Cron Scheduler
+=== Crunchy Scheduler
 
-The crunchy-dba container implements a cron scheduler. The purpose of the crunchy-dba
-container is to offer a way to perform simple DBA tasks that occur on some form of
-schedule such as backup jobs or running a vacuum on a single PostgreSQL database container
-(such as the *primary* example).
+The Crunchy Scheduler container implements a cronlike microservice within a namespace
+to automate backups of a PostgreSQL database.
 
-You can either run the crunchy-dba container as a single pod or include the container
-within a database pod.
+Currently Crunchy Scheduler only supports two types of tasks:
 
-The crunchy-dba container makes use of a Service Account to perform the startup of
-scheduled jobs. The Kubernetes Job type is used to execute the scheduled jobs with a Restart
-policy of Never.
+* pgBackRest
+* pgBaseBackup
 
-To shutdown the instance and remove the container for each example, run the following:
-....
-./cleanup.sh
-....
+This service watches Kubernetes for config maps with the label `crunchy-scheduler=true`.
+If found the scheduler will parse the data found in the config map (json object) and
+convert it to a scheduled task.  If the config map is removed, the scheduler will
+delete the task.
+
+See the following examples for creating config maps that Crunchy Scheduler can parse:
+
+* link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-diff.json[pgBackRest Diff Backup]
+* link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-full.json[pgBackRest Full Backup]
+* link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-pgbasebackup.json[pgBaseBackup Backup]
+
+The Crunchy Scheduler requires a Service Account to create jobs (pgBaseBackup) and to
+exec (pgBackRest).  See the link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/scheduler-sa.json[scheduler example]
+for the required permissions on this account.
+
+==== pgBackRest Schedules
+
+To configure Crunchy Scheduler to create pgBackRest backups the following is required:
+
+* pgBackRest schedule definition requires a deployment name.  The PostgreSQL pod should be created by a deployment.
+
+==== pgBaseBackup Schedules
+
+To configure Crunchy Scheduler to create pgBaseBackup scheduled backups, the following is required:
+
+* The name of the secret that contains the username and password the Scheduler will use to
+  configure the job template.  See link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/primary/secret.json[the primary secret example].
+  for the structure required by the Scheduler.
+* The name of the PVC created for the backups.  This should be created by the user prior to scheduling the task.
+
+{{% notice tip %}}
+When using pgBaseBackup schedules, it may be required to apply specific `supplementalGroups` or an `fsGroup` 
+to the backup job created by the scheduler.  To apply a specific `securityContext` for your 
+storage provider, mount a `backup-template.json` to `/configs` on the scheduler pod.
+
+For an example of applying a custom template, link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler[see the schedule example].
+{{% /notice %}}
 
 ==== Kubernetes and OpenShift
 
-The script to schedule vacuum on a regular schedule is executed through the following
-commands:
+First, start the PostgreSQL example created for the Scheduler by running the following commands:
+
 ....
 # Kubernetes
-cd $CCPROOT/examples/kube/dba
-./run-kube-vac.sh
-
-# OpenShift
-cd $CCPROOT/examples/kube/dba
-./run-ocp-vac.sh
+cd $CCPROOT/examples/kube/scheduler/primary
+./run.sh
 ....
 
-To run the script for scheduled backups, run the following in the same directory:
+The pod created should show a ready status before proceeding.
+
+Next, start the scheduler by running the following command:
+
 ....
 # Kubernetes
-cd $CCPROOT/examples/kube/dba
-./run-kube-backup.sh
-
-# OpenShift
-cd $CCPROOT/examples/kube/dba
-./run-ocp-backup.sh
+cd $CCPROOT/examples/kube/scheduler
+./run.sh
 ....
 
-Individual parameters for both can be modified within their respective JSON files;
-please see the link:/container-specifications/[Container Specifications] document for a full list of what can be modified.
+Once the scheduler is deployed, register the backup tasks by running the following command:
+
+....
+# Kubernetes
+cd $CCPROOT/examples/kube/scheduler
+./add-schedules.sh
+....
+
+The scheduled tasks will (these are just for fast results, not recommended for production):
+
+* take a backup every minute using pgBaseBackup
+* take a full pgBackRest backup every even minute
+* take a diff pgBackRest backup every odd minute
+
+View the logs for the `scheduler` pod until the tasks run:
+
+....
+${CCP_CLI?} logs scheduler -f
+....
+
+View the `pgBaseBackup` pods results after the backup completes:
+
+....
+${CCP_CLI?} logs <basebackup pod name>
+....
+
+View the `pgBackRest` backups via exec after the backup completes:
+
+....
+${CCP_CLI?} exec -ti <primary deployment pod name> -- pgbackrest info
+....
+
+Clean up the examples by running the following commands:
+
+....
+$CCPROOT/examples/kube/scheduler/primary/cleanup.sh
+$CCPROOT/examples/kube/scheduler/cleanup.sh
+....
 
 === Vacuum
 
@@ -367,6 +445,131 @@ test-stop.sh
 
 This script stops the test-start.sh script and also stops the
 crunchy-pg Docker container.
+
+=== Centralized Logging
+
+The logs generated by containers are critical for deployments because they provide insights into the
+health of the system.  PostgreSQL logs are very detailed and there is some information that can only be
+obtained from logs (but not limited to):
+
+* Connections and Disconnections of users
+* Checkpoint Statistics
+* PostgreSQL Server Errors
+
+Aggregrating container logs across multiple hosts allows administrators to audit, debug problems and prevent
+repudiation of misconduct.
+
+In the following example we will demonstrate how to setup Kubernetes and OpenShift to use centralized logging by using
+an EFK (Elasticsearch, Fluentd and Kibana) stack.  Fluentd will run as a daemonset on each host within the Kubernetes
+cluster and extract container logs, Elasticsearch will consume and index the logs gathered by Fluentd and Kibana will allow
+users to explore and visualize the logs via a web dashboard.
+
+To learn more about the EFK stack, see the following:
+
+* https://www.elastic.co/products/elasticsearch
+* https://www.fluentd.org/architecture
+* https://www.elastic.co/products/kibana
+
+==== Configure PostgreSQL for Centralized Logging
+
+By default, Crunchy PostgreSQL logs to files in the `/pgdata` directory.  In order to get the logs
+out of the container we need to configure PostgreSQL to log to `stdout`.
+
+The following settings should be configured in `postgresql.conf` to make PostgreSQL log to `stdout`:
+
+```
+log_destination = 'stderr'
+logging_collector = off
+```
+
+{{% notice warning %}}
+Changes to logging settings require a restart of the PostgreSQL container to take effect.
+{{% /notice %}}
+
+==== Deploying the EFK Stack On OpenShift Container Platform
+
+OpenShift Container Platform can be installed with an EFK stack.  For more information about
+configuring OpenShift to create an EFK stack, see the official documentation:
+
+* https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging.html
+
+==== Deploying the EFK Stack On Kubernetes
+
+First, deploy the EFK stack by running the example using the following commands:
+
+....
+cd $CCPROOT/examples/kube/centralized-logging/efk
+./run.sh
+....
+
+{{% notice warning %}}
+Elasticsearch is configured to use an `emptyDir` volume in this example.  Configure this example to provide a
+persistent volume when deploying into production.
+{{% /notice %}}
+
+
+Next, verify the pods are running in the `kube-system` namespace:
+
+```
+${CCP_CLI?} get pods -n kube-system --selector=k8s-app=elasticsearch-logging
+${CCP_CLI?} get pods -n kube-system --selector=k8s-app=fluentd-es
+${CCP_CLI?} get pods -n kube-system --selector=k8s-app=kibana-logging
+```
+
+If all pods deployed successfully elasticsearch should already be receiving container logs from Fluentd.
+
+Next we will deploy a PostgreSQL Cluster (primary and replica deployments) to demonstrate PostgreSQL logs
+are being captured by Fluentd.
+
+Deploy the PostgreSQL cluster by running the following:
+
+....
+cd $CCPROOT/examples/kube/centralized-logging/postgres-cluster
+./run.sh
+....
+
+Next, verify the pods are running:
+
+....
+${CCP_CLI?} get pods --selector=k8s-app=postgres-cluster
+....
+
+With the PostgreSQL successfully deployed, we can now query the logs in Kibana.
+
+We will need to setup a port-forward to the Kibana pod to access it.  To do that
+we first get the name of the pod by running the following command:
+
+....
+${CCP_CLI?} get pod --selector=k8s-app=kibana-logging -n kube-system
+....
+
+Next, start the port-forward:
+
+....
+${CCP_CLI?} port-forward <KIBANA POD NAME> 5601:5601 -n kube-system
+....
+
+To access the web dashboard navigate in a browser to `127.0.0.1:5601`.
+
+First, click the `Discover` tab and setup an index pattern to use for queries.
+
+The index pattern name we will use is `logstash-*` because Fluentd is configured to
+generate logstash style logs.
+
+Next we will configure the `Time Filter field name` to be `@timestamp`.
+
+Now that our index pattern is created, we can query for the container logs.
+
+Click the `Discover` tab and use the following queries:
+
+....
+# KUBERNETES
+CONTAINER_NAME: *primary* AND MESSAGE: ".*LOG*"
+# OpenShift
+kubernetes.pod_name: "primary" AND log
+....
+
+For more information about querying Kibana, see the official documentation: https://www.elastic.co/guide/en/beats/packetbeat/current/kibana-queries-filters.html
 
 == Backup and Restoration
 
@@ -524,6 +727,11 @@ the additional `-backups` the backups will populate in the `pgdata` directory.
 {{% /notice %}}
 
 ==== Kubernetes and OpenShift
+
+{{% notice tip %}}
+The BackRest examples on Kubernetes/OpenShift can be configured to use the PostGIS images
+by setting the following environment variable: `export CCP_PG_IMAGE='-gis'`
+{{% /notice %}}
 
 ===== Backup
 
@@ -835,99 +1043,6 @@ cd $CCPROOT/examples/kube/backrest/delta
 ./post-restore.sh
 ....
 
-=== pgBackRest with SSHD
-
-The PostgreSQL and PostgreSQL GIS containers can enable an SSH daemon to allow developers
-to do DBA tasks on the database server without the need for exec privileges.  An administrator
-who deploys the SSHD enabled PostgreSQL database can specify the authorized public keys for
-access to the database server.
-
-In order to activate SSHD in the PostgreSQL containers, the following files need to be
-mounted to the PostgreSQL container:
-
-- SSH Host keys mounted on the /sshd volume. Three keys are required:
-
-  * ssh_host_rsa_key
-  * ssh_host_ecdsa_key
-  * ssh_host_ed25519_key
-
-- sshd_config mounted on the /pgconf volume
-- authorized_keys mounted on the /pgconf volume
-
-SSHD can be enabled in the PostgreSQL containers by adding the following line:
-....
-ENABLE_SSHD=true
-....
-
-The *authorized_keys* file is mounted on the */pgconf* directory.  In order to support
-using this mount for authentication the following must be set in *sshd_config*:
-....
-AuthorizedKeysFile /pgconf/authorized_keys
-StrictModes no
-....
-
-For OpenShift deployments, the following configuration needs to be set in *sshd_config*:
-....
-UsePAM no
-....
-
-==== Docker
-
-Start the example as follows:
-
-....
-cd $CCPROOT/examples/docker/postgres-sshd
-./run.sh
-....
-
-This will create the following in your Docker environment:
-
- * A volume named pgconf which contains the pgbackrest.conf, pg_hba.conf, postgresql.conf, sshd_config, authorized_keys file
- * A volume named sshd containing the SSH Host keys
- * postgres-sshd container pgbackrest archive and sshd enabled. An initial stanza db will be created on initialization
-
-After running the example, SSH to the container using the forwarded port 2022:
-
-....
-ssh -i ./keys/id_rsa -p 2022 postgres@0.0.0.0
-....
-
-==== Kubernetes / OpenShift
-
-Start the example as follows:
-....
-cd $CCPROOT/examples/kube/postgres-sshd
-./run.sh
-....
-
-This will create the following in your Kubernetes environment:
-
- * A configMap named pgconf which contains the pgbackrest.conf, pg_hba.conf, postgresql.conf, sshd_config, authorized_keys file
- * A secret named sshd-secrets containing the SSH Host keys
- * postgres-sshd pod with pgbackrest archive and sshd enabled. An initial stanza db will be created on initialization
- * postgres-sshd service with port 2022 for SSH
-
-After running the example, SSH to the service using the postgres-sshd service available in Kubernetes:
-
-....
-ssh -i ./keys/id_rsa -p 2022 postgres@postgres-sshd
-....
-
-==== Using pgBackrest via SSH
-
-If a pgbackrest.conf file is located on the /pgconf volume and archiving is enabled, it's possible to
-run backups using the pgBackrest utility.
-
-With the SSHD service running, the following command will issue a pgBackrest backup.
-....
-ssh -i ./keys/id_rsa -p 2022 postgres@postgres-sshd pgbackrest --stanza=db backup
-....
-
-To list all the available pgBackrest backups, run the following:
-....
-ssh -i ./keys/id_rsa -p 2022 postgres@postgres-sshd pgbackrest info
-....
-
 === pg_basebackup
 
 The script assumes you are going to backup the *primary*
@@ -937,7 +1052,7 @@ in the link:/installation/storage-configuration/[Storage Configuration documenta
 include its use of persistent volumes and volume claims to store the backup data files.
 
 A successful backup will perform `pg_basebackup` on the *primary* container and store
-the backup in the `$CCP_STORAGE_PATH` volume under a directory named `primary-backups`. Each
+the backup in the `$CCP_STORAGE_PATH` volume under a directory named `$CCP_NAMESPACE-primary-backups`. Each
 backup will be stored in a subdirectory with a timestamp as the name, allowing any number of backups to be kept.
 
 The backup script will do the following:
@@ -1325,7 +1440,7 @@ mode.
 Lastly, you can test a full recovery using *all* of the WAL files, if
 you remove the `RECOVERY_TARGET_NAME` environment variable completely.
 
-The storage portions of this example can all be found under `$CCP_STORAGE_PATH`.
+The storage portions of this example can all be found under `$CCP_STORAGE_PATH/$CCP_NAMESPACE-restore-pitr`.
 
 == Connection Pooling
 
@@ -1540,12 +1655,9 @@ The container creates a default database called *userdb*, a default user called
 
 This example will create the following in your Kubernetes and OpenShift environments:
 
- * primary-deployment service which uses a PVC to persist PostgreSQL data
- * replica-deployment service, uses emptyDir persistence
- * primary-deployment deployment of replica count 1 for the primary
-   PostgreSQL database pod
- * replica-deployment deployment of replica count 1 for the replica
- * replica2-deployment deployment of replica count 1 for the 2nd replica
+ * primary and replica services
+ * primary-deployment deployment
+ * replica-deployment statefulset
  * ConfigMap to hold a custom `postgresql.conf`, `setup.sql`, and
    `pg_hba.conf` files
  * Secrets for the primary user, superuser, and normal user to
@@ -1569,6 +1681,18 @@ Start the example as follows:
 cd $CCPROOT/examples/kube/primary-deployment
 ./run.sh
 ....
+
+To scale the replica statefulset, run the following command:
+
+....
+${CCP_CLI?} scale --replicas=2 statefulset replica-deployment
+....
+
+{{% notice warning %}}
+This example only creates enough Persistent Volumes for a maximum of 2 replicas.
+If you are not using storage classes, the maximum amount of replicas this example can
+be scaled to is 2.
+{{% /notice %}}
 
 === Replication
 
@@ -1615,44 +1739,10 @@ psql -h localhost -p 12007 -U testuser -W userdb
 psql -h localhost -p 12008 -U testuser -W userdb
 ....
 
-==== Docker-Compose
-
-Running the example:
-....
-cd $CCPROOT/examples/compose/primary-replica
-docker-compose up
-....
-
-To deploy more than one replica, run the following:
-....
-docker-compose up --scale db-replica=3
-....
-
-To connect to the created database containers, first identify the ports exposed
-on the containers:
-
-....
-docker ps
-....
-
-Next, using psql, connect to the service:
-....
-psql -d userdb -h 0.0.0.0 -p <CONTAINER_PORT> -U testuser
-....
-
-{{% notice tip %}}
-See `PG_PASSWORD` in `docker-compose.yml` for the user password.
-{{% /notice %}}
-
-To tear down the example, run the following:
-....
-docker-compose stop
-docker-compose rm
-....
-
 ==== Kubernetes and OpenShift
 
 Run the following command to deploy a primary and replica database cluster:
+
 ....
 cd $CCPROOT/examples/kube/primary-replica
 ./run.sh
@@ -1661,25 +1751,30 @@ cd $CCPROOT/examples/kube/primary-replica
 It takes about a minute for the replica to begin replicating with the
 primary.  To test out replication, see if replication is underway
 with this command:
+
 ....
-psql -h pr-primary -U postgres postgres -c 'table pg_stat_replication'
+${CCP_CLI?} exec -ti pr-primary -- psql -d postgres -c 'table pg_stat_replication'
 ....
 
 If you see a line returned from that query it means the primary is replicating
 to the replica.  Try creating some data on the primary:
+
 ....
-psql -h pr-primary -U postgres postgres -c 'create table foo (id int)'
-psql -h pr-primary -U postgres postgres -c 'insert into foo values (1)'
+
+${CCP_CLI?} exec -ti pr-primary -- psql -d postgres -c 'create table foo (id int)'
+${CCP_CLI?} exec -ti pr-primary -- psql -d postgres -c 'insert into foo values (1)'
 ....
 
 Then verify that the data is replicated to the replica:
+
 ....
-psql -h pr-replica -U postgres postgres -c 'table foo'
+${CCP_CLI?} exec -ti pr-replica -- psql -d postgres -c 'table foo'
 ....
 
 *primary-replica-dc*
 
 If you wanted to experiment with scaling up the number of replicas, you can run the following example:
+
 ....
 cd $CCPROOT/examples/kube/primary-replica-dc
 ./run.sh
@@ -1687,19 +1782,8 @@ cd $CCPROOT/examples/kube/primary-replica-dc
 
 You can verify that replication is working using the same commands as above.
 
-This example creates 2 replicas when it initially starts.  To scale
-up the number of replicas and view what the deployment looks like before and after, run these commands:
 ....
-${CCP_CLI} get deployment
-${CCP_CLI} scale --current-replicas=2 --replicas=3 deployment/replica-dc
-${CCP_CLI} get deployment
-${CCP_CLI} get pod
-....
-
-You can verify that you now have 3 replicas by running this query
-on the primary:
-....
-psql -h primary-dc -U postgres postgres -c 'table pg_stat_replication'
+${CCP_CLI?} exec -ti primary-dc -- psql -d postgres -c 'table pg_stat_replication'
 ....
 
 ==== Helm
@@ -1799,7 +1883,6 @@ container and the other (statefulset-replica) to the replica containers.
 $ ${CCP_CLI} get service
 NAME            CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
 kubernetes      10.96.0.1       <none>        443/TCP    22h
-statefulset           None            <none>        5432/TCP   1h
 statefulset-primary    10.97.168.138   <none>        5432/TCP   1h
 statefulset-replica   10.97.218.221   <none>        5432/TCP   1h
 ....
@@ -1811,7 +1894,7 @@ To shutdown the instance and remove the container for each example, run the foll
 
 ==== Kubernetes and OpenShift
 
-Start the example as follows:
+First, start the example with the following command:
 ....
 cd $CCPROOT/examples/kube/statefulset
 ./run.sh
@@ -1950,18 +2033,6 @@ and client) for the example: `$CCPROOT/examples/ssl-creator.sh`.
 The example creates a client certificate for the user `testuser`.  Furthermore,
 the server certificate is created for the server name `custom-config-ssl`.
 
-If as a client it's required to confirm the identity of the server, `verify-full` can be
-specified in the connection string.  This will check if the server and the server certificate
-have the same name:
-....
-psql postgresql://custom-config-ssl:5432/postgres?sslmode=verify-full -U testuser"
-....
-
-To connect via IP, `sslmode` can be changed to `require`.
-....
-psql postgresql://IP_OF_PGSQL:5432/postgres?sslmode=require -U testuser"
-....
-
 This example can be run as follows for the Docker environment:
 ....
 cd $CCPROOT/examples/docker/custom-config-ssl
@@ -1995,31 +2066,40 @@ names to resolve to the PostgreSQL service name and generate
 server certificates using the DNS names instead of the example
 name `custom-config-ssl`.
 
-In order to connect via certificate, environment variables must be set that point
-to the client certificates.  Source the `env.sh` file to set environment varaibles
-for the example:
-
-....
-source env.sh
-....
-
 If as a client it's required to confirm the identity of the server, `verify-full` can be
-specified in the connection string.  This will check if the server and the server certificate
-have the same name:
+specified for `ssl-mode` in the connection string.  This will check if the server and the
+server certificate have the same name.  Additionally, the proper connection parameters
+must be specified in the connection string for the certificate information required to
+trust and verify the identity of the server (`sslrootcert` and `sslcrl`), and to
+authenticate the client using a certificate (`sslcert` and `sslkey`):
 
 ....
-psql postgresql://custom-config-ssl:5432/userdb?sslmode=verify-full -U testuser"
+psql "postgresql://testuser@custom-config-ssl:5432/userdb?\
+sslmode=verify-full&\
+sslrootcert=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crt&\
+sslcrl=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crl&\
+sslcert=$CCPROOT/examples/kube/custom-config-ssl/certs/client.crt&\
+sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key"
 ....
 
-To connect via IP, `sslmode` can be changed to `require`.
+To connect via IP, `sslmode` can be changed to `require`.  This will verify the server
+by checking the certificate chain up to the trusted certificate authority, but will not
+verify that the hostname matches the certificate, as occurs with `verify-full`.  The same
+connection parameters as above can be then provided for the client and server certificate
+information.
 
 ....
-psql postgresql://IP_OF_PGSQL:5432/userdb?sslmode=require -U testuser"
+psql "postgresql://testuser@IP_OF_PGSQL:5432/userdb?\
+sslmode=require&\
+sslrootcert=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crt&\
+sslcrl=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crl&\
+sslcert=$CCPROOT/examples/kube/custom-config-ssl/certs/client.crt&\
+sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key"
 ....
 
 You should see a connection that looks like the following:
 ....
-psql (10.5)
+psql (10.6)
 SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
 Type "help" for help.
 
@@ -2104,77 +2184,14 @@ You should see a row for each replica along with its replication status.
 
 === Watch
 
-This example shows how to run the crunchy-watch container
-to perform an automated failover.  For the example to
-work, the host on which you are running needs to allow
-read-write access to `/run/docker.sock`.  The crunchy-watch
-container runs as the *postgres* user, so adjust the
-file permissions of `/run/docker.sock` accordingly.
+Crunchy Watch is an application wrapped in a container that watches a PostgreSQL
+primary database and waits for a failure to occur, at which point a failover is
+performed to promote a replica.
 
-The *primary-replica* example is required to be run before this example.
-
-To shutdown the instance and remove the container for each example, run the following:
-....
-./cleanup.sh
-....
-
-==== Docker
-
-Run the example as follows:
-....
-cd $CCPROOT/examples/docker/watch
-./run.sh
-....
-
-This will start the watch container which tests every few seconds
-whether the primary database is running, if not, it will
-trigger a failover using `docker exec` on the replica host.
-
-Test it out by stopping the primary:
-....
-docker stop primary
-docker logs watch
-....
-
-Look at the watch container logs to see it perform the failover.
-
-==== Kubernetes and OpenShift
-
-Running the example:
-....
-cd $CCPROOT/examples/kube/watch
-./run.sh
-....
-
-Check out the log of the watch container as follows:
-....
-${CCP_CLI} log watch
-....
-
-Then trigger a failover using this command:
-....
-${CCP_CLI} delete pod pr-primary
-....
-
-Resume watching the watch container's log and verify that it
-detects the primary is not reachable and performs a failover
-on the replica.
-
-A final test is to see if the old replica is now a fully functioning
-primary by inserting some test data into it as follows:
-....
-psql -h pr-primary -U postgres postgres -c 'create table failtest (id int)'
-....
-
-The above command still works because the watch container has
-changed the labels of the replica to make it a primary, so the primary
-service will still work and route now to the new primary even though
-the pod is named replica.
-
-You can view the labels on a pod with this command:
-....
-${CCP_CLI} describe pod pr-replica | grep Label
-....
+The crunchy-watch container, while originally part of the Container Suite, has been
+split out into its own project. More information on the Watch container and it's
+capabilities can be found in the new project repository located at
+https://github.com/CrunchyData/crunchy-watch.
 
 == Metrics and Performance
 
@@ -2187,13 +2204,6 @@ illustrates how to view the generated reports.
 
 The port utilized for this tool is port 14000 for Docker environments and port 10000
 for Kubernetes and OpenShift environments.
-
-A requirement to build this container from source is *golang*. On RHEL 7.2, golang
-is found in the 'server optional' repository which needs to be enabled in order to install
-this dependency.
-....
-sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
-....
 
 The container creates a default database called *userdb*, a default user called
 *testuser* and a default password of *password*.
@@ -2253,13 +2263,27 @@ This example starts up 5 containers:
  * Prometheus (crunchy-prometheus)
 
 Every 5 seconds by default, Prometheus will scrape the Collect container
-for metrics.  These metrics will then be visualized by Grafana.
+for metrics.  These metrics will then be visualized by Grafana, which by default can be accessed
+with the following credentials:
+
+* Username : *admin*
+* Password: *password*
 
 By default, Prometheus detects which environment its running on (Docker, Kubernetes, or OpenShift Container Platform)
-and applies a default configuration. If this container is running on Kubernetes or OpenShift Container Platform,
-it will use the Kubernetes API to discover pods with the label `"crunchy-collect": "true"`.
+and applies a default configuration. 
 
-The collect container *must* have this label to be discovered in these environments.
+When running in Kuberenetes and OpenShift, the following two labels are required by 
+the deployments:
+
+ * `"crunchy_collect": "true"`
+ * `"name": "some-pod-name-here"`
+
+The `crunchy_collect` label allows Prometheus to find all pods that are serving metrics 
+to be scraped for storage.
+
+The `name` label allows Prometheus to rewrite the name of the pod so if it changes there's not 
+duplicate entries.
+
 Additionally, the collect container uses a special PostgreSQL role `ccp_monitoring`.
 This user is created by setting the `PGMONITOR_PASSWORD` environment variable on the
 PostgreSQL container.
@@ -2315,10 +2339,10 @@ You can view the container logs using these command:
 ....
 ${CCP_CLI} logs -c grafana metrics
 ${CCP_CLI} logs -c prometheus metrics
-${CCP_CLI} logs -c collect primary
-${CCP_CLI} logs -c postgres primary
-${CCP_CLI} logs -c collect replica
-${CCP_CLI} logs -c postgres replica
+${CCP_CLI} logs -c collect primary-metrics
+${CCP_CLI} logs -c postgres primary-metrics
+${CCP_CLI} logs -c collect replica-metrics
+${CCP_CLI} logs -c postgres replica-metrics
 ....
 
 === pg_audit
@@ -2363,8 +2387,19 @@ cd $CCPROOT/examples/kube/pgaudit
 ./run.sh
 ....
 
-The script will create the pg_audit pod (running the crunchy-postgres container)
-on the Kubernetes instance and then execute a SQL file which
-contains pg_audit configuration statements as well as some
-basic SQL commands.  These SQL commands will cause pg_audit to create
-log messages in the `pg_log` file created by the database container.
+This script will create a PostgreSQL pod with the pgAudit extension configured and ready
+to use
+
+Once the pod is deployed successfully run the following command to test the extension:
+
+....
+cd $CCPROOT/examples/kube/pgaudit
+./test-pgaudit.sh
+....
+
+This example has been configured to log directly to stdout of the pod.  To view the PostgreSQL logs
+run the following:
+
+....
+$CCP_CLI logs pgaudit
+....

@@ -1,6 +1,6 @@
 image::crunchy_logo.png[Crunchy Data Logo]
 
-Latest Release: 2.1.0 {docdate}
+Latest Release: 2.2.0 {docdate}
 
 == General
 
@@ -10,34 +10,33 @@ monitoring tools. Multiple styles of deploying PostgreSQL clusters
 are supported.
 
 Please view the official Crunchy Data Container Suite documentation
-link:https://crunchydata.github.io/crunchy-containers/[here]. If you
+link:https://crunchydata.github.io/crunchy-containers/stable/[here]. If you
 are interested in contributing or making an update to the documentation,
 please view the
-link:https://crunchydata.github.io/crunchy-containers/contributing/[Contributing Guidelines].
+link:https://crunchydata.github.io/crunchy-containers/stable/contributing/[Contributing Guidelines].
 
-Warning: The master branch is considered unstable. Please consult the
-link:https://github.com/CrunchyData/crunchy-containers/releases[tagged release]
-currently deployed in your environment.
-
-[link=https://crunchydata.github.io/crunchy-containers/]
+[link=https://crunchydata.github.io/crunchy-containers/stable/]
 image::btn.png[Official Documentation]
+
+If you are looking for the latest documentation, please see the develop branch which is considered unstable. The development
+documentation can be reviewed link:https://crunchydata.github.io/crunchy-containers/latest/installation/[here].
 
 == Getting Started
 
-Complete build and install documentation is found link:https://crunchydata.github.io/crunchy-containers/installation/[here].  The provided Dockerfiles build the containers
+Complete build and install documentation is found link:https://crunchydata.github.io/crunchy-containers/stable/installation/[here].  The provided Dockerfiles build the containers
 on a Centos 7 base image and use the community PostgreSQL RPMs.
 
 Crunchy provides a commercially supported version of these containers
 built upon RHEL 7 and the Crunchy supported PostgreSQL. Contact Crunchy
-for more details at http://www.crunchydata.com.
+for more details at https://www.crunchydata.com.
 
 Further descriptions of each of these containers and environment variables that can be used to tune them
-can be found in the link:https://crunchydata.github.io/crunchy-containers/container-specifications/[Container Specifications] document.
+can be found in the link:https://crunchydata.github.io/crunchy-containers/stable/container-specifications/[Container Specifications] document.
 
 == Usage
 
-Various examples are provided in link:https://crunchydata.github.io/crunchy-containers/getting-started/[the Getting Started documentation] for running in Docker,
+Various examples are provided in link:https://crunchydata.github.io/crunchy-containers/stable/getting-started/[the Getting Started documentation] for running in Docker,
 Kubernetes, and OpenShift environments.
 
-You will need to set up your environment as per the link:https://crunchydata.github.io/crunchy-containers/installation/[Installation documentation] in order to
+You will need to set up your environment as per the link:https://crunchydata.github.io/crunchy-containers/stable/installation/[Installation documentation] in order to
 execute the examples.

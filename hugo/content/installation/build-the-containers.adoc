@@ -6,26 +6,27 @@ weight: 2
 ---
 
 :toc:
-Latest Release: 2.1.0 {docdate}
+Latest Release: 2.2.0 {docdate}
 
 == Build the Containers
 
 At this point, you have a decision to make - either download prebuilt
 containers from link:https://hub.docker.com/[Dockerhub], *or* build the containers on your local host.
 
-To download the prebuilt containers, make sure you can login to
-link:https://hub.docker.com/[Dockerhub], and then run the following:
+To download the prebuilt containers and install the dependencies required to run the 
+container examples, make sure you can login to link:https://hub.docker.com/[Dockerhub],
+and then run the following:
 ....
 docker login
 cd $CCPROOT
 ./bin/pull-from-dockerhub.sh
+make setup
 ....
 
 Or if you'd rather build the containers from source, perform a container
 build as follows:
 
 ....
-godep restore
 cd $CCPROOT
 make setup
 make all

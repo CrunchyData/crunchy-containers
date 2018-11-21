@@ -18,7 +18,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ${DIR}/cleanup.sh
 
-create_storage "backrest"
+create_storage "backrest-full-restored"
 if [[ $? -ne 0 ]]
 then
     echo_err "Failed to create storage, exiting.."

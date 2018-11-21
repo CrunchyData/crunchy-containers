@@ -1,0 +1,61 @@
+FROM centos:7
+
+LABEL name="crunchydata/pgadmin4" \
+        vendor="crunchy data" \
+	PostgresVersion="11" \
+	PostgresFullVersion="11.1" \
+	Version="7.6" \
+	Release="2.2.0" \
+        url="https://crunchydata.com" \
+        summary="Crunchy Data pgAdmin4 GUI utility" \
+        description="Provides GUI for the pgAdmin utility." \
+        io.k8s.description="pgadmin4 container" \
+        io.k8s.display-name="Crunchy pgadmin4 container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+ENV PGVERSION="11" PGDG_REPO="pgdg-centos11-11-2.noarch.rpm"
+
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y update && yum -y install epel-release \
+ && yum -y install glibc-common-*2.17* \
+ && yum -y install gcc \
+    gettext \
+    hostname \
+    openssl \
+    procps-ng \
+    mod_wsgi mod_ssl \
+ && yum -y install postgresql11-devel postgresql11-server pgadmin4-web \
+ && yum -y clean all
+
+ENV PGROOT="/usr/pgsql-${PGVERSION}"
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /var/lib/pgadmin /certs /run/httpd
+
+ADD bin/pgadmin4/ /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
+ADD conf/pgadmin4/ /opt/cpm/conf
+
+RUN cp /opt/cpm/conf/httpd.conf /etc/httpd/conf/httpd.conf \
+  && rm /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/ssl.conf
+
+
+RUN chgrp -R 0 /usr/lib/python2.7/site-packages/pgadmin4-web \
+   /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd && \
+    chmod -R g=u /usr/lib/python2.7/site-packages/pgadmin4-web \
+   /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd
+
+RUN ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
+  && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf
+
+EXPOSE 5050
+
+VOLUME ["/var/lib/pgadmin", "/certs", "/run/httpd"]
+
+RUN chmod g=u /etc/passwd
+ENTRYPOINT ["opt/cpm/bin/uid_daemon.sh"]
+
+USER 2
+
+CMD ["/opt/cpm/bin/start-pgadmin4.sh"]

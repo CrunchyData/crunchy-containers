@@ -1,0 +1,68 @@
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "primary-deployment-pgdata"
+    },
+    "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "$CCP_NAMESPACE-primary-deployment-pgdata"
+        }
+      },
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "primary-deployment-br"
+    },
+    "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "$CCP_NAMESPACE-primary-deployment-br"
+        }
+      },
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "primary-deployment-backup"
+    },
+    "spec": {
+      "selector": {
+        "matchLabels": {
+          "name": "$CCP_NAMESPACE-primary-deployment-backup"
+        }
+      },
+      "accessModes": [
+        "$CCP_STORAGE_MODE"
+      ],
+      "resources": {
+        "requests": {
+          "storage": "$CCP_STORAGE_CAPACITY"
+        }
+      }
+    }
+}

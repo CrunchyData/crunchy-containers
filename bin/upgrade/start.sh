@@ -27,7 +27,6 @@
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
-ose_hack
 
 function trap_sigterm() {
     echo_warn "Signal trap triggered, beginning shutdown.." >> $PGDATA/trap.output
@@ -54,6 +53,11 @@ dir_check_err "${PGDATANEW?}"
 # Set the postgres binary to match the NEW_VERSION
 
 case $NEW_VERSION in
+"11")
+    echo_info "Setting PGBINNEW to ${NEW_VERSION}."
+    export PGBINNEW=/usr/pgsql-11/bin
+    export LD_LIBRARY_PATH=/usr/pgsql-11/lib
+    ;;
 "10")
     echo_info "Setting PGBINNEW to ${NEW_VERSION}."
     export PGBINNEW=/usr/pgsql-10/bin
@@ -75,6 +79,10 @@ case $NEW_VERSION in
     ;;
 esac
 case $OLD_VERSION in
+"10")
+    echo_info "Setting PGBINOLD to ${OLD_VERSION}."
+    export PGBINOLD=/usr/pgsql-10/bin
+    ;;
 "9.6")
     echo_info "Setting PGBINOLD to ${OLD_VERSION}."
     export PGBINOLD=/usr/pgsql-9.6/bin
