@@ -40,7 +40,7 @@ Features The following features are supported by the crunchy-postgres container:
       <description>The crunchy-backup container executes a full backup against another database container using the standard pg_basebackup utility that is included with PostgreSQL.
 Features The following features are supported by the crunchy-backup container:
  Backup and restoration from: pg_basebackup  Packages The crunchy-backup Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (10.5, 9.6.10 and 9.5.14) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     BACKUP_LABEL crunchy-backup The label for the backup.</description>
+ PostgreSQL (11.1, 10.6, 9.6.11 and 9.5.15) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     BACKUP_LABEL crunchy-backup The label for the backup.</description>
     </item>
     
     <item>
@@ -52,7 +52,7 @@ Features The following features are supported by the crunchy-backup container:
       <description>The crunchy-backrest-restore container executes the pgBackRest utility, allowing FULL and DELTA restore capability. See the pgBackRest guide for more details.
 Features The following features are supported and required by the crunchy-backrest-restore container:
  Mounted pgbackrest.conf configuration file via the /pgconf volume Mounted /backrestrepo for access to pgBackRest archives  Packages The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (10.5, 9.6.10 and 9.</description>
+ PostgreSQL (11.1, 10.6, 9.6.11 and 9.</description>
     </item>
     
     <item>
@@ -63,7 +63,7 @@ Features The following features are supported and required by the crunchy-backre
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgdump/</guid>
       <description>The crunchy-pgdump container executes either a pg_dump or pg_dumpall database backup against another PostgreSQL database.
 Packages The crunchy-pgdump Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (10.5, 9.6.10 and 9.5.14) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGDUMP_DB None Name of the database the backup is being performed on.</description>
+ PostgreSQL (11.1, 10.6, 9.6.11 and 9.5.15) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGDUMP_DB None Name of the database the backup is being performed on.</description>
     </item>
     
     <item>
@@ -74,7 +74,7 @@ Packages The crunchy-pgdump Docker image contains the following packages (versio
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgrestore/</guid>
       <description>The restore image provides a means of performing a restore of a dump from pg_dump or pg_dumpall via psql or pg_restore to a PostgreSQL container database.
 Packages The crunchy-pgrestore Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (10.5, 9.6.10 and 9.5.14) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGRESTORE_DB None Name of the database to connect to.</description>
+ PostgreSQL (11.1, 10.6, 9.6.11 and 9.5.15) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGRESTORE_DB None Name of the database to connect to.</description>
     </item>
     
     <item>
@@ -86,6 +86,17 @@ Packages The crunchy-pgrestore Docker image contains the following packages (ver
       <description>The crunchy-collect container provides real time metrics about the PostgreSQL database via an API. These metrics are scrapped and stored by a Prometheus time-series database and are then graphed and visualized through the open source data visualizer Grafana.
 The crunchy-collect container uses pgMonitor for advanced metric collection. It is required that the crunchy-postgres container has the PGMONITOR_PASSWORD environment variable to create the appropriate user (ccp_monitoring) to collect metrics.
 Custom queries to collect metrics can be specified by the user.</description>
+    </item>
+    
+    <item>
+      <title>crunchy-scheduler</title>
+      <link>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/</link>
+      <pubDate>Thu, 24 May 2018 10:06:13 -0700</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/</guid>
+      <description>The Crunchy Scheduler container provides a cronlike microservice for automating pgBaseBackup and pgBackRest backups within a single namespace. The scheduler watches Kubernetes for config maps with the label crunchy-scheduler=true. If found the scheduler parses a JSON object contained in the config map and converts it into an scheduled task.
+Packages The Crunchy Scheduler Docker image contains the following packages:
+ CentOS7 - publicly available RHEL7 - customers only Scheduler App  Environment Variables Required    Name Default Description     NAMESPACE None The namespace the microservice should watch.</description>
     </item>
     
     <item>
@@ -125,8 +136,8 @@ Features The following features are supported by the crunchy-pgadmin4 container:
       <pubDate>Thu, 24 May 2018 12:06:15 -0700</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-watch/</guid>
-      <description>The crunchy-watch container essentially does a health check on a primary database container and performs a failover sequence if the primary is not reached. The watch container has access to a service account that is used inside the container to issue commands to OpenShift.
-In Kubrnetese 1.5, if a policy file is being used for securing down the Kubernetes cluster, you could possibly need to add a policy to allow the pg-watcher service account access to the Kubernetes API as mentioned here.</description>
+      <description>Crunchy Watch is an application wrapped in a container that watches a PostgreSQL primary database and waits for a failure to occur, at which point a failover is performed to promote a replica.
+The crunchy-watch container, while originally part of the Container Suite, has been split out into its own project. More information on the Watch container and it&amp;rsquo;s capabilities can be found in the new project repository located at https://github.</description>
     </item>
     
     <item>
@@ -158,17 +169,6 @@ Features The following features are supported by the crunchy-upgrade container:
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-sim/</guid>
       <description>The crunchy-sim container is a simple traffic simulator for PostgreSQL.
 Features  Creates a single connection to PostgreSQL and will execute queries over a specified interval range. Queries are specified through a simple YAML file. Each query is a name-value pair and can span multiple lines by utilizing scalar notation (&amp;ldquo;|&amp;rdquo; or &amp;ldquo;&amp;gt;&amp;rdquo;) as defined by the YAML spec. Queries are randomly chosen for execution.  Restrictions  Only one connection is created for all queries.</description>
-    </item>
-    
-    <item>
-      <title>crunchy-dba</title>
-      <link>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-dba/</link>
-      <pubDate>Thu, 24 May 2018 12:05:24 -0700</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-dba/</guid>
-      <description>The crunchy-dba container implements a cron scheduler. The purpose of the crunchy-dba container is to offer a way to perform simple DBA tasks that occur on some form of schedule such as backup jobs or running a vacuum on a single PostgreSQL database container.
-You can either run the crunchy-dba container as a single pod or include the container within a database pod.
-The crunchy-dba container makes use of a Service Account to perform the startup of scheduled jobs.</description>
     </item>
     
     <item>

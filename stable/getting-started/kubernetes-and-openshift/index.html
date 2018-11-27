@@ -102,64 +102,6 @@
 
       </div>
         <ul>
-    <li data-nav-id="/getting-started/openshift-templates/" class="dd-item haschildren
-        ">
-      <div>
-      <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/">Openshift Templates</a><i class="fa fa-angle-right fa-lg category-icon"></i>
-
-      </div>
-        <ul>
-      <li data-nav-id="/getting-started/openshift-templates/single-primary/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/single-primary/">
-            Single Primary
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore/">
-            Primary Restore
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore-secret/">
-            Primary Restore Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup/">
-            Primary Backup
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup-secret/">
-            Primary Backup Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/postgres-replicated/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/postgres-replicated/">
-            Primary Replica
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/pgadmin4/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/pgadmin4/">
-            pgAdmin4
-          </a>
-        </div>
-    </li>
-        </ul>
-    </li>
     <li data-nav-id="/getting-started/kubernetes-and-openshift/" class="dd-item parent active
         ">
       <div>
@@ -225,6 +167,13 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="/container-specifications/crunchy-scheduler/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/">
+            crunchy-scheduler
+          </a>
+        </div>
+    </li>
       <li data-nav-id="/container-specifications/crunchy-prometheus/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
@@ -271,13 +220,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-sim/">
             crunchy-sim
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-dba/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-dba/">
-            crunchy-dba
           </a>
         </div>
     </li>
@@ -410,9 +352,10 @@
 <li><a href="#_pgadmin4">pgAdmin4</a></li>
 <li><a href="#_pgadmin4_with_tls">pgAdmin4 with TLS</a></li>
 <li><a href="#_upgrade">Upgrade</a></li>
-<li><a href="#_cron_scheduler">Cron Scheduler</a></li>
+<li><a href="#_crunchy_scheduler">Crunchy Scheduler</a></li>
 <li><a href="#_vacuum">Vacuum</a></li>
 <li><a href="#_systemd">systemd</a></li>
+<li><a href="#_centralized_logging">Centralized Logging</a></li>
 </ul>
 </li>
 <li><a href="#_backup_and_restoration">Backup and Restoration</a>
@@ -420,7 +363,6 @@
 <li><a href="#_pg_dump">pg_dump</a></li>
 <li><a href="#_pg_restore">pg_restore</a></li>
 <li><a href="#_pgbackrest">pgBackRest</a></li>
-<li><a href="#_pgbackrest_with_sshd">pgBackRest with SSHD</a></li>
 <li><a href="#_pg_basebackup">pg_basebackup</a></li>
 <li><a href="#_point_in_time_recovery_pitr">Point in Time Recovery (PITR)</a></li>
 </ul>
@@ -459,11 +401,21 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Latest Release: 2.1.0 2018-10-10</p>
+<p>Latest Release: 2.2.0 2018-11-27</p>
 </div>
 <div class="sect1">
 <h2 id="_getting_started">Getting Started</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<div class="notices warning" ><div class="paragraph">
+<p>The Kubernetes and OpenShift examples provided on this page have been designed using single-node Kubernetes/OCP clusters
+whose host machines provide any required supporting infrastructure or services (e.g. local hostPath storage or access
+to an NFS share). Therefore, for the best results when running these examples, it is recommended that you utilize a
+single-node architecture as well.</p>
+</div>
+</div>
+
+</div>
 <div class="paragraph">
 <div class="notices tip" ><div class="paragraph">
 <p>The examples located in the <strong>kube</strong> directory work on both Kubernetes and OpenShift. Ensure the <code>CCP_CLI</code> environment variable
@@ -649,20 +601,33 @@ for PostgreSQL without TLS.</p>
 </div>
 <div class="paragraph">
 <p>After running the example, you should be able to browse to <a href="http://127.0.0.1:5050" class="bare">http://127.0.0.1:5050</a>
-and log into the web application using a user ID of <strong>admin@admin.com</strong>
-and password of <strong>password</strong>.</p>
+and log into the web application with the following configured credentials:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Username : <strong>admin@admin.com</strong></p>
+</li>
+<li>
+<p>Password: <strong>password</strong></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>If you are running this example using Kubernetes or
-OpenShift, replace <strong>127.0.0.1:5050</strong> with the &lt;NODE_IP&gt;:30000.</p>
+OpenShift, it is required to use a port-forward proxy to access the dashboard.</p>
 </div>
 <div class="paragraph">
-<p>To get the node IP, run the following:</p>
+<p>To start the port-forward proxy run the following:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>${CCP_CLI} describe pod pgadmin4-http | grep Node:</pre>
+<pre>${CCP_CLI} port-forward pgadmin4-http 5050:5050</pre>
 </div>
+</div>
+<div class="paragraph">
+<p>To access the pgAdmin4 dashboard through the proxy, navigate to <strong><a href="http://127.0.0.1:5050" class="bare">http://127.0.0.1:5050</a></strong>
+in a browser.</p>
 </div>
 <div class="paragraph">
 <p>See the <a href="http://pgadmin.org">pgAdmin4 documentation</a> for more details.</p>
@@ -715,20 +680,33 @@ for PostgreSQL with TLS.</p>
 </div>
 <div class="paragraph">
 <p>After running the example, you should be able to browse to <a href="https://127.0.0.1:5050" class="bare">https://127.0.0.1:5050</a>
-and log into the web application using a user ID of <strong>admin@admin.com</strong>
-and password of <strong>password</strong>.</p>
+and log into the web application with the following configured credentials:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Username : <strong>admin@admin.com</strong></p>
+</li>
+<li>
+<p>Password: <strong>password</strong></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>If you are running this example using Kubernetes or
-OpenShift, replace <strong>127.0.0.1:5050</strong> with the &lt;NODE_IP&gt;:30000.</p>
+OpenShift, it is required to use a port-forward proxy to access the dashboard.</p>
 </div>
 <div class="paragraph">
-<p>To get the node IP, run the following:</p>
+<p>To start the port-forward proxy run the following:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>${CCP_CLI} describe pod pgadmin4-https | grep Node:</pre>
+<pre>${CCP_CLI} port-forward pgadmin4-https 5050:5050</pre>
 </div>
+</div>
+<div class="paragraph">
+<p>To access the pgAdmin4 dashboard through the proxy, navigate to <strong><a href="https://127.0.0.1:5050" class="bare">https://127.0.0.1:5050</a></strong>
+in a browser.</p>
 </div>
 <div class="paragraph">
 <p>See the <a href="http://pgadmin.org">pgadmin4 documentation</a> for more details.</p>
@@ -778,7 +756,7 @@ OpenShift, replace <strong>127.0.0.1:5050</strong> with the &lt;NODE_IP&gt;:3000
 <div class="paragraph">
 <div class="notices tip" ><div class="paragraph">
 <p>This example assumes you have run <strong>primary</strong> using a PG 9.5 or 9.6 image
-such as <code>centos7-9.5.14-2.1.0</code> prior to running this upgrade.</p>
+such as <code>centos7-9.5.15-2.2.0</code> prior to running this upgrade.</p>
 </div>
 </div>
 
@@ -792,7 +770,7 @@ you perform a <code>pg_upgrade</code> either from a PostgreSQL version 9.5 datab
 <p>Prior to running this example, make sure your <code>CCP_IMAGE_TAG</code>
 environment variable is using the next major version of PostgreSQL that you
 want to upgrade to. For example, if you&#8217;re upgrading from 9.5 to 9.6, make
-sure the variable references a PG 9.6 image such as <code>centos7-9.6.10-2.1.0</code>.</p>
+sure the variable references a PG 9.6 image such as <code>centos7-9.6.11-2.2.0</code>.</p>
 </div>
 <div class="paragraph">
 <p>This will create the following in your Kubernetes environment:</p>
@@ -854,64 +832,177 @@ upgraded volume.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_cron_scheduler">Cron Scheduler</h3>
+<h3 id="_crunchy_scheduler">Crunchy Scheduler</h3>
 <div class="paragraph">
-<p>The crunchy-dba container implements a cron scheduler. The purpose of the crunchy-dba
-container is to offer a way to perform simple DBA tasks that occur on some form of
-schedule such as backup jobs or running a vacuum on a single PostgreSQL database container
-(such as the <strong>primary</strong> example).</p>
+<p>The Crunchy Scheduler container implements a cronlike microservice within a namespace
+to automate backups of a PostgreSQL database.</p>
 </div>
 <div class="paragraph">
-<p>You can either run the crunchy-dba container as a single pod or include the container
-within a database pod.</p>
+<p>Currently Crunchy Scheduler only supports two types of tasks:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>pgBackRest</p>
+</li>
+<li>
+<p>pgBaseBackup</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>The crunchy-dba container makes use of a Service Account to perform the startup of
-scheduled jobs. The Kubernetes Job type is used to execute the scheduled jobs with a Restart
-policy of Never.</p>
+<p>This service watches Kubernetes for config maps with the label <code>crunchy-scheduler=true</code>.
+If found the scheduler will parse the data found in the config map (json object) and
+convert it to a scheduled task.  If the config map is removed, the scheduler will
+delete the task.</p>
 </div>
 <div class="paragraph">
-<p>To shutdown the instance and remove the container for each example, run the following:</p>
+<p>See the following examples for creating config maps that Crunchy Scheduler can parse:</p>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>./cleanup.sh</pre>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-diff.json">pgBackRest Diff Backup</a></p>
+</li>
+<li>
+<p><a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-full.json">pgBackRest Full Backup</a></p>
+</li>
+<li>
+<p><a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-pgbasebackup.json">pgBaseBackup Backup</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The Crunchy Scheduler requires a Service Account to create jobs (pgBaseBackup) and to
+exec (pgBackRest).  See the <a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/scheduler-sa.json">scheduler example</a>
+for the required permissions on this account.</p>
+</div>
+<div class="sect3">
+<h4 id="_pgbackrest_schedules">pgBackRest Schedules</h4>
+<div class="paragraph">
+<p>To configure Crunchy Scheduler to create pgBackRest backups the following is required:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>pgBackRest schedule definition requires a deployment name.  The PostgreSQL pod should be created by a deployment.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_pgbasebackup_schedules">pgBaseBackup Schedules</h4>
+<div class="paragraph">
+<p>To configure Crunchy Scheduler to create pgBaseBackup scheduled backups, the following is required:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The name of the secret that contains the username and password the Scheduler will use to
+configure the job template.  See <a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/primary/secret.json">the primary secret example</a>.
+for the structure required by the Scheduler.</p>
+</li>
+<li>
+<p>The name of the PVC created for the backups.  This should be created by the user prior to scheduling the task.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
+<p>When using pgBaseBackup schedules, it may be required to apply specific <code>supplementalGroups</code> or an <code>fsGroup</code>
+to the backup job created by the scheduler.  To apply a specific <code>securityContext</code> for your
+storage provider, mount a <code>backup-template.json</code> to <code>/configs</code> on the scheduler pod.</p>
+</div>
+<div class="paragraph">
+<p>For an example of applying a custom template, <a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler">see the schedule example</a>.</p>
+</div>
+</div>
+
 </div>
 </div>
 <div class="sect3">
 <h4 id="_kubernetes_and_openshift_4">Kubernetes and OpenShift</h4>
 <div class="paragraph">
-<p>The script to schedule vacuum on a regular schedule is executed through the following
-commands:</p>
+<p>First, start the PostgreSQL example created for the Scheduler by running the following commands:</p>
 </div>
 <div class="literalblock">
 <div class="content">
 <pre># Kubernetes
-cd $CCPROOT/examples/kube/dba
-./run-kube-vac.sh
-
-# OpenShift
-cd $CCPROOT/examples/kube/dba
-./run-ocp-vac.sh</pre>
+cd $CCPROOT/examples/kube/scheduler/primary
+./run.sh</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>To run the script for scheduled backups, run the following in the same directory:</p>
+<p>The pod created should show a ready status before proceeding.</p>
+</div>
+<div class="paragraph">
+<p>Next, start the scheduler by running the following command:</p>
 </div>
 <div class="literalblock">
 <div class="content">
 <pre># Kubernetes
-cd $CCPROOT/examples/kube/dba
-./run-kube-backup.sh
-
-# OpenShift
-cd $CCPROOT/examples/kube/dba
-./run-ocp-backup.sh</pre>
+cd $CCPROOT/examples/kube/scheduler
+./run.sh</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Individual parameters for both can be modified within their respective JSON files;
-please see the <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/">Container Specifications</a> document for a full list of what can be modified.</p>
+<p>Once the scheduler is deployed, register the backup tasks by running the following command:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre># Kubernetes
+cd $CCPROOT/examples/kube/scheduler
+./add-schedules.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The scheduled tasks will (these are just for fast results, not recommended for production):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>take a backup every minute using pgBaseBackup</p>
+</li>
+<li>
+<p>take a full pgBackRest backup every even minute</p>
+</li>
+<li>
+<p>take a diff pgBackRest backup every odd minute</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>View the logs for the <code>scheduler</code> pod until the tasks run:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>${CCP_CLI?} logs scheduler -f</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>View the <code>pgBaseBackup</code> pods results after the backup completes:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>${CCP_CLI?} logs &lt;basebackup pod name&gt;</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>View the <code>pgBackRest</code> backups via exec after the backup completes:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>${CCP_CLI?} exec -ti &lt;primary deployment pod name&gt; -- pgbackrest info</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Clean up the examples by running the following commands:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$CCPROOT/examples/kube/scheduler/primary/cleanup.sh
+$CCPROOT/examples/kube/scheduler/cleanup.sh</pre>
+</div>
 </div>
 </div>
 </div>
@@ -1011,6 +1102,194 @@ keeps systemd happy and thinking that this is a normal daemon.</p>
 <div class="paragraph">
 <p>This script stops the test-start.sh script and also stops the
 crunchy-pg Docker container.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_centralized_logging">Centralized Logging</h3>
+<div class="paragraph">
+<p>The logs generated by containers are critical for deployments because they provide insights into the
+health of the system.  PostgreSQL logs are very detailed and there is some information that can only be
+obtained from logs (but not limited to):</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Connections and Disconnections of users</p>
+</li>
+<li>
+<p>Checkpoint Statistics</p>
+</li>
+<li>
+<p>PostgreSQL Server Errors</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Aggregrating container logs across multiple hosts allows administrators to audit, debug problems and prevent
+repudiation of misconduct.</p>
+</div>
+<div class="paragraph">
+<p>In the following example we will demonstrate how to setup Kubernetes and OpenShift to use centralized logging by using
+an EFK (Elasticsearch, Fluentd and Kibana) stack.  Fluentd will run as a daemonset on each host within the Kubernetes
+cluster and extract container logs, Elasticsearch will consume and index the logs gathered by Fluentd and Kibana will allow
+users to explore and visualize the logs via a web dashboard.</p>
+</div>
+<div class="paragraph">
+<p>To learn more about the EFK stack, see the following:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://www.elastic.co/products/elasticsearch" class="bare">https://www.elastic.co/products/elasticsearch</a></p>
+</li>
+<li>
+<p><a href="https://www.fluentd.org/architecture" class="bare">https://www.fluentd.org/architecture</a></p>
+</li>
+<li>
+<p><a href="https://www.elastic.co/products/kibana" class="bare">https://www.elastic.co/products/kibana</a></p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="_configure_postgresql_for_centralized_logging">Configure PostgreSQL for Centralized Logging</h4>
+<div class="paragraph">
+<p>By default, Crunchy PostgreSQL logs to files in the <code>/pgdata</code> directory.  In order to get the logs
+out of the container we need to configure PostgreSQL to log to <code>stdout</code>.</p>
+</div>
+<div class="paragraph">
+<p>The following settings should be configured in <code>postgresql.conf</code> to make PostgreSQL log to <code>stdout</code>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>log_destination = 'stderr'
+logging_collector = off</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="notices warning" ><div class="paragraph">
+<p>Changes to logging settings require a restart of the PostgreSQL container to take effect.</p>
+</div>
+</div>
+
+</div>
+</div>
+<div class="sect3">
+<h4 id="_deploying_the_efk_stack_on_openshift_container_platform">Deploying the EFK Stack On OpenShift Container Platform</h4>
+<div class="paragraph">
+<p>OpenShift Container Platform can be installed with an EFK stack.  For more information about
+configuring OpenShift to create an EFK stack, see the official documentation:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging.html" class="bare">https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging.html</a></p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_deploying_the_efk_stack_on_kubernetes">Deploying the EFK Stack On Kubernetes</h4>
+<div class="paragraph">
+<p>First, deploy the EFK stack by running the example using the following commands:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/kube/centralized-logging/efk
+./run.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="notices warning" ><div class="paragraph">
+<p>Elasticsearch is configured to use an <code>emptyDir</code> volume in this example.  Configure this example to provide a
+persistent volume when deploying into production.</p>
+</div>
+</div>
+
+</div>
+<div class="paragraph">
+<p>Next, verify the pods are running in the <code>kube-system</code> namespace:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>${CCP_CLI?} get pods -n kube-system --selector=k8s-app=elasticsearch-logging
+${CCP_CLI?} get pods -n kube-system --selector=k8s-app=fluentd-es
+${CCP_CLI?} get pods -n kube-system --selector=k8s-app=kibana-logging</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If all pods deployed successfully elasticsearch should already be receiving container logs from Fluentd.</p>
+</div>
+<div class="paragraph">
+<p>Next we will deploy a PostgreSQL Cluster (primary and replica deployments) to demonstrate PostgreSQL logs
+are being captured by Fluentd.</p>
+</div>
+<div class="paragraph">
+<p>Deploy the PostgreSQL cluster by running the following:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/kube/centralized-logging/postgres-cluster
+./run.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, verify the pods are running:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>${CCP_CLI?} get pods --selector=k8s-app=postgres-cluster</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With the PostgreSQL successfully deployed, we can now query the logs in Kibana.</p>
+</div>
+<div class="paragraph">
+<p>We will need to setup a port-forward to the Kibana pod to access it.  To do that
+we first get the name of the pod by running the following command:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>${CCP_CLI?} get pod --selector=k8s-app=kibana-logging -n kube-system</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, start the port-forward:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>${CCP_CLI?} port-forward &lt;KIBANA POD NAME&gt; 5601:5601 -n kube-system</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To access the web dashboard navigate in a browser to <code>127.0.0.1:5601</code>.</p>
+</div>
+<div class="paragraph">
+<p>First, click the <code>Discover</code> tab and setup an index pattern to use for queries.</p>
+</div>
+<div class="paragraph">
+<p>The index pattern name we will use is <code>logstash-*</code> because Fluentd is configured to
+generate logstash style logs.</p>
+</div>
+<div class="paragraph">
+<p>Next we will configure the <code>Time Filter field name</code> to be <code>@timestamp</code>.</p>
+</div>
+<div class="paragraph">
+<p>Now that our index pattern is created, we can query for the container logs.</p>
+</div>
+<div class="paragraph">
+<p>Click the <code>Discover</code> tab and use the following queries:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre># KUBERNETES
+CONTAINER_NAME: *primary* AND MESSAGE: ".*LOG*"
+# OpenShift
+kubernetes.pod_name: "primary" AND log</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>For more information about querying Kibana, see the official documentation: <a href="https://www.elastic.co/guide/en/beats/packetbeat/current/kibana-queries-filters.html" class="bare">https://www.elastic.co/guide/en/beats/packetbeat/current/kibana-queries-filters.html</a></p>
+</div>
 </div>
 </div>
 </div>
@@ -1235,6 +1514,14 @@ the additional <code>-backups</code> the backups will populate in the <code>pgda
 </div>
 <div class="sect3">
 <h4 id="_kubernetes_and_openshift_8">Kubernetes and OpenShift</h4>
+<div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
+<p>The BackRest examples on Kubernetes/OpenShift can be configured to use the PostGIS images
+by setting the following environment variable: <code>export CCP_PG_IMAGE='-gis'</code></p>
+</div>
+</div>
+
+</div>
 <div class="sect4">
 <h5 id="_backup">Backup</h5>
 <div class="paragraph">
@@ -1764,169 +2051,6 @@ pgBackRest backup is required.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_pgbackrest_with_sshd">pgBackRest with SSHD</h3>
-<div class="paragraph">
-<p>The PostgreSQL and PostgreSQL GIS containers can enable an SSH daemon to allow developers
-to do DBA tasks on the database server without the need for exec privileges.  An administrator
-who deploys the SSHD enabled PostgreSQL database can specify the authorized public keys for
-access to the database server.</p>
-</div>
-<div class="paragraph">
-<p>In order to activate SSHD in the PostgreSQL containers, the following files need to be
-mounted to the PostgreSQL container:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>SSH Host keys mounted on the /sshd volume. Three keys are required:</p>
-<div class="ulist">
-<ul>
-<li>
-<p>ssh_host_rsa_key</p>
-</li>
-<li>
-<p>ssh_host_ecdsa_key</p>
-</li>
-<li>
-<p>ssh_host_ed25519_key</p>
-</li>
-</ul>
-</div>
-</li>
-<li>
-<p>sshd_config mounted on the /pgconf volume</p>
-</li>
-<li>
-<p>authorized_keys mounted on the /pgconf volume</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>SSHD can be enabled in the PostgreSQL containers by adding the following line:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>ENABLE_SSHD=true</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The <strong>authorized_keys</strong> file is mounted on the <strong>/pgconf</strong> directory.  In order to support
-using this mount for authentication the following must be set in <strong>sshd_config</strong>:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>AuthorizedKeysFile /pgconf/authorized_keys
-StrictModes no</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>For OpenShift deployments, the following configuration needs to be set in <strong>sshd_config</strong>:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>UsePAM no</pre>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_docker_7">Docker</h4>
-<div class="paragraph">
-<p>Start the example as follows:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>cd $CCPROOT/examples/docker/postgres-sshd
-./run.sh</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This will create the following in your Docker environment:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>A volume named pgconf which contains the pgbackrest.conf, pg_hba.conf, postgresql.conf, sshd_config, authorized_keys file</p>
-</li>
-<li>
-<p>A volume named sshd containing the SSH Host keys</p>
-</li>
-<li>
-<p>postgres-sshd container pgbackrest archive and sshd enabled. An initial stanza db will be created on initialization</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>After running the example, SSH to the container using the forwarded port 2022:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>ssh -i ./keys/id_rsa -p 2022 postgres@0.0.0.0</pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_kubernetes_openshift">Kubernetes / OpenShift</h4>
-<div class="paragraph">
-<p>Start the example as follows:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>cd $CCPROOT/examples/kube/postgres-sshd
-./run.sh</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This will create the following in your Kubernetes environment:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>A configMap named pgconf which contains the pgbackrest.conf, pg_hba.conf, postgresql.conf, sshd_config, authorized_keys file</p>
-</li>
-<li>
-<p>A secret named sshd-secrets containing the SSH Host keys</p>
-</li>
-<li>
-<p>postgres-sshd pod with pgbackrest archive and sshd enabled. An initial stanza db will be created on initialization</p>
-</li>
-<li>
-<p>postgres-sshd service with port 2022 for SSH</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>After running the example, SSH to the service using the postgres-sshd service available in Kubernetes:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>ssh -i ./keys/id_rsa -p 2022 postgres@postgres-sshd</pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_using_pgbackrest_via_ssh">Using pgBackrest via SSH</h4>
-<div class="paragraph">
-<p>If a pgbackrest.conf file is located on the /pgconf volume and archiving is enabled, it&#8217;s possible to
-run backups using the pgBackrest utility.</p>
-</div>
-<div class="paragraph">
-<p>With the SSHD service running, the following command will issue a pgBackrest backup.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>ssh -i ./keys/id_rsa -p 2022 postgres@postgres-sshd pgbackrest --stanza=db backup</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To list all the available pgBackrest backups, run the following:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>ssh -i ./keys/id_rsa -p 2022 postgres@postgres-sshd pgbackrest info</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
 <h3 id="_pg_basebackup">pg_basebackup</h3>
 <div class="paragraph">
 <p>The script assumes you are going to backup the <strong>primary</strong>
@@ -1937,7 +2061,7 @@ include its use of persistent volumes and volume claims to store the backup data
 </div>
 <div class="paragraph">
 <p>A successful backup will perform <code>pg_basebackup</code> on the <strong>primary</strong> container and store
-the backup in the <code>$CCP_STORAGE_PATH</code> volume under a directory named <code>primary-backups</code>. Each
+the backup in the <code>$CCP_STORAGE_PATH</code> volume under a directory named <code>$CCP_NAMESPACE-primary-backups</code>. Each
 backup will be stored in a subdirectory with a timestamp as the name, allowing any number of backups to be kept.</p>
 </div>
 <div class="paragraph">
@@ -1992,7 +2116,7 @@ data to this new container and then launch PostgreSQL using the original backed-
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_8">Docker</h4>
+<h4 id="_docker_7">Docker</h4>
 <div class="paragraph">
 <p>Run the backup with this command:</p>
 </div>
@@ -2222,7 +2346,7 @@ for a long time could fill up your /tmp directory.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_9">Docker</h4>
+<h4 id="_docker_8">Docker</h4>
 <div class="paragraph">
 <p>Create a database container as follows:</p>
 </div>
@@ -2508,7 +2632,7 @@ mode.</p>
 you remove the <code>RECOVERY_TARGET_NAME</code> environment variable completely.</p>
 </div>
 <div class="paragraph">
-<p>The storage portions of this example can all be found under <code>$CCP_STORAGE_PATH</code>.</p>
+<p>The storage portions of this example can all be found under <code>$CCP_STORAGE_PATH/$CCP_NAMESPACE-restore-pitr</code>.</p>
 </div>
 </div>
 </div>
@@ -2582,7 +2706,7 @@ you remove the <code>RECOVERY_TARGET_NAME</code> environment variable completely
 
 </div>
 <div class="sect3">
-<h4 id="_docker_10">Docker</h4>
+<h4 id="_docker_9">Docker</h4>
 <div class="paragraph">
 <p>Run the <code>pgbouncer</code> example:</p>
 </div>
@@ -2684,7 +2808,7 @@ will be sent round-robin to both the primary and replica.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_11">Docker</h4>
+<h4 id="_docker_10">Docker</h4>
 <div class="paragraph">
 <p>Create the container as follows:</p>
 </div>
@@ -2785,7 +2909,7 @@ and a default password of <strong>password</strong>.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_12">Docker</h4>
+<h4 id="_docker_11">Docker</h4>
 <div class="paragraph">
 <p>To create the example and run the container:</p>
 </div>
@@ -2861,20 +2985,13 @@ handled by the <code>PGDATA_PATH_OVERRIDE</code> environment variable.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>primary-deployment service which uses a PVC to persist PostgreSQL data</p>
+<p>primary and replica services</p>
 </li>
 <li>
-<p>replica-deployment service, uses emptyDir persistence</p>
+<p>primary-deployment deployment</p>
 </li>
 <li>
-<p>primary-deployment deployment of replica count 1 for the primary
-PostgreSQL database pod</p>
-</li>
-<li>
-<p>replica-deployment deployment of replica count 1 for the replica</p>
-</li>
-<li>
-<p>replica2-deployment deployment of replica count 1 for the 2nd replica</p>
+<p>replica-deployment statefulset</p>
 </li>
 <li>
 <p>ConfigMap to hold a custom <code>postgresql.conf</code>, <code>setup.sql</code>, and
@@ -2913,6 +3030,23 @@ it works out of the same <code>/pgdata/primary-deployment</code> data directory.
 <pre>cd $CCPROOT/examples/kube/primary-deployment
 ./run.sh</pre>
 </div>
+</div>
+<div class="paragraph">
+<p>To scale the replica statefulset, run the following command:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>${CCP_CLI?} scale --replicas=2 statefulset replica-deployment</pre>
+</div>
+</div>
+<div class="paragraph">
+<div class="notices warning" ><div class="paragraph">
+<p>This example only creates enough Persistent Volumes for a maximum of 2 replicas.
+If you are not using storage classes, the maximum amount of replicas this example can
+be scaled to is 2.</p>
+</div>
+</div>
+
 </div>
 </div>
 </div>
@@ -2987,7 +3121,7 @@ it works out of the same <code>/pgdata/primary-deployment</code> data directory.
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_13">Docker</h4>
+<h4 id="_docker_12">Docker</h4>
 <div class="paragraph">
 <p>To create the example and run the container:</p>
 </div>
@@ -3004,59 +3138,6 @@ it works out of the same <code>/pgdata/primary-deployment</code> data directory.
 <div class="content">
 <pre>psql -h localhost -p 12007 -U testuser -W userdb
 psql -h localhost -p 12008 -U testuser -W userdb</pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_docker_compose">Docker-Compose</h4>
-<div class="paragraph">
-<p>Running the example:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>cd $CCPROOT/examples/compose/primary-replica
-docker-compose up</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To deploy more than one replica, run the following:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>docker-compose up --scale db-replica=3</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To connect to the created database containers, first identify the ports exposed
-on the containers:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>docker ps</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Next, using psql, connect to the service:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>psql -d userdb -h 0.0.0.0 -p &lt;CONTAINER_PORT&gt; -U testuser</pre>
-</div>
-</div>
-<div class="paragraph">
-<div class="notices tip" ><div class="paragraph">
-<p>See <code>PG_PASSWORD</code> in <code>docker-compose.yml</code> for the user password.</p>
-</div>
-</div>
-
-</div>
-<div class="paragraph">
-<p>To tear down the example, run the following:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>docker-compose stop
-docker-compose rm</pre>
 </div>
 </div>
 </div>
@@ -3078,7 +3159,7 @@ with this command:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>psql -h pr-primary -U postgres postgres -c 'table pg_stat_replication'</pre>
+<pre>${CCP_CLI?} exec -ti pr-primary -- psql -d postgres -c 'table pg_stat_replication'</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3087,8 +3168,8 @@ to the replica.  Try creating some data on the primary:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>psql -h pr-primary -U postgres postgres -c 'create table foo (id int)'
-psql -h pr-primary -U postgres postgres -c 'insert into foo values (1)'</pre>
+<pre>${CCP_CLI?} exec -ti pr-primary -- psql -d postgres -c 'create table foo (id int)'
+${CCP_CLI?} exec -ti pr-primary -- psql -d postgres -c 'insert into foo values (1)'</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3096,7 +3177,7 @@ psql -h pr-primary -U postgres postgres -c 'insert into foo values (1)'</pre>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>psql -h pr-replica -U postgres postgres -c 'table foo'</pre>
+<pre>${CCP_CLI?} exec -ti pr-replica -- psql -d postgres -c 'table foo'</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3114,25 +3195,9 @@ psql -h pr-primary -U postgres postgres -c 'insert into foo values (1)'</pre>
 <div class="paragraph">
 <p>You can verify that replication is working using the same commands as above.</p>
 </div>
-<div class="paragraph">
-<p>This example creates 2 replicas when it initially starts.  To scale
-up the number of replicas and view what the deployment looks like before and after, run these commands:</p>
-</div>
 <div class="literalblock">
 <div class="content">
-<pre>${CCP_CLI} get deployment
-${CCP_CLI} scale --current-replicas=2 --replicas=3 deployment/replica-dc
-${CCP_CLI} get deployment
-${CCP_CLI} get pod</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You can verify that you now have 3 replicas by running this query
-on the primary:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>psql -h primary-dc -U postgres postgres -c 'table pg_stat_replication'</pre>
+<pre>${CCP_CLI?} exec -ti primary-dc -- psql -d postgres -c 'table pg_stat_replication'</pre>
 </div>
 </div>
 </div>
@@ -3159,7 +3224,7 @@ an asynchronous replica. The two replicas share the same service.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_14">Docker</h4>
+<h4 id="_docker_13">Docker</h4>
 <div class="paragraph">
 <p>To run this example, run the following:</p>
 </div>
@@ -3271,7 +3336,6 @@ container and the other (statefulset-replica) to the replica containers.</p>
 <pre>$ ${CCP_CLI} get service
 NAME            CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
 kubernetes      10.96.0.1       &lt;none&gt;        443/TCP    22h
-statefulset           None            &lt;none&gt;        5432/TCP   1h
 statefulset-primary    10.97.168.138   &lt;none&gt;        5432/TCP   1h
 statefulset-replica   10.97.218.221   &lt;none&gt;        5432/TCP   1h</pre>
 </div>
@@ -3287,7 +3351,7 @@ statefulset-replica   10.97.218.221   &lt;none&gt;        5432/TCP   1h</pre>
 <div class="sect3">
 <h4 id="_kubernetes_and_openshift_17">Kubernetes and OpenShift</h4>
 <div class="paragraph">
-<p>Start the example as follows:</p>
+<p>First, start the example with the following command:</p>
 </div>
 <div class="literalblock">
 <div class="content">
@@ -3394,7 +3458,7 @@ longitude and latitude through this command.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_15">Docker</h4>
+<h4 id="_docker_14">Docker</h4>
 <div class="paragraph">
 <p>Create the container as follows:</p>
 </div>
@@ -3445,7 +3509,7 @@ for <code>postgresql.conf</code>, <code>pg_hba.conf</code>, <code>pg_ident.conf<
 If it finds one of them it will use that file instead of the default files.</p>
 </div>
 <div class="sect3">
-<h4 id="_docker_16">Docker</h4>
+<h4 id="_docker_15">Docker</h4>
 <div class="paragraph">
 <p>This example can be run as follows for the Docker environment:</p>
 </div>
@@ -3483,24 +3547,6 @@ and client) for the example: <code>$CCPROOT/examples/ssl-creator.sh</code>.</p>
 <div class="paragraph">
 <p>The example creates a client certificate for the user <code>testuser</code>.  Furthermore,
 the server certificate is created for the server name <code>custom-config-ssl</code>.</p>
-</div>
-<div class="paragraph">
-<p>If as a client it&#8217;s required to confirm the identity of the server, <code>verify-full</code> can be
-specified in the connection string.  This will check if the server and the server certificate
-have the same name:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>psql postgresql://custom-config-ssl:5432/postgres?sslmode=verify-full -U testuser"</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>To connect via IP, <code>sslmode</code> can be changed to <code>require</code>.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>psql postgresql://IP_OF_PGSQL:5432/postgres?sslmode=require -U testuser"</pre>
-</div>
 </div>
 <div class="paragraph">
 <p>This example can be run as follows for the Docker environment:</p>
@@ -3550,31 +3596,38 @@ server certificates using the DNS names instead of the example
 name <code>custom-config-ssl</code>.</p>
 </div>
 <div class="paragraph">
-<p>In order to connect via certificate, environment variables must be set that point
-to the client certificates.  Source the <code>env.sh</code> file to set environment varaibles
-for the example:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>source env.sh</pre>
-</div>
-</div>
-<div class="paragraph">
 <p>If as a client it&#8217;s required to confirm the identity of the server, <code>verify-full</code> can be
-specified in the connection string.  This will check if the server and the server certificate
-have the same name:</p>
+specified for <code>ssl-mode</code> in the connection string.  This will check if the server and the
+server certificate have the same name.  Additionally, the proper connection parameters
+must be specified in the connection string for the certificate information required to
+trust and verify the identity of the server (<code>sslrootcert</code> and <code>sslcrl</code>), and to
+authenticate the client using a certificate (<code>sslcert</code> and <code>sslkey</code>):</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>psql postgresql://custom-config-ssl:5432/userdb?sslmode=verify-full -U testuser"</pre>
+<pre>psql "postgresql://testuser@custom-config-ssl:5432/userdb?\
+sslmode=verify-full&amp;\
+sslrootcert=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crt&amp;\
+sslcrl=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crl&amp;\
+sslcert=$CCPROOT/examples/kube/custom-config-ssl/certs/client.crt&amp;\
+sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key"</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>To connect via IP, <code>sslmode</code> can be changed to <code>require</code>.</p>
+<p>To connect via IP, <code>sslmode</code> can be changed to <code>require</code>.  This will verify the server
+by checking the certificate chain up to the trusted certificate authority, but will not
+verify that the hostname matches the certificate, as occurs with <code>verify-full</code>.  The same
+connection parameters as above can be then provided for the client and server certificate
+information.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>psql postgresql://IP_OF_PGSQL:5432/userdb?sslmode=require -U testuser"</pre>
+<pre>psql "postgresql://testuser@IP_OF_PGSQL:5432/userdb?\
+sslmode=require&amp;\
+sslrootcert=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crt&amp;\
+sslcrl=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crl&amp;\
+sslcert=$CCPROOT/examples/kube/custom-config-ssl/certs/client.crt&amp;\
+sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key"</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -3582,7 +3635,7 @@ have the same name:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>psql (10.5)
+<pre>psql (10.6)
 SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
 Type "help" for help.
 
@@ -3652,7 +3705,7 @@ a constraint of <code>node.labels.type != primary</code> to have the replica
 always placed on a node that is not hosting the primary service.</p>
 </div>
 <div class="sect3">
-<h4 id="_docker_17">Docker</h4>
+<h4 id="_docker_16">Docker</h4>
 <div class="paragraph">
 <p>After you set up the Swarm cluster, you can then run this example as follows on the <strong>Swarm Manager Node</strong>:</p>
 </div>
@@ -3703,108 +3756,15 @@ The password is <strong>password</strong> by default when logged into the <code>
 <div class="sect2">
 <h3 id="_watch">Watch</h3>
 <div class="paragraph">
-<p>This example shows how to run the crunchy-watch container
-to perform an automated failover.  For the example to
-work, the host on which you are running needs to allow
-read-write access to <code>/run/docker.sock</code>.  The crunchy-watch
-container runs as the <strong>postgres</strong> user, so adjust the
-file permissions of <code>/run/docker.sock</code> accordingly.</p>
+<p>Crunchy Watch is an application wrapped in a container that watches a PostgreSQL
+primary database and waits for a failure to occur, at which point a failover is
+performed to promote a replica.</p>
 </div>
 <div class="paragraph">
-<p>The <strong>primary-replica</strong> example is required to be run before this example.</p>
-</div>
-<div class="paragraph">
-<p>To shutdown the instance and remove the container for each example, run the following:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>./cleanup.sh</pre>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_docker_18">Docker</h4>
-<div class="paragraph">
-<p>Run the example as follows:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>cd $CCPROOT/examples/docker/watch
-./run.sh</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This will start the watch container which tests every few seconds
-whether the primary database is running, if not, it will
-trigger a failover using <code>docker exec</code> on the replica host.</p>
-</div>
-<div class="paragraph">
-<p>Test it out by stopping the primary:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>docker stop primary
-docker logs watch</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Look at the watch container logs to see it perform the failover.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_kubernetes_and_openshift_20">Kubernetes and OpenShift</h4>
-<div class="paragraph">
-<p>Running the example:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>cd $CCPROOT/examples/kube/watch
-./run.sh</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Check out the log of the watch container as follows:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>${CCP_CLI} log watch</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Then trigger a failover using this command:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>${CCP_CLI} delete pod pr-primary</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Resume watching the watch container&#8217;s log and verify that it
-detects the primary is not reachable and performs a failover
-on the replica.</p>
-</div>
-<div class="paragraph">
-<p>A final test is to see if the old replica is now a fully functioning
-primary by inserting some test data into it as follows:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>psql -h pr-primary -U postgres postgres -c 'create table failtest (id int)'</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The above command still works because the watch container has
-changed the labels of the replica to make it a primary, so the primary
-service will still work and route now to the new primary even though
-the pod is named replica.</p>
-</div>
-<div class="paragraph">
-<p>You can view the labels on a pod with this command:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>${CCP_CLI} describe pod pr-replica | grep Label</pre>
-</div>
-</div>
+<p>The crunchy-watch container, while originally part of the Container Suite, has been
+split out into its own project. More information on the Watch container and it&#8217;s
+capabilities can be found in the new project repository located at
+<a href="https://github.com/CrunchyData/crunchy-watch" class="bare">https://github.com/CrunchyData/crunchy-watch</a>.</p>
 </div>
 </div>
 </div>
@@ -3825,16 +3785,6 @@ illustrates how to view the generated reports.</p>
 for Kubernetes and OpenShift environments.</p>
 </div>
 <div class="paragraph">
-<p>A requirement to build this container from source is <strong>golang</strong>. On RHEL 7.2, golang
-is found in the 'server optional' repository which needs to be enabled in order to install
-this dependency.</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>sudo subscription-manager repos --enable=rhel-7-server-optional-rpms</pre>
-</div>
-</div>
-<div class="paragraph">
 <p>The container creates a default database called <strong>userdb</strong>, a default user called
 <strong>testuser</strong> and a default password of <strong>password</strong>.</p>
 </div>
@@ -3847,7 +3797,7 @@ this dependency.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_19">Docker</h4>
+<h4 id="_docker_17">Docker</h4>
 <div class="paragraph">
 <p>Run the example as follows:</p>
 </div>
@@ -3869,7 +3819,7 @@ the database, you can invoke this URL to generate updated reports:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_kubernetes_and_openshift_21">Kubernetes and OpenShift</h4>
+<h4 id="_kubernetes_and_openshift_20">Kubernetes and OpenShift</h4>
 <div class="paragraph">
 <p>Running the example:</p>
 </div>
@@ -3928,16 +3878,47 @@ to your database container.</p>
 </div>
 <div class="paragraph">
 <p>Every 5 seconds by default, Prometheus will scrape the Collect container
-for metrics.  These metrics will then be visualized by Grafana.</p>
+for metrics.  These metrics will then be visualized by Grafana, which by default can be accessed
+with the following credentials:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Username : <strong>admin</strong></p>
+</li>
+<li>
+<p>Password: <strong>password</strong></p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
 <p>By default, Prometheus detects which environment its running on (Docker, Kubernetes, or OpenShift Container Platform)
-and applies a default configuration. If this container is running on Kubernetes or OpenShift Container Platform,
-it will use the Kubernetes API to discover pods with the label <code>"crunchy-collect": "true"</code>.</p>
+and applies a default configuration.</p>
 </div>
 <div class="paragraph">
-<p>The collect container <strong>must</strong> have this label to be discovered in these environments.
-Additionally, the collect container uses a special PostgreSQL role <code>ccp_monitoring</code>.
+<p>When running in Kuberenetes and OpenShift, the following two labels are required by
+the deployments:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>"crunchy_collect": "true"</code></p>
+</li>
+<li>
+<p><code>"name": "some-pod-name-here"</code></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <code>crunchy_collect</code> label allows Prometheus to find all pods that are serving metrics
+to be scraped for storage.</p>
+</div>
+<div class="paragraph">
+<p>The <code>name</code> label allows Prometheus to rewrite the name of the pod so if it changes there&#8217;s not
+duplicate entries.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, the collect container uses a special PostgreSQL role <code>ccp_monitoring</code>.
 This user is created by setting the <code>PGMONITOR_PASSWORD</code> environment variable on the
 PostgreSQL container.</p>
 </div>
@@ -3959,7 +3940,7 @@ variable.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_docker_20">Docker</h4>
+<h4 id="_docker_18">Docker</h4>
 <div class="paragraph">
 <p>To start this set of containers, run the following:</p>
 </div>
@@ -3988,7 +3969,7 @@ web addresses:</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_kubernetes_and_openshift_22">Kubernetes and OpenShift</h4>
+<h4 id="_kubernetes_and_openshift_21">Kubernetes and OpenShift</h4>
 <div class="paragraph">
 <p>Running the example:</p>
 </div>
@@ -4025,10 +4006,10 @@ ${CCP_CLI} port-forward metrics 9090:9090</pre>
 <div class="content">
 <pre>${CCP_CLI} logs -c grafana metrics
 ${CCP_CLI} logs -c prometheus metrics
-${CCP_CLI} logs -c collect primary
-${CCP_CLI} logs -c postgres primary
-${CCP_CLI} logs -c collect replica
-${CCP_CLI} logs -c postgres replica</pre>
+${CCP_CLI} logs -c collect primary-metrics
+${CCP_CLI} logs -c postgres primary-metrics
+${CCP_CLI} logs -c collect replica-metrics
+${CCP_CLI} logs -c postgres replica-metrics</pre>
 </div>
 </div>
 </div>
@@ -4055,7 +4036,7 @@ need to define your own custom file and mount it to override the
 default <code>postgresql.conf</code> file.</p>
 </div>
 <div class="sect3">
-<h4 id="_docker_21">Docker</h4>
+<h4 id="_docker_19">Docker</h4>
 <div class="paragraph">
 <p>Run the following to create a database container:</p>
 </div>
@@ -4077,7 +4058,7 @@ the <code>pg_log</code> log file created by the database container.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_kubernetes_and_openshift_23">Kubernetes and OpenShift</h4>
+<h4 id="_kubernetes_and_openshift_22">Kubernetes and OpenShift</h4>
 <div class="paragraph">
 <p>Run the following:</p>
 </div>
@@ -4088,11 +4069,26 @@ the <code>pg_log</code> log file created by the database container.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>The script will create the pg_audit pod (running the crunchy-postgres container)
-on the Kubernetes instance and then execute a SQL file which
-contains pg_audit configuration statements as well as some
-basic SQL commands.  These SQL commands will cause pg_audit to create
-log messages in the <code>pg_log</code> file created by the database container.</p>
+<p>This script will create a PostgreSQL pod with the pgAudit extension configured and ready
+to use</p>
+</div>
+<div class="paragraph">
+<p>Once the pod is deployed successfully run the following command to test the extension:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>cd $CCPROOT/examples/kube/pgaudit
+./test-pgaudit.sh</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This example has been configured to log directly to stdout of the pod.  To view the PostgreSQL logs
+run the following:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$CCP_CLI logs pgaudit</pre>
+</div>
 </div>
 </div>
 </div>
@@ -4110,7 +4106,7 @@ log messages in the <code>pg_log</code> file created by the database container.<
 </div>
 
 <div id="navigation">
-<a class="nav nav-prev" href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/pgadmin4/" title="pgAdmin4"> <i class="fa fa-chevron-left"></i><label>pgAdmin4</label></a>
+<a class="nav nav-prev" href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/" title="Getting Started"> <i class="fa fa-chevron-left"></i><label>Getting Started</label></a>
     <a class="nav nav-next" href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/" title="Container Specifications" style="margin-right: 0px;"><label>Container Specifications</label><i class="fa fa-chevron-right"></i></a></div>
 
 </section>

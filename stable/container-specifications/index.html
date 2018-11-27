@@ -101,64 +101,6 @@
 
       </div>
         <ul>
-    <li data-nav-id="/getting-started/openshift-templates/" class="dd-item haschildren
-        ">
-      <div>
-      <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/">Openshift Templates</a><i class="fa fa-angle-right fa-lg category-icon"></i>
-
-      </div>
-        <ul>
-      <li data-nav-id="/getting-started/openshift-templates/single-primary/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/single-primary/">
-            Single Primary
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore/">
-            Primary Restore
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore-secret/">
-            Primary Restore Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup/">
-            Primary Backup
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup-secret/">
-            Primary Backup Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/postgres-replicated/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/postgres-replicated/">
-            Primary Replica
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/pgadmin4/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/pgadmin4/">
-            pgAdmin4
-          </a>
-        </div>
-    </li>
-        </ul>
-    </li>
     <li data-nav-id="/getting-started/kubernetes-and-openshift/" class="dd-item
         ">
       <div>
@@ -225,6 +167,13 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="/container-specifications/crunchy-scheduler/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/">
+            crunchy-scheduler
+          </a>
+        </div>
+    </li>
       <li data-nav-id="/container-specifications/crunchy-prometheus/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
@@ -271,13 +220,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-sim/">
             crunchy-sim
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-dba/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-dba/">
-            crunchy-dba
           </a>
         </div>
     </li>
@@ -394,7 +336,7 @@
     
 
 <div class="paragraph">
-<p>Latest Release: 2.1.0 2018-10-10</p>
+<p>Latest Release: 2.2.0 2018-11-27</p>
 </div>
 <div class="sect1">
 <h2 id="_introduction">Introduction</h2>
@@ -447,9 +389,6 @@ are described in further detail within their respective pages.</p>
 </li>
 <li>
 <p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgpool">crunchy-pgpool</a></p>
-</li>
-<li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-watch">crunchy-watch</a></p>
 </li>
 <li>
 <p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-vacuum">crunchy-vacuum</a></p>
@@ -601,9 +540,6 @@ will cause a symlink to be created from /pgdata/containername/pg_wal (or pg_xlog
 <p>MAX_WAL_SENDERS - default is 6, set this value to override this PostgreSQL configuration setting</p>
 </li>
 <li>
-<p>ENABLE_SSHD- default is false, set this value to true to enable SSHD</p>
-</li>
-<li>
 <p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
 Note: this mode can reveal secrets in logs.</p>
 </li>
@@ -640,9 +576,6 @@ Note: this mode can reveal secrets in logs.</p>
 </li>
 <li>
 <p>ability to specify a recovery using PITR and WAL files</p>
-</li>
-<li>
-<p>ability to enable SSHD</p>
 </li>
 </ul>
 </div>
@@ -1189,157 +1122,15 @@ Note: this mode can reveal secrets in logs.</p>
 <h2 id="_crunchy_watch">crunchy-watch</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>crunchy-watch runs as a pod unto itself
-typically.  The watch container essentially does a health check
-on a primary database container and performs a failover sequence
-if the primary is not reached.</p>
+<p>Crunchy Watch is an application wrapped in a container that watches a PostgreSQL
+primary database and waits for a failure to occur, at which point a failover is
+performed to promote a replica.</p>
 </div>
 <div class="paragraph">
-<p>The watch container has access to a service account that is used
-inside the container to issue commands to OpenShift.</p>
-</div>
-<div class="paragraph">
-<p>In Kube 1.5, if a policy file is being used for securing down the
-Kube cluster, you could possibly need to add a policy to allow
-the pg-watcher service account access to the Kube API as mentioned
-here: <a href="https://kubernetes.io/docs/admin/authorization/abac/#a-quick-note-on-service-accounts" class="bare">https://kubernetes.io/docs/admin/authorization/abac/#a-quick-note-on-service-accounts</a></p>
-</div>
-<div class="paragraph">
-<p>In Kube 1.6, an equivalent RBAC policy is also possibly required depending
-on your authorization/authentication configuration.  See this
-link for details on the new RBAC policy mechanism:
-<a href="https://kubernetes.io/docs/admin/authorization/rbac/" class="bare">https://kubernetes.io/docs/admin/authorization/rbac/</a></p>
-</div>
-<div class="paragraph">
-<p>For example, you can grant cluster-admin permissions on the pg-watcher service
-account, in the my-namespace namespace as follows:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>kubectl create clusterrolebinding pgwatcher-view-binding --clusterrole=cluster-admin --serviceaccount=my-namespace:pg-watcher</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>A less wide open policy would be applied like this on Kube 1.6 rbac:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>kubectl create rolebinding my-sa-binding --clusterrole=admin --serviceaccount=demo:pg-watcher --namespace=demo</pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-this kubectl command is only available in Kube 1.6, for prior
-Kube release such as 1.5 and the alpha RBAC, you will need to
-specify the role binding in a JSON/YAML file instead of using
-this command syntax above.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>You then reference the SA within the POD spec.</p>
-</div>
-<div class="paragraph">
-<p>The oc/docker/kubectl commands are included into the container from the
-host when the container image is built.  These commands are used by
-the watch logic to interact with the replica containers.</p>
-</div>
-<div class="paragraph">
-<p>Starting with release 1.7.1 crunchy-watch source code is relocated
-to <a href="https://github.com/crunchydata/crunchy-watch" class="bare">https://github.com/crunchydata/crunchy-watch</a></p>
-</div>
-<div class="sect2">
-<h3 id="_environment_variables_9">Environment Variables</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>CRUNCHY_WATCH_HEALTHCHECK_INTERVAL - the time to sleep in seconds between checking on the primary</p>
-</li>
-<li>
-<p>CRUNCHY_WATCH_FAILOVER_WAIT - the time to sleep in seconds between triggering the failover and updating its label (default is 40 secs)</p>
-</li>
-<li>
-<p>PG_CONTAINER_NAME -  if set, the name of the container to refer to when doing an <strong>exec</strong>, this is required if you have more than 1 container in your database pod</p>
-</li>
-<li>
-<p>CRUNCHY_WATCH_PRIMARY -  the primary service name</p>
-</li>
-<li>
-<p>CRUNCHY_WATCH_REPLICA - the replica service name</p>
-</li>
-<li>
-<p>PG_PRIMARY_PORT - database port to use when checking the database</p>
-</li>
-<li>
-<p>CRUNCHY_WATCH_USERNAME -  database user account to use when checking the database
-using pg_isready utility</p>
-</li>
-<li>
-<p>CRUNCHY_WATCH_DATABASE - database to use when checking the database using pg_isready</p>
-</li>
-<li>
-<p>REPLICA_TO_TRIGGER_LABEL - the pod name of a replica that you
-want to choose as the new primary in a failover; this will override
-the normal replica selection</p>
-</li>
-<li>
-<p>CRUNCHY_WATCH_PRE_HOOK - path to an executable file to run before failover is processed.</p>
-</li>
-<li>
-<p>CRUNCHY_WATCH_POST_HOOK - path to an executable file to run after failover is processed.</p>
-</li>
-<li>
-<p>CRUNCHY_DEBUG - default is false, set this value to true to debugging in logs.
-Note: this mode can reveal secrets in logs.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_logic">Logic</h3>
-<div class="paragraph">
-<p>The watch container will watch the primary, if the primary dies, then
-the watcher will:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>create the trigger file on the replica that will become the new primary</p>
-</li>
-<li>
-<p>change the labels on the replica to be those of the primary</p>
-</li>
-<li>
-<p>start watching the new primary in case that falls over next</p>
-</li>
-<li>
-<p>look for replicas that have the metadata label value of <strong>replicatype=trigger</strong> to prefer
-the failover to. If found, it will use the first replica with that label; if
-not found, it will use the first replica it finds.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Example of looking for the failover replica:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>oc get pod -l name=pg-replica-rc-dc
-NAME                     READY     STATUS    RESTARTS   AGE
-pg-replica-rc-dc           1/1       Running   2          16m
-pg-replica-rc-dc-1-96qs8   1/1       Running   1          16m
-
-oc get pod -l replicatype=trigger
-NAME             READY     STATUS    RESTARTS   AGE
-pg-replica-rc-dc   1/1       Running   2          16m</pre>
-</div>
-</div>
+<p>The crunchy-watch container, while originally part of the Container Suite, has been
+split out into its own project. More information on the Watch container and it&#8217;s
+capabilities can be found in the new project repository located at
+<a href="https://github.com/CrunchyData/crunchy-watch" class="bare">https://github.com/CrunchyData/crunchy-watch</a>.</p>
 </div>
 </div>
 </div>
@@ -1359,7 +1150,7 @@ PostgreSQL container. The type of vacuum performed is dictated by the environmen
 </div>
 </div>
 <div class="sect2">
-<h3 id="_environment_variables_10">Environment Variables</h3>
+<h3 id="_environment_variables_9">Environment Variables</h3>
 <div class="paragraph">
 <p>The complete set of environment variables read by the crunchy-vacuum job include:</p>
 </div>
@@ -1423,7 +1214,7 @@ the startup of scheduled jobs.  The Kube Job type is used to execute
 the scheduled jobs with a Restart policy of Never.</p>
 </div>
 <div class="sect2">
-<h3 id="_environment_variables_11">Environment Variables</h3>
+<h3 id="_environment_variables_10">Environment Variables</h3>
 <div class="paragraph">
 <p>The following environment variables control the actions
 of crunchy-dba:</p>
@@ -1741,7 +1532,7 @@ daylight-savings leap-ahead transitions will not be run!</p>
 <p>Crunchy pgBouncer is a lightweight connection pooler for PostgreSQL databases.</p>
 </div>
 <div class="sect2">
-<h3 id="_environment_variables_12">Environment Variables</h3>
+<h3 id="_environment_variables_11">Environment Variables</h3>
 <div class="sect3">
 <h4 id="_required_args_2">REQUIRED ARGS</h4>
 <div class="ulist">
@@ -1837,7 +1628,7 @@ to be mounted at <code>/pgconf</code>.</p>
 <p>The crunchy-backrest-restore container executes the pgbackrest utility, allowing FULL and DELTA restore capability. See the pgbackrest guide for more details. <a href="https://github.com/pgbackrest/pgbackrest" class="bare">https://github.com/pgbackrest/pgbackrest</a></p>
 </div>
 <div class="sect2">
-<h3 id="_environment_variables_13">Environment Variables</h3>
+<h3 id="_environment_variables_12">Environment Variables</h3>
 <div class="paragraph">
 <p><strong>Required:</strong>
  * STANZA - desired stanza to restore from.  For most cases this should be set to <code>db</code>.</p>
@@ -1904,7 +1695,7 @@ sample screenshot is below:</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_environment_variables_14">Environment Variables</h3>
+<h3 id="_environment_variables_13">Environment Variables</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -1990,7 +1781,7 @@ to retrieve database dumps to be restored via psql or pg_restore.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_environment_variables_15">Environment Variables</h3>
+<h3 id="_environment_variables_14">Environment Variables</h3>
 <div class="sect3">
 <h4 id="_required_args_3">REQUIRED ARGS</h4>
 <div class="ulist">
@@ -2055,7 +1846,7 @@ Postgres packages in order to perform a pg_upgrade from
 9.5 to 9.6 or 9.6 to 10 versions.</p>
 </div>
 <div class="sect2">
-<h3 id="_environment_variables_16">Environment Variables</h3>
+<h3 id="_environment_variables_15">Environment Variables</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -2135,7 +1926,7 @@ Note: this mode can reveal secrets in logs.</p>
 <p>The crunchy-sim container is a simple traffic simulator for PostgreSQL.</p>
 </div>
 <div class="sect2">
-<h3 id="_environment_variables_17">Environment Variables</h3>
+<h3 id="_environment_variables_16">Environment Variables</h3>
 <div class="ulist">
 <ul>
 <li>
@@ -2209,8 +2000,7 @@ defined by the YAML spec.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Only one connection is created for all queries.
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; aae224745f5caf481c142b4ccbf3332ab4f45f8e</p>
+<p>Only one connection is created for all queries.</p>
 </li>
 </ul>
 </div>

@@ -102,64 +102,6 @@
 
       </div>
         <ul>
-    <li data-nav-id="/getting-started/openshift-templates/" class="dd-item haschildren
-        ">
-      <div>
-      <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/">Openshift Templates</a><i class="fa fa-angle-right fa-lg category-icon"></i>
-
-      </div>
-        <ul>
-      <li data-nav-id="/getting-started/openshift-templates/single-primary/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/single-primary/">
-            Single Primary
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore/">
-            Primary Restore
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore-secret/">
-            Primary Restore Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup/">
-            Primary Backup
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup-secret/">
-            Primary Backup Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/postgres-replicated/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/postgres-replicated/">
-            Primary Replica
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/pgadmin4/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/pgadmin4/">
-            pgAdmin4
-          </a>
-        </div>
-    </li>
-        </ul>
-    </li>
     <li data-nav-id="/getting-started/kubernetes-and-openshift/" class="dd-item
         ">
       <div>
@@ -225,6 +167,13 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="/container-specifications/crunchy-scheduler/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/">
+            crunchy-scheduler
+          </a>
+        </div>
+    </li>
       <li data-nav-id="/container-specifications/crunchy-prometheus/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
@@ -271,13 +220,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-sim/">
             crunchy-sim
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-dba/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-dba/">
-            crunchy-dba
           </a>
         </div>
     </li>
@@ -405,7 +347,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Latest Release: 2.1.0 2018-10-10</p>
+<p>Latest Release: 2.2.0 2018-11-27</p>
 </div>
 <div class="sect1">
 <h2 id="_build_the_containers">Build the Containers</h2>
@@ -415,14 +357,16 @@
 containers from <a href="https://hub.docker.com/">Dockerhub</a>, <strong>or</strong> build the containers on your local host.</p>
 </div>
 <div class="paragraph">
-<p>To download the prebuilt containers, make sure you can login to
-<a href="https://hub.docker.com/">Dockerhub</a>, and then run the following:</p>
+<p>To download the prebuilt containers and install the dependencies required to run the
+container examples, make sure you can login to <a href="https://hub.docker.com/">Dockerhub</a>,
+and then run the following:</p>
 </div>
 <div class="literalblock">
 <div class="content">
 <pre>docker login
 cd $CCPROOT
-./bin/pull-from-dockerhub.sh</pre>
+./bin/pull-from-dockerhub.sh
+make setup</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -431,8 +375,7 @@ build as follows:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>godep restore
-cd $CCPROOT
+<pre>cd $CCPROOT
 make setup
 make all</pre>
 </div>
