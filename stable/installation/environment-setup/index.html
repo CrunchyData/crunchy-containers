@@ -102,64 +102,6 @@
 
       </div>
         <ul>
-    <li data-nav-id="/getting-started/openshift-templates/" class="dd-item haschildren
-        ">
-      <div>
-      <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/">Openshift Templates</a><i class="fa fa-angle-right fa-lg category-icon"></i>
-
-      </div>
-        <ul>
-      <li data-nav-id="/getting-started/openshift-templates/single-primary/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/single-primary/">
-            Single Primary
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore/">
-            Primary Restore
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore-secret/">
-            Primary Restore Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup/">
-            Primary Backup
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup-secret/">
-            Primary Backup Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/postgres-replicated/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/postgres-replicated/">
-            Primary Replica
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/pgadmin4/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/pgadmin4/">
-            pgAdmin4
-          </a>
-        </div>
-    </li>
-        </ul>
-    </li>
     <li data-nav-id="/getting-started/kubernetes-and-openshift/" class="dd-item
         ">
       <div>
@@ -225,6 +167,13 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="/container-specifications/crunchy-scheduler/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/">
+            crunchy-scheduler
+          </a>
+        </div>
+    </li>
       <li data-nav-id="/container-specifications/crunchy-prometheus/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
@@ -271,13 +220,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-sim/">
             crunchy-sim
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-dba/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-dba/">
-            crunchy-dba
           </a>
         </div>
     </li>
@@ -423,7 +365,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Latest Release: 2.1.0 2018-10-10</p>
+<p>Latest Release: 2.2.0 2018-11-27</p>
 </div>
 <div class="sect1">
 <h2 id="_requirements">Requirements</h2>
@@ -434,10 +376,10 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Docker 1.12+</strong></p>
+<p><strong>Docker 1.13+</strong></p>
 </li>
 <li>
-<p><strong>OpenShift Container Platform 3.6+</strong></p>
+<p><strong>OpenShift Container Platform 3.11</strong></p>
 </li>
 <li>
 <p><strong>Kubernetes 1.8+</strong></p>
@@ -477,8 +419,8 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
 export CCP_PGVERSION=10
-export CCP_PG_FULLVERSION=10.5
-export CCP_VERSION=2.1.0
+export CCP_PG_FULLVERSION=10.6
+export CCP_VERSION=2.2.0
 export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
@@ -514,7 +456,7 @@ effect.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>mkdir -p $HOME/cdev/src $HOME/cdev/pkg $HOME/cdev/bin</pre>
+<pre>mkdir -p $HOME/cdev/src/github.com/crunchydata $HOME/cdev/pkg $HOME/cdev/bin</pre>
 </div>
 </div>
 </div>
@@ -526,15 +468,11 @@ effect.</p>
 <h3 id="_centos_7">CentOS 7</h3>
 <div class="literalblock">
 <div class="content">
-<pre>cd $GOPATH
-sudo yum -y install golang git docker
-go get github.com/tools/godep
-cd src/github.com
-mkdir crunchydata
-cd crunchydata
+<pre>sudo yum -y install golang git docker
+cd $GOPATH/src/github.com/crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 2.1.0
+git checkout 2.2.0
 go get github.com/blang/expenv</pre>
 </div>
 </div>
@@ -557,17 +495,13 @@ need to be taken.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>cd $GOPATH
-sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
+<pre>sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
 sudo yum-config-manager --enable rhel-7-server-extras-rpms
 sudo yum -y install git golang
-go get github.com/tools/godep
-cd src/github.com
-mkdir crunchydata
-cd crunchydata
+cd $GOPATH/src/github.com/crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 2.1.0
+git checkout 2.2.0
 go get github.com/blang/expenv</pre>
 </div>
 </div>
@@ -688,77 +622,12 @@ to run Docker commands from your user account.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>You can ensure your <strong>someuser</strong> account is added correctly by running the following
-command and ensuring <code>docker</code> appears as one of the results:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>groups</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Before you start Docker, you might consider configuring Docker storage:
-This is described if you run:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>man docker-storage-setup</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Follow the instructions available <a href="https://docs.openshift.com/container-platform/3.4/install_config/install/host_preparation.html#configuring-docker-storage">on the main OpenShift documentation page</a>
-to configure Docker storage appropriately.</p>
-</div>
-<div class="paragraph">
-<p>These steps are illustrative of a typical process for setting up Docker storage. You will need to run these commands as root.</p>
-</div>
-<div class="paragraph">
-<p>First, add an extra virtual hard disk to your virtual machine (see <a href="http://catlingmindswipe.blogspot.com/2012/02/how-to-create-new-virtual-disks-in.html">this blog post</a> for tips on how to do so).</p>
-</div>
-<div class="paragraph">
-<p>Run this command to format the drive, where <code>/dev/sd?</code> is the new hard drive that was added:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>fdisk /dev/sd?</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Next, create a volume group on the new drive partition within the <code>fdisk</code> utility:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>vgcreate docker-vg /dev/sd?</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Then, you&#8217;ll need to edit the <code>docker-storage-setup</code> configuration file in order to override default options. Add these two lines to <code>/etc/sysconfig/docker-storage-setup</code>:</p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>DEVS=/dev/sd?
-VG=docker-vg</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Finally, run the command <code>docker-storage-setup</code> to use that new volume group. The results should state that the physical volume <code>/dev/sd?</code> and the volume group <code>docker-vg</code> have both been successfully created.</p>
-</div>
-<div class="paragraph">
 <p>Next, we enable and start up Docker:</p>
 </div>
 <div class="literalblock">
 <div class="content">
 <pre>sudo systemctl enable docker.service
 sudo systemctl start docker.service</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Verify that Docker version 1.12.6 was installed, as per the OpenShift 3.6
-<a href="https://docs.openshift.com/container-platform/3.6/install_config/install/host_preparation.html#installing-docker">requirements.</a></p>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>docker version</pre>
 </div>
 </div>
 </div>
@@ -769,27 +638,7 @@ sudo systemctl start docker.service</pre>
 OpenShift Enterprise on your host. The main instructions are here:</p>
 </div>
 <div class="paragraph">
-<p><a href="https://docs.openshift.com/container-platform/3.6/install_config/install/quick_install.html" class="bare">https://docs.openshift.com/container-platform/3.6/install_config/install/quick_install.html</a></p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-If you install OpenShift Enterprise on a server with less than <code>16GB</code> memory and <code>40GB</code>
-of disk, the following Ansible variables need to be added to <code>~/.config/openshift/installer.cfg.yml</code>
-prior to installation:
-</td>
-</tr>
-</table>
-</div>
-<div class="literalblock">
-<div class="content">
-<pre>openshift_check_min_host_disk_gb: '10' # min 10gb disk
-openshift_check_min_host_memory_gb: '3' # min 3gb memory</pre>
-</div>
+<p><a href="https://docs.openshift.com/container-platform/3.11/install/index.html" class="bare">https://docs.openshift.com/container-platform/3.11/install/index.html</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -812,29 +661,54 @@ with installation can occur unless you have a resolving hostname.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>hostname --ip-address</pre>
+<pre>$ hostname --ip-address</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>When running the containers in GKE Role Based Account Control will need to be set up.</p>
+<p>In order to run the various examples, Role Based Account Control will need to be set up.
+Specifically, the <strong>cluster-admin</strong> role will need to be assigned to the Kubernetes user
+that will be utilized to run the examples.  This is done by creating the proper
+<strong>ClusterRoleBinding</strong>:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>kubectl create clusterrolebinding cluster-admin-binding \
+<pre>$ kubectl create clusterrolebinding cluster-admin-binding \
+--clusterrole cluster-admin --user someuser</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you are running on GKE, the following command can be utilized to auto-populate the <strong>user</strong>
+option with the account that is currently logged into Google Cloud:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ kubectl create clusterrolebinding cluster-admin-binding \
 --clusterrole cluster-admin --user $(gcloud config get-value account)</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If more than one user will be running on the same kubernetes cluster in GKE, from the above command cluster-admin-binding will need to be unique and is the name that is added to the clusterrolebidings.  The example below will add another user to the clusterrolebinding with a unique value.</p>
+<p>If more than one user will be running the examples on the same Kubernetes cluster, a unique name
+will need to be provided for each new <strong>ClusterRoleBinding</strong> created in order to assign the
+<strong>cluster-admin</strong> role to every user.  The example below will create a <strong>ClusterRoleBinding</strong> with a
+unique value:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>$ ACCOUNT=$(gcloud info --format='value(config.account)')
-$ kubectl create clusterrolebinding &lt;unique&gt;-cluster-admin-binding \
+<pre>$ kubectl create clusterrolebinding &lt;unique&gt;-cluster-admin-binding \
     --clusterrole cluster-admin \
-    --user $ACCOUNT
-
-ACCOUNT is just your google gcloud acount login, ie username@google.com</pre>
+    --user someuser</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you are running on GKE, the following can be utilized to create a unique <strong>ClusterRoleBinding</strong>
+for each user, with the user&#8217;s Google Cloud account prepended to the name of each new
+<strong>ClusterRoleBinding</strong>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ kubectl create clusterrolebinding "$(gcloud config get-value account)-cluster-admin-binding" \
+    --clusterrole cluster-admin \
+    --user $(gcloud config get-value account)</pre>
 </div>
 </div>
 </div>
@@ -940,15 +814,23 @@ user such as:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>oc login -u someuser</pre>
+<pre>$ oc login -u someuser</pre>
 </div>
+</div>
+<div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
+<p>For the best results, it is recommended that you run the examples with a user that has <strong>NOT</strong> been
+assigned the <strong>cluster-admin</strong> cluster role.</p>
+</div>
+</div>
+
 </div>
 <div class="paragraph">
 <p>For our development purposes only, we typically specify the OCP
 Authorization policy of <code>AllowAll</code> as documented here:</p>
 </div>
 <div class="paragraph">
-<p><a href="https://docs.openshift.com/container-platform/3.7/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider" class="bare">https://docs.openshift.com/container-platform/3.7/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider</a></p>
+<p><a href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider" class="bare">https://docs.openshift.com/container-platform/3.11/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider</a></p>
 </div>
 <div class="paragraph">
 <p>We do not recommend this authentication policy for a production
@@ -989,14 +871,39 @@ Now using project "demo" on server "https://127.0.0.1:8443".</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Finally, you will want to ensure the proper privileges are added to the user in order to
-have the ability to create persistent volumes. A command similar to the following can be
-used to accomplish this, by adding the cluster-admin role to the <strong>demo</strong> user:</p>
+<p>When self-provisioning a new project using the <code>oc new-project</code> command, the current user (i.e.,
+the user you used when logging into OCP with the <code>oc login</code> command) will automatically be assigned
+to the <strong>admin</strong> role for that project.  This will allow the user to create the majority of the
+objects needed to successfully run the examples.  However, in order to create the <strong>Persistent
+Volume</strong> objects needed to properly configure storage for the examples, an additional role is
+needed. Specifically, a new role is needed that can both create and delete <strong>Persistent Volumes</strong>.</p>
+</div>
+<div class="paragraph">
+<p>Using the following two commands, create a new Cluster Role that has the ability to create and delete
+persistent volumes, and then assign that role to your current user:</p>
+</div>
+<div class="paragraph">
+<div class="notices warning" ><div class="paragraph">
+<p>Please be aware that the following two commands require privileges that your current user may not
+have. In the event that you are unable to run these commands, and do not have access to a user
+that is able to run them (e.g., the <strong>system:admin</strong> user that is created by default when
+installing OCP), please contact your local OCP administrator to run the commands on your behalf, or
+grant you the access required to run them yourself.</p>
+</div>
+</div>
+
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>oc adm policy add-cluster-role-to-user cluster-admin demo</pre>
+<pre>$ oc create clusterrole crunchytester --verb="list,create,delete" --resource=persistentvolumes
+clusterrole "crunchytester" created
+
+$ oc adm policy add-cluster-role-to-user crunchytester someuser
+cluster role "crunchytester" added: "someuser"</pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Your user should now have the roles and privileges required to run the examples.</p>
 </div>
 </div>
 </div>

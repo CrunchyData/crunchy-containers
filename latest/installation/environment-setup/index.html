@@ -365,7 +365,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Latest Release: 2.2.0 2018-11-08</p>
+<p>Latest Release: 2.2.0 2018-11-27</p>
 </div>
 <div class="sect1">
 <h2 id="_requirements">Requirements</h2>
@@ -379,7 +379,7 @@
 <p><strong>Docker 1.13+</strong></p>
 </li>
 <li>
-<p><strong>OpenShift Container Platform 3.10+</strong></p>
+<p><strong>OpenShift Container Platform 3.11</strong></p>
 </li>
 <li>
 <p><strong>Kubernetes 1.8+</strong></p>
@@ -419,7 +419,7 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
 export CCP_PGVERSION=10
-export CCP_PG_FULLVERSION=10.5
+export CCP_PG_FULLVERSION=10.6
 export CCP_VERSION=2.2.0
 export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
@@ -638,7 +638,7 @@ sudo systemctl start docker.service</pre>
 OpenShift Enterprise on your host. The main instructions are here:</p>
 </div>
 <div class="paragraph">
-<p><a href="https://docs.openshift.com/container-platform/3.10/install/index.html" class="bare">https://docs.openshift.com/container-platform/3.10/install/index.html</a></p>
+<p><a href="https://docs.openshift.com/container-platform/3.11/install/index.html" class="bare">https://docs.openshift.com/container-platform/3.11/install/index.html</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -661,29 +661,54 @@ with installation can occur unless you have a resolving hostname.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>hostname --ip-address</pre>
+<pre>$ hostname --ip-address</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>When running the containers in GKE Role Based Account Control will need to be set up.</p>
+<p>In order to run the various examples, Role Based Account Control will need to be set up.
+Specifically, the <strong>cluster-admin</strong> role will need to be assigned to the Kubernetes user
+that will be utilized to run the examples.  This is done by creating the proper
+<strong>ClusterRoleBinding</strong>:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>kubectl create clusterrolebinding cluster-admin-binding \
+<pre>$ kubectl create clusterrolebinding cluster-admin-binding \
+--clusterrole cluster-admin --user someuser</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you are running on GKE, the following command can be utilized to auto-populate the <strong>user</strong>
+option with the account that is currently logged into Google Cloud:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ kubectl create clusterrolebinding cluster-admin-binding \
 --clusterrole cluster-admin --user $(gcloud config get-value account)</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If more than one user will be running on the same kubernetes cluster in GKE, from the above command cluster-admin-binding will need to be unique and is the name that is added to the clusterrolebidings.  The example below will add another user to the clusterrolebinding with a unique value.</p>
+<p>If more than one user will be running the examples on the same Kubernetes cluster, a unique name
+will need to be provided for each new <strong>ClusterRoleBinding</strong> created in order to assign the
+<strong>cluster-admin</strong> role to every user.  The example below will create a <strong>ClusterRoleBinding</strong> with a
+unique value:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>$ ACCOUNT=$(gcloud info --format='value(config.account)')
-$ kubectl create clusterrolebinding &lt;unique&gt;-cluster-admin-binding \
+<pre>$ kubectl create clusterrolebinding &lt;unique&gt;-cluster-admin-binding \
     --clusterrole cluster-admin \
-    --user $ACCOUNT
-
-ACCOUNT is just your google gcloud acount login, ie username@google.com</pre>
+    --user someuser</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you are running on GKE, the following can be utilized to create a unique <strong>ClusterRoleBinding</strong>
+for each user, with the user&#8217;s Google Cloud account prepended to the name of each new
+<strong>ClusterRoleBinding</strong>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>$ kubectl create clusterrolebinding "$(gcloud config get-value account)-cluster-admin-binding" \
+    --clusterrole cluster-admin \
+    --user $(gcloud config get-value account)</pre>
 </div>
 </div>
 </div>
@@ -789,7 +814,7 @@ user such as:</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>oc login -u someuser</pre>
+<pre>$ oc login -u someuser</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -805,7 +830,7 @@ assigned the <strong>cluster-admin</strong> cluster role.</p>
 Authorization policy of <code>AllowAll</code> as documented here:</p>
 </div>
 <div class="paragraph">
-<p><a href="https://docs.openshift.com/container-platform/3.10/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider" class="bare">https://docs.openshift.com/container-platform/3.10/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider</a></p>
+<p><a href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider" class="bare">https://docs.openshift.com/container-platform/3.11/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider</a></p>
 </div>
 <div class="paragraph">
 <p>We do not recommend this authentication policy for a production
@@ -870,7 +895,7 @@ grant you the access required to run them yourself.</p>
 </div>
 <div class="literalblock">
 <div class="content">
-<pre>$ oc create clusterrole crunchytester --verb="create,delete" --resource=persistentvolumes
+<pre>$ oc create clusterrole crunchytester --verb="list,create,delete" --resource=persistentvolumes
 clusterrole "crunchytester" created
 
 $ oc adm policy add-cluster-role-to-user crunchytester someuser

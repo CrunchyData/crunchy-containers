@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-postgres/</loc>
+    <lastmod>2018-05-24T09:38:13-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/installation/</loc>
+    <lastmod>2018-05-08T08:55:54-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/installation/environment-setup/</loc>
+    <lastmod>2018-05-08T08:52:09-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-postgres-gis/</loc>
+    <lastmod>2018-05-24T09:51:16-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/getting-started/</loc>
+    <lastmod>2018-05-08T08:56:03-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/installation/build-the-containers/</loc>
+    <lastmod>2018-05-08T08:52:16-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-backup/</loc>
+    <lastmod>2018-05-24T10:06:08-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/</loc>
+    <lastmod>2018-05-08T08:57:16-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/installation/storage-configuration/</loc>
+    <lastmod>2018-05-08T08:52:46-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-backrest-restore/</loc>
+    <lastmod>2018-05-24T12:06:26-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/contributing/</loc>
+    <lastmod>2018-05-08T08:57:09-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-pgdump/</loc>
+    <lastmod>2018-05-24T12:08:16-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-pgrestore/</loc>
+    <lastmod>2018-05-24T12:05:38-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-collect/</loc>
+    <lastmod>2018-05-24T10:06:13-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-scheduler/</loc>
+    <lastmod>2018-05-24T10:06:13-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-prometheus/</loc>
+    <lastmod>2018-05-24T10:06:21-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-grafana/</loc>
+    <lastmod>2018-05-24T10:06:17-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-pgadmin4/</loc>
+    <lastmod>2018-05-24T12:05:42-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-watch/</loc>
+    <lastmod>2018-05-24T12:06:15-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-vacuum/</loc>
+    <lastmod>2018-05-24T12:06:12-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-upgrade/</loc>
+    <lastmod>2018-05-24T12:05:31-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-sim/</loc>
+    <lastmod>2018-05-24T12:05:28-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-pgbouncer/</loc>
+    <lastmod>2018-05-24T12:05:03-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-pgpool/</loc>
+    <lastmod>2018-05-24T12:05:00-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/container-specifications/crunchy-pgbadger/</loc>
+    <lastmod>2018-05-24T12:04:55-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/getting-started/kubernetes-and-openshift/</loc>
+    <lastmod>2018-05-15T08:30:41-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/</loc>
+    <lastmod>2018-04-23T14:52:09-07:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/2.2.0/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

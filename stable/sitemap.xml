@@ -73,6 +73,11 @@
   </url>
   
   <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/</loc>
+    <lastmod>2018-05-24T10:06:13-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/</loc>
     <lastmod>2018-05-24T10:06:21-07:00</lastmod>
   </url>
@@ -108,11 +113,6 @@
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-dba/</loc>
-    <lastmod>2018-05-24T12:05:24-07:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgbouncer/</loc>
     <lastmod>2018-05-24T12:05:03-07:00</lastmod>
   </url>
@@ -128,48 +128,8 @@
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/</loc>
-    <lastmod>2018-05-15T08:35:00-07:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/stable/getting-started/kubernetes-and-openshift/</loc>
     <lastmod>2018-05-15T08:30:41-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/single-primary/</loc>
-    <lastmod>2018-05-15T07:22:59-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore/</loc>
-    <lastmod>2018-05-15T07:22:51-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore-secret/</loc>
-    <lastmod>2018-05-15T07:22:45-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup/</loc>
-    <lastmod>2018-05-15T07:22:27-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup-secret/</loc>
-    <lastmod>2018-05-15T07:22:20-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/postgres-replicated/</loc>
-    <lastmod>2018-05-15T07:22:10-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/pgadmin4/</loc>
-    <lastmod>2018-05-15T07:22:02-07:00</lastmod>
   </url>
   
   <url>

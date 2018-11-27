@@ -101,64 +101,6 @@
 
       </div>
         <ul>
-    <li data-nav-id="/getting-started/openshift-templates/" class="dd-item haschildren
-        ">
-      <div>
-      <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/">Openshift Templates</a><i class="fa fa-angle-right fa-lg category-icon"></i>
-
-      </div>
-        <ul>
-      <li data-nav-id="/getting-started/openshift-templates/single-primary/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/single-primary/">
-            Single Primary
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore/">
-            Primary Restore
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore-secret/">
-            Primary Restore Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup/">
-            Primary Backup
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup-secret/">
-            Primary Backup Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/postgres-replicated/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/postgres-replicated/">
-            Primary Replica
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/pgadmin4/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/pgadmin4/">
-            pgAdmin4
-          </a>
-        </div>
-    </li>
-        </ul>
-    </li>
     <li data-nav-id="/getting-started/kubernetes-and-openshift/" class="dd-item
         ">
       <div>
@@ -225,6 +167,13 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="/container-specifications/crunchy-scheduler/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/">
+            crunchy-scheduler
+          </a>
+        </div>
+    </li>
       <li data-nav-id="/container-specifications/crunchy-prometheus/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
@@ -271,13 +220,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-sim/">
             crunchy-sim
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-dba/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-dba/">
-            crunchy-dba
           </a>
         </div>
     </li>
@@ -379,19 +321,7 @@
     
     <div class="progress">
         <div class="wrapper">
-    <nav id="TableOfContents">
-<ul>
-<li>
-<ul>
-<li><a href="#environment-variables">Environment Variables</a>
-<ul>
-<li><a href="#required">Required</a></li>
-<li><a href="#optional">Optional</a></li>
-</ul></li>
-<li><a href="#logic">Logic</a></li>
-</ul></li>
-</ul>
-</nav>
+    
         </div>
     </div>
     
@@ -409,165 +339,15 @@
     
     
     
-    
+    <p>Crunchy Watch is an application wrapped in a container that watches a PostgreSQL
+primary database and waits for a failure to occur, at which point a failover is
+performed to promote a replica.</p>
 
-<p>The crunchy-watch container essentially does a health check
-on a primary database container and performs a failover sequence
-if the primary is not reached. The watch container has access to a service
-account that is used inside the container to issue commands to OpenShift.</p>
+<p>The crunchy-watch container, while originally part of the Container Suite, has been
+split out into its own project. More information on the Watch container and it&rsquo;s
+capabilities can be found in the new project repository located at
+<a href="https://github.com/CrunchyData/crunchy-watch">https://github.com/CrunchyData/crunchy-watch</a>.</p>
 
-<p>In Kubrnetese 1.5, if a policy file is being used for securing down the
-Kubernetes cluster, you could possibly need to add a policy to allow
-the pg-watcher service account access to the Kubernetes API as mentioned
-<a href="https://kubernetes.io/docs/admin/authorization/abac/#a-quick-note-on-service-accounts">here</a>.</p>
-
-<p>In Kubernetes 1.6, an equivalent RBAC policy is also possibly required depending
-on your authorization/authentication configuration. See  <a href="https://kubernetes.io/docs/admin/authorization/rbac/">this link</a> for details on the new RBAC policy mechanism.</p>
-
-<p>For example, you can grant cluster-admin permissions on the pg-watcher service
-account in the my-namespace namespace as follows:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl create clusterrolebinding pgwatcher-view-binding --clusterrole<span style="color:#f92672">=</span>cluster-admin --serviceaccount<span style="color:#f92672">=</span>my-namespace:pg-watcher</code></pre></div>
-<p>A less wide open policy would be applied like this on Kube 1.6 rbac:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">kubectl create rolebinding my-sa-binding --clusterrole<span style="color:#f92672">=</span>admin --serviceaccount<span style="color:#f92672">=</span>demo:pg-watcher --namespace<span style="color:#f92672">=</span>demo</code></pre></div>
-<div class="notices tip" ><p>The above kubectl command is only available in Kubernetes 1.6. For prior
-Kubernetes releases such as 1.5 and the alpha RBAC, you will need to
-specify the role binding in a JSON/YAML file instead of using
-the previous command syntax.</p>
-</div>
-
-
-<p>The oc/docker/kubectl commands are included into the container from the
-host when the container image is built.  These commands are used by
-the watch logic to interact with the replica containers.</p>
-
-<p>Starting with release 1.7.1, crunchy-watch source code is relocated
-to a separate GitHub repository located <a href="https://github.com/crunchydata/crunchy-watch">here</a>.</p>
-
-<h2 id="environment-variables">Environment Variables</h2>
-
-<h3 id="required">Required</h3>
-
-<table>
-<thead>
-<tr>
-<th align="left"><strong>Name</strong></th>
-<th align="left"><strong>Default</strong></th>
-<th align="left"><strong>Description</strong></th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td align="left"><strong>CRUNCHY_WATCH_HEALTHCHECK_INTERVAL</strong></td>
-<td align="left">None</td>
-<td align="left">The time to sleep in seconds between checking on the primary.</td>
-</tr>
-
-<tr>
-<td align="left"><strong>CRUNCHY_WATCH_FAILOVER_WAIT</strong></td>
-<td align="left">40s</td>
-<td align="left">The time to sleep in seconds between triggering the failover and updating its label.</td>
-</tr>
-
-<tr>
-<td align="left"><strong>PG_CONTAINER_NAME</strong></td>
-<td align="left">None</td>
-<td align="left">If set, the name of the container to refer to when doing an <em>exec</em>. This is required if you have more than 1 container in your database pod.</td>
-</tr>
-
-<tr>
-<td align="left"><strong>CRUNCHY_WATCH_PRIMARY</strong></td>
-<td align="left">None</td>
-<td align="left">The primary service name.</td>
-</tr>
-
-<tr>
-<td align="left"><strong>CRUNCHY_WATCH_REPLICA</strong></td>
-<td align="left">None</td>
-<td align="left">The replica service name.</td>
-</tr>
-
-<tr>
-<td align="left"><strong>PG_PRIMARY_PORT</strong></td>
-<td align="left">None</td>
-<td align="left">Database port to use when checking the database.</td>
-</tr>
-
-<tr>
-<td align="left"><strong>CRUNCHY_WATCH_USERNAME</strong></td>
-<td align="left">None</td>
-<td align="left">Database user account to use when checking the database using pg_isready utility.</td>
-</tr>
-
-<tr>
-<td align="left"><strong>CRUNCHY_WATCH_DATABASE</strong></td>
-<td align="left">None</td>
-<td align="left">Database to use when checking the database using pg_isready.</td>
-</tr>
-
-<tr>
-<td align="left"><strong>REPLICA_TO_TRIGGER_LABEL</strong></td>
-<td align="left">None</td>
-<td align="left">The pod name of a replica that you want to choose as the new primary in a failover; this will override the normal replica selection.</td>
-</tr>
-
-<tr>
-<td align="left"><strong>CRUNCHY_WATCH_PRE_HOOK</strong></td>
-<td align="left">None</td>
-<td align="left">Path to an executable file to run before failover is processed.</td>
-</tr>
-
-<tr>
-<td align="left"><strong>CRUNCHY_WATCH_POST_HOOK</strong></td>
-<td align="left">None</td>
-<td align="left">Path to an executable file to run after failover is processed.</td>
-</tr>
-</tbody>
-</table>
-
-<h3 id="optional">Optional</h3>
-
-<table>
-<thead>
-<tr>
-<th align="left"><strong>Name</strong></th>
-<th align="left"><strong>Default</strong></th>
-<th align="left"><strong>Description</strong></th>
-</tr>
-</thead>
-
-<tbody>
-<tr>
-<td align="left"><strong>CRUNCHY_DEBUG</strong></td>
-<td align="left">FALSE</td>
-<td align="left">Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.</td>
-</tr>
-</tbody>
-</table>
-
-<h2 id="logic">Logic</h2>
-
-<p>The watch container will watch the primary. If the primary dies, then
-the watcher will:</p>
-
-<ul>
-<li>create the trigger file on the replica that will become the new primary</li>
-<li>change the labels on the replica to be those of the primary</li>
-<li>start watching the new primary in case that falls over next</li>
-<li>look for replicas that have the metadata label value of <em>replicatype=trigger</em> to prefer
-the failover to. If found, it will use the first replica with that label; if
-not found, it will use the first replica it finds.</li>
-</ul>
-
-<p>Example of looking for the failover replica:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">oc get pod -l <span style="color:#111">name</span><span style="color:#f92672">=</span>pg-replica-rc-dc
-NAME                     READY     STATUS    RESTARTS   AGE
-pg-replica-rc-dc           <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">2</span>          16m
-pg-replica-rc-dc-1-96qs8   <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">1</span>          16m
-
-oc get pod -l <span style="color:#111">replicatype</span><span style="color:#f92672">=</span>trigger
-NAME             READY     STATUS    RESTARTS   AGE
-pg-replica-rc-dc   <span style="color:#ae81ff">1</span>/1       Running   <span style="color:#ae81ff">2</span>          16m</code></pre></div>
 
     
     

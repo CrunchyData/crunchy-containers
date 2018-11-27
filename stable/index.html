@@ -101,64 +101,6 @@
 
       </div>
         <ul>
-    <li data-nav-id="/getting-started/openshift-templates/" class="dd-item haschildren
-        ">
-      <div>
-      <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/">Openshift Templates</a><i class="fa fa-angle-right fa-lg category-icon"></i>
-
-      </div>
-        <ul>
-      <li data-nav-id="/getting-started/openshift-templates/single-primary/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/single-primary/">
-            Single Primary
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore/">
-            Primary Restore
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore-secret/">
-            Primary Restore Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup/">
-            Primary Backup
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup-secret/">
-            Primary Backup Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/postgres-replicated/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/postgres-replicated/">
-            Primary Replica
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/pgadmin4/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/pgadmin4/">
-            pgAdmin4
-          </a>
-        </div>
-    </li>
-        </ul>
-    </li>
     <li data-nav-id="/getting-started/kubernetes-and-openshift/" class="dd-item
         ">
       <div>
@@ -224,6 +166,13 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="/container-specifications/crunchy-scheduler/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/">
+            crunchy-scheduler
+          </a>
+        </div>
+    </li>
       <li data-nav-id="/container-specifications/crunchy-prometheus/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
@@ -270,13 +219,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-sim/">
             crunchy-sim
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-dba/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-dba/">
-            crunchy-dba
           </a>
         </div>
     </li>
@@ -354,18 +296,24 @@
 </div>
 </div>
 <div class="paragraph">
-<p>Latest Release: 2.1.0 2018-10-10</p>
+<p>Latest Release: 2.2.0 2018-11-27</p>
 </div>
 <div class="sect1">
 <h2 id="_general">General</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Please view the official Crunchy Data Container Suite documentation <a href="https://crunchydata.github.io/crunchy-containers/">here</a>. If you are
-interested in contributing or making an update to the documentation, please view the <a href="https://crunchydata.github.io/crunchy-containers/contributing/">Contributing Guidelines</a>.</p>
+<p>The Crunchy Container Suite provides Docker containers that enable
+rapid deployment of PostgreSQL, including administration and
+monitoring tools. Multiple styles of deploying PostgreSQL clusters
+are supported.</p>
 </div>
 <div class="paragraph">
 <p>Warning: The master branch is considered unstable. Please consult the <a href="https://github.com/CrunchyData/crunchy-containers/releases">tagged release</a>
 currently deployed in your environment.</p>
+</div>
+<div class="paragraph">
+<p>If you are looking for the latest documentation, please see the develop branch which is considered unstable. The development
+documentation can be reviewed <a href="https://crunchydata.github.io/crunchy-containers/latest/">here</a>.</p>
 </div>
 </div>
 </div>
@@ -381,18 +329,21 @@ are supported.</p>
 <div class="sect2">
 <h3 id="_requirements">Requirements</h3>
 <div class="paragraph">
-<p>The containers will execute in the following environments:</p>
+<p>The containers will execute and are tested in the following environments:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Docker 1.12 and above</p>
+<p>RHEL/Centos 7</p>
 </li>
 <li>
-<p>Openshift 3.4 and above</p>
+<p>Docker 1.13+</p>
 </li>
 <li>
-<p>Kubernetes 1.5 and above</p>
+<p>Openshift 3.9+</p>
+</li>
+<li>
+<p>Kubernetes 1.8+</p>
 </li>
 </ul>
 </div>
@@ -405,55 +356,52 @@ are supported.</p>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-postgres">crunchy-postgres</a> - executes Postgres</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres">crunchy-postgres</a> - executes Postgres</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-postgres-gis">crunchy-postgres-gis</a> - executes Postgres plus the PostGIS extensions</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis">crunchy-postgres-gis</a> - executes Postgres plus the PostGIS extensions</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-backup">crunchy-backup</a> - performs a full database backup</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-backup">crunchy-backup</a> - performs a full database backup</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgpool">crunchy-pgpool</a> - executes pgpool</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgpool">crunchy-pgpool</a> - executes pgpool</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgbadger">crunchy-pgbadger</a> - executes pgbadger</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgbadger">crunchy-pgbadger</a> - executes pgbadger</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-watch">crunchy-watch</a> - performs a form of automated failover</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-collect">crunchy-collect</a> - collects Postgres metrics</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-collect">crunchy-collect</a> - collects Postgres metrics</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus">crunchy-prometheus</a> -stores Postgres metrics</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-prometheus">crunchy-prometheus</a> -stores Postgres metrics</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-grafana">crunchy-grafana</a> - graphs Postgres metrics</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-grafana">crunchy-grafana</a> - graphs Postgres metrics</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgbouncer">crunchy-pgbouncer</a> - pgbouncer connection pooler and simple form of failover</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgbouncer">crunchy-pgbouncer</a> - pgbouncer connection pooler and simple form of failover</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgadmin4">crunchy-pgadmin4</a> - pgadmin4 web application</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgadmin4">crunchy-pgadmin4</a> - pgadmin4 web application</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-dba">crunchy-dba</a> - implements a cron scheduler to perform simple DBA tasks</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-dba">crunchy-dba</a> - implements a cron scheduler to perform simple DBA tasks</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-upgrade">crunchy-upgrade</a> - allows you to perform a major postgres upgrade using pg_upgrade</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-upgrade">crunchy-upgrade</a> - allows you to perform a major postgres upgrade using pg_upgrade</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-backrest-restore">crunchy-backrest-restore</a> - allows you to perform a pgbackrest restore</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-backrest-restore">crunchy-backrest-restore</a> - allows you to perform a pgbackrest restore</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-sim">crunchy-sim</a> - executes queries over a specified interval range for Postgres traffic simulation purposes</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-sim">crunchy-sim</a> - executes queries over a specified interval range for Postgres traffic simulation purposes</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgdump">crunchy-pgdump</a> - provides a means of performing either a pg_dump or pg_dumpall on a Postgres database</p>
 </li>
 <li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgdump">crunchy-pgdump</a> - provides a means of performing either a pg_dump or pg_dumpall on a Postgres database</p>
-</li>
-<li>
-<p><a href="https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgrestore">crunchy-pgrestore</a> - provides a means of performing a restore of a dump from pg_dump or pg_dumpall via psql or pg_restore to a Postgres container database</p>
+<p><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgrestore">crunchy-pgrestore</a> - provides a means of performing a restore of a dump from pg_dump or pg_dumpall via psql or pg_restore to a Postgres container database</p>
 </li>
 </ul>
 </div>
@@ -470,7 +418,7 @@ That project is the <a href="https://github.com/crunchydata/postgres-operator">p
 </div>
 <div class="paragraph">
 <p>Further descriptions of each of these containers and environment variables that can be used to tune them
-can be found in the <a href="https://crunchydata.github.io/crunchy-containers/container-specifications/">Container Specifications</a> document.</p>
+can be found in the <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/">Container Specifications</a> document.</p>
 </div>
 </div>
 </div>
@@ -479,7 +427,7 @@ can be found in the <a href="https://crunchydata.github.io/crunchy-containers/co
 <h2 id="_getting_started">Getting Started</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Complete build and install documentation is found <a href="https://crunchydata.github.io/crunchy-containers/installation/">here</a>.  The provided Dockerfiles build the containers
+<p>Complete build and install documentation is found <a href="https://crunchydata.github.io/crunchy-containers/stable/installation/">here</a>.  The provided Dockerfiles build the containers
 on a Centos 7 base image and use the community PostgreSQL RPMs.</p>
 </div>
 <div class="paragraph">
@@ -493,11 +441,11 @@ for more details at <a href="http://www.crunchydata.com" class="bare">http://www
 <h2 id="_usage">Usage</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Various examples are provided in <a href="https://crunchydata.github.io/crunchy-containers/getting-started/">the Getting Started documentation</a> for running in Docker,
+<p>Various examples are provided in <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/">the Getting Started documentation</a> for running in Docker,
 Kubernetes, and OpenShift environments.</p>
 </div>
 <div class="paragraph">
-<p>You will need to set up your environment as per the <a href="https://crunchydata.github.io/crunchy-containers/installation/">Installation documentation</a> in order to
+<p>You will need to set up your environment as per the <a href="https://crunchydata.github.io/crunchy-containers/stable/installation/">Installation documentation</a> in order to
 execute the examples.</p>
 </div>
 </div>

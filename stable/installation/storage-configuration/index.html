@@ -102,64 +102,6 @@
 
       </div>
         <ul>
-    <li data-nav-id="/getting-started/openshift-templates/" class="dd-item haschildren
-        ">
-      <div>
-      <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/">Openshift Templates</a><i class="fa fa-angle-right fa-lg category-icon"></i>
-
-      </div>
-        <ul>
-      <li data-nav-id="/getting-started/openshift-templates/single-primary/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/single-primary/">
-            Single Primary
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore/">
-            Primary Restore
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-restore-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-restore-secret/">
-            Primary Restore Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup/">
-            Primary Backup
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/primary-backup-secret/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/primary-backup-secret/">
-            Primary Backup Secret
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/postgres-replicated/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/postgres-replicated/">
-            Primary Replica
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/getting-started/openshift-templates/pgadmin4/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/getting-started/openshift-templates/pgadmin4/">
-            pgAdmin4
-          </a>
-        </div>
-    </li>
-        </ul>
-    </li>
     <li data-nav-id="/getting-started/kubernetes-and-openshift/" class="dd-item
         ">
       <div>
@@ -225,6 +167,13 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="/container-specifications/crunchy-scheduler/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/">
+            crunchy-scheduler
+          </a>
+        </div>
+    </li>
       <li data-nav-id="/container-specifications/crunchy-prometheus/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
@@ -271,13 +220,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-sim/">
             crunchy-sim
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-dba/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-dba/">
-            crunchy-dba
           </a>
         </div>
     </li>
@@ -408,7 +350,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Latest Release: 2.1.0 2018-10-10</p>
+<p>Latest Release: 2.2.0 2018-11-27</p>
 </div>
 <div class="sect1">
 <h2 id="_available_storage_types">Available Storage Types</h2>
@@ -432,6 +374,19 @@
 <div class="paragraph">
 <p>Other storage backends work as well including GCE, EBS, ScaleIO, and
 others, but may require you to modify various examples or configuration.</p>
+</div>
+<div class="paragraph">
+<p>Crunchy Containers are tested, developed, and examples provided
+that use the various storage types listed above.  This insures
+that customers have a high degree of choices when it comes to
+choosing a volume type.  HostPath and NFS allow precise host path
+choices for where database volumes are persisted.  HostPath and NFS
+also allow governance models where volume creation is performed
+by an administrator instead of the application/developer team.</p>
+</div>
+<div class="paragraph">
+<p>Where customers desire a dynamic form of volume creation (e.g. self service),
+storage classes are also supported within the example set.</p>
 </div>
 <div class="paragraph">
 <p>Environment variables are set to determine how and what storage
@@ -469,6 +424,17 @@ rights to modify the hostaccess SCC. This can be done with the command: <code>oa
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
+<p>When running examples against HostPath storage, the run scripts provided in the
+examples will create directories using the following pattern:</p>
+</div>
+<div class="paragraph">
+<p><code>$CCP_STORAGE_PATH/$CCP_NAMESPACE-&lt;EXAMPLE_NAME&gt;</code></p>
+</div>
+</div>
+
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -485,15 +451,37 @@ the following variables that are unique to your NFS environment:</p>
 <div class="literalblock">
 <div class="content">
 <pre>export CCP_SECURITY_CONTEXT='"supplementalGroups": [65534]'
-export CCP_STORAGE_PATH=/mnt/nfsfileshare
-export CCP_NFS_IP=192.168.0.118
+export CCP_STORAGE_PATH=/nfsfileshare
+export CCP_NFS_IP=&lt;IP OF NFS SERVER&gt;
 export CCP_STORAGE_MODE=ReadWriteMany
 export CCP_STORAGE_CAPACITY=400M</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>In this example above the group ownership of the NFS mount is assumed to be
-<strong>nfsnobody</strong> or <strong>65534</strong>.</p>
+<p>In the example above the group ownership of the NFS mount is assumed to be
+<strong>nfsnobody</strong> or <strong>65534</strong>.  Additionally, it is recommended that root not be squashed on
+the NFS share (<code>no_root_squash</code>) in order to ensure the proper directories can be
+created, modified and removed as needed for the various container examples.</p>
+</div>
+<div class="paragraph">
+<div class="notices warning" ><div class="paragraph">
+<p>The examples in the Crunchy Container suite need access to the NFS export to create
+the directories used by the examples.  The NFS export should be mounted locally so
+the example <code>run.sh</code> scripts can do proper setup.</p>
+</div>
+</div>
+
+</div>
+<div class="paragraph">
+<div class="notices tip" ><div class="paragraph">
+<p>NWhen running examples against NFS storage, the run scripts provided in the
+examples will create directories using the following pattern:</p>
+</div>
+<div class="paragraph">
+<p><code>$CCP_STORAGE_PATH/$CCP_NAMESPACE-&lt;EXAMPLE_NAME&gt;</code></p>
+</div>
+</div>
+
 </div>
 <div class="paragraph">
 <div class="expand">
@@ -527,7 +515,7 @@ will include the <code>nfsnobody</code> group in the list of groups for the pod 
 <p><a href="http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html" class="bare">http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html</a></p>
 </div>
 <div class="paragraph">
-<p>if you are running your client on a VM, you will need to
+<p>If you are running your client on a VM, you will need to
 add 'insecure' to the exportfs file on the NFS server due to the way port
 translation is done between the VM host and the VM instance.</p>
 </div>
@@ -568,20 +556,14 @@ look into the <a href="https://www.novell.com/support/kb/doc.php?id=7010210">noa
 <h2 id="_dynamic_storage">Dynamic Storage</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Dynamic storage classes can be used for the examples.  Gluster
-is only one example of a storage type that supports dynamic storage
-classes.  The environment variable <code>CCP_STORAGE_CLASS</code> is used
+<p>Dynamic storage classes can be used for the examples.  There
+are various providers and solutions for dynamic storage, see the Kubernetes
+documentation on supported storage choices.
+The environment variable <code>CCP_STORAGE_CLASS</code> is used
 in the examples to determine whether or not to create a PersistentVolume
 manually or that it will be created dynamically using a StorageClass.  In
 the case of GKE, the default StorageClass is named <strong>default</strong>.   Storage
 class names are determined by the Kubernetes administrator and can vary.</p>
-</div>
-<div class="paragraph">
-<p>Setting up a Gluster cluster will offer you the ability to use
-dynamic storage provisioning in the examples.  A set of example
-Gluster configuration files is found at <code>$CCPROOT/examples/gluster</code>.
-This configuration is for a 3 node Gluster cluster which runs
-on a Centos7 Minimal VM deployment.</p>
 </div>
 <div class="paragraph">
 <p>Using block storage requires a security context to be set
