@@ -31,12 +31,9 @@ vi config.toml
 hugo server
 ....
 
-When you edit *config.toml*, you'll set `baseURL = "/"`. This will make the local version of the Hugo server accessible by default from
+The local version of the Hugo server is accessible by default from
 `localhost:1313`. Once you've run `hugo server`, that will let you interactively make changes to the documentation as desired and view the updates
 in real-time.
-
-NOTE: Please make sure to revert `baseURL` back to its original value of `https://crunchydata.github.io/crunchy-containers` if you choose
-to run the server locally.
 
 == Contributing to the Documentation
 
