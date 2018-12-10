@@ -4,7 +4,7 @@
     "metadata": {
         "name": "primary-deployment",
         "labels": {
-            "k8s-app": "postgres-cluster",
+            "cleanup": "$CCP_NAMESPACE-postgres-cluster",
             "name": "primary-deployment"
         }
     },
@@ -31,7 +31,7 @@
     "metadata": {
         "name": "replica-deployment",
         "labels": {
-            "k8s-app": "postgres-cluster",
+            "cleanup": "$CCP_NAMESPACE-postgres-cluster",
             "name": "replica-deployment"
         }
     },
@@ -58,7 +58,7 @@
     "metadata": {
         "name": "primary-deployment",
         "labels": {
-            "k8s-app": "postgres-cluster",
+            "cleanup": "$CCP_NAMESPACE-postgres-cluster",
             "name": "primary-deployment"
         }
     },
@@ -67,7 +67,7 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "k8s-app": "postgres-cluster",
+                    "cleanup": "$CCP_NAMESPACE-postgres-cluster",
                     "name": "primary-deployment"
                 }
             },
@@ -195,7 +195,7 @@
     "metadata": {
         "name": "replica-deployment",
         "labels": {
-            "k8s-app": "postgres-cluster",
+            "cleanup": "$CCP_NAMESPACE-postgres-cluster",
             "name": "replica-deployment"
         }
     },
@@ -204,7 +204,7 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "k8s-app": "postgres-cluster",
+                    "cleanup": "$CCP_NAMESPACE-postgres-cluster",
                     "name": "replica-deployment"
                 }
             },

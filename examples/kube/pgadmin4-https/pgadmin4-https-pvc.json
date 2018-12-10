@@ -2,13 +2,16 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pgadmin4-https-data"
+        "name": "pgadmin4-https-data",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-pgadmin4-https"
+        }
     },
     "spec": {
         "selector": {
-          "matchLabels": {
-            "name": "$CCP_NAMESPACE-pgadmin4-https-data"
-          }
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-pgadmin4-https-data"
+            }
         },
         "accessModes": [
             "$CCP_STORAGE_MODE"

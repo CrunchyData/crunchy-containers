@@ -2,21 +2,21 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-deployment-pgdata",
-      "labels":{
-         "k8s-app": "postgres-cluster"
-      }
+        "name": "primary-deployment-pgdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-postgres-cluster"
+        }
     },
     "spec": {
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "storageClassName": "$CCP_STORAGE_CLASS",
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "storageClassName": "$CCP_STORAGE_CLASS",
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      }
     }
 }
 
@@ -24,20 +24,20 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "replica-deployment-pgdata",
-      "labels":{
-         "k8s-app": "postgres-cluster"
-      }
+        "name": "replica-deployment-pgdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-postgres-cluster"
+        }
     },
     "spec": {
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "storageClassName": "$CCP_STORAGE_CLASS",
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "storageClassName": "$CCP_STORAGE_CLASS",
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      }
     }
 }

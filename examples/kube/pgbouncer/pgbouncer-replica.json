@@ -4,7 +4,8 @@
     "metadata": {
         "name": "pgbouncer-replica",
         "labels": {
-            "name": "pgbouncer-replica"
+            "name": "pgbouncer-replica",
+            "cleanup": "$CCP_NAMESPACE-pgbouncer"
         }
     },
     "spec": {
@@ -31,7 +32,8 @@
     "metadata": {
         "name": "pgbouncer-replica",
         "labels": {
-            "name": "pgbouncer-replica"
+            "name": "pgbouncer-replica",
+            "cleanup": "$CCP_NAMESPACE-pgbouncer"
         }
     },
     "spec": {

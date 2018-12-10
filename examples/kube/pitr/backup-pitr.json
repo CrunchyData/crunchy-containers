@@ -9,7 +9,8 @@
             "metadata": {
                 "name": "backup-pitr",
                 "labels": {
-                    "app": "backup-pitr"
+                    "app": "backup-pitr",
+                    "cleanup": "$CCP_NAMESPACE-backup-pitr"
                 }
             },
             "spec": {

@@ -29,4 +29,7 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} \
     configmap br-full-restore-pgconf \
     --from-file ${DIR?}/configs/pgbackrest.conf
 
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
+    br-full-restore-pgconf cleanup=${CCP_NAMESPACE?}-backrest-full-restore
+
 expenv -f $DIR/full-restore.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

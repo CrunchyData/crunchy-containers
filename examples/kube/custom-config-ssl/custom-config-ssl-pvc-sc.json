@@ -2,18 +2,21 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "custom-config-ssl-pgdata"
+        "name": "custom-config-ssl-pgdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-custom-config-ssl"
+        }
     },
     "spec": {
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "storageClassName": "$CCP_STORAGE_CLASS",
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "storageClassName": "$CCP_STORAGE_CLASS",
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      }
     }
 }
 
@@ -21,17 +24,20 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "custom-config-ssl-backrestrepo"
+        "name": "custom-config-ssl-backrestrepo",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-custom-config-ssl"
+        }
     },
     "spec": {
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "storageClassName": "$CCP_STORAGE_CLASS",
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "storageClassName": "$CCP_STORAGE_CLASS",
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      }
     }
 }

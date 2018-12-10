@@ -2,36 +2,42 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "br-pgdata"
+        "name": "br-pgdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-backrest-env"
+        }
     },
     "spec": {
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "storageClassName": "$CCP_STORAGE_CLASS",
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "storageClassName": "$CCP_STORAGE_CLASS",
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      }
     }
 }
 
 {
-    "kind": "PersistentVolumeClaim",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "br-backups"
-    },
-    "spec": {
+  "kind": "PersistentVolumeClaim",
+  "apiVersion": "v1",
+  "metadata": {
+      "name": "br-backups",
+      "labels": {
+          "cleanup": "$CCP_NAMESPACE-backrest-env"
+      }
+  },
+  "spec": {
       "accessModes": [
-        "$CCP_STORAGE_MODE"
+          "$CCP_STORAGE_MODE"
       ],
       "storageClassName": "$CCP_STORAGE_CLASS",
       "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
-        }
+          "requests": {
+              "storage": "$CCP_STORAGE_CAPACITY"
+          }
       }
-    }
+  }
 }

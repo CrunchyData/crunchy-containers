@@ -35,4 +35,7 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} \
     configmap br-pitr-restore-pgconf \
     --from-file ${DIR?}/configs/pgbackrest.conf
 
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
+    br-pitr-restore-pgconf cleanup=${CCP_NAMESPACE?}-backrest-pitr-restore
+
 expenv -f $DIR/pitr-restore.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

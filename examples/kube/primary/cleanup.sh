@@ -15,13 +15,7 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service primary
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod primary
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc primary-pgdata
-
-if [ -z "$CCP_STORAGE_CLASS" ]; then
-    ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-primary-pgdata
-fi
+cleanup "${CCP_NAMESPACE?}-primary"
 
 $CCPROOT/examples/waitforterm.sh primary ${CCP_CLI?}
 

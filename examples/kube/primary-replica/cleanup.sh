@@ -15,12 +15,8 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pr-replica
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pr-replica-2
-sleep  2
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pr-replica
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pr-primary
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pr-primary
+cleanup "${CCP_NAMESPACE?}-primary-replica"
+
 $CCPROOT/examples/waitforterm.sh pr-primary ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh pr-replica ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh pr-replica-2 ${CCP_CLI?}

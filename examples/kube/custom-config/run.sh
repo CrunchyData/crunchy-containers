@@ -34,4 +34,7 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap custom-config-pgconf 
     --from-file ${DIR?}/configs/pre-start-hook.sh \
     --from-file ${DIR?}/configs/post-start-hook.sh
 
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
+    custom-config-pgconf cleanup=${CCP_NAMESPACE?}-custom-config
+
 expenv -f $DIR/custom-config.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

@@ -4,7 +4,8 @@
     "metadata": {
         "name": "backrest-full-restored",
         "labels": {
-            "name": "backrest-full-restored"
+            "name": "backrest-full-restored",
+            "cleanup": "$CCP_NAMESPACE-backrest-full-restore"
         }
     },
     "spec": {
@@ -30,7 +31,8 @@
     "metadata": {
         "name": "backrest-full-restored",
         "labels": {
-            "name": "backrest-full-restored"
+            "name": "backrest-full-restored",
+            "cleanup": "$CCP_NAMESPACE-backrest-full-restore"
         }
     },
     "spec": {

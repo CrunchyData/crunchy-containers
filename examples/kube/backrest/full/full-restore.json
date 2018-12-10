@@ -9,7 +9,8 @@
             "metadata": {
                 "name": "backrest-full-restore-job",
                 "labels": {
-                    "app": "backrest-full-restore-job"
+                    "app": "backrest-full-restore-job",
+                    "cleanup": "$CCP_NAMESPACE-backrest-full-restore"
                 }
             },
             "spec": {
@@ -27,7 +28,7 @@
                             },
                             {
                                 "name": "PG_HOSTNAME",
-				"value": "backrest-full-restored"
+                                "value": "backrest-full-restored"
                             }
                         ],
                         "volumeMounts": [
