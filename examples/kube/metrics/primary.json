@@ -4,7 +4,8 @@
     "metadata": {
         "name": "primary-metrics",
         "labels": {
-            "name": "primary-metrics"
+            "name": "primary-metrics",
+            "cleanup": "$CCP_NAMESPACE-metrics"
         }
     },
     "spec": {
@@ -45,7 +46,8 @@
     "metadata": {
         "name": "primary-metrics",
         "labels": {
-            "name": "primary-metrics"
+            "name": "primary-metrics",
+            "cleanup": "$CCP_NAMESPACE-metrics"
         }
     },
     "spec": {
@@ -54,7 +56,8 @@
             "metadata": {
                 "labels": {
                     "name": "primary-metrics",
-                    "crunchy_collect": "true"
+                    "crunchy_collect": "true",
+                    "cleanup": "$CCP_NAMESPACE-metrics"
                 }
             },
             "spec": {

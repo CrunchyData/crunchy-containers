@@ -4,14 +4,17 @@
     "metadata": {
         "name": "$CCP_NAMESPACE-br-pgdata",
         "labels": {
-            "name": "$CCP_NAMESPACE-br-pgdata"
+            "name": "$CCP_NAMESPACE-br-pgdata",
+            "cleanup": "$CCP_NAMESPACE-backrest"
         }
     },
     "spec": {
         "capacity": {
             "storage": "$CCP_STORAGE_CAPACITY"
         },
-        "accessModes": ["$CCP_STORAGE_MODE"],
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
         "nfs": {
             "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-backrest",
             "server": "$CCP_NFS_IP"
@@ -26,14 +29,17 @@
     "metadata": {
         "name": "$CCP_NAMESPACE-br-backups",
         "labels": {
-            "name": "$CCP_NAMESPACE-br-backups"
+            "name": "$CCP_NAMESPACE-br-backups",
+            "cleanup": "$CCP_NAMESPACE-backrest"
         }
     },
     "spec": {
         "capacity": {
             "storage": "$CCP_STORAGE_CAPACITY"
         },
-        "accessModes": ["$CCP_STORAGE_MODE"],
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
         "nfs": {
             "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-backrest",
             "server": "$CCP_NFS_IP"

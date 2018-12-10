@@ -15,18 +15,6 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} deployment primary-deployment
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} statefulsets replica-deployment
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap primary-deployment-pgconf
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgprimary-secret
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service primary-deployment replica-deployment
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc primary-deployment-pgdata replica-deployment-pgdata replica2-deployment-pgdata
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc -l name=replica-deployment
-
-if [ -z "$CCP_STORAGE_CLASS" ]
-then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-primary-deployment-pgdata \
-    $CCP_NAMESPACE-replica-deployment-pgdata $CCP_NAMESPACE-replica2-deployment-pgdata
-fi
+cleanup "${CCP_NAMESPACE?}-primary-deployment"
 
 dir_check_rm "primary-deployment"

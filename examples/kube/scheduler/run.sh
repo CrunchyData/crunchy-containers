@@ -23,5 +23,8 @@ expenv -f $DIR/configs/backup-template.json > /tmp/backup-template.json
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap scheduler-backup-template \
     --from-file /tmp/backup-template.json
 
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
+    scheduler-backup-template cleanup=${CCP_NAMESPACE?}-scheduler
+
 expenv -f $DIR/scheduler-sa.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 expenv -f $DIR/scheduler.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

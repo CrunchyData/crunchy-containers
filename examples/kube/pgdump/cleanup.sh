@@ -15,9 +15,7 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} job pgdump
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc pgdump-pgdata
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-pgdump-pgdata
+cleanup "${CCP_NAMESPACE?}-pgdump"
 
 $CCPROOT/examples/waitforterm.sh pgdump ${CCP_CLI?}
 

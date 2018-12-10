@@ -2,9 +2,10 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "backrest",
+        "name": "backrest-env",
         "labels": {
-            "name": "backrest"
+            "name": "backrest-env",
+            "cleanup": "$CCP_NAMESPACE-backrest-env"
         }
     },
     "spec": {
@@ -17,7 +18,7 @@
             }
         ],
         "selector": {
-            "name": "backrest"
+            "name": "backrest-env"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -30,7 +31,8 @@
     "metadata": {
         "name": "backrest",
         "labels": {
-            "name": "backrest"
+            "name": "backrest",
+            "cleanup": "$CCP_NAMESPACE-backrest-delta-restore"
         }
     },
     "spec": {

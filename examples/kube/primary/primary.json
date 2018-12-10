@@ -1,25 +1,27 @@
 {
-        "kind": "Service",
-        "apiVersion": "v1",
-        "metadata": {
-            "name": "primary",
-            "labels": {
-                "name": "primary"
-            }
-        },
-        "spec": {
-            "ports": [{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "primary",
+        "labels": {
+            "name": "primary"
+        }
+    },
+    "spec": {
+        "ports": [
+            {
                 "protocol": "TCP",
                 "port": 5432,
                 "targetPort": 5432,
                 "nodePort": 0
-            }],
-            "selector": {
-                "name": "primary"
-            },
-            "type": "ClusterIP",
-            "sessionAffinity": "None"
-        }
+            }
+        ],
+        "selector": {
+            "name": "primary"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+    }
 }
 
 {
@@ -29,7 +31,8 @@
         "name": "primary",
         "namespace": "$CCP_NAMESPACE",
         "labels": {
-            "name": "primary"
+            "name": "primary",
+            "cleanup": "$CCP_NAMESPACE-primary"
         }
     },
     "spec": {

@@ -16,19 +16,7 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} clusterrolebinding prometheus-sa
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} clusterrole prometheus-sa
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} sa prometheus-sa
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod metrics
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} deployment primary-metrics replica-metrics
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service metrics primary-metrics replica-metrics
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap metrics-pgconf
-
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc metrics-prometheusdata metrics-grafanadata
-
-if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-metrics-prometheusdata $CCP_NAMESPACE-metrics-grafanadata
-fi
+cleanup "${CCP_NAMESPACE?}-metrics"
 
 $CCPROOT/examples/waitforterm.sh metrics ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh primary-metrics ${CCP_CLI?}

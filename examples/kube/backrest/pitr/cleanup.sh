@@ -15,9 +15,8 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service backrest
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod backrest
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} job backrest-pitr-restore-job
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap br-pitr-restore-pgconf
+cleanup "$CCP_NAMESPACE-backrest-pitr-restore"
+
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod,service backrest
 
 $CCPROOT/examples/waitforterm.sh backrest ${CCP_CLI?}

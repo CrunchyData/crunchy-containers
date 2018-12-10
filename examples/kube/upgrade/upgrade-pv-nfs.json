@@ -4,7 +4,8 @@
     "metadata": {
         "name": "$CCP_NAMESPACE-upgrade-pgnewdata",
         "labels": {
-            "name": "$CCP_NAMESPACE-upgrade-pgnewdata"
+            "name": "$CCP_NAMESPACE-upgrade-pgnewdata",
+            "cleanup": "$CCP_NAMESPACE-upgrade"
         }
     },
     "spec": {

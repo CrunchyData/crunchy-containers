@@ -22,10 +22,16 @@ $DIR/cleanup.sh
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgbouncer-secrets \
     --from-literal=pgbouncer-password='password'
 
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
+    pgbouncer-secrets cleanup=${CCP_NAMESPACE?}-pgbouncer
+
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgsql-secrets \
     --from-literal=pg-primary-password='password' \
     --from-literal=pg-password='password' \
     --from-literal=pg-root-password='password'
+
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
+    pgsql-secrets cleanup=${CCP_NAMESPACE?}-pgbouncer
 
 expenv -f $DIR/primary.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 expenv -f $DIR/replica.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

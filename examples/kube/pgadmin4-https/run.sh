@@ -31,8 +31,14 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgadmin4-https-s
     --from-literal=pgadmin-email='admin@admin.com' \
     --from-literal=pgadmin-password='password'
 
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
+    pgadmin4-https-secrets cleanup=${CCP_NAMESPACE?}-pgadmin4-https
+
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgadmin4-https-tls \
     --from-file=pgadmin-cert=${DIR?}/server.crt \
     --from-file=pgadmin-key=${DIR?}/server.key
+
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
+    pgadmin4-https-tls cleanup=${CCP_NAMESPACE?}-pgadmin4-https
 
 expenv -f $DIR/pgadmin4-https.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

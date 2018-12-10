@@ -4,7 +4,8 @@
     "metadata": {
         "name": "pg-replica",
         "labels": {
-            "name": "pg-replica"
+            "name": "pg-replica",
+            "cleanup": "$CCP_NAMESPACE-pgbouncer"
         }
     },
     "spec": {
@@ -34,7 +35,8 @@
     "metadata": {
         "name": "pg-replica",
         "labels": {
-            "name": "pg-replica"
+            "name": "pg-replica",
+            "cleanup": "$CCP_NAMESPACE-pgbouncer"
         }
     },
     "spec": {
@@ -52,13 +54,11 @@
                     }
                 ],
                 "readinessProbe": {
-                    "exec": {
-                        "command": [
-                            "/opt/cpm/bin/readiness.sh"
-                        ]
+                    "tcpSocket": {
+                        "port": 5432
                     },
-                    "initialDelaySeconds": 40,
-                    "timeoutSeconds": 1
+                    "initialDelaySeconds": 5,
+                    "periodSeconds": 10
                 },
                 "livenessProbe": {
                     "exec": {
@@ -126,13 +126,6 @@
                         }
                     }
                 ],
-                "readinessProbe": {
-                    "tcpSocket": {
-                        "port": 5432
-                    },
-                    "initialDelaySeconds": 5,
-                    "periodSeconds": 10
-                },
                 "volumeMounts": [
                     {
                         "mountPath": "/pgdata",

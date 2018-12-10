@@ -2,13 +2,16 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pgdump-pgdata"
+        "name": "pgdump-pgdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-pgdump"
+        }
     },
     "spec": {
         "selector": {
-          "matchLabels": {
-            "name": "$CCP_NAMESPACE-pgdump-pgdata"
-          }
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-pgdump-pgdata"
+            }
         },
         "accessModes": [
             "$CCP_STORAGE_MODE"

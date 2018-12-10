@@ -16,15 +16,7 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service custom-config
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod custom-config
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc custom-config-pgdata custom-config-pgwal custom-config-br
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap custom-config-pgconf
-
-if [[ -z "$CCP_STORAGE_CLASS" ]]
-then
-    ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-custom-config-pgdata $CCP_NAMESPACE-custom-config-pgwal $CCP_NAMESPACE-custom-config-br
-fi
+cleanup "${CCP_NAMESPACE?}-custom-config"
 
 $CCPROOT/examples/waitforterm.sh custom-config ${CCP_CLI?}
 
