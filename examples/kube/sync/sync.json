@@ -4,7 +4,8 @@
     "metadata": {
         "name": "primarysync",
         "labels": {
-            "name": "primarysync"
+            "name": "primarysync",
+            "cleanup": "$CCP_NAMESPACE-sync"
         }
     },
     "spec": {
@@ -30,7 +31,8 @@
     "metadata": {
         "name": "replicasync",
         "labels": {
-            "name": "replicasync"
+            "name": "replicasync",
+            "cleanup": "$CCP_NAMESPACE-sync"
         }
     },
     "spec": {
@@ -56,7 +58,8 @@
     "metadata": {
         "name": "primarysync",
         "labels": {
-            "name": "primarysync"
+            "name": "primarysync",
+            "cleanup": "$CCP_NAMESPACE-sync"
         }
     },
     "spec": {
@@ -163,7 +166,8 @@
     "metadata": {
         "name": "replicasync",
         "labels": {
-            "name": "replicasync"
+            "name": "replicasync",
+            "cleanup": "$CCP_NAMESPACE-sync"
         }
     },
     "spec": {
@@ -274,7 +278,8 @@
     "metadata": {
         "name": "replicaasync",
         "labels": {
-            "name": "replicasync"
+            "name": "replicasync",
+            "cleanup": "$CCP_NAMESPACE-sync"
         }
     },
     "spec": {

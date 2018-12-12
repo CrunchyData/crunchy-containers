@@ -2,13 +2,16 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "metrics-prometheusdata"
+        "name": "metrics-prometheusdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-metrics"
+        }
     },
-      "spec": {
+    "spec": {
         "selector": {
-          "matchLabels": {
-            "name": "$CCP_NAMESPACE-metrics-prometheusdata"
-          }
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-metrics-prometheusdata"
+            }
         },
         "accessModes": [
             "$CCP_STORAGE_MODE"
@@ -25,13 +28,16 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "metrics-grafanadata"
+        "name": "metrics-grafanadata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-metrics"
+        }
     },
     "spec": {
         "selector": {
-          "matchLabels": {
-            "name": "$CCP_NAMESPACE-metrics-grafanadata"
-          }
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-metrics-grafanadata"
+            }
         },
         "accessModes": [
             "$CCP_STORAGE_MODE"

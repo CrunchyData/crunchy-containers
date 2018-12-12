@@ -1,9 +1,13 @@
 {
-    "apiVersion": "v1",
     "kind": "Secret",
+    "apiVersion": "v1",
     "type": "Opaque",
     "metadata": {
-        "name": "pgprimary-secret"
+        "name": "pgprimary-secret",
+        "labels": {
+            "name": "primary-deployment",
+            "cleanup": "$CCP_NAMESPACE-primary-deployment"
+        }
     },
     "stringData": {
         "PG_USER": "testuser",
@@ -21,7 +25,8 @@
     "metadata": {
         "name": "primary-deployment",
         "labels": {
-            "name": "primary-deployment"
+            "name": "primary-deployment",
+            "cleanup": "$CCP_NAMESPACE-primary-deployment"
         }
     },
     "spec": {
@@ -47,7 +52,8 @@
     "metadata": {
         "name": "primary-deployment",
         "labels": {
-            "name": "primary-deployment"
+            "name": "primary-deployment",
+            "cleanup": "$CCP_NAMESPACE-primary-deployment"
         }
     },
     "spec": {
@@ -55,7 +61,8 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "primary-deployment"
+                    "name": "primary-deployment",
+                    "cleanup": "$CCP_NAMESPACE-primary-deployment"
                 }
             },
             "spec": {

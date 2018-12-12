@@ -47,6 +47,9 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic ${CONTAINER_NAME
     --from-file=pg-ident-conf=${DIR?}/configs/pg_ident.conf \
     --from-file=postgresql-conf=${DIR?}/configs/postgresql.conf
 
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
+    ${CONTAINER_NAME?}-secrets cleanup=${CCP_NAMESPACE?}-${CONTAINER_NAME?}
+
 expenv -f $DIR/custom-config-ssl.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 
 echo ""

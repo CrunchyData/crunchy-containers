@@ -80,3 +80,15 @@ function create_storage {
        expenv -f ${DIR?}/${PVC?} | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
     fi
 }
+
+function cleanup() {
+    label="cleanup=${1?}"
+
+    CONFIG="configmap,secret"
+    DEPLOY="deployment,daemonset,job,pod,replicaset,service,statefulset"
+    RBAC="clusterrolebinding,clusterrole,role,rolebinding,serviceaccount"
+    VOLUME="pvc,pv"
+    OBJECTS="${CONFIG?},${DEPLOY?},${RBAC?},${VOLUME?}"
+
+    ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} ${OBJECTS?} --selector=${label?}
+}

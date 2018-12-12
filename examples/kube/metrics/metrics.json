@@ -2,7 +2,10 @@
     "apiVersion": "rbac.authorization.k8s.io/v1beta1",
     "kind": "ClusterRole",
     "metadata": {
-        "name": "prometheus-sa"
+        "name": "prometheus-sa",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-metrics"
+        }
     },
     "rules": [
         {
@@ -17,32 +20,30 @@
                 "list",
                 "watch"
             ]
-        },
-        {
-            "nonResourceURLs": [
-                "/metrics"
-            ],
-            "verbs": [
-                "get",
-                "list",
-                "watch"
-            ]
         }
     ]
 }
+
 {
     "apiVersion": "v1",
     "kind": "ServiceAccount",
     "metadata": {
         "name": "prometheus-sa",
-        "namespace": "$CCP_NAMESPACE"
+        "namespace": "$CCP_NAMESPACE",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-metrics"
+        }
     }
 }
+
 {
     "apiVersion": "rbac.authorization.k8s.io/v1beta1",
     "kind": "ClusterRoleBinding",
     "metadata": {
-        "name": "prometheus-sa"
+        "name": "prometheus-sa",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-metrics"
+        }
     },
     "roleRef": {
         "apiGroup": "rbac.authorization.k8s.io",
@@ -57,13 +58,15 @@
         }
     ]
 }
+
 {
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
         "name": "metrics",
         "labels": {
-            "name": "metrics"
+            "name": "metrics",
+            "cleanup": "$CCP_NAMESPACE-metrics"
         }
     },
     "spec": {
@@ -88,13 +91,15 @@
         "sessionAffinity": "None"
     }
 }
+
 {
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
         "name": "metrics",
         "labels": {
-            "name": "metrics"
+            "name": "metrics",
+            "cleanup": "$CCP_NAMESPACE-metrics"
         }
     },
     "spec": {

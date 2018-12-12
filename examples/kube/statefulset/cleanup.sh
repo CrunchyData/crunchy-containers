@@ -15,15 +15,6 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} statefulset statefulset
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} sa,role,rolebindings statefulset-sa
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc -l 'app=statefulset'
-
-if [[ -z "$CCP_STORAGE_CLASS" ]]
-then
-    ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv -l "name=$CCP_NAMESPACE-statefulset-pgdata"
-fi
-
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service statefulset-primary statefulset-replica
+cleanup "${CCP_NAMESPACE?}-statefulset"
 
 dir_check_rm "statefulset"

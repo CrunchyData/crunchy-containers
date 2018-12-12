@@ -15,6 +15,6 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} deployments,pods,service -l name=postgres-gis
+cleanup "${CCP_NAMESPACE?}-postgres-gis"
 
 $CCPROOT/examples/waitforterm.sh postgres-gis ${CCP_CLI?}

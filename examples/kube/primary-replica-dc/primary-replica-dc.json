@@ -4,7 +4,8 @@
     "metadata": {
         "name": "primary-dc",
         "labels": {
-            "name": "primary-dc"
+            "name": "primary-dc",
+            "cleanup": "$CCP_NAMESPACE-primary-replica-dc"
         }
     },
     "spec": {
@@ -30,7 +31,8 @@
     "metadata": {
         "name": "replica-dc",
         "labels": {
-            "name": "replica-dc"
+            "name": "replica-dc",
+            "cleanup": "$CCP_NAMESPACE-primary-replica-dc"
         }
     },
     "spec": {
@@ -56,7 +58,8 @@
     "metadata": {
         "name": "primary-dc",
         "labels": {
-            "name": "primary-dc"
+            "name": "primary-dc",
+            "cleanup": "$CCP_NAMESPACE-primary-replica-dc"
         }
     },
     "spec": {
@@ -159,7 +162,8 @@
     "metadata": {
         "name": "replica-dc",
         "labels": {
-            "name": "replica-dc"
+            "name": "replica-dc",
+            "cleanup": "$CCP_NAMESPACE-primary-replica-dc"
         }
     },
     "spec": {
@@ -172,7 +176,8 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "replica-dc"
+                    "name": "replica-dc",
+                    "cleanup": "$CCP_NAMESPACE-primary-replica-dc"
                 }
             },
             "spec": {

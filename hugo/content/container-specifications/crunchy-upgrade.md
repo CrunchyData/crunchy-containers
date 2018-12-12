@@ -4,7 +4,7 @@ date: 2018-05-24T12:05:31-07:00
 draft: false
 ---
 
-The crunchy-upgrade container contains both the 9.5/9.6 and 9.6/10
+The crunchy-upgrade container contains both the 9.5 / 9.6 and 9.6 / 10
 PostgreSQL packages in order to perform a pg_upgrade from
 9.5 to 9.6 or 9.6 to 10 versions.
 

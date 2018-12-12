@@ -2,13 +2,16 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "br-aa-pgdata"
+        "name": "br-aa-pgdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-backrest-async-archive"
+        }
     },
     "spec": {
         "selector": {
-          "matchLabels": {
-            "name": "$CCP_NAMESPACE-br-aa-pgdata"
-          }
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-br-aa-pgdata"
+            }
         },
         "accessModes": [
             "$CCP_STORAGE_MODE"
@@ -25,13 +28,16 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "br-aa-backups"
+        "name": "br-aa-backups",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-backrest-async-archive"
+        }
     },
     "spec": {
         "selector": {
-          "matchLabels": {
-            "name": "$CCP_NAMESPACE-br-aa-backups"
-          }
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-br-aa-backups"
+            }
         },
         "accessModes": [
             "$CCP_STORAGE_MODE"

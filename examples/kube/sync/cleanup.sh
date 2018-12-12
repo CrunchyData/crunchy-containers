@@ -15,9 +15,7 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod replicasync replicaasync
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod primarysync
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service primarysync
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service replicasync
+cleanup "${CCP_NAMESPACE?}-sync"
+
 $CCPROOT/examples/waitforterm.sh primarysync ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh replicasync ${CCP_CLI?}

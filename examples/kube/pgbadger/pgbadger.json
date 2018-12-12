@@ -4,7 +4,8 @@
     "metadata": {
         "name": "pgbadger",
         "labels": {
-            "name": "pgbadger"
+            "name": "pgbadger",
+            "cleanup": "$CCP_NAMESPACE-pgbadger"
         }
     },
     "spec": {
@@ -38,7 +39,8 @@
     "metadata": {
         "name": "pgbadger",
         "labels": {
-            "name": "pgbadger"
+            "name": "pgbadger",
+            "cleanup": "$CCP_NAMESPACE-pgbadger"
         }
     },
     "spec": {

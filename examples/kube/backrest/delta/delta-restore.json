@@ -9,7 +9,8 @@
             "metadata": {
                 "name": "backrest-delta-restore-job",
                 "labels": {
-                    "app": "backrest-delta-restore-job"
+                    "app": "backrest-delta-restore-job",
+                    "cleanup": "$CCP_NAMESPACE-backrest-delta-restore"
                 }
             },
             "spec": {
@@ -30,7 +31,7 @@
                             },
                             {
                                 "name": "PG_HOSTNAME",
-				"value": "backrest"
+                                "value": "backrest"
                             }
                         ],
                         "volumeMounts": [

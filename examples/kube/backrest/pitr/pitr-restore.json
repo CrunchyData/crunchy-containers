@@ -9,7 +9,8 @@
             "metadata": {
                 "name": "backrest-pitr-restore-job",
                 "labels": {
-                    "app": "backrest-pitr-restore-job"
+                    "app": "backrest-pitr-restore-job",
+                    "cleanup": "$CCP_NAMESPACE-backrest-pitr-restore"
                 }
             },
             "spec": {

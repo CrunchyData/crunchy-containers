@@ -4,7 +4,8 @@
     "metadata": {
         "name": "$CCP_NAMESPACE-statefulset-pgdata-0",
         "labels": {
-            "name": "$CCP_NAMESPACE-statefulset-pgdata"
+            "name": "$CCP_NAMESPACE-statefulset-pgdata",
+            "cleanup": "$CCP_NAMESPACE-statefulset"
         }
     },
     "spec": {
@@ -26,7 +27,8 @@
     "metadata": {
         "name": "$CCP_NAMESPACE-statefulset-pgdata-1",
         "labels": {
-            "name": "$CCP_NAMESPACE-statefulset-pgdata"
+            "name": "$CCP_NAMESPACE-statefulset-pgdata",
+            "cleanup": "$CCP_NAMESPACE-statefulset"
         }
     },
     "spec": {
@@ -48,7 +50,8 @@
     "metadata": {
         "name": "$CCP_NAMESPACE-statefulset-pgdata-2",
         "labels": {
-            "name": "$CCP_NAMESPACE-statefulset-pgdata"
+            "name": "$CCP_NAMESPACE-statefulset-pgdata",
+            "cleanup": "$CCP_NAMESPACE-statefulset"
         }
     },
     "spec": {

@@ -2,18 +2,21 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-deployment-pgdata"
+        "name": "primary-deployment-pgdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-primary-scheduler"
+        }
     },
     "spec": {
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "storageClassName": "$CCP_STORAGE_CLASS",
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "storageClassName": "$CCP_STORAGE_CLASS",
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      }
     }
 }
 
@@ -21,18 +24,21 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-deployment-br"
+        "name": "primary-deployment-br",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-primary-scheduler"
+        }
     },
     "spec": {
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "storageClassName": "$CCP_STORAGE_CLASS",
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "storageClassName": "$CCP_STORAGE_CLASS",
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      }
     }
 }
 
@@ -40,17 +46,20 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-deployment-backup"
+        "name": "primary-deployment-backup",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-primary-scheduler"
+        }
     },
     "spec": {
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "storageClassName": "$CCP_STORAGE_CLASS",
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "storageClassName": "$CCP_STORAGE_CLASS",
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      }
     }
 }

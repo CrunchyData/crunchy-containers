@@ -4,7 +4,8 @@
     "metadata": {
         "name": "restore-pitr",
         "labels": {
-            "name": "restore-pitr"
+            "name": "restore-pitr",
+            "cleanup": "$CCP_NAMESPACE-restore-pitr"
         }
     },
     "spec": {
@@ -33,12 +34,13 @@
     "metadata": {
         "name": "restore-pitr",
         "labels": {
-            "name": "restore-pitr"
+            "name": "restore-pitr",
+            "cleanup": "$CCP_NAMESPACE-restore-pitr"
         }
     },
     "spec": {
         "securityContext": {
-             $CCP_SECURITY_CONTEXT
+            $CCP_SECURITY_CONTEXT
         },
         "volumes": [
             {
