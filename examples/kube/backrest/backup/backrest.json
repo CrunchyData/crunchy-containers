@@ -4,7 +4,8 @@
     "metadata": {
         "name": "backrest",
         "labels": {
-            "name": "backrest"
+            "name": "backrest",
+            "cleanup": "$CCP_NAMESPACE-backrest"
         }
     },
     "spec": {
@@ -30,7 +31,8 @@
     "metadata": {
         "name": "backrest",
         "labels": {
-            "name": "backrest"
+            "name": "backrest",
+            "cleanup": "$CCP_NAMESPACE-backrest"
         }
     },
     "spec": {

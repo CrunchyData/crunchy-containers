@@ -4,7 +4,8 @@
     "metadata": {
         "name": "restore",
         "labels": {
-            "name": "restore"
+            "name": "restore",
+            "cleanup": "$CCP_NAMESPACE-restore"
         }
     },
     "spec": {
@@ -30,7 +31,8 @@
     "metadata": {
         "name": "restore",
         "labels": {
-            "name": "restore"
+            "name": "restore",
+            "cleanup": "$CCP_NAMESPACE-restore"
         }
     },
     "spec": {

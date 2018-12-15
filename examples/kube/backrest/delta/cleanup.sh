@@ -15,9 +15,9 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service backrest
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod backrest
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} job backrest-delta-restore-job
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap br-delta-restore-pgconf
+cleanup "$CCP_NAMESPACE-backrest-delta-restore"
+
+# Cleanup backrest pods if they're running from backup examples
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod,service backrest
 
 $CCPROOT/examples/waitforterm.sh backrest ${CCP_CLI?}

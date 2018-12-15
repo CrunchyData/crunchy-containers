@@ -2,22 +2,25 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "restore-pitr-pgdata"
+        "name": "restore-pitr-pgdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-restore-pitr"
+        }
     },
     "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "$CCP_NAMESPACE-restore-pitr-pgdata"
+        "selector": {
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-restore-pitr-pgdata"
+            }
+        },
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      },
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
-        }
-      }
     }
 }
 
@@ -25,13 +28,16 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "recover-pvc"
+        "name": "recover-pvc",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-restore-pitr"
+        }
     },
     "spec": {
         "selector": {
-          "matchLabels": {
-            "name": "$CCP_NAMESPACE-recover-pv"
-          }
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-recover-pv"
+            }
         },
         "accessModes": [
             "$CCP_STORAGE_MODE"

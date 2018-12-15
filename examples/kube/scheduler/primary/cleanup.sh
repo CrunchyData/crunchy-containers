@@ -15,17 +15,6 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} deployment primary-deployment
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap primary-deployment-pgconf
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgprimary-secret
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service primary-deployment
-
-# primary-deployment-backup is used for basebackup schedules - don't delete
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc primary-deployment-pgdata primary-deployment-br primary-deployment-backup
-
-if [ -z "$CCP_STORAGE_CLASS" ]
-then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-primary-deployment-pgdata $CCP_NAMESPACE-primary-deployment-br $CCP_NAMESPACE-primary-deployment-backup
-fi
+cleanup "${CCP_NAMESPACE?}-primary-scheduler"
 
 dir_check_rm "primary-deployment"

@@ -15,6 +15,6 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} deployment,statefulset,pod,configmap,secret,service,pvc,pv --selector=k8s-app=postgres-cluster
+cleanup "${CCP_NAMESPACE?}-postgres-cluster"
 
 dir_check_rm "postgres-cluster"

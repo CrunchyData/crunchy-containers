@@ -15,13 +15,7 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service backrest-async-archive
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod backrest-async-archive
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap br-aa-pgconf
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc br-aa-pgdata br-aa-backups
-if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-br-aa-pgdata $CCP_NAMESPACE-br-aa-backups
-fi
+cleanup "${CCP_NAMESPACE?}-backrest-async-archive"
 
 $CCPROOT/examples/waitforterm.sh backrest-async-archive ${CCP_CLI?}
 

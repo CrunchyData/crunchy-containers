@@ -30,6 +30,9 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap primary-deployment-pg
   --from-file ${DIR?}/configs/pg_hba.conf \
   --from-file ${DIR?}/configs/setup.sql
 
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
+    primary-deployment-pgconf cleanup=${CCP_NAMESPACE?}-primary-deployment
+
 expenv -f $DIR/primary-deployment.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 
 if [[ ! -z ${CCP_STORAGE_CLASS} ]]

@@ -23,15 +23,13 @@ func (k *KubeAPI) GetDeploymentPods(namespace, deployment string) ([]string, err
 	}
 
 	var podList []string
-	for key, val := range d.Labels {
-		label := fmt.Sprintf("%s=%s", key, val)
-		pods, err := k.Client.CoreV1().Pods(namespace).List(metav1.ListOptions{LabelSelector: label})
-		if err != nil {
-			return nil, err
-		}
-		for _, pod := range pods.Items {
-			podList = append(podList, pod.Name)
-		}
+	label := createLabel(d.Labels)
+	pods, err := k.Client.CoreV1().Pods(namespace).List(metav1.ListOptions{LabelSelector: label})
+	if err != nil {
+		return nil, err
+	}
+	for _, pod := range pods.Items {
+		podList = append(podList, pod.Name)
 	}
 	return podList, nil
 }

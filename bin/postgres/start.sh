@@ -81,9 +81,9 @@ function role_discovery() {
     if [ $ordinal -eq 0 ]; then
         pgc label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST
         rc=$?;
-        if [[ $rc != 0 ]]; then 
+        if [[ $rc != 0 ]]; then
             echo_err "Unable to set mode on pod, label command failed."
-            exit $rc; 
+            exit $rc;
         fi
         echo_info "Setting PG_MODE to primary."
         export PG_MODE=primary
@@ -91,9 +91,9 @@ function role_discovery() {
         echo_info "Setting PG_MODE to replica."
         pgc label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST
         rc=$?;
-        if [[ $rc != 0 ]]; then 
+        if [[ $rc != 0 ]]; then
             echo_err "Unable to set mode on pod, label command failed."
-            exit $rc; 
+            exit $rc;
         fi
         export PG_MODE=replica
     fi
@@ -111,7 +111,7 @@ function initdb_logic() {
         if [ $XLOGDIR = "true" ]; then
             echo_info "XLOGDIR found."
             mkdir $PGWAL
-            
+
             if [ -d "$PGWAL" ]; then
             cmd+=" -X "$PGWAL
             else
@@ -207,7 +207,8 @@ function fill_conf_file() {
         echo_info "Setting ARCHIVE_TIMEOUT to ${ARCHIVE_TIMEOUT:-0}."
     fi
 
-    if [ -f /pgconf/pgbackrest.conf ]; then
+    if [[ -f /pgconf/pgbackrest.conf ]] || [[ -v PGBACKREST_REPO_PATH ]]
+    then
         echo_info "Setting pgbackrest archive command.."
         ARCHIVE_MODE=on
         cat /opt/cpm/conf/backrest-archive-command >> /tmp/postgresql.conf
@@ -303,13 +304,12 @@ function initialize_primary() {
         echo "Starting database.." >> /tmp/start-db.log
 
         echo_info "Temporarily starting database to run setup.sql.."
-        pg_ctl -D $PGDATA start
+        pg_ctl -D $PGDATA -o "-c listen_addresses=''" start
 
         echo_info "Waiting for PostgreSQL to start.."
         while true; do
             pg_isready \
-            --port=$PG_PRIMARY_PORT \
-            --host=$HOSTNAME \
+            --host=/tmp \
             --username=$PG_PRIMARY_USER \
             --timeout=2
             if [ $? -eq 0 ]; then
@@ -319,7 +319,7 @@ function initialize_primary() {
             sleep 2
         done
 
-    
+
         echo_info "Loading setup.sql.." >> /tmp/start-db.log
         cp /opt/cpm/bin/setup.sql /tmp
         if [ -f /pgconf/setup.sql ]; then

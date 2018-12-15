@@ -15,8 +15,4 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} scale --replicas=0 deployment/replica-dc
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} deployment replica-dc
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod primary-dc
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service primary-dc
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service replica-dc
+cleanup "${CCP_NAMESPACE?}-primary-replica-dc"

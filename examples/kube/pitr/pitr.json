@@ -4,7 +4,8 @@
     "metadata": {
         "name": "pitr",
         "labels": {
-            "name": "pitr"
+            "name": "pitr",
+            "cleanup": "$CCP_NAMESPACE-pitr"
         }
     },
     "spec": {
@@ -33,12 +34,13 @@
     "metadata": {
         "name": "pitr",
         "labels": {
-            "name": "pitr"
+            "name": "pitr",
+            "cleanup": "$CCP_NAMESPACE-pitr"
         }
     },
     "spec": {
         "securityContext": {
-             $CCP_SECURITY_CONTEXT
+            $CCP_SECURITY_CONTEXT
         },
         "containers": [
             {

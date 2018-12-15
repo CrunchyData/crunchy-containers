@@ -24,4 +24,7 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap pgaudit-pgconf \
     --from-file ${DIR?}/configs/postgresql.conf \
     --from-file ${DIR?}/configs/pgaudit-test.sql
 
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
+    pgaudit-pgconf cleanup=${CCP_NAMESPACE?}-pgaudit
+
 expenv -f $DIR/pgaudit.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE} -f -

@@ -4,7 +4,8 @@
     "metadata": {
         "name": "replica-deployment",
         "labels": {
-            "name": "replica-deployment"
+            "name": "replica-deployment",
+            "cleanup": "$CCP_NAMESPACE-primary-deployment"
         }
     },
     "spec": {
@@ -29,7 +30,11 @@
     "apiVersion": "apps/v1beta1",
     "metadata": {
         "name": "replica-deployment",
-        "creationTimestamp": null
+        "creationTimestamp": null,
+        "labels": {
+            "name": "replica-deployment",
+            "cleanup": "$CCP_NAMESPACE-primary-deployment"
+        }
     },
     "spec": {
         "replicas": 1,
@@ -43,7 +48,8 @@
             "metadata": {
                 "creationTimestamp": null,
                 "labels": {
-                    "name": "replica-deployment"
+                    "name": "replica-deployment",
+                    "cleanup": "$CCP_NAMESPACE-primary-deployment"
                 }
             },
             "spec": {
@@ -180,7 +186,11 @@
         "volumeClaimTemplates": [
             {
                 "metadata": {
-                    "name": "pgdata"
+                    "name": "pgdata",
+                    "labels": {
+                        "name": "replica-deployment",
+                        "cleanup": "$CCP_NAMESPACE-primary-deployment"
+                    }
                 },
                 "spec": {
                     "accessModes": [

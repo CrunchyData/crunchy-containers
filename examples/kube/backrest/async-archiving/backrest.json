@@ -4,7 +4,8 @@
     "metadata": {
         "name": "backrest-async-archive",
         "labels": {
-            "name": "backrest-async-archive"
+            "name": "backrest-async-archive",
+            "cleanup": "$CCP_NAMESPACE-backrest-async-archive"
         }
     },
     "spec": {
@@ -30,7 +31,8 @@
     "metadata": {
         "name": "backrest-async-archive",
         "labels": {
-            "name": "backrest-async-archive"
+            "name": "backrest-async-archive",
+            "cleanup": "$CCP_NAMESPACE-backrest-async-archive"
         }
     },
     "spec": {

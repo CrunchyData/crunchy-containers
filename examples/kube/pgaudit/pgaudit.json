@@ -4,7 +4,8 @@
     "metadata": {
         "name": "pgaudit",
         "labels": {
-            "name": "pgaudit"
+            "name": "pgaudit",
+            "cleanup": "$CCP_NAMESPACE-pgaudit"
         }
     },
     "spec": {
@@ -30,13 +31,14 @@
     "metadata": {
         "name": "pgaudit",
         "labels": {
-            "name": "pgaudit"
+            "name": "pgaudit",
+            "cleanup": "$CCP_NAMESPACE-pgaudit"
         }
     },
     "spec": {
         "securityContext": {
             $CCP_SECURITY_CONTEXT
-            },
+        },
         "containers": [
             {
                 "name": "postgres",

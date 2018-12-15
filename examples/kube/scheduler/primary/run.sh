@@ -28,8 +28,14 @@ fi
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap primary-deployment-pgconf \
   --from-file ${DIR?}/configs/pgbackrest.conf
 
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
+    primary-deployment-pgconf cleanup=${CCP_NAMESPACE?}-primary-scheduler
+
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgprimary-secret \
     --from-literal=username='primaryuser' \
     --from-literal=password='password'
+
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
+    pgprimary-secret cleanup=${CCP_NAMESPACE?}-primary-scheduler
 
 expenv -f $DIR/primary-deployment.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

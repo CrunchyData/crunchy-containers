@@ -2,22 +2,25 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-deployment-pgdata"
+        "name": "primary-deployment-pgdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-primary-scheduler"
+        }
     },
     "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "$CCP_NAMESPACE-primary-deployment-pgdata"
+        "selector": {
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-primary-deployment-pgdata"
+            }
+        },
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      },
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
-        }
-      }
     }
 }
 
@@ -25,22 +28,25 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-deployment-br"
+        "name": "primary-deployment-br",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-primary-scheduler"
+        }
     },
     "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "$CCP_NAMESPACE-primary-deployment-br"
+        "selector": {
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-primary-deployment-br"
+            }
+        },
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      },
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
-        }
-      }
     }
 }
 
@@ -48,21 +54,24 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "primary-deployment-backup"
+        "name": "primary-deployment-backup",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-primary-scheduler"
+        }
     },
     "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "$CCP_NAMESPACE-primary-deployment-backup"
+        "selector": {
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-primary-deployment-backup"
+            }
+        },
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      },
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
-        }
-      }
     }
 }

@@ -18,8 +18,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ${DIR}/cleanup.sh
 
+# Cleanup backrest pods if they're running from backup examples
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod,service backrest
+
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} \
     configmap br-delta-restore-pgconf \
     --from-file ${DIR?}/configs/pgbackrest.conf
+
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
+    br-delta-restore-pgconf cleanup=${CCP_NAMESPACE?}-backrest-delta-restore
 
 expenv -f $DIR/delta-restore.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

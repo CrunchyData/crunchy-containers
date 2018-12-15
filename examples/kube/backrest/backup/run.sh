@@ -33,4 +33,7 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} \
     configmap br-pgconf \
     --from-file ${DIR?}/configs/pgbackrest.conf
 
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
+    br-pgconf cleanup=${CCP_NAMESPACE?}-backrest
+
 expenv -f $DIR/backrest.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

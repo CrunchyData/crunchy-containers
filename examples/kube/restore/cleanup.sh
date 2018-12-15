@@ -15,13 +15,7 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod restore
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service restore
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc restore-pgdata
-
-if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-restore-pgdata
-fi
+cleanup "${CCP_NAMESPACE?}-restore"
 
 $CCPROOT/examples/waitforterm.sh restore ${CCP_CLI?}
 

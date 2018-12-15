@@ -2,14 +2,19 @@
     "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {
-        "name": "vacuum"
+        "name": "vacuum",
+        "labels": {
+            "app": "vacuum",
+            "cleanup": "$CCP_NAMESPACE-vacuum"
+        }
     },
     "spec": {
         "template": {
             "metadata": {
                 "name": "vacuum",
                 "labels": {
-                    "app": "vacuum"
+                    "app": "vacuum",
+                    "cleanup": "$CCP_NAMESPACE-vacuum"
                 }
             },
             "spec": {

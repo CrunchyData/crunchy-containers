@@ -15,8 +15,6 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pgaudit
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pgaudit
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} configmap pgaudit-pgconf
+cleanup "${CCP_NAMESPACE?}-pgaudit"
 
 $CCPROOT/examples/waitforterm.sh pgaudit ${CCP_CLI?} ${CCP_NAMESPACE}

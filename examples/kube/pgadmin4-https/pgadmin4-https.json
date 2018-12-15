@@ -4,16 +4,19 @@
     "metadata": {
         "name": "pgadmin4-https",
         "labels": {
-            "name": "pgadmin4-https"
+            "name": "pgadmin4-https",
+            "cleanup": "$CCP_NAMESPACE-pgadmin4-https"
         }
     },
     "spec": {
-        "ports": [{
-            "name": "pgadmin4-https",
-            "protocol": "TCP",
-            "port": 5050,
-            "targetPort": 5050
-        }],
+        "ports": [
+            {
+                "name": "pgadmin4-https",
+                "protocol": "TCP",
+                "port": 5050,
+                "targetPort": 5050
+            }
+        ],
         "selector": {
             "name": "pgadmin4-https"
         },
@@ -28,7 +31,8 @@
     "metadata": {
         "name": "pgadmin4-https",
         "labels": {
-            "name": "pgadmin4-https"
+            "name": "pgadmin4-https",
+            "cleanup": "$CCP_NAMESPACE-pgadmin4-https"
         }
     },
     "spec": {

@@ -17,19 +17,9 @@ source ${CCPROOT}/examples/common.sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pgadmin4-https
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pgadmin4-https
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgadmin4-https-secrets
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgadmin4-https-tls
-
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc pgadmin4-https-data
-
-if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-pgadmin4-https-data
-fi
-
 rm -f ${DIR?}/server.crt ${DIR?}/server.key ${DIR?}/privkey.pem
 
+cleanup "$CCP_NAMESPACE-pgadmin4-https"
 $CCPROOT/examples/waitforterm.sh pgadmin4-https ${CCP_CLI?}
 
 dir_check_rm "pgadmin4-https"
