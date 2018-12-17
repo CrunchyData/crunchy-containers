@@ -25,4 +25,10 @@ then
     exit 1
 fi
 
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap pitr-pgconf \
+    --from-file ${DIR?}/configs/cmds.sql
+
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
+    pitr-pgconf cleanup=${CCP_NAMESPACE?}-pitr
+
 expenv -f $DIR/pitr.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
