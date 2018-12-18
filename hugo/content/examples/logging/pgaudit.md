@@ -1,0 +1,1 @@
+# pgAudit Enhanced Logging
