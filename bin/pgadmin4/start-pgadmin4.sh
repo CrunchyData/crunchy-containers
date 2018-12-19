@@ -35,7 +35,8 @@ env_check_err "PGADMIN_SETUP_PASSWORD"
 if [[ ${ENABLE_TLS:-false} == 'true' ]]
 then
     echo_info "TLS enabled. Applying https configuration.."
-    if [[ ( ! -f /certs/server.key ) || ( ! -f /certs/server.crt ) ]]; then
+    if [[ ( ! -f /certs/server.key ) || ( ! -f /certs/server.crt ) ]]
+    then
         echo_err "ENABLE_TLS true but /certs/server.key or /certs/server.crt not found, aborting"
         exit 1
     fi
@@ -56,7 +57,8 @@ cd ${PGADMIN_DIR?}
 if [[ ! -f /var/lib/pgadmin/pgadmin4.db ]]
 then
     echo_info "Setting up pgAdmin4 database.."
-    python setup.py
+    python setup.py > /tmp/pgadmin4.stdout 2> /tmp/pgadmin4.stderr
+    err_check "$?" "pgAdmin4 Database Setup" "Could not create pgAdmin4 database: \n$(cat /tmp/pgadmin4.stderr)"
 fi
 
 cd ${PGADMIN_DIR?}

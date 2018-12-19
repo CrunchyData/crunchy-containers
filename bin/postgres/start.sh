@@ -32,8 +32,6 @@ function trap_sigterm() {
 
 trap 'trap_sigterm' SIGINT SIGTERM
 
-date
-
 source /opt/cpm/bin/setenv.sh
 source check-for-secrets.sh
 
@@ -79,24 +77,18 @@ function role_discovery() {
     ordinal=${HOSTNAME##*-}
     echo_info "Ordinal is set to ${ordinal?}."
     if [ $ordinal -eq 0 ]; then
-        pgc label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST
-        rc=$?;
-        if [[ $rc != 0 ]]; then
-            echo_err "Unable to set mode on pod, label command failed."
-            exit $rc;
-        fi
-        echo_info "Setting PG_MODE to primary."
+        pgc label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST > /tmp/pgc.stdout 2> /tmp/pgc.stderr
+        err_check "$?" "Statefulset Role Discovery (primary)" \
+            "Unable to set mode on pod, label command failed: \n$(cat /tmp/pgc.stderr)"
         export PG_MODE=primary
     else
-        echo_info "Setting PG_MODE to replica."
-        pgc label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST
-        rc=$?;
-        if [[ $rc != 0 ]]; then
-            echo_err "Unable to set mode on pod, label command failed."
-            exit $rc;
-        fi
+        pgc label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST > /tmp/pgc.stdout 2> /tmp/pgc.stderr
+        err_check "$?" "Statefulset Role Discovery (replica)" \
+            "Unable to set mode on pod, label command failed: \n$(cat /tmp/pgc.stderr)"
         export PG_MODE=replica
     fi
+
+    echo_info "Setting PG_MODE to ${PG_MODE?}"
 }
 
 function initdb_logic() {
@@ -107,33 +99,38 @@ function initdb_logic() {
     if [[ -v PG_LOCALE ]]; then
         cmd+=" --locale="$PG_LOCALE
     fi
-  if [[ -v XLOGDIR ]]; then
-        if [ $XLOGDIR = "true" ]; then
-            echo_info "XLOGDIR found."
-            mkdir $PGWAL
 
-            if [ -d "$PGWAL" ]; then
+    if [[ -v XLOGDIR ]] && [[ ${XLOGDIR?} == "true" ]]
+    then
+        echo_info "XLOGDIR enabled.  Setting initdb to use ${PGWAL?}.."
+        mkdir ${PGWAL?}
+
+        if [[ -d "${PGWAL?}" ]]
+        then
             cmd+=" -X "$PGWAL
-            else
-                echo_info "XLOGDIR not found. Using default pg_wal directory.."
-            fi
         fi
-  fi
+    else
+        echo_info "XLOGDIR not found. Using default pg_wal directory.."
+    fi
+
     if [[ ${CHECKSUMS?} == 'true' ]]
     then
+        echo_info "Data checksums enabled.  Setting initdb to use data checksums.."
         cmd+=" --data-checksums"
     fi
-    cmd+=" > /tmp/initdb.log &> /tmp/initdb.err"
+    cmd+=" > /tmp/initdb.stdout 2> /tmp/initdb.stderr"
 
-    echo $cmd
+    echo_info "Running initdb command: ${cmd?}"
     eval $cmd
+    err_check "$?" "Initializing the database (initdb)" \
+        "Unable to initialize the database: \n$(cat /tmp/initdb.stderr)"
 
     echo_info "Overlaying PostgreSQL's default configuration with customized settings.."
     cp /tmp/postgresql.conf $PGDATA
+
     cp /opt/cpm/conf/pg_hba.conf /tmp
     sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pg_hba.conf
     cp /tmp/pg_hba.conf $PGDATA
-
 }
 
 function check_for_restore() {
@@ -145,7 +142,12 @@ function check_for_restore() {
     else
         if [ ! -f /pgdata/postgresql.conf ]; then
             echo_info "Restoring from backup.."
-            rsync -a --progress --exclude 'pg_log/*' /backup/$BACKUP_PATH/* $PGDATA
+
+            rsync -a --progress --exclude 'pg_log/*' /backup/$BACKUP_PATH/* $PGDATA \
+                > /tmp/rsync.stdout 2> /tmp/rsync.stderr
+            err_check "$?" "Restore from pgBaseBackup" \
+                "Unable to rsync pgBaseBackup: \n$(cat /tmp/rsync.stderr)"
+
             chmod -R 0700 $PGDATA
         else
             initdb_logic
@@ -269,7 +271,9 @@ function initialize_replica() {
     echo_info "Waiting to allow the primary database time to successfully start before performing the initial backup.."
     waitforpg
 
-    pg_basebackup -X fetch --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST --port=$PG_PRIMARY_PORT -U $PG_PRIMARY_USER
+    pg_basebackup -X fetch --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST \
+        --port=$PG_PRIMARY_PORT -U $PG_PRIMARY_USER > /tmp/pgbasebackup.stdout 2> /tmp/pgbasebackup.stderr
+    err_check "$?" "Initialize Replica" "Could not run pg_basebackup: \n$(cat /tmp/pgbasebackup.stderr)"
 
     # PostgreSQL recovery configuration.
     if [[ -v SYNC_REPLICA ]]; then
@@ -293,10 +297,10 @@ function initialize_replica() {
 # is not empty.
 function initialize_primary() {
     echo_info "Initializing the primary database.."
-    if [ ! -f $PGDATA/postgresql.conf ]; then
+    if [ ! -f ${PGDATA?}/postgresql.conf ]; then
         ID="$(id)"
         echo_info "PGDATA is empty. ID is ${ID}. Creating the PGDATA directory.."
-        mkdir -p $PGDATA
+        mkdir -p ${PGDATA?}
 
         check_for_restore
         check_for_pitr
@@ -304,13 +308,13 @@ function initialize_primary() {
         echo "Starting database.." >> /tmp/start-db.log
 
         echo_info "Temporarily starting database to run setup.sql.."
-        pg_ctl -D $PGDATA -o "-c listen_addresses=''" start
+        pg_ctl -D ${PGDATA?} -o "-c listen_addresses=''" start
 
         echo_info "Waiting for PostgreSQL to start.."
         while true; do
             pg_isready \
             --host=/tmp \
-            --username=$PG_PRIMARY_USER \
+            --username=${PG_PRIMARY_USER?} \
             --timeout=2
             if [ $? -eq 0 ]; then
                 echo_info "The database is ready for setup.sql."
@@ -352,7 +356,6 @@ function initialize_primary() {
         echo_info "PGDATA already contains a database."
     fi
 }
-
 
 # Clean up any old pid file that might have remained
 # during a bad shutdown of the container/postgres
@@ -427,7 +430,7 @@ if [[ -v PGMONITOR_PASSWORD ]]
 then
     if [[ ${PG_MODE?} == "primary" ]] || [[ ${PG_MODE?} == "master" ]]
     then
-        source /opt/cpm/bin/pgmonitor/pgmonitor.sh
+        source /opt/cpm/bin/pgmonitor.sh
     fi
 fi
 

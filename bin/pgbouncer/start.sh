@@ -52,7 +52,7 @@ else
     cp /opt/cpm/conf/pgbouncer.ini ${CONF_DIR?}/pgbouncer.ini
 
     env_check_err "PG_SERVICE"
-    
+
     sed -i "s/DEFAULT_POOL_SIZE/${DEFAULT_POOL_SIZE:-20}/g" ${CONF_DIR?}/pgbouncer.ini
     sed -i "s/MAX_CLIENT_CONN/${MAX_CLIENT_CONN:-100}/g" ${CONF_DIR?}/pgbouncer.ini
     sed -i "s/MAX_DB_CONNECTIONS/${MAX_DB_CONNECTIONS:-0}/g" ${CONF_DIR?}/pgbouncer.ini

@@ -13,9 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -e
+
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
 
+env_check_err "NAMESPACE"
 
 export TEMPLATE_DIR='/opt/cpm/conf/backup-template.json'
 if [[ -f '/configs/backup-template.json' ]]

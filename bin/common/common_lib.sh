@@ -142,7 +142,7 @@ function test_query {
             --port=${dbport?} --username=${dbuser?} \
             --command="SELECT now();"
         if [[ $? -eq 0 ]]
-        then 
+        then
             error='false'
             break
         fi
@@ -156,5 +156,17 @@ function test_query {
     then
         echo_err "Could not run query against PostgreSQL: Host=${dbhost?}:${dbport?} DB=${dbname?} User=${dbuser?}"
         exit 1
+    fi
+}
+
+function err_check {
+    RC=${1?}
+    CONTEXT=${2?}
+    ERROR=${3?}
+
+    if [[ ${RC?} != 0 ]]
+    then
+        echo_err "${CONTEXT?}: ${ERROR?}"
+        exit ${RC?}
     fi
 }

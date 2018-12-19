@@ -34,13 +34,21 @@ then
         mkdir -p /backrestrepo/${NAMESPACE?}-backups
     fi
 
+    echo_info "pgBackRest: Checking if configuration is valid.."
+    pgbackrest info > /tmp/pgbackrest.stdout 2> /tmp/pgbackrest.stderr
+    err_check "$?" "pgBackRest Configuration Check" \
+        "Error with pgBackRest configuration: \n$(cat /tmp/pgbackrest.stderr)"
+
     if [[ -f ${BACKREST_CONF?} ]]
     then
         stanza_exists=$(pgbackrest info | grep 'No stanzas exist')
         if [[ $? -eq 0 ]]
         then
             echo_info "pgBackRest: Creating stanza.."
-            pgbackrest --stanza=db stanza-create --no-online
+            pgbackrest --stanza=db stanza-create --no-online \
+                > /tmp/pgbackrest.stdout 2> /tmp/pgbackrest.stderr
+            err_check "$?" "pgBackRest Stanza Creation" \
+                "Could not create a pgBackRest stanza: \n$(cat /tmp/pgbackrest.stderr)"
         fi
     fi
 
@@ -50,7 +58,10 @@ then
         if [[ $? -eq 0 ]]
         then
             echo_info "pgBackRest: Creating stanza.."
-            pgbackrest --stanza=db stanza-create --no-online
+            pgbackrest --stanza=db stanza-create --no-online \
+                > /tmp/pgbackrest.stdout 2> /tmp/pgbackrest.stderr
+            err_check "$?" "pgBackRest Stanza Creation" \
+                "Could not create a pgBackRest stanza: \n$(cat /tmp/pgbackrest.stderr)"
         fi
     fi
 fi
