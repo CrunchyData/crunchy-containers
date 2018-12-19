@@ -1,0 +1,1 @@
+# Statefulset PostgreSQL Cluster
