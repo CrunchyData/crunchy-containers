@@ -131,6 +131,11 @@
                         "mountPath": "/backup",
                         "name": "backup",
                         "readOnly": true
+                    },
+                    {
+                        "mountPath": "/pgconf",
+                        "name": "pgconf",
+                        "readOnly": true
                     }
                 ]
             }
@@ -151,6 +156,12 @@
             {
                 "name": "backup",
                 "emptyDir": {}
+            },
+            {
+                "name": "pgconf",
+                "configMap": {
+                    "name": "pitr-pgconf"
+                }
             }
         ]
     }
