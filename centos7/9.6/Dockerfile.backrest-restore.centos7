@@ -8,7 +8,7 @@ LABEL name="crunchydata/postgres" \
 	Release="2.2.0" \
         url="https://crunchydata.com" \
         summary="Executes the pgbackrest utility, allowing FULL & DELTA restore capability." \
-        description="Executes pgbackrest utility, allowing FULL & DELTA restore capability. Capable of mounting the pgbackrest.conf config file via /pgconf volume in addition to mounting the /backrestrepo for access to pgbackrest archives." \
+        description="Executes pgbackrest utility, allowing FULL, DELTA & PITR restore capability. Capable of mounting the /backrestrepo for access to pgbackrest archives, while allowing for the configuration of pgbackrest using applicable pgbackrest environment variables." \
         io.k8s.description="backrest restore container" \
         io.k8s.display-name="Crunchy backrest restore container" \
         io.openshift.expose-services="" \
@@ -36,25 +36,22 @@ ENV	PGROOT="/usr/pgsql-${PGVERSION}"
 ADD conf/.bash_profile /var/lib/pgsql/
 
 # set up cpm directory
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgconf /backrestrepo \
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /backrestrepo \
 	/var/lib/pgsql /var/log/pgbackrest
 
 RUN chown -R postgres:postgres /opt/cpm  \
-	/pgdata /pgconf /backrestrepo  \
+	/pgdata /backrestrepo  \
 	/var/lib/pgsql /var/log/pgbackrest
 
 #RUN chgrp -R 0 /opt/cpm  \
-#	/pgdata /pgconf /backrestrepo  \
+#	/pgdata /backrestrepo  \
 #	/var/lib/pgsql /var/log/pgbackrest && \
 #    chmod -R g=u /opt/cpm  \
-#	/pgdata /pgconf /backrestrepo  \
+#	/pgdata /backrestrepo  \
 #	/var/lib/pgsql /var/log/pgbackrest
 
-
-# volume pgconf to store pgbackrest.conf
 # volume backrestrepo for pgbackrest to restore from and log
-
-VOLUME /pgconf /pgdata /backrestrepo
+VOLUME /pgdata /backrestrepo
 
 ADD bin/backrest_restore /opt/cpm/bin
 

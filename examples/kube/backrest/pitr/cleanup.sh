@@ -19,4 +19,4 @@ cleanup "$CCP_NAMESPACE-backrest-pitr-restore"
 
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod,service backrest
 
-$CCPROOT/examples/waitforterm.sh backrest ${CCP_CLI?}
+$CCPROOT/examples/waitforterm.sh backrest-pitr-restored ${CCP_CLI?}

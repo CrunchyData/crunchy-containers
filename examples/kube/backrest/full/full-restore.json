@@ -23,12 +23,20 @@
                         "image": "$CCP_IMAGE_PREFIX/crunchy-backrest-restore:$CCP_IMAGE_TAG",
                         "env": [
                             {
-                                "name": "STANZA",
+                                "name": "PGBACKREST_STANZA",
                                 "value": "db"
                             },
                             {
-                                "name": "PG_HOSTNAME",
-                                "value": "backrest-full-restored"
+                                "name": "PGBACKREST_PG1_PATH",
+                                "value": "/pgdata/backrest-full-restored"
+                            },
+                            {
+                                "name": "PGBACKREST_REPO1_PATH",
+                                "value": "/backrestrepo/backrest-backups"
+                            },
+                            {
+                                "name": "PGBACKREST_LOG_PATH",
+                                "value": "/tmp"
                             }
                         ],
                         "volumeMounts": [
@@ -36,11 +44,6 @@
                                 "mountPath": "/pgdata",
                                 "name": "pgdata",
                                 "readOnly": false
-                            },
-                            {
-                                "mountPath": "/pgconf",
-                                "name": "pgconf",
-                                "readOnly": true
                             },
                             {
                                 "mountPath": "/backrestrepo",
@@ -51,12 +54,6 @@
                     }
                 ],
                 "volumes": [
-                    {
-                        "name": "pgconf",
-                        "configMap": {
-                            "name": "br-full-restore-pgconf"
-                        }
-                    },
                     {
                         "name": "backrestrepo",
                         "persistentVolumeClaim": {

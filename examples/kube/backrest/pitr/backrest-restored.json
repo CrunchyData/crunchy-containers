@@ -2,7 +2,7 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "backrest",
+        "name": "backrest-pitr-restored",
         "labels": {
             "name": "backrest",
             "cleanup": "$CCP_NAMESPACE-backrest-pitr-restore"
@@ -29,9 +29,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "backrest",
+        "name": "backrest-pitr-restored",
         "labels": {
-            "name": "backrest",
+            "name": "backrest-pitr-restored",
             "cleanup": "$CCP_NAMESPACE-backrest-pitr-restore"
         }
     },
@@ -107,6 +107,14 @@
                     {
                         "name": "ARCHIVE_TIMEOUT",
                         "value": "60"
+                    },
+                    {
+                        "name": "PGBACKREST",
+                        "value": "true"
+                    },
+                    {
+                        "name": "PGBACKREST_REPO1_PATH",
+                        "value": "/backrestrepo/backrest-backups"
                     }
                 ],
                 "volumeMounts": [
@@ -114,11 +122,6 @@
                         "mountPath": "/pgdata",
                         "name": "pgdata",
                         "readOnly": false
-                    },
-                    {
-                        "mountPath": "/pgconf",
-                        "name": "pgconf",
-                        "readOnly": true
                     },
                     {
                         "mountPath": "/backrestrepo",
@@ -129,12 +132,6 @@
             }
         ],
         "volumes": [
-            {
-                "name": "pgconf",
-                "configMap": {
-                    "name": "br-pitr-restore-pgconf"
-                }
-            },
             {
                 "name": "backrestrepo",
                 "persistentVolumeClaim": {
