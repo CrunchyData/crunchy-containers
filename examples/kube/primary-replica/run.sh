@@ -18,6 +18,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+create_storage "primary-replica" "${CCP_NAMESPACE?}"
+if [[ $? -ne 0 ]]
+then
+    echo_err "Failed to create storage, exiting.."
+    exit 1
+fi
+
 echo_info "Creating the example components.."
 
-expenv -f $DIR/primary-replica.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+expenv -f $DIR/primary.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+expenv -f $DIR/replica.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

@@ -19,4 +19,5 @@ cleanup "${CCP_NAMESPACE?}-primary-replica"
 
 $CCPROOT/examples/waitforterm.sh pr-primary ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh pr-replica ${CCP_CLI?}
-$CCPROOT/examples/waitforterm.sh pr-replica-2 ${CCP_CLI?}
+
+dir_check_rm "primary-replica"

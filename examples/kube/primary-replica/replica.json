@@ -1,32 +1,11 @@
 {
-    "kind": "Secret",
-    "apiVersion": "v1",
-    "type": "Opaque",
-    "metadata": {
-        "name": "pgprimary-secret",
-        "labels": {
-            "name": "primary-deployment",
-            "cleanup": "$CCP_NAMESPACE-primary-deployment"
-        }
-    },
-    "stringData": {
-        "PG_USER": "testuser",
-        "PG_DATABASE": "userdb",
-        "PG_PASSWORD": "password",
-        "PG_PRIMARY_USER": "primaryuser",
-        "PG_PRIMARY_PASSWORD": "password",
-        "PG_ROOT_PASSWORD": "password"
-    }
-}
-
-{
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary-deployment",
+        "name": "pr-replica",
         "labels": {
-            "name": "primary-deployment",
-            "cleanup": "$CCP_NAMESPACE-primary-deployment"
+            "name": "pr-replica",
+            "cleanup": "$CCP_NAMESPACE-primary-replica"
         }
     },
     "spec": {
@@ -39,7 +18,7 @@
             }
         ],
         "selector": {
-            "name": "primary-deployment"
+            "name": "pr-replica"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -50,10 +29,10 @@
     "kind": "Deployment",
     "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "primary-deployment",
+        "name": "pr-replica",
         "labels": {
-            "name": "primary-deployment",
-            "cleanup": "$CCP_NAMESPACE-primary-deployment"
+            "name": "pr-replica",
+            "cleanup": "$CCP_NAMESPACE-primary-replica"
         }
     },
     "spec": {
@@ -61,8 +40,8 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "primary-deployment",
-                    "cleanup": "$CCP_NAMESPACE-primary-deployment"
+                    "name": "pr-replica",
+                    "cleanup": "$CCP_NAMESPACE-primary-replica"
                 }
             },
             "spec": {
@@ -90,16 +69,20 @@
                         },
                         "env": [
                             {
+                                "name": "PG_PRIMARY_HOST",
+                                "value": "pr-primary"
+                            },
+                            {
                                 "name": "PG_PRIMARY_PORT",
                                 "value": "5432"
                             },
                             {
                                 "name": "PG_MODE",
-                                "value": "primary"
+                                "value": "replica"
                             },
                             {
                                 "name": "PGDATA_PATH_OVERRIDE",
-                                "value": "primary-deployment"
+                                "value": "replica"
                             },
                             {
                                 "name": "PGHOST",
@@ -107,57 +90,27 @@
                             },
                             {
                                 "name": "PG_USER",
-                                "valueFrom": {
-                                    "secretKeyRef": {
-                                        "key": "PG_USER",
-                                        "name": "pgprimary-secret"
-                                    }
-                                }
+                                "value": "testuser"
                             },
                             {
                                 "name": "PG_PASSWORD",
-                                "valueFrom": {
-                                    "secretKeyRef": {
-                                        "key": "PG_PASSWORD",
-                                        "name": "pgprimary-secret"
-                                    }
-                                }
+                                "value": "password"
                             },
                             {
                                 "name": "PG_PRIMARY_USER",
-                                "valueFrom": {
-                                    "secretKeyRef": {
-                                        "key": "PG_PRIMARY_USER",
-                                        "name": "pgprimary-secret"
-                                    }
-                                }
+                                "value": "primaryuser"
                             },
                             {
                                 "name": "PG_PRIMARY_PASSWORD",
-                                "valueFrom": {
-                                    "secretKeyRef": {
-                                        "key": "PG_PRIMARY_PASSWORD",
-                                        "name": "pgprimary-secret"
-                                    }
-                                }
+                                "value": "password"
                             },
                             {
                                 "name": "PG_ROOT_PASSWORD",
-                                "valueFrom": {
-                                    "secretKeyRef": {
-                                        "key": "PG_ROOT_PASSWORD",
-                                        "name": "pgprimary-secret"
-                                    }
-                                }
+                                "value": "password"
                             },
                             {
                                 "name": "PG_DATABASE",
-                                "valueFrom": {
-                                    "secretKeyRef": {
-                                        "key": "PG_DATABASE",
-                                        "name": "pgprimary-secret"
-                                    }
-                                }
+                                "value": "userdb"
                             }
                         ],
                         "volumeMounts": [
@@ -165,10 +118,6 @@
                                 "mountPath": "/pgdata",
                                 "name": "pgdata",
                                 "readOnly": false
-                            },
-                            {
-                                "mountPath": "/pgconf",
-                                "name": "primary-deployment-pgconf"
                             }
                         ],
                         "ports": [
@@ -185,13 +134,7 @@
                     {
                         "name": "pgdata",
                         "persistentVolumeClaim": {
-                            "claimName": "primary-deployment-pgdata"
-                        }
-                    },
-                    {
-                        "name": "primary-deployment-pgconf",
-                        "configMap": {
-                            "name": "primary-deployment-pgconf"
+                            "claimName": "pr-primary-pgdata"
                         }
                     }
                 ],
