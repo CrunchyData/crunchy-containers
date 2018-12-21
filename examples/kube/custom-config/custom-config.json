@@ -107,6 +107,10 @@
                     {
                         "name": "XLOGDIR",
                         "value": "true"
+                    },
+                    {
+                        "name": "PGBACKREST",
+                        "value": "true"
                     }
                 ],
                 "volumeMounts": [

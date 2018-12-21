@@ -51,14 +51,15 @@ docker run \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
     --env=XLOGDIR=true \
+    --env=PGBACKREST=true \
     --detach ${CCP_IMAGE_PREFIX?}/crunchy-postgres:${CCP_IMAGE_TAG?}
 
 echo ""
 echo "To connect via SSL, run the following once the DB is ready: "
 echo "psql \"postgresql://testuser@${CONTAINER_NAME?}:5432/userdb?\
 sslmode=verify-full&\
-sslrootcert=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crt&\
-sslcrl=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crl&\
-sslcert=$CCPROOT/examples/kube/custom-config-ssl/certs/client.crt&\
-sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key\""
+sslrootcert=$CCPROOT/examples/docker/custom-config-ssl/certs/ca.crt&\
+sslcrl=$CCPROOT/examples/docker/custom-config-ssl/certs/ca.crl&\
+sslcert=$CCPROOT/examples/docker/custom-config-ssl/certs/client.crt&\
+sslkey=$CCPROOT/examples/docker/custom-config-ssl/certs/client.key\""
 echo ""

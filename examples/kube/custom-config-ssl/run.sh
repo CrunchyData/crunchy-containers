@@ -42,7 +42,6 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic ${CONTAINER_NAME
     --from-file=ca-crl=${DIR?}/configs/ca.crl \
     --from-file=server-crt=${DIR?}/configs/server.crt \
     --from-file=server-key=${DIR?}/configs/server.key \
-    --from-file=pgbackrest-conf=${DIR?}/configs/pgbackrest.conf \
     --from-file=pg-hba-conf=${DIR?}/configs/pg_hba.conf \
     --from-file=pg-ident-conf=${DIR?}/configs/pg_ident.conf \
     --from-file=postgresql-conf=${DIR?}/configs/postgresql.conf
