@@ -16,6 +16,7 @@ docker run \
     --env PG_PRIMARY_PORT=5432 \
     --env PG_PRIMARY_PASSWORD=password \
     --env PG_ROOT_PASSWORD=password \
+    --env PGHOST=/tmp \
     --env PGBACKREST=true \
     --env PGBACKREST_ARCHIVE_ASYNC=y \
     --name=backrest-async-archive \
