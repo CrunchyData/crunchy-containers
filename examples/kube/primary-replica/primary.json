@@ -2,10 +2,10 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "primary",
+        "name": "pr-primary",
         "labels": {
-            "name": "primary",
-            "cleanup": "$CCP_NAMESPACE-primary"
+            "name": "pr-primary",
+            "cleanup": "$CCP_NAMESPACE-primary-replica"
         }
     },
     "spec": {
@@ -18,7 +18,7 @@
             }
         ],
         "selector": {
-            "name": "primary"
+            "name": "pr-primary"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
@@ -29,10 +29,10 @@
     "kind": "Deployment",
     "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "primary",
+        "name": "pr-primary",
         "labels": {
-            "name": "primary",
-            "cleanup": "$CCP_NAMESPACE-primary"
+            "name": "pr-primary",
+            "cleanup": "$CCP_NAMESPACE-primary-replica"
         }
     },
     "spec": {
@@ -40,8 +40,8 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "primary",
-                    "cleanup": "$CCP_NAMESPACE-primary"
+                    "name": "pr-primary",
+                    "cleanup": "$CCP_NAMESPACE-primary-replica"
                 }
             },
             "spec": {
@@ -130,7 +130,7 @@
                     {
                         "name": "pgdata",
                         "persistentVolumeClaim": {
-                            "claimName": "primary-pgdata"
+                            "claimName": "pr-primary-pgdata"
                         }
                     }
                 ],
