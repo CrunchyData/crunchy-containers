@@ -20,4 +20,4 @@ cleanup "$CCP_NAMESPACE-backrest-delta-restore"
 # Cleanup backrest pods if they're running from backup examples
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod,service backrest
 
-$CCPROOT/examples/waitforterm.sh backrest ${CCP_CLI?}
+$CCPROOT/examples/waitforterm.sh backrest-delta-restored ${CCP_CLI?}

@@ -201,19 +201,20 @@ function fill_conf_file() {
 
     cp /opt/cpm/conf/postgresql.conf.template /tmp/postgresql.conf
 
-    if [[ -v ARCHIVE_MODE ]]; then
-        echo_info "Setting ARCHIVE_MODE to ${ARCHIVE_MODE:-off}."
+    if [[ "${PGBACKREST}" == "true" ]]
+    then
+        ARCHIVE_MODE=on
+        echo_info "Setting pgbackrest archive command.."
+        cat /opt/cpm/conf/backrest-archive-command >> /tmp/postgresql.conf
+    elif [[ "${ARCHIVE_MODE}" == "on" ]] && [[ ! "${PGBACKREST}" == "true" ]]
+    then
+        echo_info "Setting standard archive command.."
         cat /opt/cpm/conf/archive-command >> /tmp/postgresql.conf
     fi
+    echo_info "Setting ARCHIVE_MODE to ${ARCHIVE_MODE:-off}."
+
     if [[ -v ARCHIVE_TIMEOUT ]]; then
         echo_info "Setting ARCHIVE_TIMEOUT to ${ARCHIVE_TIMEOUT:-0}."
-    fi
-
-    if [[ -f /pgconf/pgbackrest.conf ]] || [[ -v PGBACKREST_REPO_PATH ]]
-    then
-        echo_info "Setting pgbackrest archive command.."
-        ARCHIVE_MODE=on
-        cat /opt/cpm/conf/backrest-archive-command >> /tmp/postgresql.conf
     fi
 
     sed -i "s/TEMP_BUFFERS/${TEMP_BUFFERS:-8MB}/g" /tmp/postgresql.conf
@@ -400,7 +401,13 @@ case "$PG_MODE" in
     ;;
 esac
 
-source /opt/cpm/bin/pgbackrest.sh
+# Configure pgbackrest if enabled
+if [[ ${PGBACKREST} == "true" ]]
+then
+    echo_info "pgBackRest: Enabling pgbackrest.."
+    source /opt/cpm/bin/pgbackrest.sh
+fi
+
 source /opt/cpm/bin/custom-configs.sh
 
 # Run pre-start hook if it exists

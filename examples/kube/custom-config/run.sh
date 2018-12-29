@@ -28,7 +28,6 @@ fi
 
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap custom-config-pgconf \
     --from-file ${DIR?}/configs/pg_hba.conf \
-    --from-file ${DIR?}/configs/pgbackrest.conf \
     --from-file ${DIR?}/configs/postgresql.conf \
     --from-file ${DIR?}/configs/setup.sql \
     --from-file ${DIR?}/configs/pre-start-hook.sh \

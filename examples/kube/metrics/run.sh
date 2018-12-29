@@ -26,10 +26,6 @@ then
     exit 1
 fi
 
-${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} \
-    configmap metrics-pgconf \
-    --from-file ${DIR?}/configs/pgbackrest.conf
-
 ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
     metrics-pgconf cleanup=${CCP_NAMESPACE?}-metrics
 
