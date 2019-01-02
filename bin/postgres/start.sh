@@ -28,6 +28,10 @@ function trap_sigterm() {
     if [ -f $PGDATA/postmaster.pid ]; then
             kill -SIGINT $(head -1 $PGDATA/postmaster.pid) >> $PGDATA/trap.output
     fi
+    if [[ ${ENABLE_SSHD} == "true" ]]; then
+        echo_info "killing SSHD.."
+        killall sshd
+    fi
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
@@ -422,6 +426,12 @@ postgres -D $PGDATA &
 if [[ -v PGAUDIT_ANALYZE ]]; then
     echo_info "Starting pgaudit_analyze.."
     pgaudit_analyze $PGDATA/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
+fi
+
+if [[ ${ENABLE_SSHD} == "true" ]]; then
+    echo_info "Applying SSHD.."
+    source /opt/cpm/bin/sshd.sh
+    start_sshd
 fi
 
 if [[ -v PGBOUNCER_PASSWORD ]]

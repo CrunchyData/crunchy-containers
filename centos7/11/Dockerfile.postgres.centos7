@@ -26,6 +26,7 @@ RUN yum -y update \
     hostname \
     procps-ng  \
     rsync \
+    psmisc openssh-server openssh-clients \
  && yum -y install postgresql11-server postgresql11-contrib postgresql11 \
     pgaudit13_11 \
     pgbackrest \
@@ -56,7 +57,7 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
 # add volumes to locate WAL files to recover with
 # add volumes for pgbackrest to write to
 
-VOLUME ["/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo"]
+VOLUME ["/sshd", "/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo"]
 
 # open up the postgres port
 EXPOSE 5432
