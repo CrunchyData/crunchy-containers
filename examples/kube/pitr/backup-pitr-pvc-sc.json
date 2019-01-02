@@ -2,17 +2,20 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "backup-pitr-pgdata"
+        "name": "backup-pitr-pgdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-backup-pitr"
+        }
     },
     "spec": {
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "storageClassName": "$CCP_STORAGE_CLASS",
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "storageClassName": "$CCP_STORAGE_CLASS",
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      }
     }
 }

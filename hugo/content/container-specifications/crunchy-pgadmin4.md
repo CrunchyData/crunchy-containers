@@ -5,7 +5,7 @@ draft: false
 weight: 10
 ---
 
-The crunchy-ppgadmin4 container executes the [pgAdmin4](https://www.pgadmin.org/) web application.
+The crunchy-pgadmin4 container executes the [pgAdmin4](https://www.pgadmin.org/) web application.
 
 pgAdmin4 provides a web user interface to PostgreSQL databases.  A
 sample screenshot is below:

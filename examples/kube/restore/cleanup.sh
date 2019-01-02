@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2017 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,13 +15,7 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod restore
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service restore
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc restore-pgdata
-
-if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-restore-pgdata
-fi
+cleanup "${CCP_NAMESPACE?}-restore"
 
 $CCPROOT/examples/waitforterm.sh restore ${CCP_CLI?}
 

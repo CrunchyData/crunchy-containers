@@ -4,7 +4,8 @@
     "metadata": {
         "name": "primary-deployment",
         "labels": {
-            "name": "primary-deployment"
+            "name": "primary-deployment",
+            "cleanup": "$CCP_NAMESPACE-primary-scheduler"
         }
     },
     "spec": {
@@ -30,7 +31,8 @@
     "metadata": {
         "name": "primary-deployment",
         "labels": {
-            "name": "primary-deployment"
+            "name": "primary-deployment",
+            "cleanup": "$CCP_NAMESPACE-primary-scheduler"
         }
     },
     "spec": {
@@ -38,7 +40,8 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "primary-deployment"
+                    "name": "primary-deployment",
+                    "cleanup": "$CCP_NAMESPACE-primary-scheduler"
                 }
             },
             "spec": {

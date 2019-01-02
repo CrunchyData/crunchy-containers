@@ -2,13 +2,16 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "backup-pgdata"
+        "name": "backup-pgdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-backup"
+        }
     },
     "spec": {
         "selector": {
-          "matchLabels": {
-            "name": "$CCP_NAMESPACE-backup-pgdata"
-          }
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-backup-pgdata"
+            }
         },
         "accessModes": [
             "$CCP_STORAGE_MODE"

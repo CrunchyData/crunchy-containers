@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,9 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+set -e
+
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
 
+env_check_err "NAMESPACE"
 
 export TEMPLATE_DIR='/opt/cpm/conf/backup-template.json'
 if [[ -f '/configs/backup-template.json' ]]

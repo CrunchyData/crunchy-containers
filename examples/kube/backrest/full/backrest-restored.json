@@ -4,7 +4,8 @@
     "metadata": {
         "name": "backrest-full-restored",
         "labels": {
-            "name": "backrest-full-restored"
+            "name": "backrest-full-restored",
+            "cleanup": "$CCP_NAMESPACE-backrest-full-restore"
         }
     },
     "spec": {
@@ -30,7 +31,8 @@
     "metadata": {
         "name": "backrest-full-restored",
         "labels": {
-            "name": "backrest-full-restored"
+            "name": "backrest-full-restored",
+            "cleanup": "$CCP_NAMESPACE-backrest-full-restore"
         }
     },
     "spec": {
@@ -105,6 +107,14 @@
                     {
                         "name": "ARCHIVE_TIMEOUT",
                         "value": "60"
+                    },
+                    {
+                        "name": "PGBACKREST",
+                        "value": "true"
+                    },
+                    {
+                        "name": "PGBACKREST_REPO1_PATH",
+                        "value": "/backrestrepo/backrest-backups"
                     }
                 ],
                 "volumeMounts": [
@@ -112,11 +122,6 @@
                         "mountPath": "/pgdata",
                         "name": "pgdata",
                         "readOnly": false
-                    },
-                    {
-                        "mountPath": "/pgconf",
-                        "name": "pgconf",
-                        "readOnly": true
                     },
                     {
                         "mountPath": "/backrestrepo",
@@ -127,12 +132,6 @@
             }
         ],
         "volumes": [
-            {
-                "name": "pgconf",
-                "configMap": {
-                    "name": "br-full-restore-pgconf"
-                }
-            },
             {
                 "name": "backrestrepo",
                 "persistentVolumeClaim": {

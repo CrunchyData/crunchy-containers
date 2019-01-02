@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -51,14 +51,15 @@ docker run \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
     --env=XLOGDIR=true \
+    --env=PGBACKREST=true \
     --detach ${CCP_IMAGE_PREFIX?}/crunchy-postgres:${CCP_IMAGE_TAG?}
 
 echo ""
 echo "To connect via SSL, run the following once the DB is ready: "
 echo "psql \"postgresql://testuser@${CONTAINER_NAME?}:5432/userdb?\
 sslmode=verify-full&\
-sslrootcert=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crt&\
-sslcrl=$CCPROOT/examples/kube/custom-config-ssl/certs/ca.crl&\
-sslcert=$CCPROOT/examples/kube/custom-config-ssl/certs/client.crt&\
-sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key\""
+sslrootcert=$CCPROOT/examples/docker/custom-config-ssl/certs/ca.crt&\
+sslcrl=$CCPROOT/examples/docker/custom-config-ssl/certs/ca.crl&\
+sslcert=$CCPROOT/examples/docker/custom-config-ssl/certs/client.crt&\
+sslkey=$CCPROOT/examples/docker/custom-config-ssl/certs/client.key\""
 echo ""

@@ -2,13 +2,16 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "custom-config-pgdata"
+        "name": "custom-config-pgdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-custom-config"
+        }
     },
     "spec": {
         "selector": {
-          "matchLabels": {
-            "name": "$CCP_NAMESPACE-custom-config-pgdata"
-          }
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-custom-config-pgdata"
+            }
         },
         "accessModes": [
             "$CCP_STORAGE_MODE"
@@ -25,13 +28,16 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "custom-config-br"
+        "name": "custom-config-br",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-custom-config"
+        }
     },
     "spec": {
         "selector": {
-          "matchLabels": {
-            "name": "$CCP_NAMESPACE-custom-config-br"
-          }
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-custom-config-br"
+            }
         },
         "accessModes": [
             "$CCP_STORAGE_MODE"
@@ -48,13 +54,16 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "custom-config-pgwal"
+        "name": "custom-config-pgwal",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-custom-config"
+        }
     },
     "spec": {
         "selector": {
-          "matchLabels": {
-            "name": "$CCP_NAMESPACE-custom-config-pgwal"
-          }
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-custom-config-pgwal"
+            }
         },
         "accessModes": [
             "$CCP_STORAGE_MODE"

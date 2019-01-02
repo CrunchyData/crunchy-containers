@@ -3,8 +3,8 @@
     "kind": "PersistentVolume",
     "metadata": {
         "name": "$CCP_NAMESPACE-primary-deployment-pgdata",
-        "labels":{
-           "k8s-app": "postgres-cluster",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-postgres-cluster",
             "name": "$CCP_NAMESPACE-primary-deployment-pgdata"
         }
     },
@@ -12,7 +12,9 @@
         "capacity": {
             "storage": "$CCP_STORAGE_CAPACITY"
         },
-        "accessModes": ["$CCP_STORAGE_MODE"],
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
         "hostPath": {
             "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-postgres-cluster"
         },
@@ -20,13 +22,14 @@
     }
 }
 
+
 {
     "apiVersion": "v1",
     "kind": "PersistentVolume",
     "metadata": {
         "name": "$CCP_NAMESPACE-replica-deployment-pgdata",
         "labels":{
-           "k8s-app": "postgres-cluster",
+           "cleanup": "$CCP_NAMESPACE-postgres-cluster",
             "name": "$CCP_NAMESPACE-replica-deployment-pgdata"
         }
     },

@@ -4,7 +4,8 @@
     "metadata": {
         "name": "replica-metrics",
         "labels": {
-            "name": "replica-metrics"
+            "name": "replica-metrics",
+            "cleanup": "$CCP_NAMESPACE-metrics"
         }
     },
     "spec": {
@@ -45,7 +46,8 @@
     "metadata": {
         "name": "replica-metrics",
         "labels": {
-            "name": "replica-metrics"
+            "name": "replica-metrics",
+            "cleanup": "$CCP_NAMESPACE-metrics"
         }
     },
     "spec": {
@@ -54,7 +56,8 @@
             "metadata": {
                 "labels": {
                     "name": "replica-metrics",
-                    "crunchy_collect": "true"
+                    "crunchy_collect": "true",
+                    "cleanup": "$CCP_NAMESPACE-metrics"
                 }
             },
             "spec": {
@@ -187,6 +190,10 @@
                             {
                                 "name": "XLOGDIR",
                                 "value": "true"
+                            },
+                            {
+                                "name": "PGBACKREST",
+                                "value": "true"
                             }
                         ],
                         "volumeMounts": [
@@ -194,11 +201,6 @@
                                 "mountPath": "/pgdata",
                                 "name": "pgdata",
                                 "readOnly": false
-                            },
-                            {
-                                "mountPath": "/pgconf",
-                                "name": "pgconf",
-                                "readOnly": true
                             },
                             {
                                 "mountPath": "/pgwal",
@@ -229,12 +231,6 @@
                     {
                         "name": "pgwal",
                         "emptyDir": {}
-                    },
-                    {
-                        "name": "pgconf",
-                        "configMap": {
-                            "name": "metrics-pgconf"
-                        }
                     },
                     {
                         "name": "backrestrepo",

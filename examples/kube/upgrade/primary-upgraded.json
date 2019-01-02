@@ -4,7 +4,8 @@
     "metadata": {
         "name": "primary-upgrade",
         "labels": {
-            "name": "primary-upgrade"
+            "name": "primary-upgrade",
+            "cleanup": "$CCP_NAMESPACE-upgrade"
         }
     },
     "spec": {
@@ -30,7 +31,8 @@
     "metadata": {
         "name": "primary-upgrade",
         "labels": {
-            "name": "primary-upgrade"
+            "name": "primary-upgrade",
+            "cleanup": "$CCP_NAMESPACE-upgrade"
         }
     },
     "spec": {

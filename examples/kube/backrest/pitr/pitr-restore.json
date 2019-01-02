@@ -9,7 +9,8 @@
             "metadata": {
                 "name": "backrest-pitr-restore-job",
                 "labels": {
-                    "app": "backrest-pitr-restore-job"
+                    "app": "backrest-pitr-restore-job",
+                    "cleanup": "$CCP_NAMESPACE-backrest-pitr-restore"
                 }
             },
             "spec": {
@@ -22,16 +23,28 @@
                         "image": "$CCP_IMAGE_PREFIX/crunchy-backrest-restore:$CCP_IMAGE_TAG",
                         "env": [
                             {
-                                "name": "STANZA",
+                                "name": "PGBACKREST_STANZA",
                                 "value": "db"
                             },
                             {
-                                "name": "PG_HOSTNAME",
-                                "value": "backrest"
+                                "name": "PGBACKREST_PG1_PATH",
+                                "value": "/pgdata/backrest-pitr-restored"
                             },
                             {
-                                "name": "PITR_TARGET",
-                                "value": "$PITR_TARGET"
+                                "name": "PGBACKREST_REPO1_PATH",
+                                "value": "/backrestrepo/backrest-backups"
+                            },
+                            {
+                                "name": "PGBACKREST_LOG_PATH",
+                                "value": "/tmp"
+                            },
+                            {
+                                "name": "PGBACKREST_TYPE",
+                                "value": "time"
+                            },
+                            {
+                                "name": "PGBACKREST_TARGET",
+                                "value": "$CCP_BACKREST_TIMESTAMP"
                             }
                         ],
                         "volumeMounts": [
@@ -39,11 +52,6 @@
                                 "mountPath": "/pgdata",
                                 "name": "pgdata",
                                 "readOnly": false
-                            },
-                            {
-                                "mountPath": "/pgconf",
-                                "name": "pgconf",
-                                "readOnly": true
                             },
                             {
                                 "mountPath": "/backrestrepo",
@@ -54,12 +62,6 @@
                     }
                 ],
                 "volumes": [
-                    {
-                        "name": "pgconf",
-                        "configMap": {
-                            "name": "br-pitr-restore-pgconf"
-                        }
-                    },
                     {
                         "name": "backrestrepo",
                         "persistentVolumeClaim": {

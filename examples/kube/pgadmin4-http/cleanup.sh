@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2018 Crunchy Data Solutions, Inc.
+# Copyright 2018 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,14 +15,7 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pgadmin4-http
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pgadmin4-http
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgadmin4-http-secrets
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc pgadmin4-http-data
-
-if [ -z "$CCP_STORAGE_CLASS" ]; then
-  ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv $CCP_NAMESPACE-pgadmin4-http-data
-fi
+cleanup "${CCP_NAMESPACE?}-pgadmin4-http"
 
 $CCPROOT/examples/waitforterm.sh pgadmin4-http ${CCP_CLI?}
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -18,17 +18,12 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} svc restore-pitr
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod restore-pitr pitr
+cleanup "${CCP_NAMESPACE?}-restore-pitr"
+
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod,svc pitr
 
 $CCPROOT/examples/waitforterm.sh pitr ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh restore-pitr ${CCP_CLI?}
-
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pvc recover-pvc restore-pitr-pgdata
-if [[ -z "$CCP_STORAGE_CLASS" ]]
-then
-    ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pv ${CCP_NAMESPACE?}-recover-pv ${CCP_NAMESPACE?}-restore-pitr-pgdata
-fi
 
 dir_check_rm "restore-pitr"
 create_storage "restore-pitr"

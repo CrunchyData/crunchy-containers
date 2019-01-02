@@ -5,7 +5,8 @@
         "name": "scheduler",
         "namespace": "$CCP_NAMESPACE",
         "labels": {
-            "name": "scheduler"
+            "name": "scheduler",
+            "cleanup": "$CCP_NAMESPACE-scheduler"
         }
     },
     "spec": {

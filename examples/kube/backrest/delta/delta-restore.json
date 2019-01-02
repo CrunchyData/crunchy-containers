@@ -9,7 +9,8 @@
             "metadata": {
                 "name": "backrest-delta-restore-job",
                 "labels": {
-                    "app": "backrest-delta-restore-job"
+                    "app": "backrest-delta-restore-job",
+                    "cleanup": "$CCP_NAMESPACE-backrest-delta-restore"
                 }
             },
             "spec": {
@@ -22,15 +23,36 @@
                         "image": "$CCP_IMAGE_PREFIX/crunchy-backrest-restore:$CCP_IMAGE_TAG",
                         "env": [
                             {
-                                "name": "STANZA",
+                                "name": "PGBACKREST_STANZA",
                                 "value": "db"
                             },
                             {
-                                "name": "DELTA"
+                                "name": "PGBACKREST_PG1_PATH",
+                                "value": "/pgdata/backrest"
                             },
                             {
-                                "name": "PG_HOSTNAME",
-				"value": "backrest"
+                                "name": "PGBACKREST_REPO1_PATH",
+                                "value": "/backrestrepo/backrest-backups"
+                            },
+                            {
+                                "name": "PGBACKREST_DELTA",
+                                "value": "y"
+                            },
+                            {
+                                "name": "PGBACKREST_LOG_PATH",
+                                "value": "/tmp"
+                            },
+                            {
+                                "name": "PGBACKREST_TYPE",
+                                "value": "time"
+                            },
+                            {
+                                "name": "PGBACKREST_TARGET",
+                                "value": "$CCP_BACKREST_TIMESTAMP"
+                            },
+                            {
+                                "name": "PGBACKREST_LOG_LEVEL_STDERR",
+                                "value": "info"
                             }
                         ],
                         "volumeMounts": [
@@ -38,11 +60,6 @@
                                 "mountPath": "/pgdata",
                                 "name": "pgdata",
                                 "readOnly": false
-                            },
-                            {
-                                "mountPath": "/pgconf",
-                                "name": "pgconf",
-                                "readOnly": true
                             },
                             {
                                 "mountPath": "/backrestrepo",
@@ -53,12 +70,6 @@
                     }
                 ],
                 "volumes": [
-                    {
-                        "name": "pgconf",
-                        "configMap": {
-                            "name": "br-delta-restore-pgconf"
-                        }
-                    },
                     {
                         "name": "backrestrepo",
                         "persistentVolumeClaim": {

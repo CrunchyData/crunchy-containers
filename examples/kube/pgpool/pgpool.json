@@ -4,7 +4,8 @@
     "metadata": {
         "name": "pgpool",
         "labels": {
-            "name": "pgpool"
+            "name": "pgpool",
+            "cleanup": "$CCP_NAMESPACE-pgpool"
         }
     },
     "spec": {
@@ -30,7 +31,8 @@
     "metadata": {
         "name": "pgpool",
         "labels": {
-            "name": "pgpool"
+            "name": "pgpool",
+            "cleanup": "$CCP_NAMESPACE-pgpool"
         }
     },
     "spec": {
@@ -38,7 +40,8 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "pgpool"
+                    "name": "pgpool",
+                    "cleanup": "$CCP_NAMESPACE-pgpool"
                 }
             },
             "spec": {

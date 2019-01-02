@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2018 Crunchy Data Solutions, Inc.
+# Copyright 2018 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -28,5 +28,8 @@ fi
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgadmin4-http-secrets \
     --from-literal=pgadmin-email='admin@admin.com' \
     --from-literal=pgadmin-password='password'
+
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
+    pgadmin4-http-secrets cleanup=${CCP_NAMESPACE?}-pgadmin4-http
 
 expenv -f $DIR/pgadmin4-http.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

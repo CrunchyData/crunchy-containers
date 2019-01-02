@@ -4,7 +4,8 @@
     "metadata": {
         "name": "pitr",
         "labels": {
-            "name": "pitr"
+            "name": "pitr",
+            "cleanup": "$CCP_NAMESPACE-pitr"
         }
     },
     "spec": {
@@ -33,12 +34,13 @@
     "metadata": {
         "name": "pitr",
         "labels": {
-            "name": "pitr"
+            "name": "pitr",
+            "cleanup": "$CCP_NAMESPACE-pitr"
         }
     },
     "spec": {
         "securityContext": {
-             $CCP_SECURITY_CONTEXT
+            $CCP_SECURITY_CONTEXT
         },
         "containers": [
             {
@@ -129,6 +131,11 @@
                         "mountPath": "/backup",
                         "name": "backup",
                         "readOnly": true
+                    },
+                    {
+                        "mountPath": "/pgconf",
+                        "name": "pgconf",
+                        "readOnly": true
                     }
                 ]
             }
@@ -149,6 +156,12 @@
             {
                 "name": "backup",
                 "emptyDir": {}
+            },
+            {
+                "name": "pgconf",
+                "configMap": {
+                    "name": "pitr-pgconf"
+                }
             }
         ]
     }

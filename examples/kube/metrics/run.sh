@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -26,9 +26,8 @@ then
     exit 1
 fi
 
-${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} \
-    configmap metrics-pgconf \
-    --from-file ${DIR?}/configs/pgbackrest.conf
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
+    metrics-pgconf cleanup=${CCP_NAMESPACE?}-metrics
 
 expenv -f $DIR/metrics.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 expenv -f $DIR/primary.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

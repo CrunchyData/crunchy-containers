@@ -18,15 +18,46 @@ func TestPrimaryReplica(t *testing.T) {
 		defer harness.runExample("examples/kube/primary-replica/cleanup.sh", env, t)
 	}
 
-	pods := []string{"pr-primary", "pr-replica", "pr-replica-2"}
+	t.Log("Checking if primary deployment is ready...")
+	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "pr-primary"); !ok {
+		t.Fatal(err)
+	}
+
+	t.Log("Checking if replica deployment is ready...")
+	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "pr-replica"); !ok {
+		t.Fatal(err)
+	}
+
+	primary, err := harness.Client.GetDeploymentPods(harness.Namespace, "pr-primary")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	replica, err := harness.Client.GetDeploymentPods(harness.Namespace, "pr-replica")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(primary) == 0 {
+		t.Fatal("Primary deployment ready but no pods found")
+	}
+
+	if len(replica) == 0 {
+		t.Fatal("Primary deployment ready but no pods found")
+	}
+
+	var pods []string
+	for _, pod := range primary {
+		pods = append(pods, pod)
+	}
+
 	t.Log("Checking if pods are ready to use...")
 	if err := harness.Client.CheckPods(harness.Namespace, pods); err != nil {
 		t.Fatal(err)
 	}
 
-	host := "pr-primary"
 	local, remote := randomPort(), 5432
-	proxy, err := harness.setupProxy(host, local, remote)
+	proxy, err := harness.setupProxy(pods[0], local, remote)
 	if err != nil {
 		t.Fatal(err)
 	}
