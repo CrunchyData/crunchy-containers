@@ -40,6 +40,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
     R-core libRmath texinfo-tex texlive-epsf \
     procps-ng \
     rsync \
+    psmisc openssh-server openssh-clients \
  && yum -y reinstall glibc-common \
  && yum -y install postgresql10 postgresql10-contrib postgresql10-server \
     pgaudit10 pgaudit10_set_user \
@@ -74,7 +75,7 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
 # add volumes to locate WAL files to recover with
 # add volumes for pgbackrest to write to
 
-VOLUME ["/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo"]
+VOLUME ["/sshd", "/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo"]
 
 # open up the postgres port
 EXPOSE 5432
