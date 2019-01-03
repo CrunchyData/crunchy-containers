@@ -51,4 +51,5 @@ The crunchy-pgbouncer Docker image contains the following packages (versions var
 **RESERVE_POOL_TIMEOUT**|5|If a client has not been serviced in this many seconds, pgbouncer enables use of additional connections from reserve pool. 0 disables.
 **QUERY_TIMEOUT**|0|Queries running longer than that are canceled.
 **IGNORE_STARTUP_PARAMETERS**|extra_float_digits|Set to ignore particular parameters in startup packets.
+**PG_PORT**|5432|The port to use when connecting to the database.
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.

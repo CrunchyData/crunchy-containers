@@ -63,8 +63,9 @@ else
     sed -i "s/RESERVE_POOL_TIMEOUT/${RESERVE_POOL_TIMEOUT:-5}/g" ${CONF_DIR?}/pgbouncer.ini
     sed -i "s/QUERY_TIMEOUT/${QUERY_TIMEOUT:-0}/g" ${CONF_DIR?}/pgbouncer.ini
     sed -i "s/IGNORE_STARTUP_PARAMETERS/${IGNORE_STARTUP_PARAMETERS:-extra_float_digits}/g" ${CONF_DIR?}/pgbouncer.ini
+    sed -i "s/PG_PORT/${PG_PORT:-5432}/g" ${CONF_DIR?}/pgbouncer.ini
 
-    echo "${PG_SERVICE}:5432:*:pgbouncer:${PGBOUNCER_PASSWORD}" >> /tmp/.pgpass
+    echo "${PG_SERVICE}:${PG_PORT:-5432}:*:pgbouncer:${PGBOUNCER_PASSWORD}" >> /tmp/.pgpass
 fi
 
 export PGPASSFILE=/tmp/.pgpass

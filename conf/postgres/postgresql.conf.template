@@ -60,7 +60,7 @@ listen_addresses = '*'		# what IP address(es) to listen on;
 					# comma-separated list of addresses;
 					# defaults to 'localhost'; use '*' for all
 					# (change requires restart)
-port = 5432				# (change requires restart)
+port = PG_PRIMARY_PORT				# (change requires restart)
 max_connections = MAX_CONNECTIONS			# (change requires restart)
 #superuser_reserved_connections = 3	# (change requires restart)
 unix_socket_directories = '/tmp'	# comma-separated list of directories

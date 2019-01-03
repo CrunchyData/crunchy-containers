@@ -230,6 +230,7 @@ function fill_conf_file() {
     sed -i "s/MAX_WAL_SENDERS/${MAX_WAL_SENDERS:-6}/g" /tmp/postgresql.conf
     sed -i "s/ARCHIVE_MODE/${ARCHIVE_MODE:-off}/g" /tmp/postgresql.conf
     sed -i "s/ARCHIVE_TIMEOUT/${ARCHIVE_TIMEOUT:-0}/g" /tmp/postgresql.conf
+    sed -i "s/PG_PRIMARY_PORT/${PG_PRIMARY_PORT}/g" /tmp/postgresql.conf
 }
 
 function create_pgpass() {
@@ -319,6 +320,7 @@ function initialize_primary() {
         while true; do
             pg_isready \
             --host=/tmp \
+            --port=${PG_PRIMARY_PORT} \
             --username=${PG_PRIMARY_USER?} \
             --timeout=2
             if [ $? -eq 0 ]; then
@@ -345,7 +347,7 @@ function initialize_primary() {
         # Set PGHOST to use the socket in /tmp. unix_socket_directory is changed
         # to use /tmp instead of /var/run.
         export PGHOST=/tmp
-        psql -U postgres < /tmp/setup.sql
+        psql -U postgres -p "${PG_PRIMARY_PORT}" < /tmp/setup.sql
         if [ -f /pgconf/audit.sql ]; then
             echo_info "Using pgaudit_analyze audit.sql from /pgconf.."
             psql -U postgres < /pgconf/audit.sql

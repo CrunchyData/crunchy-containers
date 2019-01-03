@@ -3,7 +3,7 @@
 source /opt/cpm/bin/common_lib.sh
 export PGHOST="${PGHOST:-/tmp}"
 
-pgisready 'postgres' ${PGHOST?} 5432 'postgres'
+pgisready 'postgres' ${PGHOST?} "${PG_PRIMARY_PORT}" 'postgres'
 VERSION=$(psql -d postgres -qtAX -c "SELECT current_setting('server_version_num')")
 
 if (( ${VERSION?} > 90500 )) && (( ${VERSION?} < 100000 ))
