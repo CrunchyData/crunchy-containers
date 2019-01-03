@@ -4,7 +4,7 @@ source /opt/cpm/bin/common_lib.sh
 export PGHOST="${PGHOST:-/tmp}"
 
 pgisready 'postgres' ${PGHOST?} "${PG_PRIMARY_PORT}" 'postgres'
-VERSION=$(psql -d postgres -qtAX -c "SELECT current_setting('server_version_num')")
+VERSION=$(psql --port="${PG_PRIMARY_PORT}" -d postgres -qtAX -c "SELECT current_setting('server_version_num')")
 
 if (( ${VERSION?} > 90500 )) && (( ${VERSION?} < 100000 ))
 then
@@ -20,12 +20,12 @@ fi
 # TODO Add ON_ERROR_STOP and single transaction when
 # upstream pgmonitor changes setup SQL to check if the
 # role exists prior to creating it.
-psql -U postgres -d postgres \
+psql -U postgres --port="${PG_PRIMARY_PORT}" -d postgres \
     < ${function_file?} > /tmp/pgmonitor.stdout 2> /tmp/pgmonitor.stderr
 
 err_check "$?" "pgMonitor Setup" "Could not load pgMonitor functions: \n$(cat /tmp/pgmonitor.stderr)"
 
-psql -U postgres -d postgres \
+psql -U postgres --port="${PG_PRIMARY_PORT}" -d postgres \
     -c "ALTER ROLE ccp_monitoring PASSWORD '${PGMONITOR_PASSWORD?}'" \
     > /tmp/pgmonitor.stdout 2> /tmp/pgmonitor.stderr
 
