@@ -64,7 +64,7 @@ The crunchy-postgres-gis Docker image contains the following packages (versions 
 **WORK_MEM**|4MB|Set this value to configure `work_mem` in `postgresql.conf`
 **XLOGDIR**|None| Set this value to configure PostgreSQL to send WAL to the `/pgwal` volume (by default WAL is stored in `/pgdata`)
 **PGBACKREST**|false| Set this value to `true` in order to enable and initialize pgBackRest in the container
-**BACKREST_SKIP_CREATE_STANZA**|false| Set this value to `true` in order to skip the automatic creation of a stanza while initializing pgBackRest in the container
+**BACKREST_SKIP_CREATE_STANZA**|false| Set this value to `true` in order to skip the configuration check and the automatic creation of a stanza while initializing pgBackRest in the container
 
 ## Volumes
 
