@@ -103,8 +103,11 @@ then
     echo_info "pgBackRest: Configuration is valid"
 fi
 
-# Create stanza
-if pgbackrest info | grep -q 'missing stanza path'
+# Create stanza ((PGBACKREST_SKIP_CREATE_STANZA=true))
+if [[ "${BACKREST_SKIP_CREATE_STANZA}" == "true" ]]
+then
+    echo_info "pgBackRest: BACKREST_SKIP_CREATE_STANZA is 'true'.  Skipping stanza creation.." 
+elif pgbackrest info | grep -q 'missing stanza path'
 then
     echo_info "pgBackRest: The following pgbackrest env vars have been set:"
     ( set -o posix ; set | grep -oP "^PGBACKREST.*" )

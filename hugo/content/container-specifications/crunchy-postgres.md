@@ -62,6 +62,8 @@ The crunchy-postgres Docker image contains the following packages (versions vary
 **TEMP_BUFFERS**|8MB|Set this value to configure `temp_buffers` in `postgresql.conf`
 **WORK_MEM**|4MB|Set this value to configure `work_mem` in `postgresql.conf`
 **XLOGDIR**|None| Set this value to configure PostgreSQL to send WAL to the `/pgwal` volume (by default WAL is stored in `/pgdata`)
+**PGBACKREST**|false| Set this value to `true` in order to enable and initialize pgBackRest in the container
+**BACKREST_SKIP_CREATE_STANZA**|false| Set this value to `true` in order to skip the automatic creation of a stanza while initializing pgBackRest in the container
 
 ## Volumes
 
@@ -84,7 +86,6 @@ The following configuration files can be mounted to the `/pgconf` volume in the 
 `ca.crl`| Revocation list of the CA used by the server when using SSL authentication
 `pg_hba.conf`| Client authentication rules for the database
 `pg_ident.conf`| Mapping of external users (such as SSL certs, GSSAPI, LDAP) to database users
-`pgbackrest.conf`| pgBackRest configurations
 `postgresql.conf`| PostgreSQL settings
 `server.key`| Key used by the server when using SSL authentication
 `server.crt`| Certificate used by the server when using SSL authentication
