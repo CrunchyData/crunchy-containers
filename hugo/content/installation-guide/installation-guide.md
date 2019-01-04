@@ -1,8 +1,9 @@
-title: "Environment Setup"
+---
+title: "Installation Guide"
 date: 2018-05-08T08:52:09-07:00
 draft: false
-weight: 1
-\---
+weight: 100
+---
 
 Latest Release: 2.2.0 2018-12-11
 
@@ -191,7 +192,7 @@ to choose the proper version of Openshift you want to install. The main instruct
 
 ## Kubernetes Installation
 
-{% notice Warn %}
+{{% notice Warn %}}
 Make sure your hostname resolves to a single IP address in your
 /etc/hosts file. The NFS examples will not work otherwise and other problems
 with installation can occur unless you have a resolving hostname.

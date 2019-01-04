@@ -1,3 +1,11 @@
+---
+title: "Storage Configuration"
+date: 2018-05-08T08:52:09-07:00
+draft: false
+weight: 105
+---
+
+
 # Storage Configuration
 
 ## Available Storage Types

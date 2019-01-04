@@ -1,3 +1,10 @@
+---
+title: "Using the Images"
+date: {docdate}
+draft: false
+weight: 50
+---
+
 # Running the Examples
 
 The Kubernetes and OpenShift examples in this guide have been designed using

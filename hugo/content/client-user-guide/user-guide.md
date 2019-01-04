@@ -1,3 +1,10 @@
+---
+title: "User Guide"
+date: {docdate}
+draft: false
+weight: 40
+---
+
 # User Guide
 
 ## Overview

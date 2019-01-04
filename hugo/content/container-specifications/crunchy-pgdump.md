@@ -2,7 +2,7 @@
 title: "crunchy-pgdump"
 date: 2018-05-24T12:08:16-07:00
 draft: false
-weight: 5
+weight: 155
 ---
 
 The crunchy-pgdump container executes either a pg_dump or pg_dumpall database backup against another

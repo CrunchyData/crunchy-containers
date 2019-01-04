@@ -2,7 +2,7 @@
 title: "crunchy-pgadmin4"
 date: 2018-05-24T12:05:42-07:00
 draft: false
-weight: 10
+weight: 160
 ---
 
 The crunchy-pgadmin4 container executes the [pgAdmin4](https://www.pgadmin.org/) web application.

@@ -1,4 +1,9 @@
-# Introduction
+---
+title: "Introduction"
+date: {docdate}
+draft: false
+weight: 1
+---
 
 Crunchy Container Suite is a collection of container images for PostgreSQL databases
 and various tools to manage them.  The container images provided aim to be highly

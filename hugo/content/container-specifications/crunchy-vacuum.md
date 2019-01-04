@@ -2,6 +2,7 @@
 title: "crunchy-vacuum"
 date: 2018-05-24T12:06:12-07:00
 draft: false
+weight: 168
 ---
 
 The crunchy-vacuum container allows you to perform a SQL VACUUM job against a PostgreSQL database container.
