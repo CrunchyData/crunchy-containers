@@ -103,7 +103,7 @@ then
     echo_info "pgBackRest: Configuration is valid"
 fi
 
-# Create stanza ((PGBACKREST_SKIP_CREATE_STANZA=true))
+# Create stanza
 if [[ "${BACKREST_SKIP_CREATE_STANZA}" == "true" ]]
 then
     echo_info "pgBackRest: BACKREST_SKIP_CREATE_STANZA is 'true'.  Skipping stanza creation.." 
