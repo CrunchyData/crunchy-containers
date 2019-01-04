@@ -2,7 +2,7 @@
 title: "crunchy-prometheus"
 date: 2018-05-24T10:06:21-07:00
 draft: false
-weight: 8
+weight: 158
 ---
 
 [Prometheus](https://prometheus.io) is a multi-dimensional time series data model with an elastic query language. It is used in collaboration

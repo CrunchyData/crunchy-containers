@@ -2,6 +2,7 @@
 title: "crunchy-pgbadger"
 date: 2018-05-24T12:04:55-07:00
 draft: false
+weight: 165
 ---
 
 The crunchy-pgbadger container executes the [pgBadger](http://dalibo.github.io/pgbadger) utility, which

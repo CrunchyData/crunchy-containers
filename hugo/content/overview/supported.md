@@ -1,3 +1,10 @@
+---
+title: "Supported Platforms"
+date: {docdate}
+draft: false
+weight: 3
+---
+
 ## Supported Platforms
 
 Crunchy Container Suite supports the following platforms:

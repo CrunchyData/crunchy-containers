@@ -2,6 +2,7 @@
 title: "crunchy-pgpool"
 date: 2018-05-24T12:05:00-07:00
 draft: false
+weight: 166
 ---
 
 The crunchy-pgpool container executes the [pgPool II](http://www.pgpool.net/mediawiki/index.php/Main_Page)

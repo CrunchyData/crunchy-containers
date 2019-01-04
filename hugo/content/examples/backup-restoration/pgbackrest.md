@@ -1,3 +1,10 @@
+---
+title: "pgBackRest"
+date: {docdate}
+draft: false
+weight: 30
+---
+
 # pgBackRest Examples
 
 Written and maintained by David Steele, pgBackRest is a utility that provides backup and restore functionality for PostgreSQL databases.  pgBackRest is available for use within the Crunchy Container Suite, and can therefore be utilized to provide an effective backup and restore solution for any database clusters deployed using the crunchy-postgres or crunchy-postgres-gis containers.  The following section will provide an overview of how pgBackRest can be utilized within the Crunchy Container Suite, including examples for enabling and configuring pgBackRest, and then utilizing pgBackRest to backup and restore various PostreSQL database clusters.  For more detailed information about pgBackRest, please visit the [official pgBackRest website](https://pgbackrest.org/).
