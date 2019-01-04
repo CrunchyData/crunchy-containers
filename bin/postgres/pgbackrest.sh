@@ -93,18 +93,26 @@ set_pgbackrest_env_vars
 create_pgbackrest_dirs
 
 # Check if configuration is valid
-echo_info "pgBackRest: Checking if configuration is valid.."
-pgbackrest info > /tmp/pgbackrest.stdout 2> /tmp/pgbackrest.stderr
-err=$?
-err_check ${err} "pgBackRest Configuration Check" \
-    "Error with pgBackRest configuration: \n$(cat /tmp/pgbackrest.stderr)"
-if [[ ${err} == 0 ]]
+if [[ "${BACKREST_SKIP_CREATE_STANZA}" == "true" ]]
 then
-    echo_info "pgBackRest: Configuration is valid"
+    echo_info "pgBackRest: BACKREST_SKIP_CREATE_STANZA is 'true'.  Skipping configuration check.."
+else
+    echo_info "pgBackRest: Checking if configuration is valid.."
+    pgbackrest info > /tmp/pgbackrest.stdout 2> /tmp/pgbackrest.stderr
+    err=$?
+    err_check ${err} "pgBackRest Configuration Check" \
+        "Error with pgBackRest configuration: \n$(cat /tmp/pgbackrest.stderr)"
+    if [[ ${err} == 0 ]]
+    then
+        echo_info "pgBackRest: Configuration is valid"
+    fi
 fi
 
 # Create stanza
-if pgbackrest info | grep -q 'missing stanza path'
+if [[ "${BACKREST_SKIP_CREATE_STANZA}" == "true" ]]
+then
+    echo_info "pgBackRest: BACKREST_SKIP_CREATE_STANZA is 'true'.  Skipping stanza creation.." 
+elif pgbackrest info | grep -q 'missing stanza path'
 then
     echo_info "pgBackRest: The following pgbackrest env vars have been set:"
     ( set -o posix ; set | grep -oP "^PGBACKREST.*" )
