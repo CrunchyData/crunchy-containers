@@ -34,7 +34,7 @@ your specific needs and contains the PostreSQL features and services that you re
 
 ## <a name="platform-installation"></a>Platform Installation
 
-In order to run the examples and deploy various container within the Crunchy Container Suite, you 
+In order to run the examples and deploy various containers within the Crunchy Container Suite, you 
 will first need access to an environment containing one of the following supported platforms:
 
 - Docker 1.13+ (https://www.docker.com/)
@@ -50,10 +50,10 @@ environment.
 Once you have access to an environment containing one of the supported platforms, it is then 
 necessary to properly configure that environment in order to run the examples, and therefore deploy
 the various containers included in the Crunchy Container Suite.  This can be done by following
-the Crunchy Container Suite [Installation Guide](../installation-guide/installation-guide.md).  
+the Crunchy Container Suite [Installation Guide](/installation-guide/installation-guide).  
 
 Please note that as indicated within the 
-[Installation Guide](../installation-guide/installation-guide.md), certain steps may require 
+[Installation Guide](/installation-guide/installation-guide), certain steps may require 
 administrative access and/or privileges.  Therefore, please work with your local System 
 Administrator(s) as needed to setup and configure your environment according to the steps defined
 within this guide.  Additionally, certain steps are only applicable to certain platforms and/or
@@ -63,27 +63,20 @@ environment.
 ## <a name="storage-configuration"></a>Storage Configuration
 
 Once you have completed all applicable steps in the 
-[Installation Guide](../installation-guide/installation-guide.md), you can then proceed with 
+[Installation Guide](/installation-guide/installation-guide), you can then proceed with 
 configuring storage in your environment.  The specific forms of storage supported by the Crunchy
 Containers Suite, as well as instructions for configuring and enabling those forms of storage, can 
-be found in the [Storage Configuration](../installation-guide/storage-configuration.md) guide.
+be found in the [Storage Configuration](/installation-guide/storage-configuration) guide.
 Therefore, please review and follow steps in the 
-[Storage Configuration](../installation-guide/storage-configuration.md) guide in order to properly
+[Storage Configuration](/installation-guide/storage-configuration) guide in order to properly
 configure storage in your environment according to your specific storage needs.
 
 ## <a name="example-guidance"></a>Example Guidance
 
-With the [Installation Guide](../installation-guide/installation-guide.md) and 
-[Storage Configuration](../installation-guide/storage-configuration.md) complete, you are almost
+With the [Installation Guide](/installation-guide/installation-guide) and 
+[Storage Configuration](/installation-guide/storage-configuration) complete, you are almost
 ready to run the examples.  However, prior to doing so it is recommended that you first review the
-documentation for [Running the Examples](usage.md), which describes various conventions utilized in
+documentation for [Running the Examples](/client-user-guide/usage), which describes various conventions utilized in
 the examples, while also providing any other information, resources and guidance relevant to 
 successfully running the Crunchy Container Suite examples in your environment.  The documentation 
-for running the examples can be found [here](usage.md).
-
-## <a name="crunchy-container-suite-examples"></a>Crunchy Container Suite Examples
-
-Now that your environment has been properly configured for the Crunchy Container Suite and you have
-reviewed the guidance for [Running the Examples](usage.md), you are ready to run the Crunchy 
-Container Suite examples.  Therefore, please proceed to the next section in order to find the 
-examples that can now be run in your environment.
+for running the examples can be found [here](/client-user-guide/usage).

@@ -1,6 +1,6 @@
 ---
 title: "Installation Guide"
-date: 2018-05-08T08:52:09-07:00
+date: 
 draft: false
 weight: 100
 ---
@@ -97,7 +97,7 @@ highlighted below where necessary.
     git checkout 2.2.0
     go get github.com/blang/expenv
 
-{{% notice Info %}}
+{{% notice info %}}
 
 If you are a Crunchy Enterprise Customer running on RHEL, you will place the Crunchy repository
 key and yum repository file into the `$CCPROOT/conf` directory at this point. These
@@ -152,7 +152,7 @@ Update the system:
 
 ## Install Docker
 
-{{% notice Info %}}
+{{% notice info %}}
 
 The Openshift and Kubernetes (KubeAdm) instructions both have a section for installing docker. Installing
 docker now won't cause any issues but you may wish to configure Docker storage before bringing
@@ -192,7 +192,7 @@ to choose the proper version of Openshift you want to install. The main instruct
 
 ## Kubernetes Installation
 
-{{% notice Warn %}}
+{{% notice warning %}}
 Make sure your hostname resolves to a single IP address in your
 /etc/hosts file. The NFS examples will not work otherwise and other problems
 with installation can occur unless you have a resolving hostname.
@@ -271,7 +271,7 @@ It is considered a best practice to have dedicated namespaces for projects in
 both testing and production environments.
 
 
-{{% notice Info %}}
+{{% notice info %}}
 All examples in the Crunchy Container Suite operate within the namespace
 defined by the environment variable `$CCP_NAMESPACE`. The default we use for namespace
 is 'demo' but it can be set to any valid namespace name. The instructions below
@@ -389,6 +389,4 @@ grant you the access required to run them yourself.
 
 Your user should now have the roles and privileges required to run the examples.
 
-# Next Steps
 
-Next, build or pull the container images as demonstrated in the [Build the Containers](/installation/build-the-containers/) document.

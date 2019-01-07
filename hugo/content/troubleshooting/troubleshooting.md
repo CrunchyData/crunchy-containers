@@ -5,4 +5,9 @@ draft: false
 weight: 301
 ---
 
-# Troubleshooting
+
+## Kube  
+[Troubleshooting kubeadm](https://kubernetes.io/docs/setup/independent/troubleshooting-kubeadm/)
+
+## OCP 
+[Troubleshooting OpenShift Container Platform: Basics](https://access.redhat.com/solutions/1542293)
