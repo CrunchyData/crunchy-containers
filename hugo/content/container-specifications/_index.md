@@ -1,6 +1,6 @@
 ---
 title: "Container Specifications"
-date: {docdate}
+date: 
 draft: false
 weight: 6
 ---

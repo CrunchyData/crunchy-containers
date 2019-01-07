@@ -1,6 +1,6 @@
 ---
 title: "Primary and Streaming Replica Containers"
-date: {docdate}
+date: 
 draft: false
 weight: 4
 ---

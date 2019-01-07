@@ -1,6 +1,6 @@
 ---
 title: "Updating Documentation"
-date: {docdate}
+date: 
 draft: false
 weight: 251
 ---

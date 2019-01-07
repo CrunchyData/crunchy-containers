@@ -1,6 +1,6 @@
 ---
 title: "pgBaseBackup"
-date: {docdate}
+date: 
 draft: false
 weight: 31
 ---

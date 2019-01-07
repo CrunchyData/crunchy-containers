@@ -1,6 +1,6 @@
 ---
 title: "PostGIS Container"
-date: {docdate}
+date: 
 draft: false
 weight: 8
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Supported Platforms"
-date: {docdate}
+date: 
 draft: false
 weight: 3
 ---

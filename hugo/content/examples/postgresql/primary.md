@@ -1,6 +1,6 @@
 ---
 title: "PostgeSQL Primary"
-date: {docdate}
+date: 
 draft: false
 weight: 1
 ---

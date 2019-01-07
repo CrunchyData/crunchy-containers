@@ -1,6 +1,6 @@
 ---
 title: "Submitting Issues"
-date: {docdate}
+date: 
 draft: false
 weight: 252
 ---

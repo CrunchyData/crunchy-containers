@@ -1,6 +1,6 @@
 ---
 title: "pgAdmin 4"
-date: {docdate}
+date: 
 draft: false
 weight: 81
 ---

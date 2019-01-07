@@ -1,6 +1,6 @@
 ---
 title: "crunchy-prometheus"
-date: 2018-05-24T10:06:21-07:00
+date: 
 draft: false
 weight: 158
 ---

@@ -1,6 +1,6 @@
 ---
 title: "pgAudit"
-date: {docdate}
+date: 
 draft: false
 weight: 72
 ---

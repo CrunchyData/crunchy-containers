@@ -1,6 +1,6 @@
 ---
 title: "Custom Configuration of PostgreSQL Container"
-date: {docdate}
+date: 
 draft: false
 weight: 2
 ---

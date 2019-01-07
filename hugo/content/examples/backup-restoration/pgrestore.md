@@ -1,6 +1,6 @@
 ---
 title: "pgRestore"
-date: {docdate}
+date: 
 draft: false
 weight: 33
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Synchronous Replication"
-date: {docdate}
+date: 
 draft: false
 weight: 6
 ---

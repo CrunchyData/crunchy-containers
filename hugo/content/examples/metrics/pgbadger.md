@@ -1,6 +1,6 @@
 ---
 title: "pgBadger"
-date: {docdate}
+date: 
 draft: false
 weight: 62
 ---

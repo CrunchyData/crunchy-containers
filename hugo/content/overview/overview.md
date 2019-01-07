@@ -1,6 +1,6 @@
 ---
 title: "Container Images"
-date: {docdate}
+date: 
 draft: false
 weight: 2
 ---

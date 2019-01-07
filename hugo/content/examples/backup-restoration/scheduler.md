@@ -1,6 +1,6 @@
 ---
 title: "Scheduler"
-date: {docdate}
+date: 
 draft: false
 weight: 34
 ---

@@ -1,6 +1,6 @@
 ---
 title: "crunchy-postgres"
-date: 2018-05-24T09:38:13-07:00
+date: 
 draft: false
 weight: 150
 ---

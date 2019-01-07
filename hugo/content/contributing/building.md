@@ -1,6 +1,6 @@
 ---
 title: "Building the Containers"
-date: {docdate}
+date: 
 draft: false
 weight: 250
 ---

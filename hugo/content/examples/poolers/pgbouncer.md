@@ -1,6 +1,6 @@
 ---
 title: "pgBouncer"
-date: {docdate}
+date: 
 draft: false
 weight: 51
 ---

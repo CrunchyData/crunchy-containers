@@ -1,6 +1,6 @@
 ---
 title: "Client User Guide"
-date: {docdate}
+date: 
 draft: false
 weight: 3
 ---

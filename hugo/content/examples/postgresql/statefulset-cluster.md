@@ -1,6 +1,6 @@
 ---
 title: "Statefulset PostgreSQL Cluster"
-date: {docdate}
+date: 
 draft: false
 weight: 7
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Centralized Logging"
-date: {docdate}
+date: 
 draft: false
 weight: 70
 ---

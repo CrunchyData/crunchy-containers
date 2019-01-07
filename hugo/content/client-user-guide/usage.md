@@ -1,6 +1,6 @@
 ---
 title: "Using the Images"
-date: {docdate}
+date: 
 draft: false
 weight: 50
 ---

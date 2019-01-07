@@ -1,7 +1,7 @@
 
 ---
 title: "Metrics and Performance"
-date: {docdate}
+date: 
 draft: false
 weight: 61
 ---

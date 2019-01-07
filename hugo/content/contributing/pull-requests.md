@@ -1,6 +1,6 @@
 ---
 title: "Submitting Pull Requests"
-date: {docdate}
+date: 
 draft: false
 weight: 253
 ---

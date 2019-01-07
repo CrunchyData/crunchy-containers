@@ -5,8 +5,6 @@ draft: false
 weight: 100
 ---
 
-Latest Release: 2.2.0 2018-12-11
-
 # Requirements
 
 These installation instructions are developed and tested for the following operating systems:

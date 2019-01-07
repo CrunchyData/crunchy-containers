@@ -1,6 +1,6 @@
 ---
 title: "Help"
-date: {docdate}
+date: 
 draft: false
 weight: 8
 ---

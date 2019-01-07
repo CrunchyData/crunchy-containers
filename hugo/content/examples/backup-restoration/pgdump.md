@@ -1,6 +1,6 @@
 ---
 title: "pgDump"
-date: {docdate}
+date: 
 draft: false
 weight: 32
 ---

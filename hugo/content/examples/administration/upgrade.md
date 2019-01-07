@@ -1,6 +1,6 @@
 ---
 title: "Upgrade"
-date: {docdate}
+date: 
 draft: false
 weight: 81
 ---

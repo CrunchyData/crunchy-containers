@@ -1,6 +1,6 @@
 ---
 title: "pgPool II"
-date: {docdate}
+date: 
 draft: false
 weight: 22
 ---

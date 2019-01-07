@@ -1,6 +1,6 @@
 ---
 title: "pgBackRest"
-date: {docdate}
+date: 
 draft: false
 weight: 30
 ---

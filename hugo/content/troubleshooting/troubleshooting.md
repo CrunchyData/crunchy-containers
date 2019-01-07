@@ -1,6 +1,6 @@
 ---
 title: "Troubleshooting"
-date: {docdate}
+date: 
 draft: false
 weight: 301
 ---
