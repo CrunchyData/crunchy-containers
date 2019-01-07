@@ -1,6 +1,10 @@
 ---
 title: "Installation Guide"
+<<<<<<< HEAD
 date: 
+=======
+date: 2018-05-08T08:52:09-07:00
+>>>>>>> 5e3c21581dfb46d316975f0cd67c4de1ce5aebea
 draft: false
 weight: 100
 ---
