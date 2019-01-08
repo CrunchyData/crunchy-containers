@@ -88,6 +88,8 @@ ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/pgmonitor
 
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
+
+RUN mkdir /.ssh && chown 26:26 /.ssh && chmod o+rwx /.ssh
 	
 ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 
