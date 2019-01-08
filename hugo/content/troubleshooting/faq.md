@@ -1,6 +1,6 @@
 ---
 title: "FAQ"
-date: {docdate}
+date: 
 draft: false
 weight: 300
 ---

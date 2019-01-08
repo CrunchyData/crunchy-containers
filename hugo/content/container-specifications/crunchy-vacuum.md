@@ -1,6 +1,6 @@
 ---
 title: "crunchy-vacuum"
-date: 2018-05-24T12:06:12-07:00
+date:  
 draft: false
 weight: 168
 ---

@@ -1,6 +1,6 @@
 ---
 title: "Container Images"
-date: {docdate}
+date: 
 draft: false
 weight: 2
 ---
@@ -133,7 +133,7 @@ database conainers.
 The Crunchy pgAdmin4 images allows users to adminster their Crunchy PostgreSQL containers
 via a graphical user interface web application.
 
-![pgadmin4](https://crunchydata.github.io/crunchy-containers/images/pgadmin4.png "pgAdmin4")
+![pgadmin4](/pgadmin4.png "pgAdmin4")
 
 Visit the official pgAdmin4 website for more information: https://www.pgadmin.org/
 
@@ -183,7 +183,7 @@ Prometheus.  Crunchy Grafana comes with the following features:
 * Automatic datasource registration
 * Automatic administrator user setup
 
-![grafana](https://crunchydata.github.io/crunchy-containers/images/grafana.png "grafana")
+![grafana](/grafana.png "grafana")
 
 Visit the official Grafana website for more information: https://grafana.com
 
@@ -215,7 +215,7 @@ an in-depth statistical report.  Crunchy pgBadger reports include:
 Additionally Crunchy pgBadger can be configured to store reports for analysis over
 time.
 
-![pgbadger](https://crunchydata.github.io/crunchy-containers/images/pgbadger.png "pgbadger")
+![pgbadger](/pgbadger.png "pgbadger")
 
 Visit the official pgBadger website for more information: https://pgbadger.darold.net/
 

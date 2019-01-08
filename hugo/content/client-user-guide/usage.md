@@ -1,6 +1,6 @@
 ---
 title: "Using the Images"
-date: {docdate}
+date: 
 draft: false
 weight: 50
 ---
@@ -56,3 +56,10 @@ in the various environments shown in this guide:
 - [Kubectl Cheat Sheet](https://kubernetes.io/docs/user-guide/kubectl-cheatsheet/)
 - [OpenShift Cheat Sheet](https://github.com/nekop/openshift-sandbox/blob/master/docs/command-cheatsheet.md)
 - [Helm Cheat Sheet](https://github.com/kubernetes/helm/blob/master/docs/using_helm.md)
+
+## <a name="crunchy-container-suite-examples"></a>Crunchy Container Suite Examples
+
+Now that your environment has been properly configured for the Crunchy Container Suite and you have
+reviewed the guidance for running the examples, you are ready to run the Crunchy 
+Container Suite examples.  Therefore, please proceed to the next section in order to find the 
+examples that can now be run in your environment.

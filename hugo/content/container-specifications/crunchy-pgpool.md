@@ -1,6 +1,6 @@
 ---
 title: "crunchy-pgpool"
-date: 2018-05-24T12:05:00-07:00
+date: 
 draft: false
 weight: 166
 ---

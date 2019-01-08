@@ -1,6 +1,6 @@
 ---
 title: "crunchy-scheduler"
-date: 2018-05-24T10:06:13-07:00
+date: 
 draft: false
 weight: 157
 ---

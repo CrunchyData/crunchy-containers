@@ -1,6 +1,6 @@
 ---
 title: "Overview"
-date: {docdate}
+date: 
 draft: false
 weight: 2
 ---

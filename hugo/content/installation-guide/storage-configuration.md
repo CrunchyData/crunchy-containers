@@ -1,6 +1,6 @@
 ---
 title: "Storage Configuration"
-date: 2018-05-08T08:52:09-07:00
+date: 
 draft: false
 weight: 105
 ---

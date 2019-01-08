@@ -1,6 +1,6 @@
 ---
 title: "Installation Guide"
-date: {docdate}
+date: 
 draft: false
 weight: 5
 ---

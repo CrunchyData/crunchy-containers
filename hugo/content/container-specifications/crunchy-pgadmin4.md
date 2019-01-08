@@ -10,7 +10,7 @@ The crunchy-pgadmin4 container executes the [pgAdmin4](https://www.pgadmin.org/)
 pgAdmin4 provides a web user interface to PostgreSQL databases.  A
 sample screenshot is below:
 
-![pgAdmin4](../../pgadmin4-screenshot.png)
+![pgAdmin4](/pgadmin4-screenshot.png)
 
 ## Features
 

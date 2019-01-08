@@ -1,6 +1,6 @@
 ---
 title: "Contributing"
-date: {docdate}
+date: 
 draft: false
 weight: 7
 ---

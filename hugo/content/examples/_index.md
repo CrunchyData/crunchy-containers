@@ -1,6 +1,6 @@
 ---
 title: "Examples"
-date: {docdate}
+date: 
 draft: false
 weight: 4
 ---
