@@ -205,22 +205,6 @@ function fill_conf_file() {
 
     cp /opt/cpm/conf/postgresql.conf.template /tmp/postgresql.conf
 
-    if [[ "${PGBACKREST}" == "true" ]]
-    then
-        ARCHIVE_MODE=on
-        echo_info "Setting pgbackrest archive command.."
-        cat /opt/cpm/conf/backrest-archive-command >> /tmp/postgresql.conf
-    elif [[ "${ARCHIVE_MODE}" == "on" ]] && [[ ! "${PGBACKREST}" == "true" ]]
-    then
-        echo_info "Setting standard archive command.."
-        cat /opt/cpm/conf/archive-command >> /tmp/postgresql.conf
-    fi
-    echo_info "Setting ARCHIVE_MODE to ${ARCHIVE_MODE:-off}."
-
-    if [[ -v ARCHIVE_TIMEOUT ]]; then
-        echo_info "Setting ARCHIVE_TIMEOUT to ${ARCHIVE_TIMEOUT:-0}."
-    fi
-
     sed -i "s/TEMP_BUFFERS/${TEMP_BUFFERS:-8MB}/g" /tmp/postgresql.conf
     sed -i "s/LOG_MIN_DURATION_STATEMENT/${LOG_MIN_DURATION_STATEMENT:-60000}/g" /tmp/postgresql.conf
     sed -i "s/LOG_STATEMENT/${LOG_STATEMENT:-none}/g" /tmp/postgresql.conf
@@ -228,8 +212,6 @@ function fill_conf_file() {
     sed -i "s/SHARED_BUFFERS/${SHARED_BUFFERS:-128MB}/g" /tmp/postgresql.conf
     sed -i "s/WORK_MEM/${WORK_MEM:-4MB}/g" /tmp/postgresql.conf
     sed -i "s/MAX_WAL_SENDERS/${MAX_WAL_SENDERS:-6}/g" /tmp/postgresql.conf
-    sed -i "s/ARCHIVE_MODE/${ARCHIVE_MODE:-off}/g" /tmp/postgresql.conf
-    sed -i "s/ARCHIVE_TIMEOUT/${ARCHIVE_TIMEOUT:-0}/g" /tmp/postgresql.conf
     sed -i "s/PG_PRIMARY_PORT/${PG_PRIMARY_PORT}/g" /tmp/postgresql.conf
 }
 
@@ -364,6 +346,28 @@ function initialize_primary() {
     fi
 }
 
+configure_archiving() {
+
+    printf "\n# Archive Configuration:\n" >> /"${PGDATA}"/postgresql.conf
+
+    if [[ "${PGBACKREST}" == "true" ]]
+    then
+        ARCHIVE_MODE=on
+        echo_info "Setting pgbackrest archive command.."
+        cat /opt/cpm/conf/backrest-archive-command >> /"${PGDATA}"/postgresql.conf
+        elif [[ "${ARCHIVE_MODE}" == "on" ]] && [[ ! "${PGBACKREST}" == "true" ]]
+    then
+        echo_info "Setting standard archive command.."
+        cat /opt/cpm/conf/archive-command >> /"${PGDATA}"/postgresql.conf
+    fi
+
+    echo_info "Setting ARCHIVE_MODE to ${ARCHIVE_MODE:-off}."
+    echo "archive_mode = ${ARCHIVE_MODE}" >> "${PGDATA}"/postgresql.conf
+
+    echo_info "Setting ARCHIVE_TIMEOUT to ${ARCHIVE_TIMEOUT:-0}."
+    echo "archive_timeout = ${ARCHIVE_TIMEOUT}" >> "${PGDATA}"/postgresql.conf
+}
+
 # Clean up any old pid file that might have remained
 # during a bad shutdown of the container/postgres
 echo_info "Cleaning up the old postmaster.pid file.."
@@ -413,6 +417,8 @@ then
     echo_info "pgBackRest: Enabling pgbackrest.."
     source /opt/cpm/bin/pgbackrest.sh
 fi
+
+configure_archiving
 
 source /opt/cpm/bin/custom-configs.sh
 
