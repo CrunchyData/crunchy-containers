@@ -134,7 +134,7 @@
                     {
                         "name": "pgdata",
                         "persistentVolumeClaim": {
-                            "claimName": "pr-primary-pgdata"
+                            "claimName": "pr-replica-pgdata"
                         }
                     }
                 ],
