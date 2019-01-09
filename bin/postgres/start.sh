@@ -347,25 +347,27 @@ function initialize_primary() {
 }
 
 configure_archiving() {
+    printf "\n# Archive Configuration:\n" >> /"${PGDATA?}"/postgresql.conf
 
-    printf "\n# Archive Configuration:\n" >> /"${PGDATA}"/postgresql.conf
+    export ARCHIVE_MODE=${ARCHIVE_MODE:-off}
+    export ARCHIVE_TIMEOUT=${ARCHIVE_TIMEOUT:-0}
 
     if [[ "${PGBACKREST}" == "true" ]]
     then
-        ARCHIVE_MODE=on
+        export ARCHIVE_MODE=on
         echo_info "Setting pgbackrest archive command.."
-        cat /opt/cpm/conf/backrest-archive-command >> /"${PGDATA}"/postgresql.conf
-        elif [[ "${ARCHIVE_MODE}" == "on" ]] && [[ ! "${PGBACKREST}" == "true" ]]
+        cat /opt/cpm/conf/backrest-archive-command >> /"${PGDATA?}"/postgresql.conf
+    elif [[ "${ARCHIVE_MODE}" == "on" ]] && [[ ! "${PGBACKREST}" == "true" ]]
     then
         echo_info "Setting standard archive command.."
-        cat /opt/cpm/conf/archive-command >> /"${PGDATA}"/postgresql.conf
+        cat /opt/cpm/conf/archive-command >> /"${PGDATA?}"/postgresql.conf
     fi
 
-    echo_info "Setting ARCHIVE_MODE to ${ARCHIVE_MODE:-off}."
-    echo "archive_mode = ${ARCHIVE_MODE}" >> "${PGDATA}"/postgresql.conf
+    echo_info "Setting ARCHIVE_MODE to ${ARCHIVE_MODE?}."
+    echo "archive_mode = ${ARCHIVE_MODE?}" >> "${PGDATA?}"/postgresql.conf
 
-    echo_info "Setting ARCHIVE_TIMEOUT to ${ARCHIVE_TIMEOUT:-0}."
-    echo "archive_timeout = ${ARCHIVE_TIMEOUT}" >> "${PGDATA}"/postgresql.conf
+    echo_info "Setting ARCHIVE_TIMEOUT to ${ARCHIVE_TIMEOUT?}."
+    echo "archive_timeout = ${ARCHIVE_TIMEOUT?}" >> "${PGDATA?}"/postgresql.conf
 }
 
 # Clean up any old pid file that might have remained
