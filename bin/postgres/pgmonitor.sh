@@ -23,10 +23,10 @@ fi
 psql -U postgres --port="${PG_PRIMARY_PORT}" -d postgres \
     < ${function_file?} > /tmp/pgmonitor.stdout 2> /tmp/pgmonitor.stderr
 
-err_check "$?" "pgMonitor Setup" "Could not load pgMonitor functions: \n$(cat /tmp/pgmonitor.stderr)"
+#err_check "$?" "pgMonitor Setup" "Could not load pgMonitor functions: \n$(cat /tmp/pgmonitor.stderr)"
 
 psql -U postgres --port="${PG_PRIMARY_PORT}" -d postgres \
     -c "ALTER ROLE ccp_monitoring PASSWORD '${PGMONITOR_PASSWORD?}'" \
     > /tmp/pgmonitor.stdout 2> /tmp/pgmonitor.stderr
 
-err_check "$?" "pgMonitor User Setup" "Could not alter ccp_monitor user's password: \n$(cat /tmp/pgmonitor.stderr)"
+#err_check "$?" "pgMonitor User Setup" "Could not alter ccp_monitor user's password: \n$(cat /tmp/pgmonitor.stderr)"
