@@ -45,6 +45,26 @@
                 }
             },
             "spec": {
+                "affinity": {
+                    "podAffinity": {
+                        "requiredDuringSchedulingIgnoredDuringExecution": [
+                            {
+                                "labelSelector": {
+                                    "matchExpressions": [
+                                        {
+                                            "key": "name",
+                                            "operator": "In",
+                                            "values": [
+                                                "pr-replica"
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "topologyKey": "kubernetes.io/hostname"
+                            }
+                        ]
+                    }
+                },
                 "containers": [
                     {
                         "name": "postgres",
