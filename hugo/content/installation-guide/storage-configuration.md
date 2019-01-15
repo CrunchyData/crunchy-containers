@@ -12,7 +12,7 @@ weight: 105
 
 The Crunchy Container Suite is officially tested using two different storage backends:
 
-- hostPath (single node testing)
+- HostPath (single node testing)
 - NFS (single and multi-node testing)
 
 Other storage backends work as well, including GCE, EBS, ScaleIO, and

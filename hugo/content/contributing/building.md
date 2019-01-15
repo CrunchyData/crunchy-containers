@@ -1,17 +1,17 @@
 ---
 title: "Building the Containers"
-date: 
+date:
 draft: false
 weight: 250
 ---
 
 # Build From Source
 
-Assuming you have followed the [Installation Guide](/installation-guide/installation-guide)
-You should do the following in order to build the containers locally and be able to submit patches.
+This section of the documentation assumes you have followed the [Installation Guide](/installation-guide/installation-guide).
+You should do the following in order to build the containers locally and be able to submit patches:
 
-1. fork the [Crunchy-Containers](https://github.com/CrunchyData/crunchy-containers) github repository.
-2. Containers builds are via a makefile, you will need to run the following commands:
+1. Fork the [Crunchy-Containers](https://github.com/CrunchyData/crunchy-containers) GitHub repository.
+2. Containers builds are installed via a Makefile. You will need to run the following commands:
 
 ```
 cd $CCPROOT

@@ -1,6 +1,6 @@
 ---
 title: "Centralized Logging"
-date: 
+date:
 draft: false
 weight: 70
 ---
@@ -75,7 +75,7 @@ ${CCP_CLI?} get pods -n kube-system --selector=k8s-app=fluentd-es
 ${CCP_CLI?} get pods -n kube-system --selector=k8s-app=kibana-logging
 ```
 
-If all pods deployed successfully elasticsearch should already be receiving container logs from Fluentd.
+If all pods deployed successfully, Elasticsearch should already be receiving container logs from Fluentd.
 
 Next we will deploy a PostgreSQL Cluster (primary and replica deployments) to demonstrate PostgreSQL logs
 are being captured by Fluentd.

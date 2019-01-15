@@ -1,6 +1,6 @@
 ---
 title: "Installation Guide"
-date: 
+date:
 draft: false
 weight: 100
 ---
@@ -44,14 +44,14 @@ First add the following lines to your .bashrc file to set the project paths:
     export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
     export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
     export CCP_SECURITY_CONTEXT=""
-    export CCP_CLI=kubectl          # kubectl for K8s, oc for Openshift
+    export CCP_CLI=kubectl          # kubectl for K8s, oc for OpenShift
     export CCP_NAMESPACE=demo
 
 {{% notice tip %}}
 
 You will need to add environment variables for storage configuration as well. Please see
 the [Storage Configuration](/installation/storage-configuration/) document
-for configuring storage using environment variables set in .bashrc.
+for configuring storage using environment variables set in `.bashrc`.
 
 {{% /notice %}}
 
@@ -87,7 +87,7 @@ highlighted below where necessary.
     sudo yum -y install git golang
 
 
-## Clone Github repository
+## Clone GitHub repository
 
     cd $GOPATH/src/github.com/crunchydata
     git clone https://github.com/crunchydata/crunchy-containers
@@ -152,7 +152,7 @@ Update the system:
 
 {{% notice info %}}
 
-The Openshift and Kubernetes (KubeAdm) instructions both have a section for installing docker. Installing
+The OpenShift and Kubernetes (KubeAdm) instructions both have a section for installing docker. Installing
 docker now won't cause any issues but you may wish to configure Docker storage before bringing
 everything up. Configuring Docker Storage is different from *Storage Configuration* referenced earlier in the
 instructions and is not covered here.
@@ -181,8 +181,8 @@ Enable Docker service and start Docker (once all configuration is complete):
 
 ## OpenShift Installation
 
-Use the Openshift installation guide to install OpenShift Enterprise on your host. Make sure
-to choose the proper version of Openshift you want to install. The main instructions for
+Use the OpenShift installation guide to install OpenShift Enterprise on your host. Make sure
+to choose the proper version of OpenShift you want to install. The main instructions for
 3.11 are here and you'll be able to select a different version there, if needed:
 
 <https://docs.openshift.com/container-platform/3.11/install/index.html>
@@ -203,7 +203,7 @@ You should see a single IP address returned from this command:
 
 ### Installing Kubernetes
 
-We suggest using Kubeadm as a simple way to install Kubernetes
+We suggest using Kubeadm as a simple way to install Kubernetes.
 
 See [Kubeadm](https://kubernetes.io/docs/setup/independent/install-kubeadm/)
 for installing the latest version of Kubeadm.
@@ -262,7 +262,7 @@ to get Helm installed and configured properly.
 # Configuring Namespace and Permissions
 
 In Kubernetes, a concept called a **namespace** provides the means to separate
-created resources or components into individual logically grouped partitions. In Openshift,
+created resources or components into individual logically grouped partitions. In OpenShift,
 *namespace* is referred to as a *project*.
 
 It is considered a best practice to have dedicated namespaces for projects in
@@ -303,7 +303,7 @@ Then set the namespace as the default for the current context:
 
 {{% notice tip %}}
 
-When a namespace is not explicitly stated for a command, kubernetes uses the namespace
+When a namespace is not explicitly stated for a command, Kubernetes uses the namespace
 specified by the currently set context.
 
 {{% /notice %}}
@@ -319,7 +319,7 @@ We can verify that the namespace was set correctly through the following command
 ## OpenShift
 
 This section assumes an administrator has already logged in first as the **system:admin** user
-as directed by the Openshift Installation Guide.
+as directed by the OpenShift Installation Guide.
 
 For our development purposes only, we typically specify the OCP
 Authorization policy of `AllowAll` as documented here:
@@ -386,5 +386,3 @@ grant you the access required to run them yourself.
     cluster role "crunchytester" added: "someuser"
 
 Your user should now have the roles and privileges required to run the examples.
-
-

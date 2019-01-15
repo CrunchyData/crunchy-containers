@@ -9,7 +9,7 @@ weight: 50
 
 The Kubernetes and OpenShift examples in this guide have been designed using
 single-node Kubernetes/OCP clusters whose host machines provide any required supporting 
-infrastructure or services (e.g. local hostPath storage or access to an NFS share). Therefore, for
+infrastructure or services (e.g. local HostPath storage or access to an NFS share). Therefore, for
 the best results when running these examples, it is recommended that you utilize a single-node 
 architecture as well.
 

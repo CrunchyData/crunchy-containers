@@ -1,6 +1,6 @@
 ---
 title: "Container Images"
-date: 
+date:
 draft: false
 weight: 2
 ---
@@ -126,11 +126,11 @@ The Crunchy pgRestore image allows users to restore a PostgreSQL database from
 ## Administration
 
 The following images can be used to administer and maintain Crunchy PostgreSQL
-database conainers.
+database containers.
 
 ### Crunchy pgAdmin4
 
-The Crunchy pgAdmin4 images allows users to adminster their Crunchy PostgreSQL containers
+The Crunchy pgAdmin4 images allows users to administer their Crunchy PostgreSQL containers
 via a graphical user interface web application.
 
 ![pgadmin4](/pgadmin4.png "pgAdmin4")
@@ -158,7 +158,7 @@ PostgreSQL containers.  The following upgrade versions of PostgreSQL are availab
 
 ## Performance and Monitoring
 
-The following images can be used to understand how Crunchy PostgreSQL conatiners
+The following images can be used to understand how Crunchy PostgreSQL containers
 are performing over time using tools such as Grafana, Prometheus and pgBadger.
 
 ### Crunchy Collect

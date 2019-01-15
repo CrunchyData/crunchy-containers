@@ -1,6 +1,6 @@
 ---
 title: "Client User Guide"
-date: 
+date:
 draft: false
 weight: 3
 ---
