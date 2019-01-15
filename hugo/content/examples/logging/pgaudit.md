@@ -1,6 +1,6 @@
 ---
 title: "pgAudit"
-date: 
+date:
 draft: false
 weight: 72
 ---
@@ -57,7 +57,7 @@ cd $CCPROOT/examples/kube/pgaudit
 ./test-pgaudit.sh
 ```
 
-This example has been configured to log directly to stdout of the pod.  To view the PostgreSQL logs
+This example has been configured to log directly to stdout of the pod.  To view the PostgreSQL logs,
 run the following:
 
 ```

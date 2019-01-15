@@ -1,9 +1,11 @@
 ---
 title: "Introduction"
-date: 
+date:
 draft: false
 weight: 1
 ---
+
+# Crunchy Data Container Suite
 
 Crunchy Container Suite is a collection of container images for PostgreSQL databases
 and various tools to manage them.  The container images provided aim to be highly
@@ -56,4 +58,3 @@ extensions like geospatial management with PostGIS.
 Deploy Crunchy Certified PostgreSQL with Crunchy Container
 Suite to harness the security of a Common Criteria EAL 2+ certified
 database on trusted platforms such as Red Hat OpenShift or Pivotal Container Service.
-
