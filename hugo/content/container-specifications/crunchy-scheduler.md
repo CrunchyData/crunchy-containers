@@ -1,6 +1,6 @@
 ---
 title: "crunchy-scheduler"
-date: 
+date:
 draft: false
 weight: 157
 ---
@@ -31,3 +31,21 @@ The Crunchy Scheduler Docker image contains the following packages:
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.
+
+## Permissions
+
+Crunchy Scheduler queries Kubernetes to discover schedules and perform scheduled tasks
+(either creating a job or running commands against a PostgreSQL container).  Due to the integration
+with Kubernetes, Crunchy Scheduler requires a service account with the following permissions:
+
+* Role
+  * ConfigMaps: `get`, `list`, `watch`
+  * Deployments: `get`, `list`, `watch`
+  * Jobs: `get`, `list`, `watch`, `create, `delete`
+  * Pods: `get`, `list`, `watch`
+  * Pods/Exec: `create`
+  * Secrets: `get`, `list`, `watch`
+
+## Timezone
+
+Crunchy Scheduler uses the `UTC` timezone for all schedules.
