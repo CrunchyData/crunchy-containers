@@ -1,6 +1,6 @@
 ---
 title: "crunchy-backrest-restore"
-date: 
+date:
 draft: false
 weight: 154
 ---
@@ -28,12 +28,13 @@ The crunchy-backrest-restore Docker image contains the following packages (versi
 ### Required
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
-**STANZA**|None|Must be set to the desired stanza for restore.
-**DELTA**|None|When set, will add the `--delta` option to the restore. The delta option allows pgBackRest to automatically determine which files in the database cluster directory can be preserved and which ones need to be restored from the backup - it also removes files not present in the backup manifest so it will dispose of divergent changes.
+**PGBACKREST_STANZA**|None|Must be set to the desired stanza for restore.
 
 ### Optional
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
-**PG_HOSTNAME**|None|When restoring a backup to a new volume, this volume should be set to the hostname of the PostgreSQL container that will mount the restored volume.  Required for full restores to new volumes.
-**PITR_TARGET**|None|PostgreSQL timestamp used when restoring up to a point in time.  Required for PITR delta restores.
+**PGBACKREST_DELTA **|None|Enables pgBackRest delta restore mode.  Used when a user needs to restore to a volume that already contains PostgreSQL data files.
+**PGBACKREST_TARGET**|None|PostgreSQL timestamp used when restoring up to a point in time. Required for Point In Time Recovery (PITR) restores.
+**PGBACKREST_PG1_PATH**|None|Path where PostgreSQL data directory can be found.  This variable can also be used to setup a new PostgreSQL data directory on an empty volume.
+**BACKREST_CUSTOM_OPTS**|None|Custom pgBackRest options can be added here to customize pgBackRest restores.
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.

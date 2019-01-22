@@ -1,6 +1,6 @@
 ---
 title: "Scheduler"
-date: 
+date:
 draft: false
 weight: 34
 ---
@@ -30,6 +30,10 @@ The Crunchy Scheduler requires a Service Account to create jobs (pgBaseBackup) a
 exec (pgBackRest).  See the link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/scheduler-sa.json[scheduler example]
 for the required permissions on this account.
 
+{{% notice tip %}}
+Crunchy Scheduler uses the `UTC` timezone for all schedules.
+{{% /notice %}}
+
 ### pgBackRest Schedules
 
 To configure Crunchy Scheduler to create pgBackRest backups the following is required:
@@ -46,8 +50,8 @@ To configure Crunchy Scheduler to create pgBaseBackup scheduled backups, the fol
 * The name of the PVC created for the backups.  This should be created by the user prior to scheduling the task.
 
 {{% notice tip %}}
-When using pgBaseBackup schedules, it may be required to apply specific `supplementalGroups` or an `fsGroup` 
-to the backup job created by the scheduler.  To apply a specific `securityContext` for your 
+When using pgBaseBackup schedules, it may be required to apply specific `supplementalGroups` or an `fsGroup`
+to the backup job created by the scheduler.  To apply a specific `securityContext` for your
 storage provider, mount a `backup-template.json` to `/configs` on the scheduler pod.
 
 For an example of applying a custom template, link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler[see the schedule example].

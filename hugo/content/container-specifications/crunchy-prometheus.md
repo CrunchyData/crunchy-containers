@@ -1,6 +1,6 @@
 ---
 title: "crunchy-prometheus"
-date: 
+date:
 draft: false
 weight: 158
 ---
@@ -47,3 +47,12 @@ The crunchy-prometheus Docker image contains the following packages:
 **SCRAPE_INTERVAL**|5s|Set this value to the number of seconds to scrape metrics from exporters.
 **SCRAPE_TIMEOUT**|5s|Set this value to the number of seconds to timeout when scraping metrics from exporters.
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.
+
+## Permissions
+
+Crunchy Prometheus queries Kubernetes to discover metric exporters and additional Kubernetes
+metadata.  Due to the integration with Kubernetes, Crunchy Prometheus requires a service account
+with the following permissions:
+
+* Cluster Role
+  * Pods: `get`, `list`, `watch`

@@ -39,4 +39,5 @@ The crunchy-collect Docker image contains the following packages (versions vary 
 ### Optional
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
+**DISABLE_NODE_EXPORTER**|false|Set this to true to disable node exporter in the collect container.
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.
