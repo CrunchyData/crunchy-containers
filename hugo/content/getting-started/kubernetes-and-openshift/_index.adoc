@@ -5,7 +5,7 @@ draft: false
 ---
 
 :toc:
-Latest Release: 2.2.0 {docdate}
+Latest Release: 2.3.0 {docdate}
 
 == Getting Started
 

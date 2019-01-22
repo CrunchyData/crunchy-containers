@@ -6,7 +6,7 @@ weight: 1
 ---
 
 :toc:
-Latest Release: 2.2.0 {docdate}
+Latest Release: 2.3.0 {docdate}
 
 == Requirements
 
@@ -35,7 +35,7 @@ export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7
 export CCP_PGVERSION=10
 export CCP_PG_FULLVERSION=10.6
-export CCP_VERSION=2.2.0
+export CCP_VERSION=2.3.0
 export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
@@ -73,7 +73,7 @@ sudo yum -y install golang git docker
 cd $GOPATH/src/github.com/crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 2.2.0
+git checkout 2.3.0
 go get github.com/blang/expenv
 ....
 
@@ -96,7 +96,7 @@ sudo yum -y install git golang
 cd $GOPATH/src/github.com/crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 2.2.0
+git checkout 2.3.0
 go get github.com/blang/expenv
 ....
 
