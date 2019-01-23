@@ -4,7 +4,8 @@
     "metadata": {
         "name": "custom-config",
         "labels": {
-            "name": "custom-config"
+            "name": "custom-config",
+            "cleanup": "$CCP_NAMESPACE-custom-config"
         }
     },
     "spec": {
@@ -30,14 +31,15 @@
     "metadata": {
         "name": "custom-config",
         "labels": {
-            "name": "custom-config"
+            "name": "custom-config",
+            "cleanup": "$CCP_NAMESPACE-custom-config"
         }
     },
     "spec": {
         "securityContext": {
-           $CCP_SECURITY_CONTEXT
-        	},
-    "containers": [
+            $CCP_SECURITY_CONTEXT
+        },
+        "containers": [
             {
                 "name": "postgres",
                 "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
@@ -104,6 +106,10 @@
                     },
                     {
                         "name": "XLOGDIR",
+                        "value": "true"
+                    },
+                    {
+                        "name": "PGBACKREST",
                         "value": "true"
                     }
                 ],

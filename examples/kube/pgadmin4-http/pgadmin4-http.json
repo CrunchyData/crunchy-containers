@@ -4,16 +4,19 @@
     "metadata": {
         "name": "pgadmin4-http",
         "labels": {
-            "name": "pgadmin4-http"
+            "name": "pgadmin4-http",
+            "cleanup": "$CCP_NAMESPACE-pgadmin4-http"
         }
     },
     "spec": {
-        "ports": [{
-            "name": "pgadmin4-http",
-            "protocol": "TCP",
-            "port": 5050,
-            "targetPort": 5050
-        }],
+        "ports": [
+            {
+                "name": "pgadmin4-http",
+                "protocol": "TCP",
+                "port": 5050,
+                "targetPort": 5050
+            }
+        ],
         "selector": {
             "name": "pgadmin4-http"
         },
@@ -28,7 +31,8 @@
     "metadata": {
         "name": "pgadmin4-http",
         "labels": {
-            "name": "pgadmin4-http"
+            "name": "pgadmin4-http",
+            "cleanup": "$CCP_NAMESPACE-pgadmin4-http"
         }
     },
     "spec": {

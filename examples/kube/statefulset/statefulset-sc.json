@@ -2,7 +2,11 @@
     "apiVersion": "apps/v1beta1",
     "kind": "StatefulSet",
     "metadata": {
-        "name": "statefulset"
+        "name": "statefulset",
+        "labels": {
+            "app": "statefulset",
+            "cleanup": "$CCP_NAMESPACE-statefulset"
+        }
     },
     "spec": {
         "serviceName": "statefulset",
@@ -10,7 +14,8 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "app": "statefulset"
+                    "app": "statefulset",
+                    "cleanup": "$CCP_NAMESPACE-statefulset"
                 }
             },
             "spec": {
@@ -114,7 +119,11 @@
         "volumeClaimTemplates": [
             {
                 "metadata": {
-                    "name": "pgdata"
+                    "name": "pgdata",
+                    "labels": {
+                        "app": "statefulset",
+                        "cleanup": "$CCP_NAMESPACE-statefulset"
+                    }
                 },
                 "spec": {
                     "accessModes": [

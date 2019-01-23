@@ -9,7 +9,8 @@
             "metadata": {
                 "name": "pgdump",
                 "labels": {
-                    "app": "pgdump"
+                    "app": "pgdump",
+                    "cleanup": "$CCP_NAMESPACE-pgdump"
                 }
             },
             "spec": {

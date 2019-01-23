@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -16,12 +16,7 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pg-primary pg-replica
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod pgbouncer-primary pgbouncer-replica
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pg-primary pg-replica
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} service pgbouncer-primary pgbouncer-replica
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgbouncer-secrets
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} secret pgsql-secrets
+cleanup "${CCP_NAMESPACE?}-pgbouncer"
 
 $CCPROOT/examples/waitforterm.sh pgbouncer-primary ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh pgbouncer-replica ${CCP_CLI?}

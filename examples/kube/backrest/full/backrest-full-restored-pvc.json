@@ -2,13 +2,16 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-        "name": "br-new-pgdata"
+        "name": "br-new-pgdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-backrest-full-restore"
+        }
     },
     "spec": {
         "selector": {
-          "matchLabels": {
-            "name": "$CCP_NAMESPACE-br-new-pgdata"
-          }
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-br-new-pgdata"
+            }
         },
         "accessModes": [
             "$CCP_STORAGE_MODE"
@@ -20,4 +23,3 @@
         }
     }
 }
-

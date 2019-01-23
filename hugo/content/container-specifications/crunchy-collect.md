@@ -2,11 +2,11 @@
 title: "crunchy-collect"
 date: 2018-05-24T10:06:13-07:00
 draft: false
-weight: 7
+weight: 157
 ---
 
 The crunchy-collect container provides real time metrics about the PostgreSQL database
-via an API. These metrics are scrapped and stored by a [Prometheus](https://prometheus.io)
+via an API. These metrics are scraped and stored by a [Prometheus](https://prometheus.io)
 time-series database and are then graphed and visualized through the open source data
 visualizer [Grafana](https://grafana.com/).
 
@@ -39,4 +39,5 @@ The crunchy-collect Docker image contains the following packages (versions vary 
 ### Optional
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
+**DISABLE_NODE_EXPORTER**|false|Set this to true to disable node exporter in the collect container.
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.

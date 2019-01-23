@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2017 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -25,11 +25,11 @@ then
     exit 1
 fi
 
-${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap primary-deployment-pgconf \
-  --from-file ${DIR?}/configs/pgbackrest.conf
-
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgprimary-secret \
     --from-literal=username='primaryuser' \
     --from-literal=password='password'
+
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
+    pgprimary-secret cleanup=${CCP_NAMESPACE?}-primary-scheduler
 
 expenv -f $DIR/primary-deployment.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

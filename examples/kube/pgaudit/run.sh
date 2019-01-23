@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2018 Crunchy Data Solutions, Inc.
+# Copyright 2018 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -23,5 +23,8 @@ echo_info "Creating the example components.."
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap pgaudit-pgconf \
     --from-file ${DIR?}/configs/postgresql.conf \
     --from-file ${DIR?}/configs/pgaudit-test.sql
+
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
+    pgaudit-pgconf cleanup=${CCP_NAMESPACE?}-pgaudit
 
 expenv -f $DIR/pgaudit.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE} -f -

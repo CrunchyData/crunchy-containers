@@ -15,6 +15,6 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap backrest-schedule-dif
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap pgbasebackup-backup \
     --from-file=/tmp/schedule-pgbasebackup.json
 
-${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap backrest-schedule-full crunchy-scheduler=true
-${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap backrest-schedule-diff crunchy-scheduler=true
-${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap pgbasebackup-backup crunchy-scheduler=true
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap backrest-schedule-full crunchy-scheduler=true cleanup=${CCP_NAMESPACE?}-scheduler
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap backrest-schedule-diff crunchy-scheduler=true cleanup=${CCP_NAMESPACE?}-scheduler
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap pgbasebackup-backup crunchy-scheduler=true cleanup=${CCP_NAMESPACE?}-scheduler

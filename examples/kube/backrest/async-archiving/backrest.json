@@ -4,7 +4,8 @@
     "metadata": {
         "name": "backrest-async-archive",
         "labels": {
-            "name": "backrest-async-archive"
+            "name": "backrest-async-archive",
+            "cleanup": "$CCP_NAMESPACE-backrest-async-archive"
         }
     },
     "spec": {
@@ -30,7 +31,8 @@
     "metadata": {
         "name": "backrest-async-archive",
         "labels": {
-            "name": "backrest-async-archive"
+            "name": "backrest-async-archive",
+            "cleanup": "$CCP_NAMESPACE-backrest-async-archive"
         }
     },
     "spec": {
@@ -108,6 +110,22 @@
                     {
                         "name": "ARCHIVE_TIMEOUT",
                         "value": "60"
+                    },
+                    {
+                        "name": "PGBACKREST",
+                        "value": "true"
+                    },
+                    {
+                        "name": "PGBACKREST_ARCHIVE_ASYNC",
+                        "value": "y"
+                    },
+                    {
+                        "name": "PGBACKREST_PROCESS_MAX",
+                        "value": "3"
+                    },
+                    {
+                        "name": "PGBACKREST_COMPRESS_LEVEL",
+                        "value": "3"
                     }
                 ],
                 "volumeMounts": [
@@ -115,11 +133,6 @@
                         "mountPath": "/pgdata",
                         "name": "pgdata",
                         "readOnly": false
-                    },
-                    {
-                        "mountPath": "/pgconf",
-                        "name": "pgconf",
-                        "readOnly": true
                     },
                     {
                         "mountPath": "/backrestrepo",
@@ -130,12 +143,6 @@
             }
         ],
         "volumes": [
-            {
-                "name": "pgconf",
-                "configMap": {
-                    "name": "br-aa-pgconf"
-                }
-            },
             {
                 "name": "backrestrepo",
                 "persistentVolumeClaim": {

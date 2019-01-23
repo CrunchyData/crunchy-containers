@@ -10,8 +10,12 @@ function custom_config() {
     if [[ -f ${src?} ]]
     then
         echo_info "Custom ${src?} detected.  Applying custom configuration.."
+
         cp ${src?} ${dest?}
+        err_check "$?" "Applying custom configuration" "Could not copy ${src?} to ${dest?}"
+
         chmod ${mode?} ${dest?}
+        err_check "$?" "Applying custom configuration" "Could not set mode ${mode?} on ${dest?}"
     fi
 }
 

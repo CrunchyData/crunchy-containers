@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2018 Crunchy Data Solutions, Inc.
+# Copyright 2018 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -19,7 +19,7 @@ for i in $files;
 do
   original=$(git log --format=%aD $i | tail -1 | grep -o '[1-9][0-9][0-9][0-9]')
   if [[ $original != "2018" ]]; then
-    sed -i "s/Copyright 2018 Crunchy Data Solutions, Inc./Copyright $original - 2018 Crunchy Data Solutions, Inc./g" $i
+    sed -i "s/Copyright 2018 - 2019 Crunchy Data Solutions, Inc./Copyright $original - 2019 Crunchy Data Solutions, Inc./g" $i
     echo "Successfully proccessed $i."
   fi
 done

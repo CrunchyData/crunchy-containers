@@ -4,7 +4,8 @@
     "metadata": {
         "name": "primary-deployment",
         "labels": {
-            "name": "primary-deployment"
+            "name": "primary-deployment",
+            "cleanup": "$CCP_NAMESPACE-primary-scheduler"
         }
     },
     "spec": {
@@ -30,7 +31,8 @@
     "metadata": {
         "name": "primary-deployment",
         "labels": {
-            "name": "primary-deployment"
+            "name": "primary-deployment",
+            "cleanup": "$CCP_NAMESPACE-primary-scheduler"
         }
     },
     "spec": {
@@ -38,7 +40,8 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "primary-deployment"
+                    "name": "primary-deployment",
+                    "cleanup": "$CCP_NAMESPACE-primary-scheduler"
                 }
             },
             "spec": {
@@ -114,6 +117,10 @@
                             {
                                 "name": "PG_DATABASE",
                                 "value": "userdb"
+                            },
+                            {
+                                "name": "PGBACKREST",
+                                "value": "true"
                             }
                         ],
                         "volumeMounts": [
@@ -126,10 +133,6 @@
                                 "mountPath": "/backrestrepo",
                                 "name": "backrestrepo",
                                 "readOnly": false
-                            },
-                            {
-                                "mountPath": "/pgconf",
-                                "name": "primary-deployment-pgconf"
                             }
                         ],
                         "ports": [
@@ -153,12 +156,6 @@
                         "name": "backrestrepo",
                         "persistentVolumeClaim": {
                             "claimName": "primary-deployment-br"
-                        }
-                    },
-                    {
-                        "name": "primary-deployment-pgconf",
-                        "configMap": {
-                            "name": "primary-deployment-pgconf"
                         }
                     }
                 ],

@@ -4,7 +4,8 @@
     "metadata": {
         "name": "statefulset-primary",
         "labels": {
-            "name": "statefulset-primary"
+            "name": "statefulset-primary",
+            "cleanup": "$CCP_NAMESPACE-statefulset"
         }
     },
     "spec": {
@@ -30,7 +31,8 @@
     "metadata": {
         "name": "statefulset-replica",
         "labels": {
-            "name": "statefulset-replica"
+            "name": "statefulset-replica",
+            "cleanup": "$CCP_NAMESPACE-statefulset"
         }
     },
     "spec": {

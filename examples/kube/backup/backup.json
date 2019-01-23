@@ -9,7 +9,8 @@
             "metadata": {
                 "name": "backup",
                 "labels": {
-                    "app": "backup"
+                    "app": "backup",
+                    "cleanup": "$CCP_NAMESPACE-backup"
                 }
             },
             "spec": {
@@ -22,7 +23,7 @@
                     }
                 ],
                 "securityContext": {
-                     $CCP_SECURITY_CONTEXT
+                    $CCP_SECURITY_CONTEXT
                 },
                 "containers": [
                     {

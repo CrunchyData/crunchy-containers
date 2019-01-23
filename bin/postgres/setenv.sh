@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -31,11 +31,11 @@ fi
 
 export PATH=/opt/cpm/bin:$PGROOT/bin:$PATH
 export LD_LIBRARY_PATH=$PGROOT/lib
- 
+
 # if [[ -d ${PGDATA} ]]; then
 #     chown postgres:postgres ${PGDATA?}
 # fi
-# 
+#
 # if [[ -d ${PGWAL} ]]; then
 #     chown postgres:postgres ${PGWAL?}
 # fi

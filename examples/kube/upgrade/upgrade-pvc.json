@@ -2,21 +2,24 @@
     "kind": "PersistentVolumeClaim",
     "apiVersion": "v1",
     "metadata": {
-      "name": "upgrade-pgnewdata"
+        "name": "upgrade-pgnewdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-upgrade"
+        }
     },
     "spec": {
-      "selector": {
-        "matchLabels": {
-          "name": "$CCP_NAMESPACE-upgrade-pgnewdata"
+        "selector": {
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-upgrade-pgnewdata"
+            }
+        },
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
         }
-      },
-      "accessModes": [
-        "$CCP_STORAGE_MODE"
-      ],
-      "resources": {
-        "requests": {
-          "storage": "$CCP_STORAGE_CAPACITY"
-        }
-      }
     }
 }

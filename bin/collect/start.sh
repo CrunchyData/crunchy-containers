@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2017 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2017 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -16,6 +16,7 @@
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
 
+export DISABLE_NODE_EXPORTER=${DISABLE_NODE_EXPORTER:-false}
 export PG_EXP_HOME=$(find /opt/cpm/bin/ -type d -name 'postgres_exporter*')
 export NODE_EXP_HOME=$(find /opt/cpm/bin/ -type d -name 'node_exporter*')
 export PG_DIR=$(find /usr/ -type d -name 'pgsql-*')
@@ -34,15 +35,22 @@ function trap_sigterm() {
     echo_warn "Clean shutdown of postgres-exporter.."
     kill -SIGINT $(head -1 $POSTGRES_EXPORTER_PIDFILE)
 
-    echo_warn "Clean shutdown of node-exporter.."
-    kill -SIGINT $(head -1 $NODE_EXPORTER_PIDFILE)
+
+	if [[ ${DISABLE_NODE_EXPORTER?} == 'false' ]]
+	then
+	    echo_warn "Clean shutdown of node-exporter.."
+    	kill -SIGINT $(head -1 $NODE_EXPORTER_PIDFILE)
+	fi
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
 
-echo_info "Starting node-exporter.."
-${NODE_EXP_HOME?}/node_exporter >>/dev/stdout 2>&1 &
-echo $! > $NODE_EXPORTER_PIDFILE
+if [[ ${DISABLE_NODE_EXPORTER?} == 'false' ]]
+then
+	echo_info "Starting node-exporter.."
+	${NODE_EXP_HOME?}/node_exporter >>/dev/stdout 2>&1 &
+	echo $! > $NODE_EXPORTER_PIDFILE
+fi
 
 # Check that postgres is accepting connections.
 echo_info "Waiting for PostgreSQL to be ready.."

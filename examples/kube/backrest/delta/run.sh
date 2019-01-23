@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2017 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -16,10 +16,22 @@ source ${CCPROOT}/examples/common.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+if [[ -z ${CCP_BACKREST_TIMESTAMP} ]]
+then
+    echo_err "Please provide a valid timestamp for the delta PITR using varibale CCP_BACKREST_TIMESTAMP."
+    exit 1
+fi
+
+${CCP_CLI?} exec --namespace=${CCP_NAMESPACE?} -ti backrest date >/dev/null
+if [[ $? -ne 0 ]]
+then
+    echo_err "The backup example must be running prior to using this example."
+    exit 1
+fi
+
 ${DIR}/cleanup.sh
 
-${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} \
-    configmap br-delta-restore-pgconf \
-    --from-file ${DIR?}/configs/pgbackrest.conf
+# Cleanup backrest pods if they're running from backup examples
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod,service backrest
 
 expenv -f $DIR/delta-restore.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

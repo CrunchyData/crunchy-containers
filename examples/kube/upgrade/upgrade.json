@@ -2,14 +2,19 @@
     "apiVersion": "batch/v1",
     "kind": "Job",
     "metadata": {
-        "name": "upgrade"
+        "name": "upgrade",
+        "labels": {
+            "app": "upgrade",
+            "cleanup": "$CCP_NAMESPACE-upgrade"
+        }
     },
     "spec": {
         "template": {
             "metadata": {
                 "name": "upgrade",
                 "labels": {
-                    "app": "upgrade"
+                    "app": "upgrade",
+                    "cleanup": "$CCP_NAMESPACE-upgrade"
                 }
             },
             "spec": {

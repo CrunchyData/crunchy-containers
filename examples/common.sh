@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2018 Crunchy Data Solutions, Inc.
+# Copyright 2018 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -79,4 +79,16 @@ function create_storage {
     then
        expenv -f ${DIR?}/${PVC?} | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
     fi
+}
+
+function cleanup() {
+    label="cleanup=${1?}"
+
+    CONFIG="configmap,secret"
+    DEPLOY="deployment,daemonset,job,pod,replicaset,service,statefulset"
+    RBAC="clusterrolebinding,clusterrole,role,rolebinding,serviceaccount"
+    VOLUME="pvc,pv"
+    OBJECTS="${CONFIG?},${DEPLOY?},${RBAC?},${VOLUME?}"
+
+    ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} ${OBJECTS?} --selector=${label?}
 }

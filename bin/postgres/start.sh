@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -28,11 +28,13 @@ function trap_sigterm() {
     if [ -f $PGDATA/postmaster.pid ]; then
             kill -SIGINT $(head -1 $PGDATA/postmaster.pid) >> $PGDATA/trap.output
     fi
+    if [[ ${ENABLE_SSHD} == "true" ]]; then
+        echo_info "killing SSHD.."
+        killall sshd
+    fi
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
-
-date
 
 source /opt/cpm/bin/setenv.sh
 source check-for-secrets.sh
@@ -79,24 +81,18 @@ function role_discovery() {
     ordinal=${HOSTNAME##*-}
     echo_info "Ordinal is set to ${ordinal?}."
     if [ $ordinal -eq 0 ]; then
-        pgc label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST
-        rc=$?;
-        if [[ $rc != 0 ]]; then
-            echo_err "Unable to set mode on pod, label command failed."
-            exit $rc;
-        fi
-        echo_info "Setting PG_MODE to primary."
+        pgc label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST > /tmp/pgc.stdout 2> /tmp/pgc.stderr
+        err_check "$?" "Statefulset Role Discovery (primary)" \
+            "Unable to set mode on pod, label command failed: \n$(cat /tmp/pgc.stderr)"
         export PG_MODE=primary
     else
-        echo_info "Setting PG_MODE to replica."
-        pgc label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST
-        rc=$?;
-        if [[ $rc != 0 ]]; then
-            echo_err "Unable to set mode on pod, label command failed."
-            exit $rc;
-        fi
+        pgc label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST > /tmp/pgc.stdout 2> /tmp/pgc.stderr
+        err_check "$?" "Statefulset Role Discovery (replica)" \
+            "Unable to set mode on pod, label command failed: \n$(cat /tmp/pgc.stderr)"
         export PG_MODE=replica
     fi
+
+    echo_info "Setting PG_MODE to ${PG_MODE?}"
 }
 
 function initdb_logic() {
@@ -107,33 +103,38 @@ function initdb_logic() {
     if [[ -v PG_LOCALE ]]; then
         cmd+=" --locale="$PG_LOCALE
     fi
-  if [[ -v XLOGDIR ]]; then
-        if [ $XLOGDIR = "true" ]; then
-            echo_info "XLOGDIR found."
-            mkdir $PGWAL
 
-            if [ -d "$PGWAL" ]; then
+    if [[ -v XLOGDIR ]] && [[ ${XLOGDIR?} == "true" ]]
+    then
+        echo_info "XLOGDIR enabled.  Setting initdb to use ${PGWAL?}.."
+        mkdir ${PGWAL?}
+
+        if [[ -d "${PGWAL?}" ]]
+        then
             cmd+=" -X "$PGWAL
-            else
-                echo_info "XLOGDIR not found. Using default pg_wal directory.."
-            fi
         fi
-  fi
+    else
+        echo_info "XLOGDIR not found. Using default pg_wal directory.."
+    fi
+
     if [[ ${CHECKSUMS?} == 'true' ]]
     then
+        echo_info "Data checksums enabled.  Setting initdb to use data checksums.."
         cmd+=" --data-checksums"
     fi
-    cmd+=" > /tmp/initdb.log &> /tmp/initdb.err"
+    cmd+=" > /tmp/initdb.stdout 2> /tmp/initdb.stderr"
 
-    echo $cmd
+    echo_info "Running initdb command: ${cmd?}"
     eval $cmd
+    err_check "$?" "Initializing the database (initdb)" \
+        "Unable to initialize the database: \n$(cat /tmp/initdb.stderr)"
 
     echo_info "Overlaying PostgreSQL's default configuration with customized settings.."
     cp /tmp/postgresql.conf $PGDATA
+
     cp /opt/cpm/conf/pg_hba.conf /tmp
     sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pg_hba.conf
     cp /tmp/pg_hba.conf $PGDATA
-
 }
 
 function check_for_restore() {
@@ -145,7 +146,12 @@ function check_for_restore() {
     else
         if [ ! -f /pgdata/postgresql.conf ]; then
             echo_info "Restoring from backup.."
-            rsync -a --progress --exclude 'pg_log/*' /backup/$BACKUP_PATH/* $PGDATA
+
+            rsync -a --progress --exclude 'pg_log/*' /backup/$BACKUP_PATH/* $PGDATA \
+                > /tmp/rsync.stdout 2> /tmp/rsync.stderr
+            err_check "$?" "Restore from pgBaseBackup" \
+                "Unable to rsync pgBaseBackup: \n$(cat /tmp/rsync.stderr)"
+
             chmod -R 0700 $PGDATA
         else
             initdb_logic
@@ -199,21 +205,6 @@ function fill_conf_file() {
 
     cp /opt/cpm/conf/postgresql.conf.template /tmp/postgresql.conf
 
-    if [[ -v ARCHIVE_MODE ]]; then
-        echo_info "Setting ARCHIVE_MODE to ${ARCHIVE_MODE:-off}."
-        cat /opt/cpm/conf/archive-command >> /tmp/postgresql.conf
-    fi
-    if [[ -v ARCHIVE_TIMEOUT ]]; then
-        echo_info "Setting ARCHIVE_TIMEOUT to ${ARCHIVE_TIMEOUT:-0}."
-    fi
-
-    if [[ -f /pgconf/pgbackrest.conf ]] || [[ -v PGBACKREST_REPO_PATH ]]
-    then
-        echo_info "Setting pgbackrest archive command.."
-        ARCHIVE_MODE=on
-        cat /opt/cpm/conf/backrest-archive-command >> /tmp/postgresql.conf
-    fi
-
     sed -i "s/TEMP_BUFFERS/${TEMP_BUFFERS:-8MB}/g" /tmp/postgresql.conf
     sed -i "s/LOG_MIN_DURATION_STATEMENT/${LOG_MIN_DURATION_STATEMENT:-60000}/g" /tmp/postgresql.conf
     sed -i "s/LOG_STATEMENT/${LOG_STATEMENT:-none}/g" /tmp/postgresql.conf
@@ -221,8 +212,7 @@ function fill_conf_file() {
     sed -i "s/SHARED_BUFFERS/${SHARED_BUFFERS:-128MB}/g" /tmp/postgresql.conf
     sed -i "s/WORK_MEM/${WORK_MEM:-4MB}/g" /tmp/postgresql.conf
     sed -i "s/MAX_WAL_SENDERS/${MAX_WAL_SENDERS:-6}/g" /tmp/postgresql.conf
-    sed -i "s/ARCHIVE_MODE/${ARCHIVE_MODE:-off}/g" /tmp/postgresql.conf
-    sed -i "s/ARCHIVE_TIMEOUT/${ARCHIVE_TIMEOUT:-0}/g" /tmp/postgresql.conf
+    sed -i "s/PG_PRIMARY_PORT/${PG_PRIMARY_PORT}/g" /tmp/postgresql.conf
 }
 
 function create_pgpass() {
@@ -269,7 +259,9 @@ function initialize_replica() {
     echo_info "Waiting to allow the primary database time to successfully start before performing the initial backup.."
     waitforpg
 
-    pg_basebackup -X fetch --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST --port=$PG_PRIMARY_PORT -U $PG_PRIMARY_USER
+    pg_basebackup -X fetch --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST \
+        --port=$PG_PRIMARY_PORT -U $PG_PRIMARY_USER > /tmp/pgbasebackup.stdout 2> /tmp/pgbasebackup.stderr
+    err_check "$?" "Initialize Replica" "Could not run pg_basebackup: \n$(cat /tmp/pgbasebackup.stderr)"
 
     # PostgreSQL recovery configuration.
     if [[ -v SYNC_REPLICA ]]; then
@@ -293,10 +285,10 @@ function initialize_replica() {
 # is not empty.
 function initialize_primary() {
     echo_info "Initializing the primary database.."
-    if [ ! -f $PGDATA/postgresql.conf ]; then
+    if [ ! -f ${PGDATA?}/postgresql.conf ]; then
         ID="$(id)"
         echo_info "PGDATA is empty. ID is ${ID}. Creating the PGDATA directory.."
-        mkdir -p $PGDATA
+        mkdir -p ${PGDATA?}
 
         check_for_restore
         check_for_pitr
@@ -304,14 +296,14 @@ function initialize_primary() {
         echo "Starting database.." >> /tmp/start-db.log
 
         echo_info "Temporarily starting database to run setup.sql.."
-        pg_ctl -D $PGDATA start
+        pg_ctl -D ${PGDATA?} -o "-c listen_addresses=''" start
 
         echo_info "Waiting for PostgreSQL to start.."
         while true; do
             pg_isready \
-            --port=$PG_PRIMARY_PORT \
-            --host=$HOSTNAME \
-            --username=$PG_PRIMARY_USER \
+            --host=/tmp \
+            --port=${PG_PRIMARY_PORT} \
+            --username=${PG_PRIMARY_USER?} \
             --timeout=2
             if [ $? -eq 0 ]; then
                 echo_info "The database is ready for setup.sql."
@@ -337,7 +329,7 @@ function initialize_primary() {
         # Set PGHOST to use the socket in /tmp. unix_socket_directory is changed
         # to use /tmp instead of /var/run.
         export PGHOST=/tmp
-        psql -U postgres < /tmp/setup.sql
+        psql -U postgres -p "${PG_PRIMARY_PORT}" < /tmp/setup.sql
         if [ -f /pgconf/audit.sql ]; then
             echo_info "Using pgaudit_analyze audit.sql from /pgconf.."
             psql -U postgres < /pgconf/audit.sql
@@ -354,6 +346,29 @@ function initialize_primary() {
     fi
 }
 
+configure_archiving() {
+    printf "\n# Archive Configuration:\n" >> /"${PGDATA?}"/postgresql.conf
+
+    export ARCHIVE_MODE=${ARCHIVE_MODE:-off}
+    export ARCHIVE_TIMEOUT=${ARCHIVE_TIMEOUT:-0}
+
+    if [[ "${PGBACKREST}" == "true" ]]
+    then
+        export ARCHIVE_MODE=on
+        echo_info "Setting pgbackrest archive command.."
+        cat /opt/cpm/conf/backrest-archive-command >> /"${PGDATA?}"/postgresql.conf
+    elif [[ "${ARCHIVE_MODE}" == "on" ]] && [[ ! "${PGBACKREST}" == "true" ]]
+    then
+        echo_info "Setting standard archive command.."
+        cat /opt/cpm/conf/archive-command >> /"${PGDATA?}"/postgresql.conf
+    fi
+
+    echo_info "Setting ARCHIVE_MODE to ${ARCHIVE_MODE?}."
+    echo "archive_mode = ${ARCHIVE_MODE?}" >> "${PGDATA?}"/postgresql.conf
+
+    echo_info "Setting ARCHIVE_TIMEOUT to ${ARCHIVE_TIMEOUT?}."
+    echo "archive_timeout = ${ARCHIVE_TIMEOUT?}" >> "${PGDATA?}"/postgresql.conf
+}
 
 # Clean up any old pid file that might have remained
 # during a bad shutdown of the container/postgres
@@ -398,7 +413,15 @@ case "$PG_MODE" in
     ;;
 esac
 
-source /opt/cpm/bin/pgbackrest.sh
+# Configure pgbackrest if enabled
+if [[ ${PGBACKREST} == "true" ]]
+then
+    echo_info "pgBackRest: Enabling pgbackrest.."
+    source /opt/cpm/bin/pgbackrest.sh
+fi
+
+configure_archiving
+
 source /opt/cpm/bin/custom-configs.sh
 
 # Run pre-start hook if it exists
@@ -415,6 +438,12 @@ if [[ -v PGAUDIT_ANALYZE ]]; then
     pgaudit_analyze $PGDATA/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
 fi
 
+if [[ ${ENABLE_SSHD} == "true" ]]; then
+    echo_info "Applying SSHD.."
+    source /opt/cpm/bin/sshd.sh
+    start_sshd
+fi
+
 if [[ -v PGBOUNCER_PASSWORD ]]
 then
     if [[ ${PG_MODE?} == "primary" ]] || [[ ${PG_MODE?} == "master" ]]
@@ -428,7 +457,7 @@ if [[ -v PGMONITOR_PASSWORD ]]
 then
     if [[ ${PG_MODE?} == "primary" ]] || [[ ${PG_MODE?} == "master" ]]
     then
-        source /opt/cpm/bin/pgmonitor/pgmonitor.sh
+        source /opt/cpm/bin/pgmonitor.sh
     fi
 fi
 

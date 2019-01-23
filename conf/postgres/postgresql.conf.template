@@ -60,7 +60,7 @@ listen_addresses = '*'		# what IP address(es) to listen on;
 					# comma-separated list of addresses;
 					# defaults to 'localhost'; use '*' for all
 					# (change requires restart)
-port = 5432				# (change requires restart)
+port = PG_PRIMARY_PORT				# (change requires restart)
 max_connections = MAX_CONNECTIONS			# (change requires restart)
 #superuser_reserved_connections = 3	# (change requires restart)
 unix_socket_directories = '/tmp'	# comma-separated list of directories
@@ -211,13 +211,13 @@ wal_level = hot_standby			# minimal, replica, or logical
 
 # - Archiving -
 
-archive_mode = ARCHIVE_MODE		# enables archiving; off, on, or always
+#archive_mode = off		# enables archiving; off, on, or always
 				# (change requires restart)
 #archive_command = ''		# command to use to archive a logfile segment
 				# placeholders: %p = path of file to archive
 				#               %f = file name only
 				# e.g. 'test ! -f /mnt/server/archivedir/%f && cp %p /mnt/server/archivedir/%f'
-archive_timeout = ARCHIVE_TIMEOUT		# force a logfile segment switch after this
+#archive_timeout = 0		# force a logfile segment switch after this
 				# number of seconds; 0 disables
 
 
