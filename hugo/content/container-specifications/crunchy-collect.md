@@ -2,7 +2,7 @@
 title: "crunchy-collect"
 date: 2018-05-24T10:06:13-07:00
 draft: false
-weight: 7
+weight: 157
 ---
 
 The crunchy-collect container provides real time metrics about the PostgreSQL database

@@ -1,7 +1,8 @@
 ---
 title: "crunchy-pgbouncer"
-date: 2018-05-24T12:05:03-07:00
+date: 
 draft: false
+weight: 164
 ---
 
 [pgBouncer](https://pgbouncer.github.io/) is a lightweight connection pooler for PostgreSQL databases.
