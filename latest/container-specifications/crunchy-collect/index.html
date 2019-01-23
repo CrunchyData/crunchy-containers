@@ -411,13 +411,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/container-specifications/crunchy-sim/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-sim/">
-            crunchy-sim
-          </a>
-        </div>
-    </li>
       <li data-nav-id="/container-specifications/crunchy-upgrade/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-upgrade/">
@@ -520,7 +513,6 @@
       <option value="/container-specifications/crunchy-pgbouncer/" >- crunchy-pgbouncer</option>
       <option value="/container-specifications/crunchy-pgbadger/" >- crunchy-pgbadger</option>
       <option value="/container-specifications/crunchy-pgpool/" >- crunchy-pgpool</option>
-      <option value="/container-specifications/crunchy-sim/" >- crunchy-sim</option>
       <option value="/container-specifications/crunchy-upgrade/" >- crunchy-upgrade</option>
       <option value="/container-specifications/crunchy-vacuum/" >- crunchy-vacuum</option>
   
@@ -649,6 +641,12 @@ can be specified for the API to collect. For an example of a queries.yml file, s
 </thead>
 
 <tbody>
+<tr>
+<td align="left"><strong>DISABLE_NODE_EXPORTER</strong></td>
+<td align="left">false</td>
+<td align="left">Set this to true to disable node exporter in the collect container.</td>
+</tr>
+
 <tr>
 <td align="left"><strong>CRUNCHY_DEBUG</strong></td>
 <td align="left">FALSE</td>

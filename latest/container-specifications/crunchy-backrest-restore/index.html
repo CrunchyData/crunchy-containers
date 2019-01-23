@@ -411,13 +411,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/container-specifications/crunchy-sim/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-sim/">
-            crunchy-sim
-          </a>
-        </div>
-    </li>
       <li data-nav-id="/container-specifications/crunchy-upgrade/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-upgrade/">
@@ -520,7 +513,6 @@
       <option value="/container-specifications/crunchy-pgbouncer/" >- crunchy-pgbouncer</option>
       <option value="/container-specifications/crunchy-pgbadger/" >- crunchy-pgbadger</option>
       <option value="/container-specifications/crunchy-pgpool/" >- crunchy-pgpool</option>
-      <option value="/container-specifications/crunchy-sim/" >- crunchy-sim</option>
       <option value="/container-specifications/crunchy-upgrade/" >- crunchy-upgrade</option>
       <option value="/container-specifications/crunchy-vacuum/" >- crunchy-vacuum</option>
   
@@ -626,15 +618,9 @@
 
 <tbody>
 <tr>
-<td align="left"><strong>STANZA</strong></td>
+<td align="left"><strong>PGBACKREST_STANZA</strong></td>
 <td align="left">None</td>
 <td align="left">Must be set to the desired stanza for restore.</td>
-</tr>
-
-<tr>
-<td align="left"><strong>DELTA</strong></td>
-<td align="left">None</td>
-<td align="left">When set, will add the <code>--delta</code> option to the restore. The delta option allows pgBackRest to automatically determine which files in the database cluster directory can be preserved and which ones need to be restored from the backup - it also removes files not present in the backup manifest so it will dispose of divergent changes.</td>
 </tr>
 </tbody>
 </table>
@@ -652,15 +638,27 @@
 
 <tbody>
 <tr>
-<td align="left"><strong>PG_HOSTNAME</strong></td>
+<td align="left">**PGBACKREST_DELTA **</td>
 <td align="left">None</td>
-<td align="left">When restoring a backup to a new volume, this volume should be set to the hostname of the PostgreSQL container that will mount the restored volume.  Required for full restores to new volumes.</td>
+<td align="left">Enables pgBackRest delta restore mode.  Used when a user needs to restore to a volume that already contains PostgreSQL data files.</td>
 </tr>
 
 <tr>
-<td align="left"><strong>PITR_TARGET</strong></td>
+<td align="left"><strong>PGBACKREST_TARGET</strong></td>
 <td align="left">None</td>
-<td align="left">PostgreSQL timestamp used when restoring up to a point in time.  Required for PITR delta restores.</td>
+<td align="left">PostgreSQL timestamp used when restoring up to a point in time. Required for Point In Time Recovery (PITR) restores.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_PG1_PATH</strong></td>
+<td align="left">None</td>
+<td align="left">Path where PostgreSQL data directory can be found.  This variable can also be used to setup a new PostgreSQL data directory on an empty volume.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>BACKREST_CUSTOM_OPTS</strong></td>
+<td align="left">None</td>
+<td align="left">Custom pgBackRest options can be added here to customize pgBackRest restores.</td>
 </tr>
 
 <tr>
