@@ -411,13 +411,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/container-specifications/crunchy-sim/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-sim/">
-            crunchy-sim
-          </a>
-        </div>
-    </li>
       <li data-nav-id="/container-specifications/crunchy-upgrade/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-upgrade/">
@@ -520,7 +513,6 @@
       <option value="/container-specifications/crunchy-pgbouncer/" >- crunchy-pgbouncer</option>
       <option value="/container-specifications/crunchy-pgbadger/" >- crunchy-pgbadger</option>
       <option value="/container-specifications/crunchy-pgpool/" >- crunchy-pgpool</option>
-      <option value="/container-specifications/crunchy-sim/" >- crunchy-sim</option>
       <option value="/container-specifications/crunchy-upgrade/" >- crunchy-upgrade</option>
       <option value="/container-specifications/crunchy-vacuum/" >- crunchy-vacuum</option>
   
@@ -675,6 +667,20 @@ For configuration examples, see <a href="https://github.com/crunchydata/crunchy-
 </tr>
 </tbody>
 </table>
+
+<h2 id="permissions">Permissions</h2>
+
+<p>Crunchy Prometheus queries Kubernetes to discover metric exporters and additional Kubernetes
+metadata.  Due to the integration with Kubernetes, Crunchy Prometheus requires a service account
+with the following permissions:</p>
+
+<ul>
+<li>Cluster Role
+
+<ul>
+<li>Pods: <code>get</code>, <code>list</code>, <code>watch</code></li>
+</ul></li>
+</ul>
 
 
 

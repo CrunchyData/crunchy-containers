@@ -411,13 +411,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/container-specifications/crunchy-sim/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-sim/">
-            crunchy-sim
-          </a>
-        </div>
-    </li>
       <li data-nav-id="/container-specifications/crunchy-upgrade/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-upgrade/">
@@ -620,6 +613,10 @@ delete the task.</p>
 <p>The Crunchy Scheduler requires a Service Account to create jobs (pgBaseBackup) and to
 exec (pgBackRest).  See the link:<a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/scheduler-sa.json[scheduler">https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/scheduler-sa.json[scheduler</a> example]
 for the required permissions on this account.</p>
+
+<div class="notices tip" ><p>Crunchy Scheduler uses the <code>UTC</code> timezone for all schedules.</p>
+</div>
+
 
 <h3 id="pgbackrest-schedules">pgBackRest Schedules</h3>
 

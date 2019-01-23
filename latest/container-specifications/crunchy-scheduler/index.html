@@ -411,13 +411,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/container-specifications/crunchy-sim/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-sim/">
-            crunchy-sim
-          </a>
-        </div>
-    </li>
       <li data-nav-id="/container-specifications/crunchy-upgrade/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-upgrade/">
@@ -520,7 +513,6 @@
       <option value="/container-specifications/crunchy-pgbouncer/" >- crunchy-pgbouncer</option>
       <option value="/container-specifications/crunchy-pgbadger/" >- crunchy-pgbadger</option>
       <option value="/container-specifications/crunchy-pgpool/" >- crunchy-pgpool</option>
-      <option value="/container-specifications/crunchy-sim/" >- crunchy-sim</option>
       <option value="/container-specifications/crunchy-upgrade/" >- crunchy-upgrade</option>
       <option value="/container-specifications/crunchy-vacuum/" >- crunchy-vacuum</option>
   
@@ -652,6 +644,29 @@ converts it into an scheduled task.</p>
 </tr>
 </tbody>
 </table>
+
+<h2 id="permissions">Permissions</h2>
+
+<p>Crunchy Scheduler queries Kubernetes to discover schedules and perform scheduled tasks
+(either creating a job or running commands against a PostgreSQL container).  Due to the integration
+with Kubernetes, Crunchy Scheduler requires a service account with the following permissions:</p>
+
+<ul>
+<li>Role
+
+<ul>
+<li>ConfigMaps: <code>get</code>, <code>list</code>, <code>watch</code></li>
+<li>Deployments: <code>get</code>, <code>list</code>, <code>watch</code></li>
+<li>Jobs: <code>get</code>, <code>list</code>, <code>watch</code>, <code>create,</code>delete`</li>
+<li>Pods: <code>get</code>, <code>list</code>, <code>watch</code></li>
+<li>Pods/Exec: <code>create</code></li>
+<li>Secrets: <code>get</code>, <code>list</code>, <code>watch</code></li>
+</ul></li>
+</ul>
+
+<h2 id="timezone">Timezone</h2>
+
+<p>Crunchy Scheduler uses the <code>UTC</code> timezone for all schedules.</p>
 
 
 
