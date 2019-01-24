@@ -2,10 +2,10 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "backrest-env",
+        "name": "backrest-delta-restored",
         "labels": {
-            "name": "backrest-env",
-            "cleanup": "$CCP_NAMESPACE-backrest-env"
+            "name": "backrest-delta-restored",
+            "cleanup": "$CCP_NAMESPACE-backrest-delta-restore"
         }
     },
     "spec": {
@@ -29,9 +29,9 @@
     "kind": "Pod",
     "apiVersion": "v1",
     "metadata": {
-        "name": "backrest",
+        "name": "backrest-delta-restored",
         "labels": {
-            "name": "backrest",
+            "name": "backrest-delta-restored",
             "cleanup": "$CCP_NAMESPACE-backrest-delta-restore"
         }
     },
@@ -107,6 +107,22 @@
                     {
                         "name": "ARCHIVE_TIMEOUT",
                         "value": "60"
+                    },
+                    {
+                        "name": "PGBACKREST",
+                        "value": "true"
+                    },
+                    {
+                        "name": "PGBACKREST_PG1_PATH",
+                        "value": "/pgdata/backrest"
+                    },
+                    {
+                        "name": "PGBACKREST_REPO1_PATH",
+                        "value": "/backrestrepo/backrest-backups"
+                    },
+                    {
+                        "name": "PGDATA_PATH_OVERRIDE",
+                        "value": "backrest"
                     }
                 ],
                 "volumeMounts": [
@@ -114,11 +130,6 @@
                         "mountPath": "/pgdata",
                         "name": "pgdata",
                         "readOnly": false
-                    },
-                    {
-                        "mountPath": "/pgconf",
-                        "name": "pgconf",
-                        "readOnly": true
                     },
                     {
                         "mountPath": "/backrestrepo",
@@ -129,12 +140,6 @@
             }
         ],
         "volumes": [
-            {
-                "name": "pgconf",
-                "configMap": {
-                    "name": "br-delta-restore-pgconf"
-                }
-            },
             {
                 "name": "backrestrepo",
                 "persistentVolumeClaim": {

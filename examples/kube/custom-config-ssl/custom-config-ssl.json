@@ -106,6 +106,10 @@
                     {
                         "name": "ARCHIVE_TIMEOUT",
                         "value": "60"
+                    },
+                    {
+                        "name": "PGBACKREST",
+                        "value": "true"
                     }
                 ],
                 "volumeMounts": [
@@ -160,10 +164,6 @@
                         {
                             "key": "server-key",
                             "path": "server.key"
-                        },
-                        {
-                            "key": "pgbackrest-conf",
-                            "path": "pgbackrest.conf"
                         },
                         {
                             "key": "postgresql-conf",

@@ -1,8 +1,6 @@
 package cron
 
 import (
-	"fmt"
-
 	"github.com/crunchydata/crunchy-containers/tools/kubeapi"
 	log "github.com/sirupsen/logrus"
 )
@@ -39,11 +37,7 @@ func (b BackRestBackupJob) Run() {
 
 	contextLogger.Info("Running pgBackRest backup")
 
-	cmd := []string{
-		"/usr/bin/pgbackrest",
-		fmt.Sprintf("--stanza=%s", b.stanza),
-		"backup", fmt.Sprintf("--type=%s", b.backupType),
-	}
+	cmd := []string{"/opt/cpm/bin/pgbackrest_backup.sh", b.backupType}
 
 	if b.label != "" {
 		deployments, err := b.client.ListDeployments(b.namespace, b.label)
@@ -76,11 +70,12 @@ func (b BackRestBackupJob) Run() {
 		return
 	}
 
-	_, stderr, err := b.client.Exec(b.namespace, pods[0], b.container, cmd)
+	stdout, stderr, err := b.client.Exec(b.namespace, pods[0], b.container, cmd)
 	if err != nil {
 		contextLogger.WithFields(log.Fields{
 			"error":  err,
-			"output": stderr,
+			"stderr": stderr,
+			"stdout": stdout,
 		}).Error("Failed execing into container")
 		return
 	}

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2017 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -19,4 +19,5 @@ cleanup "${CCP_NAMESPACE?}-primary-replica"
 
 $CCPROOT/examples/waitforterm.sh pr-primary ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh pr-replica ${CCP_CLI?}
-$CCPROOT/examples/waitforterm.sh pr-replica-2 ${CCP_CLI?}
+
+dir_check_rm "primary-replica"

@@ -28,7 +28,8 @@ func TestCustomConfig(t *testing.T) {
 	t.Log("Running full backup...")
 	// Required for OCP - backrest gets confused when random UIDs aren't found in PAM.
 	// Exec doesn't load bashrc or bash_profile, so we need to set this explicitly.
-	fullBackup := []string{"/usr/bin/pgbackrest", "--stanza=db", "backup", "--type=full"}
+	fullBackup := []string{"/usr/bin/pgbackrest", "backup", "--stanza=db", "--pg1-path=/pgdata/custom-config",
+		"--repo1-path=/backrestrepo/custom-config-backups", "--log-path=/tmp", "--type=full"}
 	_, stderr, err := harness.Client.Exec(harness.Namespace, "custom-config", "postgres", fullBackup)
 	if err != nil {
 		t.Logf("\n%s", stderr)
@@ -66,16 +67,16 @@ func TestCustomConfig(t *testing.T) {
 		t.Fatalf("extensions less then 1, it shouldn't be: %d", len(extensions))
 	}
 
-    settings, err := db.Settings()
-    if err != nil {
-        t.Fatal(err)
-    }
+	settings, err := db.Settings()
+	if err != nil {
+		t.Fatal(err)
+	}
 
-    for _, setting := range settings {
-        if setting.Name == "log_timezone" && setting.Value != "UTC" {
-            t.Fatalf("log_timezone isn't UTC, it should be: %s = %s", setting.Name, setting.Value)
-        }
-    }
+	for _, setting := range settings {
+		if setting.Name == "log_timezone" && setting.Value != "UTC" {
+			t.Fatalf("log_timezone isn't UTC, it should be: %s = %s", setting.Name, setting.Value)
+		}
+	}
 
 	report, err := harness.createReport()
 	if err != nil {

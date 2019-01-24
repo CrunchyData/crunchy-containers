@@ -1,7 +1,8 @@
 ---
 title: "crunchy-upgrade"
-date: 2018-05-24T12:05:31-07:00
+date:  
 draft: false
+weight: 167
 ---
 
 The crunchy-upgrade container contains both the 9.5 / 9.6 and 9.6 / 10

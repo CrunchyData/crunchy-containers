@@ -190,6 +190,10 @@
                             {
                                 "name": "XLOGDIR",
                                 "value": "true"
+                            },
+                            {
+                                "name": "PGBACKREST",
+                                "value": "true"
                             }
                         ],
                         "volumeMounts": [
@@ -197,11 +201,6 @@
                                 "mountPath": "/pgdata",
                                 "name": "pgdata",
                                 "readOnly": false
-                            },
-                            {
-                                "mountPath": "/pgconf",
-                                "name": "pgconf",
-                                "readOnly": true
                             },
                             {
                                 "mountPath": "/pgwal",
@@ -232,12 +231,6 @@
                     {
                         "name": "pgwal",
                         "emptyDir": {}
-                    },
-                    {
-                        "name": "pgconf",
-                        "configMap": {
-                            "name": "metrics-pgconf"
-                        }
                     },
                     {
                         "name": "backrestrepo",

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2017 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -15,6 +15,13 @@
 source ${CCPROOT}/examples/common.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+if [[ -z ${CCP_BACKREST_TIMESTAMP} ]]
+then
+    echo_err "Please provide a valid timestamp for the PITR using varibale CCP_BACKREST_TIMESTAMP."
+    exit 1
+fi
+
 ${CCP_CLI?} exec --namespace=${CCP_NAMESPACE?} -ti backrest date >/dev/null
 if [[ $? -ne 0 ]]
 then
@@ -22,20 +29,6 @@ then
     exit 1
 fi
 
-export PITR_TARGET="$(${CCP_CLI?} exec --namespace=${CCP_NAMESPACE?} -ti backrest -- psql -U postgres -Atc 'select current_timestamp' | tr -d '\r')"
-if [[ -z ${PITR_TARGET} ]]
-then
-    echo_err "PITR_TARGET env is empty, it shouldn't be."
-    exit 1
-fi
-
 ${DIR}/cleanup.sh
-
-${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} \
-    configmap br-pitr-restore-pgconf \
-    --from-file ${DIR?}/configs/pgbackrest.conf
-
-${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
-    br-pitr-restore-pgconf cleanup=${CCP_NAMESPACE?}-backrest-pitr-restore
 
 expenv -f $DIR/pitr-restore.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

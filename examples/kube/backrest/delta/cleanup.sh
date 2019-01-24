@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -20,4 +20,4 @@ cleanup "$CCP_NAMESPACE-backrest-delta-restore"
 # Cleanup backrest pods if they're running from backup examples
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod,service backrest
 
-$CCPROOT/examples/waitforterm.sh backrest ${CCP_CLI?}
+$CCPROOT/examples/waitforterm.sh backrest-delta-restored ${CCP_CLI?}

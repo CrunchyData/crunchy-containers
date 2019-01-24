@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -17,8 +17,8 @@ echo_info "Cleaning up.."
 
 cleanup "$CCP_NAMESPACE-backrest-full-restore"
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod,service backrest backrest 
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod,service backrest 
 
-$CCPROOT/examples/waitforterm.sh backrest ${CCP_CLI?}
+$CCPROOT/examples/waitforterm.sh backrest-full-restored ${CCP_CLI?}
 
 dir_check_rm "backrest-full-restored"

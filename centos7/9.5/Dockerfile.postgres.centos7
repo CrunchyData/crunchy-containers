@@ -5,7 +5,7 @@ LABEL name="crunchydata/postgres" \
 	PostgresVersion="9.5" \
 	PostgresFullVersion="9.5.15" \
 	Version="7.6" \
-	Release="2.2.0" \
+	Release="2.3.0" \
         url="https://crunchydata.com" \
 	summary="PostgreSQL 9.5.15 (PGDG) on a Centos7 base image" \
         description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
@@ -25,6 +25,7 @@ RUN yum -y update && yum -y install epel-release \
     hostname \
     procps-ng  \
     rsync \
+    psmisc openssh-server openssh-clients \
  && yum -y install postgresql95-server postgresql95-contrib postgresql95 \
     pgaudit_95 \
     pgbackrest \
@@ -49,9 +50,6 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
     chmod -R g=u /opt/cpm /var/lib/pgsql \
     /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
-# Link pgbackrest.conf to default location for convenience
-RUN ln -sf /tmp/pgbackrest.conf /etc/pgbackrest.conf
-
 # add volumes to allow override of pg_hba.conf and postgresql.conf
 # add volumes to allow backup of postgres files
 # add volumes to offer a restore feature
@@ -59,7 +57,7 @@ RUN ln -sf /tmp/pgbackrest.conf /etc/pgbackrest.conf
 # add volumes to locate WAL files to recover with
 # add volumes for pgbackrest to write to
 
-VOLUME ["/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo"]
+VOLUME ["/sshd", "/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo"]
 
 # open up the postgres port
 EXPOSE 5432
@@ -71,6 +69,8 @@ ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/pgmonitor
 
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
+
+RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh
 	
 ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 

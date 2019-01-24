@@ -6,7 +6,8 @@
         "labels": {
             "vendor": "crunchydata",
             "pgbackup": "true",
-            "pg-cluster": "{{.Name}}"
+            "pg-cluster": "{{.Name}}",
+            "cleanup": "$CCP_NAMESPACE-scheduler"
         }
     },
     "spec": {
@@ -16,7 +17,8 @@
                 "labels": {
                     "vendor": "crunchydata",
                     "pgbackup": "true",
-                    "pg-cluster": "{{.Name}}"
+                    "pg-cluster": "{{.Name}}",
+                    "cleanup": "$CCP_NAMESPACE-scheduler"
                 }
             },
             "spec": {

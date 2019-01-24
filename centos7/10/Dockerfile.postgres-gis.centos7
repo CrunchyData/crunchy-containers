@@ -5,7 +5,7 @@ LABEL name="crunchydata/postgres-gis" \
 	PostgresVersion="10" \
 	PostgresFullVersion="10.6" \
 	Version="7.6" \
-	Release="2.2.0" \
+	Release="2.3.0" \
         url="https://crunchydata.com" \
         summary="Includes PostGIS extensions on top of crunchy-postgres" \
         description="An identical image of crunchy-postgres with the extra PostGIS packages added for users that require PostGIS." \
@@ -50,9 +50,6 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
     chmod -R g=u /opt/cpm /var/lib/pgsql \
     /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 
-# Link pgbackrest.conf to default location for convenience
-RUN ln -sf /tmp/pgbackrest.conf /etc/pgbackrest.conf
-
 # add volumes to allow override of pg_hba.conf and postgresql.conf
 # add volumes to allow backup of postgres files
 # add volumes to offer a restore feature
@@ -73,6 +70,8 @@ ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/pgmonitor
 
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
+
+RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh
 	
 ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 

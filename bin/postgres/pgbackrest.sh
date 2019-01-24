@@ -2,55 +2,131 @@
 
 source /opt/cpm/bin/common_lib.sh
 NAMESPACE=${HOSTNAME?}
-BACKREST_CONF='/pgconf/pgbackrest.conf'
 
 if [[ -v PGDATA_PATH_OVERRIDE ]]
 then
     NAMESPACE=${PGDATA_PATH_OVERRIDE?}
 fi
 
-if [[ -f ${BACKREST_CONF?} ]]
-then
-    cp ${BACKREST_CONF?} /tmp/pgbackrest.conf
-    sed -i -e "s|HOSTNAME|${NAMESPACE?}|" /tmp/pgbackrest.conf
-fi
+# Set default pgbackrest env vars if not explicity provided
+set_pgbackrest_env_vars() {
 
-if [[ -f ${BACKREST_CONF?} ]] || [[ -v PGBACKREST_REPO_PATH ]]
-then
-    # Spooling directories for async archiving
-    if [[ ! -d /pgdata/${NAMESPACE?}-spool ]]
+    if [[ ! -v PGBACKREST_STANZA ]]
     then
-        mkdir -p /pgdata/${NAMESPACE?}-spool
+        export PGBACKREST_STANZA="db"
+        default_env_vars+=("PGBACKREST_STANZA=${PGBACKREST_STANZA}")
     fi
 
-    if [[ ! -d /pgwal/${NAMESPACE?}-spool ]] && [[ -v XLOGDIR ]]
+    if [[ ! -v PGBACKREST_PG1_PATH ]] && [[ ! -v PGBACKREST_DB_PATH ]] \
+      && [[ ! -v PGBACKREST_DB1_PATH ]]
     then
-        mkdir -p /pgwal/${NAMESPACE?}-spool
+        export PGBACKREST_PG1_PATH="/pgdata/${NAMESPACE}"
+        default_env_vars+=("PGBACKREST_PG1_PATH=${PGBACKREST_PG1_PATH}")
     fi
 
-    # Backup/Archive Namespace
-    if [[ ! -d /backrestrepo/${NAMESPACE?}-backups ]]
+    if [[ ! -v PGBACKREST_REPO1_PATH ]] && [[ ! -v PGBACKREST_REPO_PATH ]]
     then
-        mkdir -p /backrestrepo/${NAMESPACE?}-backups
+        export PGBACKREST_REPO1_PATH="/backrestrepo/${NAMESPACE}-backups"
+        default_env_vars+=("PGBACKREST_REPO1_PATH=${PGBACKREST_REPO1_PATH}")
     fi
 
-    if [[ -f ${BACKREST_CONF?} ]]
+    if [[ ! -v PGBACKREST_LOG_PATH ]]
     then
-        stanza_exists=$(pgbackrest info | grep 'No stanzas exist')
-        if [[ $? -eq 0 ]]
+        export PGBACKREST_LOG_PATH="/tmp"
+        default_env_vars+=("PGBACKREST_LOG_PATH=${PGBACKREST_LOG_PATH}")
+    fi
+
+    if [[ "${PGBACKREST_ARCHIVE_ASYNC}" == "y" ]]
+    then
+        if [[ ! -v PGBACKREST_SPOOL_PATH ]] && [[ -v XLOGDIR ]]
         then
-            echo_info "pgBackRest: Creating stanza.."
-            pgbackrest --stanza=db stanza-create --no-online
+            export PGBACKREST_SPOOL_PATH="/pgwal/${NAMESPACE?}-spool"
+            default_env_vars+=("PGBACKREST_SPOOL_PATH=${PGBACKREST_SPOOL_PATH}")
+        elif [[ ! -v PGBACKREST_SPOOL_PATH ]]
+        then
+            export PGBACKREST_SPOOL_PATH="/pgdata/${NAMESPACE?}-spool"
+            default_env_vars+=("PGBACKREST_SPOOL_PATH=${PGBACKREST_SPOOL_PATH}")
         fi
     fi
+
+    if [[ ! ${#default_env_vars[@]} -eq 0 ]]
+    then
+        echo_info "pgBackRest: Defaults have been set for the following pgbackrest env vars:"
+        echo_info "pgBackRest: [${default_env_vars[*]}]"
+    fi
+}
+
+# Create default pgbackrest directories if they don't already exist
+create_pgbackrest_dirs() {
 
     if [[ -v PGBACKREST_REPO_PATH ]]
     then
-        stanza_exists=$(pgbackrest info | grep 'missing stanza path')
-        if [[ $? -eq 0 ]]
+        repo_dir="${PGBACKREST_REPO_PATH}"
+    else
+        repo_dir="${PGBACKREST_REPO1_PATH}"
+    fi
+    
+    if [[ ! -d "${repo_dir}" ]]
+    then
+        mkdir -p "${repo_dir}"
+        echo_info "pgBackRest: Created pgbackrest repository directory ${repo_dir}"
+    fi
+    
+    if [[ ! -d "${PGBACKREST_LOG_PATH}" ]]
+    then
+        mkdir -p "${PGBACKREST_LOG_PATH}"
+        echo_info "pgBackRest: Created pgbackrest logging directory ${PGBACKREST_LOG_PATH}"
+    fi
+
+    # Only create spool directories if async archiving enabled
+    if [[ "${PGBACKREST_ARCHIVE_ASYNC}" == "y" ]]
+    then
+        if [[ ! -d "${PGBACKREST_SPOOL_PATH}" ]]
         then
-            echo_info "pgBackRest: Creating stanza.."
-            pgbackrest --stanza=db stanza-create --no-online
+            mkdir -p "${PGBACKREST_SPOOL_PATH}"
+            echo_info "pgBackRest: Created async archive spool directory ${PGBACKREST_SPOOL_PATH}"
         fi
     fi
+}
+
+set_pgbackrest_env_vars
+create_pgbackrest_dirs
+
+# Check if configuration is valid
+if [[ "${BACKREST_SKIP_CREATE_STANZA}" == "true" ]]
+then
+    echo_info "pgBackRest: BACKREST_SKIP_CREATE_STANZA is 'true'.  Skipping configuration check.."
+else
+    echo_info "pgBackRest: Checking if configuration is valid.."
+    pgbackrest info > /tmp/pgbackrest.stdout 2> /tmp/pgbackrest.stderr
+    err=$?
+    err_check ${err} "pgBackRest Configuration Check" \
+        "Error with pgBackRest configuration: \n$(cat /tmp/pgbackrest.stderr)"
+    if [[ ${err} == 0 ]]
+    then
+        echo_info "pgBackRest: Configuration is valid"
+    fi
+fi
+
+# Create stanza
+if [[ "${BACKREST_SKIP_CREATE_STANZA}" == "true" ]]
+then
+    echo_info "pgBackRest: BACKREST_SKIP_CREATE_STANZA is 'true'.  Skipping stanza creation.." 
+elif pgbackrest info | grep -q 'missing stanza path'
+then
+    echo_info "pgBackRest: The following pgbackrest env vars have been set:"
+    ( set -o posix ; set | grep -oP "^PGBACKREST.*" )
+
+    echo_info "pgBackRest: Creating stanza '${PGBACKREST_STANZA}'.."
+    pgbackrest stanza-create --no-online \
+        > /tmp/pgbackrest.stdout 2> /tmp/pgbackrest.stderr
+    err=$?
+    err_check ${err} "pgBackRest Stanza Creation" \
+        "Could not create a pgBackRest stanza: \n$(cat /tmp/pgbackrest.stderr)"
+    if [[ ${err} == 0 ]]
+    then
+        echo_info "pgBackRest: Stanza '${PGBACKREST_STANZA}'' created"
+    fi
+else
+    echo_info "pgBackRest: Stanza '${PGBACKREST_STANZA}' already exists.."
 fi

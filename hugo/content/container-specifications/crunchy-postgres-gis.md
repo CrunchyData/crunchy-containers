@@ -1,8 +1,8 @@
 ---
 title: "crunchy-postgres-gis"
-date: 2018-05-24T09:51:16-07:00
+date: 
 draft: false
-weight: 2
+weight: 152
 ---
 
 PostgreSQL (pronounced "post-gress-Q-L") is an open source, ACID compliant, relational database management system (RDBMS) developed by a worldwide team of volunteers. The crunchy-postgres-gis container image is unmodified, open source PostgreSQL packaged and maintained by professionals. This image is identical to the crunchy-postgres image except it includes the open source geospatial extension [PostGIS](https://postgis.net/) for PostgreSQL in addition to the language extension [PL/R](http://www.joeconway.com/plr.html) which allows for writing functions in the R statistical computing language.
@@ -63,6 +63,8 @@ The crunchy-postgres-gis Docker image contains the following packages (versions 
 **TEMP_BUFFERS**|8MB|Set this value to configure `temp_buffers` in `postgresql.conf`
 **WORK_MEM**|4MB|Set this value to configure `work_mem` in `postgresql.conf`
 **XLOGDIR**|None| Set this value to configure PostgreSQL to send WAL to the `/pgwal` volume (by default WAL is stored in `/pgdata`)
+**PGBACKREST**|false| Set this value to `true` in order to enable and initialize pgBackRest in the container
+**BACKREST_SKIP_CREATE_STANZA**|false| Set this value to `true` in order to skip the configuration check and the automatic creation of a stanza while initializing pgBackRest in the container
 
 ## Volumes
 
@@ -85,7 +87,6 @@ The following configuration files can be mounted to the `/pgconf` volume in the 
 `ca.crl`| Revocation list of the CA used by the server when using SSL authentication
 `pg_hba.conf`| Client authentication rules for the database
 `pg_ident.conf`| Mapping of external users (such as SSL certs, GSSAPI, LDAP) to database users
-`pgbackrest.conf`| pgBackRest configurations
 `postgresql.conf`| PostgreSQL settings
 `server.key`| Key used by the server when using SSL authentication
 `server.crt`| Certificate used by the server when using SSL authentication

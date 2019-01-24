@@ -1,4 +1,13 @@
-CREATE ROLE pgbouncer;
+--- pgBouncer Auth Query User Setup
+
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'pgbouncer') THEN
+        CREATE ROLE pgbouncer;
+    END IF;
+END
+$$;
+
 ALTER ROLE pgbouncer LOGIN PASSWORD 'PGBOUNCER_PASSWORD';
 
 CREATE SCHEMA IF NOT EXISTS pgbouncer AUTHORIZATION pgbouncer;

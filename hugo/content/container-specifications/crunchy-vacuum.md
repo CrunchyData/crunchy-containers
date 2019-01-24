@@ -1,14 +1,15 @@
 ---
 title: "crunchy-vacuum"
-date: 2018-05-24T12:06:12-07:00
+date:
 draft: false
+weight: 168
 ---
 
 The crunchy-vacuum container allows you to perform a SQL VACUUM job against a PostgreSQL database container.
 You specify a database to vacuum using various environment variables which are listed below. It is possible
 to run different vacuum operations either manually or automatically through scheduling.
 
-The crunchy-vacuum image is executed, with the Postgres connection parameters passed to the single-primary
+The crunchy-vacuum image is executed with the PostgreSQL connection parameters passed to the single-primary
 PostgreSQL container. The type of vacuum performed is dictated by the environment variables passed into the job.
 
 More information on the PostgreSQL VACUUM job can be found in the [official PostgreSQL documentation](https://www.postgresql.org/docs/current/static/sql-vacuum.html).

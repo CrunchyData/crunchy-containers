@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -52,7 +52,7 @@ else
     cp /opt/cpm/conf/pgbouncer.ini ${CONF_DIR?}/pgbouncer.ini
 
     env_check_err "PG_SERVICE"
-    
+
     sed -i "s/DEFAULT_POOL_SIZE/${DEFAULT_POOL_SIZE:-20}/g" ${CONF_DIR?}/pgbouncer.ini
     sed -i "s/MAX_CLIENT_CONN/${MAX_CLIENT_CONN:-100}/g" ${CONF_DIR?}/pgbouncer.ini
     sed -i "s/MAX_DB_CONNECTIONS/${MAX_DB_CONNECTIONS:-0}/g" ${CONF_DIR?}/pgbouncer.ini
@@ -63,8 +63,9 @@ else
     sed -i "s/RESERVE_POOL_TIMEOUT/${RESERVE_POOL_TIMEOUT:-5}/g" ${CONF_DIR?}/pgbouncer.ini
     sed -i "s/QUERY_TIMEOUT/${QUERY_TIMEOUT:-0}/g" ${CONF_DIR?}/pgbouncer.ini
     sed -i "s/IGNORE_STARTUP_PARAMETERS/${IGNORE_STARTUP_PARAMETERS:-extra_float_digits}/g" ${CONF_DIR?}/pgbouncer.ini
+    sed -i "s/PG_PORT/${PG_PORT:-5432}/g" ${CONF_DIR?}/pgbouncer.ini
 
-    echo "${PG_SERVICE}:5432:*:pgbouncer:${PGBOUNCER_PASSWORD}" >> /tmp/.pgpass
+    echo "${PG_SERVICE}:${PG_PORT:-5432}:*:pgbouncer:${PGBOUNCER_PASSWORD}" >> /tmp/.pgpass
 fi
 
 export PGPASSFILE=/tmp/.pgpass

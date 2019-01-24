@@ -1,6 +1,6 @@
 #bin/bash
 
-# Copyright 2016 - 2018 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CCP_VERSION=2.2.0
+CCP_VERSION=2.3.0
 REGISTRY=52.2.93.43:5000
 containers="$CCP_IMAGE_PREFIX/crunchy-vacuum $CCP_IMAGE_PREFIX/crunchy-prometheus $CCP_IMAGE_PREFIX/crunchy-grafana $CCP_IMAGE_PREFIX/crunchy-collect $CCP_IMAGE_PREFIX/crunchy-pgbadger $CCP_IMAGE_PREFIX/crunchy-pgpool $CCP_IMAGE_PREFIX/crunchy-backup $CCP_IMAGE_PREFIX/crunchy-postgres"
 for i in $containers;

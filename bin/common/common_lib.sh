@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2018 Crunchy Data Solutions, Inc.
+# Copyright 2018 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -142,7 +142,7 @@ function test_query {
             --port=${dbport?} --username=${dbuser?} \
             --command="SELECT now();"
         if [[ $? -eq 0 ]]
-        then 
+        then
             error='false'
             break
         fi
@@ -156,5 +156,17 @@ function test_query {
     then
         echo_err "Could not run query against PostgreSQL: Host=${dbhost?}:${dbport?} DB=${dbname?} User=${dbuser?}"
         exit 1
+    fi
+}
+
+function err_check {
+    RC=${1?}
+    CONTEXT=${2?}
+    ERROR=${3?}
+
+    if [[ ${RC?} != 0 ]]
+    then
+        echo_err "${CONTEXT?}: ${ERROR?}"
+        exit ${RC?}
     fi
 }

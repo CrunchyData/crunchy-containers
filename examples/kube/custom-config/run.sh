@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2018 Crunchy Data Solutions, Inc.
+# Copyright 2018 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -28,7 +28,6 @@ fi
 
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap custom-config-pgconf \
     --from-file ${DIR?}/configs/pg_hba.conf \
-    --from-file ${DIR?}/configs/pgbackrest.conf \
     --from-file ${DIR?}/configs/postgresql.conf \
     --from-file ${DIR?}/configs/setup.sql \
     --from-file ${DIR?}/configs/pre-start-hook.sh \

@@ -1,6 +1,6 @@
 = scheduler(1)
 Crunchy Data
-September 19, 2018
+2019
 == NAME
 Crunchy Scheduler - cron-like microservice image
 
@@ -19,4 +19,4 @@ The Red Hat Enterprise Linux version from which the container was built. For exa
 
 `Release=`
 
-The specific release number of the container. For example, Release="2.2.0"
+The specific release number of the container. For example, Release="2.3.0"

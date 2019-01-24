@@ -110,6 +110,10 @@
                     {
                         "name": "ARCHIVE_TIMEOUT",
                         "value": "60"
+                    },
+                    {
+                        "name": "PGBACKREST",
+                        "value": "true"
                     }
                 ],
                 "volumeMounts": [
@@ -139,9 +143,7 @@
         "volumes": [
             {
                 "name": "pgconf",
-                "configMap": {
-                    "name": "br-pgconf"
-                }
+                "emptyDir": {}
             },
             {
                 "name": "backrestrepo",
