@@ -1,7 +1,7 @@
 
 ---
 title: "Metrics and Performance"
-date: 
+date:
 draft: false
 weight: 61
 ---
@@ -27,18 +27,18 @@ with the following credentials:
 * Password: *password*
 
 By default, Prometheus detects which environment its running on (Docker, Kubernetes, or OpenShift Container Platform)
-and applies a default configuration. 
+and applies a default configuration.
 
-When running in Kuberenetes and OpenShift, the following two labels are required by 
+When running in Kuberenetes and OpenShift, the following two labels are required by
 the deployments:
 
  * `"crunchy_collect": "true"`
  * `"name": "some-pod-name-here"`
 
-The `crunchy_collect` label allows Prometheus to find all pods that are serving metrics 
+The `crunchy_collect` label allows Prometheus to find all pods that are serving metrics
 to be scraped for storage.
 
-The `name` label allows Prometheus to rewrite the name of the pod so if it changes there's not 
+The `name` label allows Prometheus to rewrite the name of the pod so if it changes there's not
 duplicate entries.
 
 Additionally, the collect container uses a special PostgreSQL role `ccp_monitoring`.
@@ -46,7 +46,7 @@ This user is created by setting the `PGMONITOR_PASSWORD` environment variable on
 PostgreSQL container.
 
 Discovering pods requires a cluster role service account.  See the
-link:https://github.com/crunchydata/crunchy-containers/blob/master/examples/kube/metrics/metrics.json[Kubernetes and OpenShift]
+[Kubernetes and OpenShift](https://github.com/crunchydata/crunchy-containers/blob/master/examples/kube/metrics/metrics.json)
 metrics JSON file for more details.
 
 For Docker environments the collect hostname must be specified as an environment

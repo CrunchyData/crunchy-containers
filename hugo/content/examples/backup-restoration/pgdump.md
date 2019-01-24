@@ -1,6 +1,6 @@
 ---
 title: "pgDump"
-date: 
+date:
 draft: false
 weight: 32
 ---
@@ -11,14 +11,14 @@ The script assumes you are going to backup the *primary* example and that contai
 is running.
 
 This example assumes you have configured a storage filesystem as described
-in the link:/installation/storage-configuration/[Storage Configuration] document.
+in the [Storage Configuration](/installation/storage-configuration/) document.
 
 A successful backup will perform pg_dump/pg_dumpall on the primary and store
 the resulting files in the mounted volume under a directory named `<HOSTNAME>-backups`
 as a sub-directory, then followed by a unique backup directory based upon a
 date and timestamp - allowing any number of backups to be kept.
 
-For more information on how to configure this container, please see the link:/container-specifications/[Container Specifications] document.
+For more information on how to configure this container, please see the [Container Specifications](/container-specifications/) document.
 
 To shutdown the instance and remove the container for each example, run the following:
 ```

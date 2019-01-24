@@ -1,6 +1,6 @@
 ---
 title: "Statefulset PostgreSQL Cluster"
-date: 
+date:
 draft: false
 weight: 7
 ---
@@ -12,7 +12,7 @@ This example deploys a statefulset named *statefulset*.  The statefulset
 is a new feature in Kubernetes as of version 1.5 and in OpenShift Origin as of
 version 3.5. Statefulsets have replaced PetSets going forward.
 
-Please view link:https://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/[this Kubernetes description]
+Please view [this Kubernetes description](https://kubernetes.io/docs/concepts/abstractions/controllers/statefulsets/)
 to better understand what a Statefulset is and how it works.
 
 This example creates 2 PostgreSQL containers to form the set.  At
@@ -74,4 +74,4 @@ ${CCP_CLI} scale --replicas=3 statefulset statefulset
 ### Helm
 
 This example resides under the `$CCPROOT/examples/helm` directory. View the README to
-run this example using Helm link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/helm/statefulset/README.md[here].
+run this example using Helm [here](https://github.com/CrunchyData/crunchy-containers/blob/master/examples/helm/statefulset/README.md).
