@@ -1,6 +1,6 @@
 ---
 title: "pgAdmin 4"
-date: 
+date:
 draft: false
 weight: 81
 ---
@@ -27,7 +27,7 @@ ${CCP_CLI} port-forward pgadmin4-http 5050:5050
 To access the pgAdmin4 dashboard through the proxy, navigate to *http://127.0.0.1:5050*
 in a browser.
 
-See the link:http://pgadmin.org[pgAdmin4 documentation] for more details.
+See the [pgAdmin4 documentation](http://pgadmin.org) for more details.
 
 To shutdown the instance and remove the container for each example, run the following:
 ```
@@ -77,7 +77,7 @@ ${CCP_CLI} port-forward pgadmin4-https 5050:5050
 To access the pgAdmin4 dashboard through the proxy, navigate to *https://127.0.0.1:5050*
 in a browser.
 
-See the link:http://pgadmin.org[pgadmin4 documentation] for more details.
+See the [pgadmin4 documentation](http://pgadmin.org) for more details.
 
 To shutdown the instance and remove the container for each example, run the following:
 ```
