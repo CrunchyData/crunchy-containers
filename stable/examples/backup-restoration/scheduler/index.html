@@ -605,13 +605,13 @@ delete the task.</p>
 <p>See the following examples for creating config maps that Crunchy Scheduler can parse:</p>
 
 <ul>
-<li>link:<a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-diff.json[pgBackRest">https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-diff.json[pgBackRest</a> Diff Backup]</li>
-<li>link:<a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-full.json[pgBackRest">https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-full.json[pgBackRest</a> Full Backup]</li>
-<li>link:<a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-pgbasebackup.json[pgBaseBackup">https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-pgbasebackup.json[pgBaseBackup</a> Backup]</li>
+<li><a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-diff.json">pgBackRest Diff Backup</a></li>
+<li><a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-full.json">pgBackRest Full Backup</a></li>
+<li><a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-pgbasebackup.json">pgBaseBackup Backup</a></li>
 </ul>
 
 <p>The Crunchy Scheduler requires a Service Account to create jobs (pgBaseBackup) and to
-exec (pgBackRest).  See the link:<a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/scheduler-sa.json[scheduler">https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/scheduler-sa.json[scheduler</a> example]
+exec (pgBackRest).  See the <a href="https://github.com/CrunchyData/crunchy-containers/tree/master/examples/kube/scheduler/scheduler-sa.json">scheduler example</a>
 for the required permissions on this account.</p>
 
 <div class="notices tip" ><p>Crunchy Scheduler uses the <code>UTC</code> timezone for all schedules.</p>
@@ -632,7 +632,7 @@ for the required permissions on this account.</p>
 
 <ul>
 <li>The name of the secret that contains the username and password the Scheduler will use to
-configure the job template.  See link:<a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/primary/secret.json[the">https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/primary/secret.json[the</a> primary secret example].
+configure the job template.  See <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/secret/secret.json">the primary secret example</a>
 for the structure required by the Scheduler.</li>
 <li>The name of the PVC created for the backups.  This should be created by the user prior to scheduling the task.</li>
 </ul>
@@ -641,7 +641,7 @@ for the structure required by the Scheduler.</li>
 to the backup job created by the scheduler.  To apply a specific <code>securityContext</code> for your
 storage provider, mount a <code>backup-template.json</code> to <code>/configs</code> on the scheduler pod.</p>
 
-<p>For an example of applying a custom template, link:<a href="https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler[see">https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler[see</a> the schedule example].</p>
+<p>For an example of applying a custom template, <a href="https://github.com/CrunchyData/crunchy-containers/tree/master/examples/kube/scheduler">see the scheduler example</a>.</p>
 </div>
 
 

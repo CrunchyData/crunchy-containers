@@ -590,7 +590,7 @@
 <p>The script assumes you are going to backup the <em>primary</em>
 container created in the first example, so you need to ensure
 that container is running. This example assumes you have configured storage as described
-in the link:/installation/storage-configuration/[Storage Configuration documentation]. Things to point out with this example
+in the <a href="https://crunchydata.github.io/crunchy-containers/latest/installation/storage-configuration/">Storage Configuration documentation</a>. Things to point out with this example
 include its use of persistent volumes and volume claims to store the backup data files.</p>
 
 <p>A successful backup will perform <code>pg_basebackup</code> on the <em>primary</em> container and store
@@ -715,7 +715,7 @@ This is because point in time recovery allows you to &ldquo;replay&rdquo; the lo
 your database to any point since the last full backup.</p>
 
 <p>More detailed information about Write Ahead Log (WAL) archiving can be found
-link:<a href="https://www.postgresql.org/docs/10/static/continuous-archiving.html[here.">https://www.postgresql.org/docs/10/static/continuous-archiving.html[here.</a>]</p>
+<a href="https://www.postgresql.org/docs/10/static/continuous-archiving.html">here.</a></p>
 
 <p>By default in the crunchy-postgres container, WAL logging is <em>not</em> enabled.
 To enable WAL logging <em>outside of this example</em>, set the following environment

@@ -800,6 +800,18 @@
 <td align="left">None</td>
 <td align="left">Set this value to configure PostgreSQL to send WAL to the <code>/pgwal</code> volume (by default WAL is stored in <code>/pgdata</code>)</td>
 </tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST</strong></td>
+<td align="left">false</td>
+<td align="left">Set this value to <code>true</code> in order to enable and initialize pgBackRest in the container</td>
+</tr>
+
+<tr>
+<td align="left"><strong>BACKREST_SKIP_CREATE_STANZA</strong></td>
+<td align="left">false</td>
+<td align="left">Set this value to <code>true</code> in order to skip the configuration check and the automatic creation of a stanza while initializing pgBackRest in the container</td>
+</tr>
 </tbody>
 </table>
 
@@ -877,11 +889,6 @@
 <tr>
 <td align="left"><code>pg_ident.conf</code></td>
 <td align="left">Mapping of external users (such as SSL certs, GSSAPI, LDAP) to database users</td>
-</tr>
-
-<tr>
-<td align="left"><code>pgbackrest.conf</code></td>
-<td align="left">pgBackRest configurations</td>
 </tr>
 
 <tr>
