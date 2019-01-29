@@ -138,3 +138,5 @@ vac: versiontest
 #=================
 push:
 	./bin/push-to-dockerhub.sh
+
+-include Makefile.build
