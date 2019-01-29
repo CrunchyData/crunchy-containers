@@ -500,15 +500,9 @@
   revision = "d9cca5ef33035202efb1586825bdbb15ff9ec3ba"
 
 [[projects]]
-  digest = "1:14263791cdd53e1379d8363b21fe97145665737a81b73076901d204a26ab6b99"
+  digest = "1:624a05c7c6ed502bf77364cd3d54631383dafc169982fddd8ee77b53c3d9cccf"
   name = "golang.org/x/crypto"
-  packages = [
-    "curve25519",
-    "ed25519",
-    "ed25519/internal/edwards25519",
-    "ssh",
-    "ssh/terminal",
-  ]
+  packages = ["ssh/terminal"]
   pruneopts = "UT"
   revision = "81e90905daefcd6fd217b62423c0908922eadb30"
 
@@ -787,7 +781,6 @@
     "github.com/sirupsen/logrus",
     "github.com/spf13/cobra",
     "github.com/spf13/viper",
-    "golang.org/x/crypto/ssh",
     "gopkg.in/ory-am/dockertest.v3",
     "gopkg.in/robfig/cron.v2",
     "gopkg.in/yaml.v2",
