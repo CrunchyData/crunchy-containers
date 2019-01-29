@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2019 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,7 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-function start_sshd() {
+if [[ ${ENABLE_SSHD} == "true" ]]
+then
+    echo_info "Applying SSHD.."
     echo_info 'Checking for SSH Host Keys in /sshd..'
 
     if [[ ! -f /sshd/ssh_host_rsa_key ]]; then
@@ -49,4 +51,4 @@ function start_sshd() {
 
     echo_info 'Starting SSHD..'
     /usr/sbin/sshd -f /sshd/sshd_config
-}
+fi
