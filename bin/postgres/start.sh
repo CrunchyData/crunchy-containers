@@ -433,33 +433,12 @@ fi
 echo_info "Starting PostgreSQL.."
 postgres -D $PGDATA &
 
-if [[ -v PGAUDIT_ANALYZE ]]; then
-    echo_info "Starting pgaudit_analyze.."
-    pgaudit_analyze $PGDATA/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
-fi
+# Apply enhancement modules
+for module in /opt/cpm/bin/modules/*.sh
+do
+    source ${module?}
+done
 
-if [[ ${ENABLE_SSHD} == "true" ]]; then
-    echo_info "Applying SSHD.."
-    source /opt/cpm/bin/sshd.sh
-    start_sshd
-fi
-
-if [[ -v PGBOUNCER_PASSWORD ]]
-then
-    if [[ ${PG_MODE?} == "primary" ]] || [[ ${PG_MODE?} == "master" ]]
-    then
-        echo_info "pgBouncer Password detected.  Setting up pgBouncer.."
-        source /opt/cpm/bin/pgbouncer.sh
-    fi
-fi
-
-if [[ -v PGMONITOR_PASSWORD ]]
-then
-    if [[ ${PG_MODE?} == "primary" ]] || [[ ${PG_MODE?} == "master" ]]
-    then
-        source /opt/cpm/bin/pgmonitor.sh
-    fi
-fi
 
 # Run post start hook if it exists
 if [ -f /pgconf/post-start-hook.sh ]
