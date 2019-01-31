@@ -6,7 +6,7 @@ The crunchy-pgdump container executes either a pg_dump or pg_dumpall database ba
 
 ## Container Specifications
 
-See the [official documentation](https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgdump/) for more details regarding how the container operates and is customized.
+See the [official documentation](https://access.crunchydata.com/documentation/crunchy-containers/2.3.0/container-specifications/crunchy-pgdump/) for more details regarding how the container operates and is customized.
 
 ## Examples
 

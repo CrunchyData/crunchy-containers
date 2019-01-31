@@ -6,7 +6,7 @@ The crunchy-upgrade container contains both the 9.5⁄9.6 and 9.6⁄10 PostgreSQ
 
 ## Container Specifications
 
-See the [official documentation](https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-upgrade/) for more details regarding how the container operates and is customized.
+See the [official documentation](https://access.crunchydata.com/documentation/crunchy-containers/2.3.0/container-specifications/crunchy-upgrade/) for more details regarding how the container operates and is customized.
 
 ## Examples
 

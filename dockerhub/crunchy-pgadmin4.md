@@ -6,7 +6,7 @@ The crunchy-pgadmin4 container executes the [pgAdmin4](https://www.pgadmin.org/)
 
 ## Container Specifications
 
-See the [official documentation](https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgadmin4/) for more details regarding how the container operates and is customized.
+See the [official documentation](https://access.crunchydata.com/documentation/crunchy-containers/2.3.0/container-specifications/crunchy-pgadmin4/) for more details regarding how the container operates and is customized.
 
 ## Examples
 
