@@ -1,6 +1,6 @@
 ---
 title: "crunchy-postgres"
-date: 
+date:
 draft: false
 weight: 150
 ---
@@ -64,6 +64,7 @@ The crunchy-postgres Docker image contains the following packages (versions vary
 **XLOGDIR**|None| Set this value to configure PostgreSQL to send WAL to the `/pgwal` volume (by default WAL is stored in `/pgdata`)
 **PGBACKREST**|false| Set this value to `true` in order to enable and initialize pgBackRest in the container
 **BACKREST_SKIP_CREATE_STANZA**|false| Set this value to `true` in order to skip the configuration check and the automatic creation of a stanza while initializing pgBackRest in the container
+**PG_CTL_OPTS**|None| Set this value to supply custom `pg_ctl` options (ex: `-c shared_preload_libraries=pgaudit`) during the initialization phase the container start.
 
 ## Volumes
 
