@@ -1,6 +1,6 @@
 ---
 title: "pgBaseBackup"
-date: 
+date:
 draft: false
 weight: 31
 ---
@@ -11,7 +11,7 @@ weight: 31
 The script assumes you are going to backup the *primary*
 container created in the first example, so you need to ensure
 that container is running. This example assumes you have configured storage as described
-in the link:/installation/storage-configuration/[Storage Configuration documentation]. Things to point out with this example
+in the [Storage Configuration documentation](/installation/storage-configuration/). Things to point out with this example
 include its use of persistent volumes and volume claims to store the backup data files.
 
 A successful backup will perform `pg_basebackup` on the *primary* container and store
@@ -133,7 +133,7 @@ This is because point in time recovery allows you to "replay" the log files and 
 your database to any point since the last full backup.
 
 More detailed information about Write Ahead Log (WAL) archiving can be found
-link:https://www.postgresql.org/docs/10/static/continuous-archiving.html[here.]
+[here.](https://www.postgresql.org/docs/10/static/continuous-archiving.html)
 
 By default in the crunchy-postgres container, WAL logging is *not* enabled.
 To enable WAL logging *outside of this example*, set the following environment
