@@ -23,7 +23,7 @@ COPY conf/atomic/postgres/help.1 /help.1
 COPY conf/atomic/postgres/help.md /help.md
 COPY conf/licenses /licenses
 
-ENV PGVERSION="10"
+ENV PGVERSION="10" BACKREST_VERSION="2.08"
 
 # if you ever need to install package docs inside the container, uncomment
 #RUN sed -i '/nodocs/d' /etc/yum.conf
@@ -43,7 +43,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  && yum -y reinstall glibc-common \
  && yum -y install postgresql10 postgresql10-contrib postgresql10-server \
     pgaudit10 pgaudit10_set_user \
- && yum -y install crunchy-backrest \
+ && yum -y install crunchy-backrest-"${BACKREST_VERSION}" \
  && yum -y --setopt=tsflags='' install pgaudit_analyze \
  && yum -y clean all
 
