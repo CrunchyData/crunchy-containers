@@ -14,7 +14,7 @@ LABEL name="crunchydata/postgres" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="9.5" PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
+ENV PGVERSION="9.5" PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm" BACKREST_VERSION="2.08"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
@@ -28,7 +28,7 @@ RUN yum -y update && yum -y install epel-release \
     psmisc openssh-server openssh-clients \
  && yum -y install postgresql95-server postgresql95-contrib postgresql95 \
     pgaudit_95 \
-    pgbackrest \
+    pgbackrest-"${BACKREST_VERSION}" \
  && yum -y clean all
 
 ENV	PGROOT="/usr/pgsql-${PGVERSION}"
