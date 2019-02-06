@@ -41,6 +41,7 @@ The crunchy-pgadmin4 Docker image contains the following packages (versions vary
 **PGADMIN_SETUP_EMAIL**|None|Set this value to the email address used for pgAdmin4 login.
 **PGADMIN_SETUP_PASSWORD**|None|Set this value to a password used for pgAdmin4 login. This should be a strong password.
 **SERVER_PORT**|5050|Set this value to a change the port pgAdmin4 listens on.
+**SERVER_PATH**|/|Set this value to customize the path of the URL that will be utilized to access the pgAdmin4 web application.
 **ENABLE_TLS**|FALSE|Set this value to true to enable HTTPS on the pgAdmin4 container. This requires a `server.key` and `server.crt` to be mounted on the `/certs` directory.
 
 ### Optional
