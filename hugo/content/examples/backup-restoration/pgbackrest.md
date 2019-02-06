@@ -21,9 +21,11 @@ export PGBACKREST_PG1_PATH="/pgdata/${PGDATA_DIR}"
 export PGBACKREST_REPO1_PATH="/backrestrepo/${PGDATA_DIR}-backups"
 export PGBACKREST_LOG_PATH="/tmp"
 ```
+
 As shown above, a stanza named `db` is created by default, using the default values provided for both `PGBACKREST_PG1_PATH` and `PGBACKREST_REPO1_PATH`.  Variable `PGDATA_DIR` represents the name of the database cluster's data directory, which will either be the hostname of the container or the value specified for variable `PGDATA_PATH_OVERRIDE` during deployment of the container.  Please see the [crunchy-postgres](https://link) and/or [crunchy-postgres-gis](https://link) container specifications for additional details.
 
 While setting `PGBACKREST` to `true` provides a simple method for enabling pgBackRest within a crunchy-postgres or crunchy-postgres-gis container, pgBackRest is also fully configurable and customizable via the various environment variables supported by pgBackRest.  This applies to the crunchy-backrest-restore container as well, which is also configured using pgBackRest environment variables when performing database restores.  Therefore, during the deployment of any container container containing pgBackRest (crunchy-postgres, crunchy-postgres-gis or crunchy-backrest-restore), environment variables should be utilized to configure and customize the pgBackRest utility as needed and ensure the desired backup and restore functionality is achieved.  For instance, the following environment variables could be specified upon deployment of the crunchy-backrest-restore container in order to perform delta restore to a specific point-in-time:
+
 ```bash
 PGBACKREST_TYPE=time
 PITR_TARGET="2018-12-27 16:53:05.590156+00"
@@ -65,14 +67,15 @@ cd $CCPROOT/examples/kube/backrest/backup
 ```
 
 This will create the following in your Kubernetes environment:
-- A pod named **backrest** containing a PostgreSQL database with pgBackRest configured
+- A deployment named **backrest** containing a PostgreSQL database with pgBackRest configured
 - A service named **backrest** for the PostgreSQL database
 - A PV and PVC for the PGDATA directory
 - A PV and PVC for the pgBackRest backups and archives directories
 
-Once the **backrest** pod is running, use the `pgbackrest info` command to verify that pgbackrest has been properly configured and WAL archiving is working properly:
+Once the **backrest** deployment is running, use the `pgbackrest info` command to verify that pgbackrest has been properly configured and WAL archiving is working properly:
+
 ```bash
-$ ${CCP_CLI} exec backrest -- pgbackrest info \
+$ ${CCP_CLI} exec <backrest pod name> -- pgbackrest info \
   --stanza=db \
   --repo1-path=/backrestrepo/backrest-backups
 
@@ -84,11 +87,13 @@ stanza: db
     db (current)
         wal archive min/max (11-1): 000000010000000000000001 / 000000010000000000000003
 ```
+
 An output similar to the above indicates that pgBackRest was properly configured upon deployment of the pod, the **db** stanza has been created, and WAL archiving is working properly.  The error next to **status** is expected being that a backup has not yet been generated.
 
 Now that we have verified that pgBackRest is properly configured and enabled, a backup of the database can be generated.  Being that this is the first backup of the database, we will take create a **full** backup:
+
 ```bash
-$ ${CCP_CLI} exec backrest -- pgbackrest backup \
+$ ${CCP_CLI} exec <backrest pod name> -- pgbackrest backup \
   --stanza=db \
   --pg1-path=/pgdata/backrest \
   --repo1-path=/backrestrepo/backrest-backups \
@@ -111,18 +116,23 @@ pgBackRest provides numerous methods and strategies for restoring a PostgreSQL d
 This example will demonstrate a full database restore to an empty PGDATA directory.  ***Please ensure the Backup example is currently running and a full backup has been generated prior to running this example.***
 
 Prior to running the full restore, we will first make a change to the currently running database, which will we will then verify still exists following the restore.  Create a simple table in the database as follows:
+
 ```bash
-$ ${CCP_CLI} exec backrest -- psql -c "create table backrest_test_table (id int)"
+$ ${CCP_CLI} exec <backrest pod name> -- psql -c "create table backrest_test_table (id int)"
 CREATE TABLE
 ```
+
 Now verify that the new table exists:
+
 ```bash
-$ ${CCP_CLI} exec backrest -- psql -c "table backrest_test_table"
+$ ${CCP_CLI} exec <backrest pod name> -- psql -c "table backrest_test_table"
  id
 ----
 (0 rows)
 ```
+
 With the table in place, we can now start the full restore as follows:
+
 ```bash
 cd $CCPROOT/examples/kube/backrest/full
 ./run.sh
@@ -137,21 +147,23 @@ Please note that a brand new PV and PVC are created when running the restore to 
 - **PVC:** br-new-pgdata
 
 You can verify that the restore has completed successfully by verifying that the Kubernetes job has completed successfully:
+
 ```bash
 $ ${CCP_CLI} get jobs
 NAME                        COMPLETIONS   DURATION   AGE
 backrest-full-restore-job   1/1           15s        58s
 ```
 
-Once the job is complete, the post restore script can then be run, which will create a new pod named **backrest-full-restored** containing the restored database:
+Once the job is complete, the post restore script can then be run, which will create a new deployment named **backrest-full-restored** containing the restored database:
+
 ```bash
 cd $CCPROOT/examples/kube/backrest/full
 ./post-restore.sh
 ```
 
-Finally, once the **backrest-full-restored** pod is running we can verify that the restore was successful by verifying that the table created prior to the restore still exists:
+Finally, once the **backrest-full-restored** deployment is running we can verify that the restore was successful by verifying that the table created prior to the restore still exists:
 ```bash
-$ ${CCP_CLI} exec backrest-full-restored -- psql -c "table backrest_test_table"
+$ ${CCP_CLI} exec <backrest restored pod name> -- psql -c "table backrest_test_table"
  id
 ----
 (0 rows)
@@ -167,8 +179,9 @@ As demonstrated with the full restore above, the default behavior of pgBackRest 
 Prior to running the PITR restore, we will first verify the current state of the database, after which we will then make a change to the database.  This will allow us to verify that the PITR is successful by providing a method of verifying that the database has been restored to its current state following the restore.
 
 To verify the current state of the database, we will first verify that a table called **backrest_test_table** does not  exist in the database.
+
 ```bash 
-$ ${CCP_CLI} exec backrest -- psql -c " table backrest_test_table"
+$ ${CCP_CLI} exec <backrest pod name> -- psql -c " table backrest_test_table"
 ERROR:  relation "backrest_test_table" does not exist
 LINE 1:  table backrest_test_table
                ^
@@ -176,8 +189,9 @@ command terminated with exit code 1
 ```
 
 Next, capture the current timestamp, which will be used later in the example when performing the restore:
+
 ```bash
-$ ${CCP_CLI} exec backrest -- psql -c "select current_timestamp"
+$ ${CCP_CLI} exec <backrest pod name> -- psql -c "select current_timestamp"
        current_timestamp
 -------------------------------
  2018-12-27 16:53:05.590156+00
@@ -185,18 +199,23 @@ $ ${CCP_CLI} exec backrest -- psql -c "select current_timestamp"
 ```
 
 Now create table **backrest_test_table**:
+
 ```bash
-$ ${CCP_CLI} exec backrest -- psql -c "create table backrest_test_table (id int)"
+$ ${CCP_CLI} exec <backrest pod name> -- psql -c "create table backrest_test_table (id int)"
 CREATE TABLE
 ```
+
 Then verify that the new table exists:
+
 ```bash
-$ ${CCP_CLI} exec backrest -- psql -c "table backrest_test_table"
+$ ${CCP_CLI} exec <backrest pod name> -- psql -c "table backrest_test_table"
  id
 ----
 (0 rows)
 ```
+
 With the table in place, we can now start the PITR.  However, the timestamp captured above must also be provided in order to instruct pgBackRest to recover to that specific point-in-time.  This is done using the `CCP_BACKREST_TIMESTAMP` variable, which allows us to then start the PITR as follows (replace the timestamp in the command below with the timestamp you captured above):
+
 ```bash
 cd $CCPROOT/examples/kube/backrest/pitr
 CCP_BACKREST_TIMESTAMP="2018-12-20 09:49:02.275701+00" ./run.sh
@@ -206,33 +225,39 @@ This will create the following in your Kubernetes environment:
 - A Kubernetes job named **backrest-pitr-restore-job** which will perform the restore using the crunchy-backrest-restore container
 
 Additionally, when this example is run, the following pgBackRest environment variables are provided to the crunchy-backrest-restore container in order to initiate PITR restore to the point-in-time specified by the timestamp (in additional to any other pgBackRest variables required by the Crunchy Container Suite and pgBackRest):
+
 ```bash
 PGBACKREST_TYPE=time
 PITR_TARGET="${CCP_BACKREST_TIMESTAMP}"
 ```
+
 As can be seen above, the timestamp provided for `CCP_BACKREST_TIMESTAMP` is used to populate variable `PITR_TARGET`, and therefore specify the point-in-time to restore the database to, while `PGBACKREST_TYPE` is set to `time` to indicate that a PITR should be performed.
 
 Please note that the following pgBackRest environment variable is also set when performing the PITR, which results in a restore to a new/empty directory within an existing PV:
+
 ```bash
 PGBACKREST_PG1_PATH=/pgdata/backrest-pitr-restored
 ```
 
 You can verify that the restore has completed successfully by verifying that the Kubernetes job has completed successfully:
+
 ```bash
 $ ${CCP_CLI} get jobs
 NAME                        COMPLETIONS   DURATION   AGE
 backrest-pitr-restore-job   1/1           15s        58s
 ```
 
-Once the job is complete, the post restore script can then be run, which will create a new pod named **backrest-pitr-restored** containing the restored database:
+Once the job is complete, the post restore script can then be run, which will create a new deployment named **backrest-pitr-restored** containing the restored database:
+
 ```bash
 cd $CCPROOT/examples/kube/backrest/pitr
 ./post-restore.sh
 ```
 
-Finally, once the **backrest-pitr-restored** pod is running we can verify that the restore was successful by verifying that the table created prior to the restore no longer exists:
+Finally, once the **backrest-pitr-restored** deployment is running we can verify that the restore was successful by verifying that the table created prior to the restore no longer exists:
+
 ```bash 
-$ ${CCP_CLI} exec backrest-pitr-restored -- psql -c " table backrest_test_table"
+$ ${CCP_CLI} exec <backrest restored pod name> -- psql -c " table backrest_test_table"
 ERROR:  relation "backrest_test_table" does not exist
 LINE 1:  table backrest_test_table
                ^
@@ -246,9 +271,10 @@ By default, pgBackRest requires a clean/empty directory in order to perform a re
 
 Prior to running the delta restore, we will first verify the current state of the database, and we will then make a change to the database.  This will allow us to verify that the delta restore is successful by providing a method of verifying that the database has been restored to its current state following the restore.
 
-To verify the current state of the database, we will first verify that a table called **backrest_test_table** does not  exist in the database.
+To verify the current state of the database, we will first verify that a table called **backrest_test_table** does not exist in the database.
+
 ```bash 
-$ ${CCP_CLI} exec backrest -- psql -c " table backrest_test_table"
+$ ${CCP_CLI} exec <backrest pod name> -- psql -c " table backrest_test_table"
 ERROR:  relation "backrest_test_table" does not exist
 LINE 1:  table backrest_test_table
                ^
@@ -256,8 +282,9 @@ command terminated with exit code 1
 ```
 
 Next, capture the current timestamp, which will be used later in the example when performing the restore:
+
 ```bash
-$ ${CCP_CLI} exec backrest -- psql -c "select current_timestamp"
+$ ${CCP_CLI} exec <backrest pod name> -- psql -c "select current_timestamp"
        current_timestamp
 -------------------------------
  2018-12-27 16:53:05.590156+00
@@ -265,19 +292,23 @@ $ ${CCP_CLI} exec backrest -- psql -c "select current_timestamp"
 ```
 
 Now create table **backrest_test_table**:
+
 ```bash
-$ ${CCP_CLI} exec backrest -- psql -c "create table backrest_test_table (id int)"
+$ ${CCP_CLI} exec <backrest pod name> -- psql -c "create table backrest_test_table (id int)"
 CREATE TABLE
 ```
+
 Then verify that the new table exists:
+
 ```bash
-$ ${CCP_CLI} exec backrest -- psql -c "table backrest_test_table"
+$ ${CCP_CLI} exec <backrest pod name> -- psql -c "table backrest_test_table"
  id
 ----
 (0 rows)
 ```
 
 With the table in place, we can now start the delta restore.  When running the restore example the timestamp captured above must also be provided in order to instruct pgBackRest to recover to that specific point-in-time.  This is done using the `CCP_BACKREST_TIMESTAMP` variable, which allows us to then start the delta restore as follows (replace the timestamp in the command below with the timestamp you captured above):
+
 ```bash
 cd $CCPROOT/examples/kube/backrest/delta
 CCP_BACKREST_TIMESTAMP="2018-12-20 09:49:02.275701+00" ./run.sh
@@ -287,34 +318,40 @@ This will create the following in your Kubernetes environment:
 - A Kubernetes job named **backrest-delta-restore-job** which will perform the restore using the crunchy-backrest-restore container
 
 Additionally, when this example is run, the following pgBackRest environment variables are provided to the crunchy-backrest-restore container in order to initiate a delta restore to the point-in-time specified by the timestamp (in additional to any other pgBackRest variables required by the Crunchy Container Suite and pgBackRest):
+
 ```bash
 PGBACKREST_TYPE=time
 PITR_TARGET="${CCP_BACKREST_TIMESTAMP}"
 PGBACKREST_DELTA=y
 ```
+
 As can be seen above, the timestamp provided for `CCP_BACKREST_TIMESTAMP` is used to populate variable `PITR_TARGET`, and therefore specify the point-in-time to restore to, while `PGBACKREST_TYPE` is set to `time` to indicate that a PITR should be performed. `PGBACKREST_DELTA` is set to `y` to indicate that the delta option should be utilized when performing the restore.
 
 It's also worth noting that the following pgBackRest environment variable is also set when performing the delta restore, which results in a restore within the existing PGDATA directory utilized by the database deployed when running the **Backup** example:
+
 ```bash
 PGBACKREST_PG1_PATH=/pgdata/backrest
 ```
 
 You can then verify that the restore has completed successfully by verifying that the Kubernetes job has completed successfully:
+
 ```bash
 $ ${CCP_CLI} get jobs
 NAME                        COMPLETIONS   DURATION   AGE
 backrest-delta-restore-job   1/1           15s        58s
 ```
 
-Once the job is complete, the post restore script can then be run, which will create a new pod named **backrest-delta-restored** containing the restored database:
+Once the job is complete, the post restore script can then be run, which will create a new deployment named **backrest-delta-restored** containing the restored database:
+
 ```bash
 cd $CCPROOT/examples/kube/backrest/delta
 ./post-restore.sh
 ```
 
-Finally, once the **backrest-delta-restored** pod is running we can verify that the restore was successful by verifying that the table created prior to the restore no longer exists:
+Finally, once the **backrest-delta-restored** deployment is running we can verify that the restore was successful by verifying that the table created prior to the restore no longer exists:
+
 ```bash 
-$ ${CCP_CLI} exec backrest-delta-restored -- psql -c " table backrest_test_table"
+$ ${CCP_CLI} exec <backrest restored pod name> -- psql -c " table backrest_test_table"
 ERROR:  relation "backrest_test_table" does not exist
 LINE 1:  table backrest_test_table
                ^
@@ -333,27 +370,30 @@ cd $CCPROOT/examples/kube/backrest/async-archiving
 ```
 
 This will create the following in your Kubernetes environment:
-- A pod named **backrest-async-archive** containing a PostgreSQL database with pgBackRest configured
+- A deployment named **backrest-async-archive** containing a PostgreSQL database with pgBackRest configured
 - A service named **backrest-async-archive** for the PostgreSQL database
 - A PV and PVC for the PGDATA directory
 - A PV and PVC for the pgBackRest backups and archives directories
 
 Additionally, the following variable will be set during deployment of the pod in order to enable asynchronous archiving:
+
 ```bash
 PGBACKREST_ARCHIVE_ASYNC=y
 ```
 
-This will also result in the creation of the required spool path, which we can see by listing the contents of the `/pgdata` directory in the backrest-async-archive pod:
+This will also result in the creation of the required spool path, which we can see by listing the contents of the `/pgdata` directory in the backrest-async-archive deployment:
+
 ```bash
-$ ${CCP_CLI} exec backrest-async-archive -- ls /pgdata
+$ ${CCP_CLI} exec <backrest async archive pod name> -- ls /pgdata
 backrest-async-archive
 backrest-async-archive-backups
 backrest-async-archive-spool
 ```
 
 Once the database is up an running, a full backup can be taken:
+
 ```bash
-${CCP_CLI} exec backrest-async-archive -- pgbackrest backup \
+${CCP_CLI} exec <backrest async archive pod name> -- pgbackrest backup \
   --stanza=db \
   --pg1-path=/pgdata/backrest-async-archive \
   --repo1-path=/backrestrepo/backrest-async-archive-backups \
@@ -362,8 +402,9 @@ ${CCP_CLI} exec backrest-async-archive -- pgbackrest backup \
 ```
 
 And once a full backup has been taken, other types of backups can also be taken using pgBackRest, such as a differential backup:
+
 ```bash
-${CCP_CLI} exec backrest-async-archive -- pgbackrest backup \
+${CCP_CLI} exec <backrest async archive pod name> -- pgbackrest backup \
   --stanza=db \
   --pg1-path=/pgdata/backrest-async-archive \
   --repo1-path=/backrestrepo/backrest-async-archive-backups \
@@ -372,8 +413,9 @@ ${CCP_CLI} exec backrest-async-archive -- pgbackrest backup \
 ```
 
 The following command can then be run to verify that both backups were created successfully:
+
 ```bash
-${CCP_CLI} exec backrest-async-archive -- pgbackrest info \
+${CCP_CLI} exec <backrest async archive pod name> -- pgbackrest info \
   --stanza=db \
   --repo1-path=/backrestrepo/backrest-async-archive-backups
 ```

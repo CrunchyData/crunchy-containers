@@ -33,7 +33,7 @@ The crunchy-backrest-restore Docker image contains the following packages (versi
 ### Optional
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
-**PGBACKREST_DELTA **|None|Enables pgBackRest delta restore mode.  Used when a user needs to restore to a volume that already contains PostgreSQL data files.
+**PGBACKREST_DELTA**|None|Enables pgBackRest delta restore mode.  Used when a user needs to restore to a volume that already contains PostgreSQL data files.
 **PGBACKREST_TARGET**|None|PostgreSQL timestamp used when restoring up to a point in time. Required for Point In Time Recovery (PITR) restores.
 **PGBACKREST_PG1_PATH**|None|Path where PostgreSQL data directory can be found.  This variable can also be used to setup a new PostgreSQL data directory on an empty volume.
 **BACKREST_CUSTOM_OPTS**|None|Custom pgBackRest options can be added here to customize pgBackRest restores.
