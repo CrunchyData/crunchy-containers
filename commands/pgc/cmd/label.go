@@ -15,13 +15,13 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/crunchydata/crunchy-containers/commands/kubeapi"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"strings"
 	"k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"github.com/crunchydata/crunchy-containers/commands/kubeapi"
-
+	"os"
+	"strings"
 )
 
 var LabelCmdLabel string
@@ -52,13 +52,18 @@ Example:
 	Run: func(cmd *cobra.Command, args []string) {
 		log.Debug("label called")
 
-		if len(args) == 0  {
+		if len(args) == 0 {
 			log.Error("A resource type and name must be specified.")
 			return
 		}
 
 		resources, labels := parseAndClassifyArgs(args)
-		labelResource(resources, labels)
+
+		err := labelResource(resources, labels)
+
+		if err {
+			os.Exit(1) // some error occurred during labeling.
+		}
 	},
 }
 
@@ -69,7 +74,9 @@ func init() {
 
 }
 
-func labelResource(resources map[string]string, labels map[string]string) {
+func labelResource(resources map[string]string, labels map[string]string) bool {
+
+	var errorOccurred = false
 
 	if DebugFlag {
 		dumpParsedArgs(resources, labels)
@@ -86,13 +93,12 @@ func labelResource(resources map[string]string, labels map[string]string) {
 		thePod, podErr := podClient.Get(podName, metav1.GetOptions{})
 
 		if podErr != nil {
-			log.WithFields(log.Fields {
-				"pod": podName,
-				"namespace" : namespace,
-				}).Error("Pod not found in namespace.")
+			log.WithFields(log.Fields{
+				"pod":       podName,
+				"namespace": namespace,
+			}).Error("Pod not found in namespace.")
 			continue
 		}
-
 
 		podLabels := thePod.GetLabels() // get current labels assigned to pod
 
@@ -107,40 +113,46 @@ func labelResource(resources map[string]string, labels map[string]string) {
 			mergeMaps(podLabels, newLabels)
 		}
 
-
 		if DebugFlag {
 			fmt.Println("New Labels: ")
-			for k,v := range newLabels {
+			for k, v := range newLabels {
 				fmt.Printf("	%s:%s\n", k, v)
 			}
 		}
 
 		thePod.SetLabels(newLabels)
 
-		podClient.Update(thePod)
+		_, updateErr := podClient.Update(thePod)
+
+		if updateErr != nil {
+			log.WithFields(log.Fields{
+				"pod":       podName,
+				"namespace": namespace,
+			}).Error("Updating pod label error occurred")
+			errorOccurred = true
+		}
 
 	}
-
+	return errorOccurred
 }
 
 // given two maps, assign all key value pairs found in source to dest
 // identical keys will get overwritten
 func mergeMaps(source map[string]string, dest map[string]string) {
 
-	for k,v := range source {
+	for k, v := range source {
 		dest[k] = v
 	}
 }
 
-func parseAndClassifyArgs(args []string)(resources map[string]string, labels map[string]string ) {
-
+func parseAndClassifyArgs(args []string) (resources map[string]string, labels map[string]string) {
 
 	labels = map[string]string{}
 	resources = map[string]string{}
-	resType := ""	// placeholder for resource type 
-	
+	resType := "" // placeholder for resource type
+
 	for _, item := range args {
-	
+
 		// there is an assumption here that labels appear with = and resources
 		// separated by a space in pairs. Minimal works for now.
 		if strings.Contains(item, "=") {
@@ -153,7 +165,7 @@ func parseAndClassifyArgs(args []string)(resources map[string]string, labels map
 			if len(resType) > 0 {
 				resources[resType] = item
 				resType = ""
-				
+
 			} else {
 				resType = item
 			}
@@ -161,43 +173,38 @@ func parseAndClassifyArgs(args []string)(resources map[string]string, labels map
 		}
 	}
 
-
-
 	return resources, labels
 }
 
-
-
 func dumpParsedArgs(resources map[string]string, labels map[string]string) {
 
-	
 	fmt.Printf("Resources: \n")
-	for k, v := range resources { 
+	for k, v := range resources {
 		fmt.Printf("	%s:%s\n", k, v)
 	}
 
 	fmt.Printf("Labels: \n")
-	for k, v := range labels { 
+	for k, v := range labels {
 		fmt.Printf("	%s:%s\n", k, v)
 	}
 
-fmt.Println("Overwrite: ", Overwrite)
-fmt.Println("")
+	fmt.Println("Overwrite: ", Overwrite)
+	fmt.Println("")
 
 }
 
-func dumpPodInfo(pods []v1.Pod ) {
+func dumpPodInfo(pods []v1.Pod) {
 
 	for _, pod := range pods {
 
 		podLabels := pod.GetLabels()
-		fmt.Printf("Pod: %s\n", pod.ObjectMeta.Name) 
+		fmt.Printf("Pod: %s\n", pod.ObjectMeta.Name)
 		fmt.Printf("Labels: \n")
-		for k,v := range podLabels {
+		for k, v := range podLabels {
 			fmt.Printf("	%s:%s\n", k, v)
 		}
 		fmt.Printf("\n")
 
 	}
-	
+
 }
