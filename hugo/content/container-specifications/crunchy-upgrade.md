@@ -2,7 +2,7 @@
 title: "crunchy-upgrade"
 date:  
 draft: false
-weight: 167
+weight: 15
 ---
 
 The crunchy-upgrade container contains both the 9.5 / 9.6 and 9.6 / 10

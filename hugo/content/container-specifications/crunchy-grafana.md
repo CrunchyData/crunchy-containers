@@ -2,7 +2,7 @@
 title: "crunchy-grafana"
 date: 2018-05-24T10:06:17-07:00
 draft: false
-weight: 159
+weight: 4
 ---
 
 Visual dashboards are created from the collected and stored data that crunchy-collect and crunchy-prometheus

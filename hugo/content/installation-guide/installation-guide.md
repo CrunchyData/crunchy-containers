@@ -78,7 +78,8 @@ highlighted below where necessary.
 
 ### CentOS 7 only
 
-    sudo yum -y install golang git docker
+    sudo yum -y install epel-release --enablerepo=extras
+    sudo yum -y install golang git
 
 ### RHEL 7 only
 

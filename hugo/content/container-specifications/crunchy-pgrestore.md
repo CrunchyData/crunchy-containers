@@ -2,7 +2,7 @@
 title: "crunchy-pgrestore"
 date: 
 draft: false
-weight: 156
+weight: 10
 ---
 
 The restore image provides a means of performing a restore
