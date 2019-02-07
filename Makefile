@@ -10,10 +10,10 @@ endif
 all: pgimages extras
 
 # Build images that use postgres
-pgimages: commands backup backrestrestore collect pgadmin4 pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade
+pgimages: commands backup backrestrestore collect pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade
 
 # Build non-postgres images
-extras: grafana pgbadger prometheus scheduler  
+extras: grafana prometheus scheduler  
 
 versiontest:
 ifndef CCP_BASEOS
