@@ -5,7 +5,15 @@ endif
 .PHONY:	all versiontest
 
 # Default target
-all:    commands backup backrestrestore collect grafana pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis prometheus scheduler upgrade
+#all:    commands backup backrestrestore collect grafana pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis prometheus scheduler upgrade
+
+all: pgimages extras
+
+# Build images that use postgres
+pgimages: commands backup backrestrestore collect pgadmin4 pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade
+
+# Build non-postgres images
+extras: grafana pgbadger prometheus scheduler  
 
 versiontest:
 ifndef CCP_BASEOS
