@@ -5,8 +5,6 @@ endif
 .PHONY:	all versiontest
 
 # Default target
-#all:    commands backup backrestrestore collect grafana pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis prometheus scheduler upgrade
-
 all: pgimages extras
 
 # Build images that use postgres
