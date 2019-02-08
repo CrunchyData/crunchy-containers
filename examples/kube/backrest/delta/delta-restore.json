@@ -5,6 +5,7 @@
         "name": "backrest-delta-restore-job"
     },
     "spec": {
+        "backoffLimit": 0,
         "template": {
             "metadata": {
                 "name": "backrest-delta-restore-job",
