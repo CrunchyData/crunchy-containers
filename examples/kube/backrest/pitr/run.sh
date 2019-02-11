@@ -22,7 +22,9 @@ then
     exit 1
 fi
 
-${CCP_CLI?} exec --namespace=${CCP_NAMESPACE?} -ti backrest date >/dev/null
+pod=$(${CCP_CLI?} get pods --namespace=${CCP_NAMESPACE?} --no-headers -l name=backrest | awk '{print $1}')
+
+${CCP_CLI?} exec --namespace=${CCP_NAMESPACE?} -ti ${pod?} date >/dev/null
 if [[ $? -ne 0 ]]
 then
     echo_err "The backup example must be running prior to using this example."

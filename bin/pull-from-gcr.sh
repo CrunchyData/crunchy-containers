@@ -20,7 +20,6 @@ IMAGES=(
     crunchy-prometheus
     crunchy-pgrestore
     crunchy-upgrade
-    crunchy-vacuum
 )
 
 function echo_green() {

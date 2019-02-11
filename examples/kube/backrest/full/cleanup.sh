@@ -17,7 +17,7 @@ echo_info "Cleaning up.."
 
 cleanup "$CCP_NAMESPACE-backrest-full-restore"
 
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod,service backrest 
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} deployment,service backrest 
 
 $CCPROOT/examples/waitforterm.sh backrest-full-restored ${CCP_CLI?}
 

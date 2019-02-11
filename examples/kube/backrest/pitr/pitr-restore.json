@@ -5,6 +5,7 @@
         "name": "backrest-pitr-restore-job"
     },
     "spec": {
+        "backoffLimit": 0,
         "template": {
             "metadata": {
                 "name": "backrest-pitr-restore-job",

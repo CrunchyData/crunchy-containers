@@ -1,8 +1,8 @@
 ---
 title: "crunchy-postgres-gis"
-date: 
+date:
 draft: false
-weight: 152
+weight: 11
 ---
 
 PostgreSQL (pronounced "post-gress-Q-L") is an open source, ACID compliant, relational database management system (RDBMS) developed by a worldwide team of volunteers. The crunchy-postgres-gis container image is unmodified, open source PostgreSQL packaged and maintained by professionals. This image is identical to the crunchy-postgres image except it includes the open source geospatial extension [PostGIS](https://postgis.net/) for PostgreSQL in addition to the language extension [PL/R](http://www.joeconway.com/plr.html) which allows for writing functions in the R statistical computing language.
@@ -65,6 +65,7 @@ The crunchy-postgres-gis Docker image contains the following packages (versions 
 **XLOGDIR**|None| Set this value to configure PostgreSQL to send WAL to the `/pgwal` volume (by default WAL is stored in `/pgdata`)
 **PGBACKREST**|false| Set this value to `true` in order to enable and initialize pgBackRest in the container
 **BACKREST_SKIP_CREATE_STANZA**|false| Set this value to `true` in order to skip the configuration check and the automatic creation of a stanza while initializing pgBackRest in the container
+**PG_CTL_OPTS**|None| Set this value to supply custom `pg_ctl` options (ex: `-c shared_preload_libraries=pgaudit`) during the initialization phase the container start.
 
 ## Volumes
 
