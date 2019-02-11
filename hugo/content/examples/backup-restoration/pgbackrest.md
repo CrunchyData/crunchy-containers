@@ -22,7 +22,7 @@ export PGBACKREST_REPO1_PATH="/backrestrepo/${PGDATA_DIR}-backups"
 export PGBACKREST_LOG_PATH="/tmp"
 ```
 
-As shown above, a stanza named `db` is created by default, using the default values provided for both `PGBACKREST_PG1_PATH` and `PGBACKREST_REPO1_PATH`.  Variable `PGDATA_DIR` represents the name of the database cluster's data directory, which will either be the hostname of the container or the value specified for variable `PGDATA_PATH_OVERRIDE` during deployment of the container.  Please see the [crunchy-postgres](https://link) and/or [crunchy-postgres-gis](https://link) container specifications for additional details.
+As shown above, a stanza named `db` is created by default, using the default values provided for both `PGBACKREST_PG1_PATH` and `PGBACKREST_REPO1_PATH`.  Variable `PGDATA_DIR` represents the name of the database cluster's data directory, which will either be the hostname of the container or the value specified for variable `PGDATA_PATH_OVERRIDE` during deployment of the container.  Please see the [crunchy-postgres](/container-specifications/crunchy-postgres) and/or [crunchy-postgres-gis](/container-specifications/crunchy-postgres-gis) container specifications for additional details.
 
 While setting `PGBACKREST` to `true` provides a simple method for enabling pgBackRest within a crunchy-postgres or crunchy-postgres-gis container, pgBackRest is also fully configurable and customizable via the various environment variables supported by pgBackRest.  This applies to the crunchy-backrest-restore container as well, which is also configured using pgBackRest environment variables when performing database restores.  Therefore, during the deployment of any container container containing pgBackRest (crunchy-postgres, crunchy-postgres-gis or crunchy-backrest-restore), environment variables should be utilized to configure and customize the pgBackRest utility as needed and ensure the desired backup and restore functionality is achieved.  For instance, the following environment variables could be specified upon deployment of the crunchy-backrest-restore container in order to perform delta restore to a specific point-in-time:
 
@@ -32,7 +32,7 @@ PITR_TARGET="2018-12-27 16:53:05.590156+00"
 PGBACKREST_DELTA=y
 ```
 
-Full, incremental and differential backups of PostgreSQL databases deployed using the Crunchy Container Suite can scheduled using pgBackRest and the crunchy-scheduler container, and/or can also be performed manually by executing pgBackRest commands against the desired crunchy-postgres or crunchy-postgres-gis container.  Database restores, on the other hand, can be performed via the crunchy-backrest-restore container, which offers full pgBackRest restore capabilities, such as full, point-in-time and delta restores.  Further information and guidance for performing both backups and restores using the Crunchy Container Suite and pgBackRest will be provided in the examples below.  Additionally, for more information on utilizing the crunchy-scheduler container to schedule and perform pgBackRest database backups, please see the crunchy-scheduler [specifications](https://link) and [examples](https://link). 
+Full, incremental and differential backups of PostgreSQL databases deployed using the Crunchy Container Suite can scheduled using pgBackRest and the crunchy-scheduler container, and/or can also be performed manually by executing pgBackRest commands against the desired crunchy-postgres or crunchy-postgres-gis container.  Database restores, on the other hand, can be performed via the crunchy-backrest-restore container, which offers full pgBackRest restore capabilities, such as full, point-in-time and delta restores.  Further information and guidance for performing both backups and restores using the Crunchy Container Suite and pgBackRest will be provided in the examples below.  Additionally, for more information on utilizing the crunchy-scheduler container to schedule and perform pgBackRest database backups, please see the crunchy-scheduler [specifications](/container-specifications/crunchy-scheduler) and [examples](/examples/backup-restoration/scheduler/). 
 
 In addition to providing the backup and restoration capabilities discussed above, pgBackRest supports the capability to asynchronously push and get write ahead logs (WAL) to and from a WAL archive.  To enable asychronous WAL archiving within a crunchy-postgres or crunchy-postgres-gis container, pgBackRest environment variable `PGBACKREST_ARCHIVE_ASYNC` must be set to `"y"` during deployment (`PGBACKREST_ARCHIVE_ASYNC=y`).  This will automatically enable WAL archiving within the container if not otherwise explicitly enabled, set the proper `pgbackrest archive` command within the `postgresql.conf` configuration file, and ensure the proper spool path has been created.  
 
@@ -67,10 +67,11 @@ cd $CCPROOT/examples/kube/backrest/backup
 ```
 
 This will create the following in your Kubernetes environment:
-- A deployment named **backrest** containing a PostgreSQL database with pgBackRest configured
-- A service named **backrest** for the PostgreSQL database
-- A PV and PVC for the PGDATA directory
-- A PV and PVC for the pgBackRest backups and archives directories
+
+* A deployment named **backrest** containing a PostgreSQL database with pgBackRest configured
+* A service named **backrest** for the PostgreSQL database
+* A PV and PVC for the PGDATA directory
+* A PV and PVC for the pgBackRest backups and archives directories
 
 Once the **backrest** deployment is running, use the `pgbackrest info` command to verify that pgbackrest has been properly configured and WAL archiving is working properly:
 
@@ -108,9 +109,10 @@ The warning displayed is expected, since backup retention has not been configure
 
 ### Restore
 pgBackRest provides numerous methods and strategies for restoring a PostgreSQL database.  The following section will demonstrate  three forms of database restores that can be  accomplished when using pgBackRest with the Crunchy Container Suite:
-- **Full:** restore all database files into an empty PGDATA directory
-- **point-in-time Recovery (PITR):** restore a database to a specific point-in-time using an empty PGDATA directory
-- **Delta:** restore a database to a specific point-in-time using an existing PGDATA directory
+
+* **Full:** restore all database files into an empty PGDATA directory
+* **point-in-time Recovery (PITR):** restore a database to a specific point-in-time using an empty PGDATA directory
+* **Delta:** restore a database to a specific point-in-time using an existing PGDATA directory
 
 #### Full
 This example will demonstrate a full database restore to an empty PGDATA directory.  ***Please ensure the Backup example is currently running and a full backup has been generated prior to running this example.***
@@ -139,12 +141,14 @@ cd $CCPROOT/examples/kube/backrest/full
 ```
 
 This will create the following in your Kubernetes environment:
-- A Kubernetes job named **backrest-full-restore-job** which will perform the restore using the crunchy-backrest-restore container
-- A PV and PVC for the new PGDATA directory that will contain the restored database.  The directory will initially be empty, as required  pgBackRest when performing a full restore, and will then contain the restored database upon completion of the restore.
+
+* A Kubernetes job named **backrest-full-restore-job** which will perform the restore using the crunchy-backrest-restore container
+* A PV and PVC for the new PGDATA directory that will contain the restored database.  The directory will initially be empty, as required  pgBackRest when performing a full restore, and will then contain the restored database upon completion of the restore.
 
 Please note that a brand new PV and PVC are created when running the restore to clearly indicate that the database will be restored into an entirely new (i.e. empty) volume as required by pgBackRest.  The names of the new PV and PVC are as follows:
-- **PV:** ${CCP_NAMESPACE}-br-new-pgdata
-- **PVC:** br-new-pgdata
+
+* **PV:** ${CCP_NAMESPACE}-br-new-pgdata
+* **PVC:** br-new-pgdata
 
 You can verify that the restore has completed successfully by verifying that the Kubernetes job has completed successfully:
 
@@ -171,7 +175,7 @@ $ ${CCP_CLI} exec <backrest restored pod name> -- psql -c "table backrest_test_t
 
 Please note that the default behavior of pgBackRest is to recover to the end of the WAL archive stream, which is why the full restore contained all changes made since the initial full backup was taken, including the creation of table **backrest_test_table**.  pgBackRest therefore played the entire WAL archive stream for all changes that occurred up until the restore.
 
-*As a reminder, please remember to run the cleanup script for the **Backup** example after running the cleanup script for this example.*
+_As a reminder, please remember to run the cleanup script for the **Backup** example after running the cleanup script for this example._
 
 #### PITR
 As demonstrated with the full restore above, the default behavior of pgBackRest is to recover to the end of the WAL archive stream. However, pgBackRest also provides the ability to recover to a specific point-in-time utilizing the WAL archives created since the last backup. This example will demonstrate how pgBackRest can be utilized to perform a point-in-time recovery (PITR) and therefore recover the database to specific point-in-time specified by the user.  ***Please ensure that the Backup example is currently running and a full backup has been generated prior to running this example.***
@@ -264,7 +268,7 @@ LINE 1:  table backrest_test_table
 command terminated with exit code 1
 ```
 
-*As a reminder, please remember to run the cleanup script for the **Backup** example after running the cleanup script for this example.*
+_As a reminder, please remember to run the cleanup script for the **Backup** example after running the cleanup script for this example._
 
 #### Delta
 By default, pgBackRest requires a clean/empty directory in order to perform a restore.  However, pgBackRest also provides an another option when performing the restore in the form of the **delta** option, which allows the restore to be run against an existing PGDATA directory.  With the delta option enabled, pgBackRest will use checksums to determine which files in the directory can be preserved, and which need to be restored (please note that pgBackRest will also remove any files that are not present in the backup).  This example will again demonstrate a point-in-time recovery (PITR), only this time the restore will occur within the existing PGDATA directory by specifying the **delta** option during the restore. ***Please ensure that the Backup example is currently running and a full backup has been generated prior to running this example.***
@@ -358,7 +362,7 @@ LINE 1:  table backrest_test_table
 command terminated with exit code 1
 ```
 
-*As a reminder, please remember to run the cleanup script for the **Backup** example after running the cleanup script for this example.*
+_As a reminder, please remember to run the cleanup script for the **Backup** example after running the cleanup script for this example._
 
 ### Async Archiving
 pgBackRest supports the capability to asynchronously push and get write ahead logs (WAL) to and from a WAL archive. Asynchronous archiving can improve performance by parallelizing operations, while also reducing the number of connections to remote storage. For more information on async archiving and its benefits, please see the [official pgBackRest documentation](https://pgbackrest.org/).  This example will demonstrate how asynchronous archiving can be enabled within a crunchy-postgres or crunchy-postgres-gis container, while then also demonstrating the creation of a differential backup.
@@ -523,7 +527,7 @@ $ docker exec backrest-full-restored psql -c "table backrest_test_table"
 
 Please note that the default behavior of pgBackRest is to recover to the end of the WAL archive stream, which is why the full restore contained all changes made since the initial full backup was taken, including the creation of table **backrest_test_table**.  pgBackRest therefore played the entire WAL archive stream for all changes that occurred up until the restore.
 
-*As a reminder, please remember to run the cleanup script for the **Backup** example after running the cleanup script for this example.*
+_As a reminder, please remember to run the cleanup script for the **Backup** example after running the cleanup script for this example._
 
 #### PITR
 As demonstrated with the full restore above, the default behavior of pgBackRest is to recover to the end of the WAL archive stream. However, pgBackRest also provides the ability to recover to a specific point-in-time utilizing the WAL archives created since the last backup. This example will demonstrate how pgBackRest can be utilized to perform a point-in-time recovery (PITR) and therefore recover the database to specific point-in-time specified by the user.  ***Please ensure that the Backup example is currently running and a full backup has been generated prior to running this example.***
@@ -601,7 +605,7 @@ LINE 1:  table backrest_test_table
 command terminated with exit code 1
 ```
 
-*As a reminder, please remember to run the cleanup script for the **Backup** example after running the cleanup script for this example.*
+_As a reminder, please remember to run the cleanup script for the **Backup** example after running the cleanup script for this example._
 
 #### Delta
 By default, pgBackRest requires a clean/empty directory in order to perform a restore.  However, pgBackRest also provides an another option when performing the restore in the form of the **delta** option, which allows the restore to be run against an existing PGDATA directory.  With the delta option enabled, pgBackRest will use checksums to determine which files in the directory can be preserved, and which need to be restored (please note that pgBackRest will also remove any files that are not present in the backup).  This example will again demonstrate a point-in-time recovery (PITR), only this time the restore will occur within the existing PGDATA directory by specifying the **delta** option during the restore. ***Please ensure that the Backup example is currently running and a full backup has been generated prior to running this example.***
@@ -681,7 +685,7 @@ LINE 1:  table backrest_test_table
 command terminated with exit code 1
 ```
 
-*As a reminder, please remember to run the cleanup script for the **Backup** example after running the cleanup script for this example.*
+_As a reminder, please remember to run the cleanup script for the **Backup** example after running the cleanup script for this example._
 
 ### Async Archiving
 pgBackRest supports the capability to asynchronously push and get write ahead logs (WAL) to and from a WAL archive. Asynchronous archiving can improve performance by parallelizing operations, while also reducing the number of connections to remote storage. For more information on async archiving and its benefits, please see the [official pgBackRest documentation](https://pgbackrest.org/).  This example will demonstrate how asynchronous archiving can be enabled within a crunchy-postgres or crunchy-postgres-gis container, while then also demonstrating the creation of a differential backup.
@@ -693,9 +697,10 @@ cd $CCPROOT/examples/docker/backrest/async-archive
 ```
 
 This will create the following in your Docker environment:
-- A container named **backrest-async-archive** containing a PostgreSQL database with pgBackRest configured
-- A volume for the PGDATA directory
-- A volume for the pgBackRest backups and archives directories
+
+* A container named **backrest-async-archive** containing a PostgreSQL database with pgBackRest configured
+* A volume for the PGDATA directory
+* A volume for the pgBackRest backups and archives directories
 
 Additionally, the following variable will be set during deployment of the container in order to enable asynchronous archiving:
 ```bash
