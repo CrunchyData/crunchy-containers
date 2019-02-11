@@ -23,7 +23,7 @@ COPY conf/atomic/postgres-gis/help.1 /help.1
 COPY conf/atomic/postgres-gis/help.md /help.md
 COPY conf/licenses /licenses
 
-ENV PGVERSION="9.5" BACKREST_VERSION="2.08"
+ENV PGVERSION="9.5" BACKREST_VERSION="2.10"
 
 # PGDG Postgres repo
 #RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-3.noarch.rpm
