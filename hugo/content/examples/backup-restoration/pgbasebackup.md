@@ -45,7 +45,7 @@ To shutdown the instance and remove the container for each example, run the foll
 
 Run the backup with this command:
 ```
-cd $CCPROOT/examples/docker/backup
+cd $CCPROOT/examples/docker/pgbasebackup/backup
 ./run.sh
 ```
 
@@ -70,7 +70,7 @@ An example of BACKUP_PATH is as followed:
 
 When you are ready to restore from the backup created, run the following example:
 ```
-cd $CCPROOT/examples/docker/restore
+cd $CCPROOT/examples/docker/pgbasebackup/full
 ./run.sh
 ```
 
@@ -78,7 +78,7 @@ cd $CCPROOT/examples/docker/restore
 
 Running the example:
 ```
-cd $CCPROOT/examples/kube/backup
+cd $CCPROOT/examples/kube/pgbasebackup/backup
 ./run.sh
 ```
 
@@ -108,7 +108,7 @@ An example of BACKUP_PATH defined as a variable within the JSON script is as fol
 
 Running the example:
 ```
-cd $CCPROOT/examples/kube/restore
+cd $CCPROOT/examples/kube/pgbasebackup/full
 ./run.sh
 ```
 
@@ -198,7 +198,7 @@ To shutdown the instance and remove the container for each example, run the foll
 
 Create a database container as follows:
 ```
-cd $CCPROOT/examples/docker/pitr
+cd $CCPROOT/examples/docker/pgbasebackup/pitr
 ./run-pitr.sh
 ```
 
@@ -299,7 +299,7 @@ WAL history, resuming the recovery is not necessary to enable writes.
 
 Start by running the example database container:
 ```
-cd $CCPROOT/examples/kube/pitr
+cd $CCPROOT/examples/kube/pgbasebackup/pitr
 ./run-pitr.sh
 ```
 
