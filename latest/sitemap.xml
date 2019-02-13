@@ -12,6 +12,10 @@
   </url>
   
   <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-backrest-restore/</loc>
+  </url>
+  
+  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/overview/overview/</loc>
   </url>
   
@@ -21,6 +25,15 @@
   
   <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/overview/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-backup/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-collect/</loc>
+    <lastmod>2018-05-24T10:06:13-07:00</lastmod>
   </url>
   
   <url>
@@ -36,11 +49,21 @@
   </url>
   
   <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-grafana/</loc>
+    <lastmod>2018-05-24T10:06:17-07:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/examples/</loc>
   </url>
   
   <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/examples/postgresql/primary-replica/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgadmin4/</loc>
+    <lastmod>2018-05-24T12:05:42-07:00</lastmod>
   </url>
   
   <url>
@@ -57,6 +80,10 @@
   </url>
   
   <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbadger/</loc>
+  </url>
+  
+  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/contributing/</loc>
   </url>
   
@@ -65,11 +92,47 @@
   </url>
   
   <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbouncer/</loc>
+  </url>
+  
+  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/examples/postgresql/postgis/</loc>
   </url>
   
   <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/troubleshooting/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgdump/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgpool/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgrestore/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres-gis/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-scheduler/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-upgrade/</loc>
   </url>
   
   <url>
@@ -85,11 +148,7 @@
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/examples/backup-restoration/pgdump/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/examples/backup-restoration/pgrestore/</loc>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/examples/backup-restoration/pgdump-pgrestore/</loc>
   </url>
   
   <url>
@@ -138,73 +197,6 @@
   
   <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/installation-guide/storage-configuration/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres-gis/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-backup/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-backrest-restore/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgdump/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgrestore/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-collect/</loc>
-    <lastmod>2018-05-24T10:06:13-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-scheduler/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-grafana/</loc>
-    <lastmod>2018-05-24T10:06:17-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgadmin4/</loc>
-    <lastmod>2018-05-24T12:05:42-07:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbouncer/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbadger/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgpool/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-upgrade/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-vacuum/</loc>
   </url>
   
   <url>

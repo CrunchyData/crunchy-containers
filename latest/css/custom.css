@@ -61,6 +61,10 @@ nav.shortcuts a {
     margin: 0 0.5rem;
 }
 
+nav.shortcuts li a label {
+    cursor: pointer;
+}
+
 ul.menu b {
     font-weight: 500;
 }
@@ -93,8 +97,12 @@ article > aside .menu .dd-item.active > div {
     background-color: transparent;
 }
 
-article > aside .menu .dd-item.active > div * {
+article > aside .menu .dd-item.active > div a {
     font-weight: 300;
+    border-bottom: none;
+}
+
+article > aside .menu .dd-item.active > div i {
     border-bottom: none;
 }
 
@@ -106,11 +114,6 @@ article > aside .menu .dd-item div a:active,
 .dropdown-menu li:active {
     background-color: transparent;
     padding: 0 0rem;
-}
-
-article > aside .menu .dd-item.haschildren > div a {
-    cursor: none;
-    pointer-events: none;
 }
 
 article > aside .menu .dd-item li {
