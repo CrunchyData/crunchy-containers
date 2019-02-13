@@ -6,7 +6,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.52" />
+<meta name="generator" content="Hugo 0.53" />
 <title>Storage Configuration :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/latest/favicon.png" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/latest/css/nucleus.css" rel="stylesheet">
@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 <script src="https://crunchydata.github.io/crunchy-containers/latest/js/jquery-2.x.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js" integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP" crossorigin="anonymous"></script>
+<script src="https://crunchydata.github.io/crunchy-containers/latest/js/main.js"></script>
 <script src="https://crunchydata.github.io/crunchy-containers/latest/js/toc.js"></script>
 <script type="text/javascript">
       var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/latest\/";
@@ -210,17 +211,10 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/examples/backup-restoration/pgdump/" class="dd-item">
+      <li data-nav-id="/examples/backup-restoration/pgdump-pgrestore/" class="dd-item">
         <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/examples/backup-restoration/pgdump/">
-            pgDump
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/examples/backup-restoration/pgrestore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/examples/backup-restoration/pgrestore/">
-            pgRestore
+          <a href="https://crunchydata.github.io/crunchy-containers/latest/examples/backup-restoration/pgdump-pgrestore/">
+            pgDump &amp; pgRestore
           </a>
         </div>
     </li>
@@ -313,17 +307,10 @@
 
       </div>
         <ul>
-      <li data-nav-id="/container-specifications/crunchy-postgres/" class="dd-item">
+      <li data-nav-id="/container-specifications/crunchy-backrest-restore/" class="dd-item">
         <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres/">
-            crunchy-postgres
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-postgres-gis/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres-gis/">
-            crunchy-postgres-gis
+          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-backrest-restore/">
+            crunchy-backrest-restore
           </a>
         </div>
     </li>
@@ -334,45 +321,10 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/container-specifications/crunchy-backrest-restore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-backrest-restore/">
-            crunchy-backrest-restore
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-pgdump/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgdump/">
-            crunchy-pgdump
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-pgrestore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgrestore/">
-            crunchy-pgrestore
-          </a>
-        </div>
-    </li>
       <li data-nav-id="/container-specifications/crunchy-collect/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-collect/">
             crunchy-collect
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-scheduler/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-scheduler/">
-            crunchy-scheduler
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-prometheus/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/">
-            crunchy-prometheus
           </a>
         </div>
     </li>
@@ -390,6 +342,13 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="/container-specifications/crunchy-pgbadger/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbadger/">
+            crunchy-pgbadger
+          </a>
+        </div>
+    </li>
       <li data-nav-id="/container-specifications/crunchy-pgbouncer/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbouncer/">
@@ -397,10 +356,10 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/container-specifications/crunchy-pgbadger/" class="dd-item">
+      <li data-nav-id="/container-specifications/crunchy-pgdump/" class="dd-item">
         <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbadger/">
-            crunchy-pgbadger
+          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgdump/">
+            crunchy-pgdump
           </a>
         </div>
     </li>
@@ -411,17 +370,45 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="/container-specifications/crunchy-pgrestore/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgrestore/">
+            crunchy-pgrestore
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-postgres-gis/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres-gis/">
+            crunchy-postgres-gis
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-postgres/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres/">
+            crunchy-postgres
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-prometheus/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/">
+            crunchy-prometheus
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-scheduler/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-scheduler/">
+            crunchy-scheduler
+          </a>
+        </div>
+    </li>
       <li data-nav-id="/container-specifications/crunchy-upgrade/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-upgrade/">
             crunchy-upgrade
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-vacuum/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-vacuum/">
-            crunchy-vacuum
           </a>
         </div>
     </li>
@@ -645,14 +632,14 @@ following command to allow NFS write permissions:</p>
 
 <li><p>Detailed instructions for setting up a NFS server on Centos 7 can be found using the following link:</p>
 
-<p><a href="http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html">http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html</a></p></li>
+<p><a href="http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html" target="_blank">http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html</a></p></li>
 
 <li><p>If you are running your client on a VM, you will need to
 add <strong>insecure</strong> to the exportfs file on the NFS server due to the way port
 translation is done between the VM host and the VM instance.  For more details on this bug, please see the
 following link:</p>
 
-<p><a href="http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting">http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting</a></p></li>
+<p><a href="http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting" target="_blank">http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting</a></p></li>
 
 <li><p>A suggested best practice for tuning NFS for PostgreSQL is to configure the PostgreSQL fstab
 mount options like so:</p>
@@ -661,7 +648,7 @@ mount options like so:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">MTU</span><span style="color:#f92672">=</span><span style="color:#ae81ff">9000</span></code></pre></div></li>
 
 <li><p>If interested in mounting the same NFS share multiple times on the same mount point,
-look into the <a href="https://www.novell.com/support/kb/doc.php?id=7010210">noac mount option</a></p></li>
+look into the <a href="https://www.novell.com/support/kb/doc.php?id=7010210" target="_blank">noac mount option</a></p></li>
 </ul>
 
 <h2 id="dynamic-storage">Dynamic Storage</h2>
@@ -717,8 +704,6 @@ as follows:</p>
 
 <link href="https://crunchydata.github.io/crunchy-containers/latest/css/featherlight.min.css" rel="stylesheet">
 <script src="https://crunchydata.github.io/crunchy-containers/latest/js/featherlight.min.js"></script>
-
-
 
 <script src="https://crunchydata.github.io/crunchy-containers/latest/theme-flex/script.js"></script>
 
