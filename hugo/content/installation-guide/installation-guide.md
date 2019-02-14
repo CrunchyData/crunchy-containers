@@ -38,7 +38,7 @@ First add the following lines to your .bashrc file to set the project paths:
     export PATH=$PATH:$GOBIN
     export CCP_BASEOS=centos7       # centos7 for Centos, rhel7 for Redhat
     export CCP_PGVERSION=10
-    export CCP_PG_FULLVERSION=10.6
+    export CCP_PG_FULLVERSION=10.7
     export CCP_VERSION=2.3.1
     export CCP_IMAGE_PREFIX=crunchydata
     export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
