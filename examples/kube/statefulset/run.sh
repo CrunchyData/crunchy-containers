@@ -18,11 +18,14 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ${DIR}/cleanup.sh
 
-create_storage "statefulset"
-if [[ $? -ne 0 ]]
+if [[ ! -v CCP_STORAGE_CLASS ]]
 then
-    echo_err "Failed to create storage, exiting.."
-    exit 1
+    create_storage "statefulset"
+    if [[ $? -ne 0 ]]
+    then
+        echo_err "Failed to create storage, exiting.."
+        exit 1
+    fi
 fi
 
 expenv -f $DIR/statefulset-sa.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
