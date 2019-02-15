@@ -129,3 +129,15 @@ kubernetes.pod_name: "primary" AND log
 ```
 
 For more information about querying Kibana, see the official documentation: https://www.elastic.co/guide/en/beats/packetbeat/current/kibana-queries-filters.html
+
+To delete the centralized logging example run the following:
+
+```
+${CCP_ROOT?}/examples/kube/centralized-logging/efk/cleanup.sh
+```
+
+To delete the cluster roles required by the EFK stack, as an administrator, run the following:
+
+```
+${CCP_ROOT?}/examples/kube/centralized-logging/efk/cleanup-rbac.sh
+```
