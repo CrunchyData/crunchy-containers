@@ -1,16 +1,17 @@
 {
-    "kind": "Job",
     "apiVersion": "batch/v1",
+    "kind": "Job",
     "metadata": {
-        "name": "backup-pitr"
+        "name": "backup"
     },
     "spec": {
+        "backoffLimit": 0,
         "template": {
             "metadata": {
-                "name": "backup-pitr",
+                "name": "backup",
                 "labels": {
-                    "app": "backup-pitr",
-                    "cleanup": "$CCP_NAMESPACE-backup-pitr"
+                    "app": "backup",
+                    "cleanup": "$CCP_NAMESPACE-backup"
                 }
             },
             "spec": {
@@ -18,7 +19,7 @@
                     {
                         "name": "pgdata",
                         "persistentVolumeClaim": {
-                            "claimName": "backup-pitr-pgdata"
+                            "claimName": "backup-pgdata"
                         }
                     }
                 ],
@@ -27,7 +28,7 @@
                 },
                 "containers": [
                     {
-                        "name": "backup-pitr",
+                        "name": "backup",
                         "image": "$CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG",
                         "volumeMounts": [
                             {
@@ -39,11 +40,11 @@
                         "env": [
                             {
                                 "name": "BACKUP_HOST",
-                                "value": "pitr"
+                                "value": "primary"
                             },
                             {
-                                "name": "BACKUP_LABEL",
-                                "value": "somebackup"
+                                "name": "BACKUP_OPTS",
+                                "value": "--progress"
                             },
                             {
                                 "name": "BACKUP_USER",

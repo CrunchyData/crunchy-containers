@@ -46,12 +46,12 @@ func TestBackup(t *testing.T) {
 	}
 
 	t.Log("Starting backup job...")
-	_, err = harness.runExample("examples/kube/backup/run.sh", env, t)
+	_, err = harness.runExample("examples/kube/pgbasebackup/backup/run.sh", env, t)
 	if err != nil {
 		t.Fatalf("Could not run example: %s", err)
 	}
 	if harness.Cleanup {
-		defer harness.runExample("examples/kube/backup/cleanup.sh", env, t)
+		defer harness.runExample("examples/kube/pgbasebackup/backup/cleanup.sh", env, t)
 	}
 
 	t.Log("Checking if job has completed...")

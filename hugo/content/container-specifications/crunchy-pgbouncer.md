@@ -2,7 +2,7 @@
 title: "crunchy-pgbouncer"
 date: 
 draft: false
-weight: 164
+weight: 7
 ---
 
 [pgBouncer](https://pgbouncer.github.io/) is a lightweight connection pooler for PostgreSQL databases.
@@ -21,7 +21,7 @@ The following features are supported by the crunchy-pgbouncer container:
 
 The crunchy-pgbouncer Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (11.1, 10.6, 9.6.11 and 9.5.15)
+* PostgreSQL (11.2, 10.7, 9.6.12 and 9.5.16)
 * [pgBouncer](https://pgbouncer.github.io/)
 * CentOS7 - publicly available
 * RHEL7 - customers only

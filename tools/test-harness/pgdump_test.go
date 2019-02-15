@@ -46,13 +46,13 @@ func TestPGDump(t *testing.T) {
 	}
 
 	t.Log("Running the 'pgdump' example...")
-	_, err = harness.runExample("examples/kube/pgdump/run.sh", env, t)
+	_, err = harness.runExample("examples/kube/pgdump/backup/run.sh", env, t)
 	if err != nil {
 		t.Fatalf("Could not run example: %s", err)
 	}
 
 	if harness.Cleanup {
-		defer harness.runExample("examples/kube/pgdump/cleanup.sh", env, t)
+		defer harness.runExample("examples/kube/pgdump/backup/cleanup.sh", env, t)
 	}
 
 	t.Log("Checking if job has completed...")

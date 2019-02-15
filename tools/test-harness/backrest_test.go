@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 	"testing"
-	"time"
 )
 
 const testTableName = "backrestTestTable"
@@ -23,44 +22,43 @@ func TestBackrestAsyncArchive(t *testing.T) {
 		defer harness.runExample("examples/kube/backrest/async-archiving/cleanup.sh", env, t)
 	}
 
-	pods := []string{"backrest-async-archive"}
+	t.Log("Checking if backrest deployment is ready...")
+	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "backrest-async-archive"); !ok {
+		t.Fatal(err)
+	}
+
+	primary, err := harness.Client.GetDeploymentPods(harness.Namespace, "backrest-async-archive")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(primary) == 0 {
+		t.Fatal("Backrest deployment ready but no pods found")
+	}
+
+	var pods []string
+	for _, pod := range primary {
+		pods = append(pods, pod)
+	}
+
 	t.Log("Checking if pods are ready to use...")
 	if err := harness.Client.CheckPods(harness.Namespace, pods); err != nil {
 		t.Fatal(err)
 	}
 
-	t.Log("Waiting for stanza to be created...")
-	// verify stanza exists prior to creating backup the event that readiness check succeeded too early
-	stanzaExists := []string{"/usr/bin/pgbackrest", "info", "--stanza=db",
-		"--repo1-path=/backrestrepo/backrest-async-archive-backups"}
-	stdout, stderr, err := harness.Client.Exec(harness.Namespace, "backrest-async-archive", "backrest", stanzaExists)
-	for exists := false; !exists; {
-		if strings.Contains(stdout, "status: error (no valid backups)") {
-			exists = true
-		} else if !strings.Contains(stdout, "status: error (no valid backups)") {
-			time.Sleep(5 * time.Second)
-			stdout, stderr, err = harness.Client.Exec(harness.Namespace, "backrest-async-archive", "backrest", stanzaExists)
-		} else if err != nil {
-			t.Logf("\n%s", stderr)
-			t.Fatalf("Error execing into container: %s", err)
-		}
-	}
-
 	t.Log("Running full backup...")
 	// Required for OCP - backrest gets confused when random UIDs aren't found in PAM.
 	// Exec doesn't load bashrc or bash_profile, so we need to set this explicitly.
-	fullBackup := []string{"/usr/bin/pgbackrest", "backup", "--stanza=db", "--pg1-path=/pgdata/backrest-async-archive",
-		"--repo1-path=/backrestrepo/backrest-async-archive-backups", "--log-path=/tmp", "--type=full"}
-	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest-async-archive", "backrest", fullBackup)
+	fullBackup := []string{"/opt/cpm/bin/pgbackrest_backup.sh", "full"}
+	_, stderr, err := harness.Client.Exec(harness.Namespace, pods[0], "backrest", fullBackup)
 	if err != nil {
 		t.Logf("\n%s", stderr)
 		t.Fatalf("Error execing into container: %s", err)
 	}
 
 	t.Log("Running diff backup...")
-	diffBackup := []string{"/usr/bin/pgbackrest", "backup", "--stanza=db", "--pg1-path=/pgdata/backrest-async-archive",
-		"--repo1-path=/backrestrepo/backrest-async-archive-backups", "--log-path=/tmp", "--type=diff"}
-	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest-async-archive", "backrest", diffBackup)
+	diffBackup := []string{"/opt/cpm/bin/pgbackrest_backup.sh", "diff"}
+	_, stderr, err = harness.Client.Exec(harness.Namespace, pods[0], "backrest", diffBackup)
 	if err != nil {
 		t.Logf("\n%s", stderr)
 		t.Fatalf("Error execing into container: %s", err)
@@ -70,7 +68,7 @@ func TestBackrestAsyncArchive(t *testing.T) {
 	// Verify that backups have been created successfully
 	backupsExists := []string{"/usr/bin/pgbackrest", "info", "--stanza=db",
 		"--repo1-path=/backrestrepo/backrest-async-archive-backups"}
-	stdout, stderr, err = harness.Client.Exec(harness.Namespace, "backrest-async-archive", "backrest", backupsExists)
+	stdout, stderr, err := harness.Client.Exec(harness.Namespace, pods[0], "backrest", backupsExists)
 	if strings.Contains(stdout, "full backup") {
 		t.Log("Full backup created successfully")
 	} else {
@@ -104,35 +102,35 @@ func TestBackrestDeltaRestore(t *testing.T) {
 		defer harness.runExample("examples/kube/backrest/backup/cleanup.sh", backupEnv, t)
 	}
 
-	t.Log("Checking if pods are ready to use...")
-	backupPods := []string{"backrest"}
-	if err := harness.Client.CheckPods(harness.Namespace, backupPods); err != nil {
+	t.Log("Checking if backrest deployment is ready...")
+	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "backrest"); !ok {
 		t.Fatal(err)
 	}
 
-	t.Log("Waiting for stanza to be created...")
-	// verify stanza exists prior to creating backup the event that readiness check succeeded too early
-	stanzaExists := []string{"/usr/bin/pgbackrest", "info", "--stanza=db",
-		"--repo1-path=/backrestrepo/backrest-backups"}
-	stdout, stderr, err := harness.Client.Exec(harness.Namespace, "backrest", "backrest", stanzaExists)
-	for exists := false; !exists; {
-		if strings.Contains(stdout, "status: error (no valid backups)") {
-			exists = true
-		} else if !strings.Contains(stdout, "status: error (no valid backups)") {
-			time.Sleep(5 * time.Second)
-			stdout, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", stanzaExists)
-		} else if err != nil {
-			t.Logf("\n%s", stderr)
-			t.Fatalf("Error execing into container: %s", err)
-		}
+	primary, err := harness.Client.GetDeploymentPods(harness.Namespace, "backrest")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(primary) == 0 {
+		t.Fatal("Backrest deployment ready but no pods found")
+	}
+
+	var pods []string
+	for _, pod := range primary {
+		pods = append(pods, pod)
+	}
+
+	t.Log("Checking if pods are ready to use...")
+	if err := harness.Client.CheckPods(harness.Namespace, pods); err != nil {
+		t.Fatal(err)
 	}
 
 	t.Log("Running full backup...")
 	// Required for OCP - backrest gets confused when random UIDs aren't found in PAM.
 	// Exec doesn't load bashrc or bash_profile, so we need to set this explicitly.
-	fullBackup := []string{"/usr/bin/pgbackrest", "backup", "--stanza=db", "--pg1-path=/pgdata/backrest",
-		"--repo1-path=/backrestrepo/backrest-backups", "--log-path=/tmp", "--type=full"}
-	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", fullBackup)
+	fullBackup := []string{"/opt/cpm/bin/pgbackrest_backup.sh", "full"}
+	_, stderr, err := harness.Client.Exec(harness.Namespace, pods[0], "backrest", fullBackup)
 	if err != nil {
 		t.Logf("\n%s", stderr)
 		t.Fatalf("Error execing into container: %s", err)
@@ -141,7 +139,7 @@ func TestBackrestDeltaRestore(t *testing.T) {
 	t.Logf("Verifying that test table %s does not yet exist...", testTableName)
 	// Verify that test table does not yet exist
 	tableExists := []string{"/usr/bin/psql", "-c", fmt.Sprintf("table \"%s\"", testTableName)}
-	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", tableExists)
+	_, stderr, err = harness.Client.Exec(harness.Namespace, pods[0], "backrest", tableExists)
 	if strings.Contains(stderr, fmt.Sprintf("ERROR:  relation \"%s\" does not exist", testTableName)) {
 		t.Logf("Verified that table %s does not exist", testTableName)
 	} else if err != nil {
@@ -152,7 +150,7 @@ func TestBackrestDeltaRestore(t *testing.T) {
 	t.Log("Capturing current timestamp before table creation...")
 	// Capture current timestamp
 	currentTimestamp := []string{"/usr/bin/psql", "-c", "select current_timestamp"}
-	stdout, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", currentTimestamp)
+	stdout, stderr, err := harness.Client.Exec(harness.Namespace, pods[0], "backrest", currentTimestamp)
 	timestamp := strings.TrimSpace(strings.Split(stdout, "\n")[2])
 	if err != nil {
 		t.Logf("\n%s", stderr)
@@ -164,7 +162,7 @@ func TestBackrestDeltaRestore(t *testing.T) {
 	t.Logf("Creating test table %s...", testTableName)
 	// Create test table
 	createTable := []string{"/usr/bin/psql", "-c", fmt.Sprintf("create table \"%s\" (id int)", testTableName)}
-	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", createTable)
+	_, stderr, err = harness.Client.Exec(harness.Namespace, pods[0], "backrest", createTable)
 	if err != nil {
 		t.Logf("\n%s", stderr)
 		t.Fatalf("Error execing into container: %s", err)
@@ -175,7 +173,7 @@ func TestBackrestDeltaRestore(t *testing.T) {
 	t.Logf("Verifying that test table %s now exists...", testTableName)
 	// Verify that test table does not yet exist
 	tableExists = []string{"/usr/bin/psql", "-c", fmt.Sprintf("table \"%s\"", testTableName)}
-	stdout, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", tableExists)
+	stdout, stderr, err = harness.Client.Exec(harness.Namespace, pods[0], "backrest", tableExists)
 	if err == nil {
 		t.Logf("Verified that table %s exists", testTableName)
 	} else {
@@ -210,16 +208,34 @@ func TestBackrestDeltaRestore(t *testing.T) {
 		t.Fatalf("Could not run 'post-restore.sh': %s", err)
 	}
 
-	restorePods := []string{"backrest-delta-restored"}
+	t.Log("Checking if backrest deployment is ready...")
+	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "backrest-delta-restored"); !ok {
+		t.Fatal(err)
+	}
+
+	restored, err := harness.Client.GetDeploymentPods(harness.Namespace, "backrest-delta-restored")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(restored) == 0 {
+		t.Fatal("Backrest Restored deployment ready but no pods found")
+	}
+
+	var restoredPods []string
+	for _, pod := range restored {
+		restoredPods = append(restoredPods, pod)
+	}
+
 	t.Log("Checking if pods are ready to use...")
-	if err := harness.Client.CheckPods(harness.Namespace, restorePods); err != nil {
+	if err := harness.Client.CheckPods(harness.Namespace, restoredPods); err != nil {
 		t.Fatal(err)
 	}
 
 	t.Logf("Verifying that test table %s no longer exists due to the restore...", testTableName)
 	// Verify that test table does not yet exist
 	tableExists = []string{"/usr/bin/psql", "-c", fmt.Sprintf("table \"%s\"", testTableName)}
-	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest-delta-restored", "backrest", tableExists)
+	_, stderr, err = harness.Client.Exec(harness.Namespace, restoredPods[0], "backrest", tableExists)
 	if strings.Contains(stderr, fmt.Sprintf("ERROR:  relation \"%s\" does not exist", testTableName)) {
 		t.Logf("Verified that table %s no longer exists", testTableName)
 	} else if err != nil {
@@ -249,35 +265,35 @@ func TestBackrestFullRestore(t *testing.T) {
 		defer harness.runExample("examples/kube/backrest/backup/cleanup.sh", env, t)
 	}
 
-	t.Log("Checking if pods are ready to use...")
-	pods := []string{"backrest"}
-	if err := harness.Client.CheckPods(harness.Namespace, pods); err != nil {
+	t.Log("Checking if backrest deployment is ready...")
+	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "backrest"); !ok {
 		t.Fatal(err)
 	}
 
-	t.Log("Waiting for stanza to be created...")
-	// verify stanza exists prior to creating backup the event that readiness check succeeded too early
-	stanzaExists := []string{"/usr/bin/pgbackrest", "info", "--stanza=db",
-		"--repo1-path=/backrestrepo/backrest-backups"}
-	stdout, stderr, err := harness.Client.Exec(harness.Namespace, "backrest", "backrest", stanzaExists)
-	for exists := false; !exists; {
-		if strings.Contains(stdout, "status: error (no valid backups)") {
-			exists = true
-		} else if !strings.Contains(stdout, "status: error (no valid backups)") {
-			time.Sleep(5 * time.Second)
-			stdout, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", stanzaExists)
-		} else if err != nil {
-			t.Logf("\n%s", stderr)
-			t.Fatalf("Error execing into container: %s", err)
-		}
+	primary, err := harness.Client.GetDeploymentPods(harness.Namespace, "backrest")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(primary) == 0 {
+		t.Fatal("Backrest deployment ready but no pods found")
+	}
+
+	var pods []string
+	for _, pod := range primary {
+		pods = append(pods, pod)
+	}
+
+	t.Log("Checking if pods are ready to use...")
+	if err := harness.Client.CheckPods(harness.Namespace, pods); err != nil {
+		t.Fatal(err)
 	}
 
 	t.Log("Running full backup...")
 	// Required for OCP - backrest gets confused when random UIDs aren't found in PAM.
 	// Exec doesn't load bashrc or bash_profile, so we need to set this explicitly.
-	fullBackup := []string{"/usr/bin/pgbackrest", "backup", "--stanza=db", "--pg1-path=/pgdata/backrest",
-		"--repo1-path=/backrestrepo/backrest-backups", "--log-path=/tmp", "--type=full"}
-	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", fullBackup)
+	fullBackup := []string{"/opt/cpm/bin/pgbackrest_backup.sh", "full"}
+	_, stderr, err := harness.Client.Exec(harness.Namespace, pods[0], "backrest", fullBackup)
 	if err != nil {
 		t.Logf("\n%s", stderr)
 		t.Fatalf("Error execing into container: %s", err)
@@ -286,7 +302,7 @@ func TestBackrestFullRestore(t *testing.T) {
 	t.Logf("Creating test table %s...", testTableName)
 	// Create test table
 	createTable := []string{"/usr/bin/psql", "-c", fmt.Sprintf("create table \"%s\" (id int)", testTableName)}
-	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", createTable)
+	_, stderr, err = harness.Client.Exec(harness.Namespace, pods[0], "backrest", createTable)
 	if err != nil {
 		t.Logf("\n%s", stderr)
 		t.Fatalf("Error execing into container: %s", err)
@@ -297,7 +313,7 @@ func TestBackrestFullRestore(t *testing.T) {
 	t.Logf("Verifying that test table %s now exists...", testTableName)
 	// Verify that test table does not yet exist
 	tableExists := []string{"/usr/bin/psql", "-c", fmt.Sprintf("table \"%s\"", testTableName)}
-	stdout, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", tableExists)
+	stdout, stderr, err := harness.Client.Exec(harness.Namespace, pods[0], "backrest", tableExists)
 	if err == nil {
 		t.Logf("Verified that table %s exists", testTableName)
 	} else {
@@ -329,16 +345,34 @@ func TestBackrestFullRestore(t *testing.T) {
 		t.Fatalf("Could not run 'post-restore.sh': %s", err)
 	}
 
+	t.Log("Checking if backrest deployment is ready...")
+	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "backrest-full-restored"); !ok {
+		t.Fatal(err)
+	}
+
+	restored, err := harness.Client.GetDeploymentPods(harness.Namespace, "backrest-full-restored")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(restored) == 0 {
+		t.Fatal("Backrest Restored deployment ready but no pods found")
+	}
+
+	var restoredPods []string
+	for _, pod := range restored {
+		restoredPods = append(restoredPods, pod)
+	}
+
 	t.Log("Checking if pods are ready to use...")
-	restoredPod := []string{"backrest-full-restored"}
-	if err := harness.Client.CheckPods(harness.Namespace, restoredPod); err != nil {
+	if err := harness.Client.CheckPods(harness.Namespace, restoredPods); err != nil {
 		t.Fatal(err)
 	}
 
 	t.Logf("Verifying that table %s still exists...", testTableName)
 	// Verify that test table does not yet exist
 	tableExists = []string{"/usr/bin/psql", "-c", fmt.Sprintf("table \"%s\"", testTableName)}
-	stdout, stderr, err = harness.Client.Exec(harness.Namespace, "backrest-full-restored", "backrest", tableExists)
+	stdout, stderr, err = harness.Client.Exec(harness.Namespace, restoredPods[0], "backrest", tableExists)
 	if strings.Contains(stdout, "(0 rows)") {
 		t.Logf("Verified that table %s exists", testTableName)
 	} else if err != nil {
@@ -368,35 +402,35 @@ func TestBackrestPITRRestore(t *testing.T) {
 		defer harness.runExample("examples/kube/backrest/backup/cleanup.sh", backupEnv, t)
 	}
 
-	t.Log("Checking if pods are ready to use...")
-	pods := []string{"backrest"}
-	if err := harness.Client.CheckPods(harness.Namespace, pods); err != nil {
+	t.Log("Checking if backrest deployment is ready...")
+	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "backrest"); !ok {
 		t.Fatal(err)
 	}
 
-	t.Log("Waiting for stanza to be created...")
-	// verify stanza exists prior to creating backup the event that readiness check succeeded too early
-	stanzaExists := []string{"/usr/bin/pgbackrest", "info", "--stanza=db",
-		"--repo1-path=/backrestrepo/backrest-backups"}
-	stdout, stderr, err := harness.Client.Exec(harness.Namespace, "backrest", "backrest", stanzaExists)
-	for exists := false; !exists; {
-		if strings.Contains(stdout, "status: error (no valid backups)") {
-			exists = true
-		} else if !strings.Contains(stdout, "status: error (no valid backups)") {
-			time.Sleep(5 * time.Second)
-			stdout, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", stanzaExists)
-		} else if err != nil {
-			t.Logf("\n%s", stderr)
-			t.Fatalf("Error execing into container: %s", err)
-		}
+	primary, err := harness.Client.GetDeploymentPods(harness.Namespace, "backrest")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(primary) == 0 {
+		t.Fatal("Backrest deployment ready but no pods found")
+	}
+
+	var pods []string
+	for _, pod := range primary {
+		pods = append(pods, pod)
+	}
+
+	t.Log("Checking if pods are ready to use...")
+	if err := harness.Client.CheckPods(harness.Namespace, pods); err != nil {
+		t.Fatal(err)
 	}
 
 	t.Log("Running full backup...")
 	// Required for OCP - backrest gets confused when random UIDs aren't found in PAM.
 	// Exec doesn't load bashrc or bash_profile, so we need to set this explicitly.
-	fullBackup := []string{"/usr/bin/pgbackrest", "backup", "--stanza=db", "--pg1-path=/pgdata/backrest",
-		"--repo1-path=/backrestrepo/backrest-backups", "--log-path=/tmp", "--type=full"}
-	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", fullBackup)
+	fullBackup := []string{"/opt/cpm/bin/pgbackrest_backup.sh", "full"}
+	_, stderr, err := harness.Client.Exec(harness.Namespace, pods[0], "backrest", fullBackup)
 	if err != nil {
 		t.Logf("\n%s", stderr)
 		t.Fatalf("Error execing into container: %s", err)
@@ -405,7 +439,7 @@ func TestBackrestPITRRestore(t *testing.T) {
 	t.Logf("Verifying that test table %s does not yet exist...", testTableName)
 	// Verify that test table does not yet exist
 	tableExists := []string{"/usr/bin/psql", "-c", fmt.Sprintf("table \"%s\"", testTableName)}
-	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", tableExists)
+	_, stderr, err = harness.Client.Exec(harness.Namespace, pods[0], "backrest", tableExists)
 	if strings.Contains(stderr, fmt.Sprintf("ERROR:  relation \"%s\" does not exist", testTableName)) {
 		t.Logf("Verified that table %s does not exist", testTableName)
 	} else if err != nil {
@@ -416,7 +450,7 @@ func TestBackrestPITRRestore(t *testing.T) {
 	t.Log("Capturing current timestamp before table creation...")
 	// Capture current timestamp
 	currentTimestamp := []string{"/usr/bin/psql", "-c", "select current_timestamp"}
-	stdout, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", currentTimestamp)
+	stdout, stderr, err := harness.Client.Exec(harness.Namespace, pods[0], "backrest", currentTimestamp)
 	timestamp := strings.TrimSpace(strings.Split(stdout, "\n")[2])
 	if err != nil {
 		t.Logf("\n%s", stderr)
@@ -428,7 +462,7 @@ func TestBackrestPITRRestore(t *testing.T) {
 	t.Logf("Creating test table %s...", testTableName)
 	// Create test table
 	createTable := []string{"/usr/bin/psql", "-c", fmt.Sprintf("create table \"%s\" (id int)", testTableName)}
-	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", createTable)
+	_, stderr, err = harness.Client.Exec(harness.Namespace, pods[0], "backrest", createTable)
 	if err != nil {
 		t.Logf("\n%s", stderr)
 		t.Fatalf("Error execing into container: %s", err)
@@ -439,7 +473,7 @@ func TestBackrestPITRRestore(t *testing.T) {
 	t.Logf("Verifying that test table %s now exists...", testTableName)
 	// Verify that test table does not yet exist
 	tableExists = []string{"/usr/bin/psql", "-c", fmt.Sprintf("table \"%s\"", testTableName)}
-	stdout, stderr, err = harness.Client.Exec(harness.Namespace, "backrest", "backrest", tableExists)
+	stdout, stderr, err = harness.Client.Exec(harness.Namespace, pods[0], "backrest", tableExists)
 	if err == nil {
 		t.Logf("Verified that table %s exists", testTableName)
 	} else {
@@ -473,16 +507,34 @@ func TestBackrestPITRRestore(t *testing.T) {
 		t.Fatalf("Could not run 'post-restore.sh': %s", err)
 	}
 
-	restorePods := []string{"backrest-pitr-restored"}
+	t.Log("Checking if backrest deployment is ready...")
+	if ok, err := harness.Client.IsDeploymentReady(harness.Namespace, "backrest-pitr-restored"); !ok {
+		t.Fatal(err)
+	}
+
+	restored, err := harness.Client.GetDeploymentPods(harness.Namespace, "backrest-pitr-restored")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(restored) == 0 {
+		t.Fatal("Backrest Restored deployment ready but no pods found")
+	}
+
+	var restoredPods []string
+	for _, pod := range restored {
+		restoredPods = append(restoredPods, pod)
+	}
+
 	t.Log("Checking if pods are ready to use...")
-	if err := harness.Client.CheckPods(harness.Namespace, restorePods); err != nil {
+	if err := harness.Client.CheckPods(harness.Namespace, restoredPods); err != nil {
 		t.Fatal(err)
 	}
 
 	t.Logf("Verifying that test table %s no longer exists due to the restore...", testTableName)
 	// Verify that test table does not yet exist
 	tableExists = []string{"/usr/bin/psql", "-c", fmt.Sprintf("table \"%s\"", testTableName)}
-	_, stderr, err = harness.Client.Exec(harness.Namespace, "backrest-pitr-restored", "backrest", tableExists)
+	_, stderr, err = harness.Client.Exec(harness.Namespace, restoredPods[0], "backrest", tableExists)
 	if strings.Contains(stderr, fmt.Sprintf("ERROR:  relation \"%s\" does not exist", testTableName)) {
 		t.Logf("Verified that table %s no longer exists", testTableName)
 	} else if err != nil {

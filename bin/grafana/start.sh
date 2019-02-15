@@ -20,8 +20,6 @@ export PATH=$PATH:/opt/cpm/bin
 export GRAFANA_HOME=$(find /opt/cpm/bin/ -type d -name 'grafana-[1-9].*')
 export CONFIG_DIR='/opt/cpm/conf'
 
-ls -la /opt/cpm/bin
-
 DASHBOARDS=(
     CRUD_Details
     FilesystemDetailsKube
@@ -88,20 +86,26 @@ else
     sed -i -e "s|/etc/grafana/crunchy_dashboards|${DASHBOARD_DIR?}|" \
         ${DASHBOARD_DIR?}/crunchy_grafana_dashboards.yml
 
-    for dashboard in "${DASHBOARDS[@]}"
-    do
-        if [[ -f ${CONFIG_DIR?}/${dashboard?}.json ]]
-        then
-            cp ${CONFIG_DIR?}/${dashboard?}.json ${DASHBOARD_DIR?}
-        else
-            echo_err "Dashboard ${dashboard?}.json does not exist (it should).."
-            exit 1
-        fi
-    done
+    if [[ ${INSTALL_DASHBOARDS:-true} == "true" ]]
+    then
+        for dashboard in "${DASHBOARDS[@]}"
+        do
+            if [[ -f ${CONFIG_DIR?}/${dashboard?}.json ]]
+            then
+                cp ${CONFIG_DIR?}/${dashboard?}.json ${DASHBOARD_DIR?}
+            else
+                echo_err "Dashboard ${dashboard?}.json does not exist (it should).."
+                exit 1
+            fi
+        done
 
-    # Set time resolution to 5m so data appears in graphs
-    # pgMonitor defaults to 2 days
-    sed -i 's/now-2d/now-5m/g' ${DASHBOARD_DIR?}/*.json
+        # Set time resolution to 5m so data appears in graphs
+        # pgMonitor defaults to 2 days
+        sed -i 's/now-2d/now-5m/g' ${DASHBOARD_DIR?}/*.json
+    else
+        # Delete any previously installed dashboard by the container
+        rm -rf ${DASHBOARD_DIR?}/*.json
+    fi
 fi
 
 echo_info "Starting grafana-server.."

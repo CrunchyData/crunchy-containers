@@ -48,6 +48,11 @@ fi
 
 cp /opt/cpm/conf/config_local.py /var/lib/pgadmin/config_local.py
 
+if [[ -z "${SERVER_PATH}" ]]
+then
+    sed -i "/RedirectMatch/d" /var/lib/pgadmin/pgadmin.conf
+fi
+sed -i "s|SERVER_PATH|${SERVER_PATH:-/}|g" /var/lib/pgadmin/pgadmin.conf
 sed -i "s|SERVER_PORT|${SERVER_PORT:-5050}|g" /var/lib/pgadmin/pgadmin.conf
 sed -i "s/^DEFAULT_SERVER_PORT.*/DEFAULT_SERVER_PORT = ${SERVER_PORT:-5050}/" /var/lib/pgadmin/config_local.py
 sed -i "s|\"pg\":.*|\"pg\": \"/usr/pgsql-${PGVERSION?}/bin\",|g" /var/lib/pgadmin/config_local.py

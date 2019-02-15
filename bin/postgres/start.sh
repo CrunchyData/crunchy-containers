@@ -296,7 +296,10 @@ function initialize_primary() {
         echo "Starting database.." >> /tmp/start-db.log
 
         echo_info "Temporarily starting database to run setup.sql.."
-        pg_ctl -D ${PGDATA?} -o "-c listen_addresses=''" start
+        pg_ctl -D ${PGDATA?} -o "-c listen_addresses='' ${PG_CTL_OPTS:-}" start \
+            2> /tmp/pgctl.stderr
+        err_check "$?" "Temporarily Starting PostgreSQL (primary)" \
+            "Unable to start PostgreSQL: \n$(cat /tmp/pgctl.stderr)"
 
         echo_info "Waiting for PostgreSQL to start.."
         while true; do

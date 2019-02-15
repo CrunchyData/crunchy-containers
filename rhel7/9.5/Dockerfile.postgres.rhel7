@@ -5,11 +5,11 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.15" \
+	PostgresFullVersion="9.5.16" \
 	Version="7.6" \
-	Release="2.3.0" \
+	Release="2.3.1" \
         url="https://crunchydata.com" \
-	summary="PostgreSQL 9.5.15 (PGDG) on a RHEL7 base image" \
+	summary="PostgreSQL 9.5.16 (PGDG) on a RHEL7 base image" \
         description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
         run="" \
         start="" \
@@ -23,7 +23,7 @@ COPY conf/atomic/postgres/help.1 /help.1
 COPY conf/atomic/postgres/help.md /help.md
 COPY conf/licenses /licenses
 
-ENV PGVERSION="9.5"
+ENV PGVERSION="9.5" BACKREST_VERSION="2.10"
 
 # PGDG Postgres repo
 #RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-3.noarch.rpm
@@ -46,7 +46,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  && yum -y reinstall glibc-common \
  && yum -y install postgresql95 postgresql95-contrib postgresql95-server \
     pgaudit95 pgaudit95_set_user \
-    crunchy-backrest \
+    crunchy-backrest-"${BACKREST_VERSION}" \
  && yum -y --setopt=tsflags='' install pgaudit_analyze \
  && yum -y clean all
 

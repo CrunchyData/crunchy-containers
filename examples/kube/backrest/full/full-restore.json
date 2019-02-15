@@ -5,6 +5,7 @@
         "name": "backrest-full-restore-job"
     },
     "spec": {
+        "backoffLimit": 0,
         "template": {
             "metadata": {
                 "name": "backrest-full-restore-job",
