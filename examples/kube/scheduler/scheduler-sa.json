@@ -17,7 +17,6 @@
             "resources": [
                 "pods",
                 "configmaps",
-                "deployments",
                 "secrets"
             ],
             "verbs": [
@@ -28,8 +27,7 @@
         },
         {
             "apiGroups": [
-                "batch",
-                "extensions"
+                "batch"
             ],
             "resources": [
                 "jobs"
@@ -44,7 +42,6 @@
         },
         {
             "apiGroups": [
-                "extensions",
                 "apps"
             ],
             "resources": [
