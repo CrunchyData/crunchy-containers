@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Overview on Crunchy Data Container Suite Documentation</title>
+    <link>https://crunchydata.github.io/crunchy-containers/2.3.1/overview/</link>
+    <description>Recent content in Overview on Crunchy Data Container Suite Documentation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://crunchydata.github.io/crunchy-containers/2.3.1/overview/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Container Images</title>
+      <link>https://crunchydata.github.io/crunchy-containers/2.3.1/overview/overview/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/2.3.1/overview/overview/</guid>
+      <description>Overview The following provides a high level overview of each of the container images.
+CentOS vs RHEL Images The Crunchy Container suite provides two different OS images: centos7 and rhel7. These images are indentical except for the packages used by yum to install the software.
+The centos7 images, yum is configured to use PostgreSQL RPM Building Project.
+The rhel7 images use Crunchy Certified RPMs and are only available to active Crunchy Data customers.</description>
+    </item>
+    
+    <item>
+      <title>Supported Platforms</title>
+      <link>https://crunchydata.github.io/crunchy-containers/2.3.1/overview/supported/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/2.3.1/overview/supported/</guid>
+      <description> Supported Platforms Crunchy Container Suite supports the following platforms:
+ Docker 1.13+ Kubernetes 1.8+ OpenShift Container Platform 3.11  </description>
+    </item>
+    
+  </channel>
+</rss>

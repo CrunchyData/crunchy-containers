@@ -6,7 +6,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.52" />
+<meta name="generator" content="Hugo 0.53" />
 <title>pgBackRest :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/stable/favicon.png" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/stable/css/nucleus.css" rel="stylesheet">
@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/jquery-2.x.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js" integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP" crossorigin="anonymous"></script>
+<script src="https://crunchydata.github.io/crunchy-containers/stable/js/main.js"></script>
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/toc.js"></script>
 <script type="text/javascript">
       var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
@@ -211,17 +212,10 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/examples/backup-restoration/pgdump/" class="dd-item">
+      <li data-nav-id="/examples/backup-restoration/pgdump-pgrestore/" class="dd-item">
         <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/pgdump/">
-            pgDump
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/examples/backup-restoration/pgrestore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/pgrestore/">
-            pgRestore
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/pgdump-pgrestore/">
+            pgDump &amp; pgRestore
           </a>
         </div>
     </li>
@@ -313,17 +307,10 @@
 
       </div>
         <ul>
-      <li data-nav-id="/container-specifications/crunchy-postgres/" class="dd-item">
+      <li data-nav-id="/container-specifications/crunchy-backrest-restore/" class="dd-item">
         <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/">
-            crunchy-postgres
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-postgres-gis/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/">
-            crunchy-postgres-gis
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-backrest-restore/">
+            crunchy-backrest-restore
           </a>
         </div>
     </li>
@@ -334,45 +321,10 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/container-specifications/crunchy-backrest-restore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-backrest-restore/">
-            crunchy-backrest-restore
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-pgdump/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgdump/">
-            crunchy-pgdump
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-pgrestore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgrestore/">
-            crunchy-pgrestore
-          </a>
-        </div>
-    </li>
       <li data-nav-id="/container-specifications/crunchy-collect/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-collect/">
             crunchy-collect
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-scheduler/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/">
-            crunchy-scheduler
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-prometheus/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
-            crunchy-prometheus
           </a>
         </div>
     </li>
@@ -390,6 +342,13 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="/container-specifications/crunchy-pgbadger/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgbadger/">
+            crunchy-pgbadger
+          </a>
+        </div>
+    </li>
       <li data-nav-id="/container-specifications/crunchy-pgbouncer/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgbouncer/">
@@ -397,10 +356,10 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/container-specifications/crunchy-pgbadger/" class="dd-item">
+      <li data-nav-id="/container-specifications/crunchy-pgdump/" class="dd-item">
         <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgbadger/">
-            crunchy-pgbadger
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgdump/">
+            crunchy-pgdump
           </a>
         </div>
     </li>
@@ -411,17 +370,45 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="/container-specifications/crunchy-pgrestore/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgrestore/">
+            crunchy-pgrestore
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-postgres-gis/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/">
+            crunchy-postgres-gis
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-postgres/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/">
+            crunchy-postgres
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-prometheus/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
+            crunchy-prometheus
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-scheduler/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/">
+            crunchy-scheduler
+          </a>
+        </div>
+    </li>
       <li data-nav-id="/container-specifications/crunchy-upgrade/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-upgrade/">
             crunchy-upgrade
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-vacuum/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-vacuum/">
-            crunchy-vacuum
           </a>
         </div>
     </li>
@@ -505,8 +492,7 @@
       <option value="/examples/poolers/pgpool/" >- pgPool II</option>
       <option value="/examples/backup-restoration/pgbackrest/"  selected>- pgBackRest</option>
       <option value="/examples/backup-restoration/pgbasebackup/" >- pgBaseBackup</option>
-      <option value="/examples/backup-restoration/pgdump/" >- pgDump</option>
-      <option value="/examples/backup-restoration/pgrestore/" >- pgRestore</option>
+      <option value="/examples/backup-restoration/pgdump-pgrestore/" >- pgDump &amp; pgRestore</option>
       <option value="/examples/backup-restoration/scheduler/" >- Scheduler</option>
       <option value="/examples/poolers/pgbouncer/" >- pgBouncer</option>
       <option value="/examples/metrics/metrics/" >- Metrics and Performance</option>
@@ -587,7 +573,7 @@
 
 <h1 id="pgbackrest-examples">pgBackRest Examples</h1>
 
-<p>Written and maintained by David Steele, pgBackRest is a utility that provides backup and restore functionality for PostgreSQL databases.  pgBackRest is available for use within the Crunchy Container Suite, and can therefore be utilized to provide an effective backup and restore solution for any database clusters deployed using the crunchy-postgres or crunchy-postgres-gis containers.  The following section will provide an overview of how pgBackRest can be utilized within the Crunchy Container Suite, including examples for enabling and configuring pgBackRest, and then utilizing pgBackRest to backup and restore various PostgreSQL database clusters.  For more detailed information about pgBackRest, please visit the <a href="https://pgbackrest.org/">official pgBackRest website</a>.</p>
+<p>Written and maintained by David Steele, pgBackRest is a utility that provides backup and restore functionality for PostgreSQL databases.  pgBackRest is available for use within the Crunchy Container Suite, and can therefore be utilized to provide an effective backup and restore solution for any database clusters deployed using the crunchy-postgres or crunchy-postgres-gis containers.  The following section will provide an overview of how pgBackRest can be utilized within the Crunchy Container Suite, including examples for enabling and configuring pgBackRest, and then utilizing pgBackRest to backup and restore various PostgreSQL database clusters.  For more detailed information about pgBackRest, please visit the <a href="https://pgbackrest.org/" target="_blank">official pgBackRest website</a>.</p>
 
 <h2 id="configuration-overview">Configuration Overview</h2>
 
@@ -598,13 +584,13 @@
 <span style="color:#111">export</span> <span style="color:#111">PGBACKREST_PG1_PATH</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;/pgdata/</span><span style="color:#d88200">${</span><span style="color:#111">PGDATA_DIR</span><span style="color:#d88200">}</span><span style="color:#d88200">&#34;</span>
 <span style="color:#111">export</span> <span style="color:#111">PGBACKREST_REPO1_PATH</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;/backrestrepo/</span><span style="color:#d88200">${</span><span style="color:#111">PGDATA_DIR</span><span style="color:#d88200">}</span><span style="color:#d88200">-backups&#34;</span>
 <span style="color:#111">export</span> <span style="color:#111">PGBACKREST_LOG_PATH</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;/tmp&#34;</span></code></pre></div>
-<p>As shown above, a stanza named <code>db</code> is created by default, using the default values provided for both <code>PGBACKREST_PG1_PATH</code> and <code>PGBACKREST_REPO1_PATH</code>.  Variable <code>PGDATA_DIR</code> represents the name of the database cluster&rsquo;s data directory, which will either be the hostname of the container or the value specified for variable <code>PGDATA_PATH_OVERRIDE</code> during deployment of the container.  Please see the <a href="https://link">crunchy-postgres</a> and/or <a href="https://link">crunchy-postgres-gis</a> container specifications for additional details.</p>
+<p>As shown above, a stanza named <code>db</code> is created by default, using the default values provided for both <code>PGBACKREST_PG1_PATH</code> and <code>PGBACKREST_REPO1_PATH</code>.  Variable <code>PGDATA_DIR</code> represents the name of the database cluster&rsquo;s data directory, which will either be the hostname of the container or the value specified for variable <code>PGDATA_PATH_OVERRIDE</code> during deployment of the container.  Please see the <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres">crunchy-postgres</a> and/or <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis">crunchy-postgres-gis</a> container specifications for additional details.</p>
 
 <p>While setting <code>PGBACKREST</code> to <code>true</code> provides a simple method for enabling pgBackRest within a crunchy-postgres or crunchy-postgres-gis container, pgBackRest is also fully configurable and customizable via the various environment variables supported by pgBackRest.  This applies to the crunchy-backrest-restore container as well, which is also configured using pgBackRest environment variables when performing database restores.  Therefore, during the deployment of any container container containing pgBackRest (crunchy-postgres, crunchy-postgres-gis or crunchy-backrest-restore), environment variables should be utilized to configure and customize the pgBackRest utility as needed and ensure the desired backup and restore functionality is achieved.  For instance, the following environment variables could be specified upon deployment of the crunchy-backrest-restore container in order to perform delta restore to a specific point-in-time:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">PGBACKREST_TYPE</span><span style="color:#f92672">=</span><span style="color:#111">time</span>
 <span style="color:#111">PITR_TARGET</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;2018-12-27 16:53:05.590156+00&#34;</span>
 <span style="color:#111">PGBACKREST_DELTA</span><span style="color:#f92672">=</span>y</code></pre></div>
-<p>Full, incremental and differential backups of PostgreSQL databases deployed using the Crunchy Container Suite can scheduled using pgBackRest and the crunchy-scheduler container, and/or can also be performed manually by executing pgBackRest commands against the desired crunchy-postgres or crunchy-postgres-gis container.  Database restores, on the other hand, can be performed via the crunchy-backrest-restore container, which offers full pgBackRest restore capabilities, such as full, point-in-time and delta restores.  Further information and guidance for performing both backups and restores using the Crunchy Container Suite and pgBackRest will be provided in the examples below.  Additionally, for more information on utilizing the crunchy-scheduler container to schedule and perform pgBackRest database backups, please see the crunchy-scheduler <a href="https://link">specifications</a> and <a href="https://link">examples</a>.</p>
+<p>Full, incremental and differential backups of PostgreSQL databases deployed using the Crunchy Container Suite can scheduled using pgBackRest and the crunchy-scheduler container, and/or can also be performed manually by executing pgBackRest commands against the desired crunchy-postgres or crunchy-postgres-gis container.  Database restores, on the other hand, can be performed via the crunchy-backrest-restore container, which offers full pgBackRest restore capabilities, such as full, point-in-time and delta restores.  Further information and guidance for performing both backups and restores using the Crunchy Container Suite and pgBackRest will be provided in the examples below.  Additionally, for more information on utilizing the crunchy-scheduler container to schedule and perform pgBackRest database backups, please see the crunchy-scheduler <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler">specifications</a> and <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/scheduler/">examples</a>.</p>
 
 <p>In addition to providing the backup and restoration capabilities discussed above, pgBackRest supports the capability to asynchronously push and get write ahead logs (WAL) to and from a WAL archive.  To enable asychronous WAL archiving within a crunchy-postgres or crunchy-postgres-gis container, pgBackRest environment variable <code>PGBACKREST_ARCHIVE_ASYNC</code> must be set to <code>&quot;y&quot;</code> during deployment (<code>PGBACKREST_ARCHIVE_ASYNC=y</code>).  This will automatically enable WAL archiving within the container if not otherwise explicitly enabled, set the proper <code>pgbackrest archive</code> command within the <code>postgresql.conf</code> configuration file, and ensure the proper spool path has been created.</p>
 
@@ -616,7 +602,7 @@
 <span style="color:#111">export</span> <span style="color:#111">PGBACKREST_SPOOL_PATH</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;/pgwal/</span><span style="color:#d88200">${</span><span style="color:#111">PGDATA_DIR</span><span style="color:#d88200">}</span><span style="color:#d88200">/spool&#34;</span></code></pre></div>
 <p>As shown above, the default location of the spool path depends on whether or not <code>XLOGDIR=true</code>, with <code>XLOGDIR</code> enabling the storage of WAL to the <code>/pgwal</code> volume within the container.  Being that pgBackRest recommends selecting a spool path that is as close to the WAL as possible, this provides a sensible default for the spool directory.  However, <code>PGBACKREST_SPOOL_PATH</code> can also be explicitly configured during deployment to any path desired.  And once again, <code>PGDATA_DIR</code> represents either the hostname of the container or the value specified for variable <code>PGDATA_PATH_OVERRIDE</code>.</p>
 
-<p>The examples below will demonstrate the pgBackRest backup, restore and asynchronous archiving capabilities described above, while also providing insight into the proper configuration of pgBackBackrest within the Crunchy Container Suite.  For more information on these pgBackRest capabilities and associated configuration, please consult the <a href="https://pgbackrest.org/">official pgBackRest documentation</a>.</p>
+<p>The examples below will demonstrate the pgBackRest backup, restore and asynchronous archiving capabilities described above, while also providing insight into the proper configuration of pgBackBackrest within the Crunchy Container Suite.  For more information on these pgBackRest capabilities and associated configuration, please consult the <a href="https://pgbackrest.org/" target="_blank">official pgBackRest documentation</a>.</p>
 
 <h2 id="kubernetes-and-openshift">Kubernetes and OpenShift</h2>
 
@@ -632,14 +618,17 @@
 ./run.sh
 </code></pre>
 
-<p>This will create the following in your Kubernetes environment:
-- A pod named <strong>backrest</strong> containing a PostgreSQL database with pgBackRest configured
-- A service named <strong>backrest</strong> for the PostgreSQL database
-- A PV and PVC for the PGDATA directory
-- A PV and PVC for the pgBackRest backups and archives directories</p>
+<p>This will create the following in your Kubernetes environment:</p>
 
-<p>Once the <strong>backrest</strong> pod is running, use the <code>pgbackrest info</code> command to verify that pgbackrest has been properly configured and WAL archiving is working properly:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest -- pgbackrest info <span style="color:#8045ff">\
+<ul>
+<li>A deployment named <strong>backrest</strong> containing a PostgreSQL database with pgBackRest configured</li>
+<li>A service named <strong>backrest</strong> for the PostgreSQL database</li>
+<li>A PV and PVC for the PGDATA directory</li>
+<li>A PV and PVC for the pgBackRest backups and archives directories</li>
+</ul>
+
+<p>Once the <strong>backrest</strong> deployment is running, use the <code>pgbackrest info</code> command to verify that pgbackrest has been properly configured and WAL archiving is working properly:</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- pgbackrest info <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --stanza<span style="color:#f92672">=</span>db <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --repo1-path<span style="color:#f92672">=</span>/backrestrepo/backrest-backups
 
@@ -653,7 +642,7 @@ stanza: db
 <p>An output similar to the above indicates that pgBackRest was properly configured upon deployment of the pod, the <strong>db</strong> stanza has been created, and WAL archiving is working properly.  The error next to <strong>status</strong> is expected being that a backup has not yet been generated.</p>
 
 <p>Now that we have verified that pgBackRest is properly configured and enabled, a backup of the database can be generated.  Being that this is the first backup of the database, we will take create a <strong>full</strong> backup:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest -- pgbackrest backup <span style="color:#8045ff">\
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- pgbackrest backup <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --stanza<span style="color:#f92672">=</span>db <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --pg1-path<span style="color:#f92672">=</span>/pgdata/backrest <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --repo1-path<span style="color:#f92672">=</span>/backrestrepo/backrest-backups <span style="color:#8045ff">\
@@ -667,49 +656,58 @@ WARN: option repo1-retention-full is not set, the repository may run out of spac
 
 <h3 id="restore">Restore</h3>
 
-<p>pgBackRest provides numerous methods and strategies for restoring a PostgreSQL database.  The following section will demonstrate  three forms of database restores that can be  accomplished when using pgBackRest with the Crunchy Container Suite:
-- <strong>Full:</strong> restore all database files into an empty PGDATA directory
-- <strong>point-in-time Recovery (PITR):</strong> restore a database to a specific point-in-time using an empty PGDATA directory
-- <strong>Delta:</strong> restore a database to a specific point-in-time using an existing PGDATA directory</p>
+<p>pgBackRest provides numerous methods and strategies for restoring a PostgreSQL database.  The following section will demonstrate  three forms of database restores that can be  accomplished when using pgBackRest with the Crunchy Container Suite:</p>
+
+<ul>
+<li><strong>Full:</strong> restore all database files into an empty PGDATA directory</li>
+<li><strong>point-in-time Recovery (PITR):</strong> restore a database to a specific point-in-time using an empty PGDATA directory</li>
+<li><strong>Delta:</strong> restore a database to a specific point-in-time using an existing PGDATA directory</li>
+</ul>
 
 <h4 id="full">Full</h4>
 
 <p>This example will demonstrate a full database restore to an empty PGDATA directory.  <strong><em>Please ensure the Backup example is currently running and a full backup has been generated prior to running this example.</em></strong></p>
 
 <p>Prior to running the full restore, we will first make a change to the currently running database, which will we will then verify still exists following the restore.  Create a simple table in the database as follows:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest -- psql -c <span style="color:#d88200">&#34;create table backrest_test_table (id int)&#34;</span>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- psql -c <span style="color:#d88200">&#34;create table backrest_test_table (id int)&#34;</span>
 CREATE TABLE</code></pre></div>
 <p>Now verify that the new table exists:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest -- psql -c <span style="color:#d88200">&#34;table backrest_test_table&#34;</span>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- psql -c <span style="color:#d88200">&#34;table backrest_test_table&#34;</span>
  id
 ----
 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> rows<span style="color:#f92672">)</span></code></pre></div>
 <p>With the table in place, we can now start the full restore as follows:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">cd</span> <span style="color:#111">$CCPROOT</span>/examples/kube/backrest/full
 ./run.sh</code></pre></div>
-<p>This will create the following in your Kubernetes environment:
-- A Kubernetes job named <strong>backrest-full-restore-job</strong> which will perform the restore using the crunchy-backrest-restore container
-- A PV and PVC for the new PGDATA directory that will contain the restored database.  The directory will initially be empty, as required  pgBackRest when performing a full restore, and will then contain the restored database upon completion of the restore.</p>
+<p>This will create the following in your Kubernetes environment:</p>
 
-<p>Please note that a brand new PV and PVC are created when running the restore to clearly indicate that the database will be restored into an entirely new (i.e. empty) volume as required by pgBackRest.  The names of the new PV and PVC are as follows:
-- <strong>PV:</strong> ${CCP_NAMESPACE}-br-new-pgdata
-- <strong>PVC:</strong> br-new-pgdata</p>
+<ul>
+<li>A Kubernetes job named <strong>backrest-full-restore-job</strong> which will perform the restore using the crunchy-backrest-restore container</li>
+<li>A PV and PVC for the new PGDATA directory that will contain the restored database.  The directory will initially be empty, as required  pgBackRest when performing a full restore, and will then contain the restored database upon completion of the restore.</li>
+</ul>
+
+<p>Please note that a brand new PV and PVC are created when running the restore to clearly indicate that the database will be restored into an entirely new (i.e. empty) volume as required by pgBackRest.  The names of the new PV and PVC are as follows:</p>
+
+<ul>
+<li><strong>PV:</strong> ${CCP_NAMESPACE}-br-new-pgdata</li>
+<li><strong>PVC:</strong> br-new-pgdata</li>
+</ul>
 
 <p>You can verify that the restore has completed successfully by verifying that the Kubernetes job has completed successfully:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> get <span style="color:#111">jobs</span>
 NAME                        COMPLETIONS   DURATION   AGE
 backrest-full-restore-job   <span style="color:#ae81ff">1</span>/1           15s        58s</code></pre></div>
-<p>Once the job is complete, the post restore script can then be run, which will create a new pod named <strong>backrest-full-restored</strong> containing the restored database:</p>
+<p>Once the job is complete, the post restore script can then be run, which will create a new deployment named <strong>backrest-full-restored</strong> containing the restored database:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">cd</span> <span style="color:#111">$CCPROOT</span>/examples/kube/backrest/full
 ./post-restore.sh</code></pre></div>
-<p>Finally, once the <strong>backrest-full-restored</strong> pod is running we can verify that the restore was successful by verifying that the table created prior to the restore still exists:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest-full-restored -- psql -c <span style="color:#d88200">&#34;table backrest_test_table&#34;</span>
+<p>Finally, once the <strong>backrest-full-restored</strong> deployment is running we can verify that the restore was successful by verifying that the table created prior to the restore still exists:</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest restored pod name&gt; -- psql -c <span style="color:#d88200">&#34;table backrest_test_table&#34;</span>
  id
 ----
 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> rows<span style="color:#f92672">)</span></code></pre></div>
 <p>Please note that the default behavior of pgBackRest is to recover to the end of the WAL archive stream, which is why the full restore contained all changes made since the initial full backup was taken, including the creation of table <strong>backrest_test_table</strong>.  pgBackRest therefore played the entire WAL archive stream for all changes that occurred up until the restore.</p>
 
-<p>*As a reminder, please remember to run the cleanup script for the <strong>Backup</strong> example after running the cleanup script for this example.*</p>
+<p><em>As a reminder, please remember to run the cleanup script for the <strong>Backup</strong> example after running the cleanup script for this example.</em></p>
 
 <h4 id="pitr">PITR</h4>
 
@@ -718,22 +716,22 @@ backrest-full-restore-job   <span style="color:#ae81ff">1</span>/1           15s
 <p>Prior to running the PITR restore, we will first verify the current state of the database, after which we will then make a change to the database.  This will allow us to verify that the PITR is successful by providing a method of verifying that the database has been restored to its current state following the restore.</p>
 
 <p>To verify the current state of the database, we will first verify that a table called <strong>backrest_test_table</strong> does not  exist in the database.</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest -- psql -c <span style="color:#d88200">&#34; table backrest_test_table&#34;</span>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- psql -c <span style="color:#d88200">&#34; table backrest_test_table&#34;</span>
 ERROR:  relation <span style="color:#d88200">&#34;backrest_test_table&#34;</span> does not exist
 LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
                ^
 <span style="color:#111">command</span> terminated with <span style="color:#111">exit</span> code <span style="color:#ae81ff">1</span></code></pre></div>
 <p>Next, capture the current timestamp, which will be used later in the example when performing the restore:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest -- psql -c <span style="color:#d88200">&#34;select current_timestamp&#34;</span>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- psql -c <span style="color:#d88200">&#34;select current_timestamp&#34;</span>
        current_timestamp
 -------------------------------
  <span style="color:#ae81ff">2018</span>-12-27 <span style="color:#ae81ff">16</span>:53:05.590156+00
 <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> row<span style="color:#f92672">)</span></code></pre></div>
 <p>Now create table <strong>backrest_test_table</strong>:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest -- psql -c <span style="color:#d88200">&#34;create table backrest_test_table (id int)&#34;</span>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- psql -c <span style="color:#d88200">&#34;create table backrest_test_table (id int)&#34;</span>
 CREATE TABLE</code></pre></div>
 <p>Then verify that the new table exists:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest -- psql -c <span style="color:#d88200">&#34;table backrest_test_table&#34;</span>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- psql -c <span style="color:#d88200">&#34;table backrest_test_table&#34;</span>
  id
 ----
 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> rows<span style="color:#f92672">)</span></code></pre></div>
@@ -754,16 +752,16 @@ CREATE TABLE</code></pre></div>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> get <span style="color:#111">jobs</span>
 NAME                        COMPLETIONS   DURATION   AGE
 backrest-pitr-restore-job   <span style="color:#ae81ff">1</span>/1           15s        58s</code></pre></div>
-<p>Once the job is complete, the post restore script can then be run, which will create a new pod named <strong>backrest-pitr-restored</strong> containing the restored database:</p>
+<p>Once the job is complete, the post restore script can then be run, which will create a new deployment named <strong>backrest-pitr-restored</strong> containing the restored database:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">cd</span> <span style="color:#111">$CCPROOT</span>/examples/kube/backrest/pitr
 ./post-restore.sh</code></pre></div>
-<p>Finally, once the <strong>backrest-pitr-restored</strong> pod is running we can verify that the restore was successful by verifying that the table created prior to the restore no longer exists:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest-pitr-restored -- psql -c <span style="color:#d88200">&#34; table backrest_test_table&#34;</span>
+<p>Finally, once the <strong>backrest-pitr-restored</strong> deployment is running we can verify that the restore was successful by verifying that the table created prior to the restore no longer exists:</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest restored pod name&gt; -- psql -c <span style="color:#d88200">&#34; table backrest_test_table&#34;</span>
 ERROR:  relation <span style="color:#d88200">&#34;backrest_test_table&#34;</span> does not exist
 LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
                ^
 <span style="color:#111">command</span> terminated with <span style="color:#111">exit</span> code <span style="color:#ae81ff">1</span></code></pre></div>
-<p>*As a reminder, please remember to run the cleanup script for the <strong>Backup</strong> example after running the cleanup script for this example.*</p>
+<p><em>As a reminder, please remember to run the cleanup script for the <strong>Backup</strong> example after running the cleanup script for this example.</em></p>
 
 <h4 id="delta">Delta</h4>
 
@@ -771,23 +769,23 @@ LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
 
 <p>Prior to running the delta restore, we will first verify the current state of the database, and we will then make a change to the database.  This will allow us to verify that the delta restore is successful by providing a method of verifying that the database has been restored to its current state following the restore.</p>
 
-<p>To verify the current state of the database, we will first verify that a table called <strong>backrest_test_table</strong> does not  exist in the database.</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest -- psql -c <span style="color:#d88200">&#34; table backrest_test_table&#34;</span>
+<p>To verify the current state of the database, we will first verify that a table called <strong>backrest_test_table</strong> does not exist in the database.</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- psql -c <span style="color:#d88200">&#34; table backrest_test_table&#34;</span>
 ERROR:  relation <span style="color:#d88200">&#34;backrest_test_table&#34;</span> does not exist
 LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
                ^
 <span style="color:#111">command</span> terminated with <span style="color:#111">exit</span> code <span style="color:#ae81ff">1</span></code></pre></div>
 <p>Next, capture the current timestamp, which will be used later in the example when performing the restore:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest -- psql -c <span style="color:#d88200">&#34;select current_timestamp&#34;</span>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- psql -c <span style="color:#d88200">&#34;select current_timestamp&#34;</span>
        current_timestamp
 -------------------------------
  <span style="color:#ae81ff">2018</span>-12-27 <span style="color:#ae81ff">16</span>:53:05.590156+00
 <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> row<span style="color:#f92672">)</span></code></pre></div>
 <p>Now create table <strong>backrest_test_table</strong>:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest -- psql -c <span style="color:#d88200">&#34;create table backrest_test_table (id int)&#34;</span>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- psql -c <span style="color:#d88200">&#34;create table backrest_test_table (id int)&#34;</span>
 CREATE TABLE</code></pre></div>
 <p>Then verify that the new table exists:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest -- psql -c <span style="color:#d88200">&#34;table backrest_test_table&#34;</span>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- psql -c <span style="color:#d88200">&#34;table backrest_test_table&#34;</span>
  id
 ----
 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> rows<span style="color:#f92672">)</span></code></pre></div>
@@ -809,20 +807,20 @@ CREATE TABLE</code></pre></div>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> get <span style="color:#111">jobs</span>
 NAME                        COMPLETIONS   DURATION   AGE
 backrest-delta-restore-job   <span style="color:#ae81ff">1</span>/1           15s        58s</code></pre></div>
-<p>Once the job is complete, the post restore script can then be run, which will create a new pod named <strong>backrest-delta-restored</strong> containing the restored database:</p>
+<p>Once the job is complete, the post restore script can then be run, which will create a new deployment named <strong>backrest-delta-restored</strong> containing the restored database:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">cd</span> <span style="color:#111">$CCPROOT</span>/examples/kube/backrest/delta
 ./post-restore.sh</code></pre></div>
-<p>Finally, once the <strong>backrest-delta-restored</strong> pod is running we can verify that the restore was successful by verifying that the table created prior to the restore no longer exists:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest-delta-restored -- psql -c <span style="color:#d88200">&#34; table backrest_test_table&#34;</span>
+<p>Finally, once the <strong>backrest-delta-restored</strong> deployment is running we can verify that the restore was successful by verifying that the table created prior to the restore no longer exists:</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest restored pod name&gt; -- psql -c <span style="color:#d88200">&#34; table backrest_test_table&#34;</span>
 ERROR:  relation <span style="color:#d88200">&#34;backrest_test_table&#34;</span> does not exist
 LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
                ^
 <span style="color:#111">command</span> terminated with <span style="color:#111">exit</span> code <span style="color:#ae81ff">1</span></code></pre></div>
-<p>*As a reminder, please remember to run the cleanup script for the <strong>Backup</strong> example after running the cleanup script for this example.*</p>
+<p><em>As a reminder, please remember to run the cleanup script for the <strong>Backup</strong> example after running the cleanup script for this example.</em></p>
 
 <h3 id="async-archiving">Async Archiving</h3>
 
-<p>pgBackRest supports the capability to asynchronously push and get write ahead logs (WAL) to and from a WAL archive. Asynchronous archiving can improve performance by parallelizing operations, while also reducing the number of connections to remote storage. For more information on async archiving and its benefits, please see the <a href="https://pgbackrest.org/">official pgBackRest documentation</a>.  This example will demonstrate how asynchronous archiving can be enabled within a crunchy-postgres or crunchy-postgres-gis container, while then also demonstrating the creation of a differential backup.</p>
+<p>pgBackRest supports the capability to asynchronously push and get write ahead logs (WAL) to and from a WAL archive. Asynchronous archiving can improve performance by parallelizing operations, while also reducing the number of connections to remote storage. For more information on async archiving and its benefits, please see the <a href="https://pgbackrest.org/" target="_blank">official pgBackRest documentation</a>.  This example will demonstrate how asynchronous archiving can be enabled within a crunchy-postgres or crunchy-postgres-gis container, while then also demonstrating the creation of a differential backup.</p>
 
 <p>Start the example as follows:</p>
 
@@ -831,34 +829,34 @@ LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
 </code></pre>
 
 <p>This will create the following in your Kubernetes environment:
-- A pod named <strong>backrest-async-archive</strong> containing a PostgreSQL database with pgBackRest configured
+- A deployment named <strong>backrest-async-archive</strong> containing a PostgreSQL database with pgBackRest configured
 - A service named <strong>backrest-async-archive</strong> for the PostgreSQL database
 - A PV and PVC for the PGDATA directory
 - A PV and PVC for the pgBackRest backups and archives directories</p>
 
 <p>Additionally, the following variable will be set during deployment of the pod in order to enable asynchronous archiving:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">PGBACKREST_ARCHIVE_ASYNC</span><span style="color:#f92672">=</span>y</code></pre></div>
-<p>This will also result in the creation of the required spool path, which we can see by listing the contents of the <code>/pgdata</code> directory in the backrest-async-archive pod:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest-async-archive -- ls /pgdata
+<p>This will also result in the creation of the required spool path, which we can see by listing the contents of the <code>/pgdata</code> directory in the backrest-async-archive deployment:</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest async archive pod name&gt; -- ls /pgdata
 backrest-async-archive
 backrest-async-archive-backups
 backrest-async-archive-spool</code></pre></div>
 <p>Once the database is up an running, a full backup can be taken:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest-async-archive -- pgbackrest backup <span style="color:#8045ff">\
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest async archive pod name&gt; -- pgbackrest backup <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --stanza<span style="color:#f92672">=</span>db <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --pg1-path<span style="color:#f92672">=</span>/pgdata/backrest-async-archive <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --repo1-path<span style="color:#f92672">=</span>/backrestrepo/backrest-async-archive-backups <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --log-path<span style="color:#f92672">=</span>/tmp <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --type<span style="color:#f92672">=</span>full</code></pre></div>
 <p>And once a full backup has been taken, other types of backups can also be taken using pgBackRest, such as a differential backup:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest-async-archive -- pgbackrest backup <span style="color:#8045ff">\
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest async archive pod name&gt; -- pgbackrest backup <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --stanza<span style="color:#f92672">=</span>db <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --pg1-path<span style="color:#f92672">=</span>/pgdata/backrest-async-archive <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --repo1-path<span style="color:#f92672">=</span>/backrestrepo/backrest-async-archive-backups <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --log-path<span style="color:#f92672">=</span>/tmp <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --type<span style="color:#f92672">=</span>diff</code></pre></div>
 <p>The following command can then be run to verify that both backups were created successfully:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> backrest-async-archive -- pgbackrest info <span style="color:#8045ff">\
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest async archive pod name&gt; -- pgbackrest info <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --stanza<span style="color:#f92672">=</span>db <span style="color:#8045ff">\
 </span><span style="color:#8045ff"></span>  --repo1-path<span style="color:#f92672">=</span>/backrestrepo/backrest-async-archive-backups</code></pre></div>
 <h2 id="docker">Docker</h2>
@@ -947,7 +945,7 @@ CREATE TABLE</code></pre></div>
 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> rows<span style="color:#f92672">)</span></code></pre></div>
 <p>Please note that the default behavior of pgBackRest is to recover to the end of the WAL archive stream, which is why the full restore contained all changes made since the initial full backup was taken, including the creation of table <strong>backrest_test_table</strong>.  pgBackRest therefore played the entire WAL archive stream for all changes that occurred up until the restore.</p>
 
-<p>*As a reminder, please remember to run the cleanup script for the <strong>Backup</strong> example after running the cleanup script for this example.*</p>
+<p><em>As a reminder, please remember to run the cleanup script for the <strong>Backup</strong> example after running the cleanup script for this example.</em></p>
 
 <h4 id="pitr-1">PITR</h4>
 
@@ -999,7 +997,7 @@ ERROR:  relation <span style="color:#d88200">&#34;backrest_test_table&#34;</span
 LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
                ^
 <span style="color:#111">command</span> terminated with <span style="color:#111">exit</span> code <span style="color:#ae81ff">1</span></code></pre></div>
-<p>*As a reminder, please remember to run the cleanup script for the <strong>Backup</strong> example after running the cleanup script for this example.*</p>
+<p><em>As a reminder, please remember to run the cleanup script for the <strong>Backup</strong> example after running the cleanup script for this example.</em></p>
 
 <h4 id="delta-1">Delta</h4>
 
@@ -1052,11 +1050,11 @@ ERROR:  relation <span style="color:#d88200">&#34;backrest_test_table&#34;</span
 LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
                ^
 <span style="color:#111">command</span> terminated with <span style="color:#111">exit</span> code <span style="color:#ae81ff">1</span></code></pre></div>
-<p>*As a reminder, please remember to run the cleanup script for the <strong>Backup</strong> example after running the cleanup script for this example.*</p>
+<p><em>As a reminder, please remember to run the cleanup script for the <strong>Backup</strong> example after running the cleanup script for this example.</em></p>
 
 <h3 id="async-archiving-1">Async Archiving</h3>
 
-<p>pgBackRest supports the capability to asynchronously push and get write ahead logs (WAL) to and from a WAL archive. Asynchronous archiving can improve performance by parallelizing operations, while also reducing the number of connections to remote storage. For more information on async archiving and its benefits, please see the <a href="https://pgbackrest.org/">official pgBackRest documentation</a>.  This example will demonstrate how asynchronous archiving can be enabled within a crunchy-postgres or crunchy-postgres-gis container, while then also demonstrating the creation of a differential backup.</p>
+<p>pgBackRest supports the capability to asynchronously push and get write ahead logs (WAL) to and from a WAL archive. Asynchronous archiving can improve performance by parallelizing operations, while also reducing the number of connections to remote storage. For more information on async archiving and its benefits, please see the <a href="https://pgbackrest.org/" target="_blank">official pgBackRest documentation</a>.  This example will demonstrate how asynchronous archiving can be enabled within a crunchy-postgres or crunchy-postgres-gis container, while then also demonstrating the creation of a differential backup.</p>
 
 <p>Start the example as follows:</p>
 
@@ -1064,10 +1062,13 @@ LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
 ./run.sh
 </code></pre>
 
-<p>This will create the following in your Docker environment:
-- A container named <strong>backrest-async-archive</strong> containing a PostgreSQL database with pgBackRest configured
-- A volume for the PGDATA directory
-- A volume for the pgBackRest backups and archives directories</p>
+<p>This will create the following in your Docker environment:</p>
+
+<ul>
+<li>A container named <strong>backrest-async-archive</strong> containing a PostgreSQL database with pgBackRest configured</li>
+<li>A volume for the PGDATA directory</li>
+<li>A volume for the pgBackRest backups and archives directories</li>
+</ul>
 
 <p>Additionally, the following variable will be set during deployment of the container in order to enable asynchronous archiving:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">PGBACKREST_ARCHIVE_ASYNC</span><span style="color:#f92672">=</span>y</code></pre></div>
@@ -1130,8 +1131,6 @@ backrest-async-archive-spool</code></pre></div>
 
 <link href="https://crunchydata.github.io/crunchy-containers/stable/css/featherlight.min.css" rel="stylesheet">
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/featherlight.min.js"></script>
-
-
 
 <script src="https://crunchydata.github.io/crunchy-containers/stable/theme-flex/script.js"></script>
 
