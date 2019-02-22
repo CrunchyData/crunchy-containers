@@ -22,12 +22,12 @@ delete the task.
 
 See the following examples for creating config maps that Crunchy Scheduler can parse:
 
-* link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-diff.json[pgBackRest Diff Backup]
-* link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-full.json[pgBackRest Full Backup]
-* link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-pgbasebackup.json[pgBaseBackup Backup]
+* [pgBackRest Diff Backup](https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-diff.json)
+* [pgBackRest Full Backup](https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-full.json)
+* [pgBaseBackup Backup](https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-pgbasebackup.json)
 
 The Crunchy Scheduler requires a Service Account to create jobs (pgBaseBackup) and to
-exec (pgBackRest).  See the link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/scheduler-sa.json[scheduler example]
+exec (pgBackRest).  See the [scheduler example](https://github.com/CrunchyData/crunchy-containers/tree/master/examples/kube/scheduler/scheduler-sa.json)
 for the required permissions on this account.
 
 {{% notice tip %}}
@@ -45,7 +45,7 @@ To configure Crunchy Scheduler to create pgBackRest backups the following is req
 To configure Crunchy Scheduler to create pgBaseBackup scheduled backups, the following is required:
 
 * The name of the secret that contains the username and password the Scheduler will use to
-  configure the job template.  See link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler/primary/secret.json[the primary secret example].
+  configure the job template.  See [the primary secret example](https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/secret/secret.json)
   for the structure required by the Scheduler.
 * The name of the PVC created for the backups.  This should be created by the user prior to scheduling the task.
 
@@ -54,7 +54,7 @@ When using pgBaseBackup schedules, it may be required to apply specific `supplem
 to the backup job created by the scheduler.  To apply a specific `securityContext` for your
 storage provider, mount a `backup-template.json` to `/configs` on the scheduler pod.
 
-For an example of applying a custom template, link:https://github.com/CrunchyData/crunchy-containers/blob/scheduler/examples/kube/scheduler[see the schedule example].
+For an example of applying a custom template, [see the scheduler example](https://github.com/CrunchyData/crunchy-containers/tree/master/examples/kube/scheduler).
 {{% /notice %}}
 
 ### Kubernetes and OpenShift

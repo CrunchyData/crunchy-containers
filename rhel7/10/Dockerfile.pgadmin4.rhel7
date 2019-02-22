@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/pgadmin4" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.6" \
+	PostgresFullVersion="10.7" \
 	Version="7.6" \
-	Release="2.3.0" \
+	Release="2.3.1" \
         url="https://crunchydata.com" \
         summary="Crunchy Data pgAdmin4 GUI utility" \
         description="Provides GUI for the pgAdmin utility." \
@@ -57,8 +57,7 @@ ADD conf/pgadmin4/ /opt/cpm/conf
 RUN cp /opt/cpm/conf/httpd.conf /etc/httpd/conf/httpd.conf \
   && rm /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/ssl.conf
 
-
-RUN chgrp -R 0 /usr/lib/python2.7/site-packages/pgadmin4-web \
+RUN chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
    /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd && \
     chmod -R g=u /usr/lib/python2.7/site-packages/pgadmin4-web \
    /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd

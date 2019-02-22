@@ -1,6 +1,6 @@
 ---
 title: "pgBaseBackup"
-date: 
+date:
 draft: false
 weight: 31
 ---
@@ -11,7 +11,7 @@ weight: 31
 The script assumes you are going to backup the *primary*
 container created in the first example, so you need to ensure
 that container is running. This example assumes you have configured storage as described
-in the link:/installation/storage-configuration/[Storage Configuration documentation]. Things to point out with this example
+in the [Storage Configuration documentation](/installation/storage-configuration/). Things to point out with this example
 include its use of persistent volumes and volume claims to store the backup data files.
 
 A successful backup will perform `pg_basebackup` on the *primary* container and store
@@ -45,7 +45,7 @@ To shutdown the instance and remove the container for each example, run the foll
 
 Run the backup with this command:
 ```
-cd $CCPROOT/examples/docker/backup
+cd $CCPROOT/examples/docker/pgbasebackup/backup
 ./run.sh
 ```
 
@@ -70,7 +70,7 @@ An example of BACKUP_PATH is as followed:
 
 When you are ready to restore from the backup created, run the following example:
 ```
-cd $CCPROOT/examples/docker/restore
+cd $CCPROOT/examples/docker/pgbasebackup/full
 ./run.sh
 ```
 
@@ -78,7 +78,7 @@ cd $CCPROOT/examples/docker/restore
 
 Running the example:
 ```
-cd $CCPROOT/examples/kube/backup
+cd $CCPROOT/examples/kube/pgbasebackup/backup
 ./run.sh
 ```
 
@@ -108,7 +108,7 @@ An example of BACKUP_PATH defined as a variable within the JSON script is as fol
 
 Running the example:
 ```
-cd $CCPROOT/examples/kube/restore
+cd $CCPROOT/examples/kube/pgbasebackup/full
 ./run.sh
 ```
 
@@ -133,7 +133,7 @@ This is because point in time recovery allows you to "replay" the log files and 
 your database to any point since the last full backup.
 
 More detailed information about Write Ahead Log (WAL) archiving can be found
-link:https://www.postgresql.org/docs/10/static/continuous-archiving.html[here.]
+[here.](https://www.postgresql.org/docs/10/static/continuous-archiving.html)
 
 By default in the crunchy-postgres container, WAL logging is *not* enabled.
 To enable WAL logging *outside of this example*, set the following environment
@@ -198,7 +198,7 @@ To shutdown the instance and remove the container for each example, run the foll
 
 Create a database container as follows:
 ```
-cd $CCPROOT/examples/docker/pitr
+cd $CCPROOT/examples/docker/pgbasebackup/pitr
 ./run-pitr.sh
 ```
 
@@ -299,7 +299,7 @@ WAL history, resuming the recovery is not necessary to enable writes.
 
 Start by running the example database container:
 ```
-cd $CCPROOT/examples/kube/pitr
+cd $CCPROOT/examples/kube/pgbasebackup/pitr
 ./run-pitr.sh
 ```
 

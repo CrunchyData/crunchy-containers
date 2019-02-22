@@ -1,6 +1,6 @@
 ---
 title: "pgBouncer"
-date: 
+date:
 draft: false
 weight: 51
 ---
@@ -33,7 +33,7 @@ To cleanup the objects created by this example, run the following in the `pgboun
 ```
 
 {{% notice tip %}}
-For more information on `pgBouncer`, see the link:https://pgbouncer.github.io[official website].
+For more information on `pgBouncer`, see the [official website](https://pgbouncer.github.io).
 {{% /notice %}}
 
 ### Docker

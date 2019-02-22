@@ -60,4 +60,4 @@ psql -h primary -U postgres postgres
 ## Helm
 
 This example resides under the `$CCPROOT/examples/helm` directory. View the README to run this
-example using Helm link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/helm/primary/README.md[here].
+example using Helm [here](https://github.com/CrunchyData/crunchy-containers/blob/master/examples/helm/primary/README.md).

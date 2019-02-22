@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/postgres-gis" \
         vendor="crunchy data" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.1" \
+	PostgresFullVersion="11.2" \
 	Version="7.6" \
-	Release="2.3.0" \
+	Release="2.3.1" \
         url="https://crunchydata.com" \
         summary="Includes PostGIS extensions on top of crunchy-postgres" \
         description="An identical image of crunchy-postgres with the extra PostGIS packages added for users that require PostGIS." \
@@ -14,7 +14,7 @@ LABEL name="crunchydata/postgres-gis" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="11" PGDG_REPO="pgdg-centos11-11-2.noarch.rpm"
+ENV PGVERSION="11" PGDG_REPO="pgdg-centos11-11-2.noarch.rpm" BACKREST_VERSION="2.10"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
@@ -28,7 +28,7 @@ RUN yum -y update && yum -y install epel-release \
  && yum -y install postgresql11-server postgresql11-contrib postgresql11 \
     R-core libRmath plr11 \
     pgaudit13_11 \
-    pgbackrest \
+    pgbackrest-"${BACKREST_VERSION}" \
     postgis24_11 postgis24_11-client \
  && yum -y clean all
 
@@ -66,13 +66,13 @@ ADD bin/postgres /opt/cpm/bin
 ADD bin/postgres-gis /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
-ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/pgmonitor
+ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules
 
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
 
 RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh
-	
+
 ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 
 

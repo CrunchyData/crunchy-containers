@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.1" \
+	PostgresFullVersion="11.2" \
 	Version="7.6" \
-	Release="2.3.0" \
+	Release="2.3.1" \
         url="https://crunchydata.com" \
         summary="Executes the pgbackrest utility, allowing FULL & DELTA restore capability." \
         description="Executes pgbackrest utility, allowing FULL, DELTA & PITR restore capability. Capable of mounting the /backrestrepo for access to pgbackrest archives, while allowing for the configuration of pgbackrest using applicable pgbackrest environment variables." \
@@ -23,7 +23,7 @@ COPY conf/atomic/backrestrestore/help.1 /help.1
 COPY conf/atomic/backrestrestore/help.md /help.md
 COPY conf/licenses /licenses
 
-ENV PGVERSION="11"
+ENV PGVERSION="11" BACKREST_VERSION="2.10"
 
 # Crunchy Postgres repo
 ADD conf/RPM-GPG-KEY-crunchydata  /
@@ -39,7 +39,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
  && yum -y clean all
 
 RUN yum -y install postgresql11-server  \
- && yum -y install crunchy-backrest \
+ && yum -y install crunchy-backrest-"${BACKREST_VERSION}" \
  && yum -y clean all
 
 ENV	PGROOT="/usr/pgsql-${PGVERSION}"

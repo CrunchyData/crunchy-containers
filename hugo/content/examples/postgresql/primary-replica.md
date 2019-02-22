@@ -1,6 +1,6 @@
 ---
 title: "Primary and Streaming Replica Containers"
-date: 
+date:
 draft: false
 weight: 4
 ---
@@ -100,4 +100,4 @@ ${CCP_CLI?} exec -ti primary-dc -- psql -d postgres -c 'table pg_stat_replicatio
 ### Helm
 
 This example resides under the `$CCPROOT/examples/helm` directory. View the README to run this example
-using Helm link:https://github.com/CrunchyData/crunchy-containers/blob/master/examples/helm/primary-replica/README.md[here].
+using Helm [here](https://github.com/CrunchyData/crunchy-containers/blob/master/examples/helm/primary-replica/README.md).

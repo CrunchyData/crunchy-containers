@@ -2,7 +2,7 @@
 title: "crunchy-pgadmin4"
 date: 2018-05-24T12:05:42-07:00
 draft: false
-weight: 160
+weight: 5
 ---
 
 The crunchy-pgadmin4 container executes the [pgAdmin4](https://www.pgadmin.org/) web application.
@@ -28,7 +28,7 @@ The following features are supported by the crunchy-pgadmin4 container:
 
 The crunchy-pgadmin4 Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (11.1, 10.6, 9.6.11 and 9.5.15)
+* PostgreSQL (11.2, 10.7, 9.6.12 and 9.5.16)
 * [pgAdmin4](https://www.pgadmin.org/)
 * CentOS7 - publicly available
 * RHEL7 - customers only
@@ -41,6 +41,7 @@ The crunchy-pgadmin4 Docker image contains the following packages (versions vary
 **PGADMIN_SETUP_EMAIL**|None|Set this value to the email address used for pgAdmin4 login.
 **PGADMIN_SETUP_PASSWORD**|None|Set this value to a password used for pgAdmin4 login. This should be a strong password.
 **SERVER_PORT**|5050|Set this value to a change the port pgAdmin4 listens on.
+**SERVER_PATH**|/|Set this value to customize the path of the URL that will be utilized to access the pgAdmin4 web application.
 **ENABLE_TLS**|FALSE|Set this value to true to enable HTTPS on the pgAdmin4 container. This requires a `server.key` and `server.crt` to be mounted on the `/certs` directory.
 
 ### Optional

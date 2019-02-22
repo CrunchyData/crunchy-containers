@@ -6,7 +6,7 @@ weight: 252
 ---
 
 
-If you would like to submit an feature / issue for us to consider please submit an to the offical [GitHub Repository](https://github.com/CrunchyData/crunchy-containers/issues/new/choose).
+If you would like to submit an feature / issue for us to consider please submit an issue to the official [GitHub Repository](https://github.com/CrunchyData/crunchy-containers/issues/new/choose).
 
 If you would like to work any current or open issues, please update the issue with your efforts so that we can avoid redundant or unnecessary work.
 

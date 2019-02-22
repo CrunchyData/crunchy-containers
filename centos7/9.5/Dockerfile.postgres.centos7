@@ -3,18 +3,18 @@ FROM centos:7
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.15" \
+	PostgresFullVersion="9.5.16" \
 	Version="7.6" \
-	Release="2.3.0" \
+	Release="2.3.1" \
         url="https://crunchydata.com" \
-	summary="PostgreSQL 9.5.15 (PGDG) on a Centos7 base image" \
+	summary="PostgreSQL 9.5.16 (PGDG) on a Centos7 base image" \
         description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
         io.k8s.description="postgres container" \
         io.k8s.display-name="Crunchy postgres container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="9.5" PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm"
+ENV PGVERSION="9.5" PGDG_REPO="pgdg-centos95-9.5-3.noarch.rpm" BACKREST_VERSION="2.10"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
@@ -28,7 +28,7 @@ RUN yum -y update && yum -y install epel-release \
     psmisc openssh-server openssh-clients \
  && yum -y install postgresql95-server postgresql95-contrib postgresql95 \
     pgaudit_95 \
-    pgbackrest \
+    pgbackrest-"${BACKREST_VERSION}" \
  && yum -y clean all
 
 ENV	PGROOT="/usr/pgsql-${PGVERSION}"
@@ -65,13 +65,13 @@ EXPOSE 5432
 ADD bin/postgres /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
-ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/pgmonitor
+ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules
 
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
 
 RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh
-	
+
 ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 
 USER 26

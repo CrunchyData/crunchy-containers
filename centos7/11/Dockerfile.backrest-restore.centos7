@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.1" \
+	PostgresFullVersion="11.2" \
 	Version="7.6" \
-	Release="2.3.0" \
+	Release="2.3.1" \
         url="https://crunchydata.com" \
         summary="Executes the pgbackrest utility, allowing FULL & DELTA restore capability." \
         description="Executes pgbackrest utility, allowing FULL, DELTA & PITR restore capability. Capable of mounting the /backrestrepo for access to pgbackrest archives, while allowing for the configuration of pgbackrest using applicable pgbackrest environment variables." \
@@ -14,7 +14,7 @@ LABEL name="crunchydata/postgres" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="11" PGDG_REPO="pgdg-centos11-11-2.noarch.rpm"
+ENV PGVERSION="11" PGDG_REPO="pgdg-centos11-11-2.noarch.rpm" BACKREST_VERSION="2.10"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
@@ -27,7 +27,7 @@ RUN yum -y update && yum -y install epel-release \
  && yum -y clean all
 
 RUN yum -y install postgresql11-server  \
- && yum -y install pgbackrest \
+ && yum -y install pgbackrest-"${BACKREST_VERSION}" \
  && yum -y clean all
 
 ENV	PGROOT="/usr/pgsql-${PGVERSION}"

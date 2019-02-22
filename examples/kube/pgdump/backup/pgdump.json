@@ -1,0 +1,64 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "name": "pgdump"
+    },
+    "spec": {
+        "backoffLimit": 0,
+        "template": {
+            "metadata": {
+                "name": "pgdump",
+                "labels": {
+                    "app": "pgdump",
+                    "cleanup": "$CCP_NAMESPACE-pgdump"
+                }
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "pgdata",
+                        "persistentVolumeClaim": {
+                            "claimName": "pgdump-pgdata"
+                        }
+                    }
+                ],
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                },
+                "containers": [
+                    {
+                        "name": "pgdump",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-pgdump:$CCP_IMAGE_TAG",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": false
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "PGDUMP_HOST",
+                                "value": "primary"
+                            },
+                            {
+                                "name": "PGDUMP_USER",
+                                "value": "postgres"
+                            },
+                            {
+                                "name": "PGDUMP_PASS",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PGDUMP_DB",
+                                "value": "postgres"
+                            }
+                        ]
+                    }
+                ],
+                "restartPolicy": "Never"
+            }
+        }
+    }
+}

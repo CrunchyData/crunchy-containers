@@ -57,17 +57,30 @@ function create_storage {
     then
         echo_info "CCP_STORAGE_CLASS is set. Using the existing storage class for the PV."
         PVC="${1?}-pvc-sc.json"
+        if [[ ! -f ${DIR?}/${PVC?} ]]
+        then
+            echo_err "CCP_STORAGE_CLASS is set but ${DIR?}/${PVC?} does not exist.  Exiting.."
+            exit 1
+        fi
     elif [[ ! -z ${CCP_NFS_IP} ]]
     then
         echo_info "CCP_NFS_IP is set. Creating NFS based storage volumes."
+        env_check_err "CCP_STORAGE_PATH"
         sudo mkdir -p ${CCP_STORAGE_PATH?}/${dir?}
         sudo chmod -R 777 ${CCP_STORAGE_PATH?}/${dir?}
         PV="${1?}-pv-nfs.json"
     else
         echo_info "CCP_NFS_IP and CCP_STORAGE_CLASS not set. Creating HostPath based storage volumes."
+        env_check_err "CCP_STORAGE_PATH"
         sudo mkdir -p ${CCP_STORAGE_PATH?}/${dir?}
         sudo chmod -R 777 ${CCP_STORAGE_PATH?}/${dir?}
         PV="${1?}-pv.json"
+    fi
+
+    if [[ ${PV:-none} != "none" ]] && [[ ! -f ${DIR?}/${PV?} ]]
+    then
+        echo_err "Required PV definition ${DIR?}/${PV?} does not exist.  Exiting.."
+        exit 1
     fi
 
     if [[ -f ${DIR?}/${PV:-none} ]]
@@ -86,7 +99,7 @@ function cleanup() {
 
     CONFIG="configmap,secret"
     DEPLOY="deployment,daemonset,job,pod,replicaset,service,statefulset"
-    RBAC="clusterrolebinding,clusterrole,role,rolebinding,serviceaccount"
+    RBAC="role,rolebinding,serviceaccount"
     VOLUME="pvc,pv"
     OBJECTS="${CONFIG?},${DEPLOY?},${RBAC?},${VOLUME?}"
 

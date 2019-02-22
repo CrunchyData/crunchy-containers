@@ -2,7 +2,7 @@
 title: "crunchy-grafana"
 date: 2018-05-24T10:06:17-07:00
 draft: false
-weight: 159
+weight: 4
 ---
 
 Visual dashboards are created from the collected and stored data that crunchy-collect and crunchy-prometheus
@@ -50,6 +50,7 @@ The crunchy-grafana Docker image contains the following packages:
 ### Optional
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
+**INSTALL_DASHBOARDS**|true|Set this option to false to prevent the Grafana container from installing the preinstalled pgMonitor PostgreSQL dashboards.
 **PROM_USER**|5s|Specifies the Prometheus username, if one is required.
 **PROM_PASS**|5s|Specifies the Prometheus password, if one is required.
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.

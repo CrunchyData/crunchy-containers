@@ -5,7 +5,13 @@ endif
 .PHONY:	all versiontest
 
 # Default target
-all:    commands backup backrestrestore collect grafana pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis prometheus scheduler upgrade vac
+all: pgimages extras
+
+# Build images that use postgres
+pgimages: commands backup backrestrestore collect pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade
+
+# Build non-postgres images
+extras: grafana prometheus scheduler  
 
 versiontest:
 ifndef CCP_BASEOS
@@ -127,14 +133,10 @@ upgrade: versiontest
 		docker tag crunchy-upgrade $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION) ;\
 	fi
 
-vac: versiontest
-	cd vacuum && go install vacuum.go
-	cp $(GOBIN)/vacuum bin/vacuum
-	docker build -t crunchy-vacuum -f $(CCP_BASEOS)/Dockerfile.vacuum.$(CCP_BASEOS) .
-	docker tag crunchy-vacuum $(CCP_IMAGE_PREFIX)/crunchy-vacuum:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
-
 #=================
 # Utility targets
 #=================
 push:
 	./bin/push-to-dockerhub.sh
+
+-include Makefile.build

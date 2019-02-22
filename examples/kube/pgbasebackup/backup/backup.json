@@ -1,0 +1,68 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "name": "backup"
+    },
+    "spec": {
+        "backoffLimit": 0,
+        "template": {
+            "metadata": {
+                "name": "backup",
+                "labels": {
+                    "app": "backup",
+                    "cleanup": "$CCP_NAMESPACE-backup"
+                }
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "pgdata",
+                        "persistentVolumeClaim": {
+                            "claimName": "backup-pgdata"
+                        }
+                    }
+                ],
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                },
+                "containers": [
+                    {
+                        "name": "backup",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": false
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "BACKUP_HOST",
+                                "value": "primary"
+                            },
+                            {
+                                "name": "BACKUP_OPTS",
+                                "value": "--progress"
+                            },
+                            {
+                                "name": "BACKUP_USER",
+                                "value": "primaryuser"
+                            },
+                            {
+                                "name": "BACKUP_PASS",
+                                "value": "password"
+                            },
+                            {
+                                "name": "BACKUP_PORT",
+                                "value": "5432"
+                            }
+                        ]
+                    }
+                ],
+                "restartPolicy": "Never"
+            }
+        }
+    }
+}

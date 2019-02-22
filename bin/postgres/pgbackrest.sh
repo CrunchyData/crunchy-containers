@@ -112,21 +112,14 @@ fi
 if [[ "${BACKREST_SKIP_CREATE_STANZA}" == "true" ]]
 then
     echo_info "pgBackRest: BACKREST_SKIP_CREATE_STANZA is 'true'.  Skipping stanza creation.." 
-elif pgbackrest info | grep -q 'missing stanza path'
-then
+else
     echo_info "pgBackRest: The following pgbackrest env vars have been set:"
     ( set -o posix ; set | grep -oP "^PGBACKREST.*" )
 
-    echo_info "pgBackRest: Creating stanza '${PGBACKREST_STANZA}'.."
-    pgbackrest stanza-create --no-online \
-        > /tmp/pgbackrest.stdout 2> /tmp/pgbackrest.stderr
+    echo_info "pgBackRest: Executing 'stanza-create' to create stanza '${PGBACKREST_STANZA}'.."
+    pgbackrest stanza-create --no-online --log-level-console=info \
+        2> /tmp/pgbackrest.stderr
     err=$?
     err_check ${err} "pgBackRest Stanza Creation" \
         "Could not create a pgBackRest stanza: \n$(cat /tmp/pgbackrest.stderr)"
-    if [[ ${err} == 0 ]]
-    then
-        echo_info "pgBackRest: Stanza '${PGBACKREST_STANZA}'' created"
-    fi
-else
-    echo_info "pgBackRest: Stanza '${PGBACKREST_STANZA}' already exists.."
 fi

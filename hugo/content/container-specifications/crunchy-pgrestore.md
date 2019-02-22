@@ -2,7 +2,7 @@
 title: "crunchy-pgrestore"
 date: 
 draft: false
-weight: 156
+weight: 10
 ---
 
 The restore image provides a means of performing a restore
@@ -13,7 +13,7 @@ to a PostgreSQL container database.
 
 The crunchy-pgrestore Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (11.1, 10.6, 9.6.11 and 9.5.15)
+* PostgreSQL (11.2, 10.7, 9.6.12 and 9.5.16)
 * CentOS7 - publicly available
 * RHEL7 - customers only
 
