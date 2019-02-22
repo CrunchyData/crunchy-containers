@@ -6,7 +6,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.52" />
+<meta name="generator" content="Hugo 0.53" />
 <title>Primary and Streaming Replica Containers :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/stable/favicon.png" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/stable/css/nucleus.css" rel="stylesheet">
@@ -18,6 +18,7 @@
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/jquery-2.x.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js" integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP" crossorigin="anonymous"></script>
+<script src="https://crunchydata.github.io/crunchy-containers/stable/js/main.js"></script>
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/toc.js"></script>
 <script type="text/javascript">
       var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
@@ -211,17 +212,10 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/examples/backup-restoration/pgdump/" class="dd-item">
+      <li data-nav-id="/examples/backup-restoration/pgdump-pgrestore/" class="dd-item">
         <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/pgdump/">
-            pgDump
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/examples/backup-restoration/pgrestore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/pgrestore/">
-            pgRestore
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/pgdump-pgrestore/">
+            pgDump &amp; pgRestore
           </a>
         </div>
     </li>
@@ -313,17 +307,10 @@
 
       </div>
         <ul>
-      <li data-nav-id="/container-specifications/crunchy-postgres/" class="dd-item">
+      <li data-nav-id="/container-specifications/crunchy-backrest-restore/" class="dd-item">
         <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/">
-            crunchy-postgres
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-postgres-gis/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/">
-            crunchy-postgres-gis
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-backrest-restore/">
+            crunchy-backrest-restore
           </a>
         </div>
     </li>
@@ -334,45 +321,10 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/container-specifications/crunchy-backrest-restore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-backrest-restore/">
-            crunchy-backrest-restore
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-pgdump/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgdump/">
-            crunchy-pgdump
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-pgrestore/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgrestore/">
-            crunchy-pgrestore
-          </a>
-        </div>
-    </li>
       <li data-nav-id="/container-specifications/crunchy-collect/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-collect/">
             crunchy-collect
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-scheduler/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/">
-            crunchy-scheduler
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-prometheus/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
-            crunchy-prometheus
           </a>
         </div>
     </li>
@@ -390,6 +342,13 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="/container-specifications/crunchy-pgbadger/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgbadger/">
+            crunchy-pgbadger
+          </a>
+        </div>
+    </li>
       <li data-nav-id="/container-specifications/crunchy-pgbouncer/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgbouncer/">
@@ -397,10 +356,10 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/container-specifications/crunchy-pgbadger/" class="dd-item">
+      <li data-nav-id="/container-specifications/crunchy-pgdump/" class="dd-item">
         <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgbadger/">
-            crunchy-pgbadger
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgdump/">
+            crunchy-pgdump
           </a>
         </div>
     </li>
@@ -411,17 +370,45 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="/container-specifications/crunchy-pgrestore/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgrestore/">
+            crunchy-pgrestore
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-postgres-gis/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/">
+            crunchy-postgres-gis
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-postgres/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/">
+            crunchy-postgres
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-prometheus/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
+            crunchy-prometheus
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="/container-specifications/crunchy-scheduler/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/">
+            crunchy-scheduler
+          </a>
+        </div>
+    </li>
       <li data-nav-id="/container-specifications/crunchy-upgrade/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-upgrade/">
             crunchy-upgrade
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="/container-specifications/crunchy-vacuum/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-vacuum/">
-            crunchy-vacuum
           </a>
         </div>
     </li>
@@ -505,8 +492,7 @@
       <option value="/examples/poolers/pgpool/" >- pgPool II</option>
       <option value="/examples/backup-restoration/pgbackrest/" >- pgBackRest</option>
       <option value="/examples/backup-restoration/pgbasebackup/" >- pgBaseBackup</option>
-      <option value="/examples/backup-restoration/pgdump/" >- pgDump</option>
-      <option value="/examples/backup-restoration/pgrestore/" >- pgRestore</option>
+      <option value="/examples/backup-restoration/pgdump-pgrestore/" >- pgDump &amp; pgRestore</option>
       <option value="/examples/backup-restoration/scheduler/" >- Scheduler</option>
       <option value="/examples/poolers/pgbouncer/" >- pgBouncer</option>
       <option value="/examples/metrics/metrics/" >- Metrics and Performance</option>
@@ -678,7 +664,7 @@ ${CCP_CLI?} exec -ti pr-primary -- psql -d postgres -c 'insert into foo values (
 <h3 id="helm">Helm</h3>
 
 <p>This example resides under the <code>$CCPROOT/examples/helm</code> directory. View the README to run this example
-using Helm <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/helm/primary-replica/README.md">here</a>.</p>
+using Helm <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/helm/primary-replica/README.md" target="_blank">here</a>.</p>
 
 
 
@@ -716,8 +702,6 @@ using Helm <a href="https://github.com/CrunchyData/crunchy-containers/blob/maste
 
 <link href="https://crunchydata.github.io/crunchy-containers/stable/css/featherlight.min.css" rel="stylesheet">
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/featherlight.min.js"></script>
-
-
 
 <script src="https://crunchydata.github.io/crunchy-containers/stable/theme-flex/script.js"></script>
 
