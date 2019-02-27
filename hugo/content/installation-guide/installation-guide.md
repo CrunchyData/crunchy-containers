@@ -5,15 +5,27 @@ draft: false
 weight: 100
 ---
 
+# Overview 
+
+This document serves four purposes:
+
+1. Give you the prerequisites for building the images in Crunchy Container Suite from source
+1. Make sure your local machine has all the pieces needed to run the examples in this repository
+1. Run the images as standalone container in Docker
+1. Instruct you how to install the Crunchy Container Suite into Kubernetes or OpenShift
+
+Where applicable, we will try to denote which installations and steps are required for the items above.
+
+
 # Requirements
 
-These installation instructions are developed and tested for the following operating systems:
+These instructions are developed and on for the following operating systems:
 
   - **CentOS 7**
 
   - **RHEL 7**
 
-The Crunchy Container Suite can run on different environments including:
+The images in Crunchy Container Suite can run on different environments including:
 
   - **Docker 1.13+**
 
@@ -21,24 +33,62 @@ The Crunchy Container Suite can run on different environments including:
 
   - **Kubernetes 1.8+**
 
-In this document we list the basic installation steps required for these
-environments.
+# Initial Installs
+
+{{% notice tip %}}
+
+Please note that _golang_ is only required if you are building the containers. If you do
+not plan on building the containers then installing _git_ is sufficient
+
+{{% /notice %}}
 
 
-# Project Environment
+## CentOS 7 only
+
+    $ sudo yum -y install epel-release --enablerepo=extras
+    $ sudo yum -y install golang git
+
+## RHEL 7 only
+
+    $ sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
+    $ sudo yum-config-manager --enable rhel-7-server-extras-rpms
+    $ sudo yum -y install git golang
+
+
+# Clone GitHub repository
+
+Make a directory where you want to place the GitHub repository for the Crunchy Container suite
+
+    $ mdkir githubrepos
+    $ cd githubrepos
+    $ git clone https://github.com/crunchydata/crunchy-containers
+    $ cd crunchy-containers
+    $ git checkout 2.3.1
+
+We also need to go fetch a Go module for expanding environement variables
+
+    $ go get github.com/blang/expenv  
+
+?????????????? TODO clean up from here to Install Postgresql
+
+# Environment Variables
+
+{{% alert theme="info" %}}
 
 If your goal is to simply run the containers any properly configured user account should
 work. If your goal is for development and/or building the containers, we recommend a user
 whose environment is dedicated for that purpose.
 
+{{% /alert %}}
+
 First add the following lines to your .bashrc file to set the project paths:
 
-    export GOPATH=$HOME/cdev
-    export GOBIN=$GOPATH/bin
+    export GOPATH=$HOME/cdev        # path to the top of your github repository
+    export GOBIN=$GOPATH/bin        
     export PATH=$PATH:$GOBIN
     export CCP_BASEOS=centos7       # centos7 for Centos, rhel7 for Redhat
-    export CCP_PGVERSION=10
-    export CCP_PG_FULLVERSION=10.7
+    export CCP_PGVERSION=10         # The PostgreSQL major version
+    export CCP_PG_FULLVERSION=10.7  
     export CCP_VERSION=2.3.1
     export CCP_IMAGE_PREFIX=crunchydata
     export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
@@ -65,36 +115,6 @@ Next, set up a project directory structure and pull down the project from github
     mkdir -p $HOME/cdev/src/github.com/crunchydata $HOME/cdev/pkg $HOME/cdev/bin
 
 # Installation
-
-{{% notice tip %}}
-
-The installation for Centos 7 and RHEL 7 are similar, but there are several steps which
-require slightly different commands related to location of repositories, etc. These are
-highlighted below where necessary.
-
-{{% /notice %}}
-
-## Install Supporting Software
-
-### CentOS 7 only
-
-    sudo yum -y install epel-release --enablerepo=extras
-    sudo yum -y install golang git
-
-### RHEL 7 only
-
-    sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
-    sudo yum-config-manager --enable rhel-7-server-extras-rpms
-    sudo yum -y install git golang
-
-
-## Clone GitHub repository
-
-    cd $GOPATH/src/github.com/crunchydata
-    git clone https://github.com/crunchydata/crunchy-containers
-    cd crunchy-containers
-    git checkout 2.3.1
-    go get github.com/blang/expenv
 
 {{% notice info %}}
 

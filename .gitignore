@@ -11,3 +11,5 @@ bin/sample-app/sample-app
 tools/test-harness/vendor
 tools/pgmonitor/
 public
+hugo/themes/crunchy-hugo-theme
+
