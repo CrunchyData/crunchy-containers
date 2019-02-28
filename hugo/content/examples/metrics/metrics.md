@@ -57,6 +57,12 @@ To shutdown the instance and remove the container for each example, run the foll
 ./cleanup.sh
 ```
 
+To delete the cluster role required by the Prometheus, as an administrator, run the following:
+
+```
+./cleanup-rbac.sh
+```
+
 ### Docker
 
 To start this set of containers, run the following:
