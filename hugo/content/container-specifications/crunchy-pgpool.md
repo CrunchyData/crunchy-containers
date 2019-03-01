@@ -15,8 +15,7 @@ The default pgPool examples use a Secret to hold the set of pgPool configuration
 The Secret is mounted into the `pgconf` volume mount where the container will look to find configuration files.
 If you do not specify your own configuration files via a Secret then you can specify environment
 variables to the container that it will attempt to use to configure pgPool, although this is not recommended
-for production environments. The pgpool container allows for local login by postgres, using same password as 
-the example (Note: the example is configured for testuser.) See example docs for more detail.
+for production environments. The pgpool container allows for local login with a properly configured password file.
 
 ## Features
 

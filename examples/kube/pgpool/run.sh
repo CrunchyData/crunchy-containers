@@ -29,12 +29,4 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgpool-secrets \
 ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
     pgpool-secrets cleanup=${CCP_NAMESPACE?}-pgpool
 
-${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap pgpool-pgconf \
-	--from-file=$DIR/configs/pgpool.conf \
-	--from-file=hba=$DIR/configs/pool_hba.conf \
-	--from-file=psw=$DIR/configs/pool_passwd
-
-${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
-    pgpool-pgconf cleanup=${CCP_NAMESPACE?}-pgpool
-
 expenv -f $DIR/pgpool.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
