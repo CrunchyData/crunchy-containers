@@ -8,10 +8,10 @@ endif
 all: pgimages extras
 
 # Build images that use postgres
-pgimages: commands backup backrestrestore collect pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade
+pgimages: commands backup backrestrestore collect pgadmin4 pgbadger pgbench pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade
 
 # Build non-postgres images
-extras: grafana prometheus scheduler  
+extras: grafana prometheus scheduler
 
 versiontest:
 ifndef CCP_BASEOS
@@ -75,6 +75,10 @@ pgbadger: versiontest
 	docker build -t crunchy-pgbadger -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbadger.$(CCP_BASEOS) .
 	docker tag crunchy-pgbadger $(CCP_IMAGE_PREFIX)/crunchy-pgbadger:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
+pgbench: versiontest
+	docker build -t crunchy-pgbench -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbench.$(CCP_BASEOS) .
+	docker tag crunchy-pgbench $(CCP_IMAGE_PREFIX)/crunchy-pgbench:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+
 pgbouncer: versiontest
 	docker build -t crunchy-pgbouncer -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbouncer.$(CCP_BASEOS) .
 	docker tag crunchy-pgbouncer $(CCP_IMAGE_PREFIX)/crunchy-pgbouncer:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
@@ -90,12 +94,6 @@ pgpool:	versiontest
 pgrestore: versiontest
 	docker build -t crunchy-pgrestore -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgrestore.$(CCP_BASEOS) .
 	docker tag crunchy-pgrestore $(CCP_IMAGE_PREFIX)/crunchy-pgrestore:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
-
-pgsim:
-	cd sim && make
-	cp sim/build/crunchy-sim bin/crunchy-sim
-	docker build -t crunchy-sim -f $(CCP_BASEOS)/Dockerfile.sim.$(CCP_BASEOS) .
-	docker tag crunchy-sim $(CCP_IMAGE_PREFIX)/crunchy-sim:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 postgres: versiontest commands
 	cp $(GOBIN)/pgc bin/postgres

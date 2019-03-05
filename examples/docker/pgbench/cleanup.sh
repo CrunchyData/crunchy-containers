@@ -1,4 +1,4 @@
-#bin/bash
+#!/bin/bash
 
 # Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,13 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CCP_VERSION=2.3.1
-REGISTRY=52.2.93.43:5000
-containers="$CCP_IMAGE_PREFIX/crunchy-prometheus $CCP_IMAGE_PREFIX/crunchy-grafana $CCP_IMAGE_PREFIX/crunchy-collect $CCP_IMAGE_PREFIX/crunchy-pgbadger $CCP_IMAGE_PREFIX/crunchy-pgpool $CCP_IMAGE_PREFIX/crunchy-backup $CCP_IMAGE_PREFIX/crunchy-postgres $CCP_IMAGE_PREFIX/crunchy-pgbench"
-for i in $containers;
-do
-	echo $i is the container
-	docker tag $i:$CCP_VERSION $REGISTRY/$i:$CCP_VERSION
-	docker push $REGISTRY/$i:$CCP_VERSION
-done
-exit
+echo "Cleaning up..."
+
+CONTAINER_NAME='pgbench'
+
+docker stop ${CONTAINER_NAME?}
+docker rm -v ${CONTAINER_NAME?}
