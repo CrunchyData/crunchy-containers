@@ -16,7 +16,7 @@ This document serves four purposes:
 
 Where applicable, we will try to denote which installations and steps are required for the items above.
 
-When we set up the directories below, you will notice they seem to be quite deeply nested. We are basically
+When we set up the directories below, you will notice they seem to be quite deeply nested. We are 
 setting up a [Go programming language](https://golang.org/) workspace. Go has a specific folder structure 
 for it's [workspaces](https://golang.org/doc/code.html#Workspaces) with multiple projects in a workspace. 
 If you are **not** going build the container images you can ignore the deep directories below, but it will 
@@ -163,8 +163,14 @@ page and continue from there.
 
 ## Install PostgreSQL
 
+{{% notice tip %}}
+
 You only need to install PostgreSQL locally if you want to use the examples - it is not required for
-either building the containers or installing the containers into Kubernetes. These installation instructions 
+either building the containers or installing the containers into Kubernetes. 
+
+{{% / notice %}}
+
+These installation instructions 
 assume the installation of PostgreSQL 10 through the official Postgresql Development Group (PGDG) repository. 
 View the documentation located [here](https://wiki.postgresql.org/wiki/YUM_Installation) in
 order to view more detailed notes or install a different version of PostgreSQL.
