@@ -47,6 +47,11 @@ pgc:
 # Targets that generate images (alphabetized)
 #=============================================
 
+postgres-appdev: versiontest commands
+	cp $(GOBIN)/pgc bin/postgres
+	docker build -t crunchy-postgres-appdev -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-appdev.$(CCP_BASEOS) .
+	docker tag crunchy-postgres-appdev $(CCP_IMAGE_PREFIX)/crunchy-postgres-appdev:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+
 backrestrestore: versiontest
 	docker build -t crunchy-backrest-restore -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backrest-restore.$(CCP_BASEOS) .
 	docker tag crunchy-backrest-restore $(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
