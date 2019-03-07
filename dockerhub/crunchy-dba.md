@@ -8,7 +8,7 @@ The crunchy-dba container implements a cron scheduler. The purpose of the crunch
 
 ## Container Specifications
 
-See the [official documentation](https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-dba/) for more details regarding how the container operates and is customized.
+See the [official documentation](https://access.crunchydata.com/documentation/crunchy-containers/2.3.0/container-specifications/crunchy-dba/) for more details regarding how the container operates and is customized.
 
 ## Examples
 

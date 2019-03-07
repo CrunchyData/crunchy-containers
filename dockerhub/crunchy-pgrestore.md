@@ -6,7 +6,7 @@ The restore image provides a means of performing a restore of a dump from pg_dum
 
 ## Container Specifications
 
-See the [official documentation](https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgrestore/) for more details regarding how the container operates and is customized.
+See the [official documentation](https://access.crunchydata.com/documentation/crunchy-containers/2.3.0/container-specifications/crunchy-pgrestore/) for more details regarding how the container operates and is customized.
 
 ## Examples
 

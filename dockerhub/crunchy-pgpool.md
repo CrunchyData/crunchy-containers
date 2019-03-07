@@ -6,7 +6,7 @@ The crunchy-pgpool container executes the [pgPool II](http://www.pgpool.net/medi
 
 ## Container Specifications
 
-See the [official documentation](https://crunchydata.github.io/crunchy-containers/container-specifications/crunchy-pgpool/) for more details regarding how the container operates and is customized.
+See the [official documentation](https://access.crunchydata.com/documentation/crunchy-containers/2.3.0/container-specifications/crunchy-pgpool/) for more details regarding how the container operates and is customized.
 
 ## Examples
 
