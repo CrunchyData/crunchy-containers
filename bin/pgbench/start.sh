@@ -50,17 +50,15 @@ EOF
 
 create_pgpass
 
-echo_info "Initializing the target benchmark database: ${PG_DATABASE?}"
 ${PGROOT?}/bin/pgbench --initialize \
     --host=${PG_HOSTNAME?} \
     --port=${PG_PORT?} \
     --username=${PG_USERNAME?} \
     --scale=${PGBENCH_SCALE?} \
+    --quiet \
     ${PGBENCH_INIT_OPTS?} \
     ${PG_DATABASE?}
 
-echo ""
-echo_info "Running benchmark.."
 ${PGROOT?}/bin/pgbench \
     --client=${PGBENCH_CLIENTS?} \
     --jobs=${PGBENCH_JOBS?} \
