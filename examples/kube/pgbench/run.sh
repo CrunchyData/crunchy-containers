@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Copyright 2018 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +11,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-REG_CCP_IMAGE_PREFIX=registry.crunchydata.com/crunchydata
-for CONTAINER in crunchy-prometheus crunchy-upgrade crunchy-grafana crunchy-collect crunchy-pgbadger crunchy-pgpool crunchy-backup crunchy-postgres crunchy-postgres-gis crunchy-pgbouncer crunchy-pgadmin4 crunchy-pgdump crunchy-pgrestore crunchy-backrest-restore crunchy-scheduler crunchy-pgbench
-do
-	echo $CONTAINER is the container
-	docker pull $REG_CCP_IMAGE_PREFIX/$CONTAINER:$CCP_IMAGE_TAG
-	docker tag $REG_CCP_IMAGE_PREFIX/$CONTAINER:$CCP_IMAGE_TAG $CCP_IMAGE_PREFIX/$CONTAINER:$CCP_IMAGE_TAG
-done
+
+source ${CCPROOT}/examples/common.sh
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+${DIR}/cleanup.sh
+
+pod=$(${CCP_CLI?} get pods --namespace=${CCP_NAMESPACE?} --no-headers -l name=primary | awk '{print $1}')
+
+${CCP_CLI?} exec --namespace=${CCP_NAMESPACE?} -ti ${pod?} date >/dev/null
+if [[ $? -ne 0 ]]
+then
+    echo_err "The primary example must be running prior to using this example."
+    exit 1
+fi
+
+expenv -f $DIR/pgbench.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

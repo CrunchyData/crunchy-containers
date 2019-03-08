@@ -1,0 +1,69 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "name": "pgbench-custom"
+    },
+    "spec": {
+        "backoffLimit": 0,
+        "template": {
+            "metadata": {
+                "name": "pgbench-custom",
+                "labels": {
+                    "name": "pgbench-custom",
+                    "app": "pgbench-custom",
+                    "cleanup": "$CCP_NAMESPACE-pgbench-custom"
+                }
+            },
+            "spec": {
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                },
+                "containers": [
+                    {
+                        "name": "pgbench",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-pgbench:$CCP_IMAGE_TAG",
+                        "env": [
+                            {
+                                "name": "PG_DATABASE",
+                                "value": "userdb"
+                            },
+                            {
+                                "name": "PG_HOSTNAME",
+                                "value": "primary"
+                            },
+                            {
+                                "name": "PG_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PG_PORT",
+                                "value": "5432"
+                            },
+                            {
+                                "name": "PG_USERNAME",
+                                "value": "testuser"
+                            }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgconf",
+                                "name": "pgconf",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "restartPolicy": "Never",
+                "volumes": [
+                    {
+                        "name": "pgconf",
+                        "configMap": {
+                            "name": "pgbench-custom-pgconf"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
