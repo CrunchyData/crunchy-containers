@@ -127,11 +127,15 @@
         "volumes": [
             {
                 "name": "pgdata",
-                "emptyDir": {}
+                "emptyDir": {
+			    "medium": "Memory"
+			}
             },
             {
                 "name": "backup",
-                "emptyDir": {}
+                "emptyDir": {
+			    "medium": "Memory"
+			}
             },
             {
                 "name": "pgconf",

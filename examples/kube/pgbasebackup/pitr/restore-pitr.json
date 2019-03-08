@@ -51,7 +51,9 @@
             },
             {
                 "name": "pgwal",
-                "emptyDir": {}
+                "emptyDir": {
+			    "medium": "Memory"
+			}
             },
             {
                 "name": "recover",
@@ -133,7 +135,7 @@
                     },
                     {
                         "name": "BACKUP_PATH",
-                        "value": "pitr-backups/TIMESTAMP_HERE"
+                        "value": "pitr-backups/2019-03-08-15-04-02"
                     },
                     {
                         "name": "RECOVERY_TARGET_NAME",

@@ -155,7 +155,9 @@
             },
             {
                 "name": "backup",
-                "emptyDir": {}
+                "emptyDir": {
+			    "medium": "Memory"
+			}
             },
             {
                 "name": "pgconf",
