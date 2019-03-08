@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,16 +14,6 @@
 # limitations under the License.
 
 source ${CCPROOT}/examples/common.sh
-echo_info "Cleaning up.."
+echo_info "Cleaning up RBAC.."
 
-${CCP_CLI?} delete --namespace=kube-system \
-    service,statefulset,deployment,pod,daemonset,configmap,secret,serviceaccount,pvc \
-    --selector=k8s-app=elasticsearch-logging
-
-${CCP_CLI?} delete --namespace=kube-system \
-    service,statefulset,deployment,pod,daemonset,configmap,secret,serviceaccount,pvc \
-    --selector=k8s-app=fluentd-es
-
-${CCP_CLI?} delete --namespace=kube-system \
-    service,statefulset,deployment,pod,daemonset,configmap,secret,serviceaccount,pvc \
-    --selector=k8s-app=kibana-logging
+${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} clusterrolebinding,clusterrole --selector="cleanup=${CCP_NAMESPACE?}-metrics"

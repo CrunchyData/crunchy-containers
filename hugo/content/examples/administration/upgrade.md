@@ -37,10 +37,15 @@ were enabled on the database by running the following SQL: `SHOW data_checksums`
 
 {{% notice tip %}}
 Before running the example, ensure you edit `upgrade.json` and update the `OLD_VERSION`
-and `NEW_VERSION` parameters to the ones relevant to your situation.
+and `NEW_VERSION` parameters to the major release version relevant to your situation.
 {{% /notice %}}
 
-Start the upgrade as follows:
+First, delete the existing primary deployment:
+```
+${CCP_CLI} delete deployment primary
+```
+Then start the upgrade as follows:
+
 ```
 cd $CCPROOT/examples/kube/upgrade
 ./run.sh
