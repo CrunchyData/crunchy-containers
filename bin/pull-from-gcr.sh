@@ -8,17 +8,18 @@ IMAGES=(
     crunchy-backrest-restore
     crunchy-backup
     crunchy-collect
-    crunchy-scheduler
-    crunchy-pgdump
     crunchy-grafana
     crunchy-pgadmin4
     crunchy-pgbadger
+    crunchy-pgbench
     crunchy-pgbouncer
+    crunchy-pgdump
     crunchy-pgpool
+    crunchy-pgrestore
     crunchy-postgres
     crunchy-postgres-gis
     crunchy-prometheus
-    crunchy-pgrestore
+    crunchy-scheduler
     crunchy-upgrade
 )
 

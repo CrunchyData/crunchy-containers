@@ -1,0 +1,79 @@
+{
+    "apiVersion": "batch/v1",
+    "kind": "Job",
+    "metadata": {
+        "name": "pgbench"
+    },
+    "spec": {
+        "backoffLimit": 0,
+        "template": {
+            "metadata": {
+                "name": "pgbench",
+                "labels": {
+                    "app": "pgbench",
+                    "cleanup": "$CCP_NAMESPACE-pgbench"
+                }
+            },
+            "spec": {
+                "volumes": [],
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                },
+                "containers": [
+                    {
+                        "name": "pgbench",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-pgbench:$CCP_IMAGE_TAG",
+                        "volumeMounts": [],
+                        "env": [
+                            {
+                                "name": "PG_DATABASE",
+                                "value": "userdb"
+                            },
+                            {
+                                "name": "PG_HOSTNAME",
+                                "value": "primary"
+                            },
+                            {
+                                "name": "PG_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PG_PORT",
+                                "value": "5432"
+                            },
+                            {
+                                "name": "PG_USERNAME",
+                                "value": "testuser"
+                            },
+                            {
+                                "name": "PGBENCH_BENCHMARK_OPTS",
+                                "value": "--connect --progress=2"
+                            },
+                            {
+                                "name": "PGBENCH_CLIENTS",
+                                "value": "10"
+                            },
+                            {
+                                "name": "PGBENCH_INIT_OPTS",
+                                "value": "--no-vacuum"
+                            },
+                            {
+                                "name": "PGBENCH_JOBS",
+                                "value": "5"
+                            },
+                            {
+                                "name": "PGBENCH_SCALE",
+                                "value": "5"
+                            },
+                            {
+                                "name": "PGBENCH_TRANSACTIONS",
+                                "value": "500"
+                            }
+                        ]
+                    }
+                ],
+                "restartPolicy": "Never"
+            }
+        }
+    }
+}
