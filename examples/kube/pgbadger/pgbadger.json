@@ -165,11 +165,15 @@
         "volumes": [
             {
                 "name": "pgdata",
-                "emptyDir": {}
+                "emptyDir": {
+			    "medium": "Memory"
+			}
             },
             {
                 "name": "report",
-                "emptyDir": {}
+                "emptyDir": {
+			    "medium": "Memory"
+			}
             }
         ]
     }

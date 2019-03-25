@@ -43,7 +43,9 @@
         "volumes": [
             {
                 "name": "pgconf",
-                "emptyDir": {}
+                "emptyDir": {
+			    "medium": "Memory"
+		}
             }
         ],
         "containers": [

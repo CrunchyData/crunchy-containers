@@ -138,7 +138,9 @@
         "volumes": [
             {
                 "name": "pgdata",
-                "emptyDir": {}
+                "emptyDir": {
+			    "medium": "Memory"
+			}
             }
         ]
     }
