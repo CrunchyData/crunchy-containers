@@ -5,15 +5,36 @@ draft: false
 weight: 100
 ---
 
+# Overview 
+
+This document serves four purposes:
+
+1. Ensure you have  the prerequisites for building the images in Crunchy Container Suite
+1. Make sure your local machine has all the pieces needed to run the examples in the GitHub repository
+1. Run the images as standalone containers in Docker
+1. Instruct you how to install the Crunchy Container Suite into Kubernetes or OpenShift
+
+Where applicable, we will try to denote which installations and steps are required for the items above.
+
+When we set up the directories below, you will notice they seem to be quite deeply nested. We are 
+setting up a [Go programming language](https://golang.org/) workspace. Go has a specific folder structure 
+for it's [workspaces](https://golang.org/doc/code.html#Workspaces) with multiple projects in a workspace. 
+If you are **not** going build the container images you can ignore the deep directories below, but it will 
+not hurt you if you follow the directions exactly. 
+
 # Requirements
 
-These installation instructions are developed and tested for the following operating systems:
+These instructions are developed and on for the following operating systems:
 
   - **CentOS 7**
 
   - **RHEL 7**
 
-The Crunchy Container Suite can run on different environments including:
+We also assume you are using the Docker provided with the distributions above. If you have installed
+Docker CE or EE on your machine, please create a VM for this work or uninstall Docker CE or EE.
+
+
+The images in Crunchy Container Suite can run on different environments including:
 
   - **Docker 1.13+**
 
@@ -21,96 +42,137 @@ The Crunchy Container Suite can run on different environments including:
 
   - **Kubernetes 1.8+**
 
-In this document we list the basic installation steps required for these
-environments.
-
-
-# Project Environment
-
-If your goal is to simply run the containers any properly configured user account should
-work. If your goal is for development and/or building the containers, we recommend a user
-whose environment is dedicated for that purpose.
-
-First add the following lines to your .bashrc file to set the project paths:
-
-    export GOPATH=$HOME/cdev
-    export GOBIN=$GOPATH/bin
-    export PATH=$PATH:$GOBIN
-    export CCP_BASEOS=centos7       # centos7 for Centos, rhel7 for Redhat
-    export CCP_PGVERSION=10
-    export CCP_PG_FULLVERSION=10.7
-    export CCP_VERSION=2.3.1
-    export CCP_IMAGE_PREFIX=crunchydata
-    export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
-    export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
-    export CCP_SECURITY_CONTEXT=""
-    export CCP_CLI=kubectl          # kubectl for K8s, oc for OpenShift
-    export CCP_NAMESPACE=demo
+# Initial Installs
 
 {{% notice tip %}}
 
-You will need to add environment variables for storage configuration as well. Please see
-the [Storage Configuration](/installation/storage-configuration/) document
-for configuring storage using environment variables set in `.bashrc`.
+Please note that _golang_ is only required if you are building the containers from source. If you do
+not plan on building the containers then installing _git_ is sufficient.
 
 {{% /notice %}}
+
+
+## CentOS 7 only
+
+    $ sudo yum -y install epel-release --enablerepo=extras
+    $ sudo yum -y install golang git
+
+## RHEL 7 only
+
+    $ sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
+    $ sudo yum-config-manager --enable rhel-7-server-extras-rpms
+    $ sudo yum -y install git golang
+
+# Clone GitHub repository
+
+Make directories to hold the GitHub clone that also work with the Go workspace structure
+
+    $ mkdir -p $HOME/cdev/src/github.com/crunchydata $HOME/cdev/pkg $HOME/cdev/bin
+    $ cd $HOME/cdev/src/github.com/crunchydata
+    $ git clone https://github.com/crunchydata/crunchy-containers
+    $ cd crunchy-containers
+    $ git checkout 2.3.1
+
+We also need to go fetch a Go module for expanding environement variables
+
+    $ go get github.com/blang/expenv  
+
+
+# Your Shell Environment
+
+We have found, that because of the way Go handles different projects, you may want to create a separate account 
+if are plan to build the containers and work on other Go projects. You could also look into some of the 
+GOPATH wrappers.
+
+If your goal is to simply run the containers, any properly configured user account should
+work. 
+
+Now we need to set the project paths and software version numbers. Edit your $HOME/.bashrc file with your 
+favorite editor and add the following information. You can leave out the comments at the end of each 
+line starting with #:
+
+    export GOPATH=$HOME/cdev        # set path to your new Go workspace
+    export GOBIN=$GOPATH/bin        # set bin path 
+    export PATH=$PATH:$GOBIN        # add Go bin path to your overall path
+    export CCP_BASEOS=centos7       # centos7 for Centos, rhel7 for Redhat
+    export CCP_PGVERSION=10         # The PostgreSQL major version
+    export CCP_PG_FULLVERSION=10.7  # The full PostgreSQL version you want to work with
+    export CCP_VERSION=2.3.1        # The full version of the Crunchy Container Suite you are working with
+    export CCP_IMAGE_PREFIX=crunchydata # Prefix to put before all the container image names
+    export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION   # Used to tag the images
+    export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers    # The base of the clone github repo
+    export CCP_SECURITY_CONTEXT=""
+    export CCP_CLI=kubectl          # kubectl for K8s, oc for OpenShift
+    export CCP_NAMESPACE=demo       # Change this to whatever namespace/openshift project name you want to use
 
 It will be necessary to refresh your `.bashrc` file in order for the changes to take
 effect.
 
     . ~/.bashrc
 
-Next, set up a project directory structure and pull down the project from github:
+At this point we have almost all the prequesites required to build the Crunchy Container Suite. 
 
-    mkdir -p $HOME/cdev/src/github.com/crunchydata $HOME/cdev/pkg $HOME/cdev/bin
+# Building RHEL Containers With Supported Crunchy Enterprise Software
 
-# Installation
+Before you can build supported containers on RHEL and Crunchy Supported Software, you need 
+to add the Crunchy repositories to your approved Yum repositories. Crunchy Enterprise Customer running on RHEL 
+can login and download the Crunchy repository key and yum repository from <https://access.crunchydata.com/>
+on the downloads page. Once the files are downloaded please place them into the `$CCPROOT/conf` directory (defined
+above in the environment variable section).
 
-{{% notice tip %}}
-
-The installation for Centos 7 and RHEL 7 are similar, but there are several steps which
-require slightly different commands related to location of repositories, etc. These are
-highlighted below where necessary.
-
-{{% /notice %}}
-
-## Install Supporting Software
-
-### CentOS 7 only
-
-    sudo yum -y install epel-release --enablerepo=extras
-    sudo yum -y install golang git
-
-### RHEL 7 only
-
-    sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
-    sudo yum-config-manager --enable rhel-7-server-extras-rpms
-    sudo yum -y install git golang
-
-
-## Clone GitHub repository
-
-    cd $GOPATH/src/github.com/crunchydata
-    git clone https://github.com/crunchydata/crunchy-containers
-    cd crunchy-containers
-    git checkout 2.3.1
-    go get github.com/blang/expenv
+## Install Docker
 
 {{% notice info %}}
 
-If you are a Crunchy Enterprise Customer running on RHEL, you will place the Crunchy repository
-key and yum repository file into the `$CCPROOT/conf` directory at this point. These
-files can be obtained through <https://access.crunchydata.com/> on the downloads
-page.
+The OpenShift and Kubernetes (KubeAdm) instructions both have a section for installing docker. Installing
+docker now won't cause any issues but you may wish to configure Docker storage before bringing
+everything up. Configuring Docker Storage is different from *Storage Configuration* referenced later in the
+instructions and is not covered here.
+
+For a basic docker installation, you can follow the instructions below. Please refer to
+the respective installation guide for the version of Kubernetes you are installing for
+more specific details.
 
 {{% /notice %}}
+
+
+Install Docker
+
+    sudo yum -y install docker
+
+It is necessary to add the `docker` group and give your user access
+to that group:
+
+    sudo groupadd docker
+    sudo usermod -a -G docker <username>
+
+Logout and login again as the same user to allow group settings to take effect.
+
+Enable Docker service and start Docker (once all configuration is complete):
+
+    sudo systemctl enable docker.service
+    sudo systemctl start docker.service
+
+{{% notice info %}}
+
+At this point you should be able to build the containers. Please to go to [Building the Containers](/contributing/building/) 
+page and continue from there.
+
+{{% / notice %}}
 
 
 ## Install PostgreSQL
 
-These installation instructions assume the installation of PostgreSQL 10
-through the official PGDG repository. View the documentation located
-[here](https://wiki.postgresql.org/wiki/YUM_Installation) in
+{{% notice tip %}}
+
+You only need to install PostgreSQL locally if you want to use the examples - it is not required for
+either building the containers or installing the containers into Kubernetes. 
+
+{{% / notice %}}
+
+These installation instructions 
+assume the installation of PostgreSQL 10 through the official Postgresql Development Group (PGDG) repository. 
+View the documentation located [here](https://wiki.postgresql.org/wiki/YUM_Installation) in
 order to view more detailed notes or install a different version of PostgreSQL.
 
 Locate and edit your distribution’s `.repo` file, located:
@@ -118,10 +180,12 @@ Locate and edit your distribution’s `.repo` file, located:
   - On **CentOS**: /etc/yum.repos.d/CentOS-Base.repo, \[base\] and \[updates\] sections
 
   - On **RHEL**: /etc/yum/pluginconf.d/rhnplugin.conf \[main\] section
-
+ 
 To the section(s) identified above, depending on OS being used, you need to append a line to prevent dependencies
- from getting resolved to the PostgreSQL supplied by the base repository:
+from getting resolved to the PostgreSQL supplied by the base repository:
 
+- On **CentOS** and **RHEL**:
+    
     exclude=postgresql*
 
 Next, install the RPM relating to the base operating system and PostgreSQL version
@@ -149,36 +213,16 @@ Update the system:
     sudo yum -y update
 
 
-## Install Docker
+## Configuring Storage for Kuberenetes Based Systems
 
-{{% notice info %}}
+In addition to the environment variables we set earlier, you will need to add environment variables 
+for Kubernetes storage configuration. Please see the [Storage Configuration](/installation-guide/storage-configuration/) 
+document for configuring storage using environment variables set in `.bashrc`.
 
-The OpenShift and Kubernetes (KubeAdm) instructions both have a section for installing docker. Installing
-docker now won't cause any issues but you may wish to configure Docker storage before bringing
-everything up. Configuring Docker Storage is different from *Storage Configuration* referenced earlier in the
-instructions and is not covered here.
+Don't forget to:
 
-For a basic docker installation, you can follow the instructions below. Please refer to
-the respective installation guide for the version of Kubernetes you are installing for
-more specific details.
+    source ~/.bashrc
 
-
-{{% /notice %}}
-
-    sudo yum -y install docker
-
-It is necessary to add the `docker` group and give your user access
-to that group:
-
-    sudo groupadd docker
-    sudo usermod -a -G docker <username>
-
-Logout and login again as the same user to allow group settings to take effect.
-
-Enable Docker service and start Docker (once all configuration is complete):
-
-    sudo systemctl enable docker.service
-    sudo systemctl start docker.service
 
 ## OpenShift Installation
 
