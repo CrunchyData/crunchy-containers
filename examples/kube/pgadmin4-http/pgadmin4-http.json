@@ -48,7 +48,9 @@
             },
             {
                 "name": "run",
-                "emptyDir": {}
+                "emptyDir": {
+			    "medium": "Memory"
+			}
             }
         ],
         "containers": [
