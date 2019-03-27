@@ -359,7 +359,12 @@ configure_archiving() {
     then
         export ARCHIVE_MODE=on
         echo_info "Setting pgbackrest archive command.."
-        cat /opt/cpm/conf/backrest-archive-command >> /"${PGDATA?}"/postgresql.conf
+        if [[ "${BACKREST_LOCAL_AND_S3_STORAGE}" == "true" ]]
+        then
+            cat /opt/cpm/conf/backrest-archive-command-local-and-s3 >> /"${PGDATA?}"/postgresql.conf
+        else
+            cat /opt/cpm/conf/backrest-archive-command >> /"${PGDATA?}"/postgresql.conf
+        fi
     elif [[ "${ARCHIVE_MODE}" == "on" ]] && [[ ! "${PGBACKREST}" == "true" ]]
     then
         echo_info "Setting standard archive command.."
