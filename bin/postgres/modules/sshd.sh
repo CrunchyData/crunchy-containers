@@ -21,12 +21,6 @@ then
     if [[ ! -f /sshd/ssh_host_rsa_key ]]; then
         echo_err 'No ssh_host_rsa_key found in /sshd.  Exiting..'
         exit 1
-    elif [[ ! -f /sshd/ssh_host_ecdsa_key ]]; then
-        echo_err 'No ssh_host_ecdsa_key found in /sshd.  Exiting..'
-        exit 1
-    elif [[ ! -f /sshd/ssh_host_ed25519_key ]]; then
-        echo_err 'No ssh_host_ed25519_key found in /sshd.  Exiting..'
-        exit 1
     fi
 
     echo_info 'Checking for authorized_keys in /sshd'
