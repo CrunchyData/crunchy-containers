@@ -24,8 +24,7 @@ USER 0
 COPY conf/atomic/postgres-gis/help.1 /help.1
 COPY conf/atomic/postgres-gis/help.md /help.md
 
-RUN yum -y update \
- && yum -y install --enablerepo=rhel-7-server-optional-rpms \
+RUN yum -y install --enablerepo=rhel-7-server-optional-rpms \
     R-core libRmath texinfo-tex texlive-epsf \
     postgis24_10 postgis24_10-client pgrouting_10 plr10 \
  && yum -y clean all

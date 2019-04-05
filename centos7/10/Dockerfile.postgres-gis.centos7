@@ -16,8 +16,7 @@ LABEL name="crunchydata/postgres-gis" \
 
 USER 0
 
-RUN yum -y update \
- && yum -y install \
+RUN yum -y install \
     R-core libRmath plr10 \
     postgis24_10 postgis24_10-client \
  && yum -y clean all
