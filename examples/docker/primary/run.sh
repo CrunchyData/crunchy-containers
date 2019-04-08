@@ -32,6 +32,7 @@ docker run \
     -e PG_PRIMARY_PORT=5432 \
     -e PG_PRIMARY_PASSWORD=password \
     -e PG_ROOT_PASSWORD=password \
+    -e PGHOST=/tmp \
     --name=primary \
     --hostname=primary \
     --network=pgnet \
