@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Contributing on Crunchy Data Container Suite Documentation</title>
-    <link>https://crunchydata.github.io/crunchy-containers/latest/contributing/</link>
+    <link>https://crunchydata.github.io/crunchy-containers/latest//crunchy-containers/develop/contributing/</link>
     <description>Recent content in Contributing on Crunchy Data Container Suite Documentation</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="https://crunchydata.github.io/crunchy-containers/latest/contributing/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://crunchydata.github.io/crunchy-containers/latest//crunchy-containers/develop/contributing/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Building the Containers</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/contributing/building/</link>
+      <link>https://crunchydata.github.io/crunchy-containers/latest//crunchy-containers/develop/contributing/building/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/contributing/building/</guid>
-      <description>Build From Source This section of the documentation assumes you have followed the Installation Guide. You should do the following in order to build the containers locally and be able to submit patches:
- Fork the Crunchy-Containers GitHub repository. Containers builds are installed via a Makefile. You will need to run the following commands:  cd $CCPROOT make setup make all  After this, you will have all the Crunchy containers built and are ready for use in a standalone Docker environment.</description>
+      <guid>https://crunchydata.github.io/crunchy-containers/latest//crunchy-containers/develop/contributing/building/</guid>
+      <description>Build From Source This section of the documentation assumes you have followed the Installation Guide. Because the build pulls down some kubernetes dependencies, you will need sudo&amp;rsquo;ers privileges to do a build. If you don&amp;rsquo;t have the atomic-openshift-clients package installed on your machine you will see a warning message. This is expected and will not prevent the containers from working in a standalone Docker environment.
+You should do the following in order to build the containers locally and be able to submit patches:</description>
     </item>
     
     <item>
       <title>Updating Documentation</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/contributing/documentation-updates/</link>
+      <link>https://crunchydata.github.io/crunchy-containers/latest//crunchy-containers/develop/contributing/documentation-updates/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/contributing/documentation-updates/</guid>
+      <guid>https://crunchydata.github.io/crunchy-containers/latest//crunchy-containers/develop/contributing/documentation-updates/</guid>
       <description>Documentation The documentation website (located at https://crunchydata.github.io/crunchy-containers/) is generated using Hugo and GitHub Pages.
 Hosting Hugo Locally (Optional) If you would like to build the documentation locally, view the official Installing Hugo guide to set up Hugo locally.
 You can then start the server by running the following commands -
@@ -34,10 +34,10 @@ cd $CCPROOT/hugo/ hugo server  The local version of the Hugo server is accessibl
     
     <item>
       <title>Submitting Issues</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/contributing/issues/</link>
+      <link>https://crunchydata.github.io/crunchy-containers/latest//crunchy-containers/develop/contributing/issues/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/contributing/issues/</guid>
+      <guid>https://crunchydata.github.io/crunchy-containers/latest//crunchy-containers/develop/contributing/issues/</guid>
       <description>If you would like to submit an feature / issue for us to consider please submit an issue to the official GitHub Repository.
 If you would like to work any current or open issues, please update the issue with your efforts so that we can avoid redundant or unnecessary work.
 If you have any questions, you can submit a Support - Question and Answer issue and we will work with you on how you can get more involved.</description>
@@ -45,12 +45,12 @@ If you have any questions, you can submit a Support - Question and Answer issue 
     
     <item>
       <title>Submitting Pull Requests</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/contributing/pull-requests/</link>
+      <link>https://crunchydata.github.io/crunchy-containers/latest//crunchy-containers/develop/contributing/pull-requests/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/contributing/pull-requests/</guid>
+      <guid>https://crunchydata.github.io/crunchy-containers/latest//crunchy-containers/develop/contributing/pull-requests/</guid>
       <description>So you decided to submit an issue and work it. Great! Let&amp;rsquo;s get it merged in to the codebase. The following will go a long way to helping get the fix merged in quicker:
- Create a Pull Request from your Fork to the Develop branch. Update the checklists in the Pull Request description. Reference which issues this Pull Request is resolving.  </description>
+ Fork the Github repository and make a branch off of the develop branch Create a Pull Request from your Fork back to the develop branch. Update the checklists in the Pull Request description. Reference which issues this Pull Request is resolving.</description>
     </item>
     
   </channel>
