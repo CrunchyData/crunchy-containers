@@ -71,7 +71,7 @@ Make directories to hold the GitHub clone that also work with the Go workspace s
     $ cd $HOME/cdev/src/github.com/crunchydata
     $ git clone https://github.com/crunchydata/crunchy-containers
     $ cd crunchy-containers
-    $ git checkout 2.3.1
+    $ git checkout v2.4.0
 
 We also need to go fetch a Go module for expanding environement variables
 
@@ -96,8 +96,8 @@ line starting with #:
     export PATH=$PATH:$GOBIN        # add Go bin path to your overall path
     export CCP_BASEOS=centos7       # centos7 for Centos, rhel7 for Redhat
     export CCP_PGVERSION=10         # The PostgreSQL major version
-    export CCP_PG_FULLVERSION=10.7  # The full PostgreSQL version you want to work with
-    export CCP_VERSION=2.3.1        # The full version of the Crunchy Container Suite you are working with
+    export CCP_PG_FULLVERSION=10.7
+    export CCP_VERSION=2.4.0
     export CCP_IMAGE_PREFIX=crunchydata # Prefix to put before all the container image names
     export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION   # Used to tag the images
     export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers    # The base of the clone github repo
