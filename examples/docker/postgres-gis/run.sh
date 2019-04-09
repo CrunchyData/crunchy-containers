@@ -22,22 +22,6 @@ CONTAINER_NAME=postgres-gis
 
 echo "Starting the ${CONTAINER_NAME} example..."
 
-# if you want to use local host directories for persistence
-# then uncomment out these lines below and use them instead
-# of the docker volume as used in this example
-
-#PGCONF=$HOME/openshift-dedicated-container/pgconf
-#sudo chown postgres:postgres $PGCONF
-#sudo chmod 0700 $PGCONF
-#sudo chcon -Rt svirt_sandbox_file_t $PGCONF
-#	-v $PGCONF:/pgconf \
-
-#DATA_DIR=/tmp/crunchy-pg-data
-#sudo rm -rf $DATA_DIR
-#sudo mkdir -p $DATA_DIR
-#sudo chown postgres:postgres $DATA_DIR
-#sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
-
 VOLUME_NAME=${CONTAINER_NAME}-pgdata
 
 docker volume create --driver local --name=$VOLUME_NAME

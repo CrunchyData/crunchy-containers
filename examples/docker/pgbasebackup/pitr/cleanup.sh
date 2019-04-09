@@ -21,9 +21,14 @@ RESTORE_CONTAINER_NAME=restore-pitr
 
 docker stop $PITR_CONTAINER_NAME
 docker rm -v $PITR_CONTAINER_NAME
+docker volume rm pitr-pgdata
+docker volume rm pitr-wal
+docker network rm pitrnet
 
 docker stop $BACKUP_CONTAINER_NAME
 docker rm -v $BACKUP_CONTAINER_NAME
+docker volume rm pitr-backup-volume
 
 docker stop $RESTORE_CONTAINER_NAME
 docker rm -v $RESTORE_CONTAINER_NAME
+docker volume rm pitr-restore
