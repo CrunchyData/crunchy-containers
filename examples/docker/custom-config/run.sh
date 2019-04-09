@@ -44,6 +44,7 @@ docker run \
     --env=PG_USER=testuser \
     --env=PG_PASSWORD=password \
     --env=PG_ROOT_PASSWORD=password \
+    --env=PGHOST=/tmp \
     --env=XLOGDIR=true \
     --env=PGBACKREST=true \
     --detach ${CCP_IMAGE_PREFIX?}/crunchy-postgres:${CCP_IMAGE_TAG?}
