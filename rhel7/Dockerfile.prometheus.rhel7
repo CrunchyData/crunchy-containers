@@ -37,8 +37,8 @@ ADD bin/prometheus /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/prometheus /opt/cpm/conf
 
-RUN chgrp -R 0 /opt/cpm /data /conf && \
-    chmod -R g=u /opt/cpm /data 
+RUN chown -R 2:0 /opt/cpm /data && \
+    chmod -R g=u /opt/cpm /data
 
 EXPOSE 9090
 VOLUME ["/data", "/conf"]

@@ -34,8 +34,8 @@ ADD bin/pgbouncer /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgbouncer /opt/cpm/conf
 
-RUN chgrp -R 0 /opt/cpm /pgconf && \
-        chmod -R g=u /opt/cpm /pgconf
+RUN chown -R 2:0 /opt/cpm /pgconf && \
+    chmod -R g=u /opt/cpm /pgconf
 
 EXPOSE 6432
 
