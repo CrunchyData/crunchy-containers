@@ -21,26 +21,13 @@ ASYNC_CONTAINER_NAME=replicaasync
 
 echo "Starting the ${PRIMARY_CONTAINER_NAME} container..."
 
-# uncomment these lines to override the pg config files with
-# your own versions of pg_hba.conf and postgresql.conf
-#PGCONF=$HOME/openshift-dedicated-container/pgconf
-#sudo chown postgres:postgres $PGCONF
-#sudo chmod 0700 $PGCONF
-#sudo chcon -Rt svirt_sandbox_file_t $PGCONF
-# add this next line to the docker run to override pg config files
-
-DATA_DIR=/tmp/${PRIMARY_CONTAINER_NAME}-data
-sudo rm -rf $DATA_DIR
-sudo mkdir -p $DATA_DIR
-sudo chown postgres:postgres $DATA_DIR
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
-
 sudo docker stop ${PRIMARY_CONTAINER_NAME}
 sudo docker rm ${PRIMARY_CONTAINER_NAME}
+docker volume rm ${PRIMARY_CONTAINER_NAME}-pgdata
 
 sudo docker run \
 	-p 12010:5432 \
-	-v $DATA_DIR:/pgdata \
+	-v ${PRIMARY_CONTAINER_NAME}-pgdata:/pgdata \
 	-e PGHOST=/tmp \
 	-e TEMP_BUFFERS=9MB \
 	-e MAX_CONNECTIONS=101 \
@@ -65,18 +52,13 @@ sleep 20
 
 echo "Starting the ${SYNC_CONTAINER_NAME} container..."
 
-DATA_DIR=/tmp/${SYNC_CONTAINER_NAME}
-sudo rm -rf $DATA_DIR
-sudo mkdir -p $DATA_DIR
-sudo chown postgres:postgres $DATA_DIR
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
-
 sudo docker stop ${SYNC_CONTAINER_NAME}
 sudo docker rm ${SYNC_CONTAINER_NAME}
+docker volume rm ${SYNC_CONTAINER_NAME}-pgdata
 
 sudo docker run \
 	-p 12011:5432 \
-	-v $DATA_DIR:/pgdata \
+	-v ${SYNC_CONTAINER_NAME}-pgdata:/pgdata \
 	-e PGHOST=/tmp \
 	-e TEMP_BUFFERS=9MB \
 	-e MAX_CONNECTIONS=101 \
@@ -100,18 +82,13 @@ sudo docker run \
 
 echo "Starting the ${ASYNC_CONTAINER_NAME} container..."
 
-DATA_DIR=/tmp/${ASYNC_CONTAINER_NAME}
-sudo rm -rf $DATA_DIR
-sudo mkdir -p $DATA_DIR
-sudo chown postgres:postgres $DATA_DIR
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
-
 sudo docker stop ${ASYNC_CONTAINER_NAME}
 sudo docker rm ${ASYNC_CONTAINER_NAME}
+docker volume rm ${ASYNC_CONTAINER_NAME}-pgdata
 
 sudo docker run \
 	-p 12012:5432 \
-	-v $DATA_DIR:/pgdata \
+	-v ${ASYNC_CONTAINER_NAME}-pgdata:/pgdata \
 	-e PGHOST=/tmp \
 	-e TEMP_BUFFERS=9MB \
 	-e MAX_CONNECTIONS=101 \
