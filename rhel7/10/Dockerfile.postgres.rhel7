@@ -23,7 +23,7 @@ COPY conf/atomic/postgres/help.1 /help.1
 COPY conf/atomic/postgres/help.md /help.md
 COPY conf/licenses /licenses
 
-ENV PGVERSION="10" BACKREST_VERSION="2.10"
+ENV PGVERSION="10" BACKREST_VERSION="2.12"
 
 # if you ever need to install package docs inside the container, uncomment
 #RUN sed -i '/nodocs/d' /etc/yum.conf
