@@ -23,7 +23,11 @@ COPY conf/atomic/backrestrestore/help.1 /help.1
 COPY conf/atomic/backrestrestore/help.md /help.md
 COPY conf/licenses /licenses
 
+<<<<<<< HEAD
 ENV PGVERSION="9.6" BACKREST_VERSION="2.13"
+=======
+ENV PGVERSION="9.6" BACKREST_VERSION="2.12"
+>>>>>>> 3e8d8ea5... Update pgdg Repos in CentOS7 Containers & Update pgBackRest Version in all Containers (#1041)
 
 # Crunchy Postgres repo
 ADD conf/CRUNCHY-GPG-KEY.public  /
