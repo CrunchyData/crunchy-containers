@@ -14,7 +14,8 @@ LABEL name="crunchydata/postgres" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="9.6" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm" BACKREST_VERSION="2.12"
+ENV PGVERSION="9.6" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm" PGDG_REPO_DISABLE="pgdg11,pgdg10,pgdg95,pgdg94" \ 
+    BACKREST_VERSION="2.12"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
@@ -26,7 +27,8 @@ RUN yum -y update && yum -y install epel-release \
     procps-ng  \
     rsync \
     psmisc openssh-server openssh-clients \
- && yum -y install postgresql96-server postgresql96-contrib postgresql96 \
+ && yum -y install --disablerepo="${PGDG_REPO_DISABLE}" \
+    postgresql96-server postgresql96-contrib postgresql96 \
     pgaudit_96 \
     pgbackrest-"${BACKREST_VERSION}" \
  && yum -y clean all
