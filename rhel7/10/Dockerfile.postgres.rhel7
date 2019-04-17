@@ -7,7 +7,7 @@ LABEL name="crunchydata/postgres" \
 	PostgresVersion="10" \
 	PostgresFullVersion="10.7" \
 	Version="7.6" \
-	Release="2.3.1" \
+	Release="2.4.0" \
         url="https://crunchydata.com" \
 	summary="PostgreSQL 10.7 (PGDG) on a RHEL7 base image" \
         description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
@@ -23,7 +23,7 @@ COPY conf/atomic/postgres/help.1 /help.1
 COPY conf/atomic/postgres/help.md /help.md
 COPY conf/licenses /licenses
 
-ENV PGVERSION="10" BACKREST_VERSION="2.10"
+ENV PGVERSION="10" BACKREST_VERSION="2.12"
 
 # if you ever need to install package docs inside the container, uncomment
 #RUN sed -i '/nodocs/d' /etc/yum.conf

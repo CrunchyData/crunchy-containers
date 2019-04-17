@@ -3,7 +3,7 @@ FROM centos:7
 LABEL name="crunchydata/prometheus" \
         vendor="crunchy data" \
 	Version="7.6" \
-	Release="2.3.1" \
+	Release="2.4.0" \
         url="https://crunchydata.com" \
         summary="Prometheus server that stores metrics for crunchy-postgres" \
         io.k8s.description="prometheus container" \
@@ -26,8 +26,8 @@ ADD bin/prometheus /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/prometheus /opt/cpm/conf
 
-RUN chgrp -R 0 /opt/cpm /data /conf && \
-    chmod -R g=u /opt/cpm /data 
+RUN chown -R 2:0 /opt/cpm /data /conf && \
+    chmod -R g=u /opt/cpm /data /conf
 
 EXPOSE 9090
 VOLUME ["/data", "/conf"]

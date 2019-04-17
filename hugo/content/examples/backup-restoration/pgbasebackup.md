@@ -207,9 +207,10 @@ Next, we will create a base backup of that database using this:
 ./run-backup-pitr.sh
 ```
 
-After creating the base backup of the database, WAL segment files are created every 60 seconds
-that contain any database changes. These segments are stored in the
-`/tmp/pitr/pitr/pg_wal` directory.
+This will create a backup and write the backup files to a persistent
+volume (specifically Docker named volume `pitr-backup-volume`). Additionally, 
+WAL segment files will be created every 60 seconds under the `pgwal` directory
+of the running `pitr` container that contain any additional database changes.
 
 Next, create some recovery targets within the database by running
 the SQL commands against the *pitr* database as follows:
@@ -231,16 +232,32 @@ to simulate a database failure.  Do this by running the following:
 docker stop pitr
 ```
 
-Next, let's edit the restore script to use the base backup files
-created in the step above.  You can view the backup path name
-under the `/tmp/backups/pitr-backups/` directory. You will see
-another directory inside of this path with a name similar to
-`2018-03-21-21-03-29`.  Copy and paste that value into the
-`run-restore-pitr.sh` script in the `BACKUP` environment variable.
+Now get the BACKUP_PATH created by the `backup-pitr` example by viewing the containers logs:
 
-After that, run the script.
 ```
-vi ./run-restore-pitr.sh
+docker logs backup-pitr | grep PATH
+Thu May 10 18:07:58 UTC 2018 INFO: BACKUP_PATH is set to /pgdata/pitr-backups/2018-05-10-18-07-58.
+```
+
+Edit the `run-restore-pitr.sh` file and change the `BACKUP_PATH` environment variable
+using the path discovered above:
+
+```
+-e BACKUP_PATH=pitr-backups/2018-05-10-18-07-58 \
+```
+
+Next, we restore prior to the `beforechanges` recovery target.  This
+recovery point is *before* the *pitrtest* table is created.
+
+Open file `run-restore-pitr.sh`, and edit the environment
+variable to indicate we want to use the `beforechanges` recovery
+point:
+```
+-e RECOVERY_TARGET_NAME=beforechanges \
+```
+
+Then run the following to create the restored database container:
+```
 ./run-restore-pitr.sh
 ```
 
@@ -269,10 +286,10 @@ Until you run the statement above, the database will be left in read-only
 mode.
 
 Next, run the script to restore the database
-to the `afterchanges` restore point. Update the `RECOVERY_TARGET_NAME` to `afterchanges`:
+to the `afterchanges` restore point. Update the `RECOVERY_TARGET_NAME` to `afterchanges`
+in `run-restore-pitr.sh` :
 ```
-vi ./run-restore-pitr.sh
-./run-restore-pitr.sh
+-e RECOVERY_TARGET_NAME=afterchanges \
 ```
 
 After this restore, you should be able to see the test table:
@@ -282,11 +299,10 @@ psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume(
 ```
 
 Lastly, start a recovery using all of the WAL files. This will get the
-restored database as current as possible. To do so, edit the script
+restored database as current as possible. To do so, edit `run-restore-pitr.sh`
 to remove the `RECOVERY_TARGET_NAME` environment setting completely:
 ```
 ./run-restore-pitr.sh
-sleep 30
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
 psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'create table foo (id int)'
 ```
