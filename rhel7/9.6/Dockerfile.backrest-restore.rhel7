@@ -23,7 +23,7 @@ COPY conf/atomic/backrestrestore/help.1 /help.1
 COPY conf/atomic/backrestrestore/help.md /help.md
 COPY conf/licenses /licenses
 
-ENV PGVERSION="9.6" BACKREST_VERSION="2.10"
+ENV PGVERSION="9.6" BACKREST_VERSION="2.12"
 
 # Crunchy Postgres repo
 ADD conf/CRUNCHY-GPG-KEY.public  /

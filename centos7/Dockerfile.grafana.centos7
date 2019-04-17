@@ -28,7 +28,7 @@ ADD bin/grafana /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/grafana /opt/cpm/conf
 
-RUN chgrp -R 0 /opt/cpm /data && \
+RUN chown -R 2:0 /opt/cpm /data && \
     chmod -R g=u /opt/cpm /data
 
 VOLUME ["/data", "/conf"]
