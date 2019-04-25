@@ -22,7 +22,7 @@ CONTAINER_NAME=backup
 
 echo "Starting the ${CONTAINER_NAME} example..."
 
-VOLUME_NAME=$CONTAINER_NAME-pgdata
+VOLUME_NAME=backup-volume
 BACKUP_HOST=primary
 
 docker volume create --driver local --name=$VOLUME_NAME
@@ -35,7 +35,7 @@ docker run \
 	-e BACKUP_PASS=password \
 	-e BACKUP_PORT=5432 \
 	-e BACKUP_LABEL=mybackup \
-	--link $BACKUP_HOST:$BACKUP_HOST \
 	--name=$CONTAINER_NAME \
 	--hostname=$CONTAINER_NAME \
+	--network=pgnet \
 	-d $CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG

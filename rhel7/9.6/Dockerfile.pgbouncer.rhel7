@@ -7,7 +7,7 @@ LABEL name="crunchydata/pgbouncer" \
 	PostgresVersion="9.6" \
 	PostgresFullVersion="9.6.12" \
 	Version="7.6" \
-	Release="2.3.1" \
+	Release="2.4.0" \
         url="https://crunchydata.com" \
         summary="Lightweight connection pooler for crunchy-postgres" \
         description="The aim of crunchy-pgbouncer is to lower the performance impact of opening new connections to PostgreSQL; clients connect through this service. It offers session, transaction and statement pooling." \
@@ -48,8 +48,8 @@ ADD bin/pgbouncer /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgbouncer /opt/cpm/conf
 
-RUN chgrp -R 0 /opt/cpm /pgconf && \
-        chmod -R g=u /opt/cpm /pgconf
+RUN chown -R 2:0 /opt/cpm /pgconf && \
+    chmod -R g=u /opt/cpm /pgconf
 
 EXPOSE 6432
 

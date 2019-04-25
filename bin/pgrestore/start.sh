@@ -72,7 +72,7 @@ echo_info "Restore will be attempted using backup ${BACKUP_FILE?}"
 # (tar, directory, custom) are restored via pg_restore
 BACKUP_TYPE=$(file ${BACKUP_FILE?})
 set +e
-if [[ ${BACKUP_TYPE?} = *"ASCII"* ]]
+if [[ ${BACKUP_TYPE?} = *"text"* ]]
 then
     echo_info "Restoring from SQL backup via psql.."
     ${PGROOT?}/bin/psql ${conn_opts?} -f ${BACKUP_FILE?}
