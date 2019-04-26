@@ -13,9 +13,17 @@ The documentation website (located at https://crunchydata.github.io/crunchy-cont
 If you would like to build the documentation locally, view the
 [official Installing Hugo](https://gohugo.io/getting-started/installing/) guide to set up Hugo locally.
 
+The git submodule for the crunchy-hugo-theme has to be synched -
+
+```bash
+cd $CCPROOT/
+git submodule init
+git submodule update
+```
+
 You can then start the server by running the following commands -
 
-```
+```bash
 cd $CCPROOT/hugo/
 hugo server
 ```
