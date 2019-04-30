@@ -593,12 +593,13 @@
 <p>If you would like to build the documentation locally, view the
 <a href="https://gohugo.io/getting-started/installing/">official Installing Hugo</a> guide to set up Hugo locally.</p>
 
+<p>The git submodule for the crunchy-hugo-theme has to be synched -</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">cd</span> <span style="color:#111">$CCPROOT</span>/
+git submodule init
+git submodule update</code></pre></div>
 <p>You can then start the server by running the following commands -</p>
-
-<pre><code>cd $CCPROOT/hugo/
-hugo server
-</code></pre>
-
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">cd</span> <span style="color:#111">$CCPROOT</span>/hugo/
+hugo server</code></pre></div>
 <p>The local version of the Hugo server is accessible by default from
 <code>localhost:1313</code>. Once you&rsquo;ve run <code>hugo server</code>, that will let you interactively make changes to the documentation as desired and view the updates
 in real-time.</p>
