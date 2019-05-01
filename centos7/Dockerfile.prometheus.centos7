@@ -3,7 +3,7 @@ FROM centos:7
 LABEL name="crunchydata/prometheus" \
         vendor="crunchy data" \
 	Version="7.6" \
-	Release="2.4.0" \
+	Release="2.4.0-rc6" \
         url="https://crunchydata.com" \
         summary="Prometheus server that stores metrics for crunchy-postgres" \
         io.k8s.description="prometheus container" \
