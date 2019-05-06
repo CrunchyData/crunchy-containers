@@ -21,13 +21,8 @@ COPY conf/atomic/prometheus/help.1 /help.1
 COPY conf/atomic/prometheus/help.md /help.md
 COPY conf/licenses /licenses
 
-ADD conf/RPM-GPG-KEY-crunchydata  /
-ADD conf/crunchypg11.repo /etc/yum.repos.d/
-RUN rpm --import RPM-GPG-KEY-crunchydata
-
-
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
-  && yum -y update \
+  && yum -y --enablerepo=rhel-7-server-ose-3.9-rpms update \
   && yum -y install \
     bind-utils \
     gettext \
