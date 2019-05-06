@@ -34,7 +34,8 @@ ADD conf/crunchypg10.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
- && yum -y update && yum --enablerepo=epel --enablerepo="rhel-7-server-optional-rpms" -y install bind-utils \
+ && yum -y --enablerepo=rhel-7-server-ose-3.9-rpms --disablerepo=crunchy* update \
+ && yum --enablerepo=epel --enablerepo="rhel-7-server-optional-rpms" -y install bind-utils \
     gettext \
     hostname \
     R-core libRmath texinfo-tex texlive-epsf \
