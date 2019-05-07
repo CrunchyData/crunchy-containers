@@ -36,7 +36,8 @@ RUN rpm --import RPM-GPG-KEY-crunchydata
 ADD conf/crunchypg11.repo /etc/yum.repos.d/
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
- && yum -y update && yum -y update glibc-common \
+ && yum -y --enablerepo=rhel-7-server-ose-3.9-rpms --disablerepo=crunchy* update \
+ && yum -y update glibc-common \
  && yum install -y bind-utils \
 	gettext \
 	hostname \
