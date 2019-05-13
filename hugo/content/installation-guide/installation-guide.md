@@ -38,8 +38,8 @@ First add the following lines to your .bashrc file to set the project paths:
     export PATH=$PATH:$GOBIN
     export CCP_BASEOS=centos7       # centos7 for Centos, rhel7 for Redhat
     export CCP_PGVERSION=10
-    export CCP_PG_FULLVERSION=10.7
-    export CCP_VERSION=2.3.1
+    export CCP_PG_FULLVERSION=10.8
+    export CCP_VERSION=2.3.2
     export CCP_IMAGE_PREFIX=crunchydata
     export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
     export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
@@ -93,7 +93,7 @@ highlighted below where necessary.
     cd $GOPATH/src/github.com/crunchydata
     git clone https://github.com/crunchydata/crunchy-containers
     cd crunchy-containers
-    git checkout 2.3.1
+	git checkout 2.3.2
     go get github.com/blang/expenv
 
 {{% notice info %}}
