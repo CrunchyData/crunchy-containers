@@ -6,12 +6,7 @@ weight: 251
 ---
 ## Documentation
 
-<<<<<<< HEAD
-The documentation website (located at https://access.crunchydata.com/documentation/crunchy-containers/2.3.0/) is generated using link:https://gohugo.io/[Hugo] and
-link:https://pages.github.com/[GitHub Pages].
-=======
 The documentation website (located at https://crunchydata.github.io/crunchy-containers/) is generated using [Hugo](https://gohugo.io/) and [GitHub Pages](https://pages.github.com/).
->>>>>>> develop
 
 ## Hosting Hugo Locally (Optional)
 

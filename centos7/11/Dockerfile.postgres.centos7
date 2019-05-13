@@ -14,7 +14,8 @@ LABEL name="crunchydata/postgres" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="11" PGDG_REPO="pgdg-centos11-11-2.noarch.rpm" BACKREST_VERSION="2.13"
+ENV PGVERSION="11" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm" PGDG_REPO_DISABLE="pgdg10,pgdg96,pgdg95,pgdg94" \
+    BACKREST_VERSION="2.13"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
@@ -27,7 +28,8 @@ RUN yum -y update \
     procps-ng  \
     rsync \
     psmisc openssh-server openssh-clients \
- && yum -y install postgresql11-server postgresql11-contrib postgresql11 \
+ && yum -y install --disablerepo="${PGDG_REPO_DISABLE}" \
+    postgresql11-server postgresql11-contrib postgresql11 \
     pgaudit13_11 \
     pgbackrest-"${BACKREST_VERSION}" \
  && yum -y clean all
