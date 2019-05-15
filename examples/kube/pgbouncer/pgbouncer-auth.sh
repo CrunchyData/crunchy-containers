@@ -13,14 +13,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source ${CCPROOT}/examples/common.sh
-echo_info "Cleaning up.."
+echo "Setting up pgBouncer.."
 
-cleanup "${CCP_NAMESPACE?}-pgbouncer"
+echo "Obtaining pg-primary service address"
+export SERVICE_IP=`${CCP_CLI} get -o jsonpath="{.spec.clusterIP}" service pg-primary`
 
-$CCPROOT/examples/waitforterm.sh pgbouncer-primary ${CCP_CLI?}
-$CCPROOT/examples/waitforterm.sh pgbouncer-replica ${CCP_CLI?}
-$CCPROOT/examples/waitforterm.sh pg-primary ${CCP_CLI?}
-$CCPROOT/examples/waitforterm.sh pg-replica ${CCP_CLI?}
+# set password to allow psql to pick it up non-interactively
+export PGPASSWORD=password 
 
-rm -f ./pgbouncer-auth.stderr 2>/dev/null
+echo -e "Running setup SQL on ${SERVICE_IP} \n"
+
+for DB in $(psql -h $SERVICE_IP -U postgres -t -c "SELECT datname FROM pg_database WHERE datname NOT IN ('template0', 'template1')")
+do
+
+    echo $DB
+    psql -h $SERVICE_IP -U postgres -d $DB --single-transaction \
+	 -v ON_ERROR_STOP=1 < ./pgbouncer.sql  2> ./pgbouncer-auth.stderr
+    echo -e "\n"
+done
+

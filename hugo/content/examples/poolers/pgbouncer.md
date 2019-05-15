@@ -44,7 +44,15 @@ cd $CCPROOT/examples/docker/pgbouncer
 ./run.sh
 ```
 
-Once all containers have deployed and are ready for use, `psql` to the target
+Once all containers have deployed and are ready for use, we need to setup the pgbouncer authorizations in each database:
+```
+./pgbouncer-auth.sh
+```
+
+This will configure the pgbouncer user in each database of the primary. Errors from this script will appear in `pgbouncer.stderr`.
+Review this file to make sure there were no issues. It will be automatically removed by the cleanup script.
+
+Once authorizations have been successfully configured, `psql` to the target
 databases through `pgBouncer`:
 
 ```
