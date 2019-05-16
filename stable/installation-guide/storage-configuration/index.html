@@ -6,7 +6,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.53" />
+<meta name="generator" content="Hugo 0.52" />
 <title>Storage Configuration :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/stable/favicon.png" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/stable/css/nucleus.css" rel="stylesheet">
@@ -21,7 +21,7 @@
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/main.js"></script>
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/toc.js"></script>
 <script type="text/javascript">
-      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
 </script>
 <meta name="description" content="">
 
@@ -46,17 +46,17 @@
   <span class="navbar-text">
       <nav class="shortcuts">
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers" target="_blank" rel="noopener">
                     <i class='fab fa-github'></i> <label>Source</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://kubernetes.io/docs/"  rel="noopener">
+                  <a href="https://kubernetes.io/docs/" target="_blank" rel="noopener">
                     <i class='fas fa-bookmark'></i> <label>Kubernetes</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md" target="_blank" rel="noopener">
                     <i class='fas fa-file-contract'></i> <label>License</label>
                   </a>
               </li>
@@ -77,7 +77,7 @@
         <link href="https://crunchydata.github.io/crunchy-containers/stable/css/auto-complete.css" rel="stylesheet">
         <script type="text/javascript">
           
-              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
           
         </script>
         <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/stable/js/search.js"></script>
@@ -86,6 +86,20 @@
       <hr>
       <a class="baselink" href="https://crunchydata.github.io/crunchy-containers/stable/">Crunchy Data Container Suite Documentation</a>
       <hr>
+        <b>Available Formats</b>
+        <nav class="downloads">
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/pdf/crunchy_containers.pdf" target="_blank" rel="noopener">
+                      <i class='fas fa-file-pdf'></i> <label>PDF</label>
+                    </a>
+                </li>
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/epub/crunchy_containers.epub" target="_blank" rel="noopener">
+                      <i class='fas fa-book'></i> <label>EPUB</label>
+                    </a>
+                </li>
+        </nav>
+        <hr>
 
       <b>Navigation</b>
     <li data-nav-id="/overview/" class="dd-item haschildren
@@ -632,14 +646,14 @@ following command to allow NFS write permissions:</p>
 
 <li><p>Detailed instructions for setting up a NFS server on Centos 7 can be found using the following link:</p>
 
-<p><a href="http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html" target="_blank">http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html</a></p></li>
+<p><a href="http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html">http://www.itzgeek.com/how-tos/linux/centos-how-tos/how-to-setup-nfs-server-on-centos-7-rhel-7-fedora-22.html</a></p></li>
 
 <li><p>If you are running your client on a VM, you will need to
 add <strong>insecure</strong> to the exportfs file on the NFS server due to the way port
 translation is done between the VM host and the VM instance.  For more details on this bug, please see the
 following link:</p>
 
-<p><a href="http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting" target="_blank">http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting</a></p></li>
+<p><a href="http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting">http://serverfault.com/questions/107546/mount-nfs-access-denied-by-server-while-mounting</a></p></li>
 
 <li><p>A suggested best practice for tuning NFS for PostgreSQL is to configure the PostgreSQL fstab
 mount options like so:</p>
@@ -648,7 +662,7 @@ mount options like so:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">MTU</span><span style="color:#f92672">=</span><span style="color:#ae81ff">9000</span></code></pre></div></li>
 
 <li><p>If interested in mounting the same NFS share multiple times on the same mount point,
-look into the <a href="https://www.novell.com/support/kb/doc.php?id=7010210" target="_blank">noac mount option</a></p></li>
+look into the <a href="https://www.novell.com/support/kb/doc.php?id=7010210">noac mount option</a></p></li>
 </ul>
 
 <h2 id="dynamic-storage">Dynamic Storage</h2>

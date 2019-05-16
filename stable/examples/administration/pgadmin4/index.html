@@ -6,7 +6,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.53" />
+<meta name="generator" content="Hugo 0.52" />
 <title>pgAdmin 4 :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/stable/favicon.png" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/stable/css/nucleus.css" rel="stylesheet">
@@ -21,7 +21,7 @@
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/main.js"></script>
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/toc.js"></script>
 <script type="text/javascript">
-      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
 </script>
 <meta name="description" content="">
 
@@ -46,17 +46,17 @@
   <span class="navbar-text">
       <nav class="shortcuts">
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers" target="_blank" rel="noopener">
                     <i class='fab fa-github'></i> <label>Source</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://kubernetes.io/docs/"  rel="noopener">
+                  <a href="https://kubernetes.io/docs/" target="_blank" rel="noopener">
                     <i class='fas fa-bookmark'></i> <label>Kubernetes</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md" target="_blank" rel="noopener">
                     <i class='fas fa-file-contract'></i> <label>License</label>
                   </a>
               </li>
@@ -77,7 +77,7 @@
         <link href="https://crunchydata.github.io/crunchy-containers/stable/css/auto-complete.css" rel="stylesheet">
         <script type="text/javascript">
           
-              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
           
         </script>
         <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/stable/js/search.js"></script>
@@ -86,6 +86,20 @@
       <hr>
       <a class="baselink" href="https://crunchydata.github.io/crunchy-containers/stable/">Crunchy Data Container Suite Documentation</a>
       <hr>
+        <b>Available Formats</b>
+        <nav class="downloads">
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/pdf/crunchy_containers.pdf" target="_blank" rel="noopener">
+                      <i class='fas fa-file-pdf'></i> <label>PDF</label>
+                    </a>
+                </li>
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/epub/crunchy_containers.epub" target="_blank" rel="noopener">
+                      <i class='fas fa-book'></i> <label>EPUB</label>
+                    </a>
+                </li>
+        </nav>
+        <hr>
 
       <b>Navigation</b>
     <li data-nav-id="/overview/" class="dd-item haschildren
@@ -576,7 +590,7 @@
 <p>This example deploys the pgadmin4 v2 web user interface
 for PostgreSQL without TLS.</p>
 
-<p>After running the example, you should be able to browse to <a href="http://127.0.0.1:5050" target="_blank">http://127.0.0.1:5050</a>
+<p>After running the example, you should be able to browse to <a href="http://127.0.0.1:5050">http://127.0.0.1:5050</a>
 and log into the web application with the following configured credentials:</p>
 
 <ul>
@@ -592,10 +606,10 @@ OpenShift, it is required to use a port-forward proxy to access the dashboard.</
 <pre><code>${CCP_CLI} port-forward pgadmin4-http 5050:5050
 </code></pre>
 
-<p>To access the pgAdmin4 dashboard through the proxy, navigate to <em><a href="http://127.0.0.1:5050" target="_blank">http://127.0.0.1:5050</a></em>
+<p>To access the pgAdmin4 dashboard through the proxy, navigate to <em><a href="http://127.0.0.1:5050">http://127.0.0.1:5050</a></em>
 in a browser.</p>
 
-<p>See the <a href="http://pgadmin.org" target="_blank">pgAdmin4 documentation</a> for more details.</p>
+<p>See the <a href="http://pgadmin.org">pgAdmin4 documentation</a> for more details.</p>
 
 <p>To shutdown the instance and remove the container for each example, run the following:</p>
 
@@ -627,7 +641,7 @@ in a browser.</p>
 <p>This example deploys the pgadmin4 v2 web user interface
 for PostgreSQL with TLS.</p>
 
-<p>After running the example, you should be able to browse to <a href="https://127.0.0.1:5050" target="_blank">https://127.0.0.1:5050</a>
+<p>After running the example, you should be able to browse to <a href="https://127.0.0.1:5050">https://127.0.0.1:5050</a>
 and log into the web application with the following configured credentials:</p>
 
 <ul>
@@ -643,10 +657,10 @@ OpenShift, it is required to use a port-forward proxy to access the dashboard.</
 <pre><code>${CCP_CLI} port-forward pgadmin4-https 5050:5050
 </code></pre>
 
-<p>To access the pgAdmin4 dashboard through the proxy, navigate to <em><a href="https://127.0.0.1:5050" target="_blank">https://127.0.0.1:5050</a></em>
+<p>To access the pgAdmin4 dashboard through the proxy, navigate to <em><a href="https://127.0.0.1:5050">https://127.0.0.1:5050</a></em>
 in a browser.</p>
 
-<p>See the <a href="http://pgadmin.org" target="_blank">pgadmin4 documentation</a> for more details.</p>
+<p>See the <a href="http://pgadmin.org">pgadmin4 documentation</a> for more details.</p>
 
 <p>To shutdown the instance and remove the container for each example, run the following:</p>
 

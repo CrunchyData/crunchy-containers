@@ -6,7 +6,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.53" />
+<meta name="generator" content="Hugo 0.52" />
 <title>Centralized Logging :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/stable/favicon.png" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/stable/css/nucleus.css" rel="stylesheet">
@@ -21,7 +21,7 @@
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/main.js"></script>
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/toc.js"></script>
 <script type="text/javascript">
-      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
 </script>
 <meta name="description" content="">
 
@@ -46,17 +46,17 @@
   <span class="navbar-text">
       <nav class="shortcuts">
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers" target="_blank" rel="noopener">
                     <i class='fab fa-github'></i> <label>Source</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://kubernetes.io/docs/"  rel="noopener">
+                  <a href="https://kubernetes.io/docs/" target="_blank" rel="noopener">
                     <i class='fas fa-bookmark'></i> <label>Kubernetes</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md" target="_blank" rel="noopener">
                     <i class='fas fa-file-contract'></i> <label>License</label>
                   </a>
               </li>
@@ -77,7 +77,7 @@
         <link href="https://crunchydata.github.io/crunchy-containers/stable/css/auto-complete.css" rel="stylesheet">
         <script type="text/javascript">
           
-              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
           
         </script>
         <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/stable/js/search.js"></script>
@@ -86,6 +86,20 @@
       <hr>
       <a class="baselink" href="https://crunchydata.github.io/crunchy-containers/stable/">Crunchy Data Container Suite Documentation</a>
       <hr>
+        <b>Available Formats</b>
+        <nav class="downloads">
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/pdf/crunchy_containers.pdf" target="_blank" rel="noopener">
+                      <i class='fas fa-file-pdf'></i> <label>PDF</label>
+                    </a>
+                </li>
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/epub/crunchy_containers.epub" target="_blank" rel="noopener">
+                      <i class='fas fa-book'></i> <label>EPUB</label>
+                    </a>
+                </li>
+        </nav>
+        <hr>
 
       <b>Navigation</b>
     <li data-nav-id="/overview/" class="dd-item haschildren
@@ -594,9 +608,9 @@ users to explore and visualize the logs via a web dashboard.</p>
 <p>To learn more about the EFK stack, see the following:</p>
 
 <ul>
-<li><a href="https://www.elastic.co/products/elasticsearch" target="_blank">https://www.elastic.co/products/elasticsearch</a></li>
-<li><a href="https://www.fluentd.org/architecture" target="_blank">https://www.fluentd.org/architecture</a></li>
-<li><a href="https://www.elastic.co/products/kibana" target="_blank">https://www.elastic.co/products/kibana</a></li>
+<li><a href="https://www.elastic.co/products/elasticsearch">https://www.elastic.co/products/elasticsearch</a></li>
+<li><a href="https://www.fluentd.org/architecture">https://www.fluentd.org/architecture</a></li>
+<li><a href="https://www.elastic.co/products/kibana">https://www.elastic.co/products/kibana</a></li>
 </ul>
 
 <h2 id="configure-postgresql-for-centralized-logging">Configure PostgreSQL for Centralized Logging</h2>
@@ -620,7 +634,7 @@ logging_collector = off
 configuring OpenShift to create an EFK stack, see the official documentation:</p>
 
 <ul>
-<li><a href="https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging.html" target="_blank">https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging.html</a></li>
+<li><a href="https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging.html">https://docs.openshift.com/container-platform/3.11/install_config/aggregate_logging.html</a></li>
 </ul>
 
 <h2 id="deploying-the-efk-stack-on-kubernetes">Deploying the EFK Stack On Kubernetes</h2>
@@ -691,7 +705,7 @@ CONTAINER_NAME: *primary* AND MESSAGE: &quot;.*LOG*&quot;
 kubernetes.pod_name: &quot;primary&quot; AND log
 </code></pre>
 
-<p>For more information about querying Kibana, see the official documentation: <a href="https://www.elastic.co/guide/en/beats/packetbeat/current/kibana-queries-filters.html" target="_blank">https://www.elastic.co/guide/en/beats/packetbeat/current/kibana-queries-filters.html</a></p>
+<p>For more information about querying Kibana, see the official documentation: <a href="https://www.elastic.co/guide/en/beats/packetbeat/current/kibana-queries-filters.html">https://www.elastic.co/guide/en/beats/packetbeat/current/kibana-queries-filters.html</a></p>
 
 <p>To delete the centralized logging example run the following:</p>
 

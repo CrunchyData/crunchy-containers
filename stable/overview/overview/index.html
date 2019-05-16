@@ -6,7 +6,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.53" />
+<meta name="generator" content="Hugo 0.52" />
 <title>Container Images :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/stable/favicon.png" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/stable/css/nucleus.css" rel="stylesheet">
@@ -21,7 +21,7 @@
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/main.js"></script>
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/toc.js"></script>
 <script type="text/javascript">
-      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
 </script>
 <meta name="description" content="">
 
@@ -46,17 +46,17 @@
   <span class="navbar-text">
       <nav class="shortcuts">
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers" target="_blank" rel="noopener">
                     <i class='fab fa-github'></i> <label>Source</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://kubernetes.io/docs/"  rel="noopener">
+                  <a href="https://kubernetes.io/docs/" target="_blank" rel="noopener">
                     <i class='fas fa-bookmark'></i> <label>Kubernetes</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md" target="_blank" rel="noopener">
                     <i class='fas fa-file-contract'></i> <label>License</label>
                   </a>
               </li>
@@ -77,7 +77,7 @@
         <link href="https://crunchydata.github.io/crunchy-containers/stable/css/auto-complete.css" rel="stylesheet">
         <script type="text/javascript">
           
-              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
           
         </script>
         <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/stable/js/search.js"></script>
@@ -86,6 +86,20 @@
       <hr>
       <a class="baselink" href="https://crunchydata.github.io/crunchy-containers/stable/">Crunchy Data Container Suite Documentation</a>
       <hr>
+        <b>Available Formats</b>
+        <nav class="downloads">
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/pdf/crunchy_containers.pdf" target="_blank" rel="noopener">
+                      <i class='fas fa-file-pdf'></i> <label>PDF</label>
+                    </a>
+                </li>
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/epub/crunchy_containers.epub" target="_blank" rel="noopener">
+                      <i class='fas fa-book'></i> <label>EPUB</label>
+                    </a>
+                </li>
+        </nav>
+        <hr>
 
       <b>Navigation</b>
     <li data-nav-id="/overview/" class="dd-item parent haschildren
@@ -602,7 +616,7 @@ It supports the following features:</p>
 replication and user applications.</li>
 <li>pgBackRest backups built into the container</li>
 <li>Archiving WAL to dedicated volume mounts</li>
-<li><a href="https://www.postgresql.org/docs/current/contrib.html" target="_blank">Extensions available</a> in the PostgreSQL contrib module.</li>
+<li><a href="https://www.postgresql.org/docs/current/contrib.html">Extensions available</a> in the PostgreSQL contrib module.</li>
 <li>Enhanced audit logging from the pgAudit extension</li>
 <li>Enhanced database statistics from the pg_stat_tatements extensions</li>
 </ul>
@@ -632,24 +646,24 @@ image but additionally provides the following geospatial extensions:</p>
 <p><em>Physical</em> backup and restoration tools included in the Crunchy Container suite are:</p>
 
 <ul>
-<li><a href="2.x" target="_blank">pgBackRest</a>
+<li><a href="2.x">pgBackRest</a>
 PostgreSQL images</li>
-<li><a href="https://www.postgresql.org/docs/current/app-pgbasebackup.html" target="_blank">pg_basebackup</a> -
+<li><a href="https://www.postgresql.org/docs/current/app-pgbasebackup.html">pg_basebackup</a> -
 provided by the Crunchy Backup image</li>
 </ul>
 
 <p><em>Logical</em> backup and restoration tools are:</p>
 
 <ul>
-<li><a href="https://www.postgresql.org/docs/current/app-pgdump.html" target="_blank">pg_dump</a> - provided by
+<li><a href="https://www.postgresql.org/docs/current/app-pgdump.html">pg_dump</a> - provided by
 the Crunchy pgDump image</li>
-<li><a href="https://www.postgresql.org/docs/current/app-pgrestore.html" target="_blank">pg_restore</a> - provided by
+<li><a href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</a> - provided by
 the Crunchy pgRestore image</li>
 </ul>
 
 <h3 id="crunchy-backup">Crunchy Backup</h3>
 
-<p>The Crunchy Backup image allows users to create <a href="https://www.postgresql.org/docs/current/app-pgbasebackup.html" target="_blank">pg_basebackup</a>
+<p>The Crunchy Backup image allows users to create <a href="https://www.postgresql.org/docs/current/app-pgbasebackup.html">pg_basebackup</a>
 physical backups.  The backups created by Crunchy Backup can be mounted to the Crunchy
 PostgreSQL container to restore databases.</p>
 
@@ -668,12 +682,12 @@ replays Write Ahead Logs (WAL) to the latest point in time.</li>
 replays Write Ahead Logs (WAL) to a specific point in time.</li>
 </ul>
 
-<p>Visit the official pgBackRest website for more information: <a href="https://pgbackrest.org/" target="_blank">https://pgbackrest.org/</a></p>
+<p>Visit the official pgBackRest website for more information: <a href="https://pgbackrest.org/">https://pgbackrest.org/</a></p>
 
 <h3 id="crunchy-pgdump">Crunchy pgDump</h3>
 
 <p>The Crunchy pgDump image creates a logical backup of the database using the
-<a href="https://www.postgresql.org/docs/current/app-pgdump.html" target="_blank">pg_dump</a> tool.  It
+<a href="https://www.postgresql.org/docs/current/app-pgdump.html">pg_dump</a> tool.  It
 supports the following features:</p>
 
 <ul>
@@ -688,7 +702,7 @@ contents) and tar (uncompressed tar archive)</li>
 <h3 id="crunchy-pgrestore">Crunchy pgRestore</h3>
 
 <p>The Crunchy pgRestore image allows users to restore a PostgreSQL database from
-<code>pg_dump</code> logical backups using the <a href="https://www.postgresql.org/docs/current/app-pgrestore.html" target="_blank">pg_restore</a> tool.</p>
+<code>pg_dump</code> logical backups using the <a href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</a> tool.</p>
 
 <h2 id="administration">Administration</h2>
 
@@ -702,7 +716,7 @@ via a graphical user interface web application.</p>
 
 <p><img src="https://crunchydata.github.io/crunchy-containers/stable/pgadmin4.png" alt="pgadmin4" title="pgAdmin4" /></p>
 
-<p>Visit the official pgAdmin4 website for more information: <a href="https://www.pgadmin.org/" target="_blank">https://www.pgadmin.org/</a></p>
+<p>Visit the official pgAdmin4 website for more information: <a href="https://www.pgadmin.org/">https://www.pgadmin.org/</a></p>
 
 <h3 id="crunchy-scheduler">Crunchy Scheduler</h3>
 
@@ -738,12 +752,12 @@ can is scraped and stored by Crunchy Prometheus timeseries database via a web AP
 <p>Crunchy Collect contains the following exporters:</p>
 
 <ul>
-<li><a href="https://github.com/prometheus/node_exporter" target="_blank">Node Exporter</a> - hardware and OS metrics</li>
-<li><a href="https://github.com/wrouesnel/postgres_exporter" target="_blank">PostgreSQL Exporter</a> - postgres specific metrics</li>
+<li><a href="https://github.com/prometheus/node_exporter">Node Exporter</a> - hardware and OS metrics</li>
+<li><a href="https://github.com/wrouesnel/postgres_exporter">PostgreSQL Exporter</a> - postgres specific metrics</li>
 </ul>
 
 <p>This image also contains custom PostgreSQL queries for additional metrics provided
-by <a href="https://github.com/CrunchyData/pgmonitor" target="_blank">Crunchy pgMonitor</a>.</p>
+by <a href="https://github.com/CrunchyData/pgmonitor">Crunchy pgMonitor</a>.</p>
 
 <h3 id="crunchy-grafana">Crunchy Grafana</h3>
 
@@ -758,7 +772,7 @@ Prometheus.  Crunchy Grafana comes with the following features:</p>
 
 <p><img src="https://crunchydata.github.io/crunchy-containers/stable/grafana.png" alt="grafana" title="grafana" /></p>
 
-<p>Visit the official Grafana website for more information: <a href="https://grafana.com" target="_blank">https://grafana.com</a></p>
+<p>Visit the official Grafana website for more information: <a href="https://grafana.com">https://grafana.com</a></p>
 
 <h3 id="crunchy-prometheus">Crunchy Prometheus</h3>
 
@@ -773,7 +787,7 @@ Grafana.  Crunchy Prometheus supports the following features:</p>
 <li>Relabels metrics metadata for easier Crunchy Grafana integration</li>
 </ul>
 
-<p>Visit the official Prometheus website for more information: <a href="https://prometheus.io" target="_blank">https://prometheus.io</a></p>
+<p>Visit the official Prometheus website for more information: <a href="https://prometheus.io">https://prometheus.io</a></p>
 
 <h3 id="crunchy-pgbadger">Crunchy pgBadger</h3>
 
@@ -794,7 +808,7 @@ time.</p>
 
 <p><img src="https://crunchydata.github.io/crunchy-containers/stable/pgbadger.png" alt="pgbadger" title="pgbadger" /></p>
 
-<p>Visit the official pgBadger website for more information: <a href="https://pgbadger.darold.net/" target="_blank">https://pgbadger.darold.net/</a></p>
+<p>Visit the official pgBadger website for more information: <a href="https://pgbadger.darold.net/">https://pgbadger.darold.net/</a></p>
 
 <h2 id="connection-pooling-and-logical-routers">Connection Pooling and Logical Routers</h2>
 
@@ -812,7 +826,7 @@ features:</p>
 <li>Dynamic user authentication</li>
 </ul>
 
-<p>Visit the official pgBouncer website for more information: <a href="https://pgbouncer.github.io" target="_blank">https://pgbouncer.github.io</a></p>
+<p>Visit the official pgBouncer website for more information: <a href="https://pgbouncer.github.io">https://pgbouncer.github.io</a></p>
 
 <h3 id="crunchy-pgpool-ii">Crunchy pgPool II</h3>
 
@@ -823,7 +837,7 @@ entrypoint for their applications without requiring knowledge of read replicas.
 Additionally pgPool provides connection pooling to lower overhead of opening new
 connections to Crunchy PostgreSQL containers.</p>
 
-<p>Visit the official pgPool II website for more information: <a href="http://www.pgpool.net" target="_blank">http://www.pgpool.net</a></p>
+<p>Visit the official pgPool II website for more information: <a href="http://www.pgpool.net">http://www.pgpool.net</a></p>
 
 
 

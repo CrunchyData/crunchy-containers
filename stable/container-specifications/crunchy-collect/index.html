@@ -6,7 +6,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.53" />
+<meta name="generator" content="Hugo 0.52" />
 <title>crunchy-collect :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/stable/favicon.png" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/stable/css/nucleus.css" rel="stylesheet">
@@ -21,7 +21,7 @@
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/main.js"></script>
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/toc.js"></script>
 <script type="text/javascript">
-      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
 </script>
 <meta name="description" content="">
 
@@ -46,17 +46,17 @@
   <span class="navbar-text">
       <nav class="shortcuts">
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers" target="_blank" rel="noopener">
                     <i class='fab fa-github'></i> <label>Source</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://kubernetes.io/docs/"  rel="noopener">
+                  <a href="https://kubernetes.io/docs/" target="_blank" rel="noopener">
                     <i class='fas fa-bookmark'></i> <label>Kubernetes</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md" target="_blank" rel="noopener">
                     <i class='fas fa-file-contract'></i> <label>License</label>
                   </a>
               </li>
@@ -77,7 +77,7 @@
         <link href="https://crunchydata.github.io/crunchy-containers/stable/css/auto-complete.css" rel="stylesheet">
         <script type="text/javascript">
           
-              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
           
         </script>
         <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/stable/js/search.js"></script>
@@ -86,6 +86,20 @@
       <hr>
       <a class="baselink" href="https://crunchydata.github.io/crunchy-containers/stable/">Crunchy Data Container Suite Documentation</a>
       <hr>
+        <b>Available Formats</b>
+        <nav class="downloads">
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/pdf/crunchy_containers.pdf" target="_blank" rel="noopener">
+                      <i class='fas fa-file-pdf'></i> <label>PDF</label>
+                    </a>
+                </li>
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/epub/crunchy_containers.epub" target="_blank" rel="noopener">
+                      <i class='fas fa-book'></i> <label>EPUB</label>
+                    </a>
+                </li>
+        </nav>
+        <hr>
 
       <b>Navigation</b>
     <li data-nav-id="/overview/" class="dd-item haschildren
@@ -568,29 +582,29 @@
     
 
 <p>The crunchy-collect container provides real time metrics about the PostgreSQL database
-via an API. These metrics are scraped and stored by a <a href="https://prometheus.io" target="_blank">Prometheus</a>
+via an API. These metrics are scraped and stored by a <a href="https://prometheus.io">Prometheus</a>
 time-series database and are then graphed and visualized through the open source data
-visualizer <a href="https://grafana.com/" target="_blank">Grafana</a>.</p>
+visualizer <a href="https://grafana.com/">Grafana</a>.</p>
 
-<p>The crunchy-collect container uses <a href="https://github.com/CrunchyData/pgmonitor" target="_blank">pgMonitor</a> for advanced metric collection.
+<p>The crunchy-collect container uses <a href="https://github.com/CrunchyData/pgmonitor">pgMonitor</a> for advanced metric collection.
 It is required that the <code>crunchy-postgres</code> container has the <code>PGMONITOR_PASSWORD</code> environment
 variable to create the appropriate user (<code>ccp_monitoring</code>) to collect metrics.</p>
 
 <p>Custom queries to collect metrics can be specified by the user. By
 mounting a <strong>queries.yml</strong> file to <em>/conf</em> on the container, additional metrics
 can be specified for the API to collect. For an example of a queries.yml file, see
-<a href="https://github.com/CrunchyData/pgmonitor/blob/master/exporter/postgres/queries_common.yml" target="_blank">here</a></p>
+<a href="https://github.com/CrunchyData/pgmonitor/blob/master/exporter/postgres/queries_common.yml">here</a></p>
 
 <h2 id="packages">Packages</h2>
 
 <p>The crunchy-collect Docker image contains the following packages (versions vary depending on PostgreSQL version):</p>
 
 <ul>
-<li>PostgreSQL (11.2, 10.7, 9.6.12 and 9.5.16)</li>
+<li>PostgreSQL (11.3, 10.8, 9.6.13 and 9.5.17)</li>
 <li>CentOS7 - publicly available</li>
 <li>RHEL7 - customers only</li>
-<li><a href="https://github.com/wrouesnel/postgres_exporter" target="_blank">PostgreSQL Exporter</a></li>
-<li><a href="https://github.com/prometheus/node_exporter" target="_blank">Node Exporter</a></li>
+<li><a href="https://github.com/wrouesnel/postgres_exporter">PostgreSQL Exporter</a></li>
+<li><a href="https://github.com/prometheus/node_exporter">Node Exporter</a></li>
 </ul>
 
 <h2 id="environment-variables">Environment Variables</h2>

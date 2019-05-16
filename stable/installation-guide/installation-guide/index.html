@@ -6,7 +6,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.53" />
+<meta name="generator" content="Hugo 0.52" />
 <title>Installation Guide :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/stable/favicon.png" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/stable/css/nucleus.css" rel="stylesheet">
@@ -21,7 +21,7 @@
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/main.js"></script>
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/toc.js"></script>
 <script type="text/javascript">
-      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
 </script>
 <meta name="description" content="">
 
@@ -46,17 +46,17 @@
   <span class="navbar-text">
       <nav class="shortcuts">
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers" target="_blank" rel="noopener">
                     <i class='fab fa-github'></i> <label>Source</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://kubernetes.io/docs/"  rel="noopener">
+                  <a href="https://kubernetes.io/docs/" target="_blank" rel="noopener">
                     <i class='fas fa-bookmark'></i> <label>Kubernetes</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md" target="_blank" rel="noopener">
                     <i class='fas fa-file-contract'></i> <label>License</label>
                   </a>
               </li>
@@ -77,7 +77,7 @@
         <link href="https://crunchydata.github.io/crunchy-containers/stable/css/auto-complete.css" rel="stylesheet">
         <script type="text/javascript">
           
-              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
           
         </script>
         <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/stable/js/search.js"></script>
@@ -86,6 +86,20 @@
       <hr>
       <a class="baselink" href="https://crunchydata.github.io/crunchy-containers/stable/">Crunchy Data Container Suite Documentation</a>
       <hr>
+        <b>Available Formats</b>
+        <nav class="downloads">
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/pdf/crunchy_containers.pdf" target="_blank" rel="noopener">
+                      <i class='fas fa-file-pdf'></i> <label>PDF</label>
+                    </a>
+                </li>
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/epub/crunchy_containers.epub" target="_blank" rel="noopener">
+                      <i class='fas fa-book'></i> <label>EPUB</label>
+                    </a>
+                </li>
+        </nav>
+        <hr>
 
       <b>Navigation</b>
     <li data-nav-id="/overview/" class="dd-item haschildren
@@ -590,8 +604,8 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=centos7       # centos7 for Centos, rhel7 for Redhat
 export CCP_PGVERSION=10
-export CCP_PG_FULLVERSION=10.7
-export CCP_VERSION=2.3.1
+export CCP_PG_FULLVERSION=10.8
+export CCP_VERSION=2.3.2
 export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
@@ -645,13 +659,13 @@ sudo yum -y install git golang
 <pre><code>cd $GOPATH/src/github.com/crunchydata
 git clone https://github.com/crunchydata/crunchy-containers
 cd crunchy-containers
-git checkout 2.3.1
+git checkout 2.3.2
 go get github.com/blang/expenv
 </code></pre>
 
 <div class="notices info" ><p>If you are a Crunchy Enterprise Customer running on RHEL, you will place the Crunchy repository
 key and yum repository file into the <code>$CCPROOT/conf</code> directory at this point. These
-files can be obtained through <a href="https://access.crunchydata.com/" target="_blank">https://access.crunchydata.com/</a> on the downloads
+files can be obtained through <a href="https://access.crunchydata.com/">https://access.crunchydata.com/</a> on the downloads
 page.</p>
 </div>
 
@@ -660,7 +674,7 @@ page.</p>
 
 <p>These installation instructions assume the installation of PostgreSQL 10
 through the official PGDG repository. View the documentation located
-<a href="https://wiki.postgresql.org/wiki/YUM_Installation" target="_blank">here</a> in
+<a href="https://wiki.postgresql.org/wiki/YUM_Installation">here</a> in
 order to view more detailed notes or install a different version of PostgreSQL.</p>
 
 <p>Locate and edit your distribution’s <code>.repo</code> file, located:</p>
@@ -678,7 +692,7 @@ order to view more detailed notes or install a different version of PostgreSQL.<
 </code></pre>
 
 <p>Next, install the RPM relating to the base operating system and PostgreSQL version
-you wish to install. The RPMs can be found <a href="https://yum.postgresql.org/repopackages.php" target="_blank">here</a>.
+you wish to install. The RPMs can be found <a href="https://yum.postgresql.org/repopackages.php">here</a>.
 Below we chose Postgresql 10 for the example (change if you need different version):</p>
 
 <p>On <strong>CentOS</strong> system:</p>
@@ -743,7 +757,7 @@ sudo systemctl start docker.service
 to choose the proper version of OpenShift you want to install. The main instructions for
 3.11 are here and you&rsquo;ll be able to select a different version there, if needed:</p>
 
-<p><a href="https://docs.openshift.com/container-platform/3.11/install/index.html" target="_blank">https://docs.openshift.com/container-platform/3.11/install/index.html</a></p>
+<p><a href="https://docs.openshift.com/container-platform/3.11/install/index.html">https://docs.openshift.com/container-platform/3.11/install/index.html</a></p>
 
 <h2 id="kubernetes-installation">Kubernetes Installation</h2>
 
@@ -762,14 +776,14 @@ with installation can occur unless you have a resolving hostname.</p>
 
 <p>We suggest using Kubeadm as a simple way to install Kubernetes.</p>
 
-<p>See <a href="https://kubernetes.io/docs/setup/independent/install-kubeadm/" target="_blank">Kubeadm</a>
+<p>See <a href="https://kubernetes.io/docs/setup/independent/install-kubeadm/">Kubeadm</a>
 for installing the latest version of Kubeadm.</p>
 
-<p>See <a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/" target="_blank">Create a Cluster</a>
+<p>See <a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/">Create a Cluster</a>
 for creating the Kuberenetes cluster using <strong>Kubeadm</strong>. Note: We find that Weave networking
 works particularly well with the container suite.</p>
 
-<p>Please see <a href="https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/" target="_blank">here</a>
+<p>Please see <a href="https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/">here</a>
 to view the official documentation regarding configuring DNS for your Kubernetes cluster.</p>
 
 <h3 id="post-kubernetes-configuration">Post Kubernetes Configuration</h3>
@@ -818,7 +832,7 @@ option for deploying the Container Suite.</p>
 </code></pre>
 
 <p>Once you have your Kubernetes environment configured, it is simple to get
-Helm up and running. Please refer to <a href="https://github.com/kubernetes/helm/blob/master/docs/install.md" target="_blank">this document</a>
+Helm up and running. Please refer to <a href="https://github.com/kubernetes/helm/blob/master/docs/install.md">this document</a>
 to get Helm installed and configured properly.</p>
 
 <h1 id="configuring-namespace-and-permissions">Configuring Namespace and Permissions</h1>
@@ -886,7 +900,7 @@ as directed by the OpenShift Installation Guide.</p>
 <p>For our development purposes only, we typically specify the OCP
 Authorization policy of <code>AllowAll</code> as documented here:</p>
 
-<p><a href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider" target="_blank">https://docs.openshift.com/container-platform/3.11/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider</a></p>
+<p><a href="https://docs.openshift.com/container-platform/3.11/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider">https://docs.openshift.com/container-platform/3.11/install_config/configuring_authentication.html#AllowAllPasswordIdentityProvider</a></p>
 
 <p>We do not recommend this authentication policy for a production
 deployment of OCP.</p>

@@ -6,7 +6,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.53" />
+<meta name="generator" content="Hugo 0.52" />
 <title>Scheduler :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/stable/favicon.png" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/stable/css/nucleus.css" rel="stylesheet">
@@ -21,7 +21,7 @@
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/main.js"></script>
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/toc.js"></script>
 <script type="text/javascript">
-      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
 </script>
 <meta name="description" content="">
 
@@ -46,17 +46,17 @@
   <span class="navbar-text">
       <nav class="shortcuts">
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers" target="_blank" rel="noopener">
                     <i class='fab fa-github'></i> <label>Source</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://kubernetes.io/docs/"  rel="noopener">
+                  <a href="https://kubernetes.io/docs/" target="_blank" rel="noopener">
                     <i class='fas fa-bookmark'></i> <label>Kubernetes</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md" target="_blank" rel="noopener">
                     <i class='fas fa-file-contract'></i> <label>License</label>
                   </a>
               </li>
@@ -77,7 +77,7 @@
         <link href="https://crunchydata.github.io/crunchy-containers/stable/css/auto-complete.css" rel="stylesheet">
         <script type="text/javascript">
           
-              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
           
         </script>
         <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/stable/js/search.js"></script>
@@ -86,6 +86,20 @@
       <hr>
       <a class="baselink" href="https://crunchydata.github.io/crunchy-containers/stable/">Crunchy Data Container Suite Documentation</a>
       <hr>
+        <b>Available Formats</b>
+        <nav class="downloads">
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/pdf/crunchy_containers.pdf" target="_blank" rel="noopener">
+                      <i class='fas fa-file-pdf'></i> <label>PDF</label>
+                    </a>
+                </li>
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/epub/crunchy_containers.epub" target="_blank" rel="noopener">
+                      <i class='fas fa-book'></i> <label>EPUB</label>
+                    </a>
+                </li>
+        </nav>
+        <hr>
 
       <b>Navigation</b>
     <li data-nav-id="/overview/" class="dd-item haschildren
@@ -591,13 +605,13 @@ delete the task.</p>
 <p>See the following examples for creating config maps that Crunchy Scheduler can parse:</p>
 
 <ul>
-<li><a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-diff.json" target="_blank">pgBackRest Diff Backup</a></li>
-<li><a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-full.json" target="_blank">pgBackRest Full Backup</a></li>
-<li><a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-pgbasebackup.json" target="_blank">pgBaseBackup Backup</a></li>
+<li><a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-diff.json">pgBackRest Diff Backup</a></li>
+<li><a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-backrest-full.json">pgBackRest Full Backup</a></li>
+<li><a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/scheduler/configs/schedule-pgbasebackup.json">pgBaseBackup Backup</a></li>
 </ul>
 
 <p>The Crunchy Scheduler requires a Service Account to create jobs (pgBaseBackup) and to
-exec (pgBackRest).  See the <a href="https://github.com/CrunchyData/crunchy-containers/tree/master/examples/kube/scheduler/scheduler-sa.json" target="_blank">scheduler example</a>
+exec (pgBackRest).  See the <a href="https://github.com/CrunchyData/crunchy-containers/tree/master/examples/kube/scheduler/scheduler-sa.json">scheduler example</a>
 for the required permissions on this account.</p>
 
 <div class="notices tip" ><p>Crunchy Scheduler uses the <code>UTC</code> timezone for all schedules.</p>
@@ -618,7 +632,7 @@ for the required permissions on this account.</p>
 
 <ul>
 <li>The name of the secret that contains the username and password the Scheduler will use to
-configure the job template.  See <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/secret/secret.json" target="_blank">the primary secret example</a>
+configure the job template.  See <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/examples/kube/secret/secret.json">the primary secret example</a>
 for the structure required by the Scheduler.</li>
 <li>The name of the PVC created for the backups.  This should be created by the user prior to scheduling the task.</li>
 </ul>
@@ -627,7 +641,7 @@ for the structure required by the Scheduler.</li>
 to the backup job created by the scheduler.  To apply a specific <code>securityContext</code> for your
 storage provider, mount a <code>backup-template.json</code> to <code>/configs</code> on the scheduler pod.</p>
 
-<p>For an example of applying a custom template, <a href="https://github.com/CrunchyData/crunchy-containers/tree/master/examples/kube/scheduler" target="_blank">see the scheduler example</a>.</p>
+<p>For an example of applying a custom template, <a href="https://github.com/CrunchyData/crunchy-containers/tree/master/examples/kube/scheduler">see the scheduler example</a>.</p>
 </div>
 
 

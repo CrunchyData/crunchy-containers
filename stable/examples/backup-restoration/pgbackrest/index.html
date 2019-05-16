@@ -6,7 +6,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.53" />
+<meta name="generator" content="Hugo 0.52" />
 <title>pgBackRest :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/stable/favicon.png" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/stable/css/nucleus.css" rel="stylesheet">
@@ -21,7 +21,7 @@
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/main.js"></script>
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/toc.js"></script>
 <script type="text/javascript">
-      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
 </script>
 <meta name="description" content="">
 
@@ -46,17 +46,17 @@
   <span class="navbar-text">
       <nav class="shortcuts">
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers" target="_blank" rel="noopener">
                     <i class='fab fa-github'></i> <label>Source</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://kubernetes.io/docs/"  rel="noopener">
+                  <a href="https://kubernetes.io/docs/" target="_blank" rel="noopener">
                     <i class='fas fa-bookmark'></i> <label>Kubernetes</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md" target="_blank" rel="noopener">
                     <i class='fas fa-file-contract'></i> <label>License</label>
                   </a>
               </li>
@@ -77,7 +77,7 @@
         <link href="https://crunchydata.github.io/crunchy-containers/stable/css/auto-complete.css" rel="stylesheet">
         <script type="text/javascript">
           
-              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
           
         </script>
         <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/stable/js/search.js"></script>
@@ -86,6 +86,20 @@
       <hr>
       <a class="baselink" href="https://crunchydata.github.io/crunchy-containers/stable/">Crunchy Data Container Suite Documentation</a>
       <hr>
+        <b>Available Formats</b>
+        <nav class="downloads">
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/pdf/crunchy_containers.pdf" target="_blank" rel="noopener">
+                      <i class='fas fa-file-pdf'></i> <label>PDF</label>
+                    </a>
+                </li>
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/epub/crunchy_containers.epub" target="_blank" rel="noopener">
+                      <i class='fas fa-book'></i> <label>EPUB</label>
+                    </a>
+                </li>
+        </nav>
+        <hr>
 
       <b>Navigation</b>
     <li data-nav-id="/overview/" class="dd-item haschildren
@@ -573,7 +587,7 @@
 
 <h1 id="pgbackrest-examples">pgBackRest Examples</h1>
 
-<p>Written and maintained by David Steele, pgBackRest is a utility that provides backup and restore functionality for PostgreSQL databases.  pgBackRest is available for use within the Crunchy Container Suite, and can therefore be utilized to provide an effective backup and restore solution for any database clusters deployed using the crunchy-postgres or crunchy-postgres-gis containers.  The following section will provide an overview of how pgBackRest can be utilized within the Crunchy Container Suite, including examples for enabling and configuring pgBackRest, and then utilizing pgBackRest to backup and restore various PostgreSQL database clusters.  For more detailed information about pgBackRest, please visit the <a href="https://pgbackrest.org/" target="_blank">official pgBackRest website</a>.</p>
+<p>Written and maintained by David Steele, pgBackRest is a utility that provides backup and restore functionality for PostgreSQL databases.  pgBackRest is available for use within the Crunchy Container Suite, and can therefore be utilized to provide an effective backup and restore solution for any database clusters deployed using the crunchy-postgres or crunchy-postgres-gis containers.  The following section will provide an overview of how pgBackRest can be utilized within the Crunchy Container Suite, including examples for enabling and configuring pgBackRest, and then utilizing pgBackRest to backup and restore various PostgreSQL database clusters.  For more detailed information about pgBackRest, please visit the <a href="https://pgbackrest.org/">official pgBackRest website</a>.</p>
 
 <h2 id="configuration-overview">Configuration Overview</h2>
 
@@ -602,7 +616,7 @@
 <span style="color:#111">export</span> <span style="color:#111">PGBACKREST_SPOOL_PATH</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;/pgwal/</span><span style="color:#d88200">${</span><span style="color:#111">PGDATA_DIR</span><span style="color:#d88200">}</span><span style="color:#d88200">/spool&#34;</span></code></pre></div>
 <p>As shown above, the default location of the spool path depends on whether or not <code>XLOGDIR=true</code>, with <code>XLOGDIR</code> enabling the storage of WAL to the <code>/pgwal</code> volume within the container.  Being that pgBackRest recommends selecting a spool path that is as close to the WAL as possible, this provides a sensible default for the spool directory.  However, <code>PGBACKREST_SPOOL_PATH</code> can also be explicitly configured during deployment to any path desired.  And once again, <code>PGDATA_DIR</code> represents either the hostname of the container or the value specified for variable <code>PGDATA_PATH_OVERRIDE</code>.</p>
 
-<p>The examples below will demonstrate the pgBackRest backup, restore and asynchronous archiving capabilities described above, while also providing insight into the proper configuration of pgBackBackrest within the Crunchy Container Suite.  For more information on these pgBackRest capabilities and associated configuration, please consult the <a href="https://pgbackrest.org/" target="_blank">official pgBackRest documentation</a>.</p>
+<p>The examples below will demonstrate the pgBackRest backup, restore and asynchronous archiving capabilities described above, while also providing insight into the proper configuration of pgBackBackrest within the Crunchy Container Suite.  For more information on these pgBackRest capabilities and associated configuration, please consult the <a href="https://pgbackrest.org/">official pgBackRest documentation</a>.</p>
 
 <h2 id="kubernetes-and-openshift">Kubernetes and OpenShift</h2>
 
@@ -820,7 +834,7 @@ LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
 
 <h3 id="async-archiving">Async Archiving</h3>
 
-<p>pgBackRest supports the capability to asynchronously push and get write ahead logs (WAL) to and from a WAL archive. Asynchronous archiving can improve performance by parallelizing operations, while also reducing the number of connections to remote storage. For more information on async archiving and its benefits, please see the <a href="https://pgbackrest.org/" target="_blank">official pgBackRest documentation</a>.  This example will demonstrate how asynchronous archiving can be enabled within a crunchy-postgres or crunchy-postgres-gis container, while then also demonstrating the creation of a differential backup.</p>
+<p>pgBackRest supports the capability to asynchronously push and get write ahead logs (WAL) to and from a WAL archive. Asynchronous archiving can improve performance by parallelizing operations, while also reducing the number of connections to remote storage. For more information on async archiving and its benefits, please see the <a href="https://pgbackrest.org/">official pgBackRest documentation</a>.  This example will demonstrate how asynchronous archiving can be enabled within a crunchy-postgres or crunchy-postgres-gis container, while then also demonstrating the creation of a differential backup.</p>
 
 <p>Start the example as follows:</p>
 
@@ -1054,7 +1068,7 @@ LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
 
 <h3 id="async-archiving-1">Async Archiving</h3>
 
-<p>pgBackRest supports the capability to asynchronously push and get write ahead logs (WAL) to and from a WAL archive. Asynchronous archiving can improve performance by parallelizing operations, while also reducing the number of connections to remote storage. For more information on async archiving and its benefits, please see the <a href="https://pgbackrest.org/" target="_blank">official pgBackRest documentation</a>.  This example will demonstrate how asynchronous archiving can be enabled within a crunchy-postgres or crunchy-postgres-gis container, while then also demonstrating the creation of a differential backup.</p>
+<p>pgBackRest supports the capability to asynchronously push and get write ahead logs (WAL) to and from a WAL archive. Asynchronous archiving can improve performance by parallelizing operations, while also reducing the number of connections to remote storage. For more information on async archiving and its benefits, please see the <a href="https://pgbackrest.org/">official pgBackRest documentation</a>.  This example will demonstrate how asynchronous archiving can be enabled within a crunchy-postgres or crunchy-postgres-gis container, while then also demonstrating the creation of a differential backup.</p>
 
 <p>Start the example as follows:</p>
 

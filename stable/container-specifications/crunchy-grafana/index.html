@@ -6,7 +6,7 @@
     
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="generator" content="Hugo 0.53" />
+<meta name="generator" content="Hugo 0.52" />
 <title>crunchy-grafana :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/stable/favicon.png" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/stable/css/nucleus.css" rel="stylesheet">
@@ -21,7 +21,7 @@
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/main.js"></script>
 <script src="https://crunchydata.github.io/crunchy-containers/stable/js/toc.js"></script>
 <script type="text/javascript">
-      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
 </script>
 <meta name="description" content="">
 
@@ -46,17 +46,17 @@
   <span class="navbar-text">
       <nav class="shortcuts">
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers" target="_blank" rel="noopener">
                     <i class='fab fa-github'></i> <label>Source</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://kubernetes.io/docs/"  rel="noopener">
+                  <a href="https://kubernetes.io/docs/" target="_blank" rel="noopener">
                     <i class='fas fa-bookmark'></i> <label>Kubernetes</label>
                   </a>
               </li>
               <li class="" role="">
-                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md"  rel="noopener">
+                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md" target="_blank" rel="noopener">
                     <i class='fas fa-file-contract'></i> <label>License</label>
                   </a>
               </li>
@@ -77,7 +77,7 @@
         <link href="https://crunchydata.github.io/crunchy-containers/stable/css/auto-complete.css" rel="stylesheet">
         <script type="text/javascript">
           
-              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable\/";
+              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/stable";
           
         </script>
         <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/stable/js/search.js"></script>
@@ -86,6 +86,20 @@
       <hr>
       <a class="baselink" href="https://crunchydata.github.io/crunchy-containers/stable/">Crunchy Data Container Suite Documentation</a>
       <hr>
+        <b>Available Formats</b>
+        <nav class="downloads">
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/pdf/crunchy_containers.pdf" target="_blank" rel="noopener">
+                      <i class='fas fa-file-pdf'></i> <label>PDF</label>
+                    </a>
+                </li>
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/stable/epub/crunchy_containers.epub" target="_blank" rel="noopener">
+                      <i class='fas fa-book'></i> <label>EPUB</label>
+                    </a>
+                </li>
+        </nav>
+        <hr>
 
       <b>Navigation</b>
     <li data-nav-id="/overview/" class="dd-item haschildren
@@ -569,13 +583,13 @@
 
 <p>Visual dashboards are created from the collected and stored data that crunchy-collect and crunchy-prometheus
 provide for the crunchy-grafana container, which hosts an open source web-based graphing dashboard called
-<a href="https://grafana.com/" target="_blank">Grafana</a>.</p>
+<a href="https://grafana.com/">Grafana</a>.</p>
 
 <p>Grafana is a platform which can then apply the defined metrics and visualize information through various tools.
 It is extremely flexible with a powerful query and transformation language, producing beautiful
 and easily understandable graphics to analyze and monitor your data.</p>
 
-<p>By default, crunchy-grafana will register the <a href="https://prometheus.io" target="_blank">Prometheus</a> datasource within
+<p>By default, crunchy-grafana will register the <a href="https://prometheus.io">Prometheus</a> datasource within
 Grafana and import a pre-made dashboard for PostgreSQL monitoring.</p>
 
 <p>The crunchy-grafana container must be able to reach the crunchy-prometheus container.</p>
@@ -585,7 +599,7 @@ for the web frontend. Additionally, the Prometheus hostname and port number are 
 basic authentication, users must specify the username and password to access Prometheus via environment variables.</p>
 
 <p>A user may define a custom <code>defaults.ini</code> file and mount to <code>/conf</code> for custom configuration.
-For configuration examples, see <a href="https://github.com/crunchydata/crunchy-containers/blob/master/conf/grafana/defaults.ini" target="_blank">here</a>.</p>
+For configuration examples, see <a href="https://github.com/crunchydata/crunchy-containers/blob/master/conf/grafana/defaults.ini">here</a>.</p>
 
 <p>The following port is exposed by the crunchy-grafana container:</p>
 
@@ -598,7 +612,7 @@ For configuration examples, see <a href="https://github.com/crunchydata/crunchy-
 <p>The crunchy-grafana Docker image contains the following packages:</p>
 
 <ul>
-<li><a href="https://grafana.com/" target="_blank">Grafana</a></li>
+<li><a href="https://grafana.com/">Grafana</a></li>
 <li>CentOS7 - publicly available</li>
 <li>RHEL7 - customers only</li>
 </ul>
