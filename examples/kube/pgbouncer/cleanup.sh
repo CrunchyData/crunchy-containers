@@ -17,6 +17,7 @@ source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
 cleanup "${CCP_NAMESPACE?}-pgbouncer"
+cleanup "${CCP_NAMESPACE?}-pgbouncer-config"
 
 $CCPROOT/examples/waitforterm.sh pgbouncer-primary ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh pgbouncer-replica ${CCP_CLI?}
