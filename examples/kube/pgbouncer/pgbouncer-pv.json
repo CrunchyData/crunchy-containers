@@ -5,7 +5,7 @@
         "name": "$CCP_NAMESPACE-pgbouncer-config-pgdata",
         "labels": {
             "name": "$CCP_NAMESPACE-pgbouncer-config-pgdata",
-            "cleanup": "$CCP_NAMESPACE-pgbouncer-config"
+            "cleanup": "$CCP_NAMESPACE-pgbouncer"
         }
     },
     "spec": {

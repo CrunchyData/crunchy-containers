@@ -20,7 +20,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 $DIR/cleanup.sh
 
 
-create_storage "pgbouncer-config"
+create_storage "pgbouncer"
 if [[ $? -ne 0 ]]
 then
     echo_err "Failed to create storage, exiting.."

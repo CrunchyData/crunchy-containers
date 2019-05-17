@@ -4,7 +4,7 @@
     "metadata": {
         "name": "pgbouncer-config-pgdata",
         "labels": {
-            "cleanup": "$CCP_NAMESPACE-pgbouncer-config"
+            "cleanup": "$CCP_NAMESPACE-pgbouncer"
         }
     },
     "spec": {
