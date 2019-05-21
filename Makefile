@@ -11,7 +11,7 @@ all: pgimages extras
 pgimages: commands backup backrestrestore collect pgadmin4 pgbadger pgbench pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade
 
 # Build non-postgres images
-extras: grafana prometheus scheduler
+extras: node-exporter grafana prometheus scheduler
 
 versiontest:
 ifndef CCP_BASEOS
