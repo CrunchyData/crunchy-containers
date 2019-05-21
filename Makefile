@@ -63,6 +63,10 @@ grafana: versiontest
 	docker build -t crunchy-grafana -f $(CCP_BASEOS)/Dockerfile.grafana.$(CCP_BASEOS) .
 	docker tag crunchy-grafana $(CCP_IMAGE_PREFIX)/crunchy-grafana:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
+node-exporter: versiontest
+	docker build -t crunchy-node-exporter -f $(CCP_BASEOS)/Dockerfile.node-exporter.$(CCP_BASEOS) .
+	docker tag crunchy-node-exporter $(CCP_IMAGE_PREFIX)/crunchy-node-exporter:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+
 pgadmin4: versiontest
 	docker build -t crunchy-pgadmin4 -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgadmin4.$(CCP_BASEOS) .
 	docker tag crunchy-pgadmin4 $(CCP_IMAGE_PREFIX)/crunchy-pgadmin4:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
