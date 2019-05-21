@@ -19,6 +19,15 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 $DIR/cleanup.sh
 
+
+create_storage "pgbouncer"
+if [[ $? -ne 0 ]]
+then
+    echo_err "Failed to create storage, exiting.."
+    exit 1
+fi
+
+
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgbouncer-secrets \
     --from-literal=pgbouncer-password='password'
 
@@ -29,6 +38,13 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgsql-secrets \
     --from-literal=pg-primary-password='password' \
     --from-literal=pg-password='password' \
     --from-literal=pg-root-password='password'
+
+${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap pgbouncer-config-pgconf \
+    --from-file ${DIR?}/post-configs/pgbouncer-auth.sql \
+    --from-file ${DIR?}/post-configs/post-start-hook.sh
+
+${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
+    pgbouncer-config-pgconf cleanup=${CCP_NAMESPACE?}-pgbouncer
 
 ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
     pgsql-secrets cleanup=${CCP_NAMESPACE?}-pgbouncer
