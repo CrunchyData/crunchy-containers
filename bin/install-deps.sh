@@ -33,6 +33,13 @@ wget -O $CCPROOT/grafana.tar.gz https://s3-us-west-2.amazonaws.com/grafana-relea
 wget -O $CCPROOT/postgres_exporter.tar.gz https://github.com/wrouesnel/postgres_exporter/releases/download/v${POSTGRES_EXPORTER_VERSION?}/postgres_exporter_v${POSTGRES_EXPORTER_VERSION?}_linux-amd64.tar.gz
 wget -O $CCPROOT/node_exporter.tar.gz https://github.com/prometheus/node_exporter/releases/download/v${NODE_EXPORTER_VERSION}/node_exporter-${NODE_EXPORTER_VERSION}.linux-amd64.tar.gz
 
+which buildah
+if [ $? -eq 1 ]; then
+        echo "installing buildah"
+        sudo subscription-manager repos --enable=rhel-7-server-extras-rpms
+        sudo yum -y install buildah
+fi
+
 rpm -q atomic-openshift-clients
 if [ $? -ne 0 ]; then
     echo "atomic-openshift-clients is NOT installed"
