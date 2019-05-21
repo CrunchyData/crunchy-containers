@@ -36,6 +36,12 @@ To cleanup the objects created by this example, run the following in the `pgboun
 For more information on `pgBouncer`, see the [official website](https://pgbouncer.github.io).
 {{% /notice %}}
 
+
+This example uses a custom configuration to create the pgbouncer user and an auth function in 
+the primary for the pgbouncer containers to authenticate against. It takes advantage of the post-startup-hook and
+a custom sql file mounted in the /pgconf directory.
+
+
 ### Docker
 
 Run the `pgbouncer` example:

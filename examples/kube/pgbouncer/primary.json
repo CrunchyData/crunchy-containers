@@ -132,6 +132,11 @@
                         "mountPath": "/pgdata",
                         "name": "pgdata",
                         "readOnly": false
+                    },
+                    {
+                        "mountPath": "/pgconf",
+                        "name": "pgconf",
+                        "readOnly": true
                     }
                 ]
             }
@@ -139,9 +144,15 @@
         "volumes": [
             {
                 "name": "pgdata",
-                "emptyDir": {
-			    "medium": "Memory"
-			}
+                "persistentVolumeClaim": {
+                    "claimName": "pgbouncer-config-pgdata"
+                }
+            },
+            {
+                "name": "pgconf",
+                "configMap": {
+                    "name": "pgbouncer-config-pgconf"
+                }
             }
         ]
     }
