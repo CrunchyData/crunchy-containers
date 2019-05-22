@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/pgpool" \
 	vendor="crunchy data" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.2" \
+	PostgresFullVersion="11.3" \
 	Version="7.6" \
-	Release="2.4.0-rc6" \
+	Release="2.4.0-rc8" \
         url="https://crunchydata.com" \
         summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
         description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the primary and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \
