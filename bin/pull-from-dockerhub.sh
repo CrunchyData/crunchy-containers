@@ -40,3 +40,4 @@ docker pull $CCP_IMAGE_PREFIX/crunchy-pgrestore:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-upgrade:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-scheduler:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-pgbench:$CCP_IMAGE_TAG
+docker pull $CCP_IMAGE_PREFIX/crunchy-pgbasebackup-restore:$CCP_IMAGE_TAG

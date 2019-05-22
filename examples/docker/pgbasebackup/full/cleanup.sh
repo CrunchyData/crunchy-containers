@@ -15,9 +15,12 @@
 
 echo "Cleaning up..."
 
-CONTAINER_NAME=restore
-CONTAINER_VOLUME=$CONTAINER_NAME-pgdata
+RESTORE_CONTAINER_NAME=restore
+RESTORED_CONTAINER_NAME=pgbasebackup-full-restored
 
-docker stop $CONTAINER_NAME
-docker rm -v $CONTAINER_NAME
-docker volume rm $CONTAINER_VOLUME
+docker stop "${RESTORED_CONTAINER_NAME}"
+docker rm -v "${RESTORED_CONTAINER_NAME}"
+
+docker stop "${RESTORE_CONTAINER_NAME}"
+docker rm -v "${RESTORE_CONTAINER_NAME}"
+docker volume rm full-restore-pgdata

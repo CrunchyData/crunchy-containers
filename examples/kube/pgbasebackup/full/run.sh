@@ -16,7 +16,10 @@ source ${CCPROOT}/examples/common.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-${DIR}/cleanup.sh
+echo_info "Cleaning up.."
+
+cleanup "${CCP_NAMESPACE?}-restore"
+dir_check_rm "restore"
 
 create_storage "restore"
 if [[ $? -ne 0 ]]
