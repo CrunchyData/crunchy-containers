@@ -15,13 +15,11 @@
 
 CONTAINER_NAME=pitr
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 echo "Cleaning up..."
 
-sudo docker stop ${CONTAINER_NAME}
-sudo docker rm ${CONTAINER_NAME}
-docker volume rm pitr-pgdata
-docker volume rm pitr-wal
-docker network rm pitrnet
+"${DIR}"/cleanup.sh
 
 echo "Starting the ${CONTAINER_NAME} example..."
 

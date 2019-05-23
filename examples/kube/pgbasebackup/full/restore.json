@@ -1,141 +1,67 @@
 {
-    "kind": "Service",
-    "apiVersion": "v1",
+    "apiVersion": "batch/v1",
+    "kind": "Job",
     "metadata": {
-        "name": "restore",
-        "labels": {
-            "name": "restore",
-            "cleanup": "$CCP_NAMESPACE-restore"
-        }
+        "name": "restore"
     },
     "spec": {
-        "ports": [
-            {
-                "protocol": "TCP",
-                "port": 5432,
-                "targetPort": 5432,
-                "nodePort": 0
-            }
-        ],
-        "selector": {
-            "name": "restore"
-        },
-        "type": "ClusterIP",
-        "sessionAffinity": "None"
-    }
-}
-
-{
-    "kind": "Pod",
-    "apiVersion": "v1",
-    "metadata": {
-        "name": "restore",
-        "labels": {
-            "name": "restore",
-            "cleanup": "$CCP_NAMESPACE-restore"
-        }
-    },
-    "spec": {
-        "securityContext": {
-            $CCP_SECURITY_CONTEXT
-        },
-        "containers": [
-            {
-                "name": "postgres",
-                "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
-                "readinessProbe": {
-                    "exec": {
-                        "command": [
-                            "/opt/cpm/bin/readiness.sh"
-                        ]
-                    },
-                    "initialDelaySeconds": 40,
-                    "timeoutSeconds": 1
-                },
-                "livenessProbe": {
-                    "exec": {
-                        "command": [
-                            "/opt/cpm/bin/liveness.sh"
-                        ]
-                    },
-                    "initialDelaySeconds": 40,
-                    "timeoutSeconds": 1
-                },
-                "ports": [
-                    {
-                        "containerPort": 5432,
-                        "protocol": "TCP"
-                    }
-                ],
-                "env": [
-                    {
-                        "name": "PG_PRIMARY_USER",
-                        "value": "primaryuser"
-                    },
-                    {
-                        "name": "PG_PRIMARY_PORT",
-                        "value": "5432"
-                    },
-                    {
-                        "name": "PG_MODE",
-                        "value": "primary"
-                    },
-                    {
-                        "name": "BACKUP_PATH",
-                        "value": "primary-backups/TIMESTAMP_HERE"
-                    },
-                    {
-                        "name": "PG_PRIMARY_PASSWORD",
-                        "value": "password"
-                    },
-                    {
-                        "name": "PG_USER",
-                        "value": "testuser"
-                    },
-                    {
-                        "name": "PG_PASSWORD",
-                        "value": "password"
-                    },
-                    {
-                        "name": "PG_DATABASE",
-                        "value": "userdb"
-                    },
-                    {
-                        "name": "PG_ROOT_PASSWORD",
-                        "value": "password"
-                    },
-                    {
-                        "name": "PGHOST",
-                        "value": "/tmp"
-                    }
-                ],
-                "volumeMounts": [
-                    {
-                        "mountPath": "/pgdata",
-                        "name": "pgdata",
-                        "readOnly": false
-                    },
-                    {
-                        "mountPath": "/backup",
-                        "name": "backup",
-                        "readOnly": true
-                    }
-                ]
-            }
-        ],
-        "volumes": [
-            {
-                "name": "pgdata",
-                "persistentVolumeClaim": {
-                    "claimName": "restore-pgdata"
+        "backoffLimit": 0,
+        "template": {
+            "metadata": {
+                "name": "restore",
+                "labels": {
+                    "app": "restore",
+                    "cleanup": "$CCP_NAMESPACE-restore"
                 }
             },
-            {
-                "name": "backup",
-                "persistentVolumeClaim": {
-                    "claimName": "backup-pgdata"
-                }
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "pgdata",
+                        "persistentVolumeClaim": {
+                            "claimName": "restore-pgdata"
+                        }
+                    },
+                    {
+                        "name": "backup",
+                        "persistentVolumeClaim": {
+                            "claimName": "backup-pgdata"
+                        }
+                    }
+                ],
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                },
+                "containers": [
+                    {
+                        "name": "backup",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-pgbasebackup-restore:$CCP_IMAGE_TAG",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/backup",
+                                "name": "backup",
+                                "readOnly": true
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "BACKUP_PATH",
+                                "value": "primary-backups/2019-05-08-18-28-45"
+                            },
+                            {
+                                "name": "PGDATA_PATH",
+                                "value": "pgbasebackup-full-restored"
+                            }
+                        ]
+                    }
+                ],
+                "restartPolicy": "Never"
             }
-        ]
+        }
     }
 }

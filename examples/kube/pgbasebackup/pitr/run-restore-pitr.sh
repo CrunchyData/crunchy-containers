@@ -18,12 +18,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 echo_info "Cleaning up.."
 
+cleanup "${CCP_NAMESPACE?}-pgbasebackup-pitr-restored"
 cleanup "${CCP_NAMESPACE?}-restore-pitr"
-
-${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} pod,svc pitr
-
-$CCPROOT/examples/waitforterm.sh pitr ${CCP_CLI?}
-$CCPROOT/examples/waitforterm.sh restore-pitr ${CCP_CLI?}
 
 dir_check_rm "restore-pitr"
 create_storage "restore-pitr"

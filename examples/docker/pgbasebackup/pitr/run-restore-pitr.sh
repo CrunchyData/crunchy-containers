@@ -17,37 +17,23 @@ CONTAINER_NAME=restore-pitr
 
 echo "Cleaning up..."
 
-sudo docker stop ${CONTAINER_NAME}
-sudo docker rm ${CONTAINER_NAME}
-docker volume rm pitr-restore
+docker stop pgbasebackup-pitr-restored
+docker rm pgbasebackup-pitr-restored
+
+docker stop ${CONTAINER_NAME}
+docker rm ${CONTAINER_NAME}
+docker volume rm pitr-restore-pgdata
 
 echo "Starting the ${CONTAINER_NAME} example..."
 
-docker volume create --driver local --name=pitr-restore
+docker volume create --driver local --name=pitr-restore-pgdata
 
-sudo docker run \
-	-e RECOVERY_TARGET_NAME=beforechanges \
-	-p 12001:5432 \
-	-v pitr-restore:/pgdata \
-	-v pitr-backup-volume:/backup \
-	-v pitr-wal:/recover \
-	-e ARCHIVE_MODE=on \
-	-e ARCHIVE_TIMEOUT=60 \
-	-e TEMP_BUFFERS=9MB \
-	-e MAX_CONNECTIONS=101 \
-	-e SHARED_BUFFERS=129MB \
-	-e MAX_WAL_SENDERS=7 \
-	-e WORK_MEM=5MB \
-	-e PG_MODE=primary \
-	-e PG_PRIMARY_USER=primaryuser \
-	-e PG_PRIMARY_PASSWORD=password \
-	-e PG_PRIMARY_PORT=5432 \
-	-e PG_USER=testuser \
-	-e PG_ROOT_PASSWORD=password \
-	-e PG_PASSWORD=password \
-	-e PG_DATABASE=userdb \
-	-e WAL_DIR=pitr-wal \
-	-e BACKUP_PATH=pitr-backups/2019-03-08-15-04-02 \
+docker run \
+	--volume pitr-restore-pgdata:/pgdata \
+	--volume pitr-backup-volume:/backup \
+	--env BACKUP_PATH=pitr-backups/2019-05-09-00-03-57 \
+	--env PGDATA_PATH=pgbasebackup-pitr-restored \
+	--env RECOVERY_TARGET_NAME=beforechanges \
 	--name=${CONTAINER_NAME} \
 	--hostname=${CONTAINER_NAME} \
-	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
+	--detach $CCP_IMAGE_PREFIX/crunchy-pgbasebackup-restore:$CCP_IMAGE_TAG
