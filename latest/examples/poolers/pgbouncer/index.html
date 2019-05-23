@@ -633,6 +633,10 @@
 </div>
 
 
+<p>This example uses a custom configuration to create the pgbouncer user and an auth function in
+the primary for the pgbouncer containers to authenticate against. It takes advantage of the post-startup-hook and
+a custom sql file mounted in the /pgconf directory.</p>
+
 <h3 id="docker">Docker</h3>
 
 <p>Run the <code>pgbouncer</code> example:</p>
