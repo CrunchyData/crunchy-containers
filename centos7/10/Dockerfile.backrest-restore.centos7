@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.7" \
+	PostgresFullVersion="10.8" \
 	Version="7.6" \
-	Release="2.4.0-rc6" \
+	Release="2.4.0-rc8" \
         url="https://crunchydata.com" \
         summary="Executes the pgbackrest utility, allowing FULL, DELTA & PITR restore capability." \
         description="Executes pgbackrest utility, allowing FULL, DELTA & PITR restore capability. Capable of mounting the /backrestrepo for access to pgbackrest archives, while allowing for the configuration of pgbackrest using applicable pgbackrest environment variables." \

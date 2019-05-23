@@ -18,17 +18,21 @@ echo "Cleaning up..."
 PITR_CONTAINER_NAME=pitr
 BACKUP_CONTAINER_NAME=backup-pitr
 RESTORE_CONTAINER_NAME=restore-pitr
+RESTORED_CONTAINER_NAME=pgbasebackup-pitr-restored
+
+docker stop $RESTORED_CONTAINER_NAME
+docker rm -v $RESTORED_CONTAINER_NAME
+
+docker stop $RESTORE_CONTAINER_NAME
+docker rm -v $RESTORE_CONTAINER_NAME
+docker volume rm pitr-restore-pgdata
+
+docker stop $BACKUP_CONTAINER_NAME
+docker rm -v $BACKUP_CONTAINER_NAME
+docker volume rm pitr-backup-volume
 
 docker stop $PITR_CONTAINER_NAME
 docker rm -v $PITR_CONTAINER_NAME
 docker volume rm pitr-pgdata
 docker volume rm pitr-wal
 docker network rm pitrnet
-
-docker stop $BACKUP_CONTAINER_NAME
-docker rm -v $BACKUP_CONTAINER_NAME
-docker volume rm pitr-backup-volume
-
-docker stop $RESTORE_CONTAINER_NAME
-docker rm -v $RESTORE_CONTAINER_NAME
-docker volume rm pitr-restore

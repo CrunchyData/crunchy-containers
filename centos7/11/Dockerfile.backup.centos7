@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/backup" \
         vendor="crunchy data" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.2" \
+	PostgresFullVersion="11.3" \
 	Version="7.6" \
-	Release="2.4.0-rc6" \
+	Release="2.4.0-rc8" \
         url="https://crunchydata.com" \
         summary="Performs a pg_basebackup full database backup on a database container" \
         description="Meant to be executed upon demand, this container will run pg_basebackup against a running database container and write the backup files to a mounted directory." \

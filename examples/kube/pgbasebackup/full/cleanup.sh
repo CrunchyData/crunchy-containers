@@ -13,10 +13,10 @@
 # limitations under the License.
 
 source ${CCPROOT}/examples/common.sh
+
 echo_info "Cleaning up.."
 
+cleanup "${CCP_NAMESPACE?}-pgbasebackup-full-restored"
+
 cleanup "${CCP_NAMESPACE?}-restore"
-
-$CCPROOT/examples/waitforterm.sh restore ${CCP_CLI?}
-
 dir_check_rm "restore"
