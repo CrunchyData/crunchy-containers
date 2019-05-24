@@ -2,10 +2,10 @@
     "kind": "Service",
     "apiVersion": "v1",
     "metadata": {
-        "name": "pitr",
+        "name": "pgbasebackup-full-restored",
         "labels": {
-            "name": "pitr",
-            "cleanup": "$CCP_NAMESPACE-pitr"
+            "name": "pgbasebackup-full-restored",
+            "cleanup": "$CCP_NAMESPACE-pgbasebackup-full-restored"
         }
     },
     "spec": {
@@ -18,13 +18,10 @@
             }
         ],
         "selector": {
-            "name": "pitr"
+            "name": "pgbasebackup-full-restored"
         },
         "type": "ClusterIP",
         "sessionAffinity": "None"
-    },
-    "status": {
-        "loadBalancer": {}
     }
 }
 
@@ -32,10 +29,10 @@
     "kind": "Deployment",
     "apiVersion": "extensions/v1beta1",
     "metadata": {
-        "name": "pitr",
+        "name": "pgbasebackup-full-restored",
         "labels": {
-            "name": "pitr",
-            "cleanup": "$CCP_NAMESPACE-pitr"
+            "name": "pgbasebackup-full-restored",
+            "cleanup": "$CCP_NAMESPACE-pgbasebackup-full-restored"
         }
     },
     "spec": {
@@ -43,8 +40,8 @@
         "template": {
             "metadata": {
                 "labels": {
-                    "name": "pitr",
-                    "cleanup": "$CCP_NAMESPACE-pitr"
+                    "name": "primary",
+                    "cleanup": "$CCP_NAMESPACE-primary"
                 }
             },
             "spec": {
@@ -78,12 +75,12 @@
                         ],
                         "env": [
                             {
-                                "name": "PGHOST",
-                                "value": "/tmp"
-                            },
-                            {
                                 "name": "PG_PRIMARY_USER",
                                 "value": "primaryuser"
+                            },
+                            {
+                                "name": "PG_PRIMARY_PORT",
+                                "value": "5432"
                             },
                             {
                                 "name": "PG_MODE",
@@ -91,15 +88,11 @@
                             },
                             {
                                 "name": "PGDATA_PATH_OVERRIDE",
-                                "value": "pitr"
+                                "value": "pgbasebackup-full-restored"
                             },
                             {
                                 "name": "PG_PRIMARY_PASSWORD",
                                 "value": "password"
-                            },
-                            {
-                                "name": "PG_PRIMARY_PORT",
-                                "value": "5432"
                             },
                             {
                                 "name": "PG_USER",
@@ -118,12 +111,8 @@
                                 "value": "password"
                             },
                             {
-                                "name": "ARCHIVE_MODE",
-                                "value": "on"
-                            },
-                            {
-                                "name": "ARCHIVE_TIMEOUT",
-                                "value": "60"
+                                "name": "PGHOST",
+                                "value": "/tmp"
                             }
                         ],
                         "volumeMounts": [
@@ -131,16 +120,6 @@
                                 "mountPath": "/pgdata",
                                 "name": "pgdata",
                                 "readOnly": false
-                            },
-                            {
-                                "mountPath": "/pgwal",
-                                "name": "pgwal",
-                                "readOnly": false
-                            },
-                            {
-                                "mountPath": "/pgconf",
-                                "name": "pgconf",
-                                "readOnly": true
                             }
                         ]
                     }
@@ -149,22 +128,23 @@
                     {
                         "name": "pgdata",
                         "persistentVolumeClaim": {
-                            "claimName": "pitr-pgdata"
-                        }
-                    },
-                    {
-                        "name": "pgwal",
-                        "persistentVolumeClaim": {
-                            "claimName": "pitr-pgwal"
-                        }
-                    },
-                    {
-                        "name": "pgconf",
-                        "configMap": {
-                            "name": "pitr-pgconf"
+                            "claimName": "restore-pgdata"
                         }
                     }
-                ]
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                }
+            }
+        },
+        "strategy": {
+            "type": "RollingUpdate",
+            "rollingUpdate": {
+                "maxUnavailable": 1,
+                "maxSurge": 1
             }
         }
     }
