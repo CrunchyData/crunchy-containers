@@ -56,3 +56,4 @@ with the following permissions:
 
 * Cluster Role
   * Pods: `get`, `list`, `watch`
+ 
