@@ -16,6 +16,10 @@
   </url>
   
   <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbasebackup-restore/</loc>
+  </url>
+  
+  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/overview/overview/</loc>
   </url>
   
@@ -125,6 +129,10 @@
   
   <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-node-exporter/</loc>
   </url>
   
   <url>

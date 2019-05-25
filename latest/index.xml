@@ -37,6 +37,16 @@ Features The following features are supported and required by the crunchy-backre
     </item>
     
     <item>
+      <title>crunchy-pgbasebackup-restore</title>
+      <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbasebackup-restore/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbasebackup-restore/</guid>
+      <description>The crunchy-pgbasebackup-restore container restores a database using a pg_basebackup backup. Specifically, the container uses rsync to copy a pg_basebackup backup into a specified /pgdata directory. The container can then prepare the restored database for a PITR, allowing for a restore to a specific recovery target, or to the end of the WAL log.
+If a recovery target is specified when performing the restore, a recovery.conf file will be created and prepared in order to restore the database to the recovery target specified when deployed.</description>
+    </item>
+    
+    <item>
       <title>Container Images</title>
       <link>https://crunchydata.github.io/crunchy-containers/latest/overview/overview/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -260,6 +270,17 @@ Features The following features are supported by the crunchy-postgres container:
     </item>
     
     <item>
+      <title>crunchy-node-exporter</title>
+      <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-node-exporter/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-node-exporter/</guid>
+      <description>Node Exporter is a Prometheus project used for exporing machine metrics to the Prometheus time series database. Crunchy-Node-Exporter is a self-contained container of this project that is designed to run as a Daemonset in Kubernetes, exporting metrics for each node it is running on.
+The following port is exposed by the crunchy-node-exporter container:
+ crunchy-node-exporter:9100 - the Prometheus web user interface  Restrictions It is important to provide a long enough the SCRAPE_TIMEOUT setting for Prometheus in the Crunchy-Prometheus container.</description>
+    </item>
+    
+    <item>
       <title>crunchy-prometheus</title>
       <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -382,7 +403,7 @@ The following examples create the following containers:
       <guid>https://crunchydata.github.io/crunchy-containers/latest/examples/metrics/metrics/</guid>
       <description>Metrics Collection You can collect various PostgreSQL metrics from your database container by running a crunchy-collect container that points to your database container.
 This example starts up 5 containers:
- Collect (crunchy-collect) Grafana (crunchy-grafana) PostgreSQL (crunchy-postgres) Prometheus (crunchy-prometheus)  Every 5 seconds by default, Prometheus will scrape the Collect container for metrics. These metrics will then be visualized by Grafana, which by default can be accessed with the following credentials:</description>
+ Collect (crunchy-collect) Grafana (crunchy-grafana) PostgreSQL (crunchy-postgres) Prometheus (crunchy-prometheus) Node Exporter (crunchy-node-exporter)  Every 10 seconds by default, Prometheus will scrape the Collect container for metrics. These metrics will then be visualized by Grafana, which by default can be accessed with the following credentials:</description>
     </item>
     
     <item>

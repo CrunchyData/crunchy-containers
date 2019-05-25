@@ -7,7 +7,7 @@
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="generator" content="Hugo 0.52" />
-<title>PostGIS Container :: Crunchy Data Container Suite Documentation</title>
+<title>crunchy-node-exporter :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/latest/favicon.png" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/latest/css/nucleus.css" rel="stylesheet">
 <link href="https://crunchydata.github.io/crunchy-containers/latest/theme-flex/style.css" rel="stylesheet">
@@ -29,7 +29,7 @@
 
     
   </head>
-  <body data-url="/examples/postgresql/postgis/">
+  <body data-url="/container-specifications/crunchy-node-exporter/">
     
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
   
@@ -148,11 +148,10 @@
     </li>
         </ul>
     </li>
-    <li data-nav-id="/examples/" class="dd-item parent haschildren
+    <li data-nav-id="/examples/" class="dd-item haschildren
         ">
       <div>
-      <a href="https://crunchydata.github.io/crunchy-containers/latest/examples/">Examples</a>
-            <i class="fas fa-angle-down fa-lg category-icon"></i>
+      <a href="https://crunchydata.github.io/crunchy-containers/latest/examples/">Examples</a><i class="fas fa-angle-right fa-lg category-icon"></i>
 
       </div>
         <ul>
@@ -198,7 +197,7 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/examples/postgresql/postgis/" class="dd-item active">
+      <li data-nav-id="/examples/postgresql/postgis/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/examples/postgresql/postgis/">
             PostGIS Container
@@ -321,10 +320,11 @@
     </li>
         </ul>
     </li>
-    <li data-nav-id="/container-specifications/" class="dd-item haschildren
+    <li data-nav-id="/container-specifications/" class="dd-item parent haschildren
         ">
       <div>
-      <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/">Container Specifications</a><i class="fas fa-angle-right fa-lg category-icon"></i>
+      <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/">Container Specifications</a>
+            <i class="fas fa-angle-down fa-lg category-icon"></i>
 
       </div>
         <ul>
@@ -426,7 +426,7 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="/container-specifications/crunchy-node-exporter/" class="dd-item">
+      <li data-nav-id="/container-specifications/crunchy-node-exporter/" class="dd-item active">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-node-exporter/">
             crunchy-node-exporter
@@ -523,32 +523,30 @@
     <option value="/client-user-guide/" >
    Client User Guide</option>
     <option value="/examples/" >
-   Examples</option> 
-      <option value="/examples/postgresql/primary/" >- PostgreSQL Primary</option>
-      <option value="/examples/postgresql/custom-config/" >- Custom Configuration of PostgreSQL Container</option>
-      <option value="/examples/postgresql/custom-config-ssl/" >- Custom Configuration of PostgreSQL Container with SSL</option>
-      <option value="/examples/postgresql/primary-replica/" >- Primary and Streaming Replica Containers</option>
-      <option value="/examples/postgresql/sync-replica/" >- Synchronous Replication</option>
-      <option value="/examples/postgresql/statefulset-cluster/" >- Statefulset PostgreSQL Cluster</option>
-      <option value="/examples/postgresql/postgis/"  selected>- PostGIS Container</option>
-      <option value="/examples/poolers/pgpool/" >- pgPool II</option>
-      <option value="/examples/backup-restoration/pgbackrest/" >- pgBackRest</option>
-      <option value="/examples/backup-restoration/pgbasebackup/" >- pgBaseBackup</option>
-      <option value="/examples/backup-restoration/pgdump-pgrestore/" >- pgDump &amp; pgRestore</option>
-      <option value="/examples/backup-restoration/scheduler/" >- Scheduler</option>
-      <option value="/examples/poolers/pgbouncer/" >- pgBouncer</option>
-      <option value="/examples/metrics/metrics/" >- Metrics and Performance</option>
-      <option value="/examples/metrics/pgbadger/" >- pgBadger</option>
-      <option value="/examples/metrics/pgbench/" >- pgBench</option>
-      <option value="/examples/logging/centralized-logging/" >- Centralized Logging</option>
-      <option value="/examples/logging/pgaudit/" >- pgAudit</option>
-      <option value="/examples/administration/upgrade/" >- Upgrade</option>
-      <option value="/examples/administration/pgadmin4/" >- pgAdmin 4</option>
-  
+   Examples</option>
     <option value="/installation-guide/" >
    Installation Guide</option>
     <option value="/container-specifications/" >
-   Container Specifications</option>
+   Container Specifications</option> 
+      <option value="/container-specifications/crunchy-backrest-restore/" >- crunchy-backrest-restore</option>
+      <option value="/container-specifications/crunchy-pgbasebackup-restore/" >- crunchy-pgbasebackup-restore</option>
+      <option value="/container-specifications/crunchy-backup/" >- crunchy-backup</option>
+      <option value="/container-specifications/crunchy-collect/" >- crunchy-collect</option>
+      <option value="/container-specifications/crunchy-grafana/" >- crunchy-grafana</option>
+      <option value="/container-specifications/crunchy-pgadmin4/" >- crunchy-pgadmin4</option>
+      <option value="/container-specifications/crunchy-pgbadger/" >- crunchy-pgbadger</option>
+      <option value="/container-specifications/crunchy-pgbouncer/" >- crunchy-pgbouncer</option>
+      <option value="/container-specifications/crunchy-pgdump/" >- crunchy-pgdump</option>
+      <option value="/container-specifications/crunchy-pgpool/" >- crunchy-pgpool</option>
+      <option value="/container-specifications/crunchy-pgrestore/" >- crunchy-pgrestore</option>
+      <option value="/container-specifications/crunchy-postgres-gis/" >- crunchy-postgres-gis</option>
+      <option value="/container-specifications/crunchy-pgbench/" >- crunchy-pgbench</option>
+      <option value="/container-specifications/crunchy-postgres/" >- crunchy-postgres</option>
+      <option value="/container-specifications/crunchy-node-exporter/"  selected>- crunchy-node-exporter</option>
+      <option value="/container-specifications/crunchy-prometheus/" >- crunchy-prometheus</option>
+      <option value="/container-specifications/crunchy-scheduler/" >- crunchy-scheduler</option>
+      <option value="/container-specifications/crunchy-upgrade/" >- crunchy-upgrade</option>
+  
     <option value="/contributing/" >
    Contributing</option>
     <option value="/troubleshooting/" >
@@ -571,7 +569,7 @@
             <i class="fa fa-info-circle"></i>
             
           </a>
-          <a class="github-link" href="https://github.com/CrunchyData/crunchy-containers/edit/master/hugo/content/examples/postgresql/postgis.md" target="blank">
+          <a class="github-link" href="https://github.com/CrunchyData/crunchy-containers/edit/master/hugo/content/container-specifications/crunchy-node-exporter.md" target="blank">
             <i class="fa fa-code-fork"></i>
             
           </a>
@@ -591,7 +589,7 @@
 
 
 
- <a href='https://crunchydata.github.io/crunchy-containers/latest/'>Introduction</a> > <a href='https://crunchydata.github.io/crunchy-containers/latest/examples/'>Examples</a> > PostGIS Container
+ <a href='https://crunchydata.github.io/crunchy-containers/latest/'>Introduction</a> > <a href='https://crunchydata.github.io/crunchy-containers/latest/container-specifications/'>Container Specifications</a> > crunchy-node-exporter
 
  
 
@@ -607,86 +605,74 @@
     
     <div id="body-inner">
 
-    <h1>PostGIS Container</h1>
+    <h1>crunchy-node-exporter</h1>
 
     
 
     
     
 
-<h2 id="geospatial-postgis">Geospatial (PostGIS)</h2>
+<p><a href="https://github.com/prometheus/node_exporter">Node Exporter</a> is a <a href="https://prometheus.io">Prometheus</a> project used for exporing machine metrics
+to the Prometheus time series database. Crunchy-Node-Exporter is a self-contained container of this project that is designed to run as a Daemonset
+in Kubernetes, exporting metrics for each node it is running on.</p>
 
-<p>An example is provided that will run a PostgreSQL with PostGIS pod and service in Kubernetes and OpenShift and a container in Docker.</p>
+<p>The following port is exposed by the crunchy-node-exporter container:</p>
 
-<p>The container creates a default database called <em>userdb</em>, a default user called
-<em>testuser</em> and a default password of <em>password</em>.</p>
+<ul>
+<li>crunchy-node-exporter:9100 - the Prometheus web user interface</li>
+</ul>
 
-<p>You can view the extensions that postgres-gis has enabled by running the following command and viewing the listed PostGIS packages:</p>
+<h2 id="restrictions">Restrictions</h2>
 
-<pre><code>psql -h postgres-gis -U testuser userdb -c '\dx'
-</code></pre>
+<p>It is important to provide a long enough the <strong>SCRAPE_TIMEOUT</strong> setting for Prometheus in the Crunchy-Prometheus container.
+If it is set too low, crunchy-node-exporter may show TCP broken pipe errors in its logs. These are generally because the scrape
+had not completed when Prometheus closed the scrape connection.</p>
 
-<p>To validate that PostGIS is installed and which version is running, run the command:</p>
+<h2 id="packages">Packages</h2>
 
-<pre><code>psql -h postgres-gis -U testuser userdb -c &quot;SELECT postgis_full_version();&quot;
-</code></pre>
+<p>The crunchy-node-exporter Docker image contains the following packages:</p>
 
-<p>You should expect to see output similar to:</p>
+<ul>
+<li><a href="https://github.com/prometheus/node_exporter">Node Exporter</a></li>
+<li>CentOS7 - publicly available</li>
+<li>RHEL7 - customers only</li>
+</ul>
 
-<pre><code>postgis_full_version
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- POSTGIS=&quot;2.4.2 r16113&quot; PGSQL=&quot;100&quot; GEOS=&quot;3.5.0-CAPI-1.9.0 r4084&quot; PROJ=&quot;Rel. 4.8.0, 6 March 2012&quot; GDAL=&quot;GDAL 1.11.4, released 2016/01/25&quot; LIBXML=&quot;2.9.1&quot; LIBJSON=&quot;0.11&quot; TOPOLOGY RASTER
-(1 row)
-</code></pre>
+<h2 id="environment-variables">Environment Variables</h2>
 
-<p>As an exercise for invoking some of the basic PostGIS functionality for validation, try defining a 2D geometry point while giving inputs of
-longitude and latitude through this command.</p>
+<h3 id="optional">Optional</h3>
 
-<pre><code>psql -h postgres-gis -U testuser userdb -c &quot;select ST_MakePoint(28.385200,-81.563900);&quot;
-</code></pre>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Name</strong></th>
+<th align="left"><strong>Default</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
 
-<p>You should expect to see output similar to:</p>
+<tbody>
+<tr>
+<td align="left"><strong>CRUNCHY_DEBUG</strong></td>
+<td align="left">FALSE</td>
+<td align="left">Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.</td>
+</tr>
+</tbody>
+</table>
 
-<pre><code>                st_makepoint
---------------------------------------------
- 0101000000516B9A779C623C40B98D06F0166454C0
-(1 row)
-</code></pre>
+<h2 id="permissions">Permissions</h2>
 
-<p>To shutdown the instance and remove the container for each example, run the following:</p>
-
-<pre><code>./cleanup.sh
-</code></pre>
-
-<h3 id="docker">Docker</h3>
-
-<p>Create the container as follows:</p>
-
-<pre><code>cd $CCPROOT/examples/docker/postgres-gis
-./run.sh
-</code></pre>
-
-<p>Enter the following command to connect to the postgres-gis container that is
-mapped to your local port 12000:</p>
-
-<pre><code>psql -h localhost -U testuser -p 12000 userdb
-</code></pre>
-
-<h3 id="kubernetes-and-openshift">Kubernetes and OpenShift</h3>
-
-<p>Running the example:</p>
-
-<pre><code>cd $CCPROOT/examples/kube/postgres-gis
-./run.sh
-</code></pre>
+<p>Crunchy Node Exporter runs as a priviledged container and mounts the /proc and /sys as Read-only hostpath directories
+in order to obtain the metrics information from each node it is running on. Crunchy Node Exporter requires a service account
+to run properly in Red Hat Openshift.</p>
 
 
 
     
         <div class="chevrons">
     <div id="navigation">
-<a class="nav nav-prev" href="https://crunchydata.github.io/crunchy-containers/latest/examples/postgresql/statefulset-cluster/" title="Statefulset PostgreSQL Cluster"> <i class="fa fa-chevron-left"></i><label>Statefulset PostgreSQL Cluster</label></a>
-    <a class="nav nav-next" href="https://crunchydata.github.io/crunchy-containers/latest/examples/poolers/pgpool/" title="pgPool II" style="margin-right: 0px;"><label>pgPool II</label><i class="fa fa-chevron-right"></i></a></div>
+<a class="nav nav-prev" href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres/" title="crunchy-postgres"> <i class="fa fa-chevron-left"></i><label>crunchy-postgres</label></a>
+    <a class="nav nav-next" href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/" title="crunchy-prometheus" style="margin-right: 0px;"><label>crunchy-prometheus</label><i class="fa fa-chevron-right"></i></a></div>
   </div>
 
   </section>
