@@ -2,7 +2,7 @@ apiVersion: v1
 name: statefulset
 description: This example deploys a statefulset named pgset.
 version: 1
-appVersion: 2.4.0-rc8
+appVersion: 2.4.0-rc9
 keywords:
 - postgresql
 - postgres
