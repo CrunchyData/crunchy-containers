@@ -11,16 +11,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# remove any existing components of this example
 
 source ${CCPROOT}/examples/common.sh
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 echo_info "Cleaning up.."
 
-cleanup "${CCP_NAMESPACE?}-pgbasebackup-pitr-restored"
-cleanup "${CCP_NAMESPACE?}-restore-pitr"
-cleanup "${CCP_NAMESPACE?}-backup-pitr"
-cleanup "${CCP_NAMESPACE?}-pitr"
+cleanup "${CCP_NAMESPACE?}-pgbasebackup-full-restored"
 
-dir_check_rm "pitr"
-dir_check_rm "backup-pitr"
-dir_check_rm "restore-pitr"
+expenv -f $DIR/full-restored.json | ${CCP_CLI?} create --namespace="${CCP_NAMESPACE?}" -f -

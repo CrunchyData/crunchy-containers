@@ -21,6 +21,7 @@ IMAGES=(
     crunchy-prometheus
     crunchy-scheduler
     crunchy-upgrade
+    crunchy-pgbasebackup-restore
 )
 
 function echo_green() {
