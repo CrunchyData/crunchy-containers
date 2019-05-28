@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/pgbadger" \
         vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.12" \
+	PostgresFullVersion="9.6.13" \
 	Version="7.6" \
-	Release="2.4.0-rc6" \
+	Release="2.4.0-rc8" \
         url="https://crunchydata.com" \
         summary="HTTP wrapper around the PGBadger PostgreSQL utility" \
         description="Has an HTTP REST interface. You GET http://host:10000/api/badgergenerate, and it will generate a pgbadger report on a database container's log files." \
@@ -32,7 +32,7 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
-RUN yum -y update \
+RUN yum -y --enablerepo=rhel-7-server-ose-3.9-rpms --disablerepo=crunchy* update \
  && yum -y install epel-release \
  && yum -y install --enablerepo="rhel-7-server-optional-rpms" \
       gettext \

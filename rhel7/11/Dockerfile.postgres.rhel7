@@ -5,11 +5,11 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.2" \
+	PostgresFullVersion="11.3" \
 	Version="7.6" \
-	Release="2.4.0-rc6" \
+	Release="2.4.0-rc8" \
         url="https://crunchydata.com" \
-	summary="PostgreSQL 11.2 (PGDG) on a RHEL7 base image" \
+	summary="PostgreSQL 11.3 (PGDG) on a RHEL7 base image" \
         description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
         run="" \
         start="" \
@@ -34,7 +34,8 @@ ADD conf/crunchypg11.repo /etc/yum.repos.d/
 RUN rpm --import RPM-GPG-KEY-crunchydata
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
- && yum -y update && yum -y install bind-utils \
+ && yum -y --enablerepo=rhel-7-server-ose-3.9-rpms --disablerepo=crunchy* update \
+ && yum -y install bind-utils \
     gettext \
     hostname \
     procps-ng \
@@ -59,21 +60,20 @@ ADD conf/.bash_profile /
 ADD conf/.bashrc /
 
 # set up cpm directory
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /recover /backrestrepo
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
-    /pgdata /pgwal /pgconf /backup /recover /backrestrepo &&  \
+    /pgdata /pgwal /pgconf /recover /backrestrepo &&  \
     chmod -R g=u /opt/cpm /var/lib/pgsql \
-    /pgdata /pgwal /pgconf /backup /recover /backrestrepo
+    /pgdata /pgwal /pgconf /recover /backrestrepo
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
-# add volumes to allow backup of postgres files
 # add volumes to offer a restore feature
 # add volumes to allow storage of postgres WAL segment files
 # add volumes to locate WAL files to recover with
 # add volumes for pgbackrest to write to
 
-VOLUME ["/sshd", "/pgconf", "/pgdata", "/pgwal", "/backup", "/recover", "/backrestrepo"]
+VOLUME ["/sshd", "/pgconf", "/pgdata", "/pgwal", "/recover", "/backrestrepo"]
 
 # open up the postgres port
 EXPOSE 5432

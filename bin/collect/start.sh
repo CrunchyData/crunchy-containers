@@ -16,12 +16,9 @@
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
 
-export DISABLE_NODE_EXPORTER=${DISABLE_NODE_EXPORTER:-false}
 export PG_EXP_HOME=$(find /opt/cpm/bin/ -type d -name 'postgres_exporter*')
-export NODE_EXP_HOME=$(find /opt/cpm/bin/ -type d -name 'node_exporter*')
 export PG_DIR=$(find /usr/ -type d -name 'pgsql-*')
 POSTGRES_EXPORTER_PIDFILE=/tmp/postgres_exporter.pid
-NODE_EXPORTER_PIDFILE=/tmp/node_exporter.pid
 CONFIG_DIR='/opt/cpm/conf'
 QUERIES=(
     queries_common
@@ -33,24 +30,10 @@ function trap_sigterm() {
     echo_info "Doing trap logic.."
 
     echo_warn "Clean shutdown of postgres-exporter.."
-    kill -SIGINT $(head -1 $POSTGRES_EXPORTER_PIDFILE)
-
-
-	if [[ ${DISABLE_NODE_EXPORTER?} == 'false' ]]
-	then
-	    echo_warn "Clean shutdown of node-exporter.."
-    	kill -SIGINT $(head -1 $NODE_EXPORTER_PIDFILE)
-	fi
+    kill -SIGINT $(head -1 ${POSTGRES_EXPORTER_PIDFILE?})
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
-
-if [[ ${DISABLE_NODE_EXPORTER?} == 'false' ]]
-then
-	echo_info "Starting node-exporter.."
-	${NODE_EXP_HOME?}/node_exporter >>/dev/stdout 2>&1 &
-	echo $! > $NODE_EXPORTER_PIDFILE
-fi
 
 # Check that postgres is accepting connections.
 echo_info "Waiting for PostgreSQL to be ready.."

@@ -22,3 +22,5 @@ $CCPROOT/examples/waitforterm.sh pgbouncer-primary ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh pgbouncer-replica ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh pg-primary ${CCP_CLI?}
 $CCPROOT/examples/waitforterm.sh pg-replica ${CCP_CLI?}
+
+rm -f ./pgbouncer-auth.stderr 2>/dev/null

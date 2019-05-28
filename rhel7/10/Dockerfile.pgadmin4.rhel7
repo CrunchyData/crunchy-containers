@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/pgadmin4" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.7" \
+	PostgresFullVersion="10.8" \
 	Version="7.6" \
-	Release="2.4.0-rc6" \
+	Release="2.4.0-rc8" \
         url="https://crunchydata.com" \
         summary="Crunchy Data pgAdmin4 GUI utility" \
         description="Provides GUI for the pgAdmin utility." \
@@ -32,7 +32,7 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
-RUN yum -y update \
+RUN yum -y --enablerepo=rhel-7-server-ose-3.9-rpms --disablerepo=crunchy* update \
  && yum -y install epel-release \
  && yum -y install \
     glibc-common \
