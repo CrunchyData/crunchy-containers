@@ -17,6 +17,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -49,7 +50,9 @@ func BadgerGenerate(w http.ResponseWriter, r *http.Request) {
 	cmd.Stderr = &stderr
 	err := cmd.Run()
 	if err != nil {
-		log.Fatalf("Error running badger-generate: %s", err)
+		errorMsg := fmt.Sprintf("Error running badger-generate: %s\n%s", err, stderr.String())
+		log.Println(errorMsg)
+		http.Error(w, errorMsg, http.StatusInternalServerError)
 		return
 	}
 
