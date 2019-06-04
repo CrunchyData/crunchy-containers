@@ -97,7 +97,7 @@ line starting with #:
     export CCP_BASEOS=centos7       # centos7 for Centos, rhel7 for Redhat
     export CCP_PGVERSION=10         # The PostgreSQL major version
     export CCP_PG_FULLVERSION=10.8
-    export CCP_VERSION=2.4.0-rc10
+    export CCP_VERSION=2.4.0
     export CCP_IMAGE_PREFIX=crunchydata # Prefix to put before all the container image names
     export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION   # Used to tag the images
     export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers    # The base of the clone github repo
