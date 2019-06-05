@@ -10,5 +10,6 @@ weight: 3
 Crunchy Container Suite supports the following platforms:
 
 * *Docker 1.13+*
-* *Kubernetes 1.8+*
+* *Kubernetes 1.12+*
 * *OpenShift Container Platform 3.11*
+* *VMWare Enterprise PKS 1.3+*
