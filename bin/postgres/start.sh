@@ -137,63 +137,6 @@ function initdb_logic() {
     cp /tmp/pg_hba.conf $PGDATA
 }
 
-function check_for_restore() {
-    echo_info "Checking for restore.."
-    ls -l /backup
-    if [ ! -f /backup/$BACKUP_PATH/postgresql.conf ]; then
-        echo_info "No backup file found."
-        initdb_logic
-    else
-        if [ ! -f /pgdata/postgresql.conf ]; then
-            echo_info "Restoring from backup.."
-
-            rsync -a --progress --exclude 'pg_log/*' /backup/$BACKUP_PATH/* $PGDATA \
-                > /tmp/rsync.stdout 2> /tmp/rsync.stderr
-            err_check "$?" "Restore from pgBaseBackup" \
-                "Unable to rsync pgBaseBackup: \n$(cat /tmp/rsync.stderr)"
-
-            chmod -R 0700 $PGDATA
-        else
-            initdb_logic
-        fi
-    fi
-}
-function check_for_pitr() {
-    echo_info "Checking for PITR WAL files to recover with.."
-    if [ "$(ls -A /recover)" ]; then
-        echo_info "Found non-empty /recover. Assuming a PITR is requested."
-        ls -l /recover
-        if [ "$CCP_PGVERSION" = "9.5" ] || [ "$CCP_PGVERSION" = "9.6" ]; then
-            rm $PGDATA/pg_xlog/*0* $PGDATA/pg_xlog/archive_status/*0*
-        else
-            rm $PGDATA/pg_wal/*0* $PGDATA/pg_wal/archive_status/*0*
-        fi
-        cp /opt/cpm/conf/pitr-recovery.conf /tmp
-        export ENABLE_RECOVERY_TARGET_NAME=#
-        export ENABLE_RECOVERY_TARGET_TIME=#
-        export ENABLE_RECOVERY_TARGET_XID=#
-        if [[ -v RECOVERY_TARGET_NAME ]]; then
-            export ENABLE_RECOVERY_TARGET_NAME=" "
-        elif [[ -v RECOVERY_TARGET_TIME ]]; then
-            export ENABLE_RECOVERY_TARGET_TIME=" "
-        elif [[ -v RECOVERY_TARGET_XID ]]; then
-            export ENABLE_RECOVERY_TARGET_XID=" "
-        fi
-        sed -i "s/WAL_DIR/$WAL_DIR/g" /tmp/pitr-recovery.conf
-        sed -i "s/ENABLE_RECOVERY_TARGET_NAME/$ENABLE_RECOVERY_TARGET_NAME/g" /tmp/pitr-recovery.conf
-        sed -i "s/ENABLE_RECOVERY_TARGET_TIME/$ENABLE_RECOVERY_TARGET_TIME/g" /tmp/pitr-recovery.conf
-        sed -i "s/ENABLE_RECOVERY_TARGET_XID/$ENABLE_RECOVERY_TARGET_XID/g" /tmp/pitr-recovery.conf
-        sed -i "s/RECOVERY_TARGET_NAME/$RECOVERY_TARGET_NAME/g" /tmp/pitr-recovery.conf
-        sed -i "s/RECOVERY_TARGET_TIME/$RECOVERY_TARGET_TIME/g" /tmp/pitr-recovery.conf
-        sed -i "s/RECOVERY_TARGET_XID/$RECOVERY_TARGET_XID/g" /tmp/pitr-recovery.conf
-        if [[ ! -v RECOVERY_TARGET_INCLUSIVE ]]; then
-            RECOVERY_TARGET_INCLUSIVE=true
-        fi
-        sed -i "s/RECOVERY_TARGET_INCLUSIVE/$RECOVERY_TARGET_INCLUSIVE/g" /tmp/pitr-recovery.conf
-        cp /tmp/pitr-recovery.conf $PGDATA/recovery.conf
-    fi
-}
-
 function fill_conf_file() {
     env_check_info "TEMP_BUFFERS" "Setting TEMP_BUFFERS to ${TEMP_BUFFERS:-8MB}."
     env_check_info "LOG_MIN_DURATION_STATEMENT" "Setting LOG_MIN_DURATION_STATEMENT to ${LOG_MIN_DURATION_STATEMENT:-60000}."
@@ -290,8 +233,7 @@ function initialize_primary() {
         echo_info "PGDATA is empty. ID is ${ID}. Creating the PGDATA directory.."
         mkdir -p ${PGDATA?}
 
-        check_for_restore
-        check_for_pitr
+        initdb_logic
 
         echo "Starting database.." >> /tmp/start-db.log
 
@@ -359,7 +301,12 @@ configure_archiving() {
     then
         export ARCHIVE_MODE=on
         echo_info "Setting pgbackrest archive command.."
-        cat /opt/cpm/conf/backrest-archive-command >> /"${PGDATA?}"/postgresql.conf
+        if [[ "${BACKREST_LOCAL_AND_S3_STORAGE}" == "true" ]]
+        then
+            cat /opt/cpm/conf/backrest-archive-command-local-and-s3 >> /"${PGDATA?}"/postgresql.conf
+        else
+            cat /opt/cpm/conf/backrest-archive-command >> /"${PGDATA?}"/postgresql.conf
+        fi
     elif [[ "${ARCHIVE_MODE}" == "on" ]] && [[ ! "${PGBACKREST}" == "true" ]]
     then
         echo_info "Setting standard archive command.."

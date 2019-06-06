@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.16" \
+	PostgresFullVersion="9.5.17" \
 	Version="7.6" \
-	Release="2.3.1" \
+	Release="2.4.0" \
         url="https://crunchydata.com" \
         summary="Executes the pgbackrest utility, allowing FULL & DELTA restore capability." \
         description="Executes pgbackrest utility, allowing FULL, DELTA & PITR restore capability. Capable of mounting the /backrestrepo for access to pgbackrest archives, while allowing for the configuration of pgbackrest using applicable pgbackrest environment variables." \
@@ -23,7 +23,7 @@ COPY conf/atomic/backrestrestore/help.1 /help.1
 COPY conf/atomic/backrestrestore/help.md /help.md
 COPY conf/licenses /licenses
 
-ENV PGVERSION="9.5" BACKREST_VERSION="2.10"
+ENV PGVERSION="9.5" BACKREST_VERSION="2.13"
 
 # Crunchy Postgres repo
 ADD conf/CRUNCHY-GPG-KEY.public  /
@@ -31,7 +31,8 @@ ADD conf/crunchypg95.repo /etc/yum.repos.d/
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm  \
- && yum -y update && yum -y install  \
+ && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
+ && yum -y install  \
 	hostname \
 	gettext \
         nss_wrapper \

@@ -18,8 +18,9 @@ This example starts up 5 containers:
  * Grafana (crunchy-grafana)
  * PostgreSQL (crunchy-postgres)
  * Prometheus (crunchy-prometheus)
+ * Node Exporter (crunchy-node-exporter)
 
-Every 5 seconds by default, Prometheus will scrape the Collect container
+Every 10 seconds by default, Prometheus will scrape the Collect container
 for metrics.  These metrics will then be visualized by Grafana, which by default can be accessed
 with the following credentials:
 
@@ -44,6 +45,10 @@ duplicate entries.
 Additionally, the collect container uses a special PostgreSQL role `ccp_monitoring`.
 This user is created by setting the `PGMONITOR_PASSWORD` environment variable on the
 PostgreSQL container.
+
+The node exporter container is designed to run as a DaemonSet and will mount (read only) the /proc and /sys
+directories of the nodes they are running on in order to collect statistics. In Openshift, this requires the
+node exporter to use a service account, as shown in the example. 
 
 Discovering pods requires a cluster role service account.  See the
 [Kubernetes and OpenShift](https://github.com/crunchydata/crunchy-containers/blob/master/examples/kube/metrics/metrics.json)
@@ -106,4 +111,5 @@ ${CCP_CLI} logs -c collect primary-metrics
 ${CCP_CLI} logs -c postgres primary-metrics
 ${CCP_CLI} logs -c collect replica-metrics
 ${CCP_CLI} logs -c postgres replica-metrics
+${CCP_CLI} logs node-exporter
 ```

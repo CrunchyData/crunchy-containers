@@ -36,7 +36,7 @@ After execution, the container will run and provide a simple HTTP
 command you can browse to view the report.  As you run queries against
 the database, you can invoke this URL to generate updated reports:
 ```
-curl -L http://127.0.0.1:14000/api/badgergenerate
+curl -L http://127.0.0.1:10000/api/badgergenerate
 ```
 
 ### Kubernetes and OpenShift

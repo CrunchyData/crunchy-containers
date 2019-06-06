@@ -1,0 +1,26 @@
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "pgbouncer-config-pgdata",
+        "labels": {
+            "cleanup": "$CCP_NAMESPACE-pgbouncer"
+        }
+    },
+    "spec": {
+        "selector": {
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-pgbouncer-config-pgdata"
+            }
+        },
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
+        }
+    }
+}
+

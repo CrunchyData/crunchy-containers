@@ -16,6 +16,7 @@
 source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
+cleanup "${CCP_NAMESPACE?}-pgbasebackup-pitr-restored"
 cleanup "${CCP_NAMESPACE?}-restore-pitr"
 cleanup "${CCP_NAMESPACE?}-backup-pitr"
 cleanup "${CCP_NAMESPACE?}-pitr"

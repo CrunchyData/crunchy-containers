@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/backup" \
         vendor="crunchy data" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.2" \
+	PostgresFullVersion="11.3" \
 	Version="7.6" \
-	Release="2.3.1" \
+	Release="2.4.0" \
         url="https://crunchydata.com" \
         summary="Performs a pg_basebackup full database backup on a database container" \
         description="Meant to be executed upon demand, this container will run pg_basebackup against a running database container and write the backup files to a mounted directory." \
@@ -31,7 +31,8 @@ ADD conf/crunchypg11.repo /etc/yum.repos.d/
 RUN rpm --import RPM-GPG-KEY-crunchydata
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
- && yum -y update && yum install -y bind-utils \
+ && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
+ && yum install -y bind-utils \
 	gettext \
 	hostname \
 	procps-ng \

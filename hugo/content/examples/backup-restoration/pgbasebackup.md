@@ -20,101 +20,117 @@ backup will be stored in a subdirectory with a timestamp as the name, allowing a
 
 The backup script will do the following:
 
-* Start up a backup container named backup
+* Start up a backup container or Kubernetes job named *backup*
 * Run `pg_basebackup` on the container named *primary*
-* Store the backup in the `/tmp/backups/primary-backups` directory
+* Store the backup in the `/backup` volume
 * Exit after the backup
 
-When you are ready to restore from the backup, the restore example runs a PostgreSQL container
-using the backup location. Upon initialization, the container will use rsync to copy the backup
-data to this new container and then launch PostgreSQL using the original backed-up data.
+When you are ready to restore from the backup, the restore example runs a `pgbasebackup-restore` container or Kubernetes job
+in order to restore the database into a new pgdata directory, specifically using rsync to copy the backup data into
+the new directory.  A `crunchy-postgres` container then deployed using the restored database, deploying a new PostgreSQL DB
+that utilizes the original backed-up data.
 
-The restore script will do the following:
+The restore scripts will do the following:
 
-* Start up a container named *restore*
+* Start up a container or Kubernetes job named *restore*
 * Copy the backup files from the previous backup example into `/pgdata`
-* Start up the container using the backup files
-* Map the PostgreSQL port of 5432 in the container to your local host port of 12001
+* Deploy a `crunchy-postgres` container using the restored database
 
-To shutdown the instance and remove the container for each example, run the following:
+To shutdown and remove any artifacts from the example, run the following under each directory utilized when running the example:
 ```
 ./cleanup.sh
 ```
 
 ### Docker
 
-Run the backup with this command:
+Perform a backup of *primary* using `pg_basebackup` by running the following script:
 ```
 cd $CCPROOT/examples/docker/pgbasebackup/backup
 ./run.sh
 ```
 
-When you're ready to restore, a *restore* example is provided.
-
-It's required to specified a backup path for this example.  To get the correct path
-check the `backup` job logs or a timestamp:
+When you're ready to restore, a *restore* example is provided.  In order to run the restore, a path for the backup
+must be provided to the `pgabasebackup-restore` container using the `BACKUP_PATH` environment variable.  To get the correct path, check the logs for the `backup` container:
 
 ```
-docker logs backup-vpk9l | grep BACKUP_PATH
-Wed May  9 20:32:00 UTC 2018 INFO: BACKUP_PATH is set to /pgdata/primary-backups/2018-05-09-20-32-00.
+docker logs backup | grep BACKUP_PATH
+Fri May 10 01:40:06 UTC 2019 INFO: BACKUP_PATH is set to /pgdata/primary-backups/2019-05-10-01-40-06.
 ```
 
-BACKUP_PATH can also be discovered by looking at the backup mount directly (if access
+`BACKUP_PATH` can also be discovered by looking at the backup mount directly (if access
 to the storage is available to the user).
 
-An example of BACKUP_PATH is as followed:
+When you are ready to restore from the backup, first update the `$CCPROOT/examples/docker/pgbasebackup/full/run.sh` 
+script used to run restore example with the proper `BACKUP_PATH`:
+
 ```
-"name": "BACKUP_PATH",
-"value": "primary-backups/2018-05-09-20-32-00"
+--env BACKUP_PATH=primary-backups/2019-05-09-11-53-32 \
 ```
 
-When you are ready to restore from the backup created, run the following example:
+Then run the restore:
 ```
 cd $CCPROOT/examples/docker/pgbasebackup/full
 ./run.sh
 ```
 
+Once the restore is complete, the restored database can then be deployed by running the post restore script:
+```
+./post-restore.sh
+```
+
+You can then test the restored database as follows:
+```
+docker exec -it pgbasebackup-full-restored psql
+```
+
 ### Kubernetes and OpenShift
 
-Running the example:
-```
+Perform a backup of *primary* using `pg_basebackup` by running the following script:
+``` 
 cd $CCPROOT/examples/kube/pgbasebackup/backup
 ./run.sh
 ```
 
-The Kubernetes Job type executes a pod and then the pod exits.  You can
-view the Job status using this command:
+This runs a Kubernetes job, which deploys a pod that performs the backup using `pg_basebackup`,
+and then exits.  You can view the status of the job by running the following command:
 ```
 ${CCP_CLI} get job
 ```
 
-When you're ready to restore, a *restore* example is provided.
+When you're ready to restore, a *restore* example is provided.  In order to run the restore, a path for the backup
+must be provided to the `pgabasebackup-restore` container using the `BACKUP_PATH` environment variable.  To get the correct path, check the logs for the `backup` job:
 
-It's required to specified a backup path for this example.  To get the correct path
-check the `backup` job logs or a timestamp:
 ```
-kubectl logs backup-vpk9l | grep BACKUP_PATH
-Wed May  9 20:32:00 UTC 2018 INFO: BACKUP_PATH is set to /pgdata/primary-backups/2018-05-09-20-32-00.
+kubectl logs backup-txcvm | grep BACKUP_PATH
+Fri May 10 01:40:06 UTC 2019 INFO: BACKUP_PATH is set to /pgdata/primary-backups/2019-05-10-01-40-06.
 ```
 
-BACKUP_PATH can also be discovered by looking at the backup mount directly (if access
+`BACKUP_PATH` can also be discovered by looking at the backup mount directly (if access
 to the storage is available to the user).
 
-An example of BACKUP_PATH defined as a variable within the JSON script is as follows:
+When you are ready to restore from the backup, first update `$CCPROOT/examples/kube/pgbasebackup/full/restore.json`
+with the proper `BACKUP_PATH`:
 ```
-"name": "BACKUP_PATH",
-"value": "primary-backups/2018-05-09-20-32-00"
+{
+    "name": "BACKUP_PATH",
+    "value": "primary-backups/2019-05-08-18-28-45"
+}
 ```
 
-Running the example:
+Then run the restore:
 ```
 cd $CCPROOT/examples/kube/pgbasebackup/full
 ./run.sh
 ```
 
-Test the restored database as follows:
+Once the restore is complete, the restored database can then be deployed by running the post restore script:
 ```
-psql -h restore -U postgres postgres
+./post-restore.sh
+```
+
+You can then test the restored database as follows:
+```
+kubectl exec -it pgbasebackup-full-restored-7d866cd5f7-qr6w8 -- psql
 ```
 
 ## Point in Time Recovery (PITR)
@@ -145,26 +161,32 @@ ARCHIVE_TIMEOUT=60
 
 These variables set the same name settings within the `postgresql.conf`
 file that is used by the database. When set, WAL files generated by the database
-will be written out to the `/pgwal` mount point.
+will be archived to the `/pgwal` mount point.
 
-A full backup is required to do a PITR.  crunchy-backup currently
-performs this role within the example, running a `pg_basebackup` on the database.
-This is a requirement for PITR. After a backup is performed, code is added into
-crunchy-postgres which will also check to see if you want to do a PITR.
+A full backup is required to do a PITR.  The `crunchy-backup` container is utilized to 
+perform the backup in the example below, specifically running `pg_basebackup` to backup 
+the database. 
 
-There are three volume mounts used with the PITR example.
+After the backup is complete, a restore can then be performed.  The restore is performed
+using the `pgbasebackup-restore` container, which uses rysnc to copy a `pg_basebackup` 
+backup into a new pgdata directory.
 
-* `/recover` - When specified within a crunchy-postgres container, PITR is activated during container startup.
-* `/backup` - This is used to find the base backup you want to recover from.
-* `/pgwal` - This volume is used to write out new WAL files from the newly restored database container.
+There are two volume mounts used when performing the restore.
 
-Some environment variables used to manipulate the point in time recovery logic:
+* `/backup` - The volume containing the backup you would like to restore from.
+* `/pgdata` - The volume containing the restored database
 
-* The `RECOVERY_TARGET_NAME` environment variable is used to tell the PITR logic what the name of the target is.
-* `RECOVERY_TARGET_TIME` is also an optional environment variable that restores using a known time stamp.
+The following environment variables can be used to manipulate the point in time recovery logic when performing 
+the restore using the `pgbasebackup-restore` container, specifically configuring the proper recovery target
+within the `recovery.conf` file:
 
-If you don't specify either of these environment variables, then the PITR logic will assume you want to
-restore using all the WAL files or essentially the last known recovery point.
+* `RECOVERY_TARGET_NAME` - Used to restore to a named restore point
+* `RECOVERY_TARGET_TIME` - Used to restore to a specific timestamp
+* `RECOVERY_TARGET_XID` - Used to restore to a specific transaction ID
+
+If you would rather restore to the end of the WAL log, the `RECOVERY_REPLAY_ALL_WAL` environment varibale can
+be set to `true`.  Please note that if this enviornment variable is set, then any recovery targets specified via
+the environment variables described above will be ignored. 
 
 The `RECOVERY_TARGET_INCLUSIVE` environment variable is also available to
 let you control the setting of the `recovery.conf` setting `recovery_target_inclusive`.
@@ -184,12 +206,7 @@ of the function `pg_xlog_replay_resume` were changed to `pg_wal_replay_resume`.
 
 It takes about 1 minute for the database to become ready for use after initially starting.
 
-{{% notice warning %}}
-WAL segment files are written to the */tmp* directory. Leaving the example running
-for a long time could fill up your /tmp directory.
-{{% /notice %}}
-
-To shutdown the instance and remove the container for each example, run the following:
+To shutdown and remove any artifacts from the example, run the following:
 ```
 ./cleanup.sh
 ```
@@ -202,14 +219,15 @@ cd $CCPROOT/examples/docker/pgbasebackup/pitr
 ./run-pitr.sh
 ```
 
-Next, we will create a base backup of that database using this:
+Next, we will create a base backup of that database as follows:
 ```
 ./run-backup-pitr.sh
 ```
 
-After creating the base backup of the database, WAL segment files are created every 60 seconds
-that contain any database changes. These segments are stored in the
-`/tmp/pitr/pitr/pg_wal` directory.
+This will create a backup and write the backup files to a persistent
+volume (specifically Docker named volume `pitr-backup-volume`). Additionally, 
+WAL segment files will be created every 60 seconds under the `pgwal` directory
+of the running `pitr` container that contain any additional database changes.
 
 Next, create some recovery targets within the database by running
 the SQL commands against the *pitr* database as follows:
@@ -231,24 +249,46 @@ to simulate a database failure.  Do this by running the following:
 docker stop pitr
 ```
 
-Next, let's edit the restore script to use the base backup files
-created in the step above.  You can view the backup path name
-under the `/tmp/backups/pitr-backups/` directory. You will see
-another directory inside of this path with a name similar to
-`2018-03-21-21-03-29`.  Copy and paste that value into the
-`run-restore-pitr.sh` script in the `BACKUP` environment variable.
+Now get the BACKUP_PATH created by the `backup-pitr` example by viewing the containers logs:
 
-After that, run the script.
 ```
-vi ./run-restore-pitr.sh
+docker logs backup-pitr | grep PATH
+Thu May 10 18:07:58 UTC 2018 INFO: BACKUP_PATH is set to /pgdata/pitr-backups/2018-05-10-18-07-58.
+```
+
+Edit the `run-restore-pitr.sh` file and change the `BACKUP_PATH` environment variable
+using the path discovered above:
+
+```
+--env BACKUP_PATH=pitr-backups/2018-05-10-18-07-58 \
+```
+
+Next, we restore prior to the `beforechanges` recovery target.  This
+recovery point is *before* the *pitrtest* table is created.
+
+Open file `run-restore-pitr.sh`, and edit the environment
+variable to indicate we want to use the `beforechanges` recovery
+point:
+```
+--env RECOVERY_TARGET_NAME=beforechanges \
+```
+
+Then run the following to restore the database:
+```
 ./run-restore-pitr.sh
 ```
 
-The WAL segments are read and applied when restoring from the database
-backup.  At this point, you should be able to verify that the
-database was restored to the point before creating the test table:
+Once the restore is complete, the restored database can then be deployed by running the post restore script:
 ```
-psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
+./post-restore.sh
+```
+
+As a result of the `recovery.conf` file configured using `RECOVERY_TARGET_NAME` when performing the restore,
+the WAL segments are read from the WAL archive and applied up until the `beforechanges` named restore point.
+At this point you should therefore be able to verify that the database was restored to the point before creating
+the test table:
+```
+docker exec -it pgbasebackup-pitr-restored psql -c 'table pitrtest'
 ```
 
 This SQL command should show that the pitrtest table does not exist
@@ -259,41 +299,63 @@ ERROR: relation "pitrtest" does not exist
 
 PostgreSQL allows you to pause the recovery process if the target name
 or time is specified.  This pause would allow a DBA a chance to review
-the recovery time/name and see if this is what they want or expect.  If so,
+the recovery time/name/xid and see if this is what they want or expect.  If so,
 the DBA can run the following command to resume and complete the recovery:
 ```
-psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume()'
+docker exec -it pgbasebackup-pitr-restored psql -c 'select pg_wal_replay_resume()'
 ```
 
 Until you run the statement above, the database will be left in read-only
 mode.
 
 Next, run the script to restore the database
-to the `afterchanges` restore point. Update the `RECOVERY_TARGET_NAME` to `afterchanges`:
+to the `afterchanges` restore point. Update the `RECOVERY_TARGET_NAME` to `afterchanges`
+in `run-restore-pitr.sh`:
 ```
-vi ./run-restore-pitr.sh
+--env RECOVERY_TARGET_NAME=afterchanges \
+```
+
+Then run the following to again restore the database:
+```
 ./run-restore-pitr.sh
 ```
 
-After this restore, you should be able to see the test table:
+Once the restore is complete, the restored database can then once again be deployed by running the post restore script:
 ```
-psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
-psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'select pg_wal_replay_resume()'
+./post-restore.sh
 ```
 
-Lastly, start a recovery using all of the WAL files. This will get the
-restored database as current as possible. To do so, edit the script
-to remove the `RECOVERY_TARGET_NAME` environment setting completely:
+After this restore you should be able to see the test table, and will still be required to make the database writable:
+```
+docker exec -it pgbasebackup-pitr-restored psql -c 'table pitrtest'
+docker exec -it pgbasebackup-pitr-restored psql -c 'select pg_wal_replay_resume()'
+```
+
+Lastly, start a restore to the end of the WAL log. This will restore the database to the most current point 
+possible. To do so, edit `run-restore-pitr.sh` and remove `RECOVERY_TARGET_NAME`, and then set environment variable 
+`RECOVERY_REPLAY_ALL_WAL` to `true`:
+```
+--env RECOVERY_REPLAY_ALL_WAL=true \
+```
+
+Then run the following to again restore the database:
 ```
 ./run-restore-pitr.sh
-sleep 30
-psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'table pitrtest'
-psql -h 127.0.0.1 -p 12001 -U postgres postgres -c 'create table foo (id int)'
+```
+
+Once the restore is complete, the restored database can then once again be deployed by running the post restore script:
+```
+./post-restore.sh
 ```
 
 At this point, you should be able to create new data in the restored database
 and the test table should be present.  When you recover the entire
 WAL history, resuming the recovery is not necessary to enable writes.
+
+```
+docker exec -it pgbasebackup-pitr-restored psql -c 'table pitrtest'
+docker exec -it pgbasebackup-pitr-restored psql -c 'create table foo (id int)'
+```
 
 ### Kubernetes and OpenShift
 
@@ -304,17 +366,18 @@ cd $CCPROOT/examples/kube/pgbasebackup/pitr
 ```
 
 This step will create a database container, *pitr*.  This
-container is configured to continuously write WAL segment files
+container is configured to continuously archive WAL segment files
 to a mounted volume (`/pgwal`).
 
-After you start the database, you will create a base backup
+After you start the database, you will create a `pg_basebackup` backup
 using this command:
 ```
 ./run-backup-pitr.sh
 ```
 
 This will create a backup and write the backup files to a persistent
-volume (`/pgbackup`).
+volume made available to the `crunchy-backup` container via Persistent 
+Volume Claim `backup-pitr-pgdata`.
 
 Next, create some recovery targets within the database by running
 the SQL commands against the *pitr* database as follows:
@@ -327,11 +390,11 @@ This will create recovery targets named `beforechanges`, `afterchanges`, and
 the `beforechanges` and `afterchanges` targets.  It will also run a SQL
 `CHECKPOINT` to flush out the changes to WAL segments.
 
-Next, now that we have a base backup and a set of WAL files containing
+Next, now that we have a `pg_basebackup` backup and a set of WAL files containing
 our database changes, we can shut down the *pitr* database
 to simulate a database failure.  Do this by running the following:
 ```
-${CCP_CLI} delete pod pitr
+${CCP_CLI} delete deployment pitr
 ```
 
 Next, we will create 3 different restored database containers based
@@ -369,16 +432,21 @@ point:
 ```
 
 
-Then run the following to create the restored database container:
+Then run the following to restore the database:
 ```
 ./run-restore-pitr.sh
+```
+
+Once the restore is complete, the restored database can then once again be deployed by running the post restore script:
+```
+./post-restore.sh
 ```
 
 After the database has restored, you should be able to perform
 a test to see if the recovery worked as expected:
 ```
-psql -h restore-pitr -U postgres postgres -c 'table pitrtest'
-psql -h restore-pitr -U postgres postgres -c 'create table foo (id int)'
+kubectl exec -it pgbasebackup-pitr-restored-5c5df7894c-hczff -- psql -c 'table pitrtest'
+kubectl exec -it pgbasebackup-pitr-restored-5c5df7894c-hczff -- psql -c 'create table foo (id int)'
 ```
 
 The output of these commands should show that the *pitrtest* table is not
@@ -388,19 +456,19 @@ because the database is paused in read-only mode.
 To make the database resume as a writable database, run the following
 SQL command:
 ```
-select pg_wal_replay_resume();
+kubectl exec -it pgbasebackup-pitr-restored-5c5df7894c-hczff -- psql -c 'select pg_wal_replay_resume()'
 ```
 
 It should then be possible to write to the database:
 ```
-psql -h restore-pitr -U postgres postgres -c 'create table foo (id int)'
+kubectl exec -it pgbasebackup-pitr-restored-5c5df7894c-hczff -- psql -c 'create table foo (id int)'
 ```
 
 You can also test that if `afterchanges` is specified, that the
 *pitrtest* table is present but that the database is still in recovery
 mode.
 
-Lastly, you can test a full recovery using *all* of the WAL files, if
-you remove the `RECOVERY_TARGET_NAME` environment variable completely.
+Lastly, you can test a full recovery using *all* of the WAL files by removing any recovery targets,
+and setting `RECOVERY_REPLAY_ALL_WAL` to `true`.
 
 The storage portions of this example can all be found under `$CCP_STORAGE_PATH/$CCP_NAMESPACE-restore-pitr`.

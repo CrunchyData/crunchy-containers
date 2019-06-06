@@ -8,10 +8,10 @@ endif
 all: pgimages extras
 
 # Build images that use postgres
-pgimages: commands backup backrestrestore collect pgadmin4 pgbadger pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade
+pgimages: commands backup backrestrestore pgbasebackuprestore collect pgadmin4 pgbadger pgbench pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade
 
 # Build non-postgres images
-extras: grafana prometheus scheduler  
+extras: node-exporter grafana prometheus scheduler
 
 versiontest:
 ifndef CCP_BASEOS
@@ -42,7 +42,6 @@ commands: pgc
 pgc:
 	cd $(CCPROOT)/commands/pgc && go build pgc.go && mv pgc $(GOBIN)/pgc
 
-
 #=============================================
 # Targets that generate images (alphabetized)
 #=============================================
@@ -55,6 +54,10 @@ backup:	versiontest
 	docker build -t crunchy-backup -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.backup.$(CCP_BASEOS) .
 	docker tag crunchy-backup $(CCP_IMAGE_PREFIX)/crunchy-backup:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
+pgbasebackuprestore:
+	docker build -t crunchy-pgbasebackup-restore -f $(CCP_BASEOS)/Dockerfile.pgbasebackup-restore.$(CCP_BASEOS) .
+	docker tag crunchy-pgbasebackup-restore $(CCP_IMAGE_PREFIX)/crunchy-pgbasebackup-restore:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+
 collect: versiontest
 	docker build -t crunchy-collect -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.collect.$(CCP_BASEOS) .
 	docker tag crunchy-collect $(CCP_IMAGE_PREFIX)/crunchy-collect:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
@@ -62,6 +65,10 @@ collect: versiontest
 grafana: versiontest
 	docker build -t crunchy-grafana -f $(CCP_BASEOS)/Dockerfile.grafana.$(CCP_BASEOS) .
 	docker tag crunchy-grafana $(CCP_IMAGE_PREFIX)/crunchy-grafana:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+
+node-exporter: versiontest
+	docker build -t crunchy-node-exporter -f $(CCP_BASEOS)/Dockerfile.node-exporter.$(CCP_BASEOS) .
+	docker tag crunchy-node-exporter $(CCP_IMAGE_PREFIX)/crunchy-node-exporter:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 pgadmin4: versiontest
 	docker build -t crunchy-pgadmin4 -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgadmin4.$(CCP_BASEOS) .
@@ -74,6 +81,10 @@ pgbadger: versiontest
 	docker rm -f extract
 	docker build -t crunchy-pgbadger -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbadger.$(CCP_BASEOS) .
 	docker tag crunchy-pgbadger $(CCP_IMAGE_PREFIX)/crunchy-pgbadger:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+
+pgbench: versiontest
+	docker build -t crunchy-pgbench -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbench.$(CCP_BASEOS) .
+	docker tag crunchy-pgbench $(CCP_IMAGE_PREFIX)/crunchy-pgbench:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 pgbouncer: versiontest
 	docker build -t crunchy-pgbouncer -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbouncer.$(CCP_BASEOS) .
@@ -91,12 +102,6 @@ pgrestore: versiontest
 	docker build -t crunchy-pgrestore -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgrestore.$(CCP_BASEOS) .
 	docker tag crunchy-pgrestore $(CCP_IMAGE_PREFIX)/crunchy-pgrestore:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-pgsim:
-	cd sim && make
-	cp sim/build/crunchy-sim bin/crunchy-sim
-	docker build -t crunchy-sim -f $(CCP_BASEOS)/Dockerfile.sim.$(CCP_BASEOS) .
-	docker tag crunchy-sim $(CCP_IMAGE_PREFIX)/crunchy-sim:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
-
 postgres: versiontest commands
 	cp $(GOBIN)/pgc bin/postgres
 	docker build -t crunchy-postgres -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres.$(CCP_BASEOS) .
@@ -104,10 +109,12 @@ postgres: versiontest commands
 
 postgres-gis: versiontest commands
 	cp $(GOBIN)/pgc bin/postgres
-	docker build -t crunchy-postgres-gis -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS) .
+	expenv -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS) > $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS).tmp
+	docker build -t crunchy-postgres-gis -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS).tmp .
 	docker tag crunchy-postgres-gis $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+	rm -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS).tmp
 
-prometheus:	versiontest
+prometheus: versiontest
 	docker build -t crunchy-prometheus -f $(CCP_BASEOS)/Dockerfile.prometheus.$(CCP_BASEOS) .
 	docker tag crunchy-prometheus $(CCP_IMAGE_PREFIX)/crunchy-prometheus:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 

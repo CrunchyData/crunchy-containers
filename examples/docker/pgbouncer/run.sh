@@ -14,6 +14,7 @@
 # limitations under the License.
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 ${DIR?}/cleanup.sh
 
 docker network create --driver bridge pgnet
@@ -37,6 +38,7 @@ docker run \
 docker run \
     -p 5432:5432 \
     -v pg-primary:/pgdata \
+    --volume=${DIR?}/configs:/pgconf \
     --network=pgnet \
     --env-file=${DIR?}/env/pgsql-primary.list \
     --name=pg-primary \

@@ -1,0 +1,52 @@
+FROM centos:7
+
+LABEL name="crunchydata/pgbench" \
+        vendor="crunchy data" \
+	PostgresVersion="11" \
+	PostgresFullVersion="11.3" \
+	Version="7.6" \
+	Release="2.4.0" \
+        url="https://crunchydata.com" \
+    	summary="pgBench 11.2 (PGDG) on a Centos7 base image" \
+        description="pgbench is a simple program for running benchmark tests on PostgreSQL. It runs the same sequence of SQL commands over and over, possibly in multiple concurrent database sessions, and then calculates the average transaction rate (transactions per second)." \
+        io.k8s.description="pgbench container" \
+        io.k8s.display-name="Crunchy pgbench container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+ENV PGVERSION="11" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm"
+
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y update glibc-common \
+ && yum -y install bind-utils \
+    gettext \
+    hostname \
+    procps-ng  \
+    rsync \
+ && yum -y install postgresql11 \
+ && yum -y clean all
+
+ENV PGROOT="/usr/pgsql-${PGVERSION}"
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+RUN chown -R 26:0 /opt/cpm \
+ && chmod -R g=u /opt/cpm
+
+ADD bin/pgbench /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
+ADD conf/pgbench /opt/cpm/conf
+
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+
+ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
+
+VOLUME ["/pgconf"]
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]

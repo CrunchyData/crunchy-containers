@@ -226,15 +226,21 @@
                 "volumes": [
                     {
                         "name": "pgdata",
-                        "emptyDir": {}
+                        "emptyDir": {
+			    "medium": "Memory"
+			}
                     },
                     {
                         "name": "pgwal",
-                        "emptyDir": {}
+                        "emptyDir": {
+			    "medium": "Memory"
+			}
                     },
                     {
                         "name": "backrestrepo",
-                        "emptyDir": {}
+                        "emptyDir": {
+			    "medium": "Memory"
+			}
                     }
                 ],
                 "restartPolicy": "Always",

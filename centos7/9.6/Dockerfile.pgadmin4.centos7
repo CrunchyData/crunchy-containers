@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/pgadmin4" \
         vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.12" \
+	PostgresFullVersion="9.6.13" \
 	Version="7.6" \
-	Release="2.3.1" \
+	Release="2.4.0" \
         url="https://crunchydata.com" \
         summary="Crunchy Data pgAdmin4 GUI utility" \
         description="Provides GUI for the pgAdmin utility." \
@@ -14,7 +14,7 @@ LABEL name="crunchydata/pgadmin4" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="9.6" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+ENV PGVERSION="9.6" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm" PGDG_REPO_DISABLE="pgdg11,pgdg10,pgdg95,pgdg94"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
@@ -26,7 +26,7 @@ RUN yum -y update && yum -y install epel-release \
         openssl \
         procps-ng \
         mod_wsgi mod_ssl \
- && yum -y install postgresql96-devel postgresql96-server pgadmin4-web \
+ && yum -y install --disablerepo="${PGDG_REPO_DISABLE}" postgresql96-devel postgresql96-server pgadmin4-web \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"

@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/collect" \
 	vendor="crunchy data" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.16" \
+	PostgresFullVersion="9.5.17" \
 	Version="7.6" \
-	Release="2.3.1" \
+	Release="2.4.0" \
   url="https://crunchydata.com" \
   summary="Provides metrics for crunchy-postgres" \
   description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus and crunchy-grafana." \
@@ -34,7 +34,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 
 # Install postgres client tools and libraries
 RUN yum install -y epel-release \
-  && yum -y update \
+  && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
   && yum -y install \
     gettext \
     postgresql95 \
@@ -45,7 +45,6 @@ RUN yum install -y epel-release \
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 
 ADD postgres_exporter.tar.gz /opt/cpm/bin
-ADD node_exporter.tar.gz /opt/cpm/bin
 ADD tools/pgmonitor/exporter/postgres /opt/cpm/conf
 ADD bin/collect /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
@@ -58,8 +57,6 @@ VOLUME ["/conf"]
 
 # postgres_exporter
 EXPOSE 9187
-# node exporter
-EXPOSE 9100
 
 RUN chmod g=u /etc/passwd
 

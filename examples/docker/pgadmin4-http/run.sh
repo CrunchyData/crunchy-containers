@@ -29,7 +29,7 @@ docker run \
     --name=$CONTAINER_NAME \
     --hostname=$CONTAINER_NAME \
     -p 5050:5050 \
-    -v pgadmin:/var/lib/pgadmin:z\
+    -v ${CONTAINER_NAME}-data:/var/lib/pgadmin:z\
     -e PGADMIN_SETUP_EMAIL='admin@admin.com' \
     -e PGADMIN_SETUP_PASSWORD='password' \
     -e SERVER_PORT='5050' \

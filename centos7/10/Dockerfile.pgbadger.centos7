@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/pgbadger" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.7" \
+	PostgresFullVersion="10.8" \
 	Version="7.6" \
-	Release="2.3.1" \
+	Release="2.4.0" \
         url="https://crunchydata.com" \
         summary="HTTP wrapper around the PGBadger PostgreSQL utility" \
         description="Has an HTTP REST interface. You GET http://host:10000/api/badgergenerate, and it will generate a pgbadger report on a database container's log files." \
@@ -14,13 +14,13 @@ LABEL name="crunchydata/pgbadger" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="10" PGDG_REPO="pgdg-centos10-10-2.noarch.rpm"
+ENV PGVERSION="10" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm" PGDG_REPO_DISABLE="pgdg11,pgdg96,pgdg95,pgdg94"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
 RUN yum -y update \
  && yum -y install epel-release \
- && yum -y install \
+ && yum -y install --disablerepo="${PGDG_REPO_DISABLE}" \
       gettext \
       hostname \
       pgbadger \

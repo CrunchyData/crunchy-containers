@@ -12,9 +12,7 @@ This example assumes you have run *primary* using a PG 9.5 or 9.6 image
 such as `centos7-9.5.15-2.2.0` prior to running this upgrade.
 {{% /notice %}}
 
-Starting in release 1.3.1, the upgrade container will let
-you perform a `pg_upgrade` either from a PostgreSQL version 9.5 database to
-9.6 or from 9.6 to 10.
+The upgrade container will let you perform a `pg_upgrade` from a PostgreSQL version 9.5, 9.6, or 10 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, and 11. It does not do multi-version upgrades so you will need to for example do a 9.5 to 9.6 and then a 9.6 to 10 to get to version 10.
 
 Prior to running this example, make sure your `CCP_IMAGE_TAG`
 environment variable is using the next major version of PostgreSQL that you
@@ -37,10 +35,15 @@ were enabled on the database by running the following SQL: `SHOW data_checksums`
 
 {{% notice tip %}}
 Before running the example, ensure you edit `upgrade.json` and update the `OLD_VERSION`
-and `NEW_VERSION` parameters to the ones relevant to your situation.
+and `NEW_VERSION` parameters to the major release version relevant to your situation.
 {{% /notice %}}
 
-Start the upgrade as follows:
+First, delete the existing primary deployment:
+```
+${CCP_CLI} delete deployment primary
+```
+Then start the upgrade as follows:
+
 ```
 cd $CCPROOT/examples/kube/upgrade
 ./run.sh

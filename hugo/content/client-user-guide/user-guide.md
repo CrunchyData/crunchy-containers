@@ -22,7 +22,7 @@ within your environment**_):
 1. [Crunchy Container Suite Installation](#crunchy-container-suite-installation)
 1. [Storage Configuration](#storage-configuration)
 1. [Example Guidance](#example-guidance)
-1. [Crunchy Container Suite Examples](#crunchy-container-suite-examples)
+
 
 Once your environment has been configured according to instructions provided above, you will be
 able to run the Crunchy Container Suite examples. These examples will demonstrate the various
@@ -80,3 +80,5 @@ documentation for [Running the Examples](/client-user-guide/usage), which descri
 the examples, while also providing any other information, resources and guidance relevant to
 successfully running the Crunchy Container Suite examples in your environment.  The documentation
 for running the examples can be found [here](/client-user-guide/usage).
+
+

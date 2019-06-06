@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/pgpool" \
 	vendor="crunchy data" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.2" \
+	PostgresFullVersion="11.3" \
 	Version="7.6" \
-	Release="2.3.1" \
+	Release="2.4.0" \
         url="https://crunchydata.com" \
         summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
         description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the primary and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \
@@ -14,7 +14,7 @@ LABEL name="crunchydata/pgpool" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="11" PGDG_REPO="pgdg-centos11-11-2.noarch.rpm"
+ENV PGVERSION="11" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 

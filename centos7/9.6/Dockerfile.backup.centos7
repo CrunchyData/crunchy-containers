@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/backup" \
         vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.12" \
+	PostgresFullVersion="9.6.13" \
 	Version="7.6" \
-	Release="2.3.1" \
+	Release="2.4.0" \
         url="https://crunchydata.com" \
         summary="Performs a pg_basebackup full database backup on a database container" \
         description="Meant to be executed upon demand, this container will run pg_basebackup against a running database container and write the backup files to a mounted directory." \
@@ -14,7 +14,7 @@ LABEL name="crunchydata/backup" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
-ENV PGVERSION="9.6" PGDG_REPO="pgdg-centos96-9.6-3.noarch.rpm"
+ENV PGVERSION="9.6" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm"
 
 # PGDG Postgres repo
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}

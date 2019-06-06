@@ -29,8 +29,8 @@
 }
 
 {
-    "kind": "Pod",
-    "apiVersion": "v1",
+    "kind": "Deployment",
+    "apiVersion": "extensions/v1beta1",
     "metadata": {
         "name": "pitr",
         "labels": {
@@ -39,130 +39,133 @@
         }
     },
     "spec": {
-        "securityContext": {
-            $CCP_SECURITY_CONTEXT
-        },
-        "containers": [
-            {
-                "name": "postgres",
-                "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
-                "readinessProbe": {
-                    "exec": {
-                        "command": [
-                            "/opt/cpm/bin/readiness.sh"
-                        ]
-                    },
-                    "initialDelaySeconds": 40,
-                    "timeoutSeconds": 1
-                },
-                "livenessProbe": {
-                    "exec": {
-                        "command": [
-                            "/opt/cpm/bin/liveness.sh"
-                        ]
-                    },
-                    "initialDelaySeconds": 40,
-                    "timeoutSeconds": 1
-                },
-                "ports": [
+        "replicas": 1,
+        "template": {
+            "metadata": {
+                "labels": {
+                    "name": "pitr",
+                    "cleanup": "$CCP_NAMESPACE-pitr"
+                }
+            },
+            "spec": {
+                "containers": [
                     {
-                        "containerPort": 5432,
-                        "protocol": "TCP"
+                        "name": "postgres",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG",
+                        "readinessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/opt/cpm/bin/readiness.sh"
+                                ]
+                            },
+                            "initialDelaySeconds": 40,
+                            "timeoutSeconds": 1
+                        },
+                        "livenessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/opt/cpm/bin/liveness.sh"
+                                ]
+                            },
+                            "initialDelaySeconds": 40,
+                            "timeoutSeconds": 1
+                        },
+                        "ports": [
+                            {
+                                "containerPort": 5432,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "env": [
+                            {
+                                "name": "PGHOST",
+                                "value": "/tmp"
+                            },
+                            {
+                                "name": "PG_PRIMARY_USER",
+                                "value": "primaryuser"
+                            },
+                            {
+                                "name": "PG_MODE",
+                                "value": "primary"
+                            },
+                            {
+                                "name": "PGDATA_PATH_OVERRIDE",
+                                "value": "pitr"
+                            },
+                            {
+                                "name": "PG_PRIMARY_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PG_PRIMARY_PORT",
+                                "value": "5432"
+                            },
+                            {
+                                "name": "PG_USER",
+                                "value": "testuser"
+                            },
+                            {
+                                "name": "PG_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "PG_DATABASE",
+                                "value": "userdb"
+                            },
+                            {
+                                "name": "PG_ROOT_PASSWORD",
+                                "value": "password"
+                            },
+                            {
+                                "name": "ARCHIVE_MODE",
+                                "value": "on"
+                            },
+                            {
+                                "name": "ARCHIVE_TIMEOUT",
+                                "value": "60"
+                            }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/pgwal",
+                                "name": "pgwal",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/pgconf",
+                                "name": "pgconf",
+                                "readOnly": true
+                            }
+                        ]
                     }
                 ],
-                "env": [
+                "volumes": [
                     {
-                        "name": "PGHOST",
-                        "value": "/tmp"
-                    },
-                    {
-                        "name": "PG_PRIMARY_USER",
-                        "value": "primaryuser"
-                    },
-                    {
-                        "name": "PG_MODE",
-                        "value": "primary"
-                    },
-                    {
-                        "name": "PG_PRIMARY_PASSWORD",
-                        "value": "password"
-                    },
-                    {
-                        "name": "PG_PRIMARY_PORT",
-                        "value": "5432"
-                    },
-                    {
-                        "name": "PG_USER",
-                        "value": "testuser"
-                    },
-                    {
-                        "name": "PG_PASSWORD",
-                        "value": "password"
-                    },
-                    {
-                        "name": "PG_DATABASE",
-                        "value": "userdb"
-                    },
-                    {
-                        "name": "PG_ROOT_PASSWORD",
-                        "value": "password"
-                    },
-                    {
-                        "name": "ARCHIVE_MODE",
-                        "value": "on"
-                    },
-                    {
-                        "name": "ARCHIVE_TIMEOUT",
-                        "value": "60"
-                    }
-                ],
-                "volumeMounts": [
-                    {
-                        "mountPath": "/pgdata",
                         "name": "pgdata",
-                        "readOnly": false
+                        "persistentVolumeClaim": {
+                            "claimName": "pitr-pgdata"
+                        }
                     },
                     {
-                        "mountPath": "/pgwal",
                         "name": "pgwal",
-                        "readOnly": false
+                        "persistentVolumeClaim": {
+                            "claimName": "pitr-pgwal"
+                        }
                     },
                     {
-                        "mountPath": "/backup",
-                        "name": "backup",
-                        "readOnly": true
-                    },
-                    {
-                        "mountPath": "/pgconf",
                         "name": "pgconf",
-                        "readOnly": true
+                        "configMap": {
+                            "name": "pitr-pgconf"
+                        }
                     }
                 ]
             }
-        ],
-        "volumes": [
-            {
-                "name": "pgdata",
-                "persistentVolumeClaim": {
-                    "claimName": "pitr-pgdata"
-                }
-            },
-            {
-                "name": "pgwal",
-                "persistentVolumeClaim": {
-                    "claimName": "pitr-pgwal"
-                }
-            },
-            {
-                "name": "backup",
-                "emptyDir": {}
-            },
-            {
-                "name": "pgconf",
-                "configMap": {
-                    "name": "pitr-pgconf"
-                }
-            }
-        ]
+        }
     }
 }

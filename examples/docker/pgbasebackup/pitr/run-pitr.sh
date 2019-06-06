@@ -15,37 +15,20 @@
 
 CONTAINER_NAME=pitr
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 echo "Cleaning up..."
 
-sudo docker stop ${CONTAINER_NAME}
-sudo docker rm ${CONTAINER_NAME}
+"${DIR}"/cleanup.sh
 
 echo "Starting the ${CONTAINER_NAME} example..."
 
-# uncomment these lines to override the pg config files with
-# your own versions of pg_hba.conf and postgresql.conf
-#PGCONF=$HOME/openshift-dedicated-container/pgconf
-#sudo chown postgres:postgres $PGCONF
-#sudo chmod 0700 $PGCONF
-#sudo chcon -Rt svirt_sandbox_file_t $PGCONF
-# add this next line to the docker run to override pg config files
-
-DATA_DIR=/tmp/${CONTAINER_NAME}
-sudo rm -rf $DATA_DIR
-sudo mkdir -p $DATA_DIR
-sudo chown postgres:postgres $DATA_DIR
-sudo chcon -Rt svirt_sandbox_file_t $DATA_DIR
-
-WAL_DIR=/tmp/${CONTAINER_NAME}-wal
-sudo rm -rf $WAL_DIR
-sudo mkdir -p $WAL_DIR
-sudo chown postgres:postgres $WAL_DIR
-sudo chcon -Rt svirt_sandbox_file_t $WAL_DIR
+docker network create --driver bridge pitrnet
 
 sudo docker run \
 	-p 12000:5432 \
-	-v $DATA_DIR:/pgdata \
-	-v $WAL_DIR:/pgwal \
+	-v pitr-pgdata:/pgdata \
+	-v pitr-wal:/pgwal \
 	-e TEMP_BUFFERS=9MB \
 	-e PGHOST=/tmp \
 	-e MAX_CONNECTIONS=101 \
@@ -64,4 +47,5 @@ sudo docker run \
 	-e ARCHIVE_TIMEOUT=60 \
 	--name=${CONTAINER_NAME} \
 	--hostname=${CONTAINER_NAME} \
+	--network=pitrnet \
 	-d $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG

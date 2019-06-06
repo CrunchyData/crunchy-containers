@@ -20,28 +20,18 @@ echo "Cleaning up..."
 
 docker stop ${CONTAINER_NAME}
 docker rm ${CONTAINER_NAME}
+docker volume rm pitr-backup-volume
 
 echo "Starting the ${CONTAINER_NAME} example..."
 
-BACKUP_HOST=pitr
-PGDATA=/tmp/backups
-
-if [ ! -d "$PGDATA" ]; then
-	echo "Creating pgdata directory..."
-	mkdir -p $PGDATA
-fi
-
-sudo chown postgres:postgres $PGDATA
-sudo chcon -Rt svirt_sandbox_file_t $PGDATA
-
 docker run \
-	-v $PGDATA:/pgdata \
-	-e BACKUP_HOST=$BACKUP_HOST \
+	-v pitr-backup-volume:/pgdata \
+	-e BACKUP_HOST=pitr \
 	-e BACKUP_USER=primaryuser \
 	-e BACKUP_PASS=password \
 	-e BACKUP_PORT=5432 \
 	-e BACKUP_LABEL=mybackup1 \
-	--link $BACKUP_HOST:$BACKUP_HOST \
 	--name=${CONTAINER_NAME} \
 	--hostname=${CONTAINER_NAME} \
+	--network=pitrnet \
 	-d $CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG
