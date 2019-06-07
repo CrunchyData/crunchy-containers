@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+    <title>Crunchy Data Container Suite Documentation</title>
+    
+      <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="generator" content="Hugo 0.55.6" />
+<title>pgBaseBackup :: Crunchy Data Container Suite Documentation</title>
+<link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/2.4.0/favicon.png" type="image/x-icon" />
+<link href="https://crunchydata.github.io/crunchy-containers/2.4.0/css/nucleus.css" rel="stylesheet">
+<link href="https://crunchydata.github.io/crunchy-containers/2.4.0/theme-flex/style.css" rel="stylesheet">
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<link href="https://crunchydata.github.io/crunchy-containers/2.4.0/css/Fort-Fonts.css" rel="stylesheet">
+<link href="https://crunchydata.github.io/crunchy-containers/2.4.0/css/custom.css" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<script src="https://crunchydata.github.io/crunchy-containers/2.4.0/js/jquery-2.x.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js" integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP" crossorigin="anonymous"></script>
+<script src="https://crunchydata.github.io/crunchy-containers/2.4.0/js/main.js"></script>
+<script src="https://crunchydata.github.io/crunchy-containers/2.4.0/js/toc.js"></script>
+<script type="text/javascript">
+      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/2.4.0";
+</script>
+<meta name="description" content="">
+
+
+
+    
+  </head>
+  <body data-url="/examples/backup-restoration/pgbasebackup/">
+    
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+  
+<a class="navbar-brand" href="https://www.crunchydata.com/"><img alt="Crunchy Data" src="https://crunchydata.github.io/crunchy-containers/2.4.0/images/logo.svg"></a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <ul class="navbar-nav mr-auto"></ul>
+  <span class="navbar-text">
+      <nav class="shortcuts">
+              <li class="" role="">
+                  <a href="https://github.com/CrunchyData/crunchy-containers" target="_blank" rel="noopener">
+                    <i class='fab fa-github'></i> <label>Source</label>
+                  </a>
+              </li>
+              <li class="" role="">
+                  <a href="https://kubernetes.io/docs/" target="_blank" rel="noopener">
+                    <i class='fas fa-bookmark'></i> <label>Kubernetes</label>
+                  </a>
+              </li>
+              <li class="" role="">
+                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md" target="_blank" rel="noopener">
+                    <i class='fas fa-file-contract'></i> <label>License</label>
+                  </a>
+              </li>
+      </nav>
+  </span>
+</nav>
+
+<article>
+  <aside>
+
+    <ul class="menu">
+      <div>
+        <div class="searchbox">
+          <input data-search-input id="search-by" type="text" placeholder="">
+        </div>
+        <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/2.4.0/js/lunr.min.js"></script>
+        <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/2.4.0/js/auto-complete.js"></script>
+        <link href="https://crunchydata.github.io/crunchy-containers/2.4.0/css/auto-complete.css" rel="stylesheet">
+        <script type="text/javascript">
+          
+              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/2.4.0";
+          
+        </script>
+        <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/2.4.0/js/search.js"></script>
+      </div>
+
+      <hr>
+      <a class="baselink" href="https://crunchydata.github.io/crunchy-containers/2.4.0/">Crunchy Data Container Suite Documentation</a>
+      <hr>
+        <b>Available Formats</b>
+        <nav class="downloads">
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/pdf/crunchy_containers.pdf" target="_blank" rel="noopener">
+                      <i class='fas fa-file-pdf'></i> <label>PDF</label>
+                    </a>
+                </li>
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/epub/crunchy_containers.epub" target="_blank" rel="noopener">
+                      <i class='fas fa-book'></i> <label>EPUB</label>
+                    </a>
+                </li>
+        </nav>
+        <hr>
+
+      <b>Navigation</b>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/overview/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/overview/">Overview</a><i class="fas fa-angle-right fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/overview/overview/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/overview/overview/">
+            Container Images
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/overview/supported/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/overview/supported/">
+            Supported Platforms
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/client-user-guide/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/client-user-guide/">Client User Guide</a><i class="fas fa-angle-right fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/client-user-guide/user-guide/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/client-user-guide/user-guide/">
+            User Guide
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/client-user-guide/usage/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/client-user-guide/usage/">
+            Using the Images
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/" class="dd-item parent haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/">Examples</a>
+            <i class="fas fa-angle-down fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/postgresql/primary/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/postgresql/primary/">
+            PostgreSQL Primary
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/postgresql/custom-config/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/postgresql/custom-config/">
+            Custom Configuration of PostgreSQL Container
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/postgresql/custom-config-ssl/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/postgresql/custom-config-ssl/">
+            Custom Configuration of PostgreSQL Container with SSL
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/postgresql/primary-replica/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/postgresql/primary-replica/">
+            Primary and Streaming Replica Containers
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/postgresql/sync-replica/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/postgresql/sync-replica/">
+            Synchronous Replication
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/postgresql/statefulset-cluster/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/postgresql/statefulset-cluster/">
+            Statefulset PostgreSQL Cluster
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/postgresql/postgis/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/postgresql/postgis/">
+            PostGIS Container
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/poolers/pgpool/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/poolers/pgpool/">
+            pgPool II
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/backup-restoration/pgbackrest/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/backup-restoration/pgbackrest/">
+            pgBackRest
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/backup-restoration/pgbasebackup/" class="dd-item active">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/backup-restoration/pgbasebackup/">
+            pgBaseBackup
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/backup-restoration/pgdump-pgrestore/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/backup-restoration/pgdump-pgrestore/">
+            pgDump &amp; pgRestore
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/backup-restoration/scheduler/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/backup-restoration/scheduler/">
+            Scheduler
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/poolers/pgbouncer/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/poolers/pgbouncer/">
+            pgBouncer
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/metrics/metrics/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/metrics/metrics/">
+            Metrics and Performance
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/metrics/pgbadger/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/metrics/pgbadger/">
+            pgBadger
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/metrics/pgbench/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/metrics/pgbench/">
+            pgBench
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/logging/centralized-logging/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/logging/centralized-logging/">
+            Centralized Logging
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/logging/pgaudit/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/logging/pgaudit/">
+            pgAudit
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/administration/upgrade/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/administration/upgrade/">
+            Upgrade
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/administration/pgadmin4/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/administration/pgadmin4/">
+            pgAdmin 4
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/installation-guide/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/installation-guide/">Installation Guide</a><i class="fas fa-angle-right fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/installation-guide/installation-guide/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/installation-guide/installation-guide/">
+            Installation Guide
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/installation-guide/storage-configuration/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/installation-guide/storage-configuration/">
+            Storage Configuration
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/">Container Specifications</a><i class="fas fa-angle-right fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-backrest-restore/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-backrest-restore/">
+            crunchy-backrest-restore
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgbasebackup-restore/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgbasebackup-restore/">
+            crunchy-pgbasebackup-restore
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-backup/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-backup/">
+            crunchy-backup
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-collect/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-collect/">
+            crunchy-collect
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-grafana/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-grafana/">
+            crunchy-grafana
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgadmin4/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgadmin4/">
+            crunchy-pgadmin4
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgbadger/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgbadger/">
+            crunchy-pgbadger
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgbouncer/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgbouncer/">
+            crunchy-pgbouncer
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgdump/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgdump/">
+            crunchy-pgdump
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgpool/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgpool/">
+            crunchy-pgpool
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgrestore/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgrestore/">
+            crunchy-pgrestore
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-postgres-gis/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-postgres-gis/">
+            crunchy-postgres-gis
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgbench/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-pgbench/">
+            crunchy-pgbench
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-postgres/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-postgres/">
+            crunchy-postgres
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-node-exporter/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-node-exporter/">
+            crunchy-node-exporter
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-prometheus/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-prometheus/">
+            crunchy-prometheus
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-scheduler/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-scheduler/">
+            crunchy-scheduler
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-upgrade/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/container-specifications/crunchy-upgrade/">
+            crunchy-upgrade
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/contributing/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/contributing/">Contributing</a><i class="fas fa-angle-right fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/contributing/building/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/contributing/building/">
+            Building the Containers
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/contributing/documentation-updates/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/contributing/documentation-updates/">
+            Updating Documentation
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/contributing/issues/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/contributing/issues/">
+            Submitting Issues
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/contributing/pull-requests/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/contributing/pull-requests/">
+            Submitting Pull Requests
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/2.4.0/troubleshooting/" class="dd-item
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/troubleshooting/">Troubleshooting</a>
+
+      </div>
+    </li>
+
+
+
+
+      <hr><nav id="TableOfContents"></nav>
+
+
+
+      <section>
+      </section>
+    </ul>
+  </aside>
+  <section class="page">
+
+    <div class="nav-select">
+      <center>Navigation :
+        <select onchange="javascript:location.href = this.value;">
+          
+    <option value="/overview/" >
+   Overview</option>
+    <option value="/client-user-guide/" >
+   Client User Guide</option>
+    <option value="/examples/" >
+   Examples</option> 
+      <option value="/examples/postgresql/primary/" >- PostgreSQL Primary</option>
+      <option value="/examples/postgresql/custom-config/" >- Custom Configuration of PostgreSQL Container</option>
+      <option value="/examples/postgresql/custom-config-ssl/" >- Custom Configuration of PostgreSQL Container with SSL</option>
+      <option value="/examples/postgresql/primary-replica/" >- Primary and Streaming Replica Containers</option>
+      <option value="/examples/postgresql/sync-replica/" >- Synchronous Replication</option>
+      <option value="/examples/postgresql/statefulset-cluster/" >- Statefulset PostgreSQL Cluster</option>
+      <option value="/examples/postgresql/postgis/" >- PostGIS Container</option>
+      <option value="/examples/poolers/pgpool/" >- pgPool II</option>
+      <option value="/examples/backup-restoration/pgbackrest/" >- pgBackRest</option>
+      <option value="/examples/backup-restoration/pgbasebackup/"  selected>- pgBaseBackup</option>
+      <option value="/examples/backup-restoration/pgdump-pgrestore/" >- pgDump &amp; pgRestore</option>
+      <option value="/examples/backup-restoration/scheduler/" >- Scheduler</option>
+      <option value="/examples/poolers/pgbouncer/" >- pgBouncer</option>
+      <option value="/examples/metrics/metrics/" >- Metrics and Performance</option>
+      <option value="/examples/metrics/pgbadger/" >- pgBadger</option>
+      <option value="/examples/metrics/pgbench/" >- pgBench</option>
+      <option value="/examples/logging/centralized-logging/" >- Centralized Logging</option>
+      <option value="/examples/logging/pgaudit/" >- pgAudit</option>
+      <option value="/examples/administration/upgrade/" >- Upgrade</option>
+      <option value="/examples/administration/pgadmin4/" >- pgAdmin 4</option>
+  
+    <option value="/installation-guide/" >
+   Installation Guide</option>
+    <option value="/container-specifications/" >
+   Container Specifications</option>
+    <option value="/contributing/" >
+   Contributing</option>
+    <option value="/troubleshooting/" >
+   Troubleshooting</option>
+
+
+
+        </select>
+      </center>
+    </div>
+
+    
+      <div id="top-bar">
+        
+          
+          
+          
+        <div id="top-github-link">
+          <a class="github-link" href="https://crunchydata.github.io/crunchy-containers/2.4.0/contributing/" target="blank">
+            <i class="fa fa-info-circle"></i>
+            
+          </a>
+          <a class="github-link" href="https://github.com/CrunchyData/crunchy-containers/edit/master/hugo/content/examples/backup-restoration/pgbasebackup.md" target="blank">
+            <i class="fa fa-code-fork"></i>
+            
+          </a>
+        </div><div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fa fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fa fa-list-alt"></i></span>
+            <span class="links">
+            
+
+
+
+
+
+
+
+ <a href='https://crunchydata.github.io/crunchy-containers/2.4.0/'>Introduction</a> > <a href='https://crunchydata.github.io/crunchy-containers/2.4.0/examples/'>Examples</a> > pgBaseBackup
+
+ 
+
+ 
+
+
+            </span>
+        </div>
+
+      </div>
+    
+
+    
+    <div id="body-inner">
+
+    <h1>pgBaseBackup</h1>
+
+    
+
+    
+    
+
+<h1 id="pgbasebackup-examples">pgBaseBackup Examples</h1>
+
+<p>The script assumes you are going to backup the <em>primary</em>
+container created in the first example, so you need to ensure
+that container is running. This example assumes you have configured storage as described
+in the <a href="https://crunchydata.github.io/crunchy-containers/2.4.0/installation/storage-configuration/">Storage Configuration documentation</a>. Things to point out with this example
+include its use of persistent volumes and volume claims to store the backup data files.</p>
+
+<p>A successful backup will perform <code>pg_basebackup</code> on the <em>primary</em> container and store
+the backup in the <code>$CCP_STORAGE_PATH</code> volume under a directory named <code>$CCP_NAMESPACE-primary-backups</code>. Each
+backup will be stored in a subdirectory with a timestamp as the name, allowing any number of backups to be kept.</p>
+
+<p>The backup script will do the following:</p>
+
+<ul>
+<li>Start up a backup container or Kubernetes job named <em>backup</em></li>
+<li>Run <code>pg_basebackup</code> on the container named <em>primary</em></li>
+<li>Store the backup in the <code>/backup</code> volume</li>
+<li>Exit after the backup</li>
+</ul>
+
+<p>When you are ready to restore from the backup, the restore example runs a <code>pgbasebackup-restore</code> container or Kubernetes job
+in order to restore the database into a new pgdata directory, specifically using rsync to copy the backup data into
+the new directory.  A <code>crunchy-postgres</code> container then deployed using the restored database, deploying a new PostgreSQL DB
+that utilizes the original backed-up data.</p>
+
+<p>The restore scripts will do the following:</p>
+
+<ul>
+<li>Start up a container or Kubernetes job named <em>restore</em></li>
+<li>Copy the backup files from the previous backup example into <code>/pgdata</code></li>
+<li>Deploy a <code>crunchy-postgres</code> container using the restored database</li>
+</ul>
+
+<p>To shutdown and remove any artifacts from the example, run the following under each directory utilized when running the example:</p>
+
+<pre><code>./cleanup.sh
+</code></pre>
+
+<h3 id="docker">Docker</h3>
+
+<p>Perform a backup of <em>primary</em> using <code>pg_basebackup</code> by running the following script:</p>
+
+<pre><code>cd $CCPROOT/examples/docker/pgbasebackup/backup
+./run.sh
+</code></pre>
+
+<p>When you&rsquo;re ready to restore, a <em>restore</em> example is provided.  In order to run the restore, a path for the backup
+must be provided to the <code>pgabasebackup-restore</code> container using the <code>BACKUP_PATH</code> environment variable.  To get the correct path, check the logs for the <code>backup</code> container:</p>
+
+<pre><code>docker logs backup | grep BACKUP_PATH
+Fri May 10 01:40:06 UTC 2019 INFO: BACKUP_PATH is set to /pgdata/primary-backups/2019-05-10-01-40-06.
+</code></pre>
+
+<p><code>BACKUP_PATH</code> can also be discovered by looking at the backup mount directly (if access
+to the storage is available to the user).</p>
+
+<p>When you are ready to restore from the backup, first update the <code>$CCPROOT/examples/docker/pgbasebackup/full/run.sh</code>
+script used to run restore example with the proper <code>BACKUP_PATH</code>:</p>
+
+<pre><code>--env BACKUP_PATH=primary-backups/2019-05-09-11-53-32 \
+</code></pre>
+
+<p>Then run the restore:</p>
+
+<pre><code>cd $CCPROOT/examples/docker/pgbasebackup/full
+./run.sh
+</code></pre>
+
+<p>Once the restore is complete, the restored database can then be deployed by running the post restore script:</p>
+
+<pre><code>./post-restore.sh
+</code></pre>
+
+<p>You can then test the restored database as follows:</p>
+
+<pre><code>docker exec -it pgbasebackup-full-restored psql
+</code></pre>
+
+<h3 id="kubernetes-and-openshift">Kubernetes and OpenShift</h3>
+
+<p>Perform a backup of <em>primary</em> using <code>pg_basebackup</code> by running the following script:</p>
+
+<pre><code>cd $CCPROOT/examples/kube/pgbasebackup/backup
+./run.sh
+</code></pre>
+
+<p>This runs a Kubernetes job, which deploys a pod that performs the backup using <code>pg_basebackup</code>,
+and then exits.  You can view the status of the job by running the following command:</p>
+
+<pre><code>${CCP_CLI} get job
+</code></pre>
+
+<p>When you&rsquo;re ready to restore, a <em>restore</em> example is provided.  In order to run the restore, a path for the backup
+must be provided to the <code>pgabasebackup-restore</code> container using the <code>BACKUP_PATH</code> environment variable.  To get the correct path, check the logs for the <code>backup</code> job:</p>
+
+<pre><code>kubectl logs backup-txcvm | grep BACKUP_PATH
+Fri May 10 01:40:06 UTC 2019 INFO: BACKUP_PATH is set to /pgdata/primary-backups/2019-05-10-01-40-06.
+</code></pre>
+
+<p><code>BACKUP_PATH</code> can also be discovered by looking at the backup mount directly (if access
+to the storage is available to the user).</p>
+
+<p>When you are ready to restore from the backup, first update <code>$CCPROOT/examples/kube/pgbasebackup/full/restore.json</code>
+with the proper <code>BACKUP_PATH</code>:</p>
+
+<pre><code>{
+    &quot;name&quot;: &quot;BACKUP_PATH&quot;,
+    &quot;value&quot;: &quot;primary-backups/2019-05-08-18-28-45&quot;
+}
+</code></pre>
+
+<p>Then run the restore:</p>
+
+<pre><code>cd $CCPROOT/examples/kube/pgbasebackup/full
+./run.sh
+</code></pre>
+
+<p>Once the restore is complete, the restored database can then be deployed by running the post restore script:</p>
+
+<pre><code>./post-restore.sh
+</code></pre>
+
+<p>You can then test the restored database as follows:</p>
+
+<pre><code>kubectl exec -it pgbasebackup-full-restored-7d866cd5f7-qr6w8 -- psql
+</code></pre>
+
+<h2 id="point-in-time-recovery-pitr">Point in Time Recovery (PITR)</h2>
+
+<p>PITR (point-in-time-recovery) is a feature that allows for recreating a database
+from backup and log files at a certain point in time. This is done using a write
+ahead log (WAL) which is kept in the <code>pg_wal</code> directory within <code>PGDATA</code>. Changes
+made to the database files over time are recorded in these log files, which allows
+it to be used for disaster recovery purposes.</p>
+
+<p>When using PITR as a backup method, in order to restore from the last checkpoint in
+the event of a database or system failure, it is only necessary to save these log
+files plus a full backup. This provides an additional advantage in that it is not
+necessary to keep multiple full backups on hand, which consume space and time to create.
+This is because point in time recovery allows you to &ldquo;replay&rdquo; the log files and recover
+your database to any point since the last full backup.</p>
+
+<p>More detailed information about Write Ahead Log (WAL) archiving can be found
+<a href="https://www.postgresql.org/docs/10/static/continuous-archiving.html">here.</a></p>
+
+<p>By default in the crunchy-postgres container, WAL logging is <em>not</em> enabled.
+To enable WAL logging <em>outside of this example</em>, set the following environment
+variables when starting the crunchy-postgres container:</p>
+
+<pre><code>ARCHIVE_MODE=on
+ARCHIVE_TIMEOUT=60
+</code></pre>
+
+<p>These variables set the same name settings within the <code>postgresql.conf</code>
+file that is used by the database. When set, WAL files generated by the database
+will be archived to the <code>/pgwal</code> mount point.</p>
+
+<p>A full backup is required to do a PITR.  The <code>crunchy-backup</code> container is utilized to
+perform the backup in the example below, specifically running <code>pg_basebackup</code> to backup
+the database.</p>
+
+<p>After the backup is complete, a restore can then be performed.  The restore is performed
+using the <code>pgbasebackup-restore</code> container, which uses rysnc to copy a <code>pg_basebackup</code>
+backup into a new pgdata directory.</p>
+
+<p>There are two volume mounts used when performing the restore.</p>
+
+<ul>
+<li><code>/backup</code> - The volume containing the backup you would like to restore from.</li>
+<li><code>/pgdata</code> - The volume containing the restored database</li>
+</ul>
+
+<p>The following environment variables can be used to manipulate the point in time recovery logic when performing
+the restore using the <code>pgbasebackup-restore</code> container, specifically configuring the proper recovery target
+within the <code>recovery.conf</code> file:</p>
+
+<ul>
+<li><code>RECOVERY_TARGET_NAME</code> - Used to restore to a named restore point</li>
+<li><code>RECOVERY_TARGET_TIME</code> - Used to restore to a specific timestamp</li>
+<li><code>RECOVERY_TARGET_XID</code> - Used to restore to a specific transaction ID</li>
+</ul>
+
+<p>If you would rather restore to the end of the WAL log, the <code>RECOVERY_REPLAY_ALL_WAL</code> environment varibale can
+be set to <code>true</code>.  Please note that if this enviornment variable is set, then any recovery targets specified via
+the environment variables described above will be ignored.</p>
+
+<p>The <code>RECOVERY_TARGET_INCLUSIVE</code> environment variable is also available to
+let you control the setting of the <code>recovery.conf</code> setting <code>recovery_target_inclusive</code>.
+If you do not set this environment variable the default is <em>true</em>.</p>
+
+<p>Once you recover a database using PITR, it will be in read-only mode. To
+make the database resume as a writable database, run the following SQL command:</p>
+
+<pre><code>postgres=# select pg_wal_replay_resume();
+</code></pre>
+
+<div class="notices tip" >
+If you're running the PITR example for *PostgreSQL versions 9.5 or 9.6*, please note that
+starting in PostgreSQL version 10, the `pg_xlog` directory was renamed to `pg_wal`. Additionally, all usages
+of the function `pg_xlog_replay_resume` were changed to `pg_wal_replay_resume`.
+</div>
+
+<p>It takes about 1 minute for the database to become ready for use after initially starting.</p>
+
+<p>To shutdown and remove any artifacts from the example, run the following:</p>
+
+<pre><code>./cleanup.sh
+</code></pre>
+
+<h3 id="docker-1">Docker</h3>
+
+<p>Create a database container as follows:</p>
+
+<pre><code>cd $CCPROOT/examples/docker/pgbasebackup/pitr
+./run-pitr.sh
+</code></pre>
+
+<p>Next, we will create a base backup of that database as follows:</p>
+
+<pre><code>./run-backup-pitr.sh
+</code></pre>
+
+<p>This will create a backup and write the backup files to a persistent
+volume (specifically Docker named volume <code>pitr-backup-volume</code>). Additionally,
+WAL segment files will be created every 60 seconds under the <code>pgwal</code> directory
+of the running <code>pitr</code> container that contain any additional database changes.</p>
+
+<p>Next, create some recovery targets within the database by running
+the SQL commands against the <em>pitr</em> database as follows:</p>
+
+<pre><code>./run-sql.sh
+</code></pre>
+
+<p>This will create recovery targets named <code>beforechanges</code>, <code>afterchanges</code>, and
+<code>nomorechanges</code>.  It will create a table, <em>pitrtest</em>, between
+the <code>beforechanges</code> and <code>afterchanges</code> targets.  It will also run a SQL
+<code>CHECKPOINT</code> to flush out the changes to WAL segments. These labels can be
+used to mark the points in the recovery process that will be referenced when
+creating the restored database.</p>
+
+<p>Next, now that we have a base backup and a set of WAL files containing
+our database changes, we can shut down the <em>pitr</em> database
+to simulate a database failure.  Do this by running the following:</p>
+
+<pre><code>docker stop pitr
+</code></pre>
+
+<p>Now get the BACKUP_PATH created by the <code>backup-pitr</code> example by viewing the containers logs:</p>
+
+<pre><code>docker logs backup-pitr | grep PATH
+Thu May 10 18:07:58 UTC 2018 INFO: BACKUP_PATH is set to /pgdata/pitr-backups/2018-05-10-18-07-58.
+</code></pre>
+
+<p>Edit the <code>run-restore-pitr.sh</code> file and change the <code>BACKUP_PATH</code> environment variable
+using the path discovered above:</p>
+
+<pre><code>--env BACKUP_PATH=pitr-backups/2018-05-10-18-07-58 \
+</code></pre>
+
+<p>Next, we restore prior to the <code>beforechanges</code> recovery target.  This
+recovery point is <em>before</em> the <em>pitrtest</em> table is created.</p>
+
+<p>Open file <code>run-restore-pitr.sh</code>, and edit the environment
+variable to indicate we want to use the <code>beforechanges</code> recovery
+point:</p>
+
+<pre><code>--env RECOVERY_TARGET_NAME=beforechanges \
+</code></pre>
+
+<p>Then run the following to restore the database:</p>
+
+<pre><code>./run-restore-pitr.sh
+</code></pre>
+
+<p>Once the restore is complete, the restored database can then be deployed by running the post restore script:</p>
+
+<pre><code>./post-restore.sh
+</code></pre>
+
+<p>As a result of the <code>recovery.conf</code> file configured using <code>RECOVERY_TARGET_NAME</code> when performing the restore,
+the WAL segments are read from the WAL archive and applied up until the <code>beforechanges</code> named restore point.
+At this point you should therefore be able to verify that the database was restored to the point before creating
+the test table:</p>
+
+<pre><code>docker exec -it pgbasebackup-pitr-restored psql -c 'table pitrtest'
+</code></pre>
+
+<p>This SQL command should show that the pitrtest table does not exist
+at this recovery time. The output should be similar to:</p>
+
+<pre><code>ERROR: relation &quot;pitrtest&quot; does not exist
+</code></pre>
+
+<p>PostgreSQL allows you to pause the recovery process if the target name
+or time is specified.  This pause would allow a DBA a chance to review
+the recovery time/name/xid and see if this is what they want or expect.  If so,
+the DBA can run the following command to resume and complete the recovery:</p>
+
+<pre><code>docker exec -it pgbasebackup-pitr-restored psql -c 'select pg_wal_replay_resume()'
+</code></pre>
+
+<p>Until you run the statement above, the database will be left in read-only
+mode.</p>
+
+<p>Next, run the script to restore the database
+to the <code>afterchanges</code> restore point. Update the <code>RECOVERY_TARGET_NAME</code> to <code>afterchanges</code>
+in <code>run-restore-pitr.sh</code>:</p>
+
+<pre><code>--env RECOVERY_TARGET_NAME=afterchanges \
+</code></pre>
+
+<p>Then run the following to again restore the database:</p>
+
+<pre><code>./run-restore-pitr.sh
+</code></pre>
+
+<p>Once the restore is complete, the restored database can then once again be deployed by running the post restore script:</p>
+
+<pre><code>./post-restore.sh
+</code></pre>
+
+<p>After this restore you should be able to see the test table, and will still be required to make the database writable:</p>
+
+<pre><code>docker exec -it pgbasebackup-pitr-restored psql -c 'table pitrtest'
+docker exec -it pgbasebackup-pitr-restored psql -c 'select pg_wal_replay_resume()'
+</code></pre>
+
+<p>Lastly, start a restore to the end of the WAL log. This will restore the database to the most current point
+possible. To do so, edit <code>run-restore-pitr.sh</code> and remove <code>RECOVERY_TARGET_NAME</code>, and then set environment variable
+<code>RECOVERY_REPLAY_ALL_WAL</code> to <code>true</code>:</p>
+
+<pre><code>--env RECOVERY_REPLAY_ALL_WAL=true \
+</code></pre>
+
+<p>Then run the following to again restore the database:</p>
+
+<pre><code>./run-restore-pitr.sh
+</code></pre>
+
+<p>Once the restore is complete, the restored database can then once again be deployed by running the post restore script:</p>
+
+<pre><code>./post-restore.sh
+</code></pre>
+
+<p>At this point, you should be able to create new data in the restored database
+and the test table should be present.  When you recover the entire
+WAL history, resuming the recovery is not necessary to enable writes.</p>
+
+<pre><code>docker exec -it pgbasebackup-pitr-restored psql -c 'table pitrtest'
+docker exec -it pgbasebackup-pitr-restored psql -c 'create table foo (id int)'
+</code></pre>
+
+<h3 id="kubernetes-and-openshift-1">Kubernetes and OpenShift</h3>
+
+<p>Start by running the example database container:</p>
+
+<pre><code>cd $CCPROOT/examples/kube/pgbasebackup/pitr
+./run-pitr.sh
+</code></pre>
+
+<p>This step will create a database container, <em>pitr</em>.  This
+container is configured to continuously archive WAL segment files
+to a mounted volume (<code>/pgwal</code>).</p>
+
+<p>After you start the database, you will create a <code>pg_basebackup</code> backup
+using this command:</p>
+
+<pre><code>./run-backup-pitr.sh
+</code></pre>
+
+<p>This will create a backup and write the backup files to a persistent
+volume made available to the <code>crunchy-backup</code> container via Persistent
+Volume Claim <code>backup-pitr-pgdata</code>.</p>
+
+<p>Next, create some recovery targets within the database by running
+the SQL commands against the <em>pitr</em> database as follows:</p>
+
+<pre><code>./run-sql.sh
+</code></pre>
+
+<p>This will create recovery targets named <code>beforechanges</code>, <code>afterchanges</code>, and
+<code>nomorechanges</code>.  It will create a table, <em>pitrtest</em>, between
+the <code>beforechanges</code> and <code>afterchanges</code> targets.  It will also run a SQL
+<code>CHECKPOINT</code> to flush out the changes to WAL segments.</p>
+
+<p>Next, now that we have a <code>pg_basebackup</code> backup and a set of WAL files containing
+our database changes, we can shut down the <em>pitr</em> database
+to simulate a database failure.  Do this by running the following:</p>
+
+<pre><code>${CCP_CLI} delete deployment pitr
+</code></pre>
+
+<p>Next, we will create 3 different restored database containers based
+upon the base backup and the saved WAL files.</p>
+
+<p>First, get the BACKUP_PATH created by the <code>backup-pitr</code> example by viewing the pods logs:</p>
+
+<pre><code>${CCP_CLI} logs backup-pitr-8sfkh | grep PATH
+Thu May 10 18:07:58 UTC 2018 INFO: BACKUP_PATH is set to /pgdata/pitr-backups/2018-05-10-18-07-58.
+</code></pre>
+
+<p>Edit the <code>restore-pitr.json</code> file and change the <code>BACKUP_PATH</code> environment variable
+using the path discovered above (note: <code>/pgdata/</code> is not required and should be excluded
+in the variable):</p>
+
+<pre><code>{
+    &quot;name&quot;: &quot;BACKUP_PATH&quot;,
+    &quot;value&quot;: &quot;pitr-backups/2018-05-10-18-07-58&quot;
+{
+</code></pre>
+
+<p>Next, we restore prior to the <code>beforechanges</code> recovery target.  This
+recovery point is <em>before</em> the <em>pitrtest</em> table is created.</p>
+
+<p>Edit the <code>restore-pitr.json</code> file, and edit the environment
+variable to indicate we want to use the <code>beforechanges</code> recovery
+point:</p>
+
+<pre><code>{
+    &quot;name&quot;: &quot;RECOVERY_TARGET_NAME&quot;,
+    &quot;value&quot;: &quot;beforechanges&quot;
+{
+</code></pre>
+
+<p>Then run the following to restore the database:</p>
+
+<pre><code>./run-restore-pitr.sh
+</code></pre>
+
+<p>Once the restore is complete, the restored database can then once again be deployed by running the post restore script:</p>
+
+<pre><code>./post-restore.sh
+</code></pre>
+
+<p>After the database has restored, you should be able to perform
+a test to see if the recovery worked as expected:</p>
+
+<pre><code>kubectl exec -it pgbasebackup-pitr-restored-5c5df7894c-hczff -- psql -c 'table pitrtest'
+kubectl exec -it pgbasebackup-pitr-restored-5c5df7894c-hczff -- psql -c 'create table foo (id int)'
+</code></pre>
+
+<p>The output of these commands should show that the <em>pitrtest</em> table is not
+present.  It should also show that you can not create a new table
+because the database is paused in read-only mode.</p>
+
+<p>To make the database resume as a writable database, run the following
+SQL command:</p>
+
+<pre><code>kubectl exec -it pgbasebackup-pitr-restored-5c5df7894c-hczff -- psql -c 'select pg_wal_replay_resume()'
+</code></pre>
+
+<p>It should then be possible to write to the database:</p>
+
+<pre><code>kubectl exec -it pgbasebackup-pitr-restored-5c5df7894c-hczff -- psql -c 'create table foo (id int)'
+</code></pre>
+
+<p>You can also test that if <code>afterchanges</code> is specified, that the
+<em>pitrtest</em> table is present but that the database is still in recovery
+mode.</p>
+
+<p>Lastly, you can test a full recovery using <em>all</em> of the WAL files by removing any recovery targets,
+and setting <code>RECOVERY_REPLAY_ALL_WAL</code> to <code>true</code>.</p>
+
+<p>The storage portions of this example can all be found under <code>$CCP_STORAGE_PATH/$CCP_NAMESPACE-restore-pitr</code>.</p>
+
+
+
+    
+        <div class="chevrons">
+    <div id="navigation">
+<a class="nav nav-prev" href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/backup-restoration/pgbackrest/" title="pgBackRest"> <i class="fa fa-chevron-left"></i><label>pgBackRest</label></a>
+    <a class="nav nav-next" href="https://crunchydata.github.io/crunchy-containers/2.4.0/examples/backup-restoration/pgdump-pgrestore/" title="pgDump &amp; pgRestore" style="margin-right: 0px;"><label>pgDump &amp; pgRestore</label><i class="fa fa-chevron-right"></i></a></div>
+  </div>
+
+  </section>
+</article>
+
+<footer>
+
+<div class="footline">
+    
+
+    
+
+  
+
+  </div>
+
+
+	<div>
+	</div>
+</footer>
+
+<link href="https://crunchydata.github.io/crunchy-containers/2.4.0/css/featherlight.min.css" rel="stylesheet">
+<script src="https://crunchydata.github.io/crunchy-containers/2.4.0/js/featherlight.min.js"></script>
+
+<script src="https://crunchydata.github.io/crunchy-containers/2.4.0/theme-flex/script.js"></script>
+
+
+    
+
+    
+    
+
+    
+  </body>
+</html>
