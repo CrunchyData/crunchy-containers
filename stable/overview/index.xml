@@ -29,7 +29,7 @@ The rhel7 images use Crunchy Certified RPMs and are only available to active Cru
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/overview/supported/</guid>
       <description> Supported Platforms Crunchy Container Suite supports the following platforms:
- Docker 1.13+ Kubernetes 1.8+ OpenShift Container Platform 3.11  </description>
+ Docker 1.13+ Kubernetes 1.12+ OpenShift Container Platform 3.11 VMWare Enterprise PKS 1.3+  </description>
     </item>
     
   </channel>
