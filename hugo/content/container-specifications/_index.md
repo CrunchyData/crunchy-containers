@@ -13,6 +13,7 @@ weight: 6
 * [Crunchy grafana](crunchy-grafana)
 * [Crunchy pgadmin4](crunchy-pgadmin4)
 * [Crunchy pgbadger](crunchy-pgbadger)
+* [Crunchy pgbench](crunchy-pgbench)
 * [Crunchy pgbouncer](crunchy-pgbouncer)
 * [Crunchy pgdump](crunchy-pgdump)
 * [Crunchy pgpool](crunchy-pgpool)
