@@ -385,13 +385,6 @@
 	"content": "So you decided to submit an issue and work it. Great! Let\u0026rsquo;s get it merged in to the codebase. The following will go a long way to helping get the fix merged in quicker:\n Fork the Github repository and make a branch off of the develop branch Create a Pull Request from your Fork back to the develop branch. Update the checklists in the Pull Request description. Reference which issues this Pull Request is resolving.  "
 },
 {
-	"uri": "https://crunchydata.github.io/crunchy-containers/latest/contributing/documentation-updates/",
-	"title": "",
-	"tags": [],
-	"description": "",
-	"content": ""
-},
-{
 	"uri": "https://crunchydata.github.io/crunchy-containers/latest/categories/",
 	"title": "Categories",
 	"tags": [],

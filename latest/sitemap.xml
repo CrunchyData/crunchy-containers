@@ -228,11 +228,6 @@
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/contributing/documentation-updates/</loc>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/categories/</loc>
     <priority>0</priority>
   </url>
