@@ -47,8 +47,8 @@ else
         env_check_err "COLLECT_HOST"
         sed -i "s|COLLECT_HOST|${COLLECT_HOST?}|g" /data/prometheus.yml
     fi
-    sed -i "s|SCRAPE_INTERVAL|${SCRAPE_INTERVAL:-5s}|g" /data/prometheus.yml
-    sed -i "s|SCRAPE_TIMEOUT|${SCRAPE_TIMEOUT:-5s}|g" /data/prometheus.yml
+    sed -i "s|SCRAPE_INTERVAL|${SCRAPE_INTERVAL:-10s}|g" /data/prometheus.yml
+    sed -i "s|SCRAPE_TIMEOUT|${SCRAPE_TIMEOUT:-10s}|g" /data/prometheus.yml
     sed -i "s|JOB_NAME|${JOB_NAME:-crunchy-collect}|g" /data/prometheus.yml
 fi
 

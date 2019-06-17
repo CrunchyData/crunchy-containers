@@ -7,7 +7,7 @@ LABEL name="crunchydata/backup" \
 	PostgresVersion="9.5" \
       	PostgresFullRelease="9.5.13" \
 	Version="7.6" \
-	Release="2.4.0-rc8" \
+	Release="2.4.0" \
         url="https://crunchydata.com" \
         summary="Performs a pg_basebackup full database backup on a database container" \
         description="Meant to be executed upon demand, this container will run pg_basebackup against a running database container and write the backup files to a mounted directory." \
@@ -36,7 +36,7 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
 # install deps
-RUN yum -y --enablerepo=rhel-7-server-ose-3.9-rpms --disablerepo=crunchy* update \
+RUN yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
  && yum -y install gettext procps-ng \
   postgresql95-server  \
   postgresql95 \

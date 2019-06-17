@@ -17,7 +17,7 @@ major public clouds and enables enables hybrid cloud deployments.
 
 Crunchy Container Suite includes:
 
-* Compatibility with Docker, Kubernetes and OpenShift
+* Compatibility with Docker, Kubernetes, Red Hat OpenShift, VMWare Enterprise PKS
 * Cloud-agnostic: build your own database-as-a-service in any public, private, or hybrid cloud
 * No forks: 100% open source, native PostgreSQL
 * Backup, restore, & disaster recovery for terabytes of data

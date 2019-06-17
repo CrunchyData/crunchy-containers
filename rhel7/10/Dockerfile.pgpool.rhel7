@@ -7,7 +7,7 @@ LABEL name="crunchydata/pgpool" \
 	PostgresVersion="10" \
 	PostgresFullVersion="10.8" \
 	Version="7.6" \
-	Release="2.4.0-rc8" \
+	Release="2.4.0" \
   url="https://crunchydata.com" \
   summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
   description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the primary and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \
@@ -32,7 +32,7 @@ RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
-RUN yum -y --enablerepo=rhel-7-server-ose-3.9-rpms --disablerepo=crunchy* update \
+RUN yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
  && yum -y install epel-release \
  && yum -y install \
       gettext \
