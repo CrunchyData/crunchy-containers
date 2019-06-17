@@ -102,6 +102,8 @@ function initdb_logic() {
     cmd="initdb -D $PGDATA "
     if [[ -v PG_LOCALE ]]; then
         cmd+=" --locale="$PG_LOCALE
+    else
+        cmd+=" --locale=en_US.utf8"
     fi
 
     if [[ -v XLOGDIR ]] && [[ ${XLOGDIR?} == "true" ]]
