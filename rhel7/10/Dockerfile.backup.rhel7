@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/backup" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.8" \
+	PostgresFullVersion="10.9" \
 	Version="7.6" \
-	Release="2.3.2" \
+	Release="2.3.3" \
         url="https://crunchydata.com" \
         summary="Performs a pg_basebackup full database backup on a database container" \
         description="Meant to be executed upon demand, this container will run pg_basebackup against a running database container and write the backup files to a mounted directory." \
