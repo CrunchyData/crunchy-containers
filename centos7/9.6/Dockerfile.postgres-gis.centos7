@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/postgres-gis" \
         vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.13" \
+	PostgresFullVersion="9.6.14" \
 	Version="7.6" \
-	Release="2.3.2" \
+	Release="2.3.3" \
         url="https://crunchydata.com" \
         summary="Includes PostGIS extensions on top of crunchy-postgres" \
         description="An identical image of crunchy-postgres with the extra PostGIS packages added for users that require PostGIS." \
