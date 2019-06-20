@@ -5,7 +5,7 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/node-exporter" \
         vendor="crunchy data" \
 	Version="7.6" \
-	Release="2.4.0-rc10" \
+	Release="2.4.1" \
         url="https://crunchydata.com" \
         summary="Provides host metrics for crunchy-postgres" \
         description="Runs on all container hosts to collect host metrics.  Metrics are stored in Crunchy Prometheus and visualized by Crunchy Grafana" \
