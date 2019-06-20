@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/collect" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.8" \
+	PostgresFullVersion="10.9" \
 	Version="7.6" \
-	Release="2.4.0" \
+	Release="2.4.1" \
         url="https://crunchydata.com" \
         summary="Provides metrics for crunchy-postgres" \
         description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus and crunchy-grafana." \

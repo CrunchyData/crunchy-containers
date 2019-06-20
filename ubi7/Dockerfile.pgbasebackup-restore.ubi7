@@ -3,7 +3,7 @@ FROM ubi7
 LABEL name="crunchydata/pgbasebackup-restore" \
         vendor="crunchy data" \
 	Version="7.6" \
-	Release="2.4.0-rc10" \
+	Release="2.4.1" \
         url="https://crunchydata.com" \
         summary="Restores a database using a pg_basebackup backup" \
         description="Restores a database into a specified PGDATA directory using a pg_basebackup backup, while also preparing for PITR if a recovery target is specified." \
