@@ -107,6 +107,11 @@ postgres: versiontest commands
 	docker build -t crunchy-postgres -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres.$(CCP_BASEOS) .
 	docker tag crunchy-postgres $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
+postgres-appdev: versiontest commands
+	cp $(GOBIN)/pgc bin/postgres
+	docker build -t crunchy-postgres-appdev -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-appdev.$(CCP_BASEOS) .
+	docker tag crunchy-postgres-appdev $(CCP_IMAGE_PREFIX)/crunchy-postgres-appdev:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+
 postgres-gis: versiontest commands
 	cp $(GOBIN)/pgc bin/postgres
 	expenv -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS) > $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS).tmp

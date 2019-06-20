@@ -13,6 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+### TODO gonna need this shell script to also fire up pgadmin4 as well
+
+
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
 
@@ -36,74 +39,64 @@ function trap_sigterm() {
 
 trap 'trap_sigterm' SIGINT SIGTERM
 
+# Only sets path and hostname information (I think)
 source /opt/cpm/bin/setenv.sh
+
+### TODO I think this next line is only for running in Kube - we should delete it
 source check-for-secrets.sh
 
-env_check_err "PG_MODE"
 
-if [ "$PG_MODE" = "replica" ]; then
-    env_check_err "PG_PRIMARY_HOST"
-fi
-
-env_check_err "PG_PRIMARY_USER"
-env_check_err "PG_PRIMARY_PASSWORD"
-env_check_err "PG_USER"
 env_check_err "PG_PASSWORD"
-env_check_err "PG_DATABASE"
-env_check_err "PG_ROOT_PASSWORD"
-env_check_err "PG_PRIMARY_PORT"
 
-export PG_MODE=$PG_MODE
-export PG_PRIMARY_HOST=$PG_PRIMARY_HOST
-export PG_REPLICA_HOST=$PG_REPLICA_HOST
-export PG_PRIMARY_PORT=$PG_PRIMARY_PORT
-export PG_PRIMARY_USER=$PG_PRIMARY_USER
-export PG_PRIMARY_PASSWORD=$PG_PRIMARY_PASSWORD
-export PG_USER=$PG_USER
+
+export PG_MODE="primary"
+
+#These are only needed for replication so we just give them random usernames and passwords
+export PG_PRIMARY_USER="user"$(openssl rand -hex 5)
+export PG_PRIMARY_PASSWORD="pass"$(openssl rand -hex 5)
+
+# [ -z means if the string is null or spaces only
+if [ -z $PG_PRIMARY_PORT  ]
+    then
+        echo_warn "PG_PRIMARY_PORT is not set, setting port = 5432"
+        export PG_PRIMARY_PORT=5432
+    else
+        export PG_PRIMARY_PORT=$PG_PRIMARY_PORT
+    fi
+
+if [ -z $PG_USER  ]
+    then
+        echo_warn "PG_USER is not set, setting user = rnduser2w3"
+        export PG_USER="rnduser2w3"
+    else
+        export PG_USER=$PG_USER
+    fi
+if [ -z $PG_DATABASE  ]
+    then
+        echo_warn "PG_DATABASE is not set, setting database = mydb"
+        export PG_DATABASE="mydb"
+    else
+        export PG_DATABASE=$PG_DATABASE
+    fi
+if [ -z $PG_ROOT_PASSWORD ]
+    then
+        echo_warn "PG_ROOT_PASSWORD is not set, setting database = to the password you used for user"
+        export PG_ROOT_PASSWORD=$PG_PASSWORD
+    else
+        export PG_ROOT_PASSWORD=$PG_ROOT_PASSWORD
+    fi
 export PG_PASSWORD=$PG_PASSWORD
-export PG_DATABASE=$PG_DATABASE
-export PG_ROOT_PASSWORD=$PG_ROOT_PASSWORD
 
 mkdir -p $PGDATA
 chmod 0700 $PGDATA
 
-if [[ -v ARCHIVE_MODE ]]; then
-    if [ $ARCHIVE_MODE == "on" ]; then
-        mkdir -p $PGWAL
-        chmod 0700 $PGWAL
-        echo_info "Creating wal directory in ${PGWAL?}.."
-    fi
-fi
-
-## where pg-wrapper is called
-function role_discovery() {
-    PATH=$PATH:/opt/cpm/bin
-    ordinal=${HOSTNAME##*-}
-    echo_info "Ordinal is set to ${ordinal?}."
-    if [ $ordinal -eq 0 ]; then
-        pgc label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST > /tmp/pgc.stdout 2> /tmp/pgc.stderr
-        err_check "$?" "Statefulset Role Discovery (primary)" \
-            "Unable to set mode on pod, label command failed: \n$(cat /tmp/pgc.stderr)"
-        export PG_MODE=primary
-    else
-        pgc label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST > /tmp/pgc.stdout 2> /tmp/pgc.stderr
-        err_check "$?" "Statefulset Role Discovery (replica)" \
-            "Unable to set mode on pod, label command failed: \n$(cat /tmp/pgc.stderr)"
-        export PG_MODE=replica
-    fi
-
-    echo_info "Setting PG_MODE to ${PG_MODE?}"
-}
 
 function initdb_logic() {
     echo_info "Starting initdb.."
 
-    #	tar xzf /opt/cpm/conf/data.tar.gz --directory=$PGDATA
-    cmd="initdb -D $PGDATA "
+    cmd="initdb -E UTF8 -D $PGDATA "
     if [[ -v PG_LOCALE ]]; then
         cmd+=" --locale="$PG_LOCALE
-    else
-        cmd+=" --locale=en_US.utf8"
     fi
 
     if [[ -v XLOGDIR ]] && [[ ${XLOGDIR?} == "true" ]]
@@ -148,7 +141,7 @@ function fill_conf_file() {
     env_check_info "WORK_MEM" "Setting WORK_MEM to ${WORK_MEM:-4MB}."
     env_check_info "MAX_WAL_SENDERS" "Setting MAX_WAL_SENDERS to ${MAX_WAL_SENDERS:-6}."
 
-    cp /opt/cpm/conf/postgresql.conf.template /tmp/postgresql.conf
+    cp /opt/cpm/conf/postgresql.conf.template.nopgaudit /tmp/postgresql.conf
 
     sed -i "s/TEMP_BUFFERS/${TEMP_BUFFERS:-8MB}/g" /tmp/postgresql.conf
     sed -i "s/LOG_MIN_DURATION_STATEMENT/${LOG_MIN_DURATION_STATEMENT:-60000}/g" /tmp/postgresql.conf
@@ -196,36 +189,6 @@ function waitforpg() {
 
 }
 
-function initialize_replica() {
-    echo_info "Initializing the replica."
-    rm -rf $PGDATA/*
-    chmod 0700 $PGDATA
-
-    echo_info "Waiting to allow the primary database time to successfully start before performing the initial backup.."
-    waitforpg
-
-    pg_basebackup -X fetch --no-password --pgdata $PGDATA --host=$PG_PRIMARY_HOST \
-        --port=$PG_PRIMARY_PORT -U $PG_PRIMARY_USER > /tmp/pgbasebackup.stdout 2> /tmp/pgbasebackup.stderr
-    err_check "$?" "Initialize Replica" "Could not run pg_basebackup: \n$(cat /tmp/pgbasebackup.stderr)"
-
-    # PostgreSQL recovery configuration.
-    if [[ -v SYNC_REPLICA ]]; then
-        echo_info "SYNC_REPLICA environment variable is set."
-        APPLICATION_NAME=$SYNC_REPLICA
-    else
-        APPLICATION_NAME=$HOSTNAME
-        echo_info "SYNC_REPLICA environment variable is not set."
-    fi
-    echo_info "${APPLICATION_NAME} is the APPLICATION_NAME being used."
-
-    cp /opt/cpm/conf/pgrepl-recovery.conf /tmp
-    sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pgrepl-recovery.conf
-    sed -i "s/PG_PRIMARY_HOST/$PG_PRIMARY_HOST/g" /tmp/pgrepl-recovery.conf
-    sed -i "s/PG_PRIMARY_PORT/$PG_PRIMARY_PORT/g" /tmp/pgrepl-recovery.conf
-    sed -i "s/APPLICATION_NAME/$APPLICATION_NAME/g" /tmp/pgrepl-recovery.conf
-    cp /tmp/pgrepl-recovery.conf $PGDATA/recovery.conf
-}
-
 # Function to create the database if the PGDATA folder is empty, or do nothing if PGDATA
 # is not empty.
 function initialize_primary() {
@@ -235,7 +198,10 @@ function initialize_primary() {
         echo_info "PGDATA is empty. ID is ${ID}. Creating the PGDATA directory.."
         mkdir -p ${PGDATA?}
 
+
         initdb_logic
+
+
 
         echo "Starting database.." >> /tmp/start-db.log
 
@@ -265,6 +231,8 @@ function initialize_primary() {
         if [ -f /pgconf/setup.sql ]; then
             echo_info "Using setup.sql from /pgconf.."
             cp /pgconf/setup.sql /tmp
+        else
+            echo_info "Using the /opt/cpm/bin/setup.sql"
         fi
         sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/setup.sql
         sed -i "s/PG_PRIMARY_PASSWORD/$PG_PRIMARY_PASSWORD/g" /tmp/setup.sql
@@ -277,50 +245,15 @@ function initialize_primary() {
         # to use /tmp instead of /var/run.
         export PGHOST=/tmp
         psql -U postgres -p "${PG_PRIMARY_PORT}" < /tmp/setup.sql
-        if [ -f /pgconf/audit.sql ]; then
-            echo_info "Using pgaudit_analyze audit.sql from /pgconf.."
-            psql -U postgres < /pgconf/audit.sql
-        fi
 
         echo_info "Stopping database after primary initialization.."
         pg_ctl -D $PGDATA --mode=fast stop
 
-        if [[ -v SYNC_REPLICA ]]; then
-            echo "Synchronous_standby_names = '"$SYNC_REPLICA"'" >> $PGDATA/postgresql.conf
-        fi
     else
         echo_info "PGDATA already contains a database."
     fi
 }
 
-configure_archiving() {
-    printf "\n# Archive Configuration:\n" >> /"${PGDATA?}"/postgresql.conf
-
-    export ARCHIVE_MODE=${ARCHIVE_MODE:-off}
-    export ARCHIVE_TIMEOUT=${ARCHIVE_TIMEOUT:-0}
-
-    if [[ "${PGBACKREST}" == "true" ]]
-    then
-        export ARCHIVE_MODE=on
-        echo_info "Setting pgbackrest archive command.."
-        if [[ "${BACKREST_LOCAL_AND_S3_STORAGE}" == "true" ]]
-        then
-            cat /opt/cpm/conf/backrest-archive-command-local-and-s3 >> /"${PGDATA?}"/postgresql.conf
-        else
-            cat /opt/cpm/conf/backrest-archive-command >> /"${PGDATA?}"/postgresql.conf
-        fi
-    elif [[ "${ARCHIVE_MODE}" == "on" ]] && [[ ! "${PGBACKREST}" == "true" ]]
-    then
-        echo_info "Setting standard archive command.."
-        cat /opt/cpm/conf/archive-command >> /"${PGDATA?}"/postgresql.conf
-    fi
-
-    echo_info "Setting ARCHIVE_MODE to ${ARCHIVE_MODE?}."
-    echo "archive_mode = ${ARCHIVE_MODE?}" >> "${PGDATA?}"/postgresql.conf
-
-    echo_info "Setting ARCHIVE_TIMEOUT to ${ARCHIVE_TIMEOUT?}."
-    echo "archive_timeout = ${ARCHIVE_TIMEOUT?}" >> "${PGDATA?}"/postgresql.conf
-}
 
 # Clean up any old pid file that might have remained
 # during a bad shutdown of the container/postgres
@@ -338,43 +271,14 @@ fi
 ID="$(id)"
 echo_info "User ID is set to ${ID}."
 
-# For Kube Statefulset support.
-case "$PG_MODE" in
-    "set")
-    role_discovery
-    ;;
-esac
-
 fill_conf_file
-
-case "$PG_MODE" in
-    "replica"|"slave")
-    echo_info "Working on replica.."
-    create_pgpass
-    export PGPASSFILE=/tmp/.pgpass
-    if [ ! -f $PGDATA/postgresql.conf ]; then
-        initialize_replica
-    fi
-    ;;
-    "primary"|"master")
-    echo_info "Working on primary.."
-    initialize_primary
-    ;;
-    *)
-    echo_err "PG_MODE is not an accepted value. Check that the PG_MODE environment variable is set to one of the two valid values (primary, replica)."
-    ;;
-esac
-
-# Configure pgbackrest if enabled
-if [[ ${PGBACKREST} == "true" ]]
-then
-    echo_info "pgBackRest: Enabling pgbackrest.."
-    source /opt/cpm/bin/pgbackrest.sh
-fi
-
-configure_archiving
+initialize_primary
 
 source /opt/cpm/bin/custom-configs.sh
+
+######### Start up PGadmin4
+########   source /opt/cpm/bin/start-pgadmin4.sh
+
 
 # Run pre-start hook if it exists
 if [ -f /pgconf/pre-start-hook.sh ]

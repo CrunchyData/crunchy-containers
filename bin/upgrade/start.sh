@@ -105,7 +105,10 @@ env
 options=" "
 if [[ -v PG_LOCALE ]]; then
     options+=" --locale="$PG_LOCALE
+else
+    options+=" --locale=en_US.utf8"
 fi
+
 if [[ -v XLOGDIR ]]; then
     if [ -d "$XLOGDIR" ]; then
         options+=" --X "$XLOGDIR
