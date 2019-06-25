@@ -612,10 +612,8 @@
 
 <h2 id="major-upgrade">Major Upgrade</h2>
 
-<div class="notices tip" >
-This example assumes you have run *primary* using a PG 9.5 or 9.6 image
-such as `centos7-9.5.15-2.2.0` prior to running this upgrade.
-</div>
+<div class="notices tip" >This example assumes you have run <em>primary</em> using a PG 9.5 or 9.6 image
+such as <code>centos7-9.5.15-2.2.0</code> prior to running this upgrade.</div>
 
 <p>The upgrade container will let you perform a <code>pg_upgrade</code> from a PostgreSQL version 9.5, 9.6, or 10 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, and 11. It does not do multi-version upgrades so you will need to for example do a 9.5 to 9.6 and then a 9.6 to 10 to get to version 10.</p>
 
@@ -631,19 +629,15 @@ sure the variable references a PG 9.6 image such as <code>centos7-9.6.11-2.2.0</
 <li>a new data directory name <em>upgrade</em> found in the <em>pgnewdata</em> PVC</li>
 </ul>
 
-<div class="notices tip" >
-Data checksums on the Crunchy PostgreSQL container were enabled by default in version 2.1.0.
-When trying to upgrade, it's required that both the old database and the new database
-have the same data checksums setting.  Prior to upgrade, check if `data_checksums`
-were enabled on the database by running the following SQL: `SHOW data_checksums`
-</div>
+<div class="notices tip" >Data checksums on the Crunchy PostgreSQL container were enabled by default in version 2.1.0.
+When trying to upgrade, it&rsquo;s required that both the old database and the new database
+have the same data checksums setting.  Prior to upgrade, check if <code>data_checksums</code>
+were enabled on the database by running the following SQL: <code>SHOW data_checksums</code></div>
 
 <h2 id="kubernetes-and-openshift">Kubernetes and OpenShift</h2>
 
-<div class="notices tip" >
-Before running the example, ensure you edit `upgrade.json` and update the `OLD_VERSION`
-and `NEW_VERSION` parameters to the major release version relevant to your situation.
-</div>
+<div class="notices tip" >Before running the example, ensure you edit <code>upgrade.json</code> and update the <code>OLD_VERSION</code>
+and <code>NEW_VERSION</code> parameters to the major release version relevant to your situation.</div>
 
 <p>First, delete the existing primary deployment:</p>
 

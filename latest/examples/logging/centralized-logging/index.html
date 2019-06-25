@@ -649,9 +649,7 @@ out of the container we need to configure PostgreSQL to log to <code>stdout</cod
 logging_collector = off
 </code></pre>
 
-<div class="notices warning" >
-Changes to logging settings require a restart of the PostgreSQL container to take effect.
-</div>
+<div class="notices warning" >Changes to logging settings require a restart of the PostgreSQL container to take effect.</div>
 
 <h2 id="deploying-the-efk-stack-on-openshift-container-platform">Deploying the EFK Stack On OpenShift Container Platform</h2>
 
@@ -670,10 +668,8 @@ configuring OpenShift to create an EFK stack, see the official documentation:</p
 ./run.sh
 </code></pre>
 
-<div class="notices warning" >
-Elasticsearch is configured to use an `emptyDir` volume in this example.  Configure this example to provide a
-persistent volume when deploying into production.
-</div>
+<div class="notices warning" >Elasticsearch is configured to use an <code>emptyDir</code> volume in this example.  Configure this example to provide a
+persistent volume when deploying into production.</div>
 
 <p>Next, verify the pods are running in the <code>kube-system</code> namespace:</p>
 
