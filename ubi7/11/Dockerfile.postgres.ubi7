@@ -44,7 +44,7 @@ RUN yum -y update && yum -y install bind-utils \
     psmisc openssh-server openssh-clients \
  && yum -y reinstall glibc-common \
  && yum -y install postgresql11 postgresql11-contrib postgresql11-server \
-    pgaudit11 pgaudit11_set_user \
+    pgaudit11 pgaudit11_set_user postgresql11-plpython \
  && yum -y install crunchy-backrest-"${BACKREST_VERSION}" \
  && yum -y --setopt=tsflags='' install pgaudit_analyze \
  && yum -y clean all
