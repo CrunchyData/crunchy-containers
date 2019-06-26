@@ -1,6 +1,6 @@
 FROM centos:7
 
-LABEL Release="2.3.2"
+LABEL Release="2.3.3"
 
 ADD build/crunchy-sim /usr/bin
 
