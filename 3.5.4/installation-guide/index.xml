@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Installation Guide on Crunchy Data Container Suite Documentation</title>
+    <link>https://crunchydata.github.io/crunchy-containers/3.5.4/installation-guide/</link>
+    <description>Recent content in Installation Guide on Crunchy Data Container Suite Documentation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://crunchydata.github.io/crunchy-containers/3.5.4/installation-guide/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Installation Guide</title>
+      <link>https://crunchydata.github.io/crunchy-containers/3.5.4/installation-guide/installation-guide/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/3.5.4/installation-guide/installation-guide/</guid>
+      <description>Requirements These installation instructions are developed and tested for the following operating systems:
+ CentOS 7
+ RHEL 7
+  The Crunchy Container Suite can run on different environments including:
+ Docker 1.13+
+ OpenShift Container Platform 3.11
+ Kubernetes 1.8+
+  In this document we list the basic installation steps required for these environments.
+Project Environment If your goal is to simply run the containers any properly configured user account should work.</description>
+    </item>
+    
+    <item>
+      <title>Storage Configuration</title>
+      <link>https://crunchydata.github.io/crunchy-containers/3.5.4/installation-guide/storage-configuration/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/3.5.4/installation-guide/storage-configuration/</guid>
+      <description>Storage Configuration Available Storage Types The Crunchy Container Suite is officially tested using two different storage backends:
+ HostPath (single node testing) NFS (single and multi-node testing)  Other storage backends work as well, including GCE, EBS, ScaleIO, and others, but may require you to modify various examples or configuration.
+The Crunchy Container Suite is tested, developed, and examples are provided that use the various storage types listed above. This ensures that customers have a high degree of choices when it comes to choosing a volume type.</description>
+    </item>
+    
+  </channel>
+</rss>
