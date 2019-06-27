@@ -807,11 +807,9 @@ make the database resume as a writable database, run the following SQL command:<
 <pre><code>postgres=# select pg_wal_replay_resume();
 </code></pre>
 
-<div class="notices tip" >
-If you're running the PITR example for *PostgreSQL versions 9.5 or 9.6*, please note that
-starting in PostgreSQL version 10, the `pg_xlog` directory was renamed to `pg_wal`. Additionally, all usages
-of the function `pg_xlog_replay_resume` were changed to `pg_wal_replay_resume`.
-</div>
+<div class="notices tip" >If you&rsquo;re running the PITR example for <em>PostgreSQL versions 9.5 or 9.6</em>, please note that
+starting in PostgreSQL version 10, the <code>pg_xlog</code> directory was renamed to <code>pg_wal</code>. Additionally, all usages
+of the function <code>pg_xlog_replay_resume</code> were changed to <code>pg_wal_replay_resume</code>.</div>
 
 <p>It takes about 1 minute for the database to become ready for use after initially starting.</p>
 

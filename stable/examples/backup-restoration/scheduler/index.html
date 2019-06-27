@@ -639,9 +639,7 @@ delete the task.</p>
 exec (pgBackRest).  See the <a href="https://github.com/CrunchyData/crunchy-containers/tree/master/examples/kube/scheduler/scheduler-sa.json">scheduler example</a>
 for the required permissions on this account.</p>
 
-<div class="notices tip" >
-Crunchy Scheduler uses the `UTC` timezone for all schedules.
-</div>
+<div class="notices tip" >Crunchy Scheduler uses the <code>UTC</code> timezone for all schedules.</div>
 
 <h3 id="pgbackrest-schedules">pgBackRest Schedules</h3>
 
@@ -662,12 +660,11 @@ for the structure required by the Scheduler.</li>
 <li>The name of the PVC created for the backups.  This should be created by the user prior to scheduling the task.</li>
 </ul>
 
-<div class="notices tip" >
-When using pgBaseBackup schedules, it may be required to apply specific `supplementalGroups` or an `fsGroup`
-to the backup job created by the scheduler.  To apply a specific `securityContext` for your
-storage provider, mount a `backup-template.json` to `/configs` on the scheduler pod.
+<div class="notices tip" ><p>When using pgBaseBackup schedules, it may be required to apply specific <code>supplementalGroups</code> or an <code>fsGroup</code>
+to the backup job created by the scheduler.  To apply a specific <code>securityContext</code> for your
+storage provider, mount a <code>backup-template.json</code> to <code>/configs</code> on the scheduler pod.</p>
 
-For an example of applying a custom template, [see the scheduler example](https://github.com/CrunchyData/crunchy-containers/tree/master/examples/kube/scheduler).
+<p>For an example of applying a custom template, <a href="https://github.com/CrunchyData/crunchy-containers/tree/master/examples/kube/scheduler">see the scheduler example</a>.</p>
 </div>
 
 <h3 id="kubernetes-and-openshift">Kubernetes and OpenShift</h3>

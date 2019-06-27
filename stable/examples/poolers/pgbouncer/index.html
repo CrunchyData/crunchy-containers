@@ -639,9 +639,7 @@
 <pre><code>./cleanup.sh
 </code></pre>
 
-<div class="notices tip" >
-For more information on `pgBouncer`, see the [official website](https://pgbouncer.github.io).
-</div>
+<div class="notices tip" >For more information on <code>pgBouncer</code>, see the <a href="https://pgbouncer.github.io">official website</a>.</div>
 
 <p>This example uses a custom configuration to create the pgbouncer user and an auth function in
 the primary for the pgbouncer containers to authenticate against. It takes advantage of the post-startup-hook and
@@ -670,10 +668,8 @@ psql -d pgbouncer -h 0.0.0.0 -p 6433 -U pgbouncer
 
 <h3 id="kubernetes-and-openshift">Kubernetes and OpenShift</h3>
 
-<div class="notices tip" >
-OpenShift: If custom configurations aren't being mounted, an *emptydir* volume is required
-to be mounted at `/pgconf`.
-</div>
+<div class="notices tip" >OpenShift: If custom configurations aren&rsquo;t being mounted, an <em>emptydir</em> volume is required
+to be mounted at <code>/pgconf</code>.</div>
 
 <p>Run the <code>pgbouncer</code> example:</p>
 
