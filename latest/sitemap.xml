@@ -220,15 +220,16 @@
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/contributing/documentation-updates/</loc>
-  </url>
-  
-  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/contributing/issues/</loc>
   </url>
   
   <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/contributing/pull-requests/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/contributing/documentation-updates/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
