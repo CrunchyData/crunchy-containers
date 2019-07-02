@@ -46,7 +46,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
     psmisc openssh-server openssh-clients \
  && yum -y reinstall glibc-common \
  && yum -y install postgresql95 postgresql95-contrib postgresql95-server \
-    pgaudit95 pgaudit95_set_user \
+    pgaudit95 pgaudit95_set_user postgresql95-plpython \
     crunchy-backrest-"${BACKREST_VERSION}" \
  && yum -y --setopt=tsflags='' install pgaudit_analyze \
  && yum -y clean all
