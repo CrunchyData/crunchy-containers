@@ -18,6 +18,7 @@ weight: 6
 * [Crunchy pgdump](crunchy-pgdump)
 * [Crunchy pgpool](crunchy-pgpool)
 * [Crunchy pgrestore](crunchy-pgrestore)
+* [Crunchy postgres-appdev](crunchy-postgres-appdev)
 * [Crunchy postgres-gis](crunchy-postgres-gis)
 * [Crunchy postgres](crunchy-postgres)
 * [Crunchy prometheus](crunchy-prometheus)
