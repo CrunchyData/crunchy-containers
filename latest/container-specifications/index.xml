@@ -134,6 +134,16 @@ Packages The crunchy-pgrestore Docker image contains the following packages (ver
     </item>
     
     <item>
+      <title>crunchy-postgres-appdev</title>
+      <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres-appdev/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres-appdev/</guid>
+      <description>PostgreSQL (pronounced &amp;ldquo;post-gress-Q-L&amp;rdquo;) is an open source, ACID compliant, relational database management system (RDBMS) developed by a worldwide team of volunteers. The crunchy-postgres-appdev container image is unmodified, open source PostgreSQL packaged and maintained by professionals.
+This image is identical to the crunchy-postgres-gis image except it is built specifically for ease of use for application developers. To achieve that we have set reasonable default for some environment variables, remove some functionality needed for a production usage (such as replication and backup).</description>
+    </item>
+    
+    <item>
       <title>crunchy-postgres-gis</title>
       <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres-gis/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
