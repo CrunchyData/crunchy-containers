@@ -2,7 +2,7 @@ FROM ubi7
 
 MAINTAINER Crunchy Data <info@crunchydata.com>
 
-LABEL name="crunchydata/postgres" \
+LABEL name="crunchydata/crunchy-backrest-restore" \
         vendor="crunchy data" \
 	PostgresVersion="11" \
 	PostgresFullVersion="11.4" \
