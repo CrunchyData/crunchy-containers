@@ -51,6 +51,7 @@ It supports the following features:
 * [Extensions available](https://www.postgresql.org/docs/current/contrib.html) in the PostgreSQL contrib module.
 * Enhanced audit logging from the pgAudit extension
 * Enhanced database statistics from the pg_stat_tatements extensions
+* Python Procedural Language from the PL/Python extensions
 
 ### Crunchy PostgreSQL PostGIS
 
@@ -72,7 +73,7 @@ Crunchy Container Suite provides two types of backup images:
 
 *Physical* backup and restoration tools included in the Crunchy Container suite are:
 
-* [pgBackRest](2.x)
+* [pgBackRest](2.15.1)
   PostgreSQL images
 * [pg_basebackup](https://www.postgresql.org/docs/current/app-pgbasebackup.html) -
   provided by the Crunchy Backup image

@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/pgbench" \
         vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.13" \
+	PostgresFullVersion="9.6.14" \
 	Version="7.6" \
-	Release="2.4.0" \
+	Release="2.4.2" \
         url="https://crunchydata.com" \
     	summary="pgBench 9.6.12 (PGDG) on a RHEL7 base image" \
         description="pgbench is a simple program for running benchmark tests on PostgreSQL. It runs the same sequence of SQL commands over and over, possibly in multiple concurrent database sessions, and then calculates the average transaction rate (transactions per second)." \

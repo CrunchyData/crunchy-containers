@@ -3,11 +3,11 @@ FROM centos:7
 LABEL name="crunchydata/postgres" \
 	vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.13" \
+	PostgresFullVersion="9.6.14" \
 	Version="7.6" \
-	Release="2.4.0" \
+	Release="2.4.2" \
         url="https://crunchydata.com" \
-	summary="PostgreSQL 9.6.13 (PGDG) on a Centos7 base image" \
+	summary="PostgreSQL 9.6.14 (PGDG) on a Centos7 base image" \
         description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
         io.k8s.description="postgres container" \
         io.k8s.display-name="Crunchy postgres container" \
@@ -15,7 +15,7 @@ LABEL name="crunchydata/postgres" \
         io.openshift.tags="crunchy,database"
 
 ENV PGVERSION="9.6" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm" PGDG_REPO_DISABLE="pgdg11,pgdg10,pgdg95,pgdg94" \ 
-    BACKREST_VERSION="2.13"
+    BACKREST_VERSION="2.15.1"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
@@ -31,6 +31,7 @@ RUN yum -y update && yum -y install epel-release \
     postgresql96-server postgresql96-contrib postgresql96 \
     pgaudit_96 \
     pgbackrest-"${BACKREST_VERSION}" \
+    postgresql96-plpython \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"

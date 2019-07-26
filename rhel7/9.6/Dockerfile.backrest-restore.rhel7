@@ -5,9 +5,9 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.13" \
+	PostgresFullVersion="9.6.14" \
 	Version="7.6" \
-	Release="2.4.0" \
+	Release="2.4.2" \
         url="https://crunchydata.com" \
         summary="Executes the pgbackrest utility, allowing FULL & DELTA restore capability." \
         description="Executes pgbackrest utility, allowing FULL, DELTA & PITR restore capability. Capable of mounting the /backrestrepo for access to pgbackrest archives, while allowing for the configuration of pgbackrest using applicable pgbackrest environment variables." \
@@ -23,7 +23,7 @@ COPY conf/atomic/backrestrestore/help.1 /help.1
 COPY conf/atomic/backrestrestore/help.md /help.md
 COPY conf/licenses /licenses
 
-ENV PGVERSION="9.6" BACKREST_VERSION="2.13"
+ENV PGVERSION="9.6" BACKREST_VERSION="2.15.1"
 
 # Crunchy Postgres repo
 ADD conf/CRUNCHY-GPG-KEY.public  /

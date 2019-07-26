@@ -3,7 +3,7 @@ FROM registry.access.redhat.com/rhel7
 LABEL name="crunchydata/pgbasebackup-restore" \
         vendor="crunchy data" \
 	Version="7.6" \
-	Release="2.4.0" \
+	Release="2.4.2" \
         url="https://crunchydata.com" \
         summary="Restores a database using a pg_basebackup backup" \
         description="Restores a database into a specified PGDATA directory using a pg_basebackup backup, while also preparing for PITR if a recovery target is specified." \
@@ -11,6 +11,10 @@ LABEL name="crunchydata/pgbasebackup-restore" \
         io.k8s.display-name="Crunchy pg_basebackup restore container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
+
+COPY conf/atomic/pgbasebackup_restore/help.1 /help.1
+COPY conf/atomic/pgbasebackup_restore/help.md /help.md
+COPY conf/licenses /licenses
 
 RUN yum -y update \
  && yum -y install rsync  \

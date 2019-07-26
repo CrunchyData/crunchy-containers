@@ -3,9 +3,9 @@ FROM centos:7
 LABEL name="crunchydata/upgrade" \
         vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.13" \
+	PostgresFullVersion="9.6.14" \
 	Version="7.6" \
-	Release="2.4.0" \
+	Release="2.4.2" \
         url="https://crunchydata.com" \
         summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
         description="Provides a means to perform a major PostgreSQL upgrade from 9.5 to 9.6. Old data files are left intact." \
