@@ -48,10 +48,10 @@ ADD conf/backup/ /opt/cpm/conf
 RUN chown -R postgres:postgres  /opt/cpm /pgdata && \
         chmod -R g=u /opt/cpm /pgdata 
 
-VOLUME ["/pgdata"]
-
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
+
+VOLUME ["/pgdata"]
 	
 ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 

@@ -51,9 +51,6 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
     chmod -R g=u /opt/cpm /var/lib/pgsql \
     /pgdata /pgconf
 
-# add volumes to allow override of pg_hba.conf and postgresql.conf
-VOLUME ["/pgconf", "/pgdata"]
-
 # open up the postgres port
 EXPOSE 5432
 
@@ -71,6 +68,9 @@ RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
 
 RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh
+
+# add volumes to allow override of pg_hba.conf and postgresql.conf
+VOLUME ["/pgconf", "/pgdata"]
 
 ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 

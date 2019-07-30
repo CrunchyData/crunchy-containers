@@ -60,10 +60,11 @@ RUN chgrp -R 0 /opt/cpm && \
 # open up the postgres port
 EXPOSE 5432
 
+RUN chmod g=u /etc/passwd
+
 # add volumes to allow override of pgpool config files
 VOLUME ["/pgconf"]
 
-RUN chmod g=u /etc/passwd
 ENTRYPOINT ["opt/cpm/bin/uid_daemon.sh"]
 
 USER 2
