@@ -8,7 +8,7 @@ endif
 all: pgimages extras
 
 # Build images that use postgres
-pgimages: commands backup backrestrestore collect pgadmin4 pgbadger pgbench pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade node-exporter
+pgimages: commands backup backrestrestore pgbasebackuprestore collect pgadmin4 pgbadger pgbench pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade node-exporter
 
 # Build non-postgres images
 extras: grafana prometheus scheduler
@@ -58,6 +58,10 @@ backup:	versiontest
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-backup:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-backup:$(CCP_IMAGE_TAG)
 	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-backup:$(CCP_IMAGE_TAG)  $(CCP_IMAGE_PREFIX)/crunchy-backup:$(CCP_IMAGE_TAG)
 
+pgbasebackuprestore:	versiontest
+	sudo --preserve-env buildah bud $(SQUASH) -f $(CCPROOT)/$(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgbasebackup-restore.$(CCP_BASEOS) -t $(CCP_IMAGE_PREFIX)/crunchy-pgbasebackup-restore:$(CCP_IMAGE_TAG) $(CCPROOT)
+	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-pgbasebackup-restore:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-pgbasebackup-restore:$(CCP_IMAGE_TAG)
+	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-pgbasebackup-restore:$(CCP_IMAGE_TAG)  $(CCP_IMAGE_PREFIX)/crunchy-pgbasebackup-restore:$(CCP_IMAGE_TAG)
 collect: versiontest
 	sudo --preserve-env buildah bud $(SQUASH) -f $(CCPROOT)/$(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.collect.$(CCP_BASEOS) -t $(CCP_IMAGE_PREFIX)/crunchy-collect:$(CCP_IMAGE_TAG) $(CCPROOT)
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-collect:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-collect:$(CCP_IMAGE_TAG)
