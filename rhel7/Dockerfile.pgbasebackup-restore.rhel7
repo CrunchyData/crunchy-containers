@@ -27,14 +27,14 @@ RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
 
 RUN chown -R postgres:postgres /opt/cpm /pgdata
 
-VOLUME ["/backup","/pgdata"]
-
 ADD bin/pgbasebackup_restore /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/pgbasebackup_restore /opt/cpm/conf
 
 RUN chmod g=u /etc/passwd \
  && chmod g=u /etc/group
+
+VOLUME ["/backup","/pgdata"]
 
 ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 

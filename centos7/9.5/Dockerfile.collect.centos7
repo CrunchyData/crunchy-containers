@@ -39,12 +39,12 @@ ADD conf/collect /opt/cpm/conf
 RUN chgrp -R 0 /opt/cpm/bin /opt/cpm/conf && \
     chmod -R g=u /opt/cpm/bin/ opt/cpm/conf
 
-VOLUME ["/conf"]
-
 # postgres_exporter
 EXPOSE 9187
 
 RUN chmod g=u /etc/passwd
+
+VOLUME ["/conf"]
 
 ENTRYPOINT ["/opt/cpm/bin/uid_daemon.sh"]
 
