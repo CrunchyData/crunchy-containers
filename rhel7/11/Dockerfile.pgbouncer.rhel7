@@ -5,7 +5,7 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/pgbouncer" \
 	vendor="crunchy data" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.4" \
+	PostgresFullVersion="11.5" \
 	Version="7.6" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
@@ -53,9 +53,10 @@ RUN chown -R 2:0 /opt/cpm /pgconf && \
 
 EXPOSE 6432
 
+RUN chmod g=u /etc/passwd
+
 VOLUME ["/pgconf"]
 
-RUN chmod g=u /etc/passwd
 ENTRYPOINT ["opt/cpm/bin/uid_daemon.sh"]
 
 USER 2

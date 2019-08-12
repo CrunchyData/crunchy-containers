@@ -5,7 +5,7 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/upgrade" \
         vendor="crunchy data" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.4" \
+	PostgresFullVersion="11.5" \
 	Version="7.6" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
@@ -58,10 +58,10 @@ ADD conf/upgrade/ /opt/cpm/conf
 RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata && \
         chmod -R g=u /opt/cpm /pgolddata /pgnewdata
 
-VOLUME /pgolddata /pgnewdata
-
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
+
+VOLUME /pgolddata /pgnewdata
 	
 ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 

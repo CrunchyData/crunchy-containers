@@ -3,7 +3,7 @@ FROM centos:7
 LABEL name="crunchydata/upgrade" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.9" \
+	PostgresFullVersion="10.10" \
 	Version="7.6" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
@@ -39,10 +39,10 @@ ADD conf/upgrade/ /opt/cpm/conf
 RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata && \
         chmod -R g=u /opt/cpm /pgolddata /pgnewdata
 
-VOLUME /pgolddata /pgnewdata
-
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
+
+VOLUME /pgolddata /pgnewdata
 	
 ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 

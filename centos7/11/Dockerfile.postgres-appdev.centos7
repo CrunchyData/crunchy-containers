@@ -3,7 +3,7 @@ FROM centos:7
 LABEL name="crunchydata/postgres-appdev" \
         vendor="crunchydata" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.4" \
+	PostgresFullVersion="11.5" \
 	Version="7.6" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
@@ -18,8 +18,6 @@ ENV PGVERSION="11" PGDG_REPO="pgdg-centos11-11-2.noarch.rpm" PGDG_REPO_DISABLE="
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
-##### TODO NEED to add pgadmin4
-
 RUN yum -y update && yum -y install epel-release \
  && yum -y update glibc-common \
  && yum -y install bind-utils \
@@ -29,7 +27,7 @@ RUN yum -y update && yum -y install epel-release \
     rsync openssl\
  && yum -y install postgresql11-server postgresql11-contrib postgresql11 \
     R-core libRmath plr11 \
-    postgis24_11 postgis24_11-client osm2pgsql pgrouting_11 osm2pgrouting_11 ogr_fdw11\
+    postgis24_11 postgis24_11-client  pgrouting_11 postgresql11-plpython\
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
@@ -51,9 +49,6 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
     chmod -R g=u /opt/cpm /var/lib/pgsql \
     /pgdata /pgconf
 
-# add volumes to allow override of pg_hba.conf and postgresql.conf
-VOLUME ["/pgconf", "/pgdata"]
-
 # open up the postgres port
 EXPOSE 5432
 
@@ -71,6 +66,9 @@ RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
 
 RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh
+
+# add volumes to allow override of pg_hba.conf and postgresql.conf
+VOLUME ["/pgconf", "/pgdata"]
 
 ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 

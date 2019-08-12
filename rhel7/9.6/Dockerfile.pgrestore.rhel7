@@ -5,7 +5,7 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/restore" \
         vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.14" \
+	PostgresFullVersion="9.6.15" \
 	Version="7.6" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
@@ -49,10 +49,10 @@ ADD conf/pgrestore/ /opt/cpm/conf
 RUN chown -R postgres:postgres /opt/cpm /pgdata && \
         chmod -R g=u /opt/cpm /pgdata
 
-VOLUME ["/pgdata"]
-
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
+
+VOLUME ["/pgdata"]
 	
 ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 

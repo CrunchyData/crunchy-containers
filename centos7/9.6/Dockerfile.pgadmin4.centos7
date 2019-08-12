@@ -3,7 +3,7 @@ FROM centos:7
 LABEL name="crunchydata/pgadmin4" \
         vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.14" \
+	PostgresFullVersion="9.6.15" \
 	Version="7.6" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
@@ -50,9 +50,10 @@ RUN ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pga
 
 EXPOSE 5050
 
+RUN chmod g=u /etc/passwd
+
 VOLUME ["/var/lib/pgadmin", "/certs", "/run/httpd"]
 
-RUN chmod g=u /etc/passwd
 ENTRYPOINT ["opt/cpm/bin/uid_daemon.sh"]
 
 USER 2

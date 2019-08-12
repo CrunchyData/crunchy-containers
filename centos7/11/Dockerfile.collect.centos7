@@ -3,7 +3,7 @@ FROM centos:7
 LABEL name="crunchydata/collect" \
         vendor="crunchy data" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.4" \
+	PostgresFullVersion="11.5" \
 	Version="7.6" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
@@ -39,12 +39,12 @@ ADD conf/collect /opt/cpm/conf
 RUN chgrp -R 0 /opt/cpm/bin /opt/cpm/conf && \
     chmod -R g=u /opt/cpm/bin/ opt/cpm/conf
 
-VOLUME ["/conf"]
-
 # postgres_exporter
 EXPOSE 9187
 
 RUN chmod g=u /etc/passwd
+
+VOLUME ["/conf"]
 
 ENTRYPOINT ["/opt/cpm/bin/uid_daemon.sh"]
 

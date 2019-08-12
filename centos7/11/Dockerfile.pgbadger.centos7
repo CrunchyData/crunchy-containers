@@ -3,7 +3,7 @@ FROM centos:7
 LABEL name="crunchydata/pgbadger" \
         vendor="crunchy data" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.4" \
+	PostgresFullVersion="11.5" \
 	Version="7.6" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
@@ -40,10 +40,10 @@ RUN chown -R postgres:postgres /opt/cpm /report /bin && \
 # pgbadger port
 EXPOSE 10000
 
-VOLUME ["/pgdata", "/report"]
-
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
+
+VOLUME ["/pgdata", "/report"]
 	
 ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 
