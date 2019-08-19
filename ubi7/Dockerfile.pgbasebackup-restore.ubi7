@@ -12,6 +12,10 @@ LABEL name="crunchydata/pgbasebackup-restore" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
+COPY conf/atomic/pgbasebackup_restore/help.1 /help.1
+COPY conf/atomic/pgbasebackup_restore/help.md /help.md
+COPY conf/licenses /licenses
+
 RUN yum -y update \
  && yum -y install rsync  \
  && yum -y clean all
