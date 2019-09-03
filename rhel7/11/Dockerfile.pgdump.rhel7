@@ -22,6 +22,7 @@ LABEL name="crunchydata/pgdump" \
 COPY conf/atomic/pgdump/help.1 /help.1
 COPY conf/atomic/pgdump/help.md /help.md
 COPY conf/licenses /licenses
+COPY licenses /licenses
 
 ENV PGVERSION="11"
 

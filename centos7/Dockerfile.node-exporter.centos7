@@ -12,6 +12,8 @@ LABEL name="crunchydata/node-exporter" \
     io.openshift.expose-services="" \
     io.openshift.tags="crunchy,database,prometheus,exporter,metrics"
 
+COPY licenses /licenses
+
 RUN yum install -y epel-release \
   && yum -y update \
   && yum -y install gettext \

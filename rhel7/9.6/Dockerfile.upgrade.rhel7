@@ -22,6 +22,7 @@ LABEL name="crunchydata/upgrade" \
 COPY conf/atomic/upgrade/help.1 /help.1
 COPY conf/atomic/upgrade/help.md /help.md
 COPY conf/licenses /licenses
+COPY licenses /licenses
 
 ENV PGVERSION="9.6"
 

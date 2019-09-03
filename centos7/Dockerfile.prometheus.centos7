@@ -11,6 +11,8 @@ LABEL name="crunchydata/prometheus" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
+COPY licenses /licenses
+
 RUN yum -y update \
  && yum -y install epel-release \
  && yum -y install bind-utils \
