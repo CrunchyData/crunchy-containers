@@ -22,6 +22,7 @@ LABEL name="crunchydata/pgbench" \
 COPY conf/atomic/pgbench/help.1 /help.1
 COPY conf/atomic/pgbench/help.md /help.md
 COPY conf/licenses /licenses
+COPY licenses /licenses
 
 ENV PGVERSION="10"
 ENV PGROOT="/usr/pgsql-${PGVERSION}"

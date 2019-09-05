@@ -22,6 +22,7 @@ LABEL name="crunchydata/pgbouncer" \
 COPY conf/atomic/pgbouncer/help.1 /help.1
 COPY conf/atomic/pgbouncer/help.md /help.md
 COPY conf/licenses /licenses
+COPY licenses /licenses
 
 ENV PGVERSION="10"
 

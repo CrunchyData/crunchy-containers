@@ -20,6 +20,7 @@ LABEL name="crunchydata/grafana" \
 COPY conf/atomic/grafana/help.1 /help.1
 COPY conf/atomic/grafana/help.md /help.md
 COPY conf/licenses /licenses
+COPY licenses /licenses
 
 #RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
 #  && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms update \

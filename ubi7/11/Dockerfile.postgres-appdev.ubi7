@@ -14,6 +14,11 @@ LABEL name="crunchydata/postgres-appdev" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchydata,database"
 
+COPY conf/atomic/pgdump/help.1 /help.1
+COPY conf/atomic/pgdump/help.md /help.md
+COPY conf/licenses /licenses
+COPY licenses /licenses
+
 ENV PGVERSION="11" PGDG_REPO="pgdg-centos11-11-2.noarch.rpm" PGDG_REPO_DISABLE="pgdg10,pgdg96,pgdg95,pgdg94"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}

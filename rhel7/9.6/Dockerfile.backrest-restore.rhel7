@@ -22,6 +22,7 @@ LABEL name="crunchydata/postgres" \
 COPY conf/atomic/backrestrestore/help.1 /help.1
 COPY conf/atomic/backrestrestore/help.md /help.md
 COPY conf/licenses /licenses
+COPY licenses /licenses
 
 ENV PGVERSION="9.6" BACKREST_VERSION="2.15.1"
 
