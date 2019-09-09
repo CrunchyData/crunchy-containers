@@ -2,7 +2,7 @@ FROM centos:7
 
 LABEL name="crunchydata/scheduler" \
     vendor="crunchy data" \
-	Version="7.6" \
+	Version="7.7" \
 	Release="2.4.2" \
     url="https://crunchydata.com" \
     summary="Crunchy Scheduler is a cron-like microservice for scheduling automatic backups" \

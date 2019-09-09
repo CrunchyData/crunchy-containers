@@ -18,7 +18,7 @@ The container itself consists of:
 == USAGE
 See the crunchy docs.
 
-The Red Hat Enterprise Linux version from which the container was built. For example, Version="7.6"
+The Red Hat Enterprise Linux version from which the container was built. For example, Version="7.7"
 
 `Release=`
 
