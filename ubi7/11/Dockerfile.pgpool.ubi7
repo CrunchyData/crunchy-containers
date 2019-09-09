@@ -35,7 +35,7 @@ RUN rpm --import RPM-GPG-KEY-crunchydata
 
 #RUN yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
 #RUN yum -y update && yum -y install epel-release \
-RUN yum -y update  \
+RUN yum -y update --disableplugin=subscription-manager \
  && yum -y install \
       gettext \
       hostname \

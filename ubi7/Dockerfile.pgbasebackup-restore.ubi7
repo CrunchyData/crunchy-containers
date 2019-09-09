@@ -17,7 +17,7 @@ COPY conf/atomic/pgbasebackup_restore/help.md /help.md
 COPY conf/licenses /licenses
 COPY licenses /licenses
 
-RUN yum -y update \
+RUN yum -y update --disableplugin=subscription-manager \
  && yum -y install rsync  \
  && yum -y clean all
 

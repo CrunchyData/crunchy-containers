@@ -36,7 +36,8 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 # Install postgres client tools and libraries
 #RUN yum install -y epel-release \
 #  && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
-RUN yum -y update  && yum -y install \
+RUN yum -y update --disableplugin=subscription-manager \
+ && yum -y install \
     gettext \
     postgresql11 \
     postgresql11-libs \

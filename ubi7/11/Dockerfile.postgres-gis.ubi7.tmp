@@ -1,4 +1,4 @@
-FROM $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
+FROM crunchydata/crunchy-postgres:ubi7-11.5-2.4.2
 
 MAINTAINER Crunchy Data <info@crunchydata.com>
 

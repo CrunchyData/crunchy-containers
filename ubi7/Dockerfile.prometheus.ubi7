@@ -24,7 +24,8 @@ COPY licenses /licenses
 
 #RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
 #  && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms update \
-RUN yum -y update  && yum -y install \
+RUN yum -y update --disableplugin=subscription-manager \
+ && yum -y install \
     bind-utils \
     gettext \
     hostname \

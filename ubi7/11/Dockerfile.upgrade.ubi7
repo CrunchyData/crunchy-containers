@@ -38,7 +38,8 @@ ADD conf/crunchypg11.repo /etc/yum.repos.d/
 
 #RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
 # && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
-RUN yum -y update && yum -y update glibc-common \
+RUN yum -y update --disableplugin=subscription-manager \
+ && yum -y update glibc-common \
  && yum install -y bind-utils \
 	gettext \
 	hostname \

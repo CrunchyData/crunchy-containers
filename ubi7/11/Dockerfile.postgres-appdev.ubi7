@@ -25,7 +25,8 @@ RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/r
 
 ##### TODO NEED to add pgadmin4
 
-RUN yum -y update && yum -y install epel-release \
+RUN yum -y update --disableplugin=subscription-manager \
+ && yum -y install epel-release \
  && yum -y update glibc-common \
  && yum -y install bind-utils \
     gettext \

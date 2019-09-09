@@ -34,7 +34,8 @@ RUN rpm --import RPM-GPG-KEY-crunchydata
 
 #RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
 # && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
-RUN yum -y update && yum -y install bind-utils \
+RUN yum -y update --disableplugin=subscription-manager \
+ && yum -y install bind-utils \
     gettext \
     hostname \
     procps-ng \
