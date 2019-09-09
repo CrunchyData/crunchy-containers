@@ -14,6 +14,8 @@ LABEL name="crunchydata/pgbench" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
 
+COPY licenses /licenses
+
 ENV PGVERSION="9.5" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
