@@ -6,7 +6,7 @@ LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
 	PostgresVersion="9.5" \
 	PostgresFullVersion="9.5.19" \
-	Version="7.6" \
+	Version="7.7" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
 	summary="PostgreSQL 9.5.19 (PGDG) on a RHEL7 base image" \
@@ -24,7 +24,7 @@ COPY conf/atomic/postgres/help.md /help.md
 COPY conf/licenses /licenses
 COPY licenses /licenses
 
-ENV PGVERSION="9.5" BACKREST_VERSION="2.15.1"
+ENV PGVERSION="9.5" BACKREST_VERSION="2.17"
 
 # PGDG Postgres repo
 #RUN rpm -Uvh http://yum.postgresql.org/9.5/redhat/rhel-7-x86_64/pgdg-redhat95-9.5-3.noarch.rpm

@@ -6,7 +6,7 @@ LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
 	PostgresFullVersion="10.10" \
-	Version="7.6" \
+	Version="7.7" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
         summary="Executes the pgbackrest utility, allowing FULL & DELTA restore capability." \
@@ -24,7 +24,7 @@ COPY conf/atomic/backrestrestore/help.md /help.md
 COPY conf/licenses /licenses
 COPY licenses /licenses
 
-ENV PGVERSION="10" BACKREST_VERSION="2.15.1"
+ENV PGVERSION="10" BACKREST_VERSION="2.17"
 
 # Crunchy Postgres repo
 ADD conf/CRUNCHY-GPG-KEY.public  /
