@@ -37,7 +37,7 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
 #RUN yum install -y epel-release \
 #  && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
 RUN yum -y update --disableplugin=subscription-manager \
- && yum -y install \
+ && yum -y install --disableplugin=subscription-manager \
     gettext \
     postgresql11 \
     postgresql11-libs \

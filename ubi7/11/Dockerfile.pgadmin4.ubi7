@@ -36,7 +36,7 @@ RUN rpm --import RPM-GPG-KEY-crunchydata
 #RUN yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
 #RUN yum -y update && yum -y install epel-release \
 RUN yum -y update --disableplugin=subscription-manager \
- && yum -y install \
+ && yum -y install --disableplugin=subscription-manager \
     glibc-common \
     gcc \
     gettext \
@@ -45,8 +45,8 @@ RUN yum -y update --disableplugin=subscription-manager \
     procps-ng \
     mod_wsgi mod_ssl \
 # && yum --enablerepo rhel-7-server-extras-rpms -y install pgadmin4-web \
- && yum -y install pgadmin4-web \
- && yum -y install postgresql11-devel postgresql11-server \
+ && yum -y install pgadmin4-web --disableplugin=subscription-manager \
+ && yum -y install --disableplugin=subscription-manager postgresql11-devel postgresql11-server \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"

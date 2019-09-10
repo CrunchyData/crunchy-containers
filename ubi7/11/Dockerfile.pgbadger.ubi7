@@ -37,7 +37,7 @@ RUN rpm --import RPM-GPG-KEY-crunchydata
 # && yum -y install epel-release \
 #RUN yum -y update && yum -y install --enablerepo="rhel-7-server-optional-rpms" \
 RUN yum -y update --disableplugin=subscription-manager \
- && yum -y install  \
+ && yum -y install --disableplugin=subscription-manager \
       gettext \
       hostname \
       pgbadger \

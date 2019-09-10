@@ -18,7 +18,7 @@ COPY conf/licenses /licenses
 COPY licenses /licenses
 
 RUN yum -y update --disableplugin=subscription-manager \
- && yum -y install rsync  \
+ && yum -y install --disableplugin=subscription-manager rsync  \
  && yum -y clean all
 
 RUN groupadd postgres -g 26 \
