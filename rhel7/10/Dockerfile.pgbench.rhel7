@@ -6,7 +6,7 @@ LABEL name="crunchydata/pgbench" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
 	PostgresFullVersion="10.10" \
-	Version="7.6" \
+	Version="7.7" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
     	summary="pgBench 10.7 (PGDG) on a RHEL7 base image" \
@@ -22,6 +22,7 @@ LABEL name="crunchydata/pgbench" \
 COPY conf/atomic/pgbench/help.1 /help.1
 COPY conf/atomic/pgbench/help.md /help.md
 COPY conf/licenses /licenses
+COPY licenses /licenses
 
 ENV PGVERSION="10"
 ENV PGROOT="/usr/pgsql-${PGVERSION}"

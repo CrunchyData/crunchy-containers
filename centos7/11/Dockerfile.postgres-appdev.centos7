@@ -4,7 +4,7 @@ LABEL name="crunchydata/postgres-appdev" \
         vendor="crunchydata" \
 	PostgresVersion="11" \
 	PostgresFullVersion="11.5" \
-	Version="7.6" \
+	Version="7.7" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
         summary="A PostgreSQL image that makes life easier for application developers. NOT FOR PRODUCTION USE" \
@@ -13,6 +13,8 @@ LABEL name="crunchydata/postgres-appdev" \
         io.k8s.display-name="Crunchy Data postgres-appdev container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchydata,database"
+
+COPY licenses /licenses
 
 ENV PGVERSION="11" PGDG_REPO="pgdg-centos11-11-2.noarch.rpm" PGDG_REPO_DISABLE="pgdg10,pgdg96,pgdg95,pgdg94"
 

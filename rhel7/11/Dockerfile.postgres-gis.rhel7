@@ -6,7 +6,7 @@ LABEL name="crunchydata/postgres-gis" \
         vendor="crunchy data" \
 	PostgresVersion="11" \
 	PostgresFullVersion="11.5" \
-	Version="7.6" \
+	Version="7.7" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
         summary="Includes PostGIS extensions on top of crunchy-postgres" \
@@ -20,9 +20,6 @@ LABEL name="crunchydata/postgres-gis" \
         io.openshift.tags="crunchy,database"
 
 USER 0
-
-COPY conf/atomic/postgres-gis/help.1 /help.1
-COPY conf/atomic/postgres-gis/help.md /help.md
 
 RUN yum -y install --enablerepo=rhel-7-server-optional-rpms \
     R-core libRmath texinfo-tex texlive-epsf \
