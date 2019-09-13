@@ -11,8 +11,8 @@ weight: 7
 
 The following features are supported by the crunchy-pgbouncer container:
 
- * crunchy-pgbouncer uses `auth_query` to authenticate users.  This requires only the `pgbouncer`
-   username and password in `users.txt`.  Automatically generated from environment variables.
+ * crunchy-pgbouncer uses `auth_query` to authenticate users.  This requires the `pgbouncer`
+   username and password in `users.txt`.  Automatically generated from environment variables, see Restrictions.
  * Mount a custom `users.txt` and `pgbouncer.ini` configurations for advanced usage.
  * Tune pooling parameters via environment variables.
  * Connect to the administration database in pgBouncer to view statistics of the target databases.
@@ -31,6 +31,7 @@ The crunchy-pgbouncer Docker image contains the following packages (versions var
  * OpenShift: If custom configurations aren't being mounted, an **emptydir** volume is required
    to be mounted at `/pgconf`.
  * Superusers cannot connect through the connection pooler.
+ * User is required to configure the database for auth_query, see pgbouncer.ini file for configuration details.
 
 ## Environment Variables
 
