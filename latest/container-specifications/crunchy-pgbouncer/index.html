@@ -623,8 +623,8 @@
 <p>The following features are supported by the crunchy-pgbouncer container:</p>
 
 <ul>
-<li>crunchy-pgbouncer uses <code>auth_query</code> to authenticate users.  This requires only the <code>pgbouncer</code>
-username and password in <code>users.txt</code>.  Automatically generated from environment variables.</li>
+<li>crunchy-pgbouncer uses <code>auth_query</code> to authenticate users.  This requires the <code>pgbouncer</code>
+username and password in <code>users.txt</code>.  Automatically generated from environment variables, see Restrictions.</li>
 <li>Mount a custom <code>users.txt</code> and <code>pgbouncer.ini</code> configurations for advanced usage.</li>
 <li>Tune pooling parameters via environment variables.</li>
 <li>Connect to the administration database in pgBouncer to view statistics of the target databases.</li>
@@ -647,6 +647,7 @@ username and password in <code>users.txt</code>.  Automatically generated from e
 <li>OpenShift: If custom configurations aren&rsquo;t being mounted, an <strong>emptydir</strong> volume is required
 to be mounted at <code>/pgconf</code>.</li>
 <li>Superusers cannot connect through the connection pooler.</li>
+<li>User is required to configure the database for auth_query, see pgbouncer.ini file for configuration details.</li>
 </ul>
 
 <h2 id="environment-variables">Environment Variables</h2>

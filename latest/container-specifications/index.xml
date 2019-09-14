@@ -97,7 +97,7 @@ Features The following features are supported by the crunchy-pgbadger container:
       <guid>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbouncer/</guid>
       <description>pgBouncer is a lightweight connection pooler for PostgreSQL databases.
 Features The following features are supported by the crunchy-pgbouncer container:
- crunchy-pgbouncer uses auth_query to authenticate users. This requires only the pgbouncer username and password in users.txt. Automatically generated from environment variables. Mount a custom users.txt and pgbouncer.ini configurations for advanced usage. Tune pooling parameters via environment variables. Connect to the administration database in pgBouncer to view statistics of the target databases.</description>
+ crunchy-pgbouncer uses auth_query to authenticate users. This requires the pgbouncer username and password in users.txt. Automatically generated from environment variables, see Restrictions. Mount a custom users.txt and pgbouncer.ini configurations for advanced usage. Tune pooling parameters via environment variables. Connect to the administration database in pgBouncer to view statistics of the target databases.</description>
     </item>
     
     <item>
