@@ -14,11 +14,11 @@
 # limitations under the License.
 
 # Dependency Versions
-PROMETHEUS_VERSION=2.7.1
-GRAFANA_VERSION=5.4.5
+PROMETHEUS_VERSION=2.9.2
+GRAFANA_VERSION=6.1.6
 POSTGRES_EXPORTER_VERSION=0.4.7
-NODE_EXPORTER_VERSION=0.16.0
-PGMONITOR_COMMIT='dffb2b5eb04ba13ee47ae81950410738d15e8c76'
+NODE_EXPORTER_VERSION=0.18.0
+PGMONITOR_COMMIT='v3.2'
 OPENSHIFT_CLIENT='https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz'
 CERTSTRAP_VERSION=1.1.1
 
