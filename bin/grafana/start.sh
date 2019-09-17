@@ -21,11 +21,23 @@ export GRAFANA_HOME=$(find /opt/cpm/bin/ -type d -name 'grafana-[1-9].*')
 export CONFIG_DIR='/opt/cpm/conf'
 
 DASHBOARDS=(
+    Bloat_Details
     CRUD_Details
-    FilesystemDetailsKube
-    PostgreSQL
-    PostgreSQLDetails
-    TableSize_Detail
+    Filesystem_Details
+    PGBackrest
+    PG_Details
+    PG_Overview
+    TableSize_Details
+    # The following dashboards are included by pgMonitor, but we are not
+    # including them in the Grafana container for the following reasons:
+    # Overview          - this provides guidance into 3 dashboard we do not
+    #                     offer
+    # OS_Details        - we do not have access to (accurate) OS level metrics
+    # OS_Overview       - we do not have access to (accurate) OS level metrics
+    # ETCD_Details      - we leave it up to the user to decide how they want to
+    #                     monitor etcd
+    # Prometheus_Alerts - we leave it up to the user to edcide how they want to
+    #                     monitor Prometheus
 )
 
 function trap_sigterm() {
