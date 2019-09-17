@@ -23,12 +23,18 @@ then
         pgisready 'postgres' ${PGHOST?} "${PG_PRIMARY_PORT}" 'postgres'
         VERSION=$(psql --port="${PG_PRIMARY_PORT}" -d postgres -qtAX -c "SELECT current_setting('server_version_num')")
 
-        if (( ${VERSION?} > 90500 )) && (( ${VERSION?} < 100000 ))
+        if (( ${VERSION?} > 95000 )) && (( ${VERSION?} < 96000 ))
         then
-            function_file='/opt/cpm/bin/modules/functions_pg92-96.sql'
-        elif (( ${VERSION?} >= 100000 )) && (( ${VERSION?} < 120000 ))
+            function_file='/opt/cpm/bin/modules/setup_pg95.sql'
+        elif (( ${VERSION?} >= 96000 )) && (( ${VERSION?} < 100000 ))
         then
-            function_file='/opt/cpm/bin/modules/functions_pg10.sql'
+            function_file='/opt/cpm/bin/modules/setup_pg96.sql'
+        elif (( ${VERSION?} >= 100000 )) && (( ${VERSION?} < 110000 ))
+        then
+            function_file='/opt/cpm/bin/modules/setup_pg10.sql'
+        elif (( ${VERSION?} >= 110000 ))
+        then
+            function_file='/opt/cpm/bin/modules/setup_pg11.sql'
         else
             echo_err "Unknown or unsupported version of PostgreSQL.  Exiting.."
             exit 1
