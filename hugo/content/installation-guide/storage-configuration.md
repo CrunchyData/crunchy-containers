@@ -117,8 +117,13 @@ mount options like so:
 - If interested in mounting the same NFS share multiple times on the same mount point,
 look into the [noac mount option](https://www.novell.com/support/kb/doc.php?id=7010210)
 
-- Please note, when using NFS storage, all clusters created using a specific NFS server directory 
-path must have a unique name to avoid path related permissions issues in the storage directory.
+
+{{% notice info %}}
+
+When using NFS storage and two or more clusters share the same NFS storage directory, these clusters need to be uniquely named.
+
+{{% / notice %}}
+
 
 ## Dynamic Storage
 
