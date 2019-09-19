@@ -117,6 +117,14 @@ mount options like so:
 - If interested in mounting the same NFS share multiple times on the same mount point,
 look into the [noac mount option](https://www.novell.com/support/kb/doc.php?id=7010210)
 
+
+{{% notice info %}}
+
+When using NFS storage and two or more clusters share the same NFS storage directory, the clusters need to be uniquely named.
+
+{{% / notice %}}
+
+
 ## Dynamic Storage
 
 Dynamic storage classes can be used for the examples.  There
