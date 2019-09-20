@@ -8,7 +8,7 @@ endif
 all: pgimages extras
 
 # Build images that use postgres
-pgimages: commands backup backrestrestore pgbasebackuprestore collect pgadmin4 pgbadger pgbench pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade node-exporter
+pgimages: commands backup backrestrestore pgbasebackuprestore collect pgadmin4 pgbadger pgbench pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade
 
 # Build non-postgres images
 extras: grafana prometheus scheduler
@@ -71,11 +71,6 @@ grafana: versiontest
 	sudo --preserve-env buildah bud $(SQUASH) -f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.grafana.$(CCP_BASEOS) -t $(CCP_IMAGE_PREFIX)/crunchy-grafana:$(CCP_IMAGE_TAG) $(CCPROOT)
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-grafana:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-grafana:$(CCP_IMAGE_TAG)
 	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-grafana:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-grafana:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
-
-node-exporter: versiontest
-	sudo --preserve-env buildah bud $(SQUASH) -f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.node-exporter.$(CCP_BASEOS) -t $(CCP_IMAGE_PREFIX)/crunchy-node-exporter:$(CCP_IMAGE_TAG) $(CCPROOT)
-	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-node-exporter:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-node-exporter:$(CCP_IMAGE_TAG)
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-node-exporter:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-node-exporter:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 pgadmin4: versiontest
 	sudo --preserve-env buildah bud $(SQUASH) -f $(CCPROOT)/$(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgadmin4.$(CCP_BASEOS) -t $(CCP_IMAGE_PREFIX)/crunchy-pgadmin4:$(CCP_IMAGE_TAG) $(CCPROOT)

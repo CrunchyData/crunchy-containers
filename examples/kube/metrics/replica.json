@@ -18,13 +18,6 @@
                 "nodePort": 0
             },
             {
-                "name": "node-exporter",
-                "protocol": "TCP",
-                "port": 9100,
-                "targetPort": 9100,
-                "nodePort": 0
-            },
-            {
                 "name": "postgres-exporter",
                 "protocol": "TCP",
                 "port": 9187,
