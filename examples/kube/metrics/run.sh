@@ -29,14 +29,6 @@ fi
 ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
     metrics-pgconf cleanup=${CCP_NAMESPACE?}-metrics
 
-expenv -f $DIR/node-exporter-sa.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
-
-if [[ ${CCP_CLI?} == 'oc' ]]
-then
-    oc adm policy add-scc-to-user privileged system:serviceaccount:${CCP_NAMESPACE?}:prometheus-node-exporter
-fi
-
-expenv -f $DIR/node-exporter.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 expenv -f $DIR/metrics.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 expenv -f $DIR/primary.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 expenv -f $DIR/replica.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

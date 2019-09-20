@@ -76,13 +76,6 @@ func TestMetrics(t *testing.T) {
 	}
 	defer grafProx.Close()
 
-	nodeLocal, nodeRemote := randomPort(), 9100
-	nodeProx, err := harness.setupProxy(primary[0], nodeLocal, nodeRemote)
-	if err != nil {
-		t.Fatal(err)
-	}
-	defer nodeProx.Close()
-
 	pgxpLocal, pgxpRemote := randomPort(), 9187
 	pgxpProx, err := harness.setupProxy(primary[0], pgxpLocal, pgxpRemote)
 	if err != nil {
@@ -92,7 +85,6 @@ func TestMetrics(t *testing.T) {
 
 	promURL := fmt.Sprintf("http://127.0.0.1:%d", promLocal)
 	grafURL := fmt.Sprintf("http://127.0.0.1:%d", grafLocal)
-	nodeURL := fmt.Sprintf("http://127.0.0.1:%d", nodeLocal)
 	pgxpURL := fmt.Sprintf("http://127.0.0.1:%d", pgxpLocal)
 
 	if err := getStatus(promURL); err != nil {
@@ -101,10 +93,6 @@ func TestMetrics(t *testing.T) {
 
 	if err := getStatus(grafURL); err != nil {
 		t.Fatalf("Grafana health check failed: %s", err)
-	}
-
-	if err := getStatus(nodeURL); err != nil {
-		t.Fatalf("Node Exporter health check failed: %s", err)
 	}
 
 	if err := getStatus(pgxpURL); err != nil {

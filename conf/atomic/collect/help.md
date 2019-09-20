@@ -9,7 +9,6 @@ PostgreSQL metrics collection container. Every 5 seconds the collection containe
 
 The container itself consists of:
     - RHEL7 base image
-    - Node Exporter
     - PostgreSQL Exporter
     - bash script that performs the container startup
     - PostgreSQL binary packages

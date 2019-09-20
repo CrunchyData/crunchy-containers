@@ -11,7 +11,7 @@ all: pgimages extras
 pgimages: commands backup backrestrestore pgbasebackuprestore collect pgadmin4 pgbadger pgbench pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade
 
 # Build non-postgres images
-extras: node-exporter grafana prometheus scheduler
+extras: grafana prometheus scheduler
 
 versiontest:
 ifndef CCP_BASEOS
@@ -65,10 +65,6 @@ collect: versiontest
 grafana: versiontest
 	docker build -t crunchy-grafana -f $(CCP_BASEOS)/Dockerfile.grafana.$(CCP_BASEOS) .
 	docker tag crunchy-grafana $(CCP_IMAGE_PREFIX)/crunchy-grafana:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
-
-node-exporter: versiontest
-	docker build -t crunchy-node-exporter -f $(CCP_BASEOS)/Dockerfile.node-exporter.$(CCP_BASEOS) .
-	docker tag crunchy-node-exporter $(CCP_IMAGE_PREFIX)/crunchy-node-exporter:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 pgadmin4: versiontest
 	docker build -t crunchy-pgadmin4 -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.pgadmin4.$(CCP_BASEOS) .
