@@ -22,7 +22,7 @@ LABEL name="crunchydata/postgres-gis" \
 USER 0
 
 #RUN yum -y install --enablerepo=rhel-7-server-optional-rpms \
-RUN yum -y install  \
+RUN yum -y install --disableplugin=subscription-manager \
     R-core libRmath texinfo-tex texlive-epsf \
     postgis24_11 postgis24_11-client pgrouting_11 plr11 \
  && yum -y clean all
