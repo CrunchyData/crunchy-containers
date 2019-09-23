@@ -34,13 +34,15 @@ RUN rpm --import RPM-GPG-KEY-crunchydata
 
 #RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
 # && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
-RUN yum -y update && yum -y install bind-utils \
+RUN yum -y update --disableplugin=subscription-manager \
+ && yum -y install --disableplugin=subscription-manager \
+    bind-utils \
     gettext \
     hostname \
     procps-ng \
     rsync \
- && yum -y reinstall glibc-common \
- && yum -y install postgresql11 \
+ && yum -y reinstall --disableplugin=subscription-manager glibc-common \
+ && yum -y install --disableplugin=subscription-manager postgresql11 \
  && yum -y clean all
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
