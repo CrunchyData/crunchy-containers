@@ -3,21 +3,21 @@ FROM ubi7
 MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/crunchy-backrest-restore" \
-        vendor="crunchy data" \
-	PostgresVersion="11" \
-	PostgresFullVersion="11.5" \
-	Version="7.7" \
-	Release="2.4.2" \
-        url="https://crunchydata.com" \
-        summary="Executes the pgbackrest utility, allowing FULL & DELTA restore capability." \
-        description="Executes pgbackrest utility, allowing FULL, DELTA & PITR restore capability. Capable of mounting the /backrestrepo for access to pgbackrest archives, while allowing for the configuration of pgbackrest using applicable pgbackrest environment variables." \
-        run="" \
-        start="" \
-        stop="" \
-        io.k8s.description="backrest restore container" \
-        io.k8s.display-name="Crunchy backrest restore container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
+      vendor="crunchy data" \
+      PostgresVersion="11" \
+      PostgresFullVersion="11.5" \
+      Version="7.7" \
+      Release="2.4.2" \
+      url="https://crunchydata.com" \
+      summary="Executes the pgbackrest utility, allowing FULL & DELTA restore capability." \
+      description="Executes pgbackrest utility, allowing FULL, DELTA & PITR restore capability. Capable of mounting the /backrestrepo for access to pgbackrest archives, while allowing for the configuration of pgbackrest using applicable pgbackrest environment variables." \
+      run="" \
+      start="" \
+      stop="" \
+      io.k8s.description="backrest restore container" \
+      io.k8s.display-name="Crunchy backrest restore container" \
+      io.openshift.expose-services="" \
+      io.openshift.tags="crunchy,database"
 
 COPY conf/atomic/backrestrestore/help.1 /help.1
 COPY conf/atomic/backrestrestore/help.md /help.md
@@ -34,35 +34,35 @@ RUN rpm --import RPM-GPG-KEY-crunchydata
 #RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum -y update --disableplugin=subscription-manager \
  && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False \
-	hostname \
-	gettext \
-	nss_wrapper \
- 	procps-ng  \
+    hostname \
+    gettext \
+    nss_wrapper \
+    procps-ng  \
  && yum -y clean all
 
 RUN yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False postgresql11-server  \
  && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False crunchy-backrest-"${BACKREST_VERSION}" \
  && yum -y clean all
 
-ENV	PGROOT="/usr/pgsql-${PGVERSION}"
+ENV PGROOT="/usr/pgsql-${PGVERSION}"
 
 # add path settings for postgres user
 ADD conf/.bash_profile /var/lib/pgsql/
 
 # set up cpm directory
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /backrestrepo \
-	/var/lib/pgsql /var/log/pgbackrest
+    /var/lib/pgsql /var/log/pgbackrest
 
 RUN chown -R postgres:postgres /opt/cpm  \
-	/pgdata /backrestrepo  \
-	/var/lib/pgsql /var/log/pgbackrest
+    /pgdata /backrestrepo \
+    /var/lib/pgsql /var/log/pgbackrest
 
 #RUN chgrp -R 0 /opt/cpm  \
-#	/pgdata /backrestrepo  \
-#	/var/lib/pgsql /var/log/pgbackrest && \
-#    chmod -R g=u /opt/cpm  \
-#	/pgdata /backrestrepo  \
-#	/var/lib/pgsql /var/log/pgbackrest
+#  /pgdata /backrestrepo  \
+#  /var/lib/pgsql /var/log/pgbackrest && \
+#  chmod -R g=u /opt/cpm  \
+#  /pgdata /backrestrepo  \
+#  /var/lib/pgsql /var/log/pgbackrest
 
 # volume backrestrepo for pgbackrest to restore from and log
 VOLUME /pgdata /backrestrepo
@@ -77,10 +77,9 @@ ADD conf/backrest_restore /opt/cpm/conf
 
 # Removed to rely on nss_wrapper for now
 #RUN chmod g=u /etc/passwd && \
-#	chmod g=u /etc/group
+#  chmod g=u /etc/group
 #
 #ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
-
 
 USER 26
 CMD ["/opt/cpm/bin/start.sh"]

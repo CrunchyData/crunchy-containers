@@ -1,18 +1,18 @@
 FROM ubi7
 
 LABEL name="crunchydata/postgres-appdev" \
-        vendor="crunchydata" \
-	PostgresVersion="11" \
-	PostgresFullVersion="11.5" \
-	Version="7.7" \
-	Release="2.4.2" \
-        url="https://crunchydata.com" \
-        summary="A PostgreSQL image that makes life easier for application developers. NOT FOR PRODUCTION USE" \
-        description="A container image that contains all the extensions application developers probably want with extra ease of use" \
-        io.k8s.description="postgres-appdev container" \
-        io.k8s.display-name="Crunchy Data postgres-appdev container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchydata,database"
+      vendor="crunchydata" \
+      PostgresVersion="11" \
+      PostgresFullVersion="11.5" \
+      Version="7.7" \
+      Release="2.4.2" \
+      url="https://crunchydata.com" \
+      summary="A PostgreSQL image that makes life easier for application developers. NOT FOR PRODUCTION USE" \
+      description="A container image that contains all the extensions application developers probably want with extra ease of use" \
+      io.k8s.description="postgres-appdev container" \
+      io.k8s.display-name="Crunchy Data postgres-appdev container" \
+      io.openshift.expose-services="" \
+      io.openshift.tags="crunchydata,database"
 
 COPY conf/atomic/pgdump/help.1 /help.1
 COPY conf/atomic/pgdump/help.md /help.md
@@ -73,7 +73,7 @@ ADD conf/postgres /opt/cpm/conf
 ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules
 
 RUN chmod g=u /etc/passwd && \
-	chmod g=u /etc/group
+    chmod g=u /etc/group
 
 RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh
 

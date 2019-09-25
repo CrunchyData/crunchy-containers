@@ -3,21 +3,21 @@ FROM ubi7
 MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/pgdump" \
-        vendor="crunchy data" \
-	PostgresVersion="11" \
-	PostgresFullVersion="11.5" \
-	Version="7.7" \
-	Release="2.4.2" \
-        url="https://crunchydata.com" \
-        summary="Performs a pg_dump on a database container" \
-        description="Meant to be executed upon demand, this container will run pg_dump against a running database container and write the backup files to a mounted directory." \
-        run="" \
-        start="" \
-        stop="" \
-        io.k8s.description="pgdump container" \
-        io.k8s.display-name="Crunchy pgdump container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
+      vendor="crunchy data" \
+      PostgresVersion="11" \
+      PostgresFullVersion="11.5" \
+      Version="7.7" \
+      Release="2.4.2" \
+      url="https://crunchydata.com" \
+      summary="Performs a pg_dump on a database container" \
+      description="Meant to be executed upon demand, this container will run pg_dump against a running database container and write the backup files to a mounted directory." \
+      run="" \
+      start="" \
+      stop="" \
+      io.k8s.description="pgdump container" \
+      io.k8s.display-name="Crunchy pgdump container" \
+      io.openshift.expose-services="" \
+      io.openshift.tags="crunchy,database"
 
 COPY conf/atomic/pgdump/help.1 /help.1
 COPY conf/atomic/pgdump/help.md /help.md
@@ -34,11 +34,11 @@ RUN rpm --import RPM-GPG-KEY-crunchydata
 #RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum -y update --disableplugin=subscription-manager \
  && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False \
-        bind-utils \
-	gettext \
-	hostname \
-	procps-ng \
-	unzip \
+    bind-utils \
+    gettext \
+    hostname \
+    procps-ng \
+    unzip \
  && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False postgresql11 postgresql11-server \
  && yum clean all -y
 
@@ -53,8 +53,8 @@ RUN chgrp -R 0 /opt/cpm /pgdata && \
 VOLUME ["/pgdata"]
 
 RUN chmod g=u /etc/passwd && \
-	chmod g=u /etc/group
-	
+    chmod g=u /etc/group
+
 ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
 
 USER 26
