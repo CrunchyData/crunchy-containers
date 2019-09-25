@@ -3,21 +3,21 @@ FROM ubi7
 MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/pgadmin4" \
-        vendor="crunchy data" \
-	PostgresVersion="11" \
-	PostgresFullVersion="11.5" \
-	Version="7.7" \
-	Release="2.4.2" \
-        url="https://crunchydata.com" \
-        summary="Crunchy Data pgAdmin4 GUI utility" \
-        description="Provides GUI for the pgAdmin utility." \
-        run="" \
-        start="" \
-        stop="" \
-        io.k8s.description="pgadmin4 container" \
-        io.k8s.display-name="Crunchy pgadmin4 container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
+      vendor="crunchy data" \
+      PostgresVersion="11" \
+      PostgresFullVersion="11.5" \
+      Version="7.7" \
+      Release="2.4.2" \
+      url="https://crunchydata.com" \
+      summary="Crunchy Data pgAdmin4 GUI utility" \
+      description="Provides GUI for the pgAdmin utility." \
+      run="" \
+      start="" \
+      stop="" \
+      io.k8s.description="pgadmin4 container" \
+      io.k8s.display-name="Crunchy pgadmin4 container" \
+      io.openshift.expose-services="" \
+      io.openshift.tags="crunchy,database"
 
 COPY conf/atomic/pgadmin4/help.1 /help.1
 COPY conf/atomic/pgadmin4/help.md /help.md
@@ -31,12 +31,9 @@ ADD conf/RPM-GPG-KEY-crunchydata  /
 ADD conf/crunchypg11.repo /etc/yum.repos.d/
 RUN rpm --import RPM-GPG-KEY-crunchydata
 
-#RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-
-#RUN yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
-#RUN yum -y update && yum -y install epel-release \
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum -y update --disableplugin=subscription-manager \
- && yum -y install --disableplugin=subscription-manager \
+ && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False \
     glibc-common \
     gcc \
     gettext \
@@ -44,9 +41,8 @@ RUN yum -y update --disableplugin=subscription-manager \
     openssl \
     procps-ng \
     mod_wsgi mod_ssl \
-# && yum --enablerepo rhel-7-server-extras-rpms -y install pgadmin4-web \
- && yum -y install --disableplugin=subscription-manager pgadmin4-web \
- && yum -y install --disableplugin=subscription-manager postgresql11-devel postgresql11-server \
+ && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False pgadmin4-web \
+ && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False postgresql11-devel postgresql11-server \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
@@ -58,15 +54,15 @@ ADD bin/common /opt/cpm/bin
 ADD conf/pgadmin4/ /opt/cpm/conf
 
 RUN cp /opt/cpm/conf/httpd.conf /etc/httpd/conf/httpd.conf \
-  && rm /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/ssl.conf
+ && rm /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/ssl.conf
 
 RUN chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
-   /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd && \
+    /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd && \
     chmod -R g=u /usr/lib/python2.7/site-packages/pgadmin4-web \
-   /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd
+    /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd
 
 RUN ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
-  && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf
+ && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf
 
 EXPOSE 5050
 

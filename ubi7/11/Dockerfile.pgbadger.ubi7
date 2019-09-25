@@ -3,21 +3,21 @@ FROM ubi7
 MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/pgbadger" \
-        vendor="crunchy data" \
-	PostgresVersion="11" \
-	PostgresFullVersion="11.5" \
-	Version="7.7" \
-	Release="2.4.2" \
-        url="https://crunchydata.com" \
-        summary="HTTP wrapper around the PGBadger PostgreSQL utility" \
-        description="Has an HTTP REST interface. You GET http://host:10000/api/badgergenerate, and it will generate a pgbadger report on a database container's log files." \
-        run="" \
-        start="" \
-        stop="" \
-        io.k8s.description="pgbadger container" \
-        io.k8s.display-name="Crunchy pgbadger container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
+      vendor="crunchy data" \
+      PostgresVersion="11" \
+      PostgresFullVersion="11.5" \
+      Version="7.7" \
+      Release="2.4.2" \
+      url="https://crunchydata.com" \
+      summary="HTTP wrapper around the PGBadger PostgreSQL utility" \
+      description="Has an HTTP REST interface. You GET http://host:10000/api/badgergenerate, and it will generate a pgbadger report on a database container's log files." \
+      run="" \
+      start="" \
+      stop="" \
+      io.k8s.description="pgbadger container" \
+      io.k8s.display-name="Crunchy pgbadger container" \
+      io.openshift.expose-services="" \
+      io.openshift.tags="crunchy,database"
 
 COPY conf/atomic/pgbadger/help.1 /help.1
 COPY conf/atomic/pgbadger/help.md /help.md
@@ -32,15 +32,11 @@ ADD conf/crunchypg11.repo /etc/yum.repos.d/
 RUN rpm --import RPM-GPG-KEY-crunchydata
 
 #RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-
-#RUN yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
-# && yum -y install epel-release \
-#RUN yum -y update && yum -y install --enablerepo="rhel-7-server-optional-rpms" \
 RUN yum -y update --disableplugin=subscription-manager \
- && yum -y install --disableplugin=subscription-manager \
-      gettext \
-      hostname \
-      pgbadger \
+ && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False \
+    gettext \
+    hostname \
+    pgbadger \
  && yum clean all -y
 
 RUN groupadd -g 26 postgres && useradd -g 26 -u 26 postgres
@@ -52,7 +48,7 @@ ADD bin/common /opt/cpm/bin
 ADD bin/pgbadger /opt/cpm/bin
 
 RUN chown -R postgres:postgres /opt/cpm /report /bin && \
-        chmod -R g=u /opt/cpm /report /bin
+    chmod -R g=u /opt/cpm /report /bin
 
 # pgbadger port
 EXPOSE 10000
@@ -60,10 +56,9 @@ EXPOSE 10000
 VOLUME ["/pgdata", "/report"]
 
 RUN chmod g=u /etc/passwd && \
-	chmod g=u /etc/group
+    chmod g=u /etc/group
 
 ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
-
 
 USER 26
 

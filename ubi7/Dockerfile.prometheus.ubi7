@@ -3,34 +3,33 @@ FROM ubi7
 MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/prometheus" \
-        vendor="crunchy data" \
-	Version="7.7" \
-	Release="2.4.2" \
-        url="https://crunchydata.com" \
-        summary="Prometheus server that stores metrics for crunchy-postgres" \
-        description="PostgreSQL collected metrics are stored here as defined by the Crunchy Container Suite.  Prometheus will scrape metrics from Crunchy Collect. Works in conjunction with crunchy-collect and crunchy-grafana." \
-        run="" \
-        start="" \
-        stop="" \
-        io.k8s.description="prometheus container" \
-        io.k8s.display-name="Crunchy prometheus container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
+      vendor="crunchy data" \
+      Version="7.7" \
+      Release="2.4.2" \
+      url="https://crunchydata.com" \
+      summary="Prometheus server that stores metrics for crunchy-postgres" \
+      description="PostgreSQL collected metrics are stored here as defined by the Crunchy Container Suite.  Prometheus will scrape metrics from Crunchy Collect. Works in conjunction with crunchy-collect and crunchy-grafana." \
+      run="" \
+      start="" \
+      stop="" \
+      io.k8s.description="prometheus container" \
+      io.k8s.display-name="Crunchy prometheus container" \
+      io.openshift.expose-services="" \
+      io.openshift.tags="crunchy,database"
 
 COPY conf/atomic/prometheus/help.1 /help.1
 COPY conf/atomic/prometheus/help.md /help.md
 COPY conf/licenses /licenses
 COPY licenses /licenses
 
-#RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
-#  && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms update \
+#RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum -y update --disableplugin=subscription-manager \
-  && yum -y install --disableplugin=subscription-manager \
+ && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False \
     bind-utils \
     gettext \
     hostname \
     procps-ng \
-  && yum clean all -y
+ && yum clean all -y
 
 RUN mkdir -p /data /conf /opt/cpm/bin /opt/cpm/conf
 
