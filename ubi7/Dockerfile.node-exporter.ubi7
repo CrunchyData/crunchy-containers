@@ -22,10 +22,9 @@ COPY conf/atomic/node-exporter/help.md /help.md
 COPY conf/licenses /licenses
 COPY licenses /licenses
 
-#RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
-#  && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms update \
+#RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum -y update --disableplugin=subscription-manager \
-  && yum -y install --disableplugin=subscription-manager \
+  && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False \
     bind-utils \
     gettext \
     hostname \

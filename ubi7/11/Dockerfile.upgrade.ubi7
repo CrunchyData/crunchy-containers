@@ -36,16 +36,15 @@ ADD conf/RPM-GPG-KEY-crunchydata  /
 RUN rpm --import RPM-GPG-KEY-crunchydata
 ADD conf/crunchypg11.repo /etc/yum.repos.d/
 
-#RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
-# && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
+#RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum -y update --disableplugin=subscription-manager \
  && yum -y update --disableplugin=subscription-manager glibc-common \
- && yum -y install --disableplugin=subscription-manager bind-utils \
+ && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False bind-utils \
 	gettext \
 	hostname \
 	procps-ng \
 	unzip \
- && yum -y install --disableplugin=subscription-manager \
+ && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False \
  postgresql95 postgresql95-server postgresql95-contrib pgaudit95 \
  postgresql96 postgresql96-server postgresql96-contrib pgaudit96 \
  postgresql10 postgresql10-server postgresql10-contrib pgaudit10 \
