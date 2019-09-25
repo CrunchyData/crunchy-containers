@@ -31,7 +31,7 @@ ADD conf/RPM-GPG-KEY-crunchydata  /
 ADD conf/crunchypg11.repo /etc/yum.repos.d/
 RUN rpm --import RPM-GPG-KEY-crunchydata
 
-#RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 RUN yum -y update --disableplugin=subscription-manager \
  && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False \
     glibc-common \
