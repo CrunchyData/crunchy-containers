@@ -1,0 +1,407 @@
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "postgres-ha-master",
+        "labels": {
+            "application": "postgres-ha",
+            "name": "postgres-ha",
+            "cleanup": "$CCP_NAMESPACE-postgres-ha"
+        }
+    },
+    "spec": {
+        "ports": [
+            {
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432
+            }
+        ],
+        "selector": {
+            "role": "master"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+    }
+}
+
+{
+    "kind": "Service",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "postgres-ha-replica",
+        "labels": {
+            "application": "postgres-ha",
+            "name": "postgres-ha",
+            "cleanup": "$CCP_NAMESPACE-postgres-ha"
+        }
+    },
+    "spec": {
+        "ports": [
+            {
+                "protocol": "TCP",
+                "port": 5432,
+                "targetPort": 5432
+            }
+        ],
+        "selector": {
+            "role": "replica"
+        },
+        "type": "ClusterIP",
+        "sessionAffinity": "None"
+    }
+}
+
+{
+    "kind": "Deployment",
+    "apiVersion": "extensions/v1beta1",
+    "metadata": {
+        "name": "postgres-ha-01",
+        "labels": {
+            "application": "postgres-ha",
+            "name": "postgres-ha-01",
+            "cleanup": "$CCP_NAMESPACE-postgres-ha"
+        }
+    },
+    "spec": {
+        "replicas": 1,
+        "template": {
+            "metadata": {
+                "labels": {
+                    "application": "postgres-ha",
+                    "name": "postgres-ha-01",
+                    "cleanup": "$CCP_NAMESPACE-postgres-ha",
+                    "cluster-name": "example-cluster"
+                }
+            },
+            "spec": {
+                "serviceAccountName": "postgres-ha-sa",
+                "containers": [
+                    {
+                        "name": "postgres",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-postgres-ha:$CCP_IMAGE_TAG",
+                        "readinessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/opt/cpm/bin/readiness/readiness.sh"
+                                ]
+                            },
+                            "initialDelaySeconds": 30,
+                            "timeoutSeconds": 8
+                        },
+                        "env": [
+                            {
+                                "name": "POD_IP",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "fieldPath": "status.podIP"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "PATRONI_NAME",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "fieldPath": "metadata.name"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "PATRONI_SCOPE",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "fieldPath": "metadata.labels['cluster-name']"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "PGHA_PATRONI_PORT",
+                                "value": "8009"
+                            },
+                            {
+                                "name": "PATRONI_RESTAPI_LISTEN",
+                                "value": "0.0.0.0:$(PGHA_PATRONI_PORT)"
+                            },
+                            {
+                                "name": "PATRONI_RESTAPI_CONNECT_ADDRESS",
+                                "value": "$(POD_IP):$(PGHA_PATRONI_PORT)"
+                            },
+                            {
+                                "name": "PATRONI_KUBERNETES_NAMESPACE",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "PATRONI_KUBERNETES_LABELS",
+                                "value": "{cleanup: \"$CCP_NAMESPACE-postgres-ha\"}"
+                            },
+                            {
+                                "name": "PGHA_PG_PORT",
+                                "value": "5432"
+                            },
+                            {
+                                "name": "PATRONI_POSTGRESQL_LISTEN",
+                                "value": "0.0.0.0:$(PGHA_PG_PORT)"
+                            },
+                            {
+                                "name": "PATRONI_POSTGRESQL_CONNECT_ADDRESS",
+                                "value": "$(POD_IP):$(PGHA_PG_PORT)"
+                            },
+                            {
+                                "name": "PATRONI_POSTGRESQL_DATA_DIR",
+                                "value": "/pgdata/$(PATRONI_NAME)"
+                            },
+                            {
+                                "name": "PATRONI_LOG_LEVEL",
+                                "value": "INFO"
+                            },
+                            {
+                                "name": "PGHA_DATABASE",
+                                "value": "userdb"
+                            },
+                            {
+                                "name": "PGHA_PGBACKREST",
+                                "value": "true"
+                            },
+                            {
+                                "name": "PGHA_BASE_BOOTSTRAP_CONFIG",
+                                "value": "true"
+                            },
+                            {
+                                "name": "PGHA_BASE_PG_CONFIG",
+                                "value": "true"
+                            },
+                            {
+                                "name": "PGHA_PGBACKREST_CREATE_STANZA",
+                                "value": "true"
+                            }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/backrestrepo",
+                                "name": "backrestrepo",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/opt/cpm/conf/pguser",
+                                "name": "pguser"
+                            },
+                            {
+                                "mountPath": "/opt/cpm/conf/pgsuper",
+                                "name": "pgsuper"
+                            },
+                            {
+                                "mountPath": "/opt/cpm/conf/pgreplicator",
+                                "name": "pgreplicator"
+                            }
+                        ],
+                        "ports": [
+                            {
+                                "containerPort": 5432,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 8009,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {},
+                        "imagePullPolicy": "IfNotPresent"
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "pgdata",
+                        "persistentVolumeClaim": {
+                            "claimName": "postgres-ha-01-pgdata"
+                        }
+                    },
+                    {
+                        "name": "backrestrepo",
+                        "emptyDir": {}
+                    },
+                    {
+                        "name": "pguser",
+                        "secret": {
+                            "secretName": "postgres-ha-pguser"
+                        }
+                    },
+                    {
+                        "name": "pgsuper",
+                        "secret": {
+                            "secretName": "postgres-ha-pgsuper"
+                        }
+                    },
+                    {
+                        "name": "pgreplicator",
+                        "secret": {
+                            "secretName": "postgres-ha-pgreplicator"
+                        }
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                }
+            }
+        },
+        "strategy": {
+            "type": "RollingUpdate",
+            "rollingUpdate": {
+                "maxUnavailable": 1,
+                "maxSurge": 1
+            }
+        }
+    }
+}
+
+{
+    "kind": "Deployment",
+    "apiVersion": "extensions/v1beta1",
+    "metadata": {
+        "name": "postgres-ha-02",
+        "labels": {
+            "application": "postgres-ha",
+            "name": "postgres-ha-02",
+            "cleanup": "$CCP_NAMESPACE-postgres-ha"
+        }
+    },
+    "spec": {
+        "replicas": 1,
+        "template": {
+            "metadata": {
+                "labels": {
+                    "application": "postgres-ha",
+                    "name": "postgres-ha-02",
+                    "cleanup": "$CCP_NAMESPACE-postgres-ha",
+                    "cluster-name": "example-cluster"
+                }
+            },
+            "spec": {
+                "serviceAccountName": "postgres-ha-sa",
+                "containers": [
+                    {
+                        "name": "postgres",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-postgres-ha:$CCP_IMAGE_TAG",
+                        "readinessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/opt/cpm/bin/readiness/readiness.sh"
+                                ]
+                            },
+                            "initialDelaySeconds": 30,
+                            "timeoutSeconds": 8
+                        },
+                        "env": [
+                            {
+                                "name": "PATRONI_KUBERNETES_NAMESPACE",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "PATRONI_KUBERNETES_LABELS",
+                                "value": "{cleanup: \"$CCP_NAMESPACE-postgres-ha\"}"
+                            },
+                            {
+                                "name": "PGHA_DATABASE",
+                                "value": "userdb"
+                            }
+                        ],
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/pgdata",
+                                "name": "pgdata",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/backrestrepo",
+                                "name": "backrestrepo",
+                                "readOnly": false
+                            },
+                            {
+                                "mountPath": "/opt/cpm/conf/pguser",
+                                "name": "pguser"
+                            },
+                            {
+                                "mountPath": "/opt/cpm/conf/pgsuper",
+                                "name": "pgsuper"
+                            },
+                            {
+                                "mountPath": "/opt/cpm/conf/pgreplicator",
+                                "name": "pgreplicator"
+                            }
+                        ],
+                        "ports": [
+                            {
+                                "containerPort": 5432,
+                                "protocol": "TCP"
+                            },
+                            {
+                                "containerPort": 8009,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {},
+                        "imagePullPolicy": "IfNotPresent"
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "pgdata",
+                        "persistentVolumeClaim": {
+                            "claimName": "postgres-ha-01-pgdata"
+                        }
+                    },
+                    {
+                        "name": "backrestrepo",
+                        "emptyDir": {}
+                    },
+                    {
+                        "name": "pguser",
+                        "secret": {
+                            "secretName": "postgres-ha-pguser"
+                        }
+                    },
+                    {
+                        "name": "pgsuper",
+                        "secret": {
+                            "secretName": "postgres-ha-pgsuper"
+                        }
+                    },
+                    {
+                        "name": "pgreplicator",
+                        "secret": {
+                            "secretName": "postgres-ha-pgreplicator"
+                        }
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "securityContext": {
+                    $CCP_SECURITY_CONTEXT
+                }
+            }
+        },
+        "strategy": {
+            "type": "RollingUpdate",
+            "rollingUpdate": {
+                "maxUnavailable": 1,
+                "maxSurge": 1
+            }
+        }
+    }
+}

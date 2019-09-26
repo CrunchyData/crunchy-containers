@@ -1,0 +1,81 @@
+FROM centos:7
+
+LABEL name="crunchydata/postgres" \
+        vendor="crunchy data" \
+	PostgresVersion="11" \
+	PostgresFullVersion="11.5" \
+	Version="7.7" \
+	Release="2.4.2" \
+        url="https://crunchydata.com" \
+	summary="PostgreSQL 11.5 (PGDG) with Patroni" \
+        description="Used for the deployment and management of highly-available PostgreSQL clusters using Patroni." \
+        io.k8s.description="postgres container" \
+        io.k8s.display-name="Crunchy postgres container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY licenses /licenses
+
+ENV PGVERSION="11" PATRONI_VERSION="1.5.6" BACKREST_VERSION="2.17" \
+    PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm" PGDG_REPO_DISABLE="pgdg10,pgdg96,pgdg95,pgdg94"
+
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y update \
+ && yum -y install epel-release \
+ && yum -y update glibc-common \
+ && yum -y install bind-utils \
+    gettext \
+    hostname \
+    procps-ng  \
+    rsync \
+    psmisc openssh-server openssh-clients \
+    gcc \
+    python-devel \
+    python-pip \
+    python-psycopg2 \
+ && yum -y install --disablerepo="${PGDG_REPO_DISABLE}" \
+    postgresql11-server postgresql11-contrib postgresql11 \
+    pgaudit13_11 \
+    pgbackrest-"${BACKREST_VERSION}" \
+    postgresql11-plpython \
+ && yum -y clean all
+
+# install patroni for Kube
+RUN pip uninstall -y ipaddress \
+ && pip install --upgrade pip setuptools python-dateutil \
+ && pip install patroni[kubernetes]=="${PATRONI_VERSION}"
+
+ENV PGROOT="/usr/pgsql-${PGVERSION}"
+ENV PATH="${PGROOT}/bin:${PATH}"
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backrestrepo
+
+RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
+    /pgdata /pgwal /pgconf /backrestrepo &&  \
+    chmod -R g=u /opt/cpm /var/lib/pgsql \
+    /pgdata /pgwal /pgconf /backrestrepo
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin/postgres-ha /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
+ADD conf/postgres-ha /opt/cpm/conf
+ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules
+
+ADD yq /opt/cpm/bin
+RUN chmod +x /opt/cpm/bin/yq
+
+RUN chmod g=u /etc/passwd \
+ && chmod g=u /etc/group
+
+RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh
+
+VOLUME ["/pgdata", "/pgwal", "/pgconf", "/backrestrepo", "/sshd"]
+
+ENTRYPOINT ["/opt/cpm/bin/bootstrap-postgres-ha.sh"]
+
+USER 26
+
+CMD ["/usr/bin/patroni"]

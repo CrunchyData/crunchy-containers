@@ -1,0 +1,6 @@
+---
+bootstrap:
+  dcs:
+    postgresql:
+      parameters:
+        archive_command: 'source /tmp/pgbackrest_env.sh && pgbackrest archive-push %p ; pgbackrest archive-push --repo-type=s3 %p'

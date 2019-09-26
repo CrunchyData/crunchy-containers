@@ -1,0 +1,40 @@
+.TH "postgres-ha" "1" " Container Image Pages" "Crunchy Data" "2019"
+.nh
+.ad l
+
+
+.SH NAME
+.PP
+Crunchy postgres\-ha \- provides the ability to create highly-available PG clusters\&.
+
+
+.SH DESCRIPTION
+.PP
+The Crunchy postgres\-ha container is used for the deployment and management of highly-available 
+PostgreSQL clusters created using Patroni\&.
+
+.PP
+The container itself consists of:
+    \- RHEL7 base image
+    \- postgres binary packages
+    \- Patroni
+
+.PP
+Files added to the container during docker build include: /help.1.
+
+
+.SH USAGE
+.PP
+See the crunchy docs.
+
+.PP
+\fB\fCVersion=\fR
+
+.PP
+The Red Hat Enterprise Linux version from which the container was built. For example, Version="7.7"
+
+.PP
+\fB\fCRelease=\fR
+
+.PP
+The specific release number of the container. For example, Release="2.4.2"
