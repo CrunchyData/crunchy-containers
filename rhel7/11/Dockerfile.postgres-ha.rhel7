@@ -1,0 +1,93 @@
+FROM registry.access.redhat.com/rhel7
+
+MAINTAINER Crunchy Data <info@crunchydata.com>
+
+LABEL name="crunchydata/postgres" \
+        vendor="crunchy data" \
+	PostgresVersion="11" \
+	PostgresFullVersion="11.5" \
+	Version="7.7" \
+	Release="2.4.2" \
+        url="https://crunchydata.com" \
+	summary="PostgreSQL 11.5 (PGDG) with Patroni" \
+        description="Used for the deployment and management of highly-available PostgreSQL clusters using Patroni." \
+        run="" \
+        start="" \
+        stop="" \
+        io.k8s.description="postgres container" \
+        io.k8s.display-name="Crunchy postgres container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY conf/atomic/postgres-ha/help.1 /help.1
+COPY conf/atomic/postgres-ha/help.md /help.md
+COPY conf/licenses /licenses
+COPY licenses /licenses
+
+ENV PGVERSION="11" PATRONI_VERSION="1.5.6" BACKREST_VERSION="2.17"
+
+# if you ever need to install package docs inside the container, uncomment
+#RUN sed -i '/nodocs/d' /etc/yum.conf
+
+# Crunchy Postgres repo
+ADD conf/RPM-GPG-KEY-crunchydata  /
+ADD conf/crunchypg11.repo /etc/yum.repos.d/
+RUN rpm --import RPM-GPG-KEY-crunchydata
+
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
+ && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
+ && yum -y install bind-utils \
+    gettext \
+    hostname \
+    procps-ng \
+    rsync \
+    psmisc openssh-server openssh-clients \
+    gcc \
+    python-devel \
+    python-pip \
+    python-psycopg2 \
+ && yum -y reinstall glibc-common \
+ && yum -y install postgresql11 postgresql11-contrib postgresql11-server \
+    pgaudit11 pgaudit11_set_user postgresql11-plpython \
+ && yum -y install crunchy-backrest-"${BACKREST_VERSION}" \
+ && yum -y --setopt=tsflags='' install pgaudit_analyze \
+ && yum -y clean all
+
+# install patroni for Kube
+RUN pip uninstall -y ipaddress \
+ && pip install --upgrade pip setuptools python-dateutil \
+ && pip install patroni[kubernetes]=="${PATRONI_VERSION}"
+
+ENV PGROOT="/usr/pgsql-${PGVERSION}"
+ENV PATH="${PGROOT}/bin:${PATH}"
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backrestrepo
+
+RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
+    /pgdata /pgwal /pgconf /backrestrepo &&  \
+    chmod -R g=u /opt/cpm /var/lib/pgsql \
+    /pgdata /pgwal /pgconf /backrestrepo
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin/postgres-ha /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
+ADD conf/postgres-ha /opt/cpm/conf
+ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules
+
+ADD yq /opt/cpm/bin
+RUN chmod +x /opt/cpm/bin/yq
+
+RUN chmod g=u /etc/passwd \
+ && chmod g=u /etc/group
+
+RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh
+
+VOLUME ["/pgdata", "/pgwal", "/pgconf", "/backrestrepo", "/sshd"]
+
+ENTRYPOINT ["/opt/cpm/bin/bootstrap-postgres-ha.sh"]
+
+USER 26
+
+CMD ["/usr/bin/patroni"]

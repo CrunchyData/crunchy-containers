@@ -1,0 +1,7 @@
+---
+bootstrap:
+  dcs:
+    postgresql:
+      parameters:
+        archive_mode: on
+        archive_command: 'source /tmp/pgbackrest_env.sh && pgbackrest archive-push %p'
