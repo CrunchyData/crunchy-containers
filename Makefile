@@ -117,6 +117,11 @@ postgres: versiontest commands
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG)
 	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
+postgres-ha: versiontest
+	sudo --preserve-env buildah bud --layers $(SQUASH) -f $(CCPROOT)/$(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-ha.$(CCP_BASEOS) -t $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) $(CCPROOT)
+	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG)
+	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+
 postgres-gis: versiontest commands
 	cp $(GOBIN)/pgc bin/postgres
 	expenv -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS) > $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis.$(CCP_BASEOS).tmp
