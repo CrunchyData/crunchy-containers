@@ -5,8 +5,8 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/pgbench" \
         vendor="crunchy data" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.4" \
-	Version="7.6" \
+	PostgresFullVersion="11.5" \
+	Version="7.7" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
     	summary="pgBench 11.2 (PGDG) on a RHEL7 base image" \
@@ -22,6 +22,7 @@ LABEL name="crunchydata/pgbench" \
 COPY conf/atomic/pgbench/help.1 /help.1
 COPY conf/atomic/pgbench/help.md /help.md
 COPY conf/licenses /licenses
+COPY licenses /licenses
 
 ENV PGVERSION="11"
 ENV PGROOT="/usr/pgsql-${PGVERSION}"

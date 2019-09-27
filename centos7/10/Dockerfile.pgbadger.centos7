@@ -3,8 +3,8 @@ FROM centos:7
 LABEL name="crunchydata/pgbadger" \
         vendor="crunchy data" \
 	PostgresVersion="10" \
-	PostgresFullVersion="10.9" \
-	Version="7.6" \
+	PostgresFullVersion="10.10" \
+	Version="7.7" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
         summary="HTTP wrapper around the PGBadger PostgreSQL utility" \
@@ -13,6 +13,8 @@ LABEL name="crunchydata/pgbadger" \
         io.k8s.display-name="Crunchy pgbadger container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
+
+COPY licenses /licenses
 
 ENV PGVERSION="10" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm" PGDG_REPO_DISABLE="pgdg11,pgdg96,pgdg95,pgdg94"
 

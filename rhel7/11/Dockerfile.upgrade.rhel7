@@ -5,8 +5,8 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/upgrade" \
         vendor="crunchy data" \
 	PostgresVersion="11" \
-	PostgresFullVersion="11.4" \
-	Version="7.6" \
+	PostgresFullVersion="11.5" \
+	Version="7.7" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
         summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
@@ -22,6 +22,7 @@ LABEL name="crunchydata/upgrade" \
 COPY conf/atomic/upgrade/help.1 /help.1
 COPY conf/atomic/upgrade/help.md /help.md
 COPY conf/licenses /licenses
+COPY licenses /licenses
 
 ENV PGVERSION="11"
 

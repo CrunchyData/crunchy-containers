@@ -3,29 +3,25 @@ FROM $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
 MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/postgres-gis" \
-        vendor="crunchy data" \
-	PostgresVersion="11" \
-	PostgresFullVersion="11.4" \
-	Version="7.6" \
-	Release="2.4.2" \
-        url="https://crunchydata.com" \
-        summary="Includes PostGIS extensions on top of crunchy-postgres" \
-        description="An identical image of crunchy-postgres with the extra PostGIS and pgrouting packages added for users that require PostGIS." \
-        run="" \
-        start="" \
-        stop="" \
-        io.k8s.description="postgres-gis container" \
-        io.k8s.display-name="Crunchy postgres-gis container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
+      vendor="crunchy data" \
+      PostgresVersion="11" \
+      PostgresFullVersion="11.5" \
+      Version="7.7" \
+      Release="2.4.2" \
+      url="https://crunchydata.com" \
+      summary="Includes PostGIS extensions on top of crunchy-postgres" \
+      description="An identical image of crunchy-postgres with the extra PostGIS and pgrouting packages added for users that require PostGIS." \
+      run="" \
+      start="" \
+      stop="" \
+      io.k8s.description="postgres-gis container" \
+      io.k8s.display-name="Crunchy postgres-gis container" \
+      io.openshift.expose-services="" \
+      io.openshift.tags="crunchy,database"
 
 USER 0
 
-COPY conf/atomic/postgres-gis/help.1 /help.1
-COPY conf/atomic/postgres-gis/help.md /help.md
-
-#RUN yum -y install --enablerepo=rhel-7-server-optional-rpms \
-RUN yum -y install  \
+RUN yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False \
     R-core libRmath texinfo-tex texlive-epsf \
     postgis24_11 postgis24_11-client pgrouting_11 plr11 \
  && yum -y clean all

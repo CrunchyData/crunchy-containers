@@ -3,25 +3,26 @@ FROM ubi7
 MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/collect" \
-        vendor="crunchy data" \
-	PostgresVersion="11" \
-	PostgresFullVersion="11.4" \
-	Version="7.6" \
-	Release="2.4.2" \
-        url="https://crunchydata.com" \
-        summary="Provides metrics for crunchy-postgres" \
-        description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus and crunchy-grafana." \
-        run="" \
-        start="" \
-        stop="" \
-        io.k8s.description="collect container" \
-        io.k8s.display-name="Crunchy collect container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
+      vendor="crunchy data" \
+      PostgresVersion="11" \
+      PostgresFullVersion="11.5" \
+      Version="7.7" \
+      Release="2.4.2" \
+      url="https://crunchydata.com" \
+      summary="Provides metrics for crunchy-postgres" \
+      description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus and crunchy-grafana." \
+      run="" \
+      start="" \
+      stop="" \
+      io.k8s.description="collect container" \
+      io.k8s.display-name="Crunchy collect container" \
+      io.openshift.expose-services="" \
+      io.openshift.tags="crunchy,database"
 
 COPY conf/atomic/collect/help.1 /help.1
 COPY conf/atomic/collect/help.md /help.md
 COPY conf/licenses /licenses
+COPY licenses /licenses
 
 ENV PGVERSION="11"
 
@@ -30,17 +31,15 @@ ADD conf/RPM-GPG-KEY-crunchydata  /
 ADD conf/crunchypg11.repo /etc/yum.repos.d/
 RUN rpm --import RPM-GPG-KEY-crunchydata
 
-RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-
 # Install postgres client tools and libraries
-#RUN yum install -y epel-release \
-#  && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
-RUN yum -y update  && yum -y install \
+RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+RUN yum -y update --disableplugin=subscription-manager \
+ && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False \
     gettext \
     postgresql11 \
     postgresql11-libs \
     hostname \
-  && yum -y clean all
+ && yum -y clean all
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
 

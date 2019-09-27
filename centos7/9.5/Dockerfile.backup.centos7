@@ -3,8 +3,8 @@ FROM centos:7
 LABEL name="crunchydata/backup" \
         vendor="crunchy data" \
 	PostgresVersion="9.5" \
-	PostgresFullVersion="9.5.18" \
-	Version="7.6" \
+	PostgresFullVersion="9.5.19" \
+	Version="7.7" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
         summary="Performs a pg_basebackup full database backup on a database container" \
@@ -13,6 +13,8 @@ LABEL name="crunchydata/backup" \
         io.k8s.display-name="Crunchy backup container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
+
+COPY licenses /licenses
 
 ENV PGVERSION="9.5" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm"
 

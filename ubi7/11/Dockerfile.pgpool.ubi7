@@ -3,25 +3,26 @@ FROM ubi7
 MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/pgpool" \
-	vendor="crunchy data" \
-	PostgresVersion="11" \
-	PostgresFullVersion="11.4" \
-	Version="7.6" \
-	Release="2.4.2" \
-  url="https://crunchydata.com" \
-  summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
-  description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the primary and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \
-  run="" \
-  start="" \
-  stop="" \
-  io.k8s.description="pgpool container" \
-  io.k8s.display-name="Crunchy pgpool container" \
-  io.openshift.expose-services="" \
-  io.openshift.tags="crunchy,database"
+      vendor="crunchy data" \
+      PostgresVersion="11" \
+      PostgresFullVersion="11.5" \
+      Version="7.7" \
+      Release="2.4.2" \
+      url="https://crunchydata.com" \
+      summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
+      description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the primary and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \
+      run="" \
+      start="" \
+      stop="" \
+      io.k8s.description="pgpool container" \
+      io.k8s.display-name="Crunchy pgpool container" \
+      io.openshift.expose-services="" \
+      io.openshift.tags="crunchy,database"
 
 COPY conf/atomic/pgpool/help.1 /help.1
 COPY conf/atomic/pgpool/help.md /help.md
 COPY conf/licenses /licenses
+COPY licenses /licenses
 
 ENV PGVERSION="11"
 
@@ -31,18 +32,15 @@ ADD conf/crunchypg11.repo /etc/yum.repos.d/
 RUN rpm --import RPM-GPG-KEY-crunchydata
 
 #RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
-
-#RUN yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
-#RUN yum -y update && yum -y install epel-release \
-RUN yum -y update  \
- && yum -y install \
-      gettext \
-      hostname \
-      procps-ng \
- && yum -y install \
-      postgresql11 \
-      pgpool-II-11 \
-      pgpool-II-11-extensions \
+RUN yum -y update --disableplugin=subscription-manager \
+ && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False \
+    gettext \
+    hostname \
+    procps-ng \
+ && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False \
+    postgresql11 \
+    pgpool-II-11 \
+    pgpool-II-11-extensions \
  && yum -y clean all
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
@@ -52,11 +50,10 @@ ADD bin/common /opt/cpm/bin
 ADD conf/pgpool /opt/cpm/conf
 
 RUN ln -sf /opt/cpm/conf/pool_hba.conf /etc/pgpool-II-11/pool_hba.conf \
-  && ln -sf /opt/cpm/conf/pgpool/pool_passwd /etc/pgpool-II-11/pool_passwd
+ && ln -sf /opt/cpm/conf/pgpool/pool_passwd /etc/pgpool-II-11/pool_passwd
 
 RUN chgrp -R 0 /opt/cpm && \
     chmod -R g=u /opt/cpm
-
 
 # open up the postgres port
 EXPOSE 5432

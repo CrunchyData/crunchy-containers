@@ -5,8 +5,8 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/pgdump" \
         vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.14" \
-	Version="7.6" \
+	PostgresFullVersion="9.6.15" \
+	Version="7.7" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
         summary="Performs a pg_dump on a database container" \
@@ -22,6 +22,7 @@ LABEL name="crunchydata/pgdump" \
 COPY conf/atomic/pgdump/help.1 /help.1
 COPY conf/atomic/pgdump/help.md /help.md
 COPY conf/licenses /licenses
+COPY licenses /licenses
 
 ENV PGVERSION="9.6"
 

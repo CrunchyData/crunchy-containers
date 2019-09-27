@@ -1,23 +1,28 @@
 FROM ubi7
 
 LABEL name="crunchydata/pgbasebackup-restore" \
-        vendor="crunchy data" \
-	Version="7.6" \
-	Release="2.4.2" \
-        url="https://crunchydata.com" \
-        summary="Restores a database using a pg_basebackup backup" \
-        description="Restores a database into a specified PGDATA directory using a pg_basebackup backup, while also preparing for PITR if a recovery target is specified." \
-        io.k8s.description="pg_basebackup restore container" \
-        io.k8s.display-name="Crunchy pg_basebackup restore container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
+      vendor="crunchy data" \
+      Version="7.7" \
+      Release="2.4.2" \
+      url="https://crunchydata.com" \
+      summary="Restores a database using a pg_basebackup backup" \
+      description="Restores a database into a specified PGDATA directory using a pg_basebackup backup, while also preparing for PITR if a recovery target is specified." \
+      io.k8s.description="pg_basebackup restore container" \
+      io.k8s.display-name="Crunchy pg_basebackup restore container" \
+      io.openshift.expose-services="" \
+      io.openshift.tags="crunchy,database"
 
-RUN yum -y update \
- && yum -y install rsync  \
+COPY conf/atomic/pgbasebackup_restore/help.1 /help.1
+COPY conf/atomic/pgbasebackup_restore/help.md /help.md
+COPY conf/licenses /licenses
+COPY licenses /licenses
+
+RUN yum -y update --disableplugin=subscription-manager \
+ && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False rsync  \
  && yum -y clean all
 
 RUN groupadd postgres -g 26 \
- &&  useradd postgres -g 26 -u 26
+ && useradd postgres -g 26 -u 26
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
 

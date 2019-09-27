@@ -2,7 +2,7 @@ FROM centos:7
 
 LABEL name="crunchydata/prometheus" \
         vendor="crunchy data" \
-	Version="7.6" \
+	Version="7.7" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
         summary="Prometheus server that stores metrics for crunchy-postgres" \
@@ -10,6 +10,8 @@ LABEL name="crunchydata/prometheus" \
         io.k8s.display-name="Crunchy prometheus container" \
         io.openshift.expose-services="" \
         io.openshift.tags="crunchy,database"
+
+COPY licenses /licenses
 
 RUN yum -y update \
  && yum -y install epel-release \

@@ -3,25 +3,26 @@ FROM ubi7
 MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/pgbench" \
-        vendor="crunchy data" \
-	PostgresVersion="11" \
-	PostgresFullVersion="11.4" \
-	Version="7.6" \
-	Release="2.4.2" \
-        url="https://crunchydata.com" \
-    	summary="pgBench 11.2 (PGDG) on a RHEL7 base image" \
-        description="pgbench is a simple program for running benchmark tests on PostgreSQL. It runs the same sequence of SQL commands over and over, possibly in multiple concurrent database sessions, and then calculates the average transaction rate (transactions per second)." \
-        run="" \
-        start="" \
-        stop="" \
-        io.k8s.description="pgbench container" \
-        io.k8s.display-name="Crunchy pgbench container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
+      vendor="crunchy data" \
+      PostgresVersion="11" \
+      PostgresFullVersion="11.5" \
+      Version="7.7" \
+      Release="2.4.2" \
+      url="https://crunchydata.com" \
+      summary="pgBench 11.2 (PGDG) on a RHEL7 base image" \
+      description="pgbench is a simple program for running benchmark tests on PostgreSQL. It runs the same sequence of SQL commands over and over, possibly in multiple concurrent database sessions, and then calculates the average transaction rate (transactions per second)." \
+      run="" \
+      start="" \
+      stop="" \
+      io.k8s.description="pgbench container" \
+      io.k8s.display-name="Crunchy pgbench container" \
+      io.openshift.expose-services="" \
+      io.openshift.tags="crunchy,database"
 
 COPY conf/atomic/pgbench/help.1 /help.1
 COPY conf/atomic/pgbench/help.md /help.md
 COPY conf/licenses /licenses
+COPY licenses /licenses
 
 ENV PGVERSION="11"
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
@@ -31,15 +32,16 @@ ADD conf/RPM-GPG-KEY-crunchydata  /
 ADD conf/crunchypg11.repo /etc/yum.repos.d/
 RUN rpm --import RPM-GPG-KEY-crunchydata
 
-#RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
-# && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
-RUN yum -y update && yum -y install bind-utils \
+#RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+RUN yum -y update --disableplugin=subscription-manager \
+ && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False \
+    bind-utils \
     gettext \
     hostname \
     procps-ng \
     rsync \
- && yum -y reinstall glibc-common \
- && yum -y install postgresql11 \
+ && yum -y reinstall --disableplugin=subscription-manager glibc-common \
+ && yum -y install --disableplugin=subscription-manager --setopt=skip_missing_names_on_install=False postgresql11 \
  && yum -y clean all
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
@@ -52,7 +54,7 @@ ADD bin/common /opt/cpm/bin
 ADD conf/pgbench /opt/cpm/conf
 
 RUN chmod g=u /etc/passwd && \
-	chmod g=u /etc/group
+    chmod g=u /etc/group
 
 ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 
