@@ -178,7 +178,7 @@ fi
 
 sed -i "s/#PGBACKREST_INFO_THROTTLE_MINUTES#/${PGBACKREST_INFO_THROTTLE_MINUTES:-10}/g" /tmp/queries.yml
 
-PG_OPTIONS="--extend.query-path=${QUERY_DIR?}/queries.yml"
+PG_OPTIONS="--extend.query-path=${QUERY_DIR?}/queries.yml  --web.listen-address=:${POSTGRES_EXPORTER_PORT}"
 
 echo_info "Starting postgres-exporter.."
 ${PG_EXP_HOME?}/postgres_exporter ${PG_OPTIONS?} >>/dev/stdout 2>&1 &

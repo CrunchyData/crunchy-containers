@@ -25,6 +25,8 @@ import (
 )
 
 const REPORT = "/report/index.html"
+const PG_BADGER_SERVICE_PORT = "PGBADGER_SERVICE_PORT"
+const DEFAULT_PGBADGER_PORT = "10000"
 
 func init() {
 	log.SetOutput(os.Stdout)
@@ -35,7 +37,12 @@ func main() {
 	http.HandleFunc("/api/badgergenerate", BadgerGenerate)
 	http.Handle("/static/", http.StripPrefix("/static", http.FileServer(http.Dir("/report"))))
 	http.HandleFunc("/", RootPathRedirect)
-	log.Fatal(http.ListenAndServe(":10000", nil))
+	port := os.Getenv(PG_BADGER_SERVICE_PORT)
+	if port == "" {
+		log.Printf("PGBadger port not found. Using default %s\n", DEFAULT_PGBADGER_PORT)
+		port = DEFAULT_PGBADGER_PORT
+	}
+	log.Fatal(http.ListenAndServe(":" + port, nil))
 }
 
 // BadgerGenerate perform a pgbadger to create the HTML output file

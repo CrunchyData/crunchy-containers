@@ -94,6 +94,10 @@
                             {
                                 "name": "COLLECT_PG_PARAMS",
                                 "value": "sslmode=disable"
+                            },
+                            {
+                                "name": "POSTGRES_EXPORTER_PORT",
+                                "value": "9187"
                             }
                         ],
                         "volumeMounts": [
