@@ -16,7 +16,7 @@ LABEL name="crunchydata/pgadmin4" \
 
 COPY licenses /licenses
 
-ENV PGVERSION="9.5" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm" PGDG_REPO_DISABLE="pgdg11,pgdg10,pgdg96,pgdg94"
+ENV PGVERSION="9.5" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm" PGDG_REPO_DISABLE="pgdg*" PGDG_REPO_ENABLE="pgdg95"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
@@ -28,7 +28,7 @@ RUN yum -y update && yum -y install epel-release \
         openssl \
         procps-ng \
         mod_wsgi mod_ssl \
- && yum -y install --disablerepo="${PGDG_REPO_DISABLE}" postgresql95-devel postgresql95-server pgadmin4-web \
+ && yum -y install --disablerepo="${PGDG_REPO_DISABLE}" --enablerepo="${PGDG_REPO_ENABLE}" postgresql95-devel postgresql95-server pgadmin4-web \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
