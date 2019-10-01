@@ -98,6 +98,10 @@
                             {
                                 "name": "JOB_NAME",
                                 "value": "primary-metrics"
+                            },
+                            {
+                                "name": "POSTGRES_EXPORTER_PORT",
+                                "value": "9187"
                             }
                         ],
                         "volumeMounts": [

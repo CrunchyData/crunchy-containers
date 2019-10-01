@@ -146,6 +146,9 @@
                     {
                         "name": "BADGER_CUSTOM_OPTS",
                         "value": "--incremental --prefix='%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h'"
+                    },{
+                        "name": "PGBADGER_SERVICE_PORT",
+                        "value": "10000"
                     }
                 ],
                 "volumeMounts": [
