@@ -175,17 +175,6 @@ Features The following features are supported by the crunchy-postgres container:
     </item>
     
     <item>
-      <title>crunchy-node-exporter</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-node-exporter/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-node-exporter/</guid>
-      <description>Node Exporter is a Prometheus project used for exporing machine metrics to the Prometheus time series database. Crunchy-Node-Exporter is a self-contained container of this project that is designed to run as a Daemonset in Kubernetes, exporting metrics for each node it is running on.
-The following port is exposed by the crunchy-node-exporter container:
- crunchy-node-exporter:9100 - the Prometheus web user interface  Restrictions It is important to provide a long enough the SCRAPE_TIMEOUT setting for Prometheus in the Crunchy-Prometheus container.</description>
-    </item>
-    
-    <item>
       <title>crunchy-prometheus</title>
       <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

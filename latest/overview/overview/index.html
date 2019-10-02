@@ -429,13 +429,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-node-exporter/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-node-exporter/">
-            crunchy-node-exporter
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/">
@@ -781,11 +774,10 @@ are performing over time using tools such as Grafana, Prometheus and pgBadger.</
 <p>The Crunchy Collect image exports metric data of Crunchy PostgreSQL containers which
 can is scraped and stored by Crunchy Prometheus timeseries database via a web API.</p>
 
-<p>Crunchy Collect contains the following exporters:</p>
+<p>Crunchy Collect contains the following exporter:</p>
 
 <ul>
-<li><a href="https://github.com/prometheus/node_exporter">Node Exporter</a> - hardware and OS metrics</li>
-<li><a href="https://github.com/wrouesnel/postgres_exporter">PostgreSQL Exporter</a> - postgres specific metrics</li>
+<li><a href="https://github.com/wrouesnel/postgres_exporter">PostgreSQL Exporter</a> - PostgreSQL-specific metrics</li>
 </ul>
 
 <p>This image also contains custom PostgreSQL queries for additional metrics provided

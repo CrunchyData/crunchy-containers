@@ -429,13 +429,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-node-exporter/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-node-exporter/">
-            crunchy-node-exporter
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/">
@@ -546,7 +539,6 @@
       <option value="/container-specifications/crunchy-postgres-gis/" >- crunchy-postgres-gis</option>
       <option value="/container-specifications/crunchy-pgbench/" >- crunchy-pgbench</option>
       <option value="/container-specifications/crunchy-postgres/" >- crunchy-postgres</option>
-      <option value="/container-specifications/crunchy-node-exporter/" >- crunchy-node-exporter</option>
       <option value="/container-specifications/crunchy-prometheus/" >- crunchy-prometheus</option>
       <option value="/container-specifications/crunchy-scheduler/" >- crunchy-scheduler</option>
       <option value="/container-specifications/crunchy-upgrade/" >- crunchy-upgrade</option>
@@ -639,7 +631,6 @@ can be specified for the API to collect. For an example of a queries.yml file, s
 <li>CentOS7 - publicly available</li>
 <li>RHEL7 - customers only</li>
 <li><a href="https://github.com/wrouesnel/postgres_exporter">PostgreSQL Exporter</a></li>
-<li><a href="https://github.com/prometheus/node_exporter">Node Exporter</a></li>
 </ul>
 
 <h2 id="environment-variables">Environment Variables</h2>
@@ -676,12 +667,6 @@ can be specified for the API to collect. For an example of a queries.yml file, s
 </thead>
 
 <tbody>
-<tr>
-<td align="left"><strong>DISABLE_NODE_EXPORTER</strong></td>
-<td align="left">false</td>
-<td align="left">Set this to true to disable node exporter in the collect container.</td>
-</tr>
-
 <tr>
 <td align="left"><strong>CRUNCHY_DEBUG</strong></td>
 <td align="left">FALSE</td>

@@ -136,10 +136,6 @@
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-node-exporter/</loc>
-  </url>
-  
-  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/</loc>
   </url>
   
