@@ -21,9 +21,10 @@ export PG_DIR=$(find /usr/ -type d -name 'pgsql-*')
 POSTGRES_EXPORTER_PIDFILE=/tmp/postgres_exporter.pid
 CONFIG_DIR='/opt/cpm/conf'
 QUERIES=(
+    queries_backrest
+    queries_bloat
     queries_common
     queries_per_db
-    queries_pg_stat_statements
 )
 
 function trap_sigterm() {
@@ -75,21 +76,37 @@ else
     done
 
     VERSION=$(${PG_DIR?}/bin/psql "${DATA_SOURCE_NAME}" -qtAX -c "SELECT current_setting('server_version_num')")
-    if (( ${VERSION?} > 90500 )) && (( ${VERSION?} < 100000 ))
+    if (( ${VERSION?} > 95000 )) && (( ${VERSION?} < 96000 ))
     then
-        if [[ -f ${CONFIG_DIR?}/queries_pg92-96.yml ]]
+        if [[ -f ${CONFIG_DIR?}/queries_pg95.yml ]]
         then
-            cat ${CONFIG_DIR?}/queries_pg92-96.yml >> /tmp/queries.yml
+            cat ${CONFIG_DIR?}/queries_pg95.yml >> /tmp/queries.yml
         else
-            echo_err "Custom Query file queries_pg92-96.yml does not exist (it should).."
+            echo_err "Custom Query file queries_pg95.yml does not exist (it should).."
         fi
-    elif (( ${VERSION?} >= 100000 )) && (( ${VERSION?} < 120000 ))
+    elif (( ${VERSION?} >= 96000 )) && (( ${VERSION?} < 100000 ))
+    then
+        if [[ -f ${CONFIG_DIR?}/queries_pg96.yml ]]
+        then
+            cat ${CONFIG_DIR?}/queries_pg96.yml >> /tmp/queries.yml
+        else
+            echo_err "Custom Query file queries_pg96.yml does not exist (it should).."
+        fi
+    elif (( ${VERSION?} >= 100000 )) && (( ${VERSION?} < 110000 ))
     then
         if [[ -f ${CONFIG_DIR?}/queries_pg10.yml ]]
         then
             cat ${CONFIG_DIR?}/queries_pg10.yml >> /tmp/queries.yml
         else
             echo_err "Custom Query file queries_pg10.yml does not exist (it should).."
+        fi
+    elif (( ${VERSION?} >= 110000 ))
+    then
+        if [[ -f ${CONFIG_DIR?}/queries_pg11.yml ]]
+        then
+            cat ${CONFIG_DIR?}/queries_pg11.yml >> /tmp/queries.yml
+        else
+            echo_err "Custom Query file queries_pg11.yml does not exist (it should).."
         fi
     else
         echo_err "Unknown or unsupported version of PostgreSQL.  Exiting.."

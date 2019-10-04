@@ -167,10 +167,9 @@ are performing over time using tools such as Grafana, Prometheus and pgBadger.
 The Crunchy Collect image exports metric data of Crunchy PostgreSQL containers which
 can is scraped and stored by Crunchy Prometheus timeseries database via a web API.
 
-Crunchy Collect contains the following exporters:
+Crunchy Collect contains the following exporter:
 
-* [Node Exporter](https://github.com/prometheus/node_exporter) - hardware and OS metrics
-* [PostgreSQL Exporter](https://github.com/wrouesnel/postgres_exporter) - postgres specific metrics
+* [PostgreSQL Exporter](https://github.com/wrouesnel/postgres_exporter) - PostgreSQL-specific metrics
 
 This image also contains custom PostgreSQL queries for additional metrics provided
 by [Crunchy pgMonitor](https://github.com/CrunchyData/pgmonitor).
