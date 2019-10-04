@@ -22,7 +22,7 @@ function trap_sigterm() {
 
     # Clean shutdowns begin here (force fast mode in case of PostgreSQL < 9.5)
     echo_info "Cleanly shutting down PostgreSQL in force fast mode.."
-    pg_ctl -w -D $PGDATA -m fast stop
+    PGCTLTIMEOUT=${PG_CTL_STOP_TIMEOUT} pg_ctl -w -D $PGDATA -m fast stop
 
     # Unclean shutdowns begin here (if all else fails)
     if [ -f $PGDATA/postmaster.pid ]; then
@@ -63,6 +63,27 @@ export PG_USER=$PG_USER
 export PG_PASSWORD=$PG_PASSWORD
 export PG_DATABASE=$PG_DATABASE
 export PG_ROOT_PASSWORD=$PG_ROOT_PASSWORD
+
+# allow for a custom timeout value for the "pg_ctl start" command
+export PG_CTL_START_TIMEOUT=$PG_CTL_START_TIMEOUT
+
+if [ ! -z $PG_CTL_START_TIMEOUT ]; then
+    echo_info "PG_CTL_START_TIMEOUT set at: ${PG_CTL_START_TIMEOUT}"
+fi
+
+# allow for a custom timeout value for the "pg_ctl stop" command
+export PG_CTL_STOP_TIMEOUT=$PG_CTL_STOP_TIMEOUT
+
+if [ ! -z $PG_CTL_STOP_TIMEOUT ]; then
+    echo_info "PG_CTL_STOP_TIMEOUT set at: ${PG_CTL_STOP_TIMEOUT}"
+fi
+
+# allow for a custom timeout value for the "pg_ctl promote" command
+export PG_CTL_PROMOTE_TIMEOUT=$PG_CTL_PROMOTE_TIMEOUT
+
+if [ ! -z $PG_CTL_PROMOTE_TIMEOUT ]; then
+    echo_info "PG_CTL_PROMOTE_TIMEOUT set at: ${PG_CTL_PROMOTE_TIMEOUT}"
+fi
 
 mkdir -p $PGDATA
 chmod 0700 $PGDATA
@@ -240,7 +261,8 @@ function initialize_primary() {
         echo "Starting database.." >> /tmp/start-db.log
 
         echo_info "Temporarily starting database to run setup.sql.."
-        pg_ctl -D ${PGDATA?} -o "-c listen_addresses='' ${PG_CTL_OPTS:-}" start \
+        PGCTLTIMEOUT=${PG_CTL_START_TIMEOUT} pg_ctl -D ${PGDATA?} \
+            -o "-c listen_addresses='' ${PG_CTL_OPTS:-}" start \
             2> /tmp/pgctl.stderr
         err_check "$?" "Temporarily Starting PostgreSQL (primary)" \
             "Unable to start PostgreSQL: \n$(cat /tmp/pgctl.stderr)"
@@ -283,7 +305,7 @@ function initialize_primary() {
         fi
 
         echo_info "Stopping database after primary initialization.."
-        pg_ctl -D $PGDATA --mode=fast stop
+        PGCTLTIMEOUT=${PG_CTL_STOP_TIMEOUT} pg_ctl -D $PGDATA --mode=fast stop
 
         if [[ -v SYNC_REPLICA ]]; then
             echo "Synchronous_standby_names = '"$SYNC_REPLICA"'" >> $PGDATA/postgresql.conf
