@@ -60,6 +60,12 @@ set_default_collect_env() {
         default_collect_env_vars+=("COLLECT_PG_USER=${COLLECT_PG_USER}")
     fi
 
+    if [[ ! -v POSTGRES_EXPORTER_PORT ]]
+    then
+        export POSTGRES_EXPORTER_PORT="9187"
+        default_collect_env_vars+=("POSTGRES_EXPORTER_PORT=${POSTGRES_EXPORTER_PORT}")
+    fi
+
     if [[ ! ${#default_collect_env_vars[@]} -eq 0 ]]
     then
         echo_info "Defaults have been set for the following collect env vars:"

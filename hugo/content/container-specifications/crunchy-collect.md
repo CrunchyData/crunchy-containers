@@ -44,6 +44,7 @@ The crunchy-collect Docker image contains the following packages (versions vary 
 **COLLECT_PG_DATABASE**|postgres|Provides the name of the database used to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database|
 **DATA_SOURCE_NAME**|None|Explicitly defines the URL for connecting to the PostgreSQL database (must be in the form of `postgresql://`).  If provided, overrides all other settings provided to generate the connection URL.
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.
+**POSTGRES_EXPORTER_PORT**|9187|Set the postgres-exporter port to listen on for web interface and telemetry.
 
 ## Volumes
 
