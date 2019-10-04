@@ -34,7 +34,70 @@ function trap_sigterm() {
     kill -SIGINT $(head -1 ${POSTGRES_EXPORTER_PIDFILE?})
 }
 
+# Set default env vars for the collect container
+set_default_collect_env() {
+
+    if [[ ! -v COLLECT_PG_HOST ]]
+    then
+        export COLLECT_PG_HOST="127.0.0.1"
+        default_collect_env_vars+=("COLLECT_PG_HOST=${COLLECT_PG_HOST}")
+    fi
+
+    if [[ ! -v COLLECT_PG_PORT ]]
+    then
+        export COLLECT_PG_PORT="5432"
+        default_collect_env_vars+=("COLLECT_PG_PORT=${COLLECT_PG_PORT}")
+    fi
+
+    if [[ ! -v COLLECT_PG_DATABASE ]]
+    then
+        export COLLECT_PG_DATABASE="postgres"
+        default_collect_env_vars+=("COLLECT_PG_DATABASE=${COLLECT_PG_DATABASE}")
+    fi
+
+    if [[ ! -v COLLECT_PG_USER ]]
+    then
+        export COLLECT_PG_USER="ccp_monitoring"
+        default_collect_env_vars+=("COLLECT_PG_USER=${COLLECT_PG_USER}")
+    fi
+
+    if [[ ! ${#default_collect_env_vars[@]} -eq 0 ]]
+    then
+        echo_info "Defaults have been set for the following collect env vars:"
+        echo_info "[${default_collect_env_vars[*]}]"
+    fi
+}
+
+# Set the PG user credentials for use in the postgres exporter PG connection string
+set_collect_pg_credentials() {
+    
+    if [[ -d "/collect-pguser" ]]
+    then
+	    echo_info "Setting credentials for collect PG user using file system"
+
+	    COLLECT_PG_USER=$(cat /collect-pguser/username)
+	    export COLLECT_PG_USER
+
+        COLLECT_PG_PASSWORD=$(cat /collect-pguser/password)
+        export COLLECT_PG_PASSWORD
+    else
+        env_check_err "COLLECT_PG_PASSWORD"
+    fi
+}
+
 trap 'trap_sigterm' SIGINT SIGTERM
+
+if [[ ! -v DATA_SOURCE_NAME ]]
+then
+    set_collect_pg_credentials
+    set_default_collect_env
+    if [[ ! -z "${COLLECT_PG_PARAMS}" ]]
+    then
+        COLLECT_PG_PARAMS="?${COLLECT_PG_PARAMS}"
+    fi
+    export DATA_SOURCE_NAME="postgresql://${COLLECT_PG_USER}:${COLLECT_PG_PASSWORD}\
+@${COLLECT_PG_HOST}:${COLLECT_PG_PORT}/${COLLECT_PG_DATABASE}${COLLECT_PG_PARAMS}"
+fi
 
 # Check that postgres is accepting connections.
 echo_info "Waiting for PostgreSQL to be ready.."

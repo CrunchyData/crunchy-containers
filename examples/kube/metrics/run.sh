@@ -29,6 +29,8 @@ fi
 ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
     metrics-pgconf cleanup=${CCP_NAMESPACE?}-metrics
 
+expenv -f $DIR/metrics-secret.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+
 expenv -f $DIR/metrics.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 expenv -f $DIR/primary.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 expenv -f $DIR/replica.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
