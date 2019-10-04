@@ -69,6 +69,10 @@
                         },
                         "env": [
                             {
+                                "name": "PGCTLTIMEOUT",
+                                "value": "60"
+                            },
+                            {
                                 "name": "PG_PRIMARY_PORT",
                                 "value": "5432"
                             },
@@ -135,7 +139,7 @@
                     }
                 ],
                 "restartPolicy": "Always",
-                "terminationGracePeriodSeconds": 30,
+                "terminationGracePeriodSeconds": 61,
                 "dnsPolicy": "ClusterFirst",
                 "securityContext": {
                     $CCP_SECURITY_CONTEXT

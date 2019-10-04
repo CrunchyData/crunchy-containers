@@ -17,4 +17,6 @@ source /opt/cpm/bin/common_lib.sh
 enable_debugging
 
 source /opt/cpm/bin/setenv.sh
+
+unset PGCTLTIMEOUT # don't let this effect promotion
 pg_ctl promote

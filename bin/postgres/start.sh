@@ -64,6 +64,11 @@ export PG_PASSWORD=$PG_PASSWORD
 export PG_DATABASE=$PG_DATABASE
 export PG_ROOT_PASSWORD=$PG_ROOT_PASSWORD
 
+# default database shutdown wait when pod is killed - explicitely 60 seconds if not set in environment.
+export PGCTLTIMEOUT=${PGCTLTIMEOUT:-60}
+
+echo_info "PGCTLTIMEOUT set at: ${PGCTLTIMEOUT}"
+
 mkdir -p $PGDATA
 chmod 0700 $PGDATA
 

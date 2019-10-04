@@ -66,6 +66,7 @@ The crunchy-postgres-gis Docker image contains the following packages (versions 
 **PGBACKREST**|false| Set this value to `true` in order to enable and initialize pgBackRest in the container
 **BACKREST_SKIP_CREATE_STANZA**|false| Set this value to `true` in order to skip the configuration check and the automatic creation of a stanza while initializing pgBackRest in the container
 **PG_CTL_OPTS**|None| Set this value to supply custom `pg_ctl` options (ex: `-c shared_preload_libraries=pgaudit`) during the initialization phase the container start.
+**PGCTLTIMEOUT**|60| Set this value to determine how long pg_ctl will wait for shutdown to complete after the container is terminated. Note: container kill grace period (i.e. in Kubernetes, _terminationGracePeriodSeconds_ ) should be at least 1 second longer than this value. This value will be ignored by the container for promote operations (i.e. pg_ctl promote).
 
 ## Volumes
 
