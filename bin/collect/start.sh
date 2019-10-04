@@ -22,7 +22,6 @@ POSTGRES_EXPORTER_PIDFILE=/tmp/postgres_exporter.pid
 CONFIG_DIR='/opt/cpm/conf'
 QUERIES=(
     queries_backrest
-    queries_bloat
     queries_common
     queries_per_db
 )
@@ -176,6 +175,8 @@ else
         exit 1
     fi
 fi
+
+sed -i "s/#PGBACKREST_INFO_THROTTLE_MINUTES#/${PGBACKREST_INFO_THROTTLE_MINUTES:-10}/g" /tmp/queries.yml
 
 PG_OPTIONS="--extend.query-path=${QUERY_DIR?}/queries.yml"
 

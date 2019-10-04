@@ -72,7 +72,8 @@ else
     PROVISION_DIR='/data/grafana/provisioning'
     DASHBOARD_DIR="${PROVISION_DIR?}/dashboards"
     DATASOURCE_DIR="${PROVISION_DIR?}/datasources"
-    mkdir -p ${PROVISION_DIR?} ${DASHBOARD_DIR?} ${DATASOURCE_DIR?}
+    NOTIFIER_DIR="${PROVISION_DIR?}/notifiers"
+    mkdir -p ${PROVISION_DIR?} ${DASHBOARD_DIR?} ${DATASOURCE_DIR?} ${NOTIFIER_DIR}
 
     # Datasource setup
     cp ${CONFIG_DIR?}/prometheus_datasource.yml \
