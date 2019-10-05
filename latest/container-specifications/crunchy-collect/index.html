@@ -648,9 +648,9 @@ can be specified for the API to collect. For an example of a queries.yml file, s
 
 <tbody>
 <tr>
-<td align="left"><strong>DATA_SOURCE_NAME</strong></td>
-<td align="left">None</td>
-<td align="left">The URL for the PostgreSQL server&rsquo;s data source name. This is <em>required</em> to be in the form of <code>postgresql://</code>.  The user should be <code>ccp_monitoring</code> and use the <code>PGMONITOR_PASSWORD</code> value set in the <code>PostgreSQL</code> container.</td>
+<td align="left"><strong>COLLECT_PG_PASSWORD</strong></td>
+<td align="left">none</td>
+<td align="left">Provides the password needed to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database.  Should typically match the <code>PGMONITOR_PASSWORD</code> value set in the <code>crunchy-postgres</code> container.</td>
 </tr>
 </tbody>
 </table>
@@ -668,9 +668,63 @@ can be specified for the API to collect. For an example of a queries.yml file, s
 
 <tbody>
 <tr>
+<td align="left"><strong>COLLECT_PG_USER</strong></td>
+<td align="left">ccp_monitoring</td>
+<td align="left">Provides the username needed to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database.  Should typically be <code>ccp_monitoring</code> per the <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres">crunchy-postgres</a> container specification (see environment varaible <code>PGMONITOR_PASSWORD</code>).</td>
+</tr>
+
+<tr>
+<td align="left"><strong>COLLECT_PG_HOST</strong></td>
+<td align="left">127.0.0.1</td>
+<td align="left">Provides the host needed to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database</td>
+</tr>
+
+<tr>
+<td align="left"><strong>COLLECT_PG_PORT</strong></td>
+<td align="left">5432</td>
+<td align="left">Provides the port needed to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database</td>
+</tr>
+
+<tr>
+<td align="left"><strong>COLLECT_PG_DATABASE</strong></td>
+<td align="left">postgres</td>
+<td align="left">Provides the name of the database used to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database</td>
+</tr>
+
+<tr>
+<td align="left"><strong>DATA_SOURCE_NAME</strong></td>
+<td align="left">None</td>
+<td align="left">Explicitly defines the URL for connecting to the PostgreSQL database (must be in the form of <code>postgresql://</code>).  If provided, overrides all other settings provided to generate the connection URL.</td>
+</tr>
+
+<tr>
 <td align="left"><strong>CRUNCHY_DEBUG</strong></td>
 <td align="left">FALSE</td>
 <td align="left">Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>POSTGRES_EXPORTER_PORT</strong></td>
+<td align="left">9187</td>
+<td align="left">Set the postgres-exporter port to listen on for web interface and telemetry.</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="volumes">Volumes</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Name</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><strong>/collect-pguser</strong></td>
+<td align="left">Volume containing PG credentials stored in <code>username</code> and <code>password</code> files (e.g. mounted using a Kubernetes secret)</td>
 </tr>
 </tbody>
 </table>
