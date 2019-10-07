@@ -65,25 +65,15 @@ export PG_DATABASE=$PG_DATABASE
 export PG_ROOT_PASSWORD=$PG_ROOT_PASSWORD
 
 # allow for a custom timeout value for the "pg_ctl start" command
-export PG_CTL_START_TIMEOUT=$PG_CTL_START_TIMEOUT
-
-if [ ! -z $PG_CTL_START_TIMEOUT ]; then
-    echo_info "PG_CTL_START_TIMEOUT set at: ${PG_CTL_START_TIMEOUT}"
-fi
-
+export PG_CTL_START_TIMEOUT="${PG_CTL_START_TIMEOUT:-60}"
 # allow for a custom timeout value for the "pg_ctl stop" command
-export PG_CTL_STOP_TIMEOUT=$PG_CTL_STOP_TIMEOUT
-
-if [ ! -z $PG_CTL_STOP_TIMEOUT ]; then
-    echo_info "PG_CTL_STOP_TIMEOUT set at: ${PG_CTL_STOP_TIMEOUT}"
-fi
-
+export PG_CTL_STOP_TIMEOUT="${PG_CTL_STOP_TIMEOUT:-60}"
 # allow for a custom timeout value for the "pg_ctl promote" command
-export PG_CTL_PROMOTE_TIMEOUT=$PG_CTL_PROMOTE_TIMEOUT
+export PG_CTL_PROMOTE_TIMEOUT="${PG_CTL_PROMOTE_TIMEOUT:-60}"
 
-if [ ! -z $PG_CTL_PROMOTE_TIMEOUT ]; then
-    echo_info "PG_CTL_PROMOTE_TIMEOUT set at: ${PG_CTL_PROMOTE_TIMEOUT}"
-fi
+echo_info "PG_CTL_START_TIMEOUT set at: ${PG_CTL_START_TIMEOUT}"
+echo_info "PG_CTL_STOP_TIMEOUT set at: ${PG_CTL_STOP_TIMEOUT}"
+echo_info "PG_CTL_PROMOTE_TIMEOUT set at: ${PG_CTL_PROMOTE_TIMEOUT}"
 
 mkdir -p $PGDATA
 chmod 0700 $PGDATA
