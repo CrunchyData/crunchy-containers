@@ -26,10 +26,10 @@ then
         pgisready 'postgres' ${PGHOST?} "${PG_PRIMARY_PORT}" 'postgres'
         VERSION=$(psql --port="${PG_PRIMARY_PORT}" -d postgres -qtAX -c "SELECT current_setting('server_version_num')")
 
-        if (( ${VERSION?} > 95000 )) && (( ${VERSION?} < 96000 ))
+        if (( ${VERSION?} >= 90500 )) && (( ${VERSION?} < 90600 ))
         then
             function_file='/opt/cpm/bin/modules/setup_pg95.sql'
-        elif (( ${VERSION?} >= 96000 )) && (( ${VERSION?} < 100000 ))
+        elif (( ${VERSION?} >= 90600 )) && (( ${VERSION?} < 100000 ))
         then
             function_file='/opt/cpm/bin/modules/setup_pg96.sql'
         elif (( ${VERSION?} >= 100000 )) && (( ${VERSION?} < 110000 ))

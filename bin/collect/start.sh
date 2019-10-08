@@ -75,7 +75,7 @@ set_default_collect_env() {
 
 # Set the PG user credentials for use in the postgres exporter PG connection string
 set_collect_pg_credentials() {
-    
+
     if [[ -d "/collect-pguser" ]]
     then
 	    echo_info "Setting credentials for collect PG user using file system"
@@ -144,7 +144,7 @@ else
     done
 
     VERSION=$(${PG_DIR?}/bin/psql "${DATA_SOURCE_NAME}" -qtAX -c "SELECT current_setting('server_version_num')")
-    if (( ${VERSION?} > 95000 )) && (( ${VERSION?} < 96000 ))
+    if (( ${VERSION?} >= 90500 )) && (( ${VERSION?} < 90600 ))
     then
         if [[ -f ${CONFIG_DIR?}/queries_pg95.yml ]]
         then
@@ -152,7 +152,7 @@ else
         else
             echo_err "Custom Query file queries_pg95.yml does not exist (it should).."
         fi
-    elif (( ${VERSION?} >= 96000 )) && (( ${VERSION?} < 100000 ))
+    elif (( ${VERSION?} >= 90600 )) && (( ${VERSION?} < 100000 ))
     then
         if [[ -f ${CONFIG_DIR?}/queries_pg96.yml ]]
         then
