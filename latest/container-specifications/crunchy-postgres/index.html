@@ -845,6 +845,24 @@
 <td align="left">None</td>
 <td align="left">Set this value to supply custom <code>pg_ctl</code> options (ex: <code>-c shared_preload_libraries=pgaudit</code>) during the initialization phase the container start.</td>
 </tr>
+
+<tr>
+<td align="left"><strong>PG_CTL_START_TIMEOUT</strong></td>
+<td align="left">60</td>
+<td align="left">Set this value to determine how long pg_ctl will wait for start to complete. This is set to 60 by default, which is the default value set in PostgreSQL.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PG_CTL_STOP_TIMEOUT</strong></td>
+<td align="left">60</td>
+<td align="left">Set this value to determine how long pg_ctl will wait for shutdown to complete after the container is terminated. This is set to 60 by default, which is the default value set in PostgreSQL. It is recommended that in a Kubernetes environment that you set the <code>terminationGracePeriodSeconds</code> parameter to be two (2) seconds higher than this value.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PG_CTL_PROMOTE_TIMEOUT</strong></td>
+<td align="left">60</td>
+<td align="left">Set this value to determine how long pg_ctl will wait for a promotion to complete. This is set to 60 by default, which is the default value set in PostgreSQL.</td>
+</tr>
 </tbody>
 </table>
 
