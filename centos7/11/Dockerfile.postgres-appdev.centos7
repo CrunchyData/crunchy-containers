@@ -62,7 +62,7 @@ ADD bin/postgres-appdev /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
 ####### TODO If we put in PGAdmin need to put the conf here as well
 
-ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules
+ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules/pgexporter
 
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
