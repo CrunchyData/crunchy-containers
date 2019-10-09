@@ -394,6 +394,9 @@ then
 	source /pgconf/pre-start-hook.sh
 fi
 
+# Start SSHD if necessary prior to starting PG
+source /opt/cpm/bin/sshd.sh
+
 echo_info "Starting PostgreSQL.."
 postgres -D $PGDATA &
 
