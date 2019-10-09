@@ -28,16 +28,16 @@ then
 
         if (( ${VERSION?} >= 90500 )) && (( ${VERSION?} < 90600 ))
         then
-            function_file='/opt/cpm/bin/modules/setup_pg95.sql'
+            function_file='/opt/cpm/bin/modules/pgexporter/setup_pg95.sql'
         elif (( ${VERSION?} >= 90600 )) && (( ${VERSION?} < 100000 ))
         then
-            function_file='/opt/cpm/bin/modules/setup_pg96.sql'
+            function_file='/opt/cpm/bin/modules/pgexporter/setup_pg96.sql'
         elif (( ${VERSION?} >= 100000 )) && (( ${VERSION?} < 110000 ))
         then
-            function_file='/opt/cpm/bin/modules/setup_pg10.sql'
+            function_file='/opt/cpm/bin/modules/pgexporter/setup_pg10.sql'
         elif (( ${VERSION?} >= 110000 ))
         then
-            function_file='/opt/cpm/bin/modules/setup_pg11.sql'
+            function_file='/opt/cpm/bin/modules/pgexporter/setup_pg11.sql'
         else
             echo_err "Unknown or unsupported version of PostgreSQL.  Exiting.."
             exit 1

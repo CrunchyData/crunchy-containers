@@ -74,7 +74,7 @@ EXPOSE 5432
 ADD bin/postgres /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/postgres /opt/cpm/conf
-ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules
+ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules/pgexporter
 
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
