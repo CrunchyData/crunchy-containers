@@ -401,6 +401,13 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-appdev/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-appdev/">
+            crunchy-postgres-appdev
+          </a>
+        </div>
+    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/">
@@ -419,13 +426,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/">
             crunchy-postgres
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-node-exporter/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-node-exporter/">
-            crunchy-node-exporter
           </a>
         </div>
     </li>
@@ -535,10 +535,10 @@
       <option value="/container-specifications/crunchy-pgdump/" >- crunchy-pgdump</option>
       <option value="/container-specifications/crunchy-pgpool/" >- crunchy-pgpool</option>
       <option value="/container-specifications/crunchy-pgrestore/" >- crunchy-pgrestore</option>
+      <option value="/container-specifications/crunchy-postgres-appdev/" >- crunchy-postgres-appdev</option>
       <option value="/container-specifications/crunchy-postgres-gis/" >- crunchy-postgres-gis</option>
       <option value="/container-specifications/crunchy-pgbench/" >- crunchy-pgbench</option>
       <option value="/container-specifications/crunchy-postgres/" >- crunchy-postgres</option>
-      <option value="/container-specifications/crunchy-node-exporter/" >- crunchy-node-exporter</option>
       <option value="/container-specifications/crunchy-prometheus/" >- crunchy-prometheus</option>
       <option value="/container-specifications/crunchy-scheduler/" >- crunchy-scheduler</option>
       <option value="/container-specifications/crunchy-upgrade/" >- crunchy-upgrade</option>
@@ -627,11 +627,10 @@ can be specified for the API to collect. For an example of a queries.yml file, s
 <p>The crunchy-collect Docker image contains the following packages (versions vary depending on PostgreSQL version):</p>
 
 <ul>
-<li>PostgreSQL (11.4, 10.9, 9.6.14 and 9.5.18)</li>
+<li>PostgreSQL (11.5, 10.10, 9.6.15 and 9.5.19)</li>
 <li>CentOS7 - publicly available</li>
 <li>RHEL7 - customers only</li>
 <li><a href="https://github.com/wrouesnel/postgres_exporter">PostgreSQL Exporter</a></li>
-<li><a href="https://github.com/prometheus/node_exporter">Node Exporter</a></li>
 </ul>
 
 <h2 id="environment-variables">Environment Variables</h2>
@@ -649,9 +648,9 @@ can be specified for the API to collect. For an example of a queries.yml file, s
 
 <tbody>
 <tr>
-<td align="left"><strong>DATA_SOURCE_NAME</strong></td>
-<td align="left">None</td>
-<td align="left">The URL for the PostgreSQL server&rsquo;s data source name. This is <em>required</em> to be in the form of <code>postgresql://</code>.  The user should be <code>ccp_monitoring</code> and use the <code>PGMONITOR_PASSWORD</code> value set in the <code>PostgreSQL</code> container.</td>
+<td align="left"><strong>COLLECT_PG_PASSWORD</strong></td>
+<td align="left">none</td>
+<td align="left">Provides the password needed to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database.  Should typically match the <code>PGMONITOR_PASSWORD</code> value set in the <code>crunchy-postgres</code> container.</td>
 </tr>
 </tbody>
 </table>
@@ -669,15 +668,63 @@ can be specified for the API to collect. For an example of a queries.yml file, s
 
 <tbody>
 <tr>
-<td align="left"><strong>DISABLE_NODE_EXPORTER</strong></td>
-<td align="left">false</td>
-<td align="left">Set this to true to disable node exporter in the collect container.</td>
+<td align="left"><strong>COLLECT_PG_USER</strong></td>
+<td align="left">ccp_monitoring</td>
+<td align="left">Provides the username needed to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database.  Should typically be <code>ccp_monitoring</code> per the <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres">crunchy-postgres</a> container specification (see environment varaible <code>PGMONITOR_PASSWORD</code>).</td>
+</tr>
+
+<tr>
+<td align="left"><strong>COLLECT_PG_HOST</strong></td>
+<td align="left">127.0.0.1</td>
+<td align="left">Provides the host needed to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database</td>
+</tr>
+
+<tr>
+<td align="left"><strong>COLLECT_PG_PORT</strong></td>
+<td align="left">5432</td>
+<td align="left">Provides the port needed to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database</td>
+</tr>
+
+<tr>
+<td align="left"><strong>COLLECT_PG_DATABASE</strong></td>
+<td align="left">postgres</td>
+<td align="left">Provides the name of the database used to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database</td>
+</tr>
+
+<tr>
+<td align="left"><strong>DATA_SOURCE_NAME</strong></td>
+<td align="left">None</td>
+<td align="left">Explicitly defines the URL for connecting to the PostgreSQL database (must be in the form of <code>postgresql://</code>).  If provided, overrides all other settings provided to generate the connection URL.</td>
 </tr>
 
 <tr>
 <td align="left"><strong>CRUNCHY_DEBUG</strong></td>
 <td align="left">FALSE</td>
 <td align="left">Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>POSTGRES_EXPORTER_PORT</strong></td>
+<td align="left">9187</td>
+<td align="left">Set the postgres-exporter port to listen on for web interface and telemetry.</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="volumes">Volumes</h2>
+
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Name</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><strong>/collect-pguser</strong></td>
+<td align="left">Volume containing PG credentials stored in <code>username</code> and <code>password</code> files (e.g. mounted using a Kubernetes secret)</td>
 </tr>
 </tbody>
 </table>

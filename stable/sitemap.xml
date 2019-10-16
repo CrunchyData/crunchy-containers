@@ -120,6 +120,10 @@
   </url>
   
   <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-appdev/</loc>
+  </url>
+  
+  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/</loc>
   </url>
   
@@ -129,10 +133,6 @@
   
   <url>
     <loc>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-node-exporter/</loc>
   </url>
   
   <url>

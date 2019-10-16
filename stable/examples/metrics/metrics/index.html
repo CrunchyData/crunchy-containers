@@ -401,6 +401,13 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-appdev/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-appdev/">
+            crunchy-postgres-appdev
+          </a>
+        </div>
+    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/">
@@ -419,13 +426,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/">
             crunchy-postgres
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-node-exporter/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-node-exporter/">
-            crunchy-node-exporter
           </a>
         </div>
     </li>
@@ -623,7 +623,6 @@ to your database container.</p>
 <li>Grafana (crunchy-grafana)</li>
 <li>PostgreSQL (crunchy-postgres)</li>
 <li>Prometheus (crunchy-prometheus)</li>
-<li>Node Exporter (crunchy-node-exporter)</li>
 </ul>
 
 <p>Every 10 seconds by default, Prometheus will scrape the Collect container
@@ -655,10 +654,6 @@ duplicate entries.</p>
 <p>Additionally, the collect container uses a special PostgreSQL role <code>ccp_monitoring</code>.
 This user is created by setting the <code>PGMONITOR_PASSWORD</code> environment variable on the
 PostgreSQL container.</p>
-
-<p>The node exporter container is designed to run as a DaemonSet and will mount (read only) the /proc and /sys
-directories of the nodes they are running on in order to collect statistics. In Openshift, this requires the
-node exporter to use a service account, as shown in the example.</p>
 
 <p>Discovering pods requires a cluster role service account.  See the
 <a href="https://github.com/crunchydata/crunchy-containers/blob/master/examples/kube/metrics/metrics.json">Kubernetes and OpenShift</a>
@@ -723,7 +718,6 @@ ${CCP_CLI} logs -c collect primary-metrics
 ${CCP_CLI} logs -c postgres primary-metrics
 ${CCP_CLI} logs -c collect replica-metrics
 ${CCP_CLI} logs -c postgres replica-metrics
-${CCP_CLI} logs node-exporter
 </code></pre>
 
 

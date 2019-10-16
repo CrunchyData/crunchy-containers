@@ -401,6 +401,13 @@
           </a>
         </div>
     </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-appdev/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-appdev/">
+            crunchy-postgres-appdev
+          </a>
+        </div>
+    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/">
@@ -419,13 +426,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/">
             crunchy-postgres
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-node-exporter/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-node-exporter/">
-            crunchy-node-exporter
           </a>
         </div>
     </li>
@@ -643,6 +643,7 @@ replication and user applications.</li>
 <li><a href="https://www.postgresql.org/docs/current/contrib.html">Extensions available</a> in the PostgreSQL contrib module.</li>
 <li>Enhanced audit logging from the pgAudit extension</li>
 <li>Enhanced database statistics from the pg_stat_tatements extensions</li>
+<li>Python Procedural Language from the PL/Python extensions</li>
 </ul>
 
 <h3 id="crunchy-postgresql-postgis">Crunchy PostgreSQL PostGIS</h3>
@@ -670,7 +671,7 @@ image but additionally provides the following geospatial extensions:</p>
 <p><em>Physical</em> backup and restoration tools included in the Crunchy Container suite are:</p>
 
 <ul>
-<li><a href="2.x">pgBackRest</a>
+<li><a href="2.17">pgBackRest</a>
 PostgreSQL images</li>
 <li><a href="https://www.postgresql.org/docs/current/app-pgbasebackup.html">pg_basebackup</a> -
 provided by the Crunchy Backup image</li>
@@ -773,11 +774,10 @@ are performing over time using tools such as Grafana, Prometheus and pgBadger.</
 <p>The Crunchy Collect image exports metric data of Crunchy PostgreSQL containers which
 can is scraped and stored by Crunchy Prometheus timeseries database via a web API.</p>
 
-<p>Crunchy Collect contains the following exporters:</p>
+<p>Crunchy Collect contains the following exporter:</p>
 
 <ul>
-<li><a href="https://github.com/prometheus/node_exporter">Node Exporter</a> - hardware and OS metrics</li>
-<li><a href="https://github.com/wrouesnel/postgres_exporter">PostgreSQL Exporter</a> - postgres specific metrics</li>
+<li><a href="https://github.com/wrouesnel/postgres_exporter">PostgreSQL Exporter</a> - PostgreSQL-specific metrics</li>
 </ul>
 
 <p>This image also contains custom PostgreSQL queries for additional metrics provided
