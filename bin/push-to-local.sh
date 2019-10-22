@@ -21,6 +21,7 @@ IMAGES=(
     crunchy-scheduler
     crunchy-upgrade
     crunchy-backrest-restore
+    crunchy-postgres-ha
 )
 
 function echo_green() {

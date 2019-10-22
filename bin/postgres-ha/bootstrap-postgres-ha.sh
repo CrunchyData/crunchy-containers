@@ -38,6 +38,7 @@ trap_sigterm() {
 
 source /opt/cpm/bin/uid_postgres_no_exec.sh
 source /opt/cpm/bin/pre-bootstrap.sh
+source /opt/cpm/bin/sshd.sh
 
 bootstrap_cmd="$@ /tmp/postgres-ha-bootstrap.yaml"
 echo_info "Initializing cluster bootstrap with command: '${bootstrap_cmd}'"

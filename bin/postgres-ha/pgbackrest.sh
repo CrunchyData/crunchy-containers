@@ -120,9 +120,9 @@ do
 done
 
 echo_info "pgBackRest: The following pgbackrest env vars have been set:"
-cat "/tmp/pgbackrest_env.sh"
+env | grep "^PGBACKREST_"
 
-if [[ "${PGHA_PGBACKREST_CREATE_STANZA:-false}" == "true" ]]
+if [[ "${PGHA_PGBACKREST_CREATE_STANZA}" == "true" ]]
 then
     verify_pgbackrest_config
     create_stanza

@@ -1,5 +1,4 @@
 ---
 bootstrap:
-  dcs:
-    initdb:
-    - X: PGHA_WAL_DIR
+  initdb:
+  - waldir: PGHA_WALDIR

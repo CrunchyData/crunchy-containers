@@ -14,6 +14,9 @@
 # limitations under the License.
 
 source /opt/cpm/bin/common_lib.sh
+
+echo_info "postgres-ha post-bootstrap starting"
+
 enable_debugging
 
 export PGHOST="/tmp"
@@ -46,12 +49,14 @@ fi
 echo_info "Applying enahncement modules"
 for module in /opt/cpm/bin/modules/*.sh
 do
-    echo_info "Appling module ${module?}"
-    source "${module?}"
+    echo_info "Applying module ${module}"
+    source "${module}"
 done
 
 # Enable pgbackrest
-if [[ "${PGHA_PGBACKREST:-true}" == "true" ]]
+if [[ "${PGHA_PGBACKREST}" == "true" ]]
 then
     source "/opt/cpm/bin/pgbackrest.sh"
 fi
+
+echo_info "postgres-ha post-bootstrap complete"
