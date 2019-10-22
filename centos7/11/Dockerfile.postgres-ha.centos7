@@ -62,7 +62,7 @@ EXPOSE 5432
 ADD bin/postgres-ha /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/postgres-ha /opt/cpm/conf
-ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules
+ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules/pgexporter
 
 ADD yq /opt/cpm/bin
 RUN chmod +x /opt/cpm/bin/yq
