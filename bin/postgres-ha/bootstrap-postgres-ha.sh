@@ -40,6 +40,24 @@ source /opt/cpm/bin/uid_postgres_no_exec.sh
 source /opt/cpm/bin/pre-bootstrap.sh
 source /opt/cpm/bin/sshd.sh
 
+if [[ -v PGHA_PRIMARY_HOST ]]
+then
+    echo_info "Primary host specified, checking if Primary is ready before initializing replica"
+    env_check_err "PGHA_PRIMARY_HOST"
+    while [[ $(curl --silent "${PGHA_PRIMARY_HOST}:${PGHA_PATRONI_PORT}/master" --stderr - \
+        | /opt/cpm/bin/yq r - state 2> /dev/null) != "running" ]] && [[ "${retry_count:=0}" != "${retry_max:=60}" ]]
+    do
+        echo_info "Primary is not ready, retrying"
+        sleep 1
+        let "retry_count++"
+    done
+    if [[ "${retry_count:=0}" == "${retry_max:=60}" ]]
+    then
+        echo_err "Unable to determine if Primary is ready, aborting initilization of replica"
+    fi
+    echo_info "Primary is ready, proceeding with initilization of replica"
+fi
+
 bootstrap_cmd="$@ /tmp/postgres-ha-bootstrap.yaml"
 echo_info "Initializing cluster bootstrap with command: '${bootstrap_cmd}'"
 if [[ "$$" == 1 ]]
