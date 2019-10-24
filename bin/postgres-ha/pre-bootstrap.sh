@@ -168,15 +168,15 @@ set_default_patroni_env() {
 set_pg_user_credentials() {
     echo_info "Setting postgres-ha configuration for database user credentials"
     
-    if [[ -d "/opt/cpm/conf/pguser" ]]
+    if [[ -d "/pgconf/pguser" ]]
     then
 	    echo_info "Setting 'pguser' credentials using file system"
 
-	    PGHA_USER=$(cat /opt/cpm/conf/pguser/username)
+	    PGHA_USER=$(cat /pgconf/pguser/username)
         err_check "$?" "Set postgres-ha user" "Unable to set PGHA_USER using secret"
 	    export PGHA_USER
 
-        PGHA_USER_PASSWORD=$(cat /opt/cpm/conf/pguser/password)
+        PGHA_USER_PASSWORD=$(cat /pgconf/pguser/password)
         err_check "$?" "Set postgres-ha user password" "Unable to set PGHA_USER_PASSWORD using secret"
         export PGHA_USER_PASSWORD
     else
@@ -184,15 +184,15 @@ set_pg_user_credentials() {
         env_check_err "PGHA_USER_PASSWORD"
     fi
 
-    if [[ -d "/opt/cpm/conf/pgsuper" ]]
+    if [[ -d "/pgconf/pguser" ]]
     then
         echo_info "Setting 'superuser' credentials using file system"
         
-        PATRONI_SUPERUSER_USERNAME=$(cat /opt/cpm/conf/pgsuper/username)
+        PATRONI_SUPERUSER_USERNAME=$(cat /pgconf/pgsuper/username)
         err_check "$?" "Set superuser" "Unable to set PGHA_USER_PASSWORD using secret"
         export PATRONI_SUPERUSER_USERNAME
         
-        PATRONI_SUPERUSER_PASSWORD=$(cat /opt/cpm/conf/pgsuper/password)
+        PATRONI_SUPERUSER_PASSWORD=$(cat /pgconf/pgsuper/password)
         err_check "$?" "Set superuser password" "Unable to set PGHA_USER_PASSWORD using secret"
         export PATRONI_SUPERUSER_PASSWORD
     else
@@ -201,15 +201,15 @@ set_pg_user_credentials() {
     fi
 
 
-    if [[ -d "/opt/cpm/conf/pgreplicator" ]]
+    if [[ -d "/pgconf/pguser" ]]
     then
         echo_info "Setting 'replicator' credentials using file system"
         
-        PATRONI_REPLICATION_USERNAME=$(cat /opt/cpm/conf/pgreplicator/username)
+        PATRONI_REPLICATION_USERNAME=$(cat /pgconf/pgreplicator/username)
         err_check "$?" "Set replication user" "Unable to set PATRONI_REPLICATION_USERNAME using secret"
         export PATRONI_REPLICATION_USERNAME
         
-        PATRONI_REPLICATION_PASSWORD=$(cat /opt/cpm/conf/pgreplicator/password)
+        PATRONI_REPLICATION_PASSWORD=$(cat /pgconf/pgreplicator/password)
         err_check "$?" "Set replication user password" "Unable to set PATRONI_REPLICATION_PASSWORD using secret"
         export PATRONI_REPLICATION_PASSWORD
     else
