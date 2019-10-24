@@ -12,9 +12,15 @@
     "spec": {
         "ports": [
             {
+                "name": "postgres",
                 "protocol": "TCP",
                 "port": 5432,
                 "targetPort": 5432
+            }, {
+                "name": "patroni",
+                "protocol": "TCP",
+                "port": 8009,
+                "targetPort": 8009
             }
         ],
         "selector": {
@@ -39,9 +45,15 @@
     "spec": {
         "ports": [
             {
+                "name": "postgres",
                 "protocol": "TCP",
                 "port": 5432,
                 "targetPort": 5432
+            }, {
+                "name": "patroni",
+                "protocol": "TCP",
+                "port": 8009,
+                "targetPort": 8009
             }
         ],
         "selector": {
@@ -191,15 +203,15 @@
                                 "readOnly": false
                             },
                             {
-                                "mountPath": "/opt/cpm/conf/pguser",
+                                "mountPath": "/pgconf/pguser",
                                 "name": "pguser"
                             },
                             {
-                                "mountPath": "/opt/cpm/conf/pgsuper",
+                                "mountPath": "/pgconf/pgsuper",
                                 "name": "pgsuper"
                             },
                             {
-                                "mountPath": "/opt/cpm/conf/pgreplicator",
+                                "mountPath": "/pgconf/pgreplicator",
                                 "name": "pgreplicator"
                             }
                         ],
@@ -299,7 +311,7 @@
                                     "/opt/cpm/bin/readiness/readiness.sh"
                                 ]
                             },
-                            "initialDelaySeconds": 30,
+                            "initialDelaySeconds": 60,
                             "timeoutSeconds": 8
                         },
                         "env": [
@@ -318,6 +330,10 @@
                             {
                                 "name": "PGHA_DATABASE",
                                 "value": "userdb"
+                            },
+                            {
+                                "name": "PGHA_PRIMARY_HOST",
+                                "value": "postgres-ha-master"
                             }
                         ],
                         "volumeMounts": [
@@ -332,15 +348,15 @@
                                 "readOnly": false
                             },
                             {
-                                "mountPath": "/opt/cpm/conf/pguser",
+                                "mountPath": "/pgconf/pguser",
                                 "name": "pguser"
                             },
                             {
-                                "mountPath": "/opt/cpm/conf/pgsuper",
+                                "mountPath": "/pgconf/pgsuper",
                                 "name": "pgsuper"
                             },
                             {
-                                "mountPath": "/opt/cpm/conf/pgreplicator",
+                                "mountPath": "/pgconf/pgreplicator",
                                 "name": "pgreplicator"
                             }
                         ],
