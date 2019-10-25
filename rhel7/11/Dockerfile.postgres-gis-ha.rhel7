@@ -1,0 +1,38 @@
+FROM $CCP_IMAGE_PREFIX/crunchy-postgres-ha:$CCP_IMAGE_TAG
+
+MAINTAINER Crunchy Data <info@crunchydata.com>
+
+LABEL name="crunchydata/postgres-gis" \
+        vendor="crunchy data" \
+	PostgresVersion="11" \
+	PostgresFullVersion="11.5" \
+	Version="7.7" \
+	Release="2.4.2" \
+        url="https://crunchydata.com" \
+        summary="Includes PostGIS extensions on top of crunchy-postgres-ha" \
+        description="An identical image of crunchy-postgres with the extra PostGIS and pgrouting packages added for users that require PostGIS." \
+        run="" \
+        start="" \
+        stop="" \
+        io.k8s.description="postgres-gis container" \
+        io.k8s.display-name="Crunchy postgres-gis container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+USER 0
+
+RUN yum -y install --enablerepo=rhel-7-server-optional-rpms \
+    R-core libRmath texinfo-tex texlive-epsf \
+    postgis24_11 postgis24_11-client pgrouting_11 plr11 \
+ && yum -y clean all
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin/postgres-gis-ha /opt/cpm/bin
+
+ENTRYPOINT ["/opt/cpm/bin/bootstrap-postgres-ha.sh"]
+
+USER 26
+
+CMD ["/usr/bin/patroni"]
