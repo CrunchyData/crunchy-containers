@@ -12,7 +12,7 @@ Please view the official Crunchy Data Container Suite [documentation](https://ac
 
 https://access.crunchydata.com/documentation/crunchy-containers/
 
-If you are interested in contributing, please read the Contribution Guidelines.
+If you are interested in contributing, please read the [Contribution Guidelines](CONTRIBUTING.md).
 
 ## Getting Started
 
