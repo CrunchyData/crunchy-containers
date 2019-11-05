@@ -2,7 +2,29 @@ ifndef CCPROOT
 	export CCPROOT=$(GOPATH)/src/github.com/crunchydata/crunchy-containers
 endif
 
-.PHONY:	all versiontest
+# Default values if not already set
+CCP_PG_VERSION?=11
+CCP_PG_FULLVERSION?=11.5
+CCP_PATRONI_VERSION?=1.5.6
+CCP_BACKREST_VERSION?=2.17
+
+ifeq ($(CCP_PGVERSION),9.5)
+	CCP_PGAUDIT = _95
+endif
+ifeq ($(CCP_PGVERSION),9.6)
+	CCP_PGAUDIT = 11_96
+endif
+ifeq ($(CCP_PGVERSION),10)
+	CCP_PGAUDIT = 12_10
+endif
+ifeq ($(CCP_PGVERSION),11)
+	CCP_PGAUDIT = 13_11
+endif
+ifeq ($(CCP_PGVERSION),12)
+	CCP_PGAUDIT = 14_12
+endif
+
+.PHONY:	all versiontest setpgaudit
 
 # Default target
 all: pgimages extras
@@ -25,6 +47,12 @@ ifndef CCP_PG_FULLVERSION
 endif
 ifndef CCP_VERSION
 	$(error CCP_VERSION is not defined)
+endif
+ifndef CCP_PATRONI_VERSION
+	$(error CCP_PATRONI_VERSION is not defined)
+endif
+ifndef CCP_BACKREST_VERSION
+	$(error CCP_BACKREST_VERSION is not defined)
 endif
 
 setup:
@@ -118,7 +146,13 @@ postgres: versiontest commands
 	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 postgres-ha: versiontest
-	sudo --preserve-env buildah bud --layers $(SQUASH) -f $(CCPROOT)/$(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-ha.$(CCP_BASEOS) -t $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) $(CCPROOT)
+	sudo --preserve-env buildah bud \
+	--build-arg ccp_pg_version=$(CCP_PGVERSION) \
+	--build-arg ccp_pg_full_version=$(CCP_PG_FULLVERSION) \
+    --build-arg ccp_patroni_version=$(CCP_PATRONI_VERSION) \
+	--build-arg ccp_backrest_version=$(CCP_BACKREST_VERSION) \
+	--build-arg ccp_pgaudit_version=$(CCP_PGAUDIT) \
+	--layers $(SQUASH) -f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres-ha.$(CCP_BASEOS) -t $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) $(CCPROOT)
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG)
 	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
@@ -132,11 +166,14 @@ postgres-gis: versiontest commands
 
 postgres-gis-ha: versiontest commands
 	cp $(GOBIN)/pgc bin/postgres
-	expenv -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis-ha.$(CCP_BASEOS) > $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis-ha.$(CCP_BASEOS).tmp
-	sudo --preserve-env buildah bud --layers $(SQUASH) -f $(CCPROOT)/$(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis-ha.$(CCP_BASEOS).tmp -t $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_IMAGE_TAG) $(CCPROOT)
+	sudo --preserve-env buildah bud \
+	--build-arg ccp_pg_version=$(CCP_PGVERSION) \
+	--build-arg ccp_pg_full_version=$(CCP_PG_FULLVERSION) \
+	--build-arg ccp_image_prefix=$(CCP_IMAGE_PREFIX) \
+	--build-arg ccp_image_tag=$(CCP_IMAGE_TAG) \
+	--layers $(SQUASH) -f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres-gis-ha.$(CCP_BASEOS) -t $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_IMAGE_TAG) $(CCPROOT)
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_IMAGE_TAG)
 	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
-	rm -f $(CCP_BASEOS)/$(CCP_PGVERSION)/Dockerfile.postgres-gis-ha.$(CCP_BASEOS).tmp
 
 
 postgres-appdev: versiontest commands

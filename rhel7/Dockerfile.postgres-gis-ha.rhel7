@@ -1,11 +1,22 @@
-FROM $CCP_IMAGE_PREFIX/crunchy-postgres-ha:$CCP_IMAGE_TAG
+# ARG values passed in from Makefile to be used in FROM line
+# Per the Docker docs, "An ARG instruction goes out of scope at 
+# the end of the build stage where it was defined. To use an arg 
+# in multiple stages, each stage must include the ARG instruction."
+ARG ccp_image_prefix
+ARG ccp_image_tag
+
+FROM $ccp_image_prefix/crunchy-postgres-ha:$ccp_image_tag
+
+#ARG values passed in from Makefile to be used during the image build
+ARG ccp_pg_version
+ARG ccp_pg_full_version
 
 MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/postgres-gis" \
         vendor="crunchy data" \
-	PostgresVersion="11" \
-	PostgresFullVersion="11.5" \
+	PostgresVersion=$ccp_pg_version \
+	PostgresFullVersion=$ccp_pg_full_version \
 	Version="7.7" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
@@ -21,9 +32,11 @@ LABEL name="crunchydata/postgres-gis" \
 
 USER 0
 
+# Install the required software. Note that the syntax ${variableName//.} gets the contents of the
+# variable without any included periods. Thus a value of '9.5' would become '95' to match the version needed.
 RUN yum -y install --enablerepo=rhel-7-server-optional-rpms \
     R-core libRmath texinfo-tex texlive-epsf \
-    postgis24_11 postgis24_11-client pgrouting_11 plr11 \
+    postgis25_${ccp_pg_version//.} postgis25_${ccp_pg_version//.}-client pgrouting_${ccp_pg_version//.} plr${ccp_pg_version//.} \
  && yum -y clean all
 
 # open up the postgres port
