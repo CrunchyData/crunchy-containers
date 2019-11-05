@@ -1,15 +1,22 @@
 FROM registry.access.redhat.com/rhel7
 
+#ARG values passed in from Makefile
+ARG ccp_pg_version
+ARG ccp_pg_full_version
+ARG ccp_patroni_version
+ARG ccp_backrest_version
+ARG ccp_pgaudit_version
+
 MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL name="crunchydata/postgres" \
         vendor="crunchy data" \
-	PostgresVersion="11" \
-	PostgresFullVersion="11.5" \
+	PostgresVersion=${ccp_pg_version} \
+	PostgresFullVersion=${ccp_pg_full_version} \
 	Version="7.7" \
 	Release="2.4.2" \
         url="https://crunchydata.com" \
-	summary="PostgreSQL 11.5 (PGDG) with Patroni" \
+	summary="PostgreSQL ${ccp_pg_full_version} (PGDG) with Patroni" \
         description="Used for the deployment and management of highly-available PostgreSQL clusters using Patroni." \
         run="" \
         start="" \
@@ -24,16 +31,25 @@ COPY conf/atomic/postgres-ha/help.md /help.md
 COPY conf/licenses /licenses
 COPY licenses /licenses
 
-ENV PGVERSION="11" PATRONI_VERSION="1.5.6" BACKREST_VERSION="2.17"
+ENV PGVERSION="${ccp_pg_version}"
 
 # if you ever need to install package docs inside the container, uncomment
 #RUN sed -i '/nodocs/d' /etc/yum.conf
 
-# Crunchy Postgres repo
+# Crunchy Postgres repo GPG Keys
+# Both keys are added to support building all PG versions
+# of this container. PG 11 requires RPM-GPG-KEY-crunchydata
+# PG 9.5, 9.6 and 10 require CRUNCHY-GPG-KEY.public
 ADD conf/RPM-GPG-KEY-crunchydata  /
-ADD conf/crunchypg11.repo /etc/yum.repos.d/
+ADD conf/CRUNCHY-GPG-KEY.public  /
+# Add any available Crunchy PG repo files
+ADD conf/crunchypg*.repo /etc/yum.repos.d/
+# Import both keys to support all required repos
 RUN rpm --import RPM-GPG-KEY-crunchydata
+RUN rpm --import CRUNCHY-GPG-KEY.public
 
+# Install the required software. Note that the syntax ${variableName//.} gets the contents of the
+# variable without any included periods. Thus a value of '9.5' would become '95' to match the version needed.
 RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
  && yum -y --enablerepo=rhel-7-server-ose-3.11-rpms --disablerepo=crunchy* update \
  && yum -y install bind-utils \
@@ -47,16 +63,16 @@ RUN rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.
     python-pip \
     python-psycopg2 \
  && yum -y reinstall glibc-common \
- && yum -y install postgresql11 postgresql11-contrib postgresql11-server \
-    pgaudit11 pgaudit11_set_user postgresql11-plpython \
- && yum -y install crunchy-backrest-"${BACKREST_VERSION}" \
+ && yum -y install postgresql${ccp_pg_version//.} postgresql${ccp_pg_version//.}-contrib postgresql${ccp_pg_version//.}-server \
+    pgaudit${ccp_pg_version//.} pgaudit${ccp_pg_version//.}_set_user postgresql${ccp_pg_version//.}-plpython \
+ && yum -y install crunchy-backrest-"${ccp_backrest_version}" \
  && yum -y --setopt=tsflags='' install pgaudit_analyze \
  && yum -y clean all
 
 # install patroni for Kube
 RUN pip uninstall -y ipaddress \
  && pip install --upgrade pip setuptools python-dateutil \
- && pip install patroni[kubernetes]=="${PATRONI_VERSION}"
+ && pip install patroni[kubernetes]=="${ccp_patroni_version}"
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
 ENV PATH="${PGROOT}/bin:${PATH}"
@@ -74,7 +90,7 @@ EXPOSE 5432
 ADD bin/postgres-ha /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/postgres-ha /opt/cpm/conf
-ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules
+ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules/pgexporter
 
 ADD yq /opt/cpm/bin
 RUN chmod +x /opt/cpm/bin/yq

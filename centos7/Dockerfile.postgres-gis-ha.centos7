@@ -1,0 +1,47 @@
+# ARG values passed in from Makefile to be used in FROM line
+# Per the Docker docs, "An ARG instruction goes out of scope at 
+# the end of the build stage where it was defined. To use an arg 
+# in multiple stages, each stage must include the ARG instruction."
+ARG ccp_image_prefix
+ARG ccp_image_tag
+
+FROM $ccp_image_prefix/crunchy-postgres-ha:$ccp_image_tag
+
+#ARG values passed in from Makefile to be used during the image build
+ARG ccp_pg_version
+ARG ccp_pg_full_version
+
+LABEL name="crunchydata/postgres-gis" \
+        vendor="crunchy data" \
+	PostgresVersion=$ccp_pg_version \
+	PostgresFullVersion=$ccp_pg_full_version \
+	Version="7.7" \
+	Release="2.4.2" \
+        url="https://crunchydata.com" \
+        summary="Includes PostGIS extensions on top of crunchy-postgres-ha" \
+        description="An identical image of crunchy-postgres with the extra PostGIS packages added for users that require PostGIS." \
+        io.k8s.description="postgres-gis container" \
+        io.k8s.display-name="Crunchy postgres-gis container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+USER 0
+
+# Install the required software. Note that the syntax ${variableName//.} gets the contents of the
+# variable without any included periods. Thus a value of '9.5' would become '95' to match the version needed.
+RUN yum -y install \
+    R-core libRmath plr${ccp_pg_version//.} \
+    postgis25_${ccp_pg_version//.} postgis25_${ccp_pg_version//.}-client \
+ && yum -y clean all
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin/postgres-gis-ha /opt/cpm/bin
+
+ENTRYPOINT ["/opt/cpm/bin/bootstrap-postgres-ha.sh"]
+
+USER 26
+
+CMD ["/usr/bin/patroni"]
+
