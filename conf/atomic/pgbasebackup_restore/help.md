@@ -5,8 +5,8 @@ Crunchy Data
 Crunchy pgbasebackup-restore - provides the ability to restore a database using a pg_basebackup backup.
 
 == DESCRIPTION
-The Crunchy pgbasebackup-restore container restores a database into a specified PGDATA directory using a pg_basebackup 
-backup, while also preparing for a PITR if a recovery target is specified.
+The Crunchy pgbasebackup-restore container restores a database into a specified PGDATA directory using a pg_basebackup
+backup.
 
 The container itself consists of:
     - RHEL7 base image
