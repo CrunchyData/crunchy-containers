@@ -1,0 +1,16 @@
+---
+bootstrap:
+  dcs:
+    postgresql:
+      parameters:
+        log_directory: pg_log
+        shared_buffers: 128MB
+        temp_buffers: 8MB
+        log_min_duration_statement: 60000
+        log_statement: none
+        work_mem: 4MB
+        max_wal_senders: 6
+        shared_preload_libraries: pgaudit.so,pg_stat_statements.so
+  initdb:
+  - encoding: UTF8
+  - data-checksums

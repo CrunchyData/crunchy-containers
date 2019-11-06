@@ -1,3 +1,7 @@
 ---
 bootstrap:
+  dcs:
+    postgresql:
+      parameters:
+        unix_socket_directories: /tmp,/crunchyadm
   post_bootstrap: /opt/cpm/bin/post-bootstrap.sh

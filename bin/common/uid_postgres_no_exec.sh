@@ -8,6 +8,11 @@ then
         cp /tmp/uid.tmp /etc/passwd
         rm -f /tmp/uid.tmp
         echo "${USER_NAME:-postgres}:x:$(id -u):0:${USER_NAME:-postgres} user:${HOME}:/bin/bash" >> /etc/passwd
+        
+        sed  "/crunchyadm:x:17:/d" /etc/passwd >> /tmp/uid.tmp
+        cp /tmp/uid.tmp /etc/passwd
+        rm -f /tmp/uid.tmp
+        echo "${USER_NAME:-crunchyadm}:x:1000080017:0:${USER_NAME:-crunchyadm} user:${HOME}:/bin/bash" >> /etc/passwd
     fi
 
     if [[ -w /etc/group ]]

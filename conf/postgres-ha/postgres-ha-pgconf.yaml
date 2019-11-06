@@ -1,26 +1,16 @@
 ---
-bootstrap:
-  dcs:
-    postgresql:
-      parameters:
-        log_directory: pg_log
-        shared_buffers: 128MB
-        temp_buffers: 8MB
-        log_min_duration_statement: 60000
-        log_statement: none
-        work_mem: 4MB
-        max_wal_senders: 6
-        shared_preload_libraries: pgaudit.so,pg_stat_statements.so
-        unix_socket_directories: /tmp
-  initdb:
-  - encoding: UTF8
-  - data-checksums
-
 postgresql:
   pg_hba:
-  - local all postgres peer
-  - local postgres PGHA_USER md5
-  - host replication PATRONI_REPLICATION_USERNAME 0.0.0.0/0 md5
-  - host all all 0.0.0.0/0 md5
+    - local all postgres peer
+    - local all crunchyadm peer
+    - host replication PATRONI_REPLICATION_USERNAME 0.0.0.0/0 md5
+    - host all all 0.0.0.0/0 md5
   use_unix_socket: true
   pgpass: /tmp/.pgpass
+  create_replica_methods:
+    - pgbackrest
+    - basebackup
+  pgbackrest:
+    command: 'pgbackrest --delta restore'
+    keep_data: true
+    no_params: true

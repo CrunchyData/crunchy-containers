@@ -15,15 +15,15 @@
 
 if [[ -v PGMONITOR_PASSWORD ]]
 then
-    if [[ ${PG_MODE?} == "primary" ]] || [[ ${PG_MODE?} == "master" ]]
+    if [[ ${PGHA_INIT?} == "true" ]]
     then
 
         echo_info "PGMONITOR_PASSWORD detected.  Enabling pgMonitor support."
 
         source /opt/cpm/bin/common_lib.sh
-        export PGHOST="${PGHOST:-/tmp}"
+        export PGHOST="/tmp"
 
-        pgisready 'postgres' ${PGHOST?} "${PG_PRIMARY_PORT}" 'postgres'
+        test_server "postgres" "${PGHOST?}" "${PGHA_PG_PORT}" "postgres"
         VERSION=$(psql --port="${PG_PRIMARY_PORT}" -d postgres -qtAX -c "SELECT current_setting('server_version_num')")
 
         if (( ${VERSION?} >= 90500 )) && (( ${VERSION?} < 90600 ))

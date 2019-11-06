@@ -204,6 +204,14 @@ upgrade: versiontest
 		docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG) ;\
 	fi
 
+crunchyadm: versiontest
+	sudo --preserve-env buildah bud --layers $(SQUASH) \
+	    --build-arg ccp_pgversion=$(CCP_PGVERSION) \
+		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.admin.$(CCP_BASEOS) \
+		-t $(CCP_IMAGE_PREFIX)/crunchy-admin:$(CCP_IMAGE_TAG) $(CCPROOT)
+	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-admin:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-admin:$(CCP_IMAGE_TAG)
+	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-admin:$(CCP_IMAGE_TAG)  $(CCP_IMAGE_PREFIX)/crunchy-admin:$(CCP_IMAGE_TAG)
+
 #=================
 # Utility targets
 #=================
