@@ -137,15 +137,6 @@ prometheus:	versiontest
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-prometheus:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-prometheus:$(CCP_IMAGE_TAG)
 	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-prometheus:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-prometheus:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
-sample-app: versiontest
-	docker build -t $(CCP_IMAGE_PREFIX)/sample-app-build:build -f $(CCP_BASEOS)/Dockerfile.sample-app-build.$(CCP_BASEOS) .
-	docker create --name extract $(CCP_IMAGE_PREFIX)/sample-app-build:build
-	docker cp extract:/go/src/github.com/crunchydata/sample-app/sample-app ./bin/sample-app
-	docker rm -f extract
-	sudo --preserve-env buildah bud --layers $(SQUASH) -f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.sample-app.$(CCP_BASEOS) -t $(CCP_IMAGE_PREFIX)/crunchy-sample-app:$(CCP_IMAGE_TAG) $(CCPROOT)
-	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-sample-app:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-sample-app:$(CCP_IMAGE_TAG)
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-sample-app:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-sample-app:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
-
 scheduler: versiontest
 	docker build -t $(CCP_IMAGE_PREFIX)/scheduler-build:build -f $(CCP_BASEOS)/Dockerfile.scheduler-build.$(CCP_BASEOS) .
 	docker create --name extract $(CCP_IMAGE_PREFIX)/scheduler-build:build
