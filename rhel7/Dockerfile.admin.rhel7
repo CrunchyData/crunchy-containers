@@ -1,0 +1,43 @@
+FROM registry.access.redhat.com/rhel7
+
+LABEL name="crunchydata/admin" \
+        vendor="crunchy data" \
+	Version="7.7" \
+	Release="2.4.2" \
+        url="https://crunchydata.com" \
+        summary="Administrative sidecar container for 'crunchy-postgres-ha'" \
+        description="Sidecar container deployed alongside 'crunchy-postgres-ha' that can be utilized to perform administrative functions" \
+        io.k8s.description="crunchyadm sidecar container" \
+        io.k8s.display-name="Crunchy admin sidecar container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY conf/licenses /licenses
+COPY licenses /licenses
+
+ARG ccp_pgversion
+
+ENV PGVERSION="${ccp_pgversion}"
+
+# Crunchy Postgres repo
+ADD conf/RPM-GPG-KEY-crunchydata  /
+ADD conf/crunchypg11.repo /etc/yum.repos.d/
+RUN rpm --import RPM-GPG-KEY-crunchydata
+
+RUN yum -y update \
+ && yum -y install postgresql"${PGVERSION}" \
+ && yum -y clean all
+
+ENV PGROOT="/usr/pgsql-${PGVERSION}"
+ENV PATH="${PGROOT}/bin:${PATH}"
+
+ADD bin/common /opt/cpm/bin
+
+RUN chmod g=u /etc/passwd \
+ && chmod g=u /etc/group
+
+ENTRYPOINT ["/opt/cpm/bin/uid_crunchyadm.sh"]
+
+USER 17
+
+CMD ["tail -f /dev/null"]

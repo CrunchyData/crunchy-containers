@@ -13,14 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+export PGHOST="/tmp"
+
 source /opt/cpm/bin/common_lib.sh
+enable_debugging
 
 echo_info "postgres-ha post-bootstrap starting"
 
-enable_debugging
-
-export PGHOST="/tmp"
-
+# Run either a custom or the defaul setup.sql file
 if [[ -f "/pgconf/setup.sql" ]]
 then
     echo_info "Using custom setup.sql"
@@ -30,7 +30,7 @@ else
     cp "/opt/cpm/bin/setup.sql" "/tmp"
 fi
 
-# always replace PGHA_USER_PASSWORD before PGHA_USER
+# Always replace PGHA_USER_PASSWORD before PGHA_USER
 sed -i "s/PGHA_USER_PASSWORD/$PGHA_USER_PASSWORD/g" "/tmp/setup.sql"
 sed -i "s/PGHA_USER/$PGHA_USER/g" "/tmp/setup.sql"
 sed -i "s/PGHA_DATABASE/$PGHA_DATABASE/g" "/tmp/setup.sql"
@@ -52,11 +52,5 @@ do
     echo_info "Applying module ${module}"
     source "${module}"
 done
-
-# Enable pgbackrest
-if [[ "${PGHA_PGBACKREST}" == "true" ]]
-then
-    source "/opt/cpm/bin/pgbackrest.sh"
-fi
 
 echo_info "postgres-ha post-bootstrap complete"

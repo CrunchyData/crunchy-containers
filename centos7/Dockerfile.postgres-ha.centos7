@@ -54,15 +54,17 @@ RUN pip uninstall -y ipaddress \
  && pip install --upgrade pip setuptools python-dateutil \
  && pip install patroni[kubernetes]=="${ccp_patroni_version}"
 
+RUN useradd crunchyadm -g 0 -u 17
+
 ENV PGROOT="/usr/pgsql-${ccp_pg_version}"
 ENV PATH="${PGROOT}/bin:${PATH}"
 
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backrestrepo
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backrestrepo /crunchyadm
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
-    /pgdata /pgwal /pgconf /backrestrepo &&  \
+    /pgdata /pgwal /pgconf /backrestrepo /crunchyadm &&  \
     chmod -R g=u /opt/cpm /var/lib/pgsql \
-    /pgdata /pgwal /pgconf /backrestrepo
+    /pgdata /pgwal /pgconf /backrestrepo /crunchyadm
 
 # open up the postgres port
 EXPOSE 5432

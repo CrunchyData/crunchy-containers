@@ -1,0 +1,39 @@
+FROM centos:7
+
+LABEL name="crunchydata/admin" \
+        vendor="crunchy data" \
+	Version="7.7" \
+	Release="2.4.2" \
+        url="https://crunchydata.com" \
+        summary="Administrative sidecar container for 'crunchy-postgres-ha'" \
+        description="Sidecar container deployed alongside 'crunchy-postgres-ha' that can be utilized to perform administrative functions" \
+        io.k8s.description="crunchyadm sidecar container" \
+        io.k8s.display-name="Crunchy admin sidecar container" \
+        io.openshift.expose-services="" \
+        io.openshift.tags="crunchy,database"
+
+COPY licenses /licenses
+
+ARG ccp_pgversion
+
+ENV PGVERSION="${ccp_pgversion}" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm" PGDG_REPO_DISABLE="pgdg*" PGDG_REPO_ENABLE=pgdg"${ccp_pgversion}"
+
+RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
+
+RUN yum -y install --disablerepo="${PGDG_REPO_DISABLE}" --enablerepo="${PGDG_REPO_ENABLE}" \ 
+    postgresql"${PGVERSION}" \
+ && yum -y clean all
+
+ENV PGROOT="/usr/pgsql-${PGVERSION}"
+ENV PATH="${PGROOT}/bin:${PATH}"
+
+ADD bin/common /opt/cpm/bin
+
+RUN chmod g=u /etc/passwd \
+ && chmod g=u /etc/group
+
+ENTRYPOINT ["/opt/cpm/bin/uid_crunchyadm.sh"]
+
+USER 17
+
+CMD ["tail -f /dev/null"]

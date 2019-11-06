@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+export PGHOST="/tmp"
+
 source /opt/cpm/bin/common_lib.sh
 
 echo_info "postgres-ha pre-bootstrap starting..."
@@ -20,47 +22,53 @@ echo_info "postgres-ha pre-bootstrap starting..."
 # Set defaults for the various auto-configuration options that can be enabled/disabled
 set_default_pgha_autoconfig_env()  {
 
-    if [[ "${PGHA_DEFAULT_CONFIG:=true}" == "true" ]]
+    if [[ ! -v PGHA_DEFAULT_CONFIG ]]
     then
-        export PGHA_DEFAULT_CONFIG
+        export PGHA_DEFAULT_CONFIG="true"
         default_pgha_autoconfig_env_vars+=("PGHA_DEFAULT_CONFIG")
     fi
-
-    if [[ "${PGHA_BASE_BOOTSTRAP_CONFIG:=true}" == "true" ]]
+    
+    if [[ ! -v PGHA_BASE_BOOTSTRAP_CONFIG ]]
     then
-        export PGHA_BASE_BOOTSTRAP_CONFIG
+        export PGHA_BASE_BOOTSTRAP_CONFIG="true"
         default_pgha_autoconfig_env_vars+=("PGHA_BASE_BOOTSTRAP_CONFIG")
     fi
-
-    if [[ "${PGHA_BASE_PG_CONFIG:=true}" == "true" ]]
+    
+    if [[ ! -v PGHA_BASE_PG_CONFIG ]]
     then
-        export PGHA_BASE_PG_CONFIG
+        export PGHA_BASE_PG_CONFIG="true"
         default_pgha_autoconfig_env_vars+=("PGHA_BASE_PG_CONFIG")
     fi
-
-    if [[ "${PGHA_ENABLE_WALDIR:=false}" == "false" ]]
+    
+    if [[ ! -v PGHA_ENABLE_WALDIR ]]
     then
-        export PGHA_ENABLE_WALDIR
+        export PGHA_ENABLE_WALDIR="false"
         default_pgha_autoconfig_env_vars+=("PGHA_ENABLE_WALDIR")
     fi
 
-    if [[ "${PGHA_PGBACKREST:=true}" == "true" ]]
+    if [[ ! -v PGHA_PGBACKREST ]]
     then
-        export PGHA_PGBACKREST
+        export PGHA_PGBACKREST="true"
         default_pgha_autoconfig_env_vars+=("PGHA_PGBACKREST")
-        if [[ "${PGHA_PGBACKREST_LOCAL_S3_STORAGE:=false}" == "false" ]]
+        if [[ ! -v PGHA_PGBACKREST_LOCAL_S3_STORAGE ]]
         then
-            export PGHA_PGBACKREST_LOCAL_S3_STORAGE
+            export PGHA_PGBACKREST_LOCAL_S3_STORAGE="false"
             default_pgha_autoconfig_env_vars+=("PGHA_PGBACKREST_LOCAL_S3_STORAGE")
         fi
-        if [[ "${PGHA_PGBACKREST_CREATE_STANZA:=false}" == "false" ]]
+        if [[ ! -v PGHA_PGBACKREST_INITIALIZE ]]
         then
-            export PGHA_PGBACKREST_CREATE_STANZA
-            default_pgha_autoconfig_env_vars+=("PGHA_PGBACKREST_CREATE_STANZA")
+            export PGHA_PGBACKREST_INITIALIZE="false"
+            default_pgha_autoconfig_env_vars+=("PGHA_PGBACKREST_INITIALIZE")
         fi
     else
         echo_info "pgBackRest auto-config disabled"
-        echo_info "PGHA_PGBACKREST_LOCAL_S3_STORAGE and PGHA_PGBACKREST_CREATE_STANZA will be ignored if provided"
+        echo_info "PGHA_PGBACKREST_LOCAL_S3_STORAGE and PGHA_PGBACKREST_INITIALIZE will be ignored if provided"
+    fi
+
+    if [[ ! -v PGHA_CRUNCHYADM ]]
+    then
+        export PGHA_CRUNCHYADM="false"
+        default_pgha_autoconfig_env_vars+=("PGHA_CRUNCHYADM")
     fi
 
     if [[ ! ${#default_pgha_autoconfig_env_vars[@]} -eq 0 ]]
@@ -200,7 +208,6 @@ set_pg_user_credentials() {
         env_check_err "PATRONI_SUPERUSER_PASSWORD"
     fi
 
-
     if [[ -d "/pgconf/pguser" ]]
     then
         echo_info "Setting 'replicator' credentials using file system"
@@ -299,6 +306,13 @@ build_bootstrap_config_file() {
         echo_info "Custom postgres-ha configuration file not detected"
     fi
 
+    if [[ "${PGHA_INIT}" == "true" && ! -f "${PATRONI_POSTGRESQL_DATA_DIR}/PG_VERSION" ]]
+    then
+        echo_info "PGDATA directory is empty on node identifed as Primary"
+        echo_info "initdb configuration will be applied to intitilize a new database"
+        /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-initdb.yaml"
+    fi
+
     if [[ $(cat "${bootstrap_file}") == "---" ]]
     then
         echo_err "postgres-ha configuration file is empty! Please provide a custom config file or enable the base configs."
@@ -333,6 +347,10 @@ validate_env
 
 # Create the Patroni bootstrap configuration file
 build_bootstrap_config_file
+
+# Create the pgdata directory if it doesn't exist
+mkdir -p "${PATRONI_POSTGRESQL_DATA_DIR}"
+chmod 0700 "${PATRONI_POSTGRESQL_DATA_DIR}"
 
 echo_info "postgres-ha pre-bootstrap complete!  The following configuration will be utilized to initialize " \
 "this postgres-ha node:"
