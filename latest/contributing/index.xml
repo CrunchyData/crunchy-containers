@@ -38,7 +38,7 @@ If you have any questions, you can submit a Support - Question and Answer issue 
       
       <guid>https://crunchydata.github.io/crunchy-containers/latest/contributing/pull-requests/</guid>
       <description>So you decided to submit an issue and work it. Great! Let&amp;rsquo;s get it merged in to the codebase. The following will go a long way to helping get the fix merged in quicker:
- Fork the Github repository and make a branch off of the develop branch Create a Pull Request from your Fork back to the develop branch. Update the checklists in the Pull Request description. Reference which issues this Pull Request is resolving.</description>
+ Fork the Github repository and make a branch off of the master branch Create a Pull Request from your Fork back to the master branch. Update the checklists in the Pull Request description. Reference which issues this Pull Request is resolving.</description>
     </item>
     
     <item>
