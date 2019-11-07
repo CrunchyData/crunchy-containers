@@ -47,3 +47,28 @@
         "persistentVolumeReclaimPolicy": "Retain"
     }
 }
+
+{
+    "apiVersion": "v1",
+    "kind": "PersistentVolume",
+    "metadata": {
+        "name": "$CCP_NAMESPACE-postgres-gis-ha-backrestrepo",
+        "labels": {
+            "application": "patroni",
+            "name": "$CCP_NAMESPACE-postgres-gis-ha-backrestrepo",
+            "cleanup": "$CCP_NAMESPACE-postgres-gis-ha"
+        }
+    },
+    "spec": {
+        "capacity": {
+            "storage": "$CCP_STORAGE_CAPACITY"
+        },
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "hostPath": {
+            "path": "$CCP_STORAGE_PATH/$CCP_NAMESPACE-postgres-gis-ha"
+        },
+        "persistentVolumeReclaimPolicy": "Retain"
+    }
+}
