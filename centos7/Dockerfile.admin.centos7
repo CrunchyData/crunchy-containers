@@ -20,8 +20,8 @@ ENV PGVERSION="${ccp_pgversion}" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm" 
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
-RUN yum -y install --disablerepo="${PGDG_REPO_DISABLE}" --enablerepo="${PGDG_REPO_ENABLE}" \ 
-    postgresql"${PGVERSION}" \
+RUN yum -y install --disablerepo="${PGDG_REPO_DISABLE}" --enablerepo="${PGDG_REPO_ENABLE//.}" \ 
+    postgresql"${PGVERSION//.}" \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"

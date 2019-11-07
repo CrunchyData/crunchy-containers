@@ -19,13 +19,20 @@ ARG ccp_pgversion
 
 ENV PGVERSION="${ccp_pgversion}"
 
-# Crunchy Postgres repo
+# Crunchy Postgres repo GPG Keys
+# Both keys are added to support building all PG versions
+# of this container. PG 11 requires RPM-GPG-KEY-crunchydata
+# PG 9.5, 9.6 and 10 require CRUNCHY-GPG-KEY.public
 ADD conf/RPM-GPG-KEY-crunchydata  /
-ADD conf/crunchypg11.repo /etc/yum.repos.d/
+ADD conf/CRUNCHY-GPG-KEY.public  /
+# Add any available Crunchy PG repo files
+ADD conf/crunchypg*.repo /etc/yum.repos.d/
+# Import both keys to support all required repos
 RUN rpm --import RPM-GPG-KEY-crunchydata
+RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN yum -y update \
- && yum -y install postgresql"${PGVERSION}" \
+ && yum -y install postgresql"${PGVERSION//.}" \
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
