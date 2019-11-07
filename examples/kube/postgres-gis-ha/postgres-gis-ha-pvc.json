@@ -51,3 +51,30 @@
         }
     }
 }
+
+{
+    "kind": "PersistentVolumeClaim",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "postgres-gis-ha-backrestrepo",
+        "labels": {
+            "application": "postgres-gis-ha",
+            "cleanup": "$CCP_NAMESPACE-postgres-gis-ha"
+        }
+    },
+    "spec": {
+        "selector": {
+            "matchLabels": {
+                "name": "$CCP_NAMESPACE-postgres-gis-ha-backrestrepo"
+            }
+        },
+        "accessModes": [
+            "$CCP_STORAGE_MODE"
+        ],
+        "resources": {
+            "requests": {
+                "storage": "$CCP_STORAGE_CAPACITY"
+            }
+        }
+    }
+}
