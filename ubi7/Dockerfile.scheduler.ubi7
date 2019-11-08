@@ -5,7 +5,7 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/scheduler" \
       vendor="crunchy data" \
       Version="7.7" \
-      Release="2.4.2" \
+      Release="4.2.0" \
       url="https://crunchydata.com" \
       summary="Crunchy Scheduler is a cron-like microservice for scheduling automatic backups" \
       description="Crunchy Scheduler parses JSON configMaps with the label 'crunchy-scheduler=true' and transforms them into cron based tasks for automating pgBaseBackup and pgBackRest backups" \
