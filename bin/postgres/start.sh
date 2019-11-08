@@ -229,6 +229,70 @@ function initialize_replica() {
     fi
     echo_info "${APPLICATION_NAME} is the APPLICATION_NAME being used."
 
+    # PostgreSQL 12 changed how a replica/standby is set up. There is no longer
+    # a recovery.conf file that indicates a PostgreSQL instance is a standby,
+    # but rather one of two "signal" files that are available. The settings
+    # for the PostgreSQL recovery/standby are kept in the main PostgreSQL.conf
+    # file. As such we will fork off here, and allow each more to be st up.
+    PG_VERSION=`cat $PGDATA/PG_VERSION`
+    if [[ $PG_VERSION -ge 12 ]]; then
+        initialize_replica_post12
+    else
+        initialize_replica_pre12
+    fi
+}
+
+# PostgreSQL 12 moved all settings that affect a replica instance into the
+# main "postgresql.conf" file and removed the "replica.conf" file that would
+# put a PostgreSQL instance into recovery/standby mode. Now, in addition to the
+# recovery settings being in the "postgresql.conf" file, one must add one of the
+# following files in the $PGDATA directory to put the server into one of these
+# modes:
+#
+# - "standby.signal": used for a replica that you want in a current, read-only
+#                     state
+# - "recovery.signal": used for a "targeted recovery", e.g. a
+#                      point-in-time-recovery (PITR), which will stop replaying
+#                      logs once the targeted recovery point is reached.
+#
+# For more info:
+# https://www.postgresql.org/docs/current/runtime-config-wal.html#RUNTIME-CONFIG-WAL-ARCHIVE-RECOVERY
+function initialize_replica_post12() {
+    echo_info "Setting up recovery using methodology for PostgreSQL 12 and above."
+    # set up a temporary file with recovery settings that we output to
+    RECOVERY_FILE_TMP='/tmp/pgrepl-recovery.conf'
+    echo_info "Preparing recovery settings in ${RECOVERY_FILE_TMP}"
+    # first, create a temporary file to build up the recovery file separately.
+    # use the legacy name to help
+    touch $RECOVERY_FILE_TMP
+    # As of PostgreSQL 12, the recovery_target_timeline defaults to "latest",
+    # so we will not add that in.
+    #
+    # Also as of PostgreSQL 12, the "standby_mode" parameter is dropped, as that
+    # is now dictated by which signal file is used.
+    #
+    # In PostgreSQL 12, "trigger_file" => "promote_trigger_file"
+    echo "promote_trigger_file = '/tmp/pg-failover-trigger'" > $RECOVERY_FILE_TMP
+    # the primary_conninfo string stays mostly the same
+    PGCONF_PRIMARY_CONNINFO="application_name=${APPLICATION_NAME} host=${PG_PRIMARY_HOST} port=${PG_PRIMARY_PORT} user=${PG_PRIMARY_USER}"
+    echo "primary_conninfo = '${PGCONF_PRIMARY_CONNINFO}'" > $RECOVERY_FILE_TMP
+    # append the contents of $RECOVERY_FILE_TMP to the postgresql.conf file
+    cat $RECOVERY_FILE_TMP >> $PGDATA/postgresql.conf
+    # and put the server into standby mode
+    touch $PGDATA/standby.signal
+}
+
+# Before PostgreSQL 12, the way to set up a replica instance was to use a file
+# called recovery.conf. The recovery.conf file serves as a way to indicate to
+# PostgreSQL to boot up in "recovery" mode, and based on the settings, one could
+# create a "hot standby" where read-only queries could be routed. This is the
+# basis of streaming replication, etc. All the settings for setting up the file
+# are documented here:
+# https://www.postgresql.org/docs/11/recovery-config.html
+function initialize_replica_pre12() {
+    echo_info "Setting up recovery using methodology for PostgreSQL 11 and below."
+    # Basically, we have a preconfigured recovery file with some settings in it,
+    # And we substitute out some of the settings
     cp /opt/cpm/conf/pgrepl-recovery.conf /tmp
     sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pgrepl-recovery.conf
     sed -i "s/PG_PRIMARY_HOST/$PG_PRIMARY_HOST/g" /tmp/pgrepl-recovery.conf
