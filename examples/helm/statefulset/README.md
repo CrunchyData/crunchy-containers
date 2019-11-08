@@ -107,7 +107,7 @@ $ helm install statefulset --name statefulset \
   --set Image.tag=centos7-9.6.11-2.2.0
 ```
 
-The above command changes the image tag of the container from the default of `centos7-10.10-2.4.2` to `centos7-9.6.11-2.2.0`.
+The above command changes the image tag of the container from the default of `centos7-10.10-4.1.1` to `centos7-9.6.11-2.2.0`.
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
 
@@ -124,7 +124,7 @@ The above command changes the image tag of the container from the default of `ce
 | `.serviceType`      | The type of service      | `ClusterIP`               
 | `.image.repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
 | `.image.container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
-| `.image.tag` | The image tag to be used.    | `centos7-10.10-2.4.2`                                                    |
+| `.image.tag` | The image tag to be used.    | `centos7-10.10-4.1.1`                                                    |
 | `.pv.storage` | Size of persistent volume     | 400M                                                    |
 | `.pv.name` | Name of persistent volume    | `pgset-pv`                                                    |
 | `.pvc.name` | Name of persistent volume    | `pgset-pvc`                                                    |

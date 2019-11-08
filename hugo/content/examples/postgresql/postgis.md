@@ -1,6 +1,6 @@
 ---
 title: "PostGIS Container"
-date: 
+date:
 draft: false
 weight: 8
 ---
@@ -29,7 +29,7 @@ You should expect to see output similar to:
 ```
 postgis_full_version
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
- POSTGIS="2.4.2 r16113" PGSQL="100" GEOS="3.5.0-CAPI-1.9.0 r4084" PROJ="Rel. 4.8.0, 6 March 2012" GDAL="GDAL 1.11.4, released 2016/01/25" LIBXML="2.9.1" LIBJSON="0.11" TOPOLOGY RASTER
+ POSTGIS="2.4.8 r16113" PGSQL="100" GEOS="3.5.0-CAPI-1.9.0 r4084" PROJ="Rel. 4.8.0, 6 March 2012" GDAL="GDAL 1.11.4, released 2016/01/25" LIBXML="2.9.1" LIBJSON="0.11" TOPOLOGY RASTER
 (1 row)
 ```
 
