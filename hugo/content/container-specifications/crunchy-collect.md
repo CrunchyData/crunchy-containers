@@ -23,7 +23,7 @@ can be specified for the API to collect. For an example of a queries.yml file, s
 
 The crunchy-collect Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (11.5, 10.10, 9.6.15 and 9.5.19)
+* PostgreSQL (12.0, 11.5, 10.10, 9.6.15 and 9.5.19)
 * CentOS7 - publicly available
 * RHEL7 - customers only
 * [PostgreSQL Exporter](https://github.com/wrouesnel/postgres_exporter)
@@ -38,7 +38,7 @@ The crunchy-collect Docker image contains the following packages (versions vary 
 ### Optional
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
-**COLLECT_PG_USER**|ccp_monitoring|Provides the username needed to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database.  Should typically be `ccp_monitoring` per the [crunchy-postgres](/container-specifications/crunchy-postgres) container specification (see environment varaible `PGMONITOR_PASSWORD`). 
+**COLLECT_PG_USER**|ccp_monitoring|Provides the username needed to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database.  Should typically be `ccp_monitoring` per the [crunchy-postgres](/container-specifications/crunchy-postgres) container specification (see environment varaible `PGMONITOR_PASSWORD`).
 **COLLECT_PG_HOST**|127.0.0.1|Provides the host needed to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database|
 **COLLECT_PG_PORT**|5432|Provides the port needed to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database|
 **COLLECT_PG_DATABASE**|postgres|Provides the name of the database used to generate the PostgreSQL URL required by the PostgreSQL Exporter to connect to a PG database|
