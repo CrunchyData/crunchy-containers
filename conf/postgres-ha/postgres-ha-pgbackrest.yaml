@@ -4,4 +4,7 @@ bootstrap:
     postgresql:
       parameters:
         archive_mode: on
-        archive_command: 'source /tmp/pgbackrest_env.sh && pgbackrest archive-push %p'
+        archive_command: 'source /tmp/pgbackrest_env.sh && pgbackrest archive-push "%p"'
+      use_slots: false
+      recovery_conf:
+        restore_command: 'source /tmp/pgbackrest_env.sh && pgbackrest archive-get %f "%p"'
