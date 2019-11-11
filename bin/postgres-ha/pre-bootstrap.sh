@@ -298,19 +298,19 @@ build_bootstrap_config_file() {
         echo_info "pgBackRest config for postgres-ha configuration disabled"
     fi
 
+    if [[ "${PGHA_INIT}" == "true" && ! -f "${PATRONI_POSTGRESQL_DATA_DIR}/PG_VERSION" ]]
+    then
+        echo_info "PGDATA directory is empty on node identifed as Primary"
+        echo_info "initdb configuration will be applied to intitilize a new database"
+        /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-initdb.yaml"
+    fi
+
     if [[ -f "/pgconf/postgres-ha.yaml" ]]
     then
         echo_info "Applying custom postgres-ha configuration file"
         /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/pgconf/postgres-ha.yaml"
     else
         echo_info "Custom postgres-ha configuration file not detected"
-    fi
-
-    if [[ "${PGHA_INIT}" == "true" && ! -f "${PATRONI_POSTGRESQL_DATA_DIR}/PG_VERSION" ]]
-    then
-        echo_info "PGDATA directory is empty on node identifed as Primary"
-        echo_info "initdb configuration will be applied to intitilize a new database"
-        /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-initdb.yaml"
     fi
 
     if [[ $(cat "${bootstrap_file}") == "---" ]]
