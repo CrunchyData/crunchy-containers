@@ -27,6 +27,14 @@ ENV PGVERSION="${ccp_pg_version}"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${ccp_pg_version}/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
 
+RUN echo $'[kubernetes] \n\
+name=Kubernetes \n\
+baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64 \n\
+enabled=1 \n\
+gpgcheck=1 \n\
+repo_gpgcheck=1 \n\
+gpgkey=https://packages.cloud.google.com/yum/doc/yum-key.gpg https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg' > /etc/yum.repos.d/kubernetes.repo
+
 # Install the required software. Note that the syntax ${variableName//.} gets the contents of the
 # variable without any included periods. Thus a value of '9.5' would become '95' to match the version needed.
 RUN yum -y update \
@@ -47,6 +55,7 @@ RUN yum -y update \
     pgaudit${ccp_pgaudit_version} \
     pgbackrest-"${ccp_backrest_version}" \
     postgresql${ccp_pg_version//.}-plpython \
+ && yum -y install kubectl \
  && yum -y clean all
 
 # install patroni for Kube
