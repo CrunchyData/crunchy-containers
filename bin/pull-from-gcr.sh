@@ -21,8 +21,9 @@ IMAGES=(
     crunchy-prometheus
     crunchy-scheduler
     crunchy-upgrade
-    crunchy-pgbasebackup-restore.
+    crunchy-pgbasebackup-restore
     crunchy-postgres-ha
+    crunchy-postgres-gis-ha
 )
 
 function echo_green() {
