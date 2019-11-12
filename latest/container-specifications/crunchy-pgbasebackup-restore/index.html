@@ -609,22 +609,9 @@
     
 
 <p>The <strong>crunchy-pgbasebackup-restore</strong> container restores a database using a <code>pg_basebackup</code> backup.  Specifically, the container
-uses <code>rsync</code> to copy a <code>pg_basebackup</code> backup into a specified <code>/pgdata</code> directory.  The container can then prepare the restored
-database for a PITR, allowing for a restore to a specific recovery target, or to the end of the WAL log.</p>
+uses <code>rsync</code> to copy a <code>pg_basebackup</code> backup into a specified <code>/pgdata</code> directory.</p>
 
-<p>If a recovery target is specified when performing the restore, a <code>recovery.conf</code> file will be created and prepared in order
-to restore the database to the recovery target specified when deployed.  A recovery target can be specified using one of the
-following environment variables (defined further under the <strong>Optional</strong> environment variables listed below):</p>
-
-<ul>
-<li><strong>RECOVERY_TARGET_NAME</strong></li>
-<li><strong>RECOVERY_TARGET_TIME</strong></li>
-<li><strong>RECOVERY_TARGET_XID</strong></li>
-<li><strong>RECOVERY_REPLAY_ALL_WAL</strong></li>
-</ul>
-
-<p>If one of these environment variables is not specified, then a <code>recovery.conf</code> file will not be included in the restore, and
-the WAL log will not be replayed to any specific point in time when the database is deployed.</p>
+<p>The crunchy-pgbasebackup-restore does not support point-in-time-recovery (PITR). If you would to create an environment that allows you to use PostgreSQL&rsquo;s point-in-time-recovery capabilities, please use the <a href="crunchy-backrest-restore.md">crunchy-backrest-restore</a> container with a corresponding pgBackRest repository.</p>
 
 <h2 id="packages">Packages</h2>
 
@@ -676,36 +663,6 @@ the WAL log will not be replayed to any specific point in time when the database
 </thead>
 
 <tbody>
-<tr>
-<td align="left"><strong>RECOVERY_TARGET_NAME</strong></td>
-<td align="left">None</td>
-<td align="left">Sets a named restore point for a PITR in the <code>recovery.conf</code> file</td>
-</tr>
-
-<tr>
-<td align="left"><strong>RECOVERY_TARGET_TIME</strong></td>
-<td align="left">None</td>
-<td align="left">Sets a timestamp for a PITR the <code>recovery.conf</code> file</td>
-</tr>
-
-<tr>
-<td align="left"><strong>RECOVERY_TARGET_XID</strong></td>
-<td align="left">None</td>
-<td align="left">Sets a transaction ID for a PITR in the <code>recovery.conf</code> file</td>
-</tr>
-
-<tr>
-<td align="left"><strong>RECOVERY_REPLAY_ALL_WAL</strong></td>
-<td align="left">false</td>
-<td align="left">If set to <code>true</code>, configures the <code>recovery.conf</code> file to restore to the end of the WAL log.  Please note that if variable is set to <code>true</code> any recovery targets provided will be ignored.</td>
-</tr>
-
-<tr>
-<td align="left"><strong>RECOVERY_TARGET_INCLUSIVE</strong></td>
-<td align="left">true</td>
-<td align="left">If set to <code>true</code>, configures the <code>recovery.conf</code> file to stop after the specified recovery target during the recovery. If set to <code>false</code>, the recovery will stop just before the recovery target.</td>
-</tr>
-
 <tr>
 <td align="left"><strong>RSYNC_SHOW_PROGRESS</strong></td>
 <td align="left">false</td>

@@ -608,9 +608,16 @@
     
     
 
-<p>The crunchy-upgrade container contains both the 9.5 / 9.6 and 9.6 / 10
-PostgreSQL packages in order to perform a pg_upgrade from
-9.5 to 9.6 or 9.6 to 10 versions.</p>
+<p>The crunchy-upgrade container contains multiple versions of PostgreSQL in order
+to perform a <code>pg_upgrade</code> between major versions of PostgreSQL. This includes
+the following combinations:</p>
+
+<ul>
+<li>PostgreSQL 9.5 / PostgreSQL 9.6</li>
+<li>PostgreSQL 9.6 / PostgreSQL 10</li>
+<li>PostgreSQL 10 / PostgreSQL 11</li>
+<li>PostgreSQL 11 / PostgreSQL 12</li>
+</ul>
 
 <h2 id="features">Features</h2>
 
@@ -626,7 +633,11 @@ PostgreSQL packages in order to perform a pg_upgrade from
 
 <ul>
 <li>Does <strong>not</strong> currently support a PostGIS upgrade.</li>
-<li>Supports upgrades from only 9.5 to 9.6, or 9.6 to 10.</li>
+<li>Supports upgrades from:</li>
+<li>9.5 to 9.6</li>
+<li>9.6 to 10</li>
+<li>10 to 11</li>
+<li>11 to 12</li>
 </ul>
 
 <h2 id="packages">Packages</h2>
@@ -634,7 +645,7 @@ PostgreSQL packages in order to perform a pg_upgrade from
 <p>The crunchy-upgrade Docker image contains the following packages (versions vary depending on PostgreSQL version):</p>
 
 <ul>
-<li>PostgreSQL (11.5, 10.10, 9.6.15 and 9.5.19)</li>
+<li>PostgreSQL (12.0, 11.5, 10.10, 9.6.15 and 9.5.19)</li>
 <li>CentOS7 - publicly available</li>
 <li>RHEL7 - customers only</li>
 </ul>
