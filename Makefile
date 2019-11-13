@@ -30,7 +30,7 @@ endif
 all: pgimages extras
 
 # Build images that use postgres
-pgimages: commands backup backrestrestore pgbasebackuprestore collect pgadmin4 pgbadger pgbench pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade
+pgimages: commands backup backrestrestore pgbasebackuprestore collect pgadmin4 pgbadger pgbench pgbouncer pgdump pgpool pgrestore postgres postgres-ha postgres-gis postgres-gis-ha upgrade crunchyadm
 
 # Build non-postgres images
 extras: grafana prometheus scheduler

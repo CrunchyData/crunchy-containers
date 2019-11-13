@@ -23,6 +23,7 @@ IMAGES=(
     crunchy-backrest-restore
     crunchy-postgres-ha
     crunchy-postgres-gis-ha
+    crunchy-admin
 )
 
 function echo_green() {

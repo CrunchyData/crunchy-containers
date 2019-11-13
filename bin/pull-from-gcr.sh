@@ -24,6 +24,7 @@ IMAGES=(
     crunchy-pgbasebackup-restore
     crunchy-postgres-ha
     crunchy-postgres-gis-ha
+    crunchy-admin
 )
 
 function echo_green() {
