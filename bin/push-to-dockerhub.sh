@@ -30,3 +30,4 @@ docker push $CCP_IMAGE_PREFIX/crunchy-pgbench:$CCP_IMAGE_TAG
 docker push $CCP_IMAGE_PREFIX/crunchy-pgbasebackup-restore:$CCP_IMAGE_TAG
 docker push  $CCP_IMAGE_PREFIX/crunchy-postgres-ha:$CCP_IMAGE_TAG
 docker push  $CCP_IMAGE_PREFIX/crunchy-postgres-gis-ha:$CCP_IMAGE_TAG
+docker push  $CCP_IMAGE_PREFIX/crunchy-admin:$CCP_IMAGE_TAG
