@@ -29,11 +29,11 @@ Crunchy Container Suite provides two types of PostgreSQL database images:
 
 Supported major versions of these images are:
 
-- 9.5
-- 9.6
-- 10
-- 11
 - 12
+- 11
+- 10
+- 9.6
+- 9.5
 
 ### Crunchy PostgreSQL
 
@@ -153,11 +153,11 @@ it into an scheduled task.
 The Crunchy Upgrade image allows users to perform major upgrades of their Crunchy
 PostgreSQL containers.  The following upgrade versions of PostgreSQL are available:
 
-- 9.5
-- 9.6
-- 10
-- 11
 - 12
+- 11
+- 10
+- 9.6
+- 9.5
 
 ## Performance and Monitoring
 
