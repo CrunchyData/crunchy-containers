@@ -1,6 +1,6 @@
 # ARG values passed in from Makefile to be used in FROM line
-# Per the Docker docs, "An ARG instruction goes out of scope at 
-# the end of the build stage where it was defined. To use an arg 
+# Per the Docker docs, "An ARG instruction goes out of scope at
+# the end of the build stage where it was defined. To use an arg
 # in multiple stages, each stage must include the ARG instruction."
 ARG ccp_image_prefix
 ARG ccp_image_tag
@@ -13,10 +13,10 @@ ARG ccp_pg_full_version
 
 LABEL name="crunchydata/postgres-gis" \
         vendor="crunchy data" \
-	PostgresVersion=$ccp_pg_version \
-	PostgresFullVersion=$ccp_pg_full_version \
-	Version="7.7" \
-	Release="2.4.2" \
+        PostgresVersion=$ccp_pg_version \
+        PostgresFullVersion=$ccp_pg_full_version \
+        Version="7.7" \
+        Release="4.2.0" \
         url="https://crunchydata.com" \
         summary="Includes PostGIS extensions on top of crunchy-postgres-ha" \
         description="An identical image of crunchy-postgres with the extra PostGIS packages added for users that require PostGIS." \
@@ -44,4 +44,3 @@ ENTRYPOINT ["/opt/cpm/bin/bootstrap-postgres-ha.sh"]
 USER 26
 
 CMD ["/usr/bin/patroni"]
-
