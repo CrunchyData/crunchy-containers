@@ -1,6 +1,6 @@
 ---
 title: "pgBackRest"
-date: 
+date:
 draft: false
 weight: 30
 ---
@@ -28,11 +28,11 @@ While setting `PGBACKREST` to `true` provides a simple method for enabling pgBac
 
 ```bash
 PGBACKREST_TYPE=time
-PITR_TARGET="2018-12-27 16:53:05.590156+00"
+PITR_TARGET="2019-10-27 16:53:05.590156+00"
 PGBACKREST_DELTA=y
 ```
 
-Full, incremental and differential backups of PostgreSQL databases deployed using the Crunchy Container Suite can scheduled using pgBackRest and the crunchy-scheduler container, and/or can also be performed manually by executing pgBackRest commands against the desired crunchy-postgres or crunchy-postgres-gis container.  Database restores, on the other hand, can be performed via the crunchy-backrest-restore container, which offers full pgBackRest restore capabilities, such as full, point-in-time and delta restores.  Further information and guidance for performing both backups and restores using the Crunchy Container Suite and pgBackRest will be provided in the examples below.  Additionally, for more information on utilizing the crunchy-scheduler container to schedule and perform pgBackRest database backups, please see the crunchy-scheduler [specifications](/container-specifications/crunchy-scheduler) and [examples](/examples/backup-restoration/scheduler/). 
+Full, incremental and differential backups of PostgreSQL databases deployed using the Crunchy Container Suite can scheduled using pgBackRest and the crunchy-scheduler container, and/or can also be performed manually by executing pgBackRest commands against the desired crunchy-postgres or crunchy-postgres-gis container.  Database restores, on the other hand, can be performed via the crunchy-backrest-restore container, which offers full pgBackRest restore capabilities, such as full, point-in-time and delta restores.  Further information and guidance for performing both backups and restores using the Crunchy Container Suite and pgBackRest will be provided in the examples below.  Additionally, for more information on utilizing the crunchy-scheduler container to schedule and perform pgBackRest database backups, please see the crunchy-scheduler [specifications](/container-specifications/crunchy-scheduler) and [examples](/examples/backup-restoration/scheduler/).
 
 In addition to providing the backup and restoration capabilities discussed above, pgBackRest supports the capability to asynchronously push and get write ahead logs (WAL) to and from a WAL archive.  To enable asychronous WAL archiving within a crunchy-postgres or crunchy-postgres-gis container, pgBackRest environment variable `PGBACKREST_ARCHIVE_ASYNC` must be set to `"y"` during deployment (`PGBACKREST_ARCHIVE_ASYNC=y`).  This will automatically enable WAL archiving within the container if not otherwise explicitly enabled, set the proper `pgbackrest archive` command within the `postgresql.conf` configuration file, and ensure the proper spool path has been created.  
 
@@ -51,8 +51,8 @@ As shown above, the default location of the spool path depends on whether or not
 The examples below will demonstrate the pgBackRest backup, restore and asynchronous archiving capabilities described above, while also providing insight into the proper configuration of pgBackBackrest within the Crunchy Container Suite.  For more information on these pgBackRest capabilities and associated configuration, please consult the [official pgBackRest documentation](https://pgbackrest.org/).  
 
 ## Kubernetes and OpenShift
- 
-***The pgBackRest examples for Kubernetes and OpenShift can be configured to use the PostGIS images by setting the following environment variable when running the examples:*** 
+
+***The pgBackRest examples for Kubernetes and OpenShift can be configured to use the PostGIS images by setting the following environment variable when running the examples:***
 ```bash
 export CCP_PG_IMAGE='-gis'
 ```
@@ -184,7 +184,7 @@ Prior to running the PITR restore, we will first verify the current state of the
 
 To verify the current state of the database, we will first verify that a table called **backrest_test_table** does not  exist in the database.
 
-```bash 
+```bash
 $ ${CCP_CLI} exec <backrest pod name> -- psql -c " table backrest_test_table"
 ERROR:  relation "backrest_test_table" does not exist
 LINE 1:  table backrest_test_table
@@ -198,7 +198,7 @@ Next, capture the current timestamp, which will be used later in the example whe
 $ ${CCP_CLI} exec <backrest pod name> -- psql -c "select current_timestamp"
        current_timestamp
 -------------------------------
- 2018-12-27 16:53:05.590156+00
+ 2019-10-27 16:53:05.590156+00
 (1 row)
 ```
 
@@ -222,7 +222,7 @@ With the table in place, we can now start the PITR.  However, the timestamp capt
 
 ```bash
 cd $CCPROOT/examples/kube/backrest/pitr
-CCP_BACKREST_TIMESTAMP="2018-12-20 09:49:02.275701+00" ./run.sh
+CCP_BACKREST_TIMESTAMP="2019-10-27 16:53:05.590156+00" ./run.sh
 ```
 
 This will create the following in your Kubernetes environment:
@@ -260,7 +260,7 @@ cd $CCPROOT/examples/kube/backrest/pitr
 
 Finally, once the **backrest-pitr-restored** deployment is running we can verify that the restore was successful by verifying that the table created prior to the restore no longer exists:
 
-```bash 
+```bash
 $ ${CCP_CLI} exec <backrest restored pod name> -- psql -c " table backrest_test_table"
 ERROR:  relation "backrest_test_table" does not exist
 LINE 1:  table backrest_test_table
@@ -277,7 +277,7 @@ Prior to running the delta restore, we will first verify the current state of th
 
 To verify the current state of the database, we will first verify that a table called **backrest_test_table** does not exist in the database.
 
-```bash 
+```bash
 $ ${CCP_CLI} exec <backrest pod name> -- psql -c " table backrest_test_table"
 ERROR:  relation "backrest_test_table" does not exist
 LINE 1:  table backrest_test_table
@@ -291,7 +291,7 @@ Next, capture the current timestamp, which will be used later in the example whe
 $ ${CCP_CLI} exec <backrest pod name> -- psql -c "select current_timestamp"
        current_timestamp
 -------------------------------
- 2018-12-27 16:53:05.590156+00
+ 2019-10-27 16:53:05.590156+00
 (1 row)
 ```
 
@@ -315,7 +315,7 @@ With the table in place, we can now start the delta restore.  When running the r
 
 ```bash
 cd $CCPROOT/examples/kube/backrest/delta
-CCP_BACKREST_TIMESTAMP="2018-12-20 09:49:02.275701+00" ./run.sh
+CCP_BACKREST_TIMESTAMP="2019-10-27 16:53:05.590156+00" ./run.sh
 ```
 
 This will create the following in your Kubernetes environment:
@@ -354,7 +354,7 @@ cd $CCPROOT/examples/kube/backrest/delta
 
 Finally, once the **backrest-delta-restored** deployment is running we can verify that the restore was successful by verifying that the table created prior to the restore no longer exists:
 
-```bash 
+```bash
 $ ${CCP_CLI} exec <backrest restored pod name> -- psql -c " table backrest_test_table"
 ERROR:  relation "backrest_test_table" does not exist
 LINE 1:  table backrest_test_table
@@ -535,7 +535,7 @@ As demonstrated with the full restore above, the default behavior of pgBackRest 
 Prior to running the PITR restore, we will first verify the current state of the database, after which we will then make a change to the database.  This will allow us to verify that the PITR is successful by providing a method of verifying that the database has been restored to its current state following the restore.
 
 To verify the current state of the database, we will first verify that a table called **backrest_test_table** does not  exist in the database.
-```bash 
+```bash
 $ docker exec backrest psql -c "table backrest_test_table"
 ERROR:  relation "backrest_test_table" does not exist
 LINE 1:  table backrest_test_table
@@ -548,7 +548,7 @@ Next, capture the current timestamp, which will be used later in the example whe
 $ docker exec backrest psql -c "select current_timestamp"
        current_timestamp
 -------------------------------
- 2018-12-27 16:53:05.590156+00
+ 2019-10-27 16:53:05.590156+00
 (1 row)
 ```
 
@@ -567,7 +567,7 @@ $ docker exec backrest psql -c "table backrest_test_table"
 With the table in place, we can now start the PITR.  However, the timestamp captured above must also be provided in order to instruct pgBackRest to recover to that specific point-in-time.  This is done using the `CCP_BACKREST_TIMESTAMP` variable, which allows us to then start the PITR as follows (replace the timestamp in the command below with the timestamp you captured above):
 ```bash
 cd $CCPROOT/examples/docker/backrest/pitr
-CCP_BACKREST_TIMESTAMP="2018-12-20 09:49:02.275701+00" ./run.sh
+CCP_BACKREST_TIMESTAMP="2019-10-27 16:53:05.590156+00" ./run.sh
 ```
 
 This will create the following in your Docker environment:
@@ -597,7 +597,7 @@ cd $CCPROOT/examples/docker/backrest/pitr
 ```
 
 Finally, once the **backrest-pitr-restored** container is running we can verify that the restore was successful by verifying that the table created prior to the restore no longer exists:
-```bash 
+```bash
 $ docker exec backrest-pitr-restored psql -c "table backrest_test_table"
 ERROR:  relation "backrest_test_table" does not exist
 LINE 1:  table backrest_test_table
@@ -613,7 +613,7 @@ By default, pgBackRest requires a clean/empty directory in order to perform a re
 Prior to running the delta restore, we will first verify the current state of the database, and we will then make a change to the database.  This will allow us to verify that the delta restore is successful by providing a method of verifying that the database has been restored to its current state following the restore.
 
 To verify the current state of the database, we will first verify that a table called **backrest_test_table** does not  exist in the database.
-```bash 
+```bash
 $ docker exec backrest psql -c "table backrest_test_table"
 ERROR:  relation "backrest_test_table" does not exist
 LINE 1:  table backrest_test_table
@@ -626,7 +626,7 @@ Next, capture the current timestamp, which will be used later in the example whe
 $ docker exec backrest psql -c "select current_timestamp"
        current_timestamp
 -------------------------------
- 2018-12-27 16:53:05.590156+00
+ 2019-10-27 16:53:05.590156+00
 (1 row)
 ```
 
@@ -646,7 +646,7 @@ $ docker exec backrest psql -c "table backrest_test_table"
 With the table in place, we can now start the delta restore.  When running the restore example the timestamp captured above must also be provided in order to instruct pgBackRest to recover to that specific point-in-time.  This is done using the `CCP_BACKREST_TIMESTAMP` variable, which allows us to then start the delta restore as follows (replace the timestamp in the command below with the timestamp you captured above):
 ```bash
 cd $CCPROOT/examples/docker/backrest/delta
-CCP_BACKREST_TIMESTAMP="2018-12-20 09:49:02.275701+00" ./run.sh
+CCP_BACKREST_TIMESTAMP="2019-10-27 16:53:05.590156+00" ./run.sh
 ```
 
 This will create the following in your Docker environment:
@@ -677,7 +677,7 @@ cd $CCPROOT/examples/docker/backrest/delta
 ```
 
 Finally, once the **backrest-delta-restored** container is running we can verify that the restore was successful by verifying that the table created prior to the restore no longer exists:
-```bash 
+```bash
 $ docker exec backrest-delta-restored psql -c "table backrest_test_table"
 ERROR:  relation "backrest_test_table" does not exist
 LINE 1:  table backrest_test_table
