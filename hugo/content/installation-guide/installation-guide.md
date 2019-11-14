@@ -5,7 +5,7 @@ draft: false
 weight: 100
 ---
 
-# Overview 
+# Overview
 
 This document serves four purposes:
 
@@ -16,11 +16,11 @@ This document serves four purposes:
 
 Where applicable, we will try to denote which installations and steps are required for the items above.
 
-When we set up the directories below, you will notice they seem to be quite deeply nested. We are 
-setting up a [Go programming language](https://golang.org/) workspace. Go has a specific folder structure 
-for it's [workspaces](https://golang.org/doc/code.html#Workspaces) with multiple projects in a workspace. 
-If you are **not** going build the container images you can ignore the deep directories below, but it will 
-not hurt you if you follow the directions exactly. 
+When we set up the directories below, you will notice they seem to be quite deeply nested. We are
+setting up a [Go programming language](https://golang.org/) workspace. Go has a specific folder structure
+for it's [workspaces](https://golang.org/doc/code.html#Workspaces) with multiple projects in a workspace.
+If you are **not** going build the container images you can ignore the deep directories below, but it will
+not hurt you if you follow the directions exactly.
 
 # Requirements
 
@@ -80,23 +80,23 @@ We also need to go fetch a Go module for expanding environement variables
 
 # Your Shell Environment
 
-We have found, that because of the way Go handles different projects, you may want to create a separate account 
-if are plan to build the containers and work on other Go projects. You could also look into some of the 
+We have found, that because of the way Go handles different projects, you may want to create a separate account
+if are plan to build the containers and work on other Go projects. You could also look into some of the
 GOPATH wrappers.
 
 If your goal is to simply run the containers, any properly configured user account should
-work. 
+work.
 
-Now we need to set the project paths and software version numbers. Edit your $HOME/.bashrc file with your 
-favorite editor and add the following information. You can leave out the comments at the end of each 
+Now we need to set the project paths and software version numbers. Edit your $HOME/.bashrc file with your
+favorite editor and add the following information. You can leave out the comments at the end of each
 line starting with #:
 
     export GOPATH=$HOME/cdev        # set path to your new Go workspace
-    export GOBIN=$GOPATH/bin        # set bin path 
+    export GOBIN=$GOPATH/bin        # set bin path
     export PATH=$PATH:$GOBIN        # add Go bin path to your overall path
     export CCP_BASEOS=centos7       # centos7 for Centos, rhel7 for Redhat
     export CCP_PGVERSION=10         # The PostgreSQL major version
-    export CCP_PG_FULLVERSION=10.10
+    export CCP_PG_FULLVERSION=10.11
     export CCP_VERSION=4.1.1
     export CCP_IMAGE_PREFIX=crunchydata # Prefix to put before all the container image names
     export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION   # Used to tag the images
@@ -110,12 +110,12 @@ effect.
 
     . ~/.bashrc
 
-At this point we have almost all the prequesites required to build the Crunchy Container Suite. 
+At this point we have almost all the prequesites required to build the Crunchy Container Suite.
 
 # Building RHEL Containers With Supported Crunchy Enterprise Software
 
-Before you can build supported containers on RHEL and Crunchy Supported Software, you need 
-to add the Crunchy repositories to your approved Yum repositories. Crunchy Enterprise Customer running on RHEL 
+Before you can build supported containers on RHEL and Crunchy Supported Software, you need
+to add the Crunchy repositories to your approved Yum repositories. Crunchy Enterprise Customer running on RHEL
 can login and download the Crunchy repository key and yum repository from <https://access.crunchydata.com/>
 on the downloads page. Once the files are downloaded please place them into the `$CCPROOT/conf` directory (defined
 above in the environment variable section).
@@ -155,7 +155,7 @@ Enable Docker service and start Docker (once all configuration is complete):
 
 {{% notice info %}}
 
-At this point you should be able to build the containers. Please to go to [Building the Containers](/contributing/building/) 
+At this point you should be able to build the containers. Please to go to [Building the Containers](/contributing/building/)
 page and continue from there.
 
 {{% / notice %}}
@@ -166,12 +166,12 @@ page and continue from there.
 {{% notice tip %}}
 
 You only need to install PostgreSQL locally if you want to use the examples - it is not required for
-either building the containers or installing the containers into Kubernetes. 
+either building the containers or installing the containers into Kubernetes.
 
 {{% / notice %}}
 
-These installation instructions 
-assume the installation of PostgreSQL 10 through the official Postgresql Development Group (PGDG) repository. 
+These installation instructions
+assume the installation of PostgreSQL 10 through the official Postgresql Development Group (PGDG) repository.
 View the documentation located [here](https://wiki.postgresql.org/wiki/YUM_Installation) in
 order to view more detailed notes or install a different version of PostgreSQL.
 
@@ -180,12 +180,12 @@ Locate and edit your distribution’s `.repo` file, located:
   - On **CentOS**: /etc/yum.repos.d/CentOS-Base.repo, \[base\] and \[updates\] sections
 
   - On **RHEL**: /etc/yum/pluginconf.d/rhnplugin.conf \[main\] section
- 
+
 To the section(s) identified above, depending on OS being used, you need to append a line to prevent dependencies
 from getting resolved to the PostgreSQL supplied by the base repository:
 
 - On **CentOS** and **RHEL**:
-    
+
     exclude=postgresql*
 
 Next, install the RPM relating to the base operating system and PostgreSQL version
@@ -215,8 +215,8 @@ Update the system:
 
 ## Configuring Storage for Kuberenetes Based Systems
 
-In addition to the environment variables we set earlier, you will need to add environment variables 
-for Kubernetes storage configuration. Please see the [Storage Configuration](/installation-guide/storage-configuration/) 
+In addition to the environment variables we set earlier, you will need to add environment variables
+for Kubernetes storage configuration. Please see the [Storage Configuration](/installation-guide/storage-configuration/)
 document for configuring storage using environment variables set in `.bashrc`.
 
 Don't forget to:

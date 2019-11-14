@@ -27,7 +27,7 @@ The following features are supported by the `crunchy-postgres` container:
 
 The crunchy-pgpool Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (12.0, 11.5, 10.10, 9.6.15 and 9.5.19)
+* PostgreSQL (12.1, 11.6, 10.11, 9.6.16 and 9.5.20)
 * [pgPool II](http://www.pgpool.net/mediawiki/index.php/Main_Page)
 * CentOS7 - publicly available
 * RHEL7 - customers only

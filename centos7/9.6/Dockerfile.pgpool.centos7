@@ -3,7 +3,7 @@ FROM centos:7
 LABEL name="crunchydata/pgpool" \
 	vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.15" \
+	PostgresFullVersion="9.6.16" \
 	Version="7.7" \
 	Release="4.1.1" \
         url="https://crunchydata.com" \
