@@ -1,0 +1,42 @@
+ARG PREFIX
+ARG BASEVER
+ARG PG_FULL
+FROM ${PREFIX}/crunchy-pg-base:centos7-${PG_FULL}-${BASEVER}
+
+ARG PG_MAJOR
+
+LABEL name="crunchydata/pgbench" \
+	summary="pgBench ${PG_FULL} (PGDG) on a Centos7 base image" \
+	description="pgbench is a simple program for running benchmark tests on PostgreSQL. It runs the same sequence of SQL commands over and over, possibly in multiple concurrent database sessions, and then calculates the average transaction rate (transactions per second)." \
+	io.k8s.description="pgbench container" \
+	io.k8s.display-name="Crunchy pgbench container" \
+	io.openshift.expose-services="" \
+	io.openshift.tags="crunchy,database"
+
+RUN yum -y install \
+	--setopt=skip_missing_names_on_install=False \
+	rsync \
+	&& yum -y clean all
+
+# Preserving PGVERSION out of paranoia
+ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+RUN chown -R 26:0 /opt/cpm \
+ && chmod -R g=u /opt/cpm
+
+ADD bin/pgbench /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
+ADD conf/pgbench /opt/cpm/conf
+
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+
+ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
+
+VOLUME ["/pgconf"]
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]

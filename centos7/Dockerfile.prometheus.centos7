@@ -1,25 +1,16 @@
-FROM centos:7
+ARG PREFIX
+ARG BASEVER
+ARG PG_FULL
+FROM ${PREFIX}/crunchy-base:centos7-${PG_FULL}-${BASEVER}
+
+ARG PG_MAJOR
 
 LABEL name="crunchydata/prometheus" \
-        vendor="crunchy data" \
-        Version="7.7" \
-        Release="4.2.0" \
-        url="https://crunchydata.com" \
-        summary="Prometheus server that stores metrics for crunchy-postgres" \
-        io.k8s.description="prometheus container" \
-        io.k8s.display-name="Crunchy prometheus container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
-
-COPY licenses /licenses
-
-RUN yum -y update \
- && yum -y install epel-release \
- && yum -y install bind-utils \
-    procps-ng \
-    hostname  \
-    gettext \
-  && yum clean all -y
+		summary="Prometheus server that stores metrics for crunchy-postgres" \
+		io.k8s.description="prometheus container" \
+		io.k8s.display-name="Crunchy prometheus container" \
+		io.openshift.expose-services="" \
+		io.openshift.tags="crunchy,database"
 
 RUN mkdir -p /data /conf /opt/cpm/bin /opt/cpm/conf
 
@@ -29,7 +20,7 @@ ADD bin/common /opt/cpm/bin
 ADD conf/prometheus /opt/cpm/conf
 
 RUN chown -R 2:0 /opt/cpm /data /conf && \
-    chmod -R g=u /opt/cpm /data /conf
+	chmod -R g=u /opt/cpm /data /conf
 
 EXPOSE 9090
 
