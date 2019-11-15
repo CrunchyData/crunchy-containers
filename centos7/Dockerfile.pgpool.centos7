@@ -1,0 +1,50 @@
+ARG PREFIX
+ARG BASEVER
+ARG PG_FULL
+FROM ${PREFIX}/crunchy-pg-base:centos7-${PG_FULL}-${BASEVER}
+
+ARG PG_MAJOR
+
+LABEL name="crunchydata/pgpool" \
+	summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
+	description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the primary and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \
+	io.k8s.description="pgpool container" \
+	io.k8s.display-name="Crunchy pgpool container" \
+	io.openshift.expose-services="" \
+	io.openshift.tags="crunchy,database"
+
+RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
+	--setopt=skip_missing_names_on_install=False \
+	pgpool-II-${PG_MAJOR//.} \
+	pgpool-II-${PG_MAJOR//.}-extensions \
+	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+
+# Preserving PGVERSION out of paranoia
+ENV PGVERSION="${PG_MAJOR}"
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+ADD bin/pgpool /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
+ADD conf/pgpool /opt/cpm/conf
+
+RUN ln -sf /opt/cpm/conf/pool_hba.conf /etc/pgpool-II-${PG_MAJOR//.}/pool_hba.conf \
+	&& ln -sf /opt/cpm/conf/pgpool/pool_passwd /etc/pgpool-II-${PG_MAJOR//.}/pool_passwd
+
+RUN chgrp -R 0 /opt/cpm && \
+		chmod -R g=u /opt/cpm
+
+
+# open up the postgres port
+EXPOSE 5432
+
+RUN chmod g=u /etc/passwd
+
+# add volumes to allow override of pgpool config files
+VOLUME ["/pgconf"]
+
+ENTRYPOINT ["opt/cpm/bin/uid_daemon.sh"]
+
+USER 2
+
+CMD ["/opt/cpm/bin/startpgpool.sh"]

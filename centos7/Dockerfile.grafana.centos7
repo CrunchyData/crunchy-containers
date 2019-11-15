@@ -1,26 +1,17 @@
-FROM centos:7
+ARG PREFIX
+ARG BASEVER
+ARG PG_FULL
+FROM ${PREFIX}/crunchy-base:centos7-${PG_FULL}-${BASEVER}
+
+ARG PG_MAJOR
 
 LABEL name="crunchydata/grafana" \
-        vendor="crunchy data" \
-        Version="7.7" \
-        Release="4.2.0" \
-        url="https://crunchydata.com" \
-        summary="Provides a Grafana web dashboard to view collected PostgreSQL metrics" \
-        description="Connect this container to the crunchy-prometheus container as a data source, then use the metrics to build dashboards. Works in conjunction with crunchy-collect and crunchy-prometheus." \
-        io.k8s.description="grafana container" \
-        io.k8s.display-name="Crunchy grafana container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
-
-COPY licenses /licenses
-
-RUN yum -y update \
- && yum -y install epel-release \
- && yum -y install bind-utils \
-    procps-ng \
-    hostname  \
-    gettext \
-  && yum clean all -y
+	summary="Provides a Grafana web dashboard to view collected PostgreSQL metrics" \
+	description="Connect this container to the crunchy-prometheus container as a data source, then use the metrics to build dashboards. Works in conjunction with crunchy-collect and crunchy-prometheus." \
+	io.k8s.description="grafana container" \
+	io.k8s.display-name="Crunchy grafana container" \
+	io.openshift.expose-services="" \
+	io.openshift.tags="crunchy,database"
 
 RUN mkdir -p /data /opt/cpm/bin /opt/cpm/conf
 
@@ -31,7 +22,7 @@ ADD bin/common /opt/cpm/bin
 ADD conf/grafana /opt/cpm/conf
 
 RUN chown -R 2:0 /opt/cpm /data && \
-    chmod -R g=u /opt/cpm /data
+	chmod -R g=u /opt/cpm /data
 
 EXPOSE 3000
 

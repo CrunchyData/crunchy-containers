@@ -1,0 +1,40 @@
+ARG PREFIX
+ARG BASEVER
+ARG PG_FULL
+FROM ${PREFIX}/crunchy-postgres:centos7-${PG_FULL}-${BASEVER}
+
+ARG PG_MAJOR
+ARG POSTGIS_LBL
+
+LABEL name="crunchydata/postgres-gis" \
+	summary="Includes PostGIS extensions on top of crunchy-postgres" \
+	description="An identical image of crunchy-postgres with the extra PostGIS packages added for users that require PostGIS." \
+	io.k8s.description="postgres-gis container" \
+	io.k8s.display-name="Crunchy postgres-gis container" \
+	io.openshift.expose-services="" \
+	io.openshift.tags="crunchy,database"
+
+USER 0
+
+RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
+	--setopt=skip_missing_names_on_install=False \
+	libRmath \
+	plr${PG_MAJOR//.} \
+	postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
+	postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
+	R-core \
+	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+
+# Preserving PGVERSION out of paranoia
+ENV PGVERSION="${PG_MAJOR}"
+
+# open up the postgres port
+EXPOSE 5432
+
+ADD bin/postgres-gis /opt/cpm/bin
+
+ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]

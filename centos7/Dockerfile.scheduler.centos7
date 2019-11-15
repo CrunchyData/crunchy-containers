@@ -1,31 +1,38 @@
-FROM centos:7
+ARG PREFIX
+ARG BASEVER
+ARG PG_FULL
+
+FROM golang:1.13.1 AS scheduler-build
+WORKDIR /go/src/github.com/crunchydata/crunchy-containers
+ADD . .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -o scheduler ./tools/scheduler
+
+
+FROM ${PREFIX}/crunchy-base:centos7-${PG_FULL}-${BASEVER}
+
+ARG PG_MAJOR
 
 LABEL name="crunchydata/scheduler" \
-    vendor="crunchy data" \
-	Version="7.7" \
-	Release="4.2.0" \
-    url="https://crunchydata.com" \
-    summary="Crunchy Scheduler is a cron-like microservice for scheduling automatic backups" \
-    description="Crunchy Scheduler parses JSON configMaps with the label 'crunchy-scheduler=true' and transforms them into cron based tasks for automating pgBaseBackup and pgBackRest backups" \
-    io.k8s.description="scheduler container" \
-    io.k8s.display-name="Crunchy Scheduler container" \
-    io.openshift.expose-services="" \
-    io.openshift.tags="crunchy,database,cron"
+	summary="Crunchy Scheduler is a cron-like microservice for scheduling automatic backups" \
+	description="Crunchy Scheduler parses JSON configMaps with the label 'crunchy-scheduler=true' and transforms them into cron based tasks for automating pgBaseBackup and pgBackRest backups" \
+	io.k8s.description="scheduler container" \
+	io.k8s.display-name="Crunchy Scheduler container" \
+	io.openshift.expose-services="" \
+	io.openshift.tags="crunchy,database,cron"
 
 COPY licenses /licenses
 
-RUN yum -y update \
- && yum -y install epel-release \
- && yum -y install \
-      gettext \
-      hostname  \
-      nss_wrapper \
-      procps-ng \
- && yum clean all -y
+RUN yum -y install \
+	--setopt=skip_missing_names_on_install=False \
+	nss_wrapper \
+	&& yum -y clean all
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /configs \
  && chown -R 2:2 /opt/cpm /configs
 
+COPY --from=scheduler-build \
+	/go/src/github.com/crunchydata/crunchy-containers/scheduler \
+	/opt/cpm/bin
 ADD bin/scheduler /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/scheduler /opt/cpm/conf

@@ -1,70 +1,66 @@
-FROM centos:7
+ARG PREFIX
+ARG BASEVER
+ARG PG_FULL
+FROM ${PREFIX}/crunchy-pg-base:centos7-${PG_FULL}-${BASEVER}
 
-#ARG values passed in from Makefile
-ARG ccp_pg_version
-ARG ccp_pg_full_version
-ARG ccp_patroni_version
-ARG ccp_backrest_version
-ARG ccp_pgaudit_version
+# ===== Early lines ordered for leveraging cache, reorder carefully =====
+ARG PG_MAJOR
+
+ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}" 
+
+ARG PGAUDIT_LBL
+ARG BACKREST_VER
+
+# Separate yum run matching postgres image, leverages cached layer
+RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
+	openssh-clients \
+	openssh-server \
+	pgaudit${PGAUDIT_LBL} \
+	pgbackrest-"${BACKREST_VER}" \
+	postgresql${PG_MAJOR//.}-contrib \
+	postgresql${PG_MAJOR//.}-server \
+	postgresql${PG_MAJOR//.}-plpython \
+	psmisc \
+	rsync \
+	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+
+# ===== Steps unique to this image after here =====
+ARG PATRONI_VER
 
 LABEL name="crunchydata/postgres" \
-        vendor="crunchy data" \
-        PostgresVersion=${ccp_pg_version} \
-        PostgresFullVersion=${ccp_pg_full_version} \
-        Version="7.7" \
-        Release="4.2.0" \
-        url="https://crunchydata.com" \
-        summary="PostgreSQL ${ccp_pg_full_version} (PGDG) with Patroni" \
-        description="Used for the deployment and management of highly-available PostgreSQL clusters using Patroni." \
-        io.k8s.description="postgres container" \
-        io.k8s.display-name="Crunchy postgres container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
+	summary="PostgreSQL ${PG_FULL} (PGDG) with Patroni" \
+	description="Used for the deployment and management of highly-available PostgreSQL clusters using Patroni." \
+	io.k8s.description="postgres container" \
+	io.k8s.display-name="Crunchy postgres container" \
+	io.openshift.expose-services="" \
+	io.openshift.tags="crunchy,database"
 
-COPY licenses /licenses
+ADD conf/repos/kubernetes.repo /etc/yum.repos.d/
 
-ENV PGVERSION="${ccp_pg_version}"
-
-RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${ccp_pg_version}/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-
-# Install the required software. Note that the syntax ${variableName//.} gets the contents of the
-# variable without any included periods. Thus a value of '9.5' would become '95' to match the version needed.
-RUN yum -y update \
- && yum -y install epel-release \
- && yum -y update glibc-common \
- && yum -y install bind-utils \
-    gettext \
-    hostname \
-    procps-ng  \
-    rsync \
-    psmisc openssh-server openssh-clients \
-    gcc \
-    python-devel \
-    python-pip \
-    python-psycopg2 \
- && yum -y install --disablerepo="pgdg*" --enablerepo="pgdg${ccp_pg_version//.}" \
-    postgresql${ccp_pg_version//.}-server postgresql${ccp_pg_version//.}-contrib postgresql${ccp_pg_version//.} \
-    pgaudit${ccp_pgaudit_version} \
-    pgbackrest-"${ccp_backrest_version}" \
-    postgresql${ccp_pg_version//.}-plpython \
- && yum -y clean all
+RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
+	--setopt=skip_missing_names_on_install=False \
+	gcc \
+	kubectl \
+	python-devel \
+	python-pip \
+	python-psycopg2 \
+	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
 
 # install patroni for Kube
 RUN pip uninstall -y ipaddress \
  && pip install --upgrade pip setuptools python-dateutil \
- && pip install patroni[kubernetes]=="${ccp_patroni_version}"
+ && pip install patroni[kubernetes]=="${PATRONI_VER}"
 
 RUN useradd crunchyadm -g 0 -u 17
 
-ENV PGROOT="/usr/pgsql-${ccp_pg_version}"
 ENV PATH="${PGROOT}/bin:${PATH}"
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backrestrepo /crunchyadm
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
-    /pgdata /pgwal /pgconf /backrestrepo /crunchyadm &&  \
-    chmod -R g=u /opt/cpm /var/lib/pgsql \
-    /pgdata /pgwal /pgconf /backrestrepo /crunchyadm
+	/pgdata /pgwal /pgconf /backrestrepo /crunchyadm &&  \
+	chmod -R g=u /opt/cpm /var/lib/pgsql \
+	/pgdata /pgwal /pgconf /backrestrepo /crunchyadm
 
 # open up the postgres port
 EXPOSE 5432
