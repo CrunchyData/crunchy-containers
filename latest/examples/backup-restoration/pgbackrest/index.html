@@ -627,7 +627,7 @@
 
 <p>While setting <code>PGBACKREST</code> to <code>true</code> provides a simple method for enabling pgBackRest within a crunchy-postgres or crunchy-postgres-gis container, pgBackRest is also fully configurable and customizable via the various environment variables supported by pgBackRest.  This applies to the crunchy-backrest-restore container as well, which is also configured using pgBackRest environment variables when performing database restores.  Therefore, during the deployment of any container container containing pgBackRest (crunchy-postgres, crunchy-postgres-gis or crunchy-backrest-restore), environment variables should be utilized to configure and customize the pgBackRest utility as needed and ensure the desired backup and restore functionality is achieved.  For instance, the following environment variables could be specified upon deployment of the crunchy-backrest-restore container in order to perform delta restore to a specific point-in-time:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">PGBACKREST_TYPE</span><span style="color:#f92672">=</span><span style="color:#111">time</span>
-<span style="color:#111">PITR_TARGET</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;2018-12-27 16:53:05.590156+00&#34;</span>
+<span style="color:#111">PITR_TARGET</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;2019-10-27 16:53:05.590156+00&#34;</span>
 <span style="color:#111">PGBACKREST_DELTA</span><span style="color:#f92672">=</span>y</code></pre></div>
 <p>Full, incremental and differential backups of PostgreSQL databases deployed using the Crunchy Container Suite can scheduled using pgBackRest and the crunchy-scheduler container, and/or can also be performed manually by executing pgBackRest commands against the desired crunchy-postgres or crunchy-postgres-gis container.  Database restores, on the other hand, can be performed via the crunchy-backrest-restore container, which offers full pgBackRest restore capabilities, such as full, point-in-time and delta restores.  Further information and guidance for performing both backups and restores using the Crunchy Container Suite and pgBackRest will be provided in the examples below.  Additionally, for more information on utilizing the crunchy-scheduler container to schedule and perform pgBackRest database backups, please see the crunchy-scheduler <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-scheduler">specifications</a> and <a href="https://crunchydata.github.io/crunchy-containers/latest/examples/backup-restoration/scheduler/">examples</a>.</p>
 
@@ -764,7 +764,7 @@ LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- psql -c <span style="color:#d88200">&#34;select current_timestamp&#34;</span>
        current_timestamp
 -------------------------------
- <span style="color:#ae81ff">2018</span>-12-27 <span style="color:#ae81ff">16</span>:53:05.590156+00
+ <span style="color:#ae81ff">2019</span>-10-27 <span style="color:#ae81ff">16</span>:53:05.590156+00
 <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> row<span style="color:#f92672">)</span></code></pre></div>
 <p>Now create table <strong>backrest_test_table</strong>:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- psql -c <span style="color:#d88200">&#34;create table backrest_test_table (id int)&#34;</span>
@@ -776,7 +776,7 @@ CREATE TABLE</code></pre></div>
 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> rows<span style="color:#f92672">)</span></code></pre></div>
 <p>With the table in place, we can now start the PITR.  However, the timestamp captured above must also be provided in order to instruct pgBackRest to recover to that specific point-in-time.  This is done using the <code>CCP_BACKREST_TIMESTAMP</code> variable, which allows us to then start the PITR as follows (replace the timestamp in the command below with the timestamp you captured above):</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">cd</span> <span style="color:#111">$CCPROOT</span>/examples/kube/backrest/pitr
-<span style="color:#111">CCP_BACKREST_TIMESTAMP</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;2018-12-20 09:49:02.275701+00&#34;</span> ./run.sh</code></pre></div>
+<span style="color:#111">CCP_BACKREST_TIMESTAMP</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;2019-10-27 16:53:05.590156+00&#34;</span> ./run.sh</code></pre></div>
 <p>This will create the following in your Kubernetes environment:
 - A Kubernetes job named <strong>backrest-pitr-restore-job</strong> which will perform the restore using the crunchy-backrest-restore container</p>
 
@@ -818,7 +818,7 @@ LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- psql -c <span style="color:#d88200">&#34;select current_timestamp&#34;</span>
        current_timestamp
 -------------------------------
- <span style="color:#ae81ff">2018</span>-12-27 <span style="color:#ae81ff">16</span>:53:05.590156+00
+ <span style="color:#ae81ff">2019</span>-10-27 <span style="color:#ae81ff">16</span>:53:05.590156+00
 <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> row<span style="color:#f92672">)</span></code></pre></div>
 <p>Now create table <strong>backrest_test_table</strong>:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ <span style="color:#d88200">${</span><span style="color:#111">CCP_CLI</span><span style="color:#d88200">}</span> <span style="color:#111">exec</span> &lt;backrest pod name&gt; -- psql -c <span style="color:#d88200">&#34;create table backrest_test_table (id int)&#34;</span>
@@ -830,7 +830,7 @@ CREATE TABLE</code></pre></div>
 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> rows<span style="color:#f92672">)</span></code></pre></div>
 <p>With the table in place, we can now start the delta restore.  When running the restore example the timestamp captured above must also be provided in order to instruct pgBackRest to recover to that specific point-in-time.  This is done using the <code>CCP_BACKREST_TIMESTAMP</code> variable, which allows us to then start the delta restore as follows (replace the timestamp in the command below with the timestamp you captured above):</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">cd</span> <span style="color:#111">$CCPROOT</span>/examples/kube/backrest/delta
-<span style="color:#111">CCP_BACKREST_TIMESTAMP</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;2018-12-20 09:49:02.275701+00&#34;</span> ./run.sh</code></pre></div>
+<span style="color:#111">CCP_BACKREST_TIMESTAMP</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;2019-10-27 16:53:05.590156+00&#34;</span> ./run.sh</code></pre></div>
 <p>This will create the following in your Kubernetes environment:
 - A Kubernetes job named <strong>backrest-delta-restore-job</strong> which will perform the restore using the crunchy-backrest-restore container</p>
 
@@ -1002,7 +1002,7 @@ LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker <span style="color:#111">exec</span> backrest psql -c <span style="color:#d88200">&#34;select current_timestamp&#34;</span>
        current_timestamp
 -------------------------------
- <span style="color:#ae81ff">2018</span>-12-27 <span style="color:#ae81ff">16</span>:53:05.590156+00
+ <span style="color:#ae81ff">2019</span>-10-27 <span style="color:#ae81ff">16</span>:53:05.590156+00
 <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> row<span style="color:#f92672">)</span></code></pre></div>
 <p>Now create table <strong>backrest_test_table</strong>:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker <span style="color:#111">exec</span> backrest psql -c <span style="color:#d88200">&#34;create table backrest_test_table (id int)&#34;</span>
@@ -1014,7 +1014,7 @@ CREATE TABLE</code></pre></div>
 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> rows<span style="color:#f92672">)</span></code></pre></div>
 <p>With the table in place, we can now start the PITR.  However, the timestamp captured above must also be provided in order to instruct pgBackRest to recover to that specific point-in-time.  This is done using the <code>CCP_BACKREST_TIMESTAMP</code> variable, which allows us to then start the PITR as follows (replace the timestamp in the command below with the timestamp you captured above):</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">cd</span> <span style="color:#111">$CCPROOT</span>/examples/docker/backrest/pitr
-<span style="color:#111">CCP_BACKREST_TIMESTAMP</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;2018-12-20 09:49:02.275701+00&#34;</span> ./run.sh</code></pre></div>
+<span style="color:#111">CCP_BACKREST_TIMESTAMP</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;2019-10-27 16:53:05.590156+00&#34;</span> ./run.sh</code></pre></div>
 <p>This will create the following in your Docker environment:
 - A container named <strong>backrest-pitr-restore</strong> which will perform the restore using the crunchy-backrest-restore container</p>
 
@@ -1054,7 +1054,7 @@ LINE <span style="color:#ae81ff">1</span>:  table backrest_test_table
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker <span style="color:#111">exec</span> backrest psql -c <span style="color:#d88200">&#34;select current_timestamp&#34;</span>
        current_timestamp
 -------------------------------
- <span style="color:#ae81ff">2018</span>-12-27 <span style="color:#ae81ff">16</span>:53:05.590156+00
+ <span style="color:#ae81ff">2019</span>-10-27 <span style="color:#ae81ff">16</span>:53:05.590156+00
 <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> row<span style="color:#f92672">)</span></code></pre></div>
 <p>Now create table <strong>backrest_test_table</strong>:</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">$ docker <span style="color:#111">exec</span> backrest psql -c <span style="color:#d88200">&#34;create table backrest_test_table (id int)&#34;</span>
@@ -1066,7 +1066,7 @@ CREATE TABLE</code></pre></div>
 <span style="color:#f92672">(</span><span style="color:#ae81ff">0</span> rows<span style="color:#f92672">)</span></code></pre></div>
 <p>With the table in place, we can now start the delta restore.  When running the restore example the timestamp captured above must also be provided in order to instruct pgBackRest to recover to that specific point-in-time.  This is done using the <code>CCP_BACKREST_TIMESTAMP</code> variable, which allows us to then start the delta restore as follows (replace the timestamp in the command below with the timestamp you captured above):</p>
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">cd</span> <span style="color:#111">$CCPROOT</span>/examples/docker/backrest/delta
-<span style="color:#111">CCP_BACKREST_TIMESTAMP</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;2018-12-20 09:49:02.275701+00&#34;</span> ./run.sh</code></pre></div>
+<span style="color:#111">CCP_BACKREST_TIMESTAMP</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;2019-10-27 16:53:05.590156+00&#34;</span> ./run.sh</code></pre></div>
 <p>This will create the following in your Docker environment:
 - A container named <strong>backrest-delta-restore</strong> which will perform the restore using the crunchy-backrest-restore container</p>
 
