@@ -19,7 +19,7 @@ COPY conf/atomic/pgdump/help.md /help.md
 COPY conf/licenses /licenses
 COPY licenses /licenses
 
-ENV PGVERSION="11" PGDG_REPO="pgdg-centos11-11-2.noarch.rpm" PGDG_REPO_DISABLE="pgdg10,pgdg96,pgdg95,pgdg94"
+ENV PGVERSION="11" PGDG_REPO="pgdg-redhat-repo-latest.noarch.rpm" PGDG_REPO_DISABLE="pgdg*" PGDG_REPO_ENABLE="pgdg11"
 
 RUN rpm -Uvh https://download.postgresql.org/pub/repos/yum/${PGVERSION}/redhat/rhel-7-x86_64/${PGDG_REPO}
 
@@ -32,9 +32,10 @@ RUN yum -y update && yum -y install epel-release \
     hostname \
     procps-ng  \
     rsync openssl\
- && yum -y install postgresql11-server postgresql11-contrib postgresql11 \
+ && yum -y install --disablerepo="${PGDG_REPO_DISABLE}" --enablerepo="${PGDG_REPO_ENABLE}" \
+    postgresql11-server postgresql11-contrib postgresql11 \
     R-core libRmath plr11 \
-    postgis24_11 postgis24_11-client osm2pgsql pgrouting_11 osm2pgrouting_11 ogr_fdw11\
+    postgis25_11 postgis25_11-client osm2pgsql pgrouting_11 osm2pgrouting_11 ogr_fdw11\
  && yum -y clean all
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
