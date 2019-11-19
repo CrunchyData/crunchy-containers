@@ -5,8 +5,8 @@ endif
 # Default values if not already set
 CCP_BASEOS ?= centos7
 CCP_PG_VERSION ?= 12
-CCP_PG_FULLVERSION ?= 12.0
-CCP_PATRONI_VERSION ?= 1.5.6
+CCP_PG_FULLVERSION ?= 12.1
+CCP_PATRONI_VERSION ?= 1.6.1
 CCP_BACKREST_VERSION ?= 2.18
 CCP_VERSION ?= 4.2.0
 CCP_PGAUDIT = "14_12" #no need to be env overridable given override logic below
@@ -46,8 +46,8 @@ all: cc-pg-base-image pgimages extras
 # Build non-postgres images
 extras: grafana prometheus scheduler
 
-# Build images that use postgres
-pgimages: backrestrestore backup collect crunchyadm pgadmin4 pgbadger pgbasebackuprestore pgbench pgbouncer pgdump pgpool pgrestore postgres postgres-ha postgres-gis postgres-gis-ha upgrade
+# Build images that use postgres - ordered for potential concurrent benefits
+pgimages: postgres postgres-ha backup backrestrestore collect crunchyadm pgadmin4 pgbadger pgbasebackuprestore postgres-gis postgres-gis-ha pgbench pgbouncer pgdump pgpool pgrestore upgrade 
 
 
 #===========================================
