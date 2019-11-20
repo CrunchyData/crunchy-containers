@@ -4,7 +4,7 @@ ARG PG_FULL
 FROM ${PREFIX}/crunchy-pg-base:centos7-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
-ARG BACKREST_VER=2.18
+ARG BACKREST_VER
 
 LABEL name="crunchydata/postgres" \
     summary="Executes the pgbackrest utility, allowing FULL, DELTA & PITR restore capability." \
