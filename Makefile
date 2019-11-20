@@ -135,6 +135,7 @@ cc-pg-base-image-buildah: cc-pg-base-image-build
 cc-pg-base-image-docker: cc-pg-base-image-build
 
 # ----- Special case pg-based image (postgres) -----
+# Special case args: BACKREST_VER, PGAUDIT_LBL
 postgres-pgimg-build: cc-pg-base-image commands $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres.$(CCP_BASEOS)
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres.$(CCP_BASEOS) \
@@ -155,6 +156,7 @@ postgres-pgimg-docker: postgres-pgimg-build
 	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG)
 
 # ----- Special case pg-based image (postgres-gis) -----
+# Special case args: POSTGIS_LBL
 postgres-gis-pgimg-build: postgres commands $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres-gis.$(CCP_BASEOS)
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres-gis.$(CCP_BASEOS) \
@@ -174,6 +176,7 @@ postgres-gis-pgimg-docker: postgres-gis-pgimg-build
 	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_IMAGE_TAG)
 
 # ----- Special case pg-based image (postgres-ha) -----
+# Special case args: BACKREST_VER, PGAUDIT_LBL, PATRONI_VER
 postgres-ha-pgimg-build: cc-pg-base-image commands $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres-ha.$(CCP_BASEOS)
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres-ha.$(CCP_BASEOS) \
@@ -195,6 +198,7 @@ postgres-ha-pgimg-docker: postgres-ha-pgimg-build
 	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 # ----- Special case pg-based image (postgres-gis-ha) -----
+# Special case args: POSTGIS_LBL
 postgres-gis-ha-pgimg-build: postgres-ha commands $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres-gis-ha.$(CCP_BASEOS)
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres-gis-ha.$(CCP_BASEOS) \
@@ -212,6 +216,26 @@ postgres-gis-ha-pgimg-buildah: postgres-gis-ha-pgimg-build
 
 postgres-gis-ha-pgimg-docker: postgres-gis-ha-pgimg-build
 	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
+
+# ----- Special case pg-based image (backrest-restore) -----
+# Special case args: BACKREST_VER
+backrest-restore-pgimg-build: cc-pg-base-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.backrest-restore.$(CCP_BASEOS)
+	$(IMGCMDSTEM) \
+		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.backrest-restore.$(CCP_BASEOS) \
+		-t $(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG) \
+		--build-arg BASEVER=$(CCP_VERSION) \
+		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
+		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
+		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
+		--build-arg BACKREST_VER=$(CCP_BACKREST_VERSION) \
+		$(CCPROOT)
+
+backrest-restore-pgimg-buildah: backrest-restore-pgimg-build
+	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG)
+	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG)
+
+backrest-restore-pgimg-docker: backrest-restore-pgimg-build
+	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG)
 
 # ----- All other pg-based images ----
 %-pgimg-build: cc-pg-base-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.%.$(CCP_BASEOS)
