@@ -92,6 +92,20 @@ primary_initialization_monitor() {
     echo_info "Primary is ready, proceeding with initilization of replica"
 }
 
+# Remove the "pause" key from the patroni.dynamic.json if it exists.  This protects against
+# Patroni being unable to initialize a restored cluster in the event that the backup utilized for 
+# the restore was taken while Patroni was paused, resulting in the "pause" key being present in the
+# patroni.dynamic.json file contained with the backed up PGDATA directory (if the "pause" key is
+# present, normal bootstrapping processes [e.g. leader election] will not occur, and the restored 
+# database will not be able to initialize).
+remove_patroni_pause_key()  {
+    if [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}/patroni.dynamic.json" ]]
+    then
+        echo "Now removing \"pause\" key from patroni.dynamic.json configuration file if present"
+        sed -i -e "s/\"pause\":\s*true,*\s*//" "${PATRONI_POSTGRESQL_DATA_DIR}/patroni.dynamic.json"
+    fi
+}
+
 # Configure users and groups
 source /opt/cpm/bin/uid_postgres_no_exec.sh
 
@@ -142,6 +156,9 @@ fi
 
 # Moinitor for the intialization of the cluster 
 initialization_monitor
+
+# Remove the pause key from patroni.dynamic.json if it exists
+remove_patroni_pause_key
 
 # save a copy of certain pod env vars for pgbackrest ssh cmd wrapper
 env | grep "^KUBERNETES" | sed "s/^/export /" >> "/tmp/pod_env.sh"
