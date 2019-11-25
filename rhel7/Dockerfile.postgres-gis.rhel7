@@ -1,14 +1,14 @@
 ARG PREFIX
 ARG BASEVER
 ARG PG_FULL
-FROM ${PREFIX}/crunchy-postgres:centos7-${PG_FULL}-${BASEVER}
+FROM ${PREFIX}/crunchy-postgres:rhel7-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 ARG POSTGIS_LBL
 
 LABEL name="crunchydata/postgres-gis" \
 	summary="Includes PostGIS extensions on top of crunchy-postgres" \
-	description="An identical image of crunchy-postgres with the extra PostGIS packages added for users that require PostGIS." \
+	description="An identical image of crunchy-postgres with the extra PostGIS and pgrouting packages added for users that require PostGIS." \
 	io.k8s.description="postgres-gis container" \
 	io.k8s.display-name="Crunchy postgres-gis container" \
 	io.openshift.expose-services="" \
@@ -16,14 +16,17 @@ LABEL name="crunchydata/postgres-gis" \
 
 USER 0
 
-RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
-	--setopt=skip_missing_names_on_install=False \
-	libRmath \
-	plr${PG_MAJOR//.} \
-	postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
-	postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
-	R-core \
-	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+RUN yum -y install \
+		--setopt=skip_missing_names_on_install=False \
+		libRmath \
+		pgrouting_${PG_MAJOR//.} \
+		plr${PG_MAJOR//.} \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
+		R-core \
+		texinfo-tex \
+		texlive-epsf \
+	&& yum -y clean all
 
 # open up the postgres port
 EXPOSE 5432

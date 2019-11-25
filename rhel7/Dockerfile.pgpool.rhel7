@@ -1,7 +1,7 @@
 ARG PREFIX
 ARG BASEVER
 ARG PG_FULL
-FROM ${PREFIX}/crunchy-pg-base:centos7-${PG_FULL}-${BASEVER}
+FROM ${PREFIX}/crunchy-pg-base:rhel7-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 
@@ -13,11 +13,14 @@ LABEL name="crunchydata/pgpool" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
+COPY conf/atomic/pgpool/help.1 /help.1
+COPY conf/atomic/pgpool/help.md /help.md
+
+RUN yum -y install \
 		--setopt=skip_missing_names_on_install=False \
 		pgpool-II-${PG_MAJOR//.} \
 		pgpool-II-${PG_MAJOR//.}-extensions \
-	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+	&& yum -y clean all
 
 # Preserving PGVERSION out of paranoia
 ENV PGVERSION="${PG_MAJOR}"

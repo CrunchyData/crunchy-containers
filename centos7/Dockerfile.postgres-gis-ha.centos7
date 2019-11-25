@@ -7,12 +7,12 @@ ARG PG_MAJOR
 ARG POSTGIS_LBL
 
 LABEL name="crunchydata/postgres-gis" \
-    summary="Includes PostGIS extensions on top of crunchy-postgres-ha" \
-    description="An identical image of crunchy-postgres with the extra PostGIS packages added for users that require PostGIS." \
-    io.k8s.description="postgres-gis container" \
-    io.k8s.display-name="Crunchy postgres-gis container" \
-    io.openshift.expose-services="" \
-    io.openshift.tags="crunchy,database"
+	summary="Includes PostGIS extensions on top of crunchy-postgres-ha" \
+	description="An identical image of crunchy-postgres with the extra PostGIS packages added for users that require PostGIS." \
+	io.k8s.description="postgres-gis container" \
+	io.k8s.display-name="Crunchy postgres-gis container" \
+	io.openshift.expose-services="" \
+	io.openshift.tags="crunchy,database"
 
 USER 0
 

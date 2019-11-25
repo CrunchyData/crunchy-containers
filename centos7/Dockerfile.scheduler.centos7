@@ -20,8 +20,6 @@ LABEL name="crunchydata/scheduler" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database,cron"
 
-COPY licenses /licenses
-
 RUN yum -y install \
 	--setopt=skip_missing_names_on_install=False \
 	nss_wrapper \

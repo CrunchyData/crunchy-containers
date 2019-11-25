@@ -1,25 +1,25 @@
-FROM registry.access.redhat.com/rhel7
+ARG PREFIX
+ARG BASEVER
+ARG PG_FULL
+FROM ${PREFIX}/crunchy-base:rhel7-${PG_FULL}-${BASEVER}
+
+ARG PG_MAJOR
 
 LABEL name="crunchydata/pgbasebackup-restore" \
-        vendor="crunchy data" \
-        Version="7.7" \
-        Release="4.2.0" \
-        url="https://crunchydata.com" \
-        summary="Restores a database using a pg_basebackup backup" \
-        description="Restores a database into a specified PGDATA directory using a pg_basebackup backup." \
-        io.k8s.description="pg_basebackup restore container" \
-        io.k8s.display-name="Crunchy pg_basebackup restore container" \
-        io.openshift.expose-services="" \
-        io.openshift.tags="crunchy,database"
+	summary="Restores a database using a pg_basebackup backup" \
+	description="Restores a database into a specified PGDATA directory using a pg_basebackup backup." \
+	io.k8s.description="pg_basebackup restore container" \
+	io.k8s.display-name="Crunchy pg_basebackup restore container" \
+	io.openshift.expose-services="" \
+	io.openshift.tags="crunchy,database"
 
 COPY conf/atomic/pgbasebackup_restore/help.1 /help.1
 COPY conf/atomic/pgbasebackup_restore/help.md /help.md
-COPY conf/licenses /licenses
-COPY licenses /licenses
 
-RUN yum -y update \
- && yum -y install rsync  \
- && yum -y clean all
+RUN yum -y install \
+	--setopt=skip_missing_names_on_install=False \
+	rsync \
+	&& yum -y clean all
 
 RUN groupadd postgres -g 26 \
  &&  useradd postgres -g 26 -u 26
@@ -31,8 +31,8 @@ RUN chown -R postgres:postgres /opt/cpm /pgdata
 ADD bin/pgbasebackup_restore /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 
-RUN chmod g=u /etc/passwd \
- && chmod g=u /etc/group
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
 
 VOLUME ["/backup","/pgdata"]
 
