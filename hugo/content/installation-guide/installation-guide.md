@@ -213,7 +213,7 @@ Update the system:
     sudo yum -y update
 
 
-## Configuring Storage for Kuberenetes Based Systems
+## Configuring Storage for Kubernetes Based Systems
 
 In addition to the environment variables we set earlier, you will need to add environment variables
 for Kubernetes storage configuration. Please see the [Storage Configuration](/installation-guide/storage-configuration/)
@@ -254,7 +254,7 @@ See [Kubeadm](https://kubernetes.io/docs/setup/independent/install-kubeadm/)
 for installing the latest version of Kubeadm.
 
 See [Create a Cluster](https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/)
-for creating the Kuberenetes cluster using **Kubeadm**. Note: We find that Weave networking
+for creating the Kubernetes cluster using **Kubeadm**. Note: We find that Weave networking
 works particularly well with the container suite.
 
 Please see [here](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/)
