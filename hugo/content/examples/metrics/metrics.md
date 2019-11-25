@@ -29,7 +29,7 @@ with the following credentials:
 By default, Prometheus detects which environment its running on (Docker, Kubernetes, or OpenShift Container Platform)
 and applies a default configuration.
 
-When running in Kuberenetes and OpenShift, the following two labels are required by
+When running in Kubernetes and OpenShift, the following two labels are required by
 the deployments:
 
  * `"crunchy_collect": "true"`
