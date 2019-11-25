@@ -1,0 +1,28 @@
+ARG PREFIX
+ARG BASEVER
+ARG PG_FULL
+FROM ${PREFIX}/crunchy-base:rhel7-${PG_FULL}-${BASEVER}
+
+ARG PG_MAJOR
+
+LABEL PostgresVersion="${PG_MAJOR}" \
+	PostgresFullVersion="${PG_FULL}" \
+	postgresql.version.major="${PG_MAJOR}" \
+	postgresql.version="${PG_FULL}"
+
+# Crunchy Postgres repo GPG Keys
+# Both keys are added to support building all PG versions
+# of this container. PG 11 requires RPM-GPG-KEY-crunchydata
+# PG 9.5, 9.6 and 10 require CRUNCHY-GPG-KEY.public
+ADD conf/RPM-GPG-KEY-crunchydata  /
+ADD conf/CRUNCHY-GPG-KEY.public  /
+# Add any available Crunchy PG repo files
+ADD conf/crunchypg${PG_MAJOR//.}.repo /etc/yum.repos.d/
+# Import both keys to support all required repos
+RUN rpm --import RPM-GPG-KEY-crunchydata
+RUN rpm --import CRUNCHY-GPG-KEY.public
+
+RUN yum install -y \
+		--setopt=skip_missing_names_on_install=False \
+		postgresql${PG_MAJOR//.} \
+	&& yum -y clean all

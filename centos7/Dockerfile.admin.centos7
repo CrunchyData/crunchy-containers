@@ -18,8 +18,8 @@ ENV PATH="${PGROOT}/bin:${PATH}"
 
 ADD bin/common /opt/cpm/bin
 
-RUN chmod g=u /etc/passwd \
- && chmod g=u /etc/group
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
 
 ENTRYPOINT ["/opt/cpm/bin/uid_crunchyadm.sh"]
 

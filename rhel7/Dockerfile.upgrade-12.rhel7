@@ -1,0 +1,59 @@
+ARG PREFIX
+ARG BASEVER
+ARG PG_FULL
+FROM ${PREFIX}/crunchy-pg-base:rhel7-${PG_FULL}-${BASEVER}
+
+LABEL name="crunchydata/upgrade" \
+	summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
+	description="Provides a means to perform a major PostgreSQL upgrade from 9.5 to 9.6, 9.6 to 10, 10 to 11, or 11 to 12. Old data files are left intact." \
+	io.k8s.description="postgres upgrade container" \
+	io.k8s.display-name="Crunchy postgres upgrade container" \
+	io.openshift.expose-services="" \
+	io.openshift.tags="crunchy,database"
+
+COPY conf/atomic/upgrade/help.1 /help.1
+COPY conf/atomic/upgrade/help.md /help.md
+
+RUN yum -y install \
+	--setopt=skip_missing_names_on_install=False \
+	pgaudit_95 \
+	postgresql95 \
+	postgresql95-contrib \
+	postgresql95-server \
+	pgaudit11_96 \
+	postgresql96 \
+	postgresql96-contrib \
+	postgresql96-server \
+	pgaudit12_10 \
+	postgresql10 \
+	postgresql10-contrib \
+	postgresql10-server \
+	pgaudit13_11 \
+	postgresql11 \
+	postgresql11-contrib \
+	postgresql11-server \
+	pgaudit14_12 \
+	postgresql12 \
+	postgresql12-contrib \
+	postgresql12-server \
+	unzip \
+	&& yum -y clean all
+
+RUN mkdir -p /opt/cpm/bin /pgolddata /pgnewdata /opt/cpm/conf
+ADD bin/upgrade/ /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
+ADD conf/upgrade/ /opt/cpm/conf
+
+RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata 
+	&& chmod -R g=u /opt/cpm /pgolddata /pgnewdata
+
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+
+VOLUME /pgolddata /pgnewdata
+
+ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]
