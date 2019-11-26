@@ -20,7 +20,7 @@
       <description>The crunchy-backrest-restore container executes the pgBackRest utility, allowing FULL and DELTA restore capability. See the pgBackRest guide for more details.
 Features The following features are supported and required by the crunchy-backrest-restore container:
  Mounted pgbackrest.conf configuration file via the /pgconf volume Mounted /backrestrepo for access to pgBackRest archives  Packages The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (11.5, 10.10, 9.6.15 and 9.</description>
+ PostgreSQL (12.1, 11.6, 10.11, 9.</description>
     </item>
     
     <item>
@@ -42,7 +42,7 @@ If a recovery target is specified when performing the restore, a recovery.conf f
       <description>The crunchy-backup container executes a full backup against another database container using the standard pg_basebackup utility that is included with PostgreSQL.
 Features The following features are supported by the crunchy-backup container:
  Backup and restoration from: pg_basebackup  Packages The crunchy-backup Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (11.5, 10.10, 9.6.15 and 9.5.19) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     BACKUP_LABEL crunchy-backup The label for the backup.</description>
+ PostgreSQL (12.1, 11.6, 10.11, 9.6.16 and 9.5.20) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     BACKUP_LABEL crunchy-backup The label for the backup.</description>
     </item>
     
     <item>
@@ -108,7 +108,7 @@ Features The following features are supported by the crunchy-pgbouncer container
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgdump/</guid>
       <description>The crunchy-pgdump container executes either a pg_dump or pg_dumpall database backup against another PostgreSQL database.
 Packages The crunchy-pgdump Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (11.5, 10.10, 9.6.15 and 9.5.19) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGDUMP_DB None Name of the database the backup is being performed on.</description>
+ PostgreSQL (12.1, 11.6, 10.11, 9.6.16 and 9.5.20) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGDUMP_DB None Name of the database the backup is being performed on.</description>
     </item>
     
     <item>
@@ -130,7 +130,7 @@ The default pgPool examples use a Secret to hold the set of pgPool configuration
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgrestore/</guid>
       <description>The restore image provides a means of performing a restore of a dump from pg_dump or pg_dumpall via psql or pg_restore to a PostgreSQL container database.
 Packages The crunchy-pgrestore Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (11.5, 10.10, 9.6.15 and 9.5.19) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGRESTORE_DB None Name of the database to connect to.</description>
+ PostgreSQL (12.1, 11.6, 10.11, 9.6.16 and 9.5.20) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGRESTORE_DB None Name of the database to connect to.</description>
     </item>
     
     <item>
@@ -200,9 +200,9 @@ Packages The Crunchy Scheduler Docker image contains the following packages:
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-upgrade/</guid>
-      <description>The crunchy-upgrade container contains both the 9.5 / 9.6 and 9.6 / 10 PostgreSQL packages in order to perform a pg_upgrade from 9.5 to 9.6 or 9.6 to 10 versions.
-Features The following features are supported by the crunchy-upgrade container:
- Supports a pg_upgrade of the PostgreSQL database. Doesn&amp;rsquo;t alter the old database files. Creates the new database directory.  Restrictions  Does not currently support a PostGIS upgrade. Supports upgrades from only 9.</description>
+      <description>The crunchy-upgrade container contains multiple versions of PostgreSQL in order to perform a pg_upgrade between major versions of PostgreSQL. This includes the following combinations:
+ PostgreSQL 9.5 / PostgreSQL 9.6 PostgreSQL 9.6 / PostgreSQL 10 PostgreSQL 10 / PostgreSQL 11 PostgreSQL 11 / PostgreSQL 12  Features The following features are supported by the crunchy-upgrade container:
+ Supports a pg_upgrade of the PostgreSQL database. Doesn&amp;rsquo;t alter the old database files.</description>
     </item>
     
   </channel>
