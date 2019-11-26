@@ -682,7 +682,7 @@ favorite editor and add the following information. You can leave out the comment
 line starting with #:</p>
 
 <pre><code>export GOPATH=$HOME/cdev        # set path to your new Go workspace
-export GOBIN=$GOPATH/bin        # set bin path 
+export GOBIN=$GOPATH/bin        # set bin path
 export PATH=$PATH:$GOBIN        # add Go bin path to your overall path
 export CCP_BASEOS=centos7       # centos7 for Centos, rhel7 for Redhat
 export CCP_PGVERSION=10         # The PostgreSQL major version
@@ -803,7 +803,7 @@ Below we chose Postgresql 10 for the example (change if you need different versi
 <pre><code>sudo yum -y update
 </code></pre>
 
-<h2 id="configuring-storage-for-kuberenetes-based-systems">Configuring Storage for Kuberenetes Based Systems</h2>
+<h2 id="configuring-storage-for-kubernetes-based-systems">Configuring Storage for Kubernetes Based Systems</h2>
 
 <p>In addition to the environment variables we set earlier, you will need to add environment variables
 for Kubernetes storage configuration. Please see the <a href="https://crunchydata.github.io/crunchy-containers/latest/installation-guide/storage-configuration/">Storage Configuration</a>
@@ -842,7 +842,7 @@ with installation can occur unless you have a resolving hostname.</p>
 for installing the latest version of Kubeadm.</p>
 
 <p>See <a href="https://kubernetes.io/docs/setup/independent/create-cluster-kubeadm/">Create a Cluster</a>
-for creating the Kuberenetes cluster using <strong>Kubeadm</strong>. Note: We find that Weave networking
+for creating the Kubernetes cluster using <strong>Kubeadm</strong>. Note: We find that Weave networking
 works particularly well with the container suite.</p>
 
 <p>Please see <a href="https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/">here</a>
