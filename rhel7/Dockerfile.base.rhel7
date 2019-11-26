@@ -16,13 +16,16 @@ LABEL vendor="Crunchy Data" \
 COPY conf/licenses /licenses
 COPY licenses /licenses
 
+ARG EPEL_RPM=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
 RUN yum -y --enablerepo=rhel-7-server-ose-3.11-rpms update \
 	&& yum -y install \
 		--setopt=skip_missing_names_on_install=False \
+		${EPEL_RPM} \
 		bind-utils \
-		epel-release \
 		gettext \
 		hostname \
 		procps-ng \
+	&& sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/epel*.repo \
 	&& yum -y clean all --enablerepo=rhel-7-server-ose-3.11-rpms
 

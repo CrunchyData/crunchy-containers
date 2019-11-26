@@ -9,16 +9,18 @@ ARG PG_MAJOR
 # Preserving PGVERSION out of paranoia
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}" 
 
-ARG PGAUDIT_LBL
 ARG BACKREST_VER
+# Used by Makefile to process pgdg naming, not used here, listed to
+# suppress warning regarding unused passed vars
+ARG PGAUDIT_LBL
 
 # Separate yum run matching postgres image, leverages cached layer
-RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
+RUN yum -y install \
 	--setopt=skip_missing_names_on_install=False \
 	openssh-clients \
 	openssh-server \
-	pgaudit${PGAUDIT_LBL} \
-	pgaudit${PGAUDIT_LBL}_set_user \
+	pgaudit${PG_MAJOR//.} \
+	pgaudit${PG_MAJOR//.}_set_user \
 	crunchy-backrest-"${BACKREST_VER}" \
 	postgresql${PG_MAJOR//.}-contrib \
 	postgresql${PG_MAJOR//.}-server \
@@ -26,7 +28,7 @@ RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
 	psmisc \
 	rsync \
 	&& yum -y --setopt=tsflags='' install pgaudit_analyze \
-	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+	&& yum -y clean all
 
 # ===== Steps unique to this image after here =====
 ARG PATRONI_VER
@@ -46,12 +48,13 @@ ADD conf/repos/kubernetes.repo /etc/yum.repos.d/
 
 RUN yum -y install \
 	--setopt=skip_missing_names_on_install=False \
+	--enablerepo="epel" \
 	gcc \
 	kubectl \
 	python-devel \
 	python-pip \
 	python-psycopg2 \
-	&& yum -y clean all
+	&& yum -y clean all --enablerepo="epel"
 
 # install patroni for Kube
 RUN pip uninstall -y ipaddress \
