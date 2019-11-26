@@ -24,8 +24,8 @@ ADD bin/grafana /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/grafana /opt/cpm/conf
 
-RUN chown -R 2:0 /opt/cpm /data \
-	&& chmod -R g=u /opt/cpm /data
+RUN chown -R 2:0 /opt/cpm /data && \
+	chmod -R g=u /opt/cpm /data
 
 EXPOSE 3000
 

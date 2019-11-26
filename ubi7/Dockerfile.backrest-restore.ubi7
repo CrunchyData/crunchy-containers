@@ -1,7 +1,7 @@
 ARG PREFIX
 ARG BASEVER
 ARG PG_FULL
-FROM ${PREFIX}/crunchy-pg-base:rhel7-${PG_FULL}-${BASEVER}
+FROM ${PREFIX}/crunchy-pg-base:ubi7-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 ARG BACKREST_VER
@@ -16,12 +16,14 @@ LABEL name="crunchydata/postgres" \
 
 # Run postgres install in separate transaction ahead of backrest for postgres user
 RUN yum -y install  \
+		--disableplugin=subscription-manager \
 		--setopt=skip_missing_names_on_install=False \
-		--enablerepo="epel" \
 		nss_wrapper \
 		postgresql${PG_MAJOR//.}-server \
-	&& yum -y install crunchy-backrest-"${BACKREST_VER}" \
-	&& yum -y clean all --enablerepo="epel"
+	&& yum -y install \
+		--disableplugin=subscription-manager \
+	   crunchy-backrest-"${BACKREST_VER}" \
+	&& yum -y clean all
 
 COPY conf/atomic/backrestrestore/help.1 /help.1
 COPY conf/atomic/backrestrestore/help.md /help.md

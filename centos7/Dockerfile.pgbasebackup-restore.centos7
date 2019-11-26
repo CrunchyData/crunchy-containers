@@ -18,8 +18,8 @@ RUN yum -y install \
 	rsync \
 	&& yum -y clean all
 
-RUN groupadd postgres -g 26 \
- &&  useradd postgres -g 26 -u 26
+RUN groupadd postgres -g 26 && \
+	useradd postgres -g 26 -u 26
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
 
@@ -28,8 +28,8 @@ RUN chown -R postgres:postgres /opt/cpm /pgdata
 ADD bin/pgbasebackup_restore /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 
-RUN chmod g=u /etc/passwd \
- && chmod g=u /etc/group
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
 
 VOLUME ["/backup","/pgdata"]
 

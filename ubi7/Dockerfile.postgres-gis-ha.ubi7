@@ -1,7 +1,7 @@
 ARG PREFIX
 ARG BASEVER
 ARG PG_FULL
-FROM ${PREFIX}/crunchy-postgres-ha:rhel7-${PG_FULL}-${BASEVER}
+FROM ${PREFIX}/crunchy-postgres-ha:ubi7-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 ARG POSTGIS_LBL
@@ -17,7 +17,7 @@ LABEL name="crunchydata/postgres-gis" \
 USER 0
 
 RUN yum -y install \
-		--enablerepo="epel,rhel-7-server-optional-rpms" \
+		--disableplugin=subscription-manager \
 		--setopt=skip_missing_names_on_install=False \
 		libRmath \
 		pgrouting_${PG_MAJOR//.} \
@@ -27,7 +27,7 @@ RUN yum -y install \
 		R-core \
 		texinfo-tex \
 		texlive-epsf \
-	&& yum -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" 
+	&& yum -y clean all
 
 # open up the postgres port
 EXPOSE 5432

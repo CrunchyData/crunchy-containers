@@ -21,8 +21,8 @@ LABEL name="crunchydata/pgbasebackup-restore" \
 COPY conf/atomic/pgbasebackup_restore/help.1 /help.1
 COPY conf/atomic/pgbasebackup_restore/help.md /help.md
 
-RUN groupadd postgres -g 26 \
- &&  useradd postgres -g 26 -u 26
+RUN groupadd postgres -g 26 && \
+	useradd postgres -g 26 -u 26
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
 

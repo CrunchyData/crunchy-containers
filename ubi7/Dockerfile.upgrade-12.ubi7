@@ -1,7 +1,7 @@
 ARG PREFIX
 ARG BASEVER
 ARG PG_FULL
-FROM ${PREFIX}/crunchy-pg-base:rhel7-${PG_FULL}-${BASEVER}
+FROM ${PREFIX}/crunchy-pg-base:ubi7-${PG_FULL}-${BASEVER}
 
 LABEL name="crunchydata/upgrade" \
 	summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
@@ -21,6 +21,7 @@ ADD conf/crunchypg10.repo /etc/yum.repos.d/
 ADD conf/crunchypg11.repo /etc/yum.repos.d/
 
 RUN yum -y install \
+	--disableplugin=subscription-manager \
 	--setopt=skip_missing_names_on_install=False \
 	pgaudit95 \
 	postgresql95 \
@@ -50,8 +51,8 @@ ADD bin/upgrade/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 ADD conf/upgrade/ /opt/cpm/conf
 
-RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata && \
-	chmod -R g=u /opt/cpm /pgolddata /pgnewdata
+RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata \
+	&& chmod -R g=u /opt/cpm /pgolddata /pgnewdata
 
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group

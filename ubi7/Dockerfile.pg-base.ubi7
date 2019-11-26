@@ -1,7 +1,7 @@
 ARG PREFIX
 ARG BASEVER
 ARG PG_FULL
-FROM ${PREFIX}/crunchy-base:rhel7-${PG_FULL}-${BASEVER}
+FROM ${PREFIX}/crunchy-base:ubi7-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 
@@ -23,6 +23,7 @@ RUN rpm --import RPM-GPG-KEY-crunchydata
 RUN rpm --import CRUNCHY-GPG-KEY.public
 
 RUN yum -y install \
+		--disableplugin=subscription-manager \
 		--setopt=skip_missing_names_on_install=False \
 		postgresql${PG_MAJOR//.} \
 	&& yum -y clean all

@@ -23,8 +23,8 @@ COPY conf/atomic/scheduler/help.1 /help.1
 COPY conf/atomic/scheduler/help.md /help.md
 
 RUN yum -y install \
-	--setopt=skip_missing_names_on_install=False \
 	--enablerepo="epel" \
+	--setopt=skip_missing_names_on_install=False \
 	nss_wrapper \
 	&& yum -y clean all --enablerepo="epel"
 

@@ -17,12 +17,12 @@ LABEL name="crunchydata/postgres-gis" \
 USER 0
 
 RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
-    --setopt=skip_missing_names_on_install=False \
-    libRmath \
-    plr${PG_MAJOR//.} \
-    postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
-    postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
-    R-core \
+		--setopt=skip_missing_names_on_install=False \
+		libRmath \
+		plr${PG_MAJOR//.} \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
+		R-core \
     && yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
 
 # open up the postgres port

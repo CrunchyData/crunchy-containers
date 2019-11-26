@@ -1,7 +1,7 @@
 ARG PREFIX
 ARG BASEVER
 ARG PG_FULL
-FROM ${PREFIX}/crunchy-pg-base:centos7-${PG_FULL}-${BASEVER}
+FROM ${PREFIX}/crunchy-pg-base:ubi7-${PG_FULL}-${BASEVER}
 
 # ===== Early lines ordered for leveraging cache, reorder carefully =====
 ARG PG_MAJOR
@@ -10,31 +10,38 @@ ARG PG_MAJOR
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}" 
 
 ARG BACKREST_VER
+# Used by Makefile to process pgdg naming, not used here, listed to
+# suppress warning regarding unused passed vars
 ARG PGAUDIT_LBL
 
 # Separate yum run matching postgres-ha image, leverages cached layer
 RUN yum -y install \
-	--enablerepo="pgdg${PG_MAJOR//.}" \
+	--disableplugin=subscription-manager \
 	--setopt=skip_missing_names_on_install=False \
 	openssh-clients \
 	openssh-server \
-	pgaudit${PGAUDIT_LBL} \
-	pgbackrest-"${BACKREST_VER}" \
+	pgaudit${PG_MAJOR//.} \
+	pgaudit${PG_MAJOR//.}_set_user \
+	crunchy-backrest-"${BACKREST_VER}" \
 	postgresql${PG_MAJOR//.}-contrib \
 	postgresql${PG_MAJOR//.}-server \
 	postgresql${PG_MAJOR//.}-plpython \
 	psmisc \
 	rsync \
-	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+	&& yum -y --setopt=tsflags='' install pgaudit_analyze \
+	&& yum -y clean all
 
 # ===== Steps unique to this image after here =====
 LABEL name="crunchydata/postgres" \
-	summary="PostgreSQL ${PG_FULL} (PGDG) on a Centos7 base image" \
+	summary="PostgreSQL ${PG_FULL} on a RHEL7 base image" \
 	description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
 	io.k8s.description="postgres container" \
 	io.k8s.display-name="Crunchy postgres container" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
+
+COPY conf/atomic/postgres/help.1 /help.1
+COPY conf/atomic/postgres/help.md /help.md
 
 # add path settings for postgres user
 # bash_profile is loaded in login, but not with exec
@@ -45,6 +52,7 @@ ADD conf/.bashrc /var/lib/pgsql
 ADD conf/.bash_profile /
 ADD conf/.bashrc /
 
+# set up cpm directory
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /recover /backrestrepo
 
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \

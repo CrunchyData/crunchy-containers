@@ -1,7 +1,7 @@
 ARG PREFIX
 ARG BASEVER
 ARG PG_FULL
-FROM ${PREFIX}/crunchy-pg-base:centos7-${PG_FULL}-${BASEVER}
+FROM ${PREFIX}/crunchy-pg-base:ubi7-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 
@@ -13,7 +13,11 @@ LABEL name="crunchydata/pgadmin4" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
+COPY conf/atomic/pgadmin4/help.1 /help.1
+COPY conf/atomic/pgadmin4/help.md /help.md
+
+RUN yum -y install \
+		--disableplugin=subscription-manager \
 		--setopt=skip_missing_names_on_install=False \
 		gcc \
 		mod_ssl \
@@ -22,7 +26,7 @@ RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
 		pgadmin4-web \
 		postgresql${PG_MAJOR//.}-devel \
 		postgresql${PG_MAJOR//.}-server \
-	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+	&& yum -y clean all
 
 # Preserving PGVERSION out of paranoia
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="PG_MAJOR"
