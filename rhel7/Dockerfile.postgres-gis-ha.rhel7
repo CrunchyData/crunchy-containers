@@ -18,15 +18,16 @@ USER 0
 
 RUN yum -y install \
 		--setopt=skip_missing_names_on_install=False \
+		--enablerepo="epel,rhel-7-server-optional-rpms" \
 		libRmath \
+		pgrouting_${PG_MAJOR//.} \
 		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
 		R-core \
-		pgrouting_${ccp_pg_version//.} \
 		texinfo-tex \
 		texlive-epsf \
-	&& yum -y clean all
+	&& yum -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" 
 
 # open up the postgres port
 EXPOSE 5432

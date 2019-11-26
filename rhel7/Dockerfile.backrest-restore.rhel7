@@ -17,10 +17,11 @@ LABEL name="crunchydata/postgres" \
 # Run postgres install in separate transaction ahead of backrest for postgres user
 RUN yum -y install  \
 		--setopt=skip_missing_names_on_install=False \
+		--enablerepo="epel" \
 		nss_wrapper \
 		postgresql${PG_MAJOR//.}-server \
 	&& yum -y install crunchy-backrest-"${BACKREST_VER}" \
-	&& yum -y clean all
+	&& yum -y clean all --enablerepo="epel"
 
 COPY conf/atomic/backrestrestore/help.1 /help.1
 COPY conf/atomic/backrestrestore/help.md /help.md

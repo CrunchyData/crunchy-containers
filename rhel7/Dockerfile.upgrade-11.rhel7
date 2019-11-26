@@ -21,19 +21,19 @@ ADD conf/crunchypg10.repo /etc/yum.repos.d/
 
 RUN yum -y install \
 	--setopt=skip_missing_names_on_install=False \
-	pgaudit_95 \
+	pgaudit95 \
 	postgresql95 \
 	postgresql95-contrib \
 	postgresql95-server \
-	pgaudit11_96 \
+	pgaudit96 \
 	postgresql96 \
 	postgresql96-contrib \
 	postgresql96-server \
-	pgaudit12_10 \
+	pgaudit10 \
 	postgresql10 \
 	postgresql10-contrib \
 	postgresql10-server \
-	pgaudit13_11 \
+	pgaudit11 \
 	postgresql11 \
 	postgresql11-contrib \
 	postgresql11-server \
