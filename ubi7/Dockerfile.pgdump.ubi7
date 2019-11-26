@@ -1,0 +1,47 @@
+ARG PREFIX
+ARG BASEVER
+ARG PG_FULL
+FROM ${PREFIX}/crunchy-pg-base:ubi7-${PG_FULL}-${BASEVER}
+
+ARG PG_MAJOR
+
+RUN yum -y install \
+	--disableplugin=subscription-manager \
+	--setopt=skip_missing_names_on_install=False \
+	file \
+	postgresql${PG_MAJOR//.}-server \
+	unzip \
+	&& yum -y clean all
+
+LABEL name="crunchydata/pgdump" \
+	summary="Performs a pg_dump on a database container" \
+	description="Meant to be executed upon demand, this container will run pg_dump against a running database container and write the backup files to a mounted directory." \
+	io.k8s.description="pgdump container" \
+	io.k8s.display-name="Crunchy pgdump container" \
+	io.openshift.expose-services="" \
+	io.openshift.tags="crunchy,database"
+
+COPY conf/atomic/pgdump/help.1 /help.1
+COPY conf/atomic/pgdump/help.md /help.md
+
+# Preserving PGVERSION out of paranoia
+ENV PGVERSION="${PG_MAJOR}"
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata
+ADD bin/pgdump/ /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
+ADD conf/pgdump/ /opt/cpm/conf
+
+RUN chgrp -R 0 /opt/cpm /pgdata && \
+	chmod -R g=u /opt/cpm /pgdata 
+
+RUN chmod g=u /etc/passwd && \
+	chmod g=u /etc/group
+
+VOLUME ["/pgdata"]
+
+ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
+
+USER 26
+
+CMD ["/opt/cpm/bin/start.sh"]

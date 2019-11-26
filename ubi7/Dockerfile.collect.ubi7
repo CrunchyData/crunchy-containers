@@ -1,0 +1,44 @@
+ARG PREFIX
+ARG BASEVER
+ARG PG_FULL
+FROM ${PREFIX}/crunchy-pg-base:ubi7-${PG_FULL}-${BASEVER}
+
+ARG PG_MAJOR
+
+LABEL name="crunchydata/collect" \
+	summary="Provides metrics for crunchy-postgres" \
+	description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus and crunchy-grafana." \
+	io.k8s.description="collect container" \
+	io.k8s.display-name="Crunchy collect container" \
+	io.openshift.expose-services="" \
+	io.openshift.tags="crunchy,database"
+
+COPY conf/atomic/collect/help.1 /help.1
+COPY conf/atomic/collect/help.md /help.md
+
+# Preserving PGVERSION out of paranoia
+ENV PGVERSION="${PG_MAJOR}"
+
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf
+
+ADD postgres_exporter.tar.gz /opt/cpm/bin
+ADD tools/pgmonitor/exporter/postgres /opt/cpm/conf
+ADD bin/collect /opt/cpm/bin
+ADD bin/common /opt/cpm/bin
+ADD conf/collect /opt/cpm/conf
+
+RUN chgrp -R 0 /opt/cpm/bin /opt/cpm/conf && \
+	chmod -R g=u /opt/cpm/bin/ opt/cpm/conf
+
+# postgres_exporter
+EXPOSE 9187
+
+RUN chmod g=u /etc/passwd
+
+VOLUME ["/conf"]
+
+ENTRYPOINT ["/opt/cpm/bin/uid_daemon.sh"]
+
+USER 2
+
+CMD ["/opt/cpm/bin/start.sh"]

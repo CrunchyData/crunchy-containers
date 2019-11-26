@@ -13,7 +13,8 @@ LABEL PostgresVersion="${PG_MAJOR}" \
 
 RUN yum -y install ${PGDG_REPO_RPM} \
 	&& sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/pgdg*.repo \
-	&& yum install -y --enablerepo="pgdg${PG_MAJOR//.}" \
+	&& yum -y install \
+		--enablerepo="pgdg${PG_MAJOR//.}" \
 		--setopt=skip_missing_names_on_install=False \
 		postgresql${PG_MAJOR//.} \
 	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"

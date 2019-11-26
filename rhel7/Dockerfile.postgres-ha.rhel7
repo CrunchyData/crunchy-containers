@@ -47,8 +47,8 @@ COPY conf/atomic/postgres-ha/help.md /help.md
 ADD conf/repos/kubernetes.repo /etc/yum.repos.d/
 
 RUN yum -y install \
-	--setopt=skip_missing_names_on_install=False \
 	--enablerepo="epel" \
+	--setopt=skip_missing_names_on_install=False \
 	gcc \
 	kubectl \
 	python-devel \
@@ -63,7 +63,6 @@ RUN pip uninstall -y ipaddress \
 
 RUN useradd crunchyadm -g 0 -u 17
 
-ENV PGROOT="/usr/pgsql-${PG_MAJOR}"
 ENV PATH="${PGROOT}/bin:${PATH}"
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backrestrepo /crunchyadm

@@ -35,7 +35,7 @@ RUN ln -sf /opt/cpm/conf/pool_hba.conf /etc/pgpool-II-${PG_MAJOR//.}/pool_hba.co
 	&& ln -sf /opt/cpm/conf/pgpool/pool_passwd /etc/pgpool-II-${PG_MAJOR//.}/pool_passwd
 
 RUN chgrp -R 0 /opt/cpm && \
-		chmod -R g=u /opt/cpm
+	chmod -R g=u /opt/cpm
 
 
 # open up the postgres port

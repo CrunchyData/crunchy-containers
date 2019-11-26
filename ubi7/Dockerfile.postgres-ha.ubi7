@@ -1,7 +1,7 @@
 ARG PREFIX
 ARG BASEVER
 ARG PG_FULL
-FROM ${PREFIX}/crunchy-pg-base:centos7-${PG_FULL}-${BASEVER}
+FROM ${PREFIX}/crunchy-pg-base:ubi7-${PG_FULL}-${BASEVER}
 
 # ===== Early lines ordered for leveraging cache, reorder carefully =====
 ARG PG_MAJOR
@@ -10,45 +10,52 @@ ARG PG_MAJOR
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}" 
 
 ARG BACKREST_VER
+# Used by Makefile to process pgdg naming, not used here, listed to
+# suppress warning regarding unused passed vars
 ARG PGAUDIT_LBL
 
 # Separate yum run matching postgres image, leverages cached layer
 RUN yum -y install \
-	--enablerepo="pgdg${PG_MAJOR//.}" \
+	--disableplugin=subscription-manager \
 	--setopt=skip_missing_names_on_install=False \
 	openssh-clients \
 	openssh-server \
-	pgaudit${PGAUDIT_LBL} \
-	pgbackrest-"${BACKREST_VER}" \
+	pgaudit${PG_MAJOR//.} \
+	pgaudit${PG_MAJOR//.}_set_user \
+	crunchy-backrest-"${BACKREST_VER}" \
 	postgresql${PG_MAJOR//.}-contrib \
 	postgresql${PG_MAJOR//.}-server \
 	postgresql${PG_MAJOR//.}-plpython \
 	psmisc \
 	rsync \
-	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+	&& yum -y --setopt=tsflags='' install pgaudit_analyze \
+	&& yum -y clean all
 
 # ===== Steps unique to this image after here =====
 ARG PATRONI_VER
 
 LABEL name="crunchydata/postgres" \
-	summary="PostgreSQL ${PG_FULL} (PGDG) with Patroni" \
+	summary="PostgreSQL ${PG_FULL} with Patroni" \
 	description="Used for the deployment and management of highly-available PostgreSQL clusters using Patroni." \
 	io.k8s.description="postgres container" \
 	io.k8s.display-name="Crunchy postgres container" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
+COPY conf/atomic/postgres-ha/help.1 /help.1
+COPY conf/atomic/postgres-ha/help.md /help.md
+
 ADD conf/repos/kubernetes.repo /etc/yum.repos.d/
 
 RUN yum -y install \
-	--enablerepo="pgdg${PG_MAJOR//.}" \
+	--disableplugin=subscription-manager \
 	--setopt=skip_missing_names_on_install=False \
 	gcc \
 	kubectl \
 	python-devel \
 	python-pip \
 	python-psycopg2 \
-	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+	&& yum -y clean all
 
 # install patroni for Kube
 RUN pip uninstall -y ipaddress \

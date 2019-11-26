@@ -1,11 +1,11 @@
 ARG PREFIX
 ARG BASEVER
 ARG PG_FULL
-FROM ${PREFIX}/crunchy-pg-base:rhel7-${PG_FULL}-${BASEVER}
+FROM ${PREFIX}/crunchy-pg-base:ubi7-${PG_FULL}-${BASEVER}
 
 LABEL name="crunchydata/upgrade" \
 	summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
-	description="Provides a means to perform a major PostgreSQL upgrade from 9.5 to 9.6, 9.6 to 10, 10 to 11, or 11 to 12. Old data files are left intact." \
+	description="Provides a means to perform a major PostgreSQL upgrade from 9.5 to 9.6, 9.6 to 10 or 10 to 11. Old data files are left intact." \
 	io.k8s.description="postgres upgrade container" \
 	io.k8s.display-name="Crunchy postgres upgrade container" \
 	io.openshift.expose-services="" \
@@ -18,9 +18,9 @@ COPY conf/atomic/upgrade/help.md /help.md
 ADD conf/crunchypg95.repo /etc/yum.repos.d/
 ADD conf/crunchypg96.repo /etc/yum.repos.d/
 ADD conf/crunchypg10.repo /etc/yum.repos.d/
-ADD conf/crunchypg11.repo /etc/yum.repos.d/
 
 RUN yum -y install \
+	--disableplugin=subscription-manager \
 	--setopt=skip_missing_names_on_install=False \
 	pgaudit95 \
 	postgresql95 \
@@ -38,10 +38,6 @@ RUN yum -y install \
 	postgresql11 \
 	postgresql11-contrib \
 	postgresql11-server \
-	pgaudit12 \
-	postgresql12 \
-	postgresql12-contrib \
-	postgresql12-server \
 	unzip \
 	&& yum -y clean all
 

@@ -1,0 +1,31 @@
+ARG RELVER
+FROM ubi7
+
+MAINTAINER Crunchy Data <info@crunchydata.com>
+
+LABEL vendor="Crunchy Data" \
+	Version="7.7" \
+	Release="${RELVER}" \
+	url="https://crunchydata.com" \
+	org.opencontainers.image.vendor="Crunchy Data" \
+	os.version="7.7" \
+	run="" \
+	start="" \
+	stop=""
+
+COPY conf/licenses /licenses
+COPY licenses /licenses
+
+ARG EPEL_RPM=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+RUN yum -y update \
+	&& yum -y install \
+		--disableplugin=subscription-manager \
+		--setopt=skip_missing_names_on_install=False \
+		${EPEL_RPM} \
+		bind-utils \
+		gettext \
+		hostname \
+		procps-ng \
+	&& yum -y clean all
+

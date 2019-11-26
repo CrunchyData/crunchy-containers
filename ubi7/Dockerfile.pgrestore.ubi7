@@ -1,11 +1,12 @@
 ARG PREFIX
 ARG BASEVER
 ARG PG_FULL
-FROM ${PREFIX}/crunchy-pg-base:rhel7-${PG_FULL}-${BASEVER}
+FROM ${PREFIX}/crunchy-pg-base:ubi7-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 
 RUN yum -y install \
+	--disableplugin=subscription-manager \
 	--setopt=skip_missing_names_on_install=False \
 	file \
 	postgresql${PG_MAJOR//.}-server \
