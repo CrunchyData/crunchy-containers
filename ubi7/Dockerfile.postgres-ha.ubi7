@@ -22,7 +22,7 @@ RUN yum -y install \
 	openssh-server \
 	pgaudit${PG_MAJOR//.} \
 	pgaudit${PG_MAJOR//.}_set_user \
-	crunchy-backrest-"${BACKREST_VER}" \
+	crunchy-backrest-${BACKREST_VER} \
 	postgresql${PG_MAJOR//.}-contrib \
 	postgresql${PG_MAJOR//.}-server \
 	postgresql${PG_MAJOR//.}-plpython \

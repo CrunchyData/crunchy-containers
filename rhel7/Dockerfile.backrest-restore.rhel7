@@ -20,7 +20,7 @@ RUN yum -y install  \
 		--enablerepo="epel" \
 		nss_wrapper \
 		postgresql${PG_MAJOR//.}-server \
-	&& yum -y install crunchy-backrest-"${BACKREST_VER}" \
+	&& yum -y install crunchy-backrest-${BACKREST_VER} \
 	&& yum -y clean all --enablerepo="epel"
 
 COPY conf/atomic/backrestrestore/help.1 /help.1
