@@ -5,6 +5,8 @@ FROM ${PREFIX}/crunchy-base:centos7-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 ARG PGDG_REPO_RPM=https://download.postgresql.org/pub/repos/yum/${PG_MAJOR}/redhat/rhel-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+# Needed for parity with rhel/ubi in Makefile
+ARG PG_LBL
 
 LABEL PostgresVersion="${PG_MAJOR}" \
 	PostgresFullVersion="${PG_FULL}" \
@@ -14,7 +16,7 @@ LABEL PostgresVersion="${PG_MAJOR}" \
 RUN yum -y install ${PGDG_REPO_RPM} \
 	&& sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/pgdg*.repo \
 	&& yum -y install \
-		--enablerepo="pgdg${PG_MAJOR//.}" \
+		--enablerepo="pgdg${PG_LBL}" \
 		--setopt=skip_missing_names_on_install=False \
-		postgresql${PG_MAJOR//.} \
-	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+		postgresql${PG_LBL} \
+	&& yum -y clean all --enablerepo="pgdg${PG_LBL}"
