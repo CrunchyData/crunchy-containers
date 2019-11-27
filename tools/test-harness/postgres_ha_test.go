@@ -1,8 +1,8 @@
 package tests
 
 import (
-	"testing"
 	"encoding/json"
+	"testing"
 )
 
 // Test the Postgres HA container by running the relevant example and validated the
@@ -65,8 +65,11 @@ func TestPostgresHA(t *testing.T) {
 		}
 	})
 
-
 	t.Run("Testing database connectivity", func(t *testing.T) {
+		// If the pods were not found, this test fails.
+		if len(pods) == 0 {
+			t.FailNow()
+		}
 		local, remote := randomPort(), 5432
 		proxy, err := harness.setupProxy(pods[0], local, remote)
 		if err != nil {
@@ -82,13 +85,17 @@ func TestPostgresHA(t *testing.T) {
 	})
 
 	t.Run("Grabbing Patroni output", func(t *testing.T) {
+		// If the pods were not found, this test fails.
+		if len(pods) == 0 {
+			t.FailNow()
+		}
 		// Struct to hold relevant Patroni data
 		type PatroniData struct {
-			State string
-			Member string
+			State   string
+			Member  string
 			Cluster string
-			Host string
-			Role string
+			Host    string
+			Role    string
 		}
 		// Exec into the first pod listed and run the Patroni client to gather status information
 		patronictl := []string{"patronictl", "list", "--format", "json"}
@@ -98,10 +105,10 @@ func TestPostgresHA(t *testing.T) {
 			t.Fatalf("Error execing into container: %s", err)
 		}
 
-		// Store unmarshalled 
-		var pd []PatroniData	
+		// Store unmarshalled
+		var pd []PatroniData
 		json.Unmarshal([]byte(output), &pd)
-		
+
 		// Variables to store numer of pods running and the number of leaders
 		numRunning := 0
 		numLeader := 0
@@ -126,17 +133,17 @@ func TestPostgresHA(t *testing.T) {
 		// 1) A Patroni enabled pod does not have a running status at this point
 		// 2) There is more than one 'leader' pod
 		// 3) There is not a 'leader' pod
-		if numRunning != len(pd){
+		if numRunning != len(pd) {
 			t.Fatal("Not all Pods are running")
 		}
 		if numLeader > 1 {
 			t.Fatal("There is more than one leader.")
 		}
-		
+
 		if numLeader < 1 {
 			t.Fatal("There is no leader.")
 		}
-})
+	})
 	// Cleanup resources created for test
 	if harness.Cleanup {
 		defer harness.Client.DeleteNamespace(harness.Namespace)
