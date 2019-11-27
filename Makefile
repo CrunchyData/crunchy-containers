@@ -122,6 +122,7 @@ cc-pg-base-image-build: ccbase-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.pg-base
 		-t $(CCP_IMAGE_PREFIX)/crunchy-pg-base:$(CCP_IMAGE_TAG) \
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
+		--build-arg PG_LBL=$(subst .,,$(CCP_PGVERSION)) \
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		$(CCPROOT)
