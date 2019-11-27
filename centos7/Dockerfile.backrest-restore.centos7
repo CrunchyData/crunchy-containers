@@ -18,7 +18,7 @@ RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
 	--setopt=skip_missing_names_on_install=False \
 	nss_wrapper \
 	postgresql${PG_MAJOR//.}-server \
-	pgbackrest-"${BACKREST_VER}" \
+	pgbackrest-${BACKREST_VER} \
 	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
 
 # Preserving PGVERSION out of paranoia

@@ -19,7 +19,7 @@ RUN yum -y install \
 	openssh-clients \
 	openssh-server \
 	pgaudit${PGAUDIT_LBL} \
-	pgbackrest-"${BACKREST_VER}" \
+	pgbackrest-${BACKREST_VER} \
 	postgresql${PG_MAJOR//.}-contrib \
 	postgresql${PG_MAJOR//.}-server \
 	postgresql${PG_MAJOR//.}-plpython \
