@@ -82,7 +82,6 @@ postgres-gis: postgres-gis-pgimg-$(IMGBUILDER)
 postgres-gis-ha: postgres-gis-ha-pgimg-$(IMGBUILDER)
 
 postgres-appdev: commands postgres-appdev-pgimg-$(IMGBUILDER)
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres-appdev:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres-appdev:latest
 
 
 #===========================================
@@ -101,7 +100,6 @@ scheduler: scheduler-img-$(IMGBUILDER)
 
 # ----- Base Image -----
 ccbase-image: ccbase-image-$(IMGBUILDER)
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-base:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-base:$(CCP_IMAGE_TAG)
 
 ccbase-image-build: $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.base.$(CCP_BASEOS)
 	$(IMGCMDSTEM) \
@@ -117,7 +115,6 @@ ccbase-image-docker: ccbase-image-build
 
 # ----- PG Base Image -----
 cc-pg-base-image: cc-pg-base-image-$(IMGBUILDER)
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-pg-base:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-pg-base:$(CCP_IMAGE_TAG)
 
 cc-pg-base-image-build: ccbase-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.pg-base.$(CCP_BASEOS)
 	$(IMGCMDSTEM) \
@@ -150,10 +147,8 @@ postgres-pgimg-build: cc-pg-base-image commands $(CCPROOT)/$(CCP_BASEOS)/Dockerf
 
 postgres-pgimg-buildah: postgres-pgimg-build
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG)
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG)
 
 postgres-pgimg-docker: postgres-pgimg-build
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG)
 
 # ----- Special case pg-based image (postgres-gis) -----
 # Special case args: POSTGIS_LBL
@@ -170,10 +165,8 @@ postgres-gis-pgimg-build: postgres commands $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.
 
 postgres-gis-pgimg-buildah: postgres-gis-pgimg-build
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_IMAGE_TAG)
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_IMAGE_TAG)
 
 postgres-gis-pgimg-docker: postgres-gis-pgimg-build
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_IMAGE_TAG)
 
 # ----- Special case pg-based image (postgres-ha) -----
 # Special case args: BACKREST_VER, PGAUDIT_LBL, PATRONI_VER
@@ -192,10 +185,8 @@ postgres-ha-pgimg-build: cc-pg-base-image commands $(CCPROOT)/$(CCP_BASEOS)/Dock
 
 postgres-ha-pgimg-buildah: postgres-ha-pgimg-build
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG)
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 postgres-ha-pgimg-docker: postgres-ha-pgimg-build
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 # ----- Special case pg-based image (postgres-gis-ha) -----
 # Special case args: POSTGIS_LBL
@@ -212,10 +203,8 @@ postgres-gis-ha-pgimg-build: postgres-ha commands $(CCPROOT)/$(CCP_BASEOS)/Docke
 
 postgres-gis-ha-pgimg-buildah: postgres-gis-ha-pgimg-build
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_IMAGE_TAG)
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 postgres-gis-ha-pgimg-docker: postgres-gis-ha-pgimg-build
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_BASEOS)-$(CCP_PG_FULLVERSION)-$(CCP_VERSION)
 
 # ----- Special case pg-based image (backrest-restore) -----
 # Special case args: BACKREST_VER
@@ -232,10 +221,8 @@ backrest-restore-pgimg-build: cc-pg-base-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfi
 
 backrest-restore-pgimg-buildah: backrest-restore-pgimg-build
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG)
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG)
 
 backrest-restore-pgimg-docker: backrest-restore-pgimg-build
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG)
 
 # ----- All other pg-based images ----
 %-pgimg-build: cc-pg-base-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.%.$(CCP_BASEOS)
@@ -250,10 +237,8 @@ backrest-restore-pgimg-docker: backrest-restore-pgimg-build
 
 %-pgimg-buildah: %-pgimg-build
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG)
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG)
 
 %-pgimg-docker: %-pgimg-build
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG)
 
 # ----- Extra images -----
 %-img-build: $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.%.$(CCP_BASEOS) 
@@ -268,10 +253,8 @@ backrest-restore-pgimg-docker: backrest-restore-pgimg-build
 
 %-img-buildah: ccbase-image-buildah %-img-build
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG)
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG)
 
 %-img-docker: ccbase-image-docker %-img-build
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG)
 
 # ----- Upgrade Images -----
 upgrade: upgrade-$(CCP_PGVERSION)
@@ -294,10 +277,8 @@ upgrade-%-pgimg-build: $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.upgrade-%.$(CCP_BASEO
 
 upgrade-%-pgimg-buildah: cc-pg-base-image-buildah upgrade-%-pgimg-build
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG)
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG)
 
 upgrade-%-pgimg-docker: cc-pg-base-image-docker upgrade-%-pgimg-build
-	docker tag docker.io/$(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG) $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG)
 
 
 #=================
