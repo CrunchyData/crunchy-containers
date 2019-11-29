@@ -10,7 +10,7 @@ CCP_PATRONI_VERSION ?= 1.6.1
 CCP_BACKREST_VERSION ?= 2.18
 CCP_VERSION ?= 4.2.0
 CCP_PGAUDIT = "14_12" #no need to be env overridable given override logic below
-CCP_POSTGIS ?= 2.5
+CCP_POSTGIS_VERSION ?= 2.5
 
 # Valid values: buildah (default), docker
 IMGBUILDER ?= buildah
@@ -161,7 +161,7 @@ postgres-gis-pgimg-build: postgres commands $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
-		--build-arg POSTGIS_LBL=$(subst .,,$(CCP_POSTGIS)) \
+		--build-arg POSTGIS_LBL=$(subst .,,$(CCP_POSTGIS_VERSION)) \
 		$(CCPROOT)
 
 postgres-gis-pgimg-buildah: postgres-gis-pgimg-build
@@ -199,7 +199,7 @@ postgres-gis-ha-pgimg-build: postgres-ha commands $(CCPROOT)/$(CCP_BASEOS)/Docke
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
-		--build-arg POSTGIS_LBL=$(subst .,,$(CCP_POSTGIS)) \
+		--build-arg POSTGIS_LBL=$(subst .,,$(CCP_POSTGIS_VERSION)) \
 		$(CCPROOT)
 
 postgres-gis-ha-pgimg-buildah: postgres-gis-ha-pgimg-build
