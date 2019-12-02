@@ -38,13 +38,10 @@ LABEL name="crunchydata/postgres" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-ADD conf/repos/kubernetes.repo /etc/yum.repos.d/
-
 RUN yum -y install \
 	--enablerepo="pgdg${PG_MAJOR//.}" \
 	--setopt=skip_missing_names_on_install=False \
 	gcc \
-	kubectl \
 	python-devel \
 	python-pip \
 	python-psycopg2 \

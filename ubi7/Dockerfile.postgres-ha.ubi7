@@ -45,13 +45,10 @@ LABEL name="crunchydata/postgres" \
 COPY conf/atomic/postgres-ha/help.1 /help.1
 COPY conf/atomic/postgres-ha/help.md /help.md
 
-ADD conf/repos/kubernetes.repo /etc/yum.repos.d/
-
 RUN yum -y install \
 	--disableplugin=subscription-manager \
 	--setopt=skip_missing_names_on_install=False \
 	gcc \
-	kubectl \
 	python-devel \
 	python-pip \
 	python-psycopg2 \
