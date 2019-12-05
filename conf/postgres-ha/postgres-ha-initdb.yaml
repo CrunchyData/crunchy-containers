@@ -2,6 +2,7 @@
 bootstrap:
   dcs:
     postgresql:
+      use_pg_rewind: true
       parameters:
         log_directory: pg_log
         shared_buffers: 128MB

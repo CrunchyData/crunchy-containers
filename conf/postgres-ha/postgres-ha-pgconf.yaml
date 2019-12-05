@@ -15,3 +15,4 @@ postgresql:
     command: 'pgbackrest --delta restore'
     keep_data: true
     no_params: true
+  remove_data_directory_on_rewind_failure: true
