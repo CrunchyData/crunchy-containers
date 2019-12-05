@@ -47,7 +47,8 @@ RUN yum -y update --disableplugin=subscription-manager \
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
 
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /var/lib/pgadmin /certs /run/httpd
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /var/lib/pgadmin /var/log/pgadmin \
+	/certs /run/httpd
 
 ADD bin/pgadmin4/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
