@@ -4,6 +4,7 @@ postgresql:
     - local all postgres peer
     - local all crunchyadm peer
     - host replication PATRONI_REPLICATION_USERNAME 0.0.0.0/0 md5
+    - host all PATRONI_REPLICATION_USERNAME 0.0.0.0/0 reject
     - host all all 0.0.0.0/0 md5
   use_unix_socket: true
   pgpass: /tmp/.pgpass
