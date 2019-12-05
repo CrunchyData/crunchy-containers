@@ -33,7 +33,8 @@ RUN yum -y update && yum -y install epel-release \
 
 ENV PGROOT="/usr/pgsql-${PGVERSION}"
 
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /var/lib/pgadmin /certs /run/httpd
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /var/lib/pgadmin /var/log/pgadmin \
+	/certs /run/httpd
 
 ADD bin/pgadmin4/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
@@ -43,9 +44,10 @@ RUN cp /opt/cpm/conf/httpd.conf /etc/httpd/conf/httpd.conf \
   && rm /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/ssl.conf
 
 RUN chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
-   /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd && \
-    chmod -R g=u /usr/lib/python2.7/site-packages/pgadmin4-web \
-   /var/lib/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd
+		/var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd \
+		/var/log/httpd \
+	&& chmod -R g=u /usr/lib/python2.7/site-packages/pgadmin4-web \
+		/var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd
 
 RUN ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
   && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf
