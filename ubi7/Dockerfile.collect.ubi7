@@ -13,9 +13,6 @@ LABEL name="crunchydata/collect" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-COPY conf/atomic/collect/help.1 /help.1
-COPY conf/atomic/collect/help.md /help.md
-
 # Preserving PGVERSION out of paranoia
 ENV PGVERSION="${PG_MAJOR}"
 

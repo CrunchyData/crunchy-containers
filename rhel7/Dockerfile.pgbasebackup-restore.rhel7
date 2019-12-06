@@ -18,9 +18,6 @@ LABEL name="crunchydata/pgbasebackup-restore" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-COPY conf/atomic/pgbasebackup_restore/help.1 /help.1
-COPY conf/atomic/pgbasebackup_restore/help.md /help.md
-
 RUN groupadd postgres -g 26 && \
 	useradd postgres -g 26 -u 26
 

@@ -13,9 +13,6 @@ LABEL name="crunchydata/pgadmin4" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-COPY conf/atomic/pgadmin4/help.1 /help.1
-COPY conf/atomic/pgadmin4/help.md /help.md
-
 RUN yum -y install \
 		--setopt=skip_missing_names_on_install=False \
 		--enablerepo="epel,rhel-7-server-extras-rpms" \

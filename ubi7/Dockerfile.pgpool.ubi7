@@ -13,9 +13,6 @@ LABEL name="crunchydata/pgpool" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-COPY conf/atomic/pgpool/help.1 /help.1
-COPY conf/atomic/pgpool/help.md /help.md
-
 RUN yum -y install \
 		--disableplugin=subscription-manager \
 		--setopt=skip_missing_names_on_install=False \

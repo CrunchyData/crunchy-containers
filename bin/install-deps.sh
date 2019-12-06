@@ -40,24 +40,10 @@ if [ $? -eq 1 ]; then
         sudo yum -y install buildah
 fi
 
-rpm -q atomic-openshift-clients
-if [ $? -ne 0 ]; then
-    echo "atomic-openshift-clients is NOT installed"
-    sudo yum list available | grep atomic-openshift-clients
-    if [ $? -ne 0 ]; then
-        echo atomic-openshift-clients package is NOT found
-        sudo yum -y install kubernetes-client
-
-        FILE='openshift-origin-client.tgz'
-        wget -O /tmp/${FILE?} ${OPENSHIFT_CLIENT?}
-        tar xvzf /tmp/${FILE?} -C /tmp
-        sudo cp /tmp/openshift-*/oc /usr/bin/oc
-    else
-        echo atomic-openshift-clients package IS found
-        sudo yum -y install atomic-openshift-clients
-    fi
-
-fi
+FILE='openshift-origin-client.tgz'
+wget -O /tmp/${FILE?} ${OPENSHIFT_CLIENT?}
+tar xvzf /tmp/${FILE?} -C /tmp
+sudo cp /tmp/openshift-*/oc /usr/bin/oc
 
 # Install dep
 go get github.com/golang/dep/cmd/dep

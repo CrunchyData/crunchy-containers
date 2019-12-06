@@ -21,9 +21,6 @@ LABEL name="crunchydata/backup" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-COPY conf/atomic/backup/help.1 /help.1
-COPY conf/atomic/backup/help.md /help.md
-
 # Preserving PGVERSION out of paranoia
 ENV PGVERSION="${PG_MAJOR}"
 
@@ -33,7 +30,7 @@ ADD bin/common /opt/cpm/bin
 ADD conf/backup/ /opt/cpm/conf
 
 RUN chown -R postgres:postgres  /opt/cpm /pgdata && \
-	chmod -R g=u /opt/cpm /pgdata 
+	chmod -R g=u /opt/cpm /pgdata
 
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
