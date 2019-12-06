@@ -239,10 +239,10 @@ backrest-restore-pgimg-docker: backrest-restore-pgimg-build
 %-pgimg-buildah: %-pgimg-build
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG)
 
-%-pgimg-docker: %-pgimg-build
+%-pgimg-docker: %-pgimg-build ;
 
 # ----- Extra images -----
-%-img-build: $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.%.$(CCP_BASEOS) 
+%-img-build: ccbase-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.%.$(CCP_BASEOS) 
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.$*.$(CCP_BASEOS) \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) \
@@ -252,22 +252,20 @@ backrest-restore-pgimg-docker: backrest-restore-pgimg-build
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		$(CCPROOT)
 
-%-img-buildah: ccbase-image-buildah %-img-build
+%-img-buildah: %-img-build
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG)
 
-%-img-docker: ccbase-image-docker %-img-build
+%-img-docker: %-img-build ;
 
 # ----- Upgrade Images -----
 upgrade: upgrade-$(CCP_PGVERSION)
 
-upgrade-9.5: # Do nothing
-	$(info Upgrade build skipped for 9.5)
-upgrade-9.6: upgrade-9.6-pgimg-$(IMGBUILDER)
-upgrade-10: upgrade-10-pgimg-$(IMGBUILDER)
-upgrade-11: upgrade-11-pgimg-$(IMGBUILDER)
-upgrade-12: upgrade-12-pgimg-$(IMGBUILDER)
+upgrade-%: upgrade-%-pgimg-$(IMGBUILDER) ;
 
-upgrade-%-pgimg-build: $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.upgrade-%.$(CCP_BASEOS)
+upgrade-9.5: # Do nothing but log to avoid erroring out on missing Dockerfile
+	$(info Upgrade build skipped for 9.5)
+
+upgrade-%-pgimg-build: cc-pg-base-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.upgrade-%.$(CCP_BASEOS)
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.upgrade-$*.$(CCP_BASEOS) \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG) \
@@ -276,10 +274,10 @@ upgrade-%-pgimg-build: $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.upgrade-%.$(CCP_BASEO
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		$(CCPROOT)
 
-upgrade-%-pgimg-buildah: cc-pg-base-image-buildah upgrade-%-pgimg-build
+upgrade-%-pgimg-buildah: upgrade-%-pgimg-build
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG)
 
-upgrade-%-pgimg-docker: cc-pg-base-image-docker upgrade-%-pgimg-build
+upgrade-%-pgimg-docker: upgrade-%-pgimg-build ;
 
 
 #=================
