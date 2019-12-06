@@ -11,9 +11,6 @@ LABEL name="crunchydata/upgrade" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-COPY conf/atomic/upgrade/help.1 /help.1
-COPY conf/atomic/upgrade/help.md /help.md
-
 # Add previous version repos as pg-base only covers PG_MAJOR
 ADD conf/crunchypg95.repo /etc/yum.repos.d/
 ADD conf/crunchypg96.repo /etc/yum.repos.d/

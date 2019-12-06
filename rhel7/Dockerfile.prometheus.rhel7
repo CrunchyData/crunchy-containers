@@ -13,9 +13,6 @@ LABEL name="crunchydata/prometheus" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-COPY conf/atomic/prometheus/help.1 /help.1
-COPY conf/atomic/prometheus/help.md /help.md
-
 RUN mkdir -p /data /conf /opt/cpm/bin /opt/cpm/conf
 
 ADD prometheus.tar.gz /opt/cpm/bin

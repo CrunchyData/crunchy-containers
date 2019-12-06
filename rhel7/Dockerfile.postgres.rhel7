@@ -7,7 +7,7 @@ FROM ${PREFIX}/crunchy-pg-base:rhel7-${PG_FULL}-${BASEVER}
 ARG PG_MAJOR
 
 # Preserving PGVERSION out of paranoia
-ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}" 
+ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
 
 ARG BACKREST_VER
 # Used by Makefile to process pgdg naming, not used here, listed to
@@ -41,9 +41,6 @@ LABEL name="crunchydata/postgres" \
 	io.k8s.display-name="Crunchy postgres container" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
-
-COPY conf/atomic/postgres/help.1 /help.1
-COPY conf/atomic/postgres/help.md /help.md
 
 # add path settings for postgres user
 # bash_profile is loaded in login, but not with exec

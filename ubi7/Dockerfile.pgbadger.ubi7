@@ -20,9 +20,6 @@ LABEL name="crunchydata/pgbadger" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-COPY conf/atomic/pgbadger/help.1 /help.1
-COPY conf/atomic/pgbadger/help.md /help.md
-
 RUN yum -y install \
 		--disableplugin=subscription-manager \
 		--setopt=skip_missing_names_on_install=False \

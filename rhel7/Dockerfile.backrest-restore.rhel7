@@ -23,9 +23,6 @@ RUN yum -y install  \
 	&& yum -y install crunchy-backrest-${BACKREST_VER} \
 	&& yum -y clean all --enablerepo="epel"
 
-COPY conf/atomic/backrestrestore/help.1 /help.1
-COPY conf/atomic/backrestrestore/help.md /help.md
-
 # Preserving PGVERSION out of paranoia
 ENV	PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
 

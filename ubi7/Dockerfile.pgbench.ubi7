@@ -19,9 +19,6 @@ LABEL name="crunchydata/pgbench" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-COPY conf/atomic/pgbench/help.1 /help.1
-COPY conf/atomic/pgbench/help.md /help.md
-
 # Preserving PGVERSION out of paranoia
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
 

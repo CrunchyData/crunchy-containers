@@ -7,10 +7,8 @@ weight: 250
 
 # Build From Source
 
-This section of the documentation assumes you have followed the [Installation Guide](/installation-guide/installation-guide). 
-Because the build pulls down some kubernetes dependencies, you will need sudo'ers privileges to do a build. If you don't have 
-the *atomic-openshift-clients* package installed on your machine you will see a warning message. This is expected and will not prevent 
-the containers from working in a standalone Docker environment.
+This section of the documentation assumes you have followed the [Installation Guide](/installation-guide/installation-guide).
+Because the build pulls down some kubernetes dependencies, you will need sudo'ers privileges to do a build.
 
 You should do the following in order to build the containers locally and be able to submit patches:
 

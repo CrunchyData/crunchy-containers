@@ -19,9 +19,6 @@ LABEL name="crunchydata/scheduler" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database,cron"
 
-COPY conf/atomic/scheduler/help.1 /help.1
-COPY conf/atomic/scheduler/help.md /help.md
-
 RUN yum -y install \
 	--disableplugin=subscription-manager \
 	--setopt=skip_missing_names_on_install=False \

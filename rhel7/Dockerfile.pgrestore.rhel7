@@ -20,9 +20,6 @@ LABEL name="crunchydata/restore" \
 	io.openshift.expose-services="" \
 	io.openshift.tags="crunchy,database"
 
-COPY conf/atomic/pgrestore/help.1 /help.1
-COPY conf/atomic/pgrestore/help.md /help.md
-
 # Preserving PGVERSION out of paranoia
 ENV PGVERSION="${PG_MAJOR}"
 
