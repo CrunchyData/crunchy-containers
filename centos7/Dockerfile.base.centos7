@@ -10,6 +10,9 @@ LABEL vendor="Crunchy Data" \
 
 COPY licenses /licenses
 
+ENV LC_ALL en_US.utf-8
+ENV LANG en_US.utf-8
+
 RUN yum -y update \
 	&& yum -y install \
 		--setopt=skip_missing_names_on_install=False \
