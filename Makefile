@@ -6,7 +6,7 @@ endif
 CCP_BASEOS ?= centos7
 CCP_PG_VERSION ?= 12
 CCP_PG_FULLVERSION ?= 12.1
-CCP_PATRONI_VERSION ?= 1.6.1
+CCP_PATRONI_VERSION ?= 1.6.3
 CCP_BACKREST_VERSION ?= 2.18
 CCP_VERSION ?= 4.2.0
 CCP_PGAUDIT = "14_12" #no need to be env overridable given override logic below
@@ -47,7 +47,7 @@ all: cc-pg-base-image pgimages extras
 extras: grafana prometheus scheduler
 
 # Build images that use postgres - ordered for potential concurrent benefits
-pgimages: postgres postgres-ha backup backrestrestore collect crunchyadm pgadmin4 pgbadger pgbasebackuprestore postgres-gis postgres-gis-ha pgbench pgbouncer pgdump pgpool pgrestore upgrade 
+pgimages: postgres postgres-ha backup backrestrestore collect crunchyadm pgadmin4 pgbadger pgbasebackuprestore postgres-gis postgres-gis-ha pgbench pgbouncer pgdump pgpool pgrestore upgrade
 
 
 #===========================================
@@ -85,7 +85,7 @@ postgres-appdev: commands postgres-appdev-pgimg-$(IMGBUILDER)
 
 
 #===========================================
-# Targets generating non-pg-based images 
+# Targets generating non-pg-based images
 #===========================================
 
 grafana: grafana-img-$(IMGBUILDER)
@@ -242,7 +242,7 @@ backrest-restore-pgimg-docker: backrest-restore-pgimg-build
 %-pgimg-docker: %-pgimg-build ;
 
 # ----- Extra images -----
-%-img-build: ccbase-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.%.$(CCP_BASEOS) 
+%-img-build: ccbase-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.%.$(CCP_BASEOS)
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.$*.$(CCP_BASEOS) \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) \

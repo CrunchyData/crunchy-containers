@@ -7,7 +7,7 @@ FROM ${PREFIX}/crunchy-pg-base:centos7-${PG_FULL}-${BASEVER}
 ARG PG_MAJOR
 
 # Preserving PGVERSION out of paranoia
-ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}" 
+ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
 
 ARG BACKREST_VER
 ARG PGAUDIT_LBL
@@ -42,15 +42,14 @@ RUN yum -y install \
 	--enablerepo="pgdg${PG_MAJOR//.}" \
 	--setopt=skip_missing_names_on_install=False \
 	gcc \
-	python-devel \
-	python-pip \
-	python-psycopg2 \
+	python3-devel \
+	python3-pip \
+	python3-psycopg2 \
 	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
 
 # install patroni for Kube
-RUN pip uninstall -y ipaddress \
- && pip install --upgrade pip setuptools python-dateutil \
- && pip install patroni[kubernetes]=="${PATRONI_VER}"
+RUN pip3 install --upgrade setuptools python-dateutil \
+ && pip3 install patroni[kubernetes]=="${PATRONI_VER}"
 
 RUN useradd crunchyadm -g 0 -u 17
 
@@ -85,4 +84,4 @@ ENTRYPOINT ["/opt/cpm/bin/bootstrap-postgres-ha.sh"]
 
 USER 26
 
-CMD ["/usr/bin/patroni"]
+CMD ["/usr/local/bin/patroni"]
