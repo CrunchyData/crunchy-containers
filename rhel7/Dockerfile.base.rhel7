@@ -16,6 +16,9 @@ LABEL vendor="Crunchy Data" \
 COPY conf/licenses /licenses
 COPY licenses /licenses
 
+ENV LC_ALL en_US.utf-8
+ENV LANG en_US.utf-8
+
 ARG EPEL_RPM=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 
 RUN yum -y --enablerepo=rhel-7-server-ose-3.11-rpms update \
@@ -28,4 +31,3 @@ RUN yum -y --enablerepo=rhel-7-server-ose-3.11-rpms update \
 		procps-ng \
 	&& sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/epel*.repo \
 	&& yum -y clean all --enablerepo=rhel-7-server-ose-3.11-rpms
-
