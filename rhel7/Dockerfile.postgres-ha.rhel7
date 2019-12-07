@@ -91,4 +91,4 @@ ENTRYPOINT ["/opt/cpm/bin/bootstrap-postgres-ha.sh"]
 
 USER 26
 
-CMD ["/usr/bin/patroni"]
+CMD ["/usr/local/bin/patroni"]
