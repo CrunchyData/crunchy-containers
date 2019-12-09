@@ -98,6 +98,9 @@ scheduler: scheduler-img-$(IMGBUILDER)
 # Pattern-based image generation targets
 #===========================================
 
+$(CCPROOT)/$(CCP_BASEOS)/Dockerfile.%.$(CCP_BASEOS):
+	$(error No Dockerfile found for $* naming pattern: [$@])
+
 # ----- Base Image -----
 ccbase-image: ccbase-image-$(IMGBUILDER)
 
