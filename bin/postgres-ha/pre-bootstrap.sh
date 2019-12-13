@@ -71,6 +71,12 @@ set_default_pgha_autoconfig_env()  {
         default_pgha_autoconfig_env_vars+=("PGHA_CRUNCHYADM")
     fi
 
+    if [[ ! -v PGHA_REPLICA_REINIT_ON_START_FAIL ]]
+    then
+        export PGHA_REPLICA_REINIT_ON_START_FAIL="true"
+        default_pgha_autoconfig_env_vars+=("PGHA_REPLICA_REINIT_ON_START_FAIL")
+    fi
+
     if [[ ! ${#default_pgha_autoconfig_env_vars[@]} -eq 0 ]]
     then
         pgha_autoconfig_env_vars=$(printf ', %s' "${default_pgha_autoconfig_env_vars[@]}")

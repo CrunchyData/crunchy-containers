@@ -98,14 +98,20 @@
                         "readinessProbe": {
                             "exec": {
                                 "command": [
-                                    "/bin/bash",
-                                    "-c",
-                                    "[[ -f '/crunchyadm/pgha_initialized' ]]",
-                                    "&& pg_isready -h /crunchyadm -U crunchyready"
-                                 ]
+                                    "/opt/cpm/bin/pgha-readiness.sh"
+                                ]
+                            },
+                            "initialDelaySeconds": 30
+                        },
+                        "livenessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/opt/cpm/bin/pgha-liveness.sh"
+                                ]
                             },
                             "initialDelaySeconds": 30,
-                            "timeoutSeconds": 8
+                            "periodSeconds": 15,
+                            "timeoutSeconds": 10
                         },
                         "env": [
                             {
@@ -203,6 +209,10 @@
                             {
                                 "name": "PGHA_CRUNCHYADM",
                                 "value": "true"
+                            },
+                            {
+                                "name": "PGHA_REPLICA_REINIT_ON_START_FAIL",
+                                "value": "true"
                             }
                         ],
                         "volumeMounts": [
@@ -255,14 +265,11 @@
                         "readinessProbe": {
                             "exec": {
                                 "command": [
-                                    "/bin/bash",
-                                    "-c",
-                                    "[[ -f '/crunchyadm/pgha_initialized' ]]",
-                                    "&& pg_isready -h /crunchyadm -U crunchyready"
-                                 ]
+                                    "/opt/cpm/bin/crunchyadm-readiness.sh"
+                                ]
                             },
                             "initialDelaySeconds": 30,
-                            "timeoutSeconds": 8
+                            "timeoutSeconds": 10
                         },
                         "env": [
                             {
@@ -367,14 +374,20 @@
                         "readinessProbe": {
                             "exec": {
                                 "command": [
-                                    "/bin/bash",
-                                    "-c",
-                                    "[[ -f '/crunchyadm/pgha_initialized' ]]",
-                                    "&& pg_isready -h /crunchyadm -U crunchyready"
-                                 ]
+                                    "/opt/cpm/bin/pgha-readiness.sh"
+                                ]
+                            },
+                            "initialDelaySeconds": 30
+                        },
+                        "livenessProbe": {
+                            "exec": {
+                                "command": [
+                                    "/opt/cpm/bin/pgha-liveness.sh"
+                                ]
                             },
                             "initialDelaySeconds": 30,
-                            "timeoutSeconds": 8
+                            "periodSeconds": 15,
+                            "timeoutSeconds": 10
                         },
                         "env": [
                             {
@@ -399,6 +412,10 @@
                             },
                             {
                                 "name": "PGHA_CRUNCHYADM",
+                                "value": "true"
+                            },
+                            {
+                                "name": "PGHA_REPLICA_REINIT_ON_START_FAIL",
                                 "value": "true"
                             }
                         ],
@@ -452,14 +469,11 @@
                         "readinessProbe": {
                             "exec": {
                                 "command": [
-                                    "/bin/bash",
-                                    "-c",
-                                    "[[ -f '/crunchyadm/pgha_initialized' ]]",
-                                    "&& pg_isready -h /crunchyadm -U crunchyready"
-                                 ]
+                                    "/opt/cpm/bin/crunchyadm-readiness.sh"
+                                ]
                             },
                             "initialDelaySeconds": 30,
-                            "timeoutSeconds": 8
+                            "timeoutSeconds": 10
                         },
                         "env": [
                             {

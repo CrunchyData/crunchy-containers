@@ -43,38 +43,48 @@ trap_sigterm() {
 initialization_monitor() {
     echo_info "Starting background process to monitor Patroni initization and restart the database if needed"
     {
-        while [[ $(curl --silent "127.0.0.1:${PGHA_PATRONI_PORT}/master" --stderr - \
+        while [[ $(curl --silent "127.0.0.1:${PGHA_PATRONI_PORT}/patroni" --stderr - \
             | /opt/cpm/bin/yq r - state 2> /dev/null) != "running" ]]
         do
             sleep 1
             echo "Cluster not yet inititialized, retrying" >> "/tmp/patroni_initialize_check.log"
         done
-        echo_info "Detected that Patroni has initilized the cluster"
-        if [[ -f "/crunchyadm/pgha_manual_init" ]]
-        then
-            echo_info "Executing Patroni restart to restart database and update configuration"
-            curl -X POST --silent "127.0.0.1:${PGHA_PATRONI_PORT}/restart"
-            test_server "postgres" "${PGHOST}" "${PGHA_PG_PORT}" "postgres"
-            echo_info "The database has been restarted"
-        else
-            echo "Pending restart not detected, will not restart" >> "/tmp/patroni_initialize_check.log"
-        fi
-        
-        # Enable pgbackrest
-        if [[ "${PGHA_PGBACKREST}" == "true" ]]
-        then
-            source "/opt/cpm/bin/pgbackrest-post-bootstrap.sh"
-        fi
 
-        # Create the crunchyadm user
-        if [[ "${PGHA_CRUNCHYADM}" == "true" ]]
+        init_role=$(curl --silent "127.0.0.1:${PGHA_PATRONI_PORT}/patroni" --stderr - | \
+            /opt/cpm/bin/yq r - role)
+        if [[ "${init_role}" == "master" ]]
         then
-            echo_info "Creating user crunchyadm"
-            psql -c "CREATE USER crunchyadm LOGIN;"
+            echo_info "Detected that the local node has been initialized as 'master'"
+            echo_info "Now executing the post-init process to fully initialize the cluster"
+            if [[ -f "/crunchyadm/pgha_manual_init" ]]
+            then
+                echo_info "Executing Patroni restart to restart database and update configuration"
+                curl -X POST --silent "127.0.0.1:${PGHA_PATRONI_PORT}/restart"
+                test_server "postgres" "${PGHOST}" "${PGHA_PG_PORT}" "postgres"
+                echo_info "The database has been restarted"
+            else
+                echo "Pending restart not detected, will not restart" >> "/tmp/patroni_initialize_check.log"
+            fi
+            
+            # Enable pgbackrest
+            if [[ "${PGHA_PGBACKREST}" == "true" ]]
+            then
+                source "/opt/cpm/bin/pgbackrest-post-bootstrap.sh"
+            fi
+
+            # Create the crunchyadm user
+            if [[ "${PGHA_CRUNCHYADM}" == "true" ]]
+            then
+                echo_info "Creating user crunchyadm"
+                psql -c "CREATE USER crunchyadm LOGIN;"
+            fi
+        else
+            echo_info "Detected that the local node has been initialized as 'replica'"
+            echo_info "The post-init process is not executed for replicas and will be skipped"
         fi
         
         touch "/crunchyadm/pgha_initialized"  # write file to indicate the cluster is fully initialized
-        echo_info "PostgreSQL Database Cluster ${PATRONI_SCOPE} fully initialized and ready for use"
+        echo_info "Node ${PATRONI_NAME} fully initialized for cluster ${PATRONI_SCOPE} and is ready for use"
     } &
 }
 
