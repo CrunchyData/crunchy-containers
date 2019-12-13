@@ -16,6 +16,7 @@ LABEL name="crunchydata/admin" \
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}"
 ENV PATH="${PGROOT}/bin:${PATH}"
 
+ADD bin/crunchyadm /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
 
 RUN chmod g=u /etc/passwd && \
