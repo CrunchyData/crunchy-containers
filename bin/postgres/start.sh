@@ -273,7 +273,7 @@ function initialize_replica_post12() {
     echo "promote_trigger_file = '/tmp/pg-failover-trigger'" > $RECOVERY_FILE_TMP
     # the primary_conninfo string stays mostly the same
     PGCONF_PRIMARY_CONNINFO="application_name=${APPLICATION_NAME} host=${PG_PRIMARY_HOST} port=${PG_PRIMARY_PORT} user=${PG_PRIMARY_USER}"
-    echo "primary_conninfo = '${PGCONF_PRIMARY_CONNINFO}'" > $RECOVERY_FILE_TMP
+    echo "primary_conninfo = '${PGCONF_PRIMARY_CONNINFO}'" >> $RECOVERY_FILE_TMP
     # append the contents of $RECOVERY_FILE_TMP to the postgresql.conf file
     cat $RECOVERY_FILE_TMP >> $PGDATA/postgresql.conf
     # and put the server into standby mode
