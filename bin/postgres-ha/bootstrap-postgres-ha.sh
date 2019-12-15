@@ -19,12 +19,12 @@ source /opt/cpm/bin/common_lib.sh
 enable_debugging
 
 trap_sigterm() {
-    
+
     echo_warn "Signal trap triggered, beginning shutdown.." | tee -a "${PATRONI_POSTGRESQL_DATA_DIR}"/trap.output
 
     killall patroni
     echo_warn "Killed Patroni to gracefully shutdown PG" | tee -a "${PATRONI_POSTGRESQL_DATA_DIR}"/trap.output
-    
+
     if [[ ${ENABLE_SSHD} == "true" ]]
     then
         echo_info "Killing SSHD.."
@@ -65,7 +65,7 @@ initialization_monitor() {
             else
                 echo "Pending restart not detected, will not restart" >> "/tmp/patroni_initialize_check.log"
             fi
-            
+
             # Enable pgbackrest
             if [[ "${PGHA_PGBACKREST}" == "true" ]]
             then
@@ -82,7 +82,7 @@ initialization_monitor() {
             echo_info "Detected that the local node has been initialized as 'replica'"
             echo_info "The post-init process is not executed for replicas and will be skipped"
         fi
-        
+
         touch "/crunchyadm/pgha_initialized"  # write file to indicate the cluster is fully initialized
         echo_info "Node ${PATRONI_NAME} fully initialized for cluster ${PATRONI_SCOPE} and is ready for use"
     } &
@@ -103,10 +103,10 @@ primary_initialization_monitor() {
 }
 
 # Remove the "pause" key from the patroni.dynamic.json if it exists.  This protects against
-# Patroni being unable to initialize a restored cluster in the event that the backup utilized for 
+# Patroni being unable to initialize a restored cluster in the event that the backup utilized for
 # the restore was taken while Patroni was paused, resulting in the "pause" key being present in the
 # patroni.dynamic.json file contained with the backed up PGDATA directory (if the "pause" key is
-# present, normal bootstrapping processes [e.g. leader election] will not occur, and the restored 
+# present, normal bootstrapping processes [e.g. leader election] will not occur, and the restored
 # database will not be able to initialize).
 remove_patroni_pause_key()  {
     if [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}/patroni.dynamic.json" ]]
@@ -141,15 +141,29 @@ if [[ ! -f "/crunchyadm/pgha_initialized" && "${PGHA_INIT}" == "true" && \
     -f "${PATRONI_POSTGRESQL_DATA_DIR}/PG_VERSION" ]]
 then
     echo_info "Existing database found in PGDATA directory of initialization node"
-    
+
+    manual_start_pg_ctl_options=""
+    # detect if this is a server that needs to entre recovery mode, which is
+    # what might happen after an instance is cloned.
+    # if this is the case, we will want to have a warm standby
+    if [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}/recovery.conf" || -f "${PATRONI_POSTGRESQL_DATA_DIR}/recovery.signal" ]]
+    then
+      echo_info "Discovered presence of a recovery.conf or recovery.signal file"
+      echo_info "Setting hot_standby=\"off\" until PostgreSQL reaches a consistent state"
+      manual_start_pg_ctl_options="-c hot_standby=off"
+    fi
+
     echo_info "Starting database manually prior to starting Patroni"
-    pg_ctl -D "${PATRONI_POSTGRESQL_DATA_DIR}" start
-    touch "/crunchyadm/pgha_manual_init"
-    
-    test_server "postgres" "${PGHOST}" "${PGHA_PG_PORT}" "postgres"
+    pg_ctl -D "${PATRONI_POSTGRESQL_DATA_DIR}" -o "${manual_start_pg_ctl_options}" start
     echo_info "Database manually started"
+
+    echo_info "Waiting to reach a consistent state"
+    test_server "postgres" "${PGHOST}" "${PGHA_PG_PORT}" "postgres"
+    echo_info "Reached a consistent state"
+
+    touch "/crunchyadm/pgha_manual_init"
     echo_info "Manually creating Patroni accounts and proceeding with Patroni initialization"
-    
+
     if [[ -f "/pgconf/post-existing-init.sql" ]]
     then
         post_existing_init_file="/pgconf/post-existing-init.sql"
@@ -164,7 +178,7 @@ then
         psql -f -
 fi
 
-# Moinitor for the intialization of the cluster 
+# Moinitor for the intialization of the cluster
 initialization_monitor
 
 # Remove the pause key from patroni.dynamic.json if it exists
