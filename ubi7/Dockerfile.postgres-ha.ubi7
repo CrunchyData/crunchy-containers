@@ -34,7 +34,7 @@ RUN yum -y install \
 # ===== Steps unique to this image after here =====
 ARG PATRONI_VER
 
-LABEL name="crunchydata/postgres" \
+LABEL name="crunchydata/postgres-ha" \
 	summary="PostgreSQL ${PG_FULL} with Patroni" \
 	description="Used for the deployment and management of highly-available PostgreSQL clusters using Patroni." \
 	io.k8s.description="postgres container" \

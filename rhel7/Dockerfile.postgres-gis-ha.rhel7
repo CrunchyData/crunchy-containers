@@ -6,7 +6,7 @@ FROM ${PREFIX}/crunchy-postgres-ha:rhel7-${PG_FULL}-${BASEVER}
 ARG PG_MAJOR
 ARG POSTGIS_LBL
 
-LABEL name="crunchydata/postgres-gis" \
+LABEL name="crunchydata/postgres-gis-ha" \
 	summary="Includes PostGIS extensions on top of crunchy-postgres-ha" \
 	description="An identical image of crunchy-postgres with the extra PostGIS and pgrouting packages added for users that require PostGIS." \
 	io.k8s.description="postgres-gis container" \
@@ -27,7 +27,7 @@ RUN yum -y install \
 		R-core \
 		texinfo-tex \
 		texlive-epsf \
-	&& yum -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" 
+	&& yum -y clean all --enablerepo="epel,rhel-7-server-optional-rpms"
 
 # open up the postgres port
 EXPOSE 5432
@@ -39,4 +39,3 @@ ENTRYPOINT ["/opt/cpm/bin/bootstrap-postgres-ha.sh"]
 USER 26
 
 CMD ["/usr/local/bin/patroni"]
-
