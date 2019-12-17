@@ -48,15 +48,14 @@ RUN yum -y install \
 	--enablerepo="epel" \
 	--setopt=skip_missing_names_on_install=False \
 	gcc \
-	python-devel \
-	python-pip \
-	python-psycopg2 \
+	python3-devel \
+	python3-pip \
+	python3-psycopg2 \
 	&& yum -y clean all --enablerepo="epel"
 
 # install patroni for Kube
-RUN pip uninstall -y ipaddress \
- && pip install --upgrade pip setuptools python-dateutil \
- && pip install patroni[kubernetes]=="${PATRONI_VER}"
+RUN pip3 install --upgrade setuptools python-dateutil \
+	&& pip3 install patroni[kubernetes]=="${PATRONI_VER}"
 
 RUN useradd crunchyadm -g 0 -u 17
 
