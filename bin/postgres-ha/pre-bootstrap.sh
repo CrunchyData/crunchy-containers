@@ -71,10 +71,10 @@ set_default_pgha_autoconfig_env()  {
         default_pgha_autoconfig_env_vars+=("PGHA_CRUNCHYADM")
     fi
 
-    if [[ ! -v PGHA_REPLICA_REINIT_ON_START_FAIL ]]
+    if [[ ! -v PGHA_SYNC_REPLICATION ]]
     then
-        export PGHA_REPLICA_REINIT_ON_START_FAIL="true"
-        default_pgha_autoconfig_env_vars+=("PGHA_REPLICA_REINIT_ON_START_FAIL")
+        export PGHA_SYNC_REPLICATION="false"
+        default_pgha_autoconfig_env_vars+=("PGHA_SYNC_REPLICATION")
     fi
 
     if [[ ! ${#default_pgha_autoconfig_env_vars[@]} -eq 0 ]]
@@ -115,6 +115,12 @@ set_default_pgha_env()  {
     else
         echo_info "The use of the /pgwal directory for writing WAL is not enabled"
         echo_info "A default value will not be set for PGHA_WALDIR and any value provided for will be ignored"
+    fi
+
+    if [[ ! -v PGHA_REPLICA_REINIT_ON_START_FAIL ]]
+    then
+        export PGHA_REPLICA_REINIT_ON_START_FAIL="true"
+        pgha_env_vars+=("PGHA_REPLICA_REINIT_ON_START_FAIL")
     fi
 
     if [[ ! ${#default_pgha_env_vars[@]} -eq 0 ]]
@@ -309,6 +315,12 @@ build_bootstrap_config_file() {
         echo_info "PGDATA directory is empty on node identifed as Primary"
         echo_info "initdb configuration will be applied to intitilize a new database"
         /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-initdb.yaml"
+    fi
+
+    if [[ "${PGHA_SYNC_REPLICATION}" == "true" ]]
+    then
+        echo_info "Applying synchronous replication settings to postgres-ha configuration"
+        /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-sync.yaml"
     fi
 
     if [[ -f "/pgconf/postgres-ha.yaml" ]]
