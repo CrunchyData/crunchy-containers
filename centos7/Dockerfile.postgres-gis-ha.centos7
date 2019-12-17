@@ -6,7 +6,7 @@ FROM ${PREFIX}/crunchy-postgres-ha:centos7-${PG_FULL}-${BASEVER}
 ARG PG_MAJOR
 ARG POSTGIS_LBL
 
-LABEL name="crunchydata/postgres-gis" \
+LABEL name="crunchydata/postgres-gis-ha" \
 	summary="Includes PostGIS extensions on top of crunchy-postgres-ha" \
 	description="An identical image of crunchy-postgres with the extra PostGIS packages added for users that require PostGIS." \
 	io.k8s.description="postgres-gis container" \
@@ -35,4 +35,3 @@ ENTRYPOINT ["/opt/cpm/bin/bootstrap-postgres-ha.sh"]
 USER 26
 
 CMD ["/usr/local/bin/patroni"]
-
