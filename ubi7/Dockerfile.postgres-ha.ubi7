@@ -46,9 +46,9 @@ RUN yum -y install \
 	--disableplugin=subscription-manager \
 	--setopt=skip_missing_names_on_install=False \
 	gcc \
-	python3-devel \
-	python3-pip \
-	python3-psycopg2 \
+	python36-devel \
+	python36-pip \
+	python36-psycopg2 \
 	&& yum -y clean all
 
 # install patroni for Kube
