@@ -1,0 +1,8 @@
+--- 
+bootstrap: 
+  dcs: 
+    postgresql: 
+      parameters: 
+        synchronous_commit: "on"
+        synchronous_standby_names: "*"
+    synchronous_mode: true
