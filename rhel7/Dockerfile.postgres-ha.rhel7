@@ -45,13 +45,13 @@ LABEL name="crunchydata/postgres-ha" \
 	io.openshift.tags="crunchy,database"
 
 RUN yum -y install \
-	--enablerepo="epel" \
+	--enablerepo="epel,rhel-7-server-optional-rpms" \
 	--setopt=skip_missing_names_on_install=False \
 	gcc \
-	python36-devel \
-	python36-pip \
-	python36-psycopg2 \
-	&& yum -y clean all --enablerepo="epel"
+	python3-devel \
+	python3-pip \
+	python3-psycopg2 \
+	&& yum -y clean all --enablerepo="epel,rhel-7-server-optional-rpms"
 
 # install patroni for Kube
 RUN pip3 install --upgrade setuptools python-dateutil \
