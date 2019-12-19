@@ -5,13 +5,12 @@ FROM ${PREFIX}/crunchy-pg-base:ubi7-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 
-LABEL name="crunchydata/admin" \
+LABEL name="admin" \
 	summary="Administrative sidecar container for 'crunchy-postgres-ha'" \
 	description="Sidecar container deployed alongside 'crunchy-postgres-ha' that can be utilized to perform administrative functions" \
-	io.k8s.description="crunchyadm sidecar container" \
+	io.k8s.description="crunchyadm sidecar for crunchy-postgres-ha" \
 	io.k8s.display-name="Crunchy admin sidecar container" \
-	io.openshift.expose-services="" \
-	io.openshift.tags="crunchy,database"
+	io.openshift.tags="postgresql,postgres,crunchy"
 
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}"
 ENV PATH="${PGROOT}/bin:${PATH}"

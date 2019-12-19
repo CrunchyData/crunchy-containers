@@ -7,7 +7,7 @@ FROM ${PREFIX}/crunchy-pg-base:centos7-${PG_FULL}-${BASEVER}
 ARG PG_MAJOR
 
 # Preserving PGVERSION out of paranoia
-ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}" 
+ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
 
 ARG BACKREST_VER
 ARG PGAUDIT_LBL
@@ -28,13 +28,12 @@ RUN yum -y install \
 	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
 
 # ===== Steps unique to this image after here =====
-LABEL name="crunchydata/postgres" \
+LABEL name="postgres" \
 	summary="PostgreSQL ${PG_FULL} (PGDG) on a Centos7 base image" \
 	description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
-	io.k8s.description="postgres container" \
-	io.k8s.display-name="Crunchy postgres container" \
-	io.openshift.expose-services="" \
-	io.openshift.tags="crunchy,database"
+	io.k8s.description="Crunchy PostgreSQL is the trusted open source distribution of PostgreSQL" \
+	io.k8s.display-name="Crunchy PostgreSQL" \
+	io.openshift.tags="postgresql,postgres,sql,nosql,database,crunchy"
 
 # add path settings for postgres user
 # bash_profile is loaded in login, but not with exec

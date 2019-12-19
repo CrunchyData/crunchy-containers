@@ -7,9 +7,7 @@ ARG PG_MAJOR
 # Needed due to lack of environment substitution trick on ADD
 ARG PG_LBL
 
-LABEL PostgresVersion="${PG_MAJOR}" \
-	PostgresFullVersion="${PG_FULL}" \
-	postgresql.version.major="${PG_MAJOR}" \
+LABEL postgresql.version.major="${PG_MAJOR}" \
 	postgresql.version="${PG_FULL}"
 
 # Crunchy Postgres repo GPG Keys

@@ -12,13 +12,12 @@ RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
 	unzip \
 	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
 
-LABEL name="crunchydata/restore" \
+LABEL name="restore" \
 	summary="Performs a pg_restore on a database container" \
 	description="Meant to be executed upon demand, this container will run pg_restore against a running database container and write the backup files to a mounted directory." \
-	io.k8s.description="pgrestore container" \
+	io.k8s.description="Crunchy pgrestore container" \
 	io.k8s.display-name="Crunchy pgrestore container" \
-	io.openshift.expose-services="" \
-	io.openshift.tags="crunchy,database"
+	io.openshift.tags="postgresql,postgres,backup,database,crunchy"
 
 # Preserving PGVERSION out of paranoia
 ENV PGVERSION="${PG_MAJOR}"

@@ -3,13 +3,12 @@ ARG BASEVER
 ARG PG_FULL
 FROM ${PREFIX}/crunchy-pg-base:centos7-${PG_FULL}-${BASEVER}
 
-LABEL name="crunchydata/upgrade" \
+LABEL name="upgrade" \
 	summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
 	description="Provides a means to perform a major PostgreSQL upgrade from 9.5 to 9.6, 9.6 to 10, 10 to 11, or 11 to 12. Old data files are left intact." \
 	io.k8s.description="postgres upgrade container" \
-	io.k8s.display-name="Crunchy postgres upgrade container" \
-	io.openshift.expose-services="" \
-	io.openshift.tags="crunchy,database"
+	io.k8s.display-name="Crunchy PostgreSQL upgrade container" \
+	io.openshift.tags="postgresql,postgres,upgrade,database,crunchy"
 
 RUN yum -y install --enablerepo="pgdg95,pgdg96,pgdg10,pgdg11,pgdg12" \
 	--setopt=skip_missing_names_on_install=False \
