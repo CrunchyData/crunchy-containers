@@ -11,13 +11,12 @@ RUN yum -y install \
 	rsync \
 	&& yum -y clean all
 
-LABEL name="crunchydata/pgbasebackup-restore" \
+LABEL name="pgbasebackup-restore" \
 	summary="Restores a database using a pg_basebackup backup" \
 	description="Restores a database into a specified PGDATA directory using a pg_basebackup backup." \
 	io.k8s.description="pg_basebackup restore container" \
-	io.k8s.display-name="Crunchy pg_basebackup restore container" \
-	io.openshift.expose-services="" \
-	io.openshift.tags="crunchy,database"
+	io.k8s.display-name="pg_basebackup restore container" \
+	io.openshift.tags="postgresql,postgres,pgbackrest,backup,database,crunchy"
 
 RUN groupadd postgres -g 26 && \
 	useradd postgres -g 26 -u 26

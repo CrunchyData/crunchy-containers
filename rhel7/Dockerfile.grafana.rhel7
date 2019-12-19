@@ -5,13 +5,12 @@ FROM ${PREFIX}/crunchy-base:rhel7-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 
-LABEL name="crunchydata/grafana" \
+LABEL name="grafana" \
 	summary="Provides a Grafana web dashboard to view collected PostgreSQL metrics" \
 	description="Connect this container to the crunchy-prometheus container as a data source, then use the metrics to build dashboards. Works in conjunction with crunchy-collect and crunchy-prometheus." \
-	io.k8s.description="grafana container" \
-	io.k8s.display-name="Crunchy grafana container" \
-	io.openshift.expose-services="" \
-	io.openshift.tags="crunchy,database"
+	io.k8s.description="Crunchy PostgreSQL Monitoring with pgMonitor - Grafana" \
+	io.k8s.display-name="Crunchy PostgreSQL Monitoring with pgMonitor - Grafana" \
+	io.openshift.tags="postgresql,postgres,monitoring,grafana,database,crunchy"
 
 RUN mkdir -p /data /opt/cpm/bin /opt/cpm/conf
 

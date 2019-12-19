@@ -8,9 +8,7 @@ ARG PGDG_REPO_RPM=https://download.postgresql.org/pub/repos/yum/${PG_MAJOR}/redh
 # Needed for parity with rhel/ubi in Makefile
 ARG PG_LBL
 
-LABEL PostgresVersion="${PG_MAJOR}" \
-	PostgresFullVersion="${PG_FULL}" \
-	postgresql.version.major="${PG_MAJOR}" \
+LABEL postgresql.version.major="${PG_MAJOR}" \
 	postgresql.version="${PG_FULL}"
 
 RUN yum -y install ${PGDG_REPO_RPM} \

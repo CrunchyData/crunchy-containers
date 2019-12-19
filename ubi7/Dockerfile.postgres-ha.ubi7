@@ -34,13 +34,12 @@ RUN yum -y install \
 # ===== Steps unique to this image after here =====
 ARG PATRONI_VER
 
-LABEL name="crunchydata/postgres-ha" \
-	summary="PostgreSQL ${PG_FULL} with Patroni" \
+LABEL name="postgres-ha" \
+	summary="PostgreSQL ${PG_FULL} (PGDG) with Patroni" \
 	description="Used for the deployment and management of highly-available PostgreSQL clusters using Patroni." \
-	io.k8s.description="postgres container" \
-	io.k8s.display-name="Crunchy postgres container" \
-	io.openshift.expose-services="" \
-	io.openshift.tags="crunchy,database"
+	io.k8s.description="Crunchy PostgreSQL optimized for high-availability (HA)" \
+	io.k8s.display-name="Crunchy PostgreSQL - HA Optimized" \
+	io.openshift.tags="postgresql,postgres,postgis,sql,nosql,database,ha,crunchy"
 
 RUN yum -y install \
 	--enablerepo="epel,rhel-7-server-optional-rpms" \

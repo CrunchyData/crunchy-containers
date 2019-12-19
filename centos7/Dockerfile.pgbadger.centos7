@@ -12,13 +12,12 @@ FROM ${PREFIX}/crunchy-pg-base:centos7-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 
-LABEL name="crunchydata/pgbadger" \
+LABEL name="pgbadger" \
 	summary="HTTP wrapper around the PGBadger PostgreSQL utility" \
 	description="Has an HTTP REST interface. You GET http://host:10000/api/badgergenerate, and it will generate a pgbadger report on a database container's log files." \
-	io.k8s.description="pgbadger container" \
-	io.k8s.display-name="Crunchy pgbadger container" \
-	io.openshift.expose-services="" \
-	io.openshift.tags="crunchy,database"
+	io.k8s.description="pgBadger" \
+	io.k8s.display-name="pgBadger" \
+	io.openshift.tags="postgresql,postgres,monitoring,pgbadger,database,crunchy"
 
 RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
 		--setopt=skip_missing_names_on_install=False \

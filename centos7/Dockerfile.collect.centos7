@@ -5,13 +5,12 @@ FROM ${PREFIX}/crunchy-pg-base:centos7-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 
-LABEL name="crunchydata/collect" \
-	summary="Provides metrics for crunchy-postgres" \
-	description="Run with crunchy-postgres, crunchy-collect reads the Postgres data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus and crunchy-grafana." \
-	io.k8s.description="collect container" \
-	io.k8s.display-name="Crunchy collect container" \
-	io.openshift.expose-services="" \
-	io.openshift.tags="crunchy,database"
+LABEL name="collect" \
+	summary="Metrics exporter for PostgreSQL" \
+	description="When run with the crunchy-postgres family of containers, crunchy-collect reads the PostgreSQL data directory and has a SQL interface to a database to allow for metrics collection. Used in conjunction with crunchy-prometheus and crunchy-grafana as part of pgMonitor." \
+	io.k8s.description="Crunchy PostgreSQL Monitoring with pgMonitor - Collector" \
+	io.k8s.display-name="Crunchy PostgreSQL Monitoring with pgMonitor - Collector" \
+	io.openshift.tags="postgresql,postgres,monitoring,database,crunchy"
 
 # Preserving PGVERSION out of paranoia
 ENV PGVERSION="${PG_MAJOR}"

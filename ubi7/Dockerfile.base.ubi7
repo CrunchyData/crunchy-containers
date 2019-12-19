@@ -4,14 +4,10 @@ FROM ubi7
 MAINTAINER Crunchy Data <info@crunchydata.com>
 
 LABEL vendor="Crunchy Data" \
-	Version="7.7" \
-	Release="${RELVER}" \
 	url="https://crunchydata.com" \
+	release="${RELVER}" \
 	org.opencontainers.image.vendor="Crunchy Data" \
-	os.version="7.7" \
-	run="" \
-	start="" \
-	stop=""
+	os.version="7.7"
 
 COPY conf/licenses /licenses
 COPY licenses /licenses

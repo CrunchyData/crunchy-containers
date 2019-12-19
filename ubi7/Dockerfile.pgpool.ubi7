@@ -5,13 +5,12 @@ FROM ${PREFIX}/crunchy-pg-base:ubi7-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 
-LABEL name="crunchydata/pgpool" \
+LABEL name="pgpool" \
 	summary="Contains the pgpool utility as a PostgreSQL-aware load balancer" \
 	description="Offers a smart load balancer in front of a Postgres cluster, sending writes only to the primary and reads to the replica(s). This allows an application to only have a single connection point when interacting with a Postgres cluster." \
-	io.k8s.description="pgpool container" \
-	io.k8s.display-name="Crunchy pgpool container" \
-	io.openshift.expose-services="" \
-	io.openshift.tags="crunchy,database"
+	io.k8s.description="pgpool II" \
+	io.k8s.display-name="pgpool II" \
+	io.openshift.tags="postgresql,postgres,pgpool,database,crunchy"
 
 RUN yum -y install \
 		--disableplugin=subscription-manager \
