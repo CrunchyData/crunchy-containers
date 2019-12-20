@@ -162,7 +162,7 @@ then
     do
         "Database has not reached a consistent state, sleeping..."
         # sleep to give recovery a chance to complete
-        sleep 30
+        sleep 5
         # if no postgres process is running at this point then assume a failed start and attempt to
         # start again.  Otherwise check once again to see if recovery is complete
         if ! pgrep postgres
