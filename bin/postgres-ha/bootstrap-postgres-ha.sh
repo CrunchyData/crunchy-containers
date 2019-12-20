@@ -158,7 +158,18 @@ then
     echo_info "Database manually started"
 
     echo_info "Waiting to reach a consistent state"
-    test_server "postgres" "${PGHOST}" "${PGHA_PG_PORT}" "postgres"
+    until pg_isready --dbname="postgres" --host="${PGHOST}" --port="${PGHA_PG_PORT}" --username="postgres"
+    do
+        "Database has not reached a consistent state, sleeping..."
+        # sleep to give recovery a chance to complete
+        sleep 30
+        # if no postgres process is running at this point then assume a failed start and attempt to
+        # start again.  Otherwise check once again to see if recovery is complete
+        if ! pgrep postgres
+        then
+            pg_ctl -D "${PATRONI_POSTGRESQL_DATA_DIR}" -o "${manual_start_pg_ctl_options}" start
+        fi
+    done
     echo_info "Reached a consistent state"
 
     touch "/crunchyadm/pgha_manual_init"

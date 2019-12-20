@@ -300,11 +300,10 @@ build_bootstrap_config_file() {
     if [[ "${PGHA_PGBACKREST}" == "true" ]]
     then
         echo_info "Applying pgbackrest config to postgres-ha configuration"
+        /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-pgbackrest.yaml"
         if [[ "${PGHA_PGBACKREST_LOCAL_S3_STORAGE}" == "true" ]]
         then
             /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-pgbackrest-local-s3.yaml"
-        else
-            /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-pgbackrest.yaml"
         fi
     else
         echo_info "pgBackRest config for postgres-ha configuration disabled"
