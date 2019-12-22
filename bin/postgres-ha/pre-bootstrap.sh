@@ -309,7 +309,7 @@ build_bootstrap_config_file() {
         echo_info "pgBackRest config for postgres-ha configuration disabled"
     fi
 
-    if [[ "${PGHA_INIT}" == "true" && ! -f "${PATRONI_POSTGRESQL_DATA_DIR}/PG_VERSION" ]]
+    if [[ "${PGHA_INIT}" == "true" ]]
     then
         echo_info "PGDATA directory is empty on node identifed as Primary"
         echo_info "initdb configuration will be applied to intitilize a new database"

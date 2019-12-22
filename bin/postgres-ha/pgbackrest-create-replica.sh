@@ -35,6 +35,14 @@ then
 elif [[ -z "$(ls -A ${PATRONI_POSTGRESQL_DATA_DIR})" ]]
 then
     echo_info "Empty PGDATA dir found for replica, a non-delta restore will be peformed"
+
+    # create the PGDATA directory if needed (e.g. in the event it was deleted)
+    # and set the proper permissions
+    if [[ ! -d "${PATRONI_POSTGRESQL_DATA_DIR}" ]]
+    then
+        mkdir -p "${PATRONI_POSTGRESQL_DATA_DIR}"
+        chmod 0700 "${PATRONI_POSTGRESQL_DATA_DIR}"
+    fi
 else
     echo_info "Invalid PGDATA directory found for replica, cleaning prior to restore"
     while [[ ! -z "$(ls -A ${PATRONI_POSTGRESQL_DATA_DIR})" ]]
