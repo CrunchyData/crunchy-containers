@@ -142,6 +142,24 @@ if [[ ! -f "/crunchyadm/pgha_initialized" && "${PGHA_INIT}" == "true" && \
 then
     echo_info "Existing database found in PGDATA directory of initialization node"
 
+    # If the Patroni bootstap configuration file is configured to use a custom PG config file using
+    # the custom_config parameter, or if a postgresql.base.conf file is present in the PGDATA
+    # directory, then assume those files are the base postgresql.conf parameters for the database
+    # in accordance with the Patroni documentation for applying PG configuration to a cluster, and 
+    # therefore cleans out the contents of the existing postgresql.conf file if it exists (otherwise 
+    # an empty file will simply be created).  This ensures that the settings from previous Patroni 
+    # clusters that may no longer be valid (e.g. invalid dir names) do not prevent the DB from
+    # starting successfully.  Once Patroni is initialized, the postgresql.conf will be populated 
+    # with the dynamic configuration defined for the cluster.
+    # If a custom or base config file is not found, then the postgresql.conf will remain untouched,
+    # and will then become the base configuration is accordance with the Patroni documentation.
+    if [[ $(/opt/cpm/bin/yq r "/tmp/postgres-ha-bootstrap.yaml" postgresql.custom_conf) != "null" ]] ||
+        [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}/postgresql.base.conf" ]]
+    then
+        echo_info "Detected existing or custom base configuration for Patroni, cleaning postgresql.conf"
+        > "${PATRONI_POSTGRESQL_DATA_DIR}/postgresql.conf"
+    fi
+    
     manual_start_pg_ctl_options=""
     # detect if this is a server that needs to entre recovery mode, which is
     # what might happen after an instance is cloned.
@@ -160,7 +178,7 @@ then
     echo_info "Waiting to reach a consistent state"
     until pg_isready --dbname="postgres" --host="${PGHOST}" --port="${PGHA_PG_PORT}" --username="postgres"
     do
-        "Database has not reached a consistent state, sleeping..."
+        echo_info "Database has not reached a consistent state, sleeping..."
         # sleep to give recovery a chance to complete
         sleep 5
         # if no postgres process is running at this point then assume a failed start and attempt to
