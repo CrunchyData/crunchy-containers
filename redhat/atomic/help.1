@@ -1,0 +1,51 @@
+.TH "crunchy-containers " "1" " Container Image Pages" "Crunchy Data" "December 23, 2019"
+.nh
+.ad l
+
+
+.SH NAME
+.PP
+crunchy-containers \- Essential open source microservices for production PostgreSQL
+
+
+.SH DESCRIPTION
+.PP
+The Crunchy Container Suite provides the essential microservices for running a enterprise-grade PostgreSQL cluster. These include:
+    \- PostgreSQL
+    \- PostGIS
+    \- pgBackRest
+    \- pgBouncer
+
+.PP
+and more.
+
+
+.SH USAGE
+.PP
+For more information on the Crunchy Container Suite, see the official Crunchy Container Suite Documentation: https://access.crunchydata.com/documentation/crunchy-containers/
+
+
+.SH LABELS
+.PP
+The starter container includes the following LABEL settings:
+
+.PP
+That atomic command runs the Docker command set in this label:
+
+.PP
+\fB\fCName=\fR
+
+.PP
+The registry location and name of the image. For example, Name="crunchydata/crunchy-postgres".
+
+.PP
+\fB\fCVersion=\fR
+
+.PP
+The Red Hat Enterprise Linux version from which the container was built. For example, Version="7.7"
+
+.PP
+\fB\fCRelease=\fR
+
+.PP
+The specific release number of the container. For example, Release="4.2.0"
