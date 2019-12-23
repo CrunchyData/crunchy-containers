@@ -172,7 +172,7 @@ then
     fi
 
     echo_info "Starting database manually prior to starting Patroni"
-    pg_ctl -D "${PATRONI_POSTGRESQL_DATA_DIR}" -o "${manual_start_pg_ctl_options}" start
+    pg_ctl -D "${PATRONI_POSTGRESQL_DATA_DIR}" -o "-c unix_socket_directories='/tmp'" -o "${manual_start_pg_ctl_options}" start
     echo_info "Database manually started"
 
     echo_info "Waiting to reach a consistent state"
