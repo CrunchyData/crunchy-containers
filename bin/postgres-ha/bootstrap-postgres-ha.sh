@@ -43,6 +43,7 @@ trap_sigterm() {
 initialization_monitor() {
     echo_info "Starting background process to monitor Patroni initization and restart the database if needed"
     {
+        # Wait for the local node to enter a "running" state
         while [[ $(curl --silent "127.0.0.1:${PGHA_PATRONI_PORT}/patroni" --stderr - \
             | /opt/cpm/bin/yq r - state 2> /dev/null) != "running" ]]
         do
@@ -50,8 +51,25 @@ initialization_monitor() {
             echo "Cluster not yet inititialized, retrying" >> "/tmp/patroni_initialize_check.log"
         done
 
+        # Identify the role of the local node, i.e. primary (master) or replica
         init_role=$(curl --silent "127.0.0.1:${PGHA_PATRONI_PORT}/patroni" --stderr - | \
             /opt/cpm/bin/yq r - role)
+
+        # Wait until the local primary or replica returns 200 indicating it is running
+        status_code=$(curl -o /dev/stderr -w "%{http_code}" "127.0.0.1:${PGHA_PATRONI_PORT}/${init_role}" 2> /dev/null)
+        until [[ "${status_code}" == "200" ]]
+        do
+            sleep 1
+            echo "${init_role} not yet inititialized, retrying" >> "/tmp/patroni_initialize_check.log"
+
+            status_code=$(curl -o /dev/stderr -w "%{http_code}" "127.0.0.1:${PGHA_PATRONI_PORT}/${init_role}" 2> /dev/null)
+        done
+
+        # Apply custom configuration other than custom 'postgres-ha.yaml', e.g. custom keys and
+        # certificates to enable SSL
+        source /opt/cpm/bin/ssl-config.sh
+        echo_info "SSL config is: ${PGHA_SSL_CONFIG}"
+
         if [[ "${init_role}" == "master" ]]
         then
             echo_info "Detected that the local node has been initialized as 'master'"
@@ -77,6 +95,18 @@ initialization_monitor() {
             then
                 echo_info "Creating user crunchyadm"
                 psql -c "CREATE USER crunchyadm LOGIN;"
+            fi
+
+            # If SSL certificates have been configured for the cluster, patch the cluster
+            # configuration to enable SSL and then restart the node
+            if [[ "${PGHA_SSL_CONFIG}" != "" ]]
+            then
+                echo_info "Now patching DCS to apply SSL configuration ${PGHA_SSL_CONFIG}"
+                curl -s -XPATCH -d \
+                    "{\"postgresql\":{\"parameters\":{\"ssl\":\"on\"${PGHA_SSL_CONFIG}}}}" \
+                    "127.0.0.1:${PGHA_PATRONI_PORT}/config"
+                echo_info "Executing Patroni restart to apply SSL configuration"
+                curl -X POST --silent "127.0.0.1:${PGHA_PATRONI_PORT}/restart"
             fi
         else
             echo_info "Detected that the local node has been initialized as 'replica'"
@@ -212,6 +242,11 @@ initialization_monitor
 
 # Remove the pause key from patroni.dynamic.json if it exists
 remove_patroni_pause_key
+
+ # Ensure any existing SSL certificates in PGDATA have the proper permissions
+chmod -f 0600 "${PATRONI_POSTGRESQL_DATA_DIR}/server.key" "${PATRONI_POSTGRESQL_DATA_DIR}/server.crt" \
+    "${PATRONI_POSTGRESQL_DATA_DIR}/ca.crt" "${PATRONI_POSTGRESQL_DATA_DIR}/ca.crl" \
+    "${PATRONI_POSTGRESQL_DATA_DIR}/replicator.crt" "${PATRONI_POSTGRESQL_DATA_DIR}/replicator.key"
 
 # Bootstrap the cluster
 bootstrap_cmd="$@ /tmp/postgres-ha-bootstrap.yaml"
