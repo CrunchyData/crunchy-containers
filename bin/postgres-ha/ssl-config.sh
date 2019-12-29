@@ -44,5 +44,6 @@ custom_config "/pgconf/ca.crt" "${PATRONI_POSTGRESQL_DATA_DIR}/ca.crt" 600
 custom_config "/pgconf/ca.crl" "${PATRONI_POSTGRESQL_DATA_DIR}/ca.crl" 600
 custom_config "/pgconf/replicator.crt" "${PATRONI_POSTGRESQL_DATA_DIR}/replicator.crt" 600
 custom_config "/pgconf/replicator.key" "${PATRONI_POSTGRESQL_DATA_DIR}/replicator.key" 600
+custom_config "/pgconf/replicator.crl" "${PATRONI_POSTGRESQL_DATA_DIR}/replicator.crl" 600
 
 export PGHA_SSL_CONFIG
