@@ -246,7 +246,8 @@ remove_patroni_pause_key
  # Ensure any existing SSL certificates in PGDATA have the proper permissions
 chmod -f 0600 "${PATRONI_POSTGRESQL_DATA_DIR}/server.key" "${PATRONI_POSTGRESQL_DATA_DIR}/server.crt" \
     "${PATRONI_POSTGRESQL_DATA_DIR}/ca.crt" "${PATRONI_POSTGRESQL_DATA_DIR}/ca.crl" \
-    "${PATRONI_POSTGRESQL_DATA_DIR}/replicator.crt" "${PATRONI_POSTGRESQL_DATA_DIR}/replicator.key"
+    "${PATRONI_POSTGRESQL_DATA_DIR}/replicator.crt" "${PATRONI_POSTGRESQL_DATA_DIR}/replicator.key" \
+    "${PATRONI_POSTGRESQL_DATA_DIR}/replicator.crl"
 
 # Bootstrap the cluster
 bootstrap_cmd="$@ /tmp/postgres-ha-bootstrap.yaml"
