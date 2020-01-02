@@ -16,8 +16,9 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/contributing/building/</guid>
-      <description>Build From Source This section of the documentation assumes you have followed the Installation Guide. Because the build pulls down some kubernetes dependencies, you will need sudo&amp;rsquo;ers privileges to do a build. If you don&amp;rsquo;t have the atomic-openshift-clients package installed on your machine you will see a warning message. This is expected and will not prevent the containers from working in a standalone Docker environment.
-You should do the following in order to build the containers locally and be able to submit patches:</description>
+      <description>Build From Source This section of the documentation assumes you have followed the Installation Guide. Because the build pulls down some kubernetes dependencies, you will need sudo&amp;rsquo;ers privileges to do a build.
+You should do the following in order to build the containers locally and be able to submit patches:
+ Fork the Crunchy-Containers GitHub repository. Containers builds are installed via a Makefile. You will need to run the following commands:</description>
     </item>
     
     <item>

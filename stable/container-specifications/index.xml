@@ -29,8 +29,10 @@ Features The following features are supported and required by the crunchy-backre
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgbasebackup-restore/</guid>
-      <description>The crunchy-pgbasebackup-restore container restores a database using a pg_basebackup backup. Specifically, the container uses rsync to copy a pg_basebackup backup into a specified /pgdata directory. The container can then prepare the restored database for a PITR, allowing for a restore to a specific recovery target, or to the end of the WAL log.
-If a recovery target is specified when performing the restore, a recovery.conf file will be created and prepared in order to restore the database to the recovery target specified when deployed.</description>
+      <description>The crunchy-pgbasebackup-restore container restores a database using a pg_basebackup backup. Specifically, the container uses rsync to copy a pg_basebackup backup into a specified /pgdata directory.
+The crunchy-pgbasebackup-restore does not support point-in-time-recovery (PITR). If you would to create an environment that allows you to use PostgreSQL&amp;rsquo;s point-in-time-recovery capabilities, please use the crunchy-backrest-restore container with a corresponding pgBackRest repository.
+Packages The crunchy-pgbasebackup-restore Docker image contains the following packages:
+ rsync CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     BACKUP_PATH None The path under the /backup volume containing the pg_basebackup that will be used for the restore (/backup should be excluded when providing the path)   PGDATA_PATH None The path under the /pgdata volume containing the restored database (/pgdata should be excluded when providing the path).</description>
     </item>
     
     <item>
