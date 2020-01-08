@@ -35,6 +35,8 @@ RUN chmod g=u /etc/passwd && \
 
 ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 
+# The VOLUME directive must appear after all RUN directives to ensure the proper
+# volume permissions are applied when building the image
 VOLUME ["/pgconf"]
 
 USER 26
