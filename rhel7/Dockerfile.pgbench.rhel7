@@ -32,9 +32,11 @@ ADD conf/pgbench /opt/cpm/conf
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
 
-ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
-
+# The VOLUME directive must appear after all RUN directives to ensure the proper
+# volume permissions are applied when building the image
 VOLUME ["/pgconf"]
+
+ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 
 USER 26
 
