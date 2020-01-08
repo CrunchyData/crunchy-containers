@@ -38,12 +38,14 @@ RUN chown -R postgres:postgres /opt/cpm  \
 	/pgdata /backrestrepo \
 	/var/lib/pgsql /var/log/pgbackrest
 
-# volume backrestrepo for pgbackrest to restore from and log
-VOLUME /pgdata /backrestrepo
-
 ADD bin/backrest_restore /opt/cpm/bin
 
 ADD conf/backrest_restore /opt/cpm/conf
+
+# volume backrestrepo for pgbackrest to restore from and log
+# The VOLUME directive must appear after all RUN directives to ensure the proper
+# volume permissions are applied when building the image
+VOLUME /pgdata /backrestrepo
 
 USER 26
 CMD ["/opt/cpm/bin/start.sh"]
