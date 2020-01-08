@@ -47,6 +47,8 @@ EXPOSE 10000
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
 
+# The VOLUME directive must appear after all RUN directives to ensure the proper
+# volume permissions are applied when building the image
 VOLUME ["/pgdata", "/report"]
 
 ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]

@@ -77,6 +77,8 @@ RUN chmod g=u /etc/passwd \
 
 RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh
 
+# The VOLUME directive must appear after all RUN directives to ensure the proper
+# volume permissions are applied when building the image
 VOLUME ["/pgdata", "/pgwal", "/pgconf", "/backrestrepo", "/sshd"]
 
 ENTRYPOINT ["/opt/cpm/bin/bootstrap-postgres-ha.sh"]

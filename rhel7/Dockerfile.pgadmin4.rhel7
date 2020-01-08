@@ -50,6 +50,8 @@ EXPOSE 5050
 
 RUN chmod g=u /etc/passwd
 
+# The VOLUME directive must appear after all RUN directives to ensure the proper
+# volume permissions are applied when building the image
 VOLUME ["/var/lib/pgadmin", "/certs", "/run/httpd"]
 
 ENTRYPOINT ["opt/cpm/bin/uid_daemon.sh"]
