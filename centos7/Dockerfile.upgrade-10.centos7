@@ -38,6 +38,8 @@ RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata && \
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
 
+# The VOLUME directive must appear after all RUN directives to ensure the proper
+# volume permissions are applied when building the image
 VOLUME /pgolddata /pgnewdata
 
 ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
