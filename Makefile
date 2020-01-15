@@ -8,7 +8,7 @@ CCP_PG_VERSION ?= 12
 CCP_PG_FULLVERSION ?= 12.1
 CCP_PATRONI_VERSION ?= 1.6.3
 CCP_BACKREST_VERSION ?= 2.20
-CCP_VERSION ?= 4.2.0
+CCP_VERSION ?= 4.2.1
 CCP_PGAUDIT = "14_12" #no need to be env overridable given override logic below
 CCP_POSTGIS_VERSION ?= 2.5
 
