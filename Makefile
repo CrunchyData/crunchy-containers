@@ -15,6 +15,7 @@ CCP_POSTGIS_VERSION ?= 2.5
 # Valid values: buildah (default), docker
 IMGBUILDER ?= buildah
 IMGCMDSTEM=sudo --preserve-env buildah bud --layers $(SQUASH)
+DFSET=$(CCP_BASEOS)
 
 # pgaudit compatibility is tied to PG version
 ifeq ($(CCP_PGVERSION),9.5)
@@ -36,6 +37,11 @@ endif
 # Allows simplification of IMGBUILDER switching
 ifeq ("$(IMGBUILDER)","docker")
 	IMGCMDSTEM=docker build
+endif
+
+# Allows consolidation of ubi/rhel Dockerfile sets
+ifeq ("$(CCP_BASEOS)", "ubi7")
+	DFSET=rhel7
 endif
 
 .PHONY:	all extras pgimages
@@ -98,16 +104,17 @@ scheduler: scheduler-img-$(IMGBUILDER)
 # Pattern-based image generation targets
 #===========================================
 
-$(CCPROOT)/$(CCP_BASEOS)/Dockerfile.%.$(CCP_BASEOS):
+$(CCPROOT)/$(DFSET)/Dockerfile.%.$(DFSET):
 	$(error No Dockerfile found for $* naming pattern: [$@])
 
 # ----- Base Image -----
 ccbase-image: ccbase-image-$(IMGBUILDER)
 
-ccbase-image-build: $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.base.$(CCP_BASEOS)
+ccbase-image-build: $(CCPROOT)/$(DFSET)/Dockerfile.base.$(DFSET)
 	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.base.$(CCP_BASEOS) \
+		-f $(CCPROOT)/$(DFSET)/Dockerfile.base.$(DFSET) \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-base:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
 		--build-arg RELVER=$(CCP_VERSION) \
 		$(CCPROOT)
 
@@ -119,10 +126,11 @@ ccbase-image-docker: ccbase-image-build
 # ----- PG Base Image -----
 cc-pg-base-image: cc-pg-base-image-$(IMGBUILDER)
 
-cc-pg-base-image-build: ccbase-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.pg-base.$(CCP_BASEOS)
+cc-pg-base-image-build: ccbase-image $(CCPROOT)/$(DFSET)/Dockerfile.pg-base.$(DFSET)
 	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.pg-base.$(CCP_BASEOS) \
+		-f $(CCPROOT)/$(DFSET)/Dockerfile.pg-base.$(DFSET) \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-pg-base:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PG_LBL=$(subst .,,$(CCP_PGVERSION)) \
@@ -137,10 +145,11 @@ cc-pg-base-image-docker: cc-pg-base-image-build
 
 # ----- Special case pg-based image (postgres) -----
 # Special case args: BACKREST_VER, PGAUDIT_LBL
-postgres-pgimg-build: cc-pg-base-image commands $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres.$(CCP_BASEOS)
+postgres-pgimg-build: cc-pg-base-image commands $(CCPROOT)/$(DFSET)/Dockerfile.postgres.$(DFSET)
 	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres.$(CCP_BASEOS) \
+		-f $(CCPROOT)/$(DFSET)/Dockerfile.postgres.$(DFSET) \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
@@ -156,10 +165,11 @@ postgres-pgimg-docker: postgres-pgimg-build
 
 # ----- Special case pg-based image (postgres-gis) -----
 # Special case args: POSTGIS_LBL
-postgres-gis-pgimg-build: postgres commands $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres-gis.$(CCP_BASEOS)
+postgres-gis-pgimg-build: postgres commands $(CCPROOT)/$(DFSET)/Dockerfile.postgres-gis.$(DFSET)
 	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres-gis.$(CCP_BASEOS) \
+		-f $(CCPROOT)/$(DFSET)/Dockerfile.postgres-gis.$(DFSET) \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
@@ -174,10 +184,11 @@ postgres-gis-pgimg-docker: postgres-gis-pgimg-build
 
 # ----- Special case pg-based image (postgres-ha) -----
 # Special case args: BACKREST_VER, PGAUDIT_LBL, PATRONI_VER
-postgres-ha-pgimg-build: cc-pg-base-image commands $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres-ha.$(CCP_BASEOS)
+postgres-ha-pgimg-build: cc-pg-base-image commands $(CCPROOT)/$(DFSET)/Dockerfile.postgres-ha.$(DFSET)
 	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres-ha.$(CCP_BASEOS) \
+		-f $(CCPROOT)/$(DFSET)/Dockerfile.postgres-ha.$(DFSET) \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
@@ -194,10 +205,11 @@ postgres-ha-pgimg-docker: postgres-ha-pgimg-build
 
 # ----- Special case pg-based image (postgres-gis-ha) -----
 # Special case args: POSTGIS_LBL
-postgres-gis-ha-pgimg-build: postgres-ha commands $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres-gis-ha.$(CCP_BASEOS)
+postgres-gis-ha-pgimg-build: postgres-ha commands $(CCPROOT)/$(DFSET)/Dockerfile.postgres-gis-ha.$(DFSET)
 	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.postgres-gis-ha.$(CCP_BASEOS) \
+		-f $(CCPROOT)/$(DFSET)/Dockerfile.postgres-gis-ha.$(DFSET) \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
@@ -212,10 +224,11 @@ postgres-gis-ha-pgimg-docker: postgres-gis-ha-pgimg-build
 
 # ----- Special case pg-based image (backrest-restore) -----
 # Special case args: BACKREST_VER
-backrest-restore-pgimg-build: cc-pg-base-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.backrest-restore.$(CCP_BASEOS)
+backrest-restore-pgimg-build: cc-pg-base-image $(CCPROOT)/$(DFSET)/Dockerfile.backrest-restore.$(DFSET)
 	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.backrest-restore.$(CCP_BASEOS) \
+		-f $(CCPROOT)/$(DFSET)/Dockerfile.backrest-restore.$(DFSET) \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
@@ -229,10 +242,11 @@ backrest-restore-pgimg-buildah: backrest-restore-pgimg-build
 backrest-restore-pgimg-docker: backrest-restore-pgimg-build
 
 # ----- All other pg-based images ----
-%-pgimg-build: cc-pg-base-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.%.$(CCP_BASEOS)
+%-pgimg-build: cc-pg-base-image $(CCPROOT)/$(DFSET)/Dockerfile.%.$(DFSET)
 	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.$*.$(CCP_BASEOS) \
+		-f $(CCPROOT)/$(DFSET)/Dockerfile.$*.$(DFSET) \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
@@ -245,10 +259,11 @@ backrest-restore-pgimg-docker: backrest-restore-pgimg-build
 %-pgimg-docker: %-pgimg-build ;
 
 # ----- Extra images -----
-%-img-build: ccbase-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.%.$(CCP_BASEOS)
+%-img-build: ccbase-image $(CCPROOT)/$(DFSET)/Dockerfile.%.$(DFSET)
 	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.$*.$(CCP_BASEOS) \
+		-f $(CCPROOT)/$(DFSET)/Dockerfile.$*.$(DFSET) \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
@@ -268,10 +283,11 @@ upgrade-%: upgrade-%-pgimg-$(IMGBUILDER) ;
 upgrade-9.5: # Do nothing but log to avoid erroring out on missing Dockerfile
 	$(info Upgrade build skipped for 9.5)
 
-upgrade-%-pgimg-build: cc-pg-base-image $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.upgrade-%.$(CCP_BASEOS)
+upgrade-%-pgimg-build: cc-pg-base-image $(CCPROOT)/$(DFSET)/Dockerfile.upgrade-%.$(DFSET)
 	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/$(CCP_BASEOS)/Dockerfile.upgrade-$*.$(CCP_BASEOS) \
+		-f $(CCPROOT)/$(DFSET)/Dockerfile.upgrade-$*.$(DFSET) \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \

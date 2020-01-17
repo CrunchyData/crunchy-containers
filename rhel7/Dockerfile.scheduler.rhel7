@@ -1,13 +1,14 @@
-ARG PREFIX
+ARG BASEOS
 ARG BASEVER
 ARG PG_FULL
+ARG PREFIX
 
 FROM golang:1.13.1 AS scheduler-build
 WORKDIR /go/src/github.com/crunchydata/crunchy-containers
 ADD . .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -o scheduler ./tools/scheduler
 
-FROM ${PREFIX}/crunchy-base:rhel7-${PG_FULL}-${BASEVER}
+FROM ${PREFIX}/crunchy-base:${BASEOS}-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 
