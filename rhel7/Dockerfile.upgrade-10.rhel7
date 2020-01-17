@@ -1,7 +1,8 @@
-ARG PREFIX
+ARG BASEOS
 ARG BASEVER
 ARG PG_FULL
-FROM ${PREFIX}/crunchy-pg-base:rhel7-${PG_FULL}-${BASEVER}
+ARG PREFIX
+FROM ${PREFIX}/crunchy-pg-base:${BASEOS}-${PG_FULL}-${BASEVER}
 
 LABEL name="upgrade" \
 	summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
