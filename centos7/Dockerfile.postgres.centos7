@@ -23,6 +23,7 @@ RUN yum -y install \
 	postgresql${PG_MAJOR//.}-contrib \
 	postgresql${PG_MAJOR//.}-server \
 	postgresql${PG_MAJOR//.}-plpython \
+	postgresql${PG_MAJOR//.}-plpython3 \
 	psmisc \
 	rsync \
 	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
