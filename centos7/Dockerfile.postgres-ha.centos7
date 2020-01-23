@@ -56,12 +56,17 @@ RUN useradd crunchyadm -g 0 -u 17
 
 ENV PATH="${PGROOT}/bin:${PATH}"
 
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backrestrepo /crunchyadm
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backrestrepo \
+	/crunchyadm /tablespaces
 
+# Adjust ownership for the folders to be the "postgres" user and allow the group
+# permissions to match the user ones EXCEPT for the /tablespaces folder, which
+# will only have permissions on the user
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
-	/pgdata /pgwal /pgconf /backrestrepo /crunchyadm &&  \
+	/pgdata /pgwal /pgconf /backrestrepo /crunchyadm /tablespaces &&  \
 	chmod -R g=u /opt/cpm /var/lib/pgsql \
-	/pgdata /pgwal /pgconf /backrestrepo /crunchyadm
+	/pgdata /pgwal /pgconf /backrestrepo /crunchyadm && \
+	chmod -R u=rwx,go= /tablespaces
 
 # open up the postgres port
 EXPOSE 5432
