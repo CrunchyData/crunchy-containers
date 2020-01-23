@@ -27,19 +27,19 @@ set_default_pgha_autoconfig_env()  {
         export PGHA_DEFAULT_CONFIG="true"
         default_pgha_autoconfig_env_vars+=("PGHA_DEFAULT_CONFIG")
     fi
-    
+
     if [[ ! -v PGHA_BASE_BOOTSTRAP_CONFIG ]]
     then
         export PGHA_BASE_BOOTSTRAP_CONFIG="true"
         default_pgha_autoconfig_env_vars+=("PGHA_BASE_BOOTSTRAP_CONFIG")
     fi
-    
+
     if [[ ! -v PGHA_BASE_PG_CONFIG ]]
     then
         export PGHA_BASE_PG_CONFIG="true"
         default_pgha_autoconfig_env_vars+=("PGHA_BASE_PG_CONFIG")
     fi
-    
+
     if [[ ! -v PGHA_ENABLE_WALDIR ]]
     then
         export PGHA_ENABLE_WALDIR="false"
@@ -85,7 +85,7 @@ set_default_pgha_autoconfig_env()  {
 }
 
 # Set defaults for the custom crunchy-postgres-ha env vars required to bootstrap a cluster
-set_default_pgha_env()  { 
+set_default_pgha_env()  {
 
     if [[ ! -v PGHA_PATRONI_PORT ]]
     then
@@ -132,7 +132,7 @@ set_default_pgha_env()  {
 
 # Set default Patroni environment variables
 set_default_patroni_env() {
-    
+
     host_ip=$(hostname -i)
 
     if [[ ! -v PATRONI_NAME ]]
@@ -187,7 +187,7 @@ set_default_patroni_env() {
 # Set the PG user credentials for Patroni & post-bootstrap using the file system (e.g. Kube secrets)
 set_pg_user_credentials() {
     echo_info "Setting postgres-ha configuration for database user credentials"
-    
+
     if [[ -d "/pgconf/pguser" ]]
     then
 	    echo_info "Setting 'pguser' credentials using file system"
@@ -207,11 +207,11 @@ set_pg_user_credentials() {
     if [[ -d "/pgconf/pgsuper" ]]
     then
         echo_info "Setting 'superuser' credentials using file system"
-        
+
         PATRONI_SUPERUSER_USERNAME=$(cat /pgconf/pgsuper/username)
         err_check "$?" "Set superuser" "Unable to set PGHA_USER_PASSWORD using secret"
         export PATRONI_SUPERUSER_USERNAME
-        
+
         PATRONI_SUPERUSER_PASSWORD=$(cat /pgconf/pgsuper/password)
         err_check "$?" "Set superuser password" "Unable to set PGHA_USER_PASSWORD using secret"
         export PATRONI_SUPERUSER_PASSWORD
@@ -223,13 +223,13 @@ set_pg_user_credentials() {
     if [[ -d "/pgconf/pgreplicator" ]]
     then
         echo_info "Setting 'replicator' credentials using file system"
-        
+
         # Configure certificate-based authentication for replication if proper certs are available.
         # Otherwise use a password
         if [[ -f "/pgconf/replicator.key" ]] && [[ -f "/pgconf/replicator.crt" ]]
         then
             export PATRONI_REPLICATION_SSLKEY="${PATRONI_POSTGRESQL_DATA_DIR}/replicator.key"
-            export PATRONI_REPLICATION_SSLCERT="${PATRONI_POSTGRESQL_DATA_DIR}/replicator.crt"            
+            export PATRONI_REPLICATION_SSLCERT="${PATRONI_POSTGRESQL_DATA_DIR}/replicator.crt"
         else
             PATRONI_REPLICATION_PASSWORD=$(cat /pgconf/pgreplicator/password)
             err_check "$?" "Set replication user password" "Unable to set PATRONI_REPLICATION_PASSWORD using secret"
@@ -246,7 +246,7 @@ set_pg_user_credentials() {
         then
             export PATRONI_REPLICATION_SSLCRL="${PATRONI_POSTGRESQL_DATA_DIR}/replicator.crl"
         fi
-        
+
         PATRONI_REPLICATION_USERNAME=$(cat /pgconf/pgreplicator/username)
         err_check "$?" "Set replication user" "Unable to set PATRONI_REPLICATION_USERNAME using secret"
         export PATRONI_REPLICATION_USERNAME
@@ -258,7 +258,7 @@ set_pg_user_credentials() {
 
 # Validate environment variables
 validate_env() {
-    if [[ "${PATRONI_POSTGRESQL_DATA_DIR}" == "/pgdata" || "${PATRONI_POSTGRESQL_DATA_DIR}" == "/pgdata/" 
+    if [[ "${PATRONI_POSTGRESQL_DATA_DIR}" == "/pgdata" || "${PATRONI_POSTGRESQL_DATA_DIR}" == "/pgdata/"
         || ! "${PATRONI_POSTGRESQL_DATA_DIR:0:8}" == "/pgdata/" ]]
     then
         echo_err "The PGDATA directory provided using PATRONI_POSTGRESQL_DATA_DIR must be a subdirectory of volume /pgdata"
@@ -276,7 +276,7 @@ validate_env() {
 
 # Build the Patroni bootstrap configuration file
 build_bootstrap_config_file() {
-    
+
     bootstrap_file="/tmp/postgres-ha-bootstrap.yaml"
     echo "---" >> "${bootstrap_file}"
 
@@ -293,7 +293,7 @@ build_bootstrap_config_file() {
     else
         echo_info "Base bootstrap config for postgres-ha configuration disabled"
     fi
-    
+
     if [[ "${PGHA_BASE_PG_CONFIG}" == "true" ]]
     then
         cp "/opt/cpm/conf/postgres-ha-pgconf.yaml" "/tmp"
@@ -387,6 +387,23 @@ build_bootstrap_config_file
 # Create the pgdata directory if it doesn't exist
 mkdir -p "${PATRONI_POSTGRESQL_DATA_DIR}"
 chmod 0700 "${PATRONI_POSTGRESQL_DATA_DIR}"
+
+# If a list of tablespaces has been passed in, create these names in the
+#tablespace directory, which are in the format:
+#
+# tablespace1,tablespace2
+IFS=',' read -r -a TABLESPACES <<< "${PGHA_TABLESPACES}"
+# Next, iterate through the list, especially if any tablespaces were found
+for TABLESPACE in "${TABLESPACES[@]}"
+do
+  TABLESPACE_PATH="/tablespaces/${TABLESPACE}/${TABLESPACE}"
+  echo_info "create directory for tablespace \"${TABLESPACE}\" on mount point \"${TABLESPACE_PATH}\""
+  # create the folder that the tablespace will be mounted to as well as set its
+  # permissions correctly. This has to go "two deep" in order to account for
+  # the direcory structure of the mounted file system
+  mkdir -p "${TABLESPACE_PATH}"
+  chmod 0700 "${TABLESPACE_PATH}"
+done
 
 echo_info "postgres-ha pre-bootstrap complete!  The following configuration will be utilized to initialize " \
 "this postgres-ha node:"
