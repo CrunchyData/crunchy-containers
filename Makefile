@@ -44,13 +44,13 @@ ifeq ("$(CCP_BASEOS)", "ubi7")
 	DFSET=rhel7
 endif
 
-.PHONY:	all extras pgimages
+.PHONY:	all pg-independent-images pgimages
 
 # Default target
-all: cc-pg-base-image pgimages extras
+all: cc-pg-base-image pgimages pg-independent-images
 
 # Build images that either don't have a PG dependency or using the latest PG version is all that is needed
-extras: backup pgadmin4 pgbadger pgbasebackuprestore pgbench pgbouncer pgdump pgpool grafana prometheus scheduler
+pg-independent-images: backup pgadmin4 pgbadger pgbasebackuprestore pgbench pgbouncer pgdump pgpool grafana prometheus scheduler
 
 # Build images that require a specific postgres version - ordered for potential concurrent benefits
 pgimages: postgres postgres-ha backrestrestore collect crunchyadm postgres-gis postgres-gis-ha pgrestore upgrade
