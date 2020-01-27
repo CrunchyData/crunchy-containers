@@ -139,15 +139,6 @@ via a graphical user interface web application.
 
 Visit the official pgAdmin4 website for more information: https://www.pgadmin.org/
 
-### Crunchy Scheduler
-
-The Crunchy Scheduler image provides a cronlike microservice for automating
-`pg_basebackup` and `pgBackRest` backups within a single Kubernetes namespace.
-
-The scheduler watches Kubernetes for config maps with the label `crunchy-scheduler=true`.
-If found the scheduler parses a JSON object contained in the config map and converts
-it into an scheduled task.
-
 ### Crunchy Upgrade
 
 The Crunchy Upgrade image allows users to perform major upgrades of their Crunchy

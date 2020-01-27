@@ -18,7 +18,6 @@ IMAGES=(
     crunchy-pgrestore
     crunchy-postgres-gis
     crunchy-prometheus
-    crunchy-scheduler
     crunchy-upgrade
     crunchy-backrest-restore
     crunchy-postgres-ha

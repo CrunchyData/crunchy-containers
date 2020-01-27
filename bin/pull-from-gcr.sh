@@ -19,7 +19,6 @@ IMAGES=(
     crunchy-postgres
     crunchy-postgres-gis
     crunchy-prometheus
-    crunchy-scheduler
     crunchy-upgrade
     crunchy-pgbasebackup-restore
     crunchy-postgres-ha
