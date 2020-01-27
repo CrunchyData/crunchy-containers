@@ -1,6 +1,6 @@
 ---
 title: "Container Specifications"
-date: 
+date:
 draft: false
 weight: 6
 ---
@@ -22,5 +22,4 @@ weight: 6
 * [Crunchy postgres-gis](crunchy-postgres-gis)
 * [Crunchy postgres](crunchy-postgres)
 * [Crunchy prometheus](crunchy-prometheus)
-* [Crunchy scheduler](crunchy-scheduler)
 * [Crunchy upgrade](crunchy-upgrade)
