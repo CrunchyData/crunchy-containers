@@ -49,11 +49,11 @@ endif
 # Default target
 all: cc-pg-base-image pgimages extras
 
-# Build non-postgres images
-extras: grafana prometheus scheduler
+# Build images that either don't have a PG dependency or using the latest PG version is all that is needed
+extras: backup pgadmin4 pgbadger pgbasebackuprestore pgbench pgbouncer pgdump pgpool grafana prometheus scheduler
 
-# Build images that use postgres - ordered for potential concurrent benefits
-pgimages: postgres postgres-ha backup backrestrestore collect crunchyadm pgadmin4 pgbadger pgbasebackuprestore postgres-gis postgres-gis-ha pgbench pgbouncer pgdump pgpool pgrestore upgrade
+# Build images that require a specific postgres version - ordered for potential concurrent benefits
+pgimages: postgres postgres-ha backrestrestore collect crunchyadm postgres-gis postgres-gis-ha pgrestore upgrade
 
 
 #===========================================
