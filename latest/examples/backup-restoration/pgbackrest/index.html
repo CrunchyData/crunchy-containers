@@ -229,13 +229,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/latest/examples/backup-restoration/scheduler/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/examples/backup-restoration/scheduler/">
-            Scheduler
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/latest/examples/poolers/pgbouncer/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/examples/poolers/pgbouncer/">
@@ -436,13 +429,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-scheduler/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-scheduler/">
-            crunchy-scheduler
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-upgrade/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-upgrade/">
@@ -531,7 +517,6 @@
       <option value="/examples/backup-restoration/pgbackrest/"  selected>- pgBackRest</option>
       <option value="/examples/backup-restoration/pgbasebackup/" >- pgBaseBackup</option>
       <option value="/examples/backup-restoration/pgdump-pgrestore/" >- pgDump &amp; pgRestore</option>
-      <option value="/examples/backup-restoration/scheduler/" >- Scheduler</option>
       <option value="/examples/poolers/pgbouncer/" >- pgBouncer</option>
       <option value="/examples/metrics/metrics/" >- Metrics and Performance</option>
       <option value="/examples/metrics/pgbadger/" >- pgBadger</option>
@@ -629,7 +614,7 @@
 <div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#111">PGBACKREST_TYPE</span><span style="color:#f92672">=</span><span style="color:#111">time</span>
 <span style="color:#111">PITR_TARGET</span><span style="color:#f92672">=</span><span style="color:#d88200">&#34;2019-10-27 16:53:05.590156+00&#34;</span>
 <span style="color:#111">PGBACKREST_DELTA</span><span style="color:#f92672">=</span>y</code></pre></div>
-<p>Full, incremental and differential backups of PostgreSQL databases deployed using the Crunchy Container Suite can scheduled using pgBackRest and the crunchy-scheduler container, and/or can also be performed manually by executing pgBackRest commands against the desired crunchy-postgres or crunchy-postgres-gis container.  Database restores, on the other hand, can be performed via the crunchy-backrest-restore container, which offers full pgBackRest restore capabilities, such as full, point-in-time and delta restores.  Further information and guidance for performing both backups and restores using the Crunchy Container Suite and pgBackRest will be provided in the examples below.  Additionally, for more information on utilizing the crunchy-scheduler container to schedule and perform pgBackRest database backups, please see the crunchy-scheduler <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-scheduler">specifications</a> and <a href="https://crunchydata.github.io/crunchy-containers/latest/examples/backup-restoration/scheduler/">examples</a>.</p>
+<p>Database restores can be performed via the crunchy-backrest-restore container, which offers full pgBackRest restore capabilities, such as full, point-in-time and delta restores.  Further information and guidance for performing both backups and restores using the Crunchy Container Suite and pgBackRest will be provided in the examples below.</p>
 
 <p>In addition to providing the backup and restoration capabilities discussed above, pgBackRest supports the capability to asynchronously push and get write ahead logs (WAL) to and from a WAL archive.  To enable asychronous WAL archiving within a crunchy-postgres or crunchy-postgres-gis container, pgBackRest environment variable <code>PGBACKREST_ARCHIVE_ASYNC</code> must be set to <code>&quot;y&quot;</code> during deployment (<code>PGBACKREST_ARCHIVE_ASYNC=y</code>).  This will automatically enable WAL archiving within the container if not otherwise explicitly enabled, set the proper <code>pgbackrest archive</code> command within the <code>postgresql.conf</code> configuration file, and ensure the proper spool path has been created.</p>
 

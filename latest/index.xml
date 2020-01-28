@@ -291,17 +291,6 @@ Features The following features are supported by the crunchy-postgres container:
     </item>
     
     <item>
-      <title>crunchy-scheduler</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-scheduler/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-scheduler/</guid>
-      <description>The Crunchy Scheduler container provides a cronlike microservice for automating pgBaseBackup and pgBackRest backups within a single namespace. The scheduler watches Kubernetes for config maps with the label crunchy-scheduler=true. If found the scheduler parses a JSON object contained in the config map and converts it into an scheduled task.
-Packages The Crunchy Scheduler Docker image contains the following packages:
- CentOS7 - publicly available RHEL7 - customers only Scheduler App  Environment Variables Required    Name Default Description     NAMESPACE None The namespace the microservice should watch.</description>
-    </item>
-    
-    <item>
       <title>crunchy-upgrade</title>
       <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-upgrade/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -351,17 +340,6 @@ A successful backup will perform pg_basebackup on the primary container and stor
       <description>pgDump &amp;amp; pgRestore Examples The following examples will demonstrate how the crunchy-pgdump container can be utilized to create a database backup using the pg_dump utility, while also demonstrating how the backup created can then be utilized to restore the database using the pg_restore utility.
 Backup (pg_dump) The script assumes you are going to backup the primary example and that container is running.
 This example assumes you have configured a storage filesystem as described in the Storage Configuration document.</description>
-    </item>
-    
-    <item>
-      <title>Scheduler</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/examples/backup-restoration/scheduler/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/examples/backup-restoration/scheduler/</guid>
-      <description>Crunchy Scheduler The Crunchy Scheduler container implements a cronlike microservice within a namespace to automate backups of a PostgreSQL database.
-Currently Crunchy Scheduler only supports two types of tasks:
- pgBackRest pgBaseBackup  This service watches Kubernetes for config maps with the label crunchy-scheduler=true. If found the scheduler will parse the data found in the config map (json object) and convert it to a scheduled task. If the config map is removed, the scheduler will delete the task.</description>
     </item>
     
     <item>
