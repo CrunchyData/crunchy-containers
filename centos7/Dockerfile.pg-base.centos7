@@ -19,7 +19,6 @@ ADD conf/crunchypg${PG_LBL}.repo /etc/yum.repos.d/
 RUN rpm --import RPM-GPG-KEY-crunchydata
 
 RUN yum -y install \
-	&& yum -y install \
 		--setopt=skip_missing_names_on_install=False \
 		postgresql${PG_LBL} \
 	&& yum -y clean all
