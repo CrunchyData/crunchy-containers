@@ -11,7 +11,7 @@ LABEL name="upgrade" \
 	io.k8s.display-name="Crunchy PostgreSQL upgrade container" \
 	io.openshift.tags="postgresql,postgres,upgrade,database,crunchy"
 
-RUN yum -y install --enablerepo="pgdg95,pgdg96,pgdg10,pgdg11,pgdg12" \
+RUN yum -y install \
 	--setopt=skip_missing_names_on_install=False \
 	pgaudit_95 \
 	postgresql95 \
@@ -34,7 +34,7 @@ RUN yum -y install --enablerepo="pgdg95,pgdg96,pgdg10,pgdg11,pgdg12" \
 	postgresql12-contrib \
 	postgresql12-server \
 	unzip \
-	&& yum -y clean all --enablerepo="pgdg95,pgdg96,pgdg10,pgdg11,pgdg12"
+	&& yum -y clean all
 
 RUN mkdir -p /opt/cpm/bin /pgolddata /pgnewdata /opt/cpm/conf
 ADD bin/upgrade/ /opt/cpm/bin

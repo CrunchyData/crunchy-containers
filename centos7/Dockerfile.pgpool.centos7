@@ -13,11 +13,11 @@ LABEL name="pgpool" \
 	io.k8s.display-name="pgpool II" \
 	io.openshift.tags="postgresql,postgres,pgpool,database,crunchy"
 
-RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
+RUN yum -y install \
 		--setopt=skip_missing_names_on_install=False \
 		pgpool-II-${PG_MAJOR//.} \
 		pgpool-II-${PG_MAJOR//.}-extensions \
-	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+	&& yum -y clean all
 
 # Preserving PGVERSION out of paranoia
 ENV PGVERSION="${PG_MAJOR}"

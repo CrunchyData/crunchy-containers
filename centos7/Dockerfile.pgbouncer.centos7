@@ -13,10 +13,10 @@ LABEL name="pgbouncer" \
 	io.k8s.display-name="pgBouncer" \
 	io.openshift.tags="postgresql,postgres,pooling,pgbouncer,database,crunchy"
 
-RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
+RUN yum -y install \
 	--setopt=skip_missing_names_on_install=False \
 	pgbouncer \
-	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+	&& yum -y clean all
 
 # Preserving PGVERSION out of paranoia
 ENV PGVERSION="${PG_MAJOR}"

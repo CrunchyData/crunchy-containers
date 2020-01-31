@@ -13,7 +13,7 @@ LABEL name="pgadmin4" \
 	io.k8s.display-name="pgAdmin 4" \
 	io.openshift.tags="postgresql,postgres,monitoring,pgadmin4,pgadmin,database,crunchy"
 
-RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
+RUN yum -y install \
 		--setopt=skip_missing_names_on_install=False \
 		gcc \
 		mod_ssl \
@@ -22,7 +22,7 @@ RUN yum -y install --enablerepo="pgdg${PG_MAJOR//.}" \
 		pgadmin4-web \
 		postgresql${PG_MAJOR//.}-devel \
 		postgresql${PG_MAJOR//.}-server \
-	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+	&& yum -y clean all
 
 # Preserving PGVERSION out of paranoia
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="PG_MAJOR"

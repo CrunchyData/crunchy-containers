@@ -15,23 +15,22 @@ ARG PGAUDIT_LBL
 
 # Separate yum run matching postgres-ha image, leverages cached layer
 RUN yum -y install \
-	--enablerepo="pgdg${PG_MAJOR//.}" \
 	--setopt=skip_missing_names_on_install=False \
 	openssh-clients \
 	openssh-server \
 	pgaudit${PGAUDIT_LBL} \
-	pgbackrest-${BACKREST_VER} \
+	crunchy-backrest-${BACKREST_VER} \
 	postgresql${PG_MAJOR//.}-contrib \
 	postgresql${PG_MAJOR//.}-server \
 	postgresql${PG_MAJOR//.}-plpython \
 	postgresql${PG_MAJOR//.}-plpython3 \
 	psmisc \
 	rsync \
-	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+	&& yum -y clean all
 
 # ===== Steps unique to this image after here =====
 LABEL name="postgres" \
-	summary="PostgreSQL ${PG_FULL} (PGDG) on a Centos7 base image" \
+	summary="PostgreSQL ${PG_FULL} on a Centos7 base image" \
 	description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
 	io.k8s.description="Crunchy PostgreSQL is the trusted open source distribution of PostgreSQL" \
 	io.k8s.display-name="Crunchy PostgreSQL" \
