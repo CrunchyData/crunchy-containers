@@ -11,14 +11,13 @@ ARG PG_MAJOR
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
 
 ARG BACKREST_VER
-ARG PGAUDIT_LBL
 
 # Separate yum run matching postgres image, leverages cached layer
 RUN yum -y install \
 	--setopt=skip_missing_names_on_install=False \
 	openssh-clients \
 	openssh-server \
-	pgaudit${PGAUDIT_LBL} \
+	pgaudit${PG_MAJOR//.} \
 	crunchy-backrest-${BACKREST_VER} \
 	postgresql${PG_MAJOR//.}-contrib \
 	postgresql${PG_MAJOR//.}-server \

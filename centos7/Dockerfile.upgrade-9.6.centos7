@@ -13,11 +13,11 @@ LABEL name="upgrade" \
 
 RUN yum -y install \
 	--setopt=skip_missing_names_on_install=False \
-	pgaudit_95 \
+	pgaudit95 \
 	postgresql95 \
 	postgresql95-contrib \
 	postgresql95-server \
-	pgaudit11_96 \
+	pgaudit96 \
 	postgresql96 \
 	postgresql96-contrib \
 	postgresql96-server \
