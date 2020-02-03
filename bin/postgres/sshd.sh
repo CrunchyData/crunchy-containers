@@ -18,8 +18,8 @@ then
     echo_info "Applying SSHD.."
     echo_info 'Checking for SSH Host Keys in /sshd..'
 
-    if [[ ! -f /sshd/ssh_host_rsa_key ]]; then
-        echo_err 'No ssh_host_rsa_key found in /sshd.  Exiting..'
+    if [[ ! -f /sshd/ssh_host_ed25519_key ]]; then
+        echo_err 'No ssh_host_ed25519_key found in /sshd.  Exiting..'
         exit 1
     fi
 
@@ -40,8 +40,8 @@ then
     echo_info "setting up .ssh directory"
     mkdir ~/.ssh
     cp /sshd/config ~/.ssh/
-    cp /sshd/id_rsa /tmp
-    chmod 400 /tmp/id_rsa ~/.ssh/config
+    cp /sshd/id_ed25519 /tmp
+    chmod 400 /tmp/id_ed25519 ~/.ssh/config
 
     echo_info 'Starting SSHD..'
     /usr/sbin/sshd -f /sshd/sshd_config
