@@ -9,30 +9,12 @@ CCP_PG_FULLVERSION ?= 12.1
 CCP_PATRONI_VERSION ?= 1.6.3
 CCP_BACKREST_VERSION ?= 2.20
 CCP_VERSION ?= 4.3.0
-CCP_PGAUDIT = "14_12" #no need to be env overridable given override logic below
 CCP_POSTGIS_VERSION ?= 2.5
 
 # Valid values: buildah (default), docker
 IMGBUILDER ?= buildah
 IMGCMDSTEM=sudo --preserve-env buildah bud --layers $(SQUASH)
 DFSET=$(CCP_BASEOS)
-
-# pgaudit compatibility is tied to PG version
-ifeq ($(CCP_PGVERSION),9.5)
-	CCP_PGAUDIT = "_95"
-endif
-ifeq ($(CCP_PGVERSION),9.6)
-	CCP_PGAUDIT = "11_96"
-endif
-ifeq ($(CCP_PGVERSION),10)
-	CCP_PGAUDIT = "12_10"
-endif
-ifeq ($(CCP_PGVERSION),11)
-	CCP_PGAUDIT = "13_11"
-endif
-ifeq ($(CCP_PGVERSION),12)
-	CCP_PGAUDIT = "14_12"
-endif
 
 # Allows simplification of IMGBUILDER switching
 ifeq ("$(IMGBUILDER)","docker")
@@ -154,7 +136,6 @@ postgres-pgimg-build: cc-pg-base-image commands $(CCPROOT)/$(DFSET)/Dockerfile.p
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		--build-arg BACKREST_VER=$(CCP_BACKREST_VERSION) \
-		--build-arg PGAUDIT_LBL="$(CCP_PGAUDIT)" \
 		$(CCPROOT)
 
 postgres-pgimg-buildah: postgres-pgimg-build
@@ -193,7 +174,6 @@ postgres-ha-pgimg-build: cc-pg-base-image commands $(CCPROOT)/$(DFSET)/Dockerfil
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		--build-arg BACKREST_VER=$(CCP_BACKREST_VERSION) \
-		--build-arg PGAUDIT_LBL="$(CCP_PGAUDIT)" \
 	    --build-arg PATRONI_VER=$(CCP_PATRONI_VERSION) \
 		$(CCPROOT)
 
