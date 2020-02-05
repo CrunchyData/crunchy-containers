@@ -5,13 +5,13 @@ endif
 .PHONY:	all versiontest
 
 # Default target
-all: pgimages extras
+all: pgimages pg-independent-images
 
 # Build images that use postgres
-pgimages: commands backup backrestrestore pgbasebackuprestore collect pgadmin4 pgbadger pgbench pgbouncer pgdump pgpool pgrestore postgres postgres-gis upgrade
+pgimages: commands backrestrestore collect pgrestore postgres postgres-gis upgrade
 
-# Build non-postgres images
-extras: grafana prometheus scheduler
+# Build images that either don't have a PG dependency or using the latest PG version is all that is needed
+pg-independent-images: backup pgadmin4 pgbadger pgbasebackuprestore pgbench pgbouncer pgdump pgpool grafana prometheus scheduler
 
 versiontest:
 ifndef CCP_BASEOS
