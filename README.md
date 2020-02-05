@@ -25,6 +25,7 @@ Crunchy provides a commercially supported version of these containers built upon
 Further descriptions of each of these containers and environment variables that can be used to tune them can be found in the [Container Specifications](https://access.crunchydata.com/documentation/crunchy-containers/latest/container-specifications/) document.
 
 ## Usage
+This is Zia2020
 
 Various examples are provided in the [Examples](https://access.crunchydata.com/documentation/crunchy-containers/latest/examples/) documentation for running in Docker, Kubernetes, and OpenShift environments.
 
