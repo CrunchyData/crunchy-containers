@@ -15,7 +15,7 @@
 
 export PGHOST="/tmp"
 
-source /opt/cpm/bin/common_lib.sh
+source /opt/cpm/bin/common/common_lib.sh
 enable_debugging
 
 trap_sigterm() {
@@ -67,7 +67,7 @@ initialization_monitor() {
 
         # Apply custom configuration other than custom 'postgres-ha.yaml', e.g. custom keys and
         # certificates to enable SSL
-        source /opt/cpm/bin/ssl-config.sh
+        source /opt/cpm/bin/bootstrap/ssl-config.sh
         echo_info "SSL config is: ${PGHA_SSL_CONFIG}"
 
         if [[ "${init_role}" == "master" ]]
@@ -87,7 +87,7 @@ initialization_monitor() {
             # Enable pgbackrest
             if [[ "${PGHA_PGBACKREST}" == "true" ]]
             then
-                source "/opt/cpm/bin/pgbackrest-post-bootstrap.sh"
+                source "/opt/cpm/bin/pgbackrest/pgbackrest-post-bootstrap.sh"
             fi
 
             # Create the crunchyadm user
@@ -150,16 +150,16 @@ remove_patroni_pause_key()  {
 source /opt/cpm/bin/uid_postgres_no_exec.sh
 
 # Perform cluster pre-initialization (set defaults, load secrets, peform validation, log config details, etc.)
-source /opt/cpm/bin/pre-bootstrap.sh
+source /opt/cpm/bin/bootstrap/pre-bootstrap.sh
 
 # Enable pgbackrest
 if [[ "${PGHA_PGBACKREST}" == "true" ]]
 then
-    source /opt/cpm/bin/pgbackrest-pre-bootstrap.sh
+    source /opt/cpm/bin/pgbackrest/pgbackrest-pre-bootstrap.sh
 fi
 
 # Enable SSHD if needed for a pgBackRest dedicated repository prior to bootstrapping
-source /opt/cpm/bin/sshd.sh
+source /opt/cpm/bin/bootstrap/sshd.sh
 
 if [[ -v PGHA_PRIMARY_HOST ]]
 then
@@ -227,7 +227,7 @@ then
     then
         post_existing_init_file="/pgconf/post-existing-init.sql"
     else
-        post_existing_init_file="/opt/cpm/bin/post-existing-init.sql"
+        post_existing_init_file="/opt/cpm/bin/sql/post-existing-init.sql"
     fi
     sed -e "s/\${PATRONI_SUPERUSER_USERNAME}/${PATRONI_SUPERUSER_USERNAME}/" \
         -e "s/\${PATRONI_SUPERUSER_PASSWORD}/${PATRONI_SUPERUSER_PASSWORD}/" \

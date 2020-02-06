@@ -69,7 +69,7 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
 EXPOSE 5432
 
 ADD bin/postgres-ha /opt/cpm/bin
-ADD bin/common /opt/cpm/bin
+ADD bin/common /opt/cpm/bin/common
 ADD conf/postgres-ha /opt/cpm/conf
 ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules/pgexporter
 

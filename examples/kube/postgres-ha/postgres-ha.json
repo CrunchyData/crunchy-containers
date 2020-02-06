@@ -106,7 +106,7 @@
                         "livenessProbe": {
                             "exec": {
                                 "command": [
-                                    "/opt/cpm/bin/pgha-liveness.sh"
+                                    "/opt/cpm/bin/health/pgha-liveness.sh"
                                 ]
                             },
                             "initialDelaySeconds": 30,
@@ -382,7 +382,7 @@
                         "livenessProbe": {
                             "exec": {
                                 "command": [
-                                    "/opt/cpm/bin/pgha-liveness.sh"
+                                    "/opt/cpm/bin/health/pgha-liveness.sh"
                                 ]
                             },
                             "initialDelaySeconds": 30,

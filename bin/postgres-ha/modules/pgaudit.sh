@@ -15,7 +15,7 @@
 
 if [[ -v PGAUDIT_ANALYZE ]]
 then
-    source /opt/cpm/bin/common_lib.sh
+    source /opt/cpm/bin/common/common_lib.sh
     echo_info "Applied pgaudit module.."
     pgaudit_analyze "${PATRONI_POSTGRESQL_DATA_DIR}"/pg_log --user=postgres --log-file /tmp/pgaudit_analyze.log &
 fi
