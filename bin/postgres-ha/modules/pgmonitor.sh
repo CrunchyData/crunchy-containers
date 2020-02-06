@@ -20,7 +20,7 @@ then
 
         echo_info "PGMONITOR_PASSWORD detected.  Enabling pgMonitor support."
 
-        source /opt/cpm/bin/common_lib.sh
+        source /opt/cpm/bin/common/common_lib.sh
         export PGHOST="/tmp"
 
         test_server "postgres" "${PGHOST?}" "${PGHA_PG_PORT}" "postgres"
@@ -45,7 +45,7 @@ then
 
         echo_info "Using setup file '${function_file}' for pgMonitor"
         cp "${function_file}" "/tmp/setup_pg.sql"
-        sed -i "s/\/usr\/bin\/pgbackrest-info.sh/\/opt\/cpm\/bin\/pgbackrest_info.sh/g" "/tmp/setup_pg.sql"
+        sed -i "s/\/usr\/bin\/pgbackrest-info.sh/\/opt\/cpm\/bin\/pgbackrest\/pgbackrest_info.sh/g" "/tmp/setup_pg.sql"
 
         # TODO Add ON_ERROR_STOP and single transaction when
         # upstream pgmonitor changes setup SQL to check if the
