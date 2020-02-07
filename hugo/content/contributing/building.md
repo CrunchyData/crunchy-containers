@@ -7,8 +7,13 @@ weight: 250
 
 # Build From Source
 
+{{% notice tip %}}
+Please be sure to have your GPG Key and `.repo` file in the `conf` directory
+before proceeding.
+{{% /notice %}}
+
 This section of the documentation assumes you have followed the [Installation Guide](/installation-guide/installation-guide).
-Because the build pulls down some kubernetes dependencies, you will need sudo'ers privileges to do a build.
+Because the build pulls down some Kubernetes dependencies, you will need sudo'ers privileges to do a build.
 
 You should do the following in order to build the containers locally and be able to submit patches:
 
