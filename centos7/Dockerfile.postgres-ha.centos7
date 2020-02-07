@@ -11,42 +11,39 @@ ARG PG_MAJOR
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
 
 ARG BACKREST_VER
-ARG PGAUDIT_LBL
 
 # Separate yum run matching postgres image, leverages cached layer
 RUN yum -y install \
-	--enablerepo="pgdg${PG_MAJOR//.}" \
 	--setopt=skip_missing_names_on_install=False \
 	openssh-clients \
 	openssh-server \
-	pgaudit${PGAUDIT_LBL} \
-	pgbackrest-${BACKREST_VER} \
+	pgaudit${PG_MAJOR//.} \
+	crunchy-backrest-${BACKREST_VER} \
 	postgresql${PG_MAJOR//.}-contrib \
 	postgresql${PG_MAJOR//.}-server \
 	postgresql${PG_MAJOR//.}-plpython \
 	postgresql${PG_MAJOR//.}-plpython3 \
 	psmisc \
 	rsync \
-	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+	&& yum -y clean all
 
 # ===== Steps unique to this image after here =====
 ARG PATRONI_VER
 
 LABEL name="postgres-ha" \
-	summary="PostgreSQL ${PG_FULL} (PGDG) with Patroni" \
+	summary="PostgreSQL ${PG_FULL} with Patroni" \
 	description="Used for the deployment and management of highly-available PostgreSQL clusters using Patroni." \
 	io.k8s.description="Crunchy PostgreSQL optimized for high-availability (HA)" \
 	io.k8s.display-name="Crunchy PostgreSQL - HA Optimized" \
 	io.openshift.tags="postgresql,postgres,postgis,sql,nosql,database,ha,crunchy"
 
 RUN yum -y install \
-	--enablerepo="pgdg${PG_MAJOR//.}" \
 	--setopt=skip_missing_names_on_install=False \
 	gcc \
 	python3-devel \
 	python3-pip \
 	python3-psycopg2 \
-	&& yum -y clean all --enablerepo="pgdg${PG_MAJOR//.}"
+	&& yum -y clean all
 
 # install patroni for Kube
 RUN pip3 install --upgrade setuptools python-dateutil \
