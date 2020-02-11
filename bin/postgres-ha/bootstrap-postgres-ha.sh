@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 - 2019 Crunchy Data Solutions, Inc.
+# Copyright 2019 - 2020 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -175,11 +175,11 @@ then
     # If the Patroni bootstap configuration file is configured to use a custom PG config file using
     # the custom_config parameter, or if a postgresql.base.conf file is present in the PGDATA
     # directory, then assume those files are the base postgresql.conf parameters for the database
-    # in accordance with the Patroni documentation for applying PG configuration to a cluster, and 
-    # therefore cleans out the contents of the existing postgresql.conf file if it exists (otherwise 
-    # an empty file will simply be created).  This ensures that the settings from previous Patroni 
+    # in accordance with the Patroni documentation for applying PG configuration to a cluster, and
+    # therefore cleans out the contents of the existing postgresql.conf file if it exists (otherwise
+    # an empty file will simply be created).  This ensures that the settings from previous Patroni
     # clusters that may no longer be valid (e.g. invalid dir names) do not prevent the DB from
-    # starting successfully.  Once Patroni is initialized, the postgresql.conf will be populated 
+    # starting successfully.  Once Patroni is initialized, the postgresql.conf will be populated
     # with the dynamic configuration defined for the cluster.
     # If a custom or base config file is not found, then the postgresql.conf will remain untouched,
     # and will then become the base configuration is accordance with the Patroni documentation.
@@ -189,7 +189,7 @@ then
         echo_info "Detected existing or custom base configuration for Patroni, cleaning postgresql.conf"
         > "${PATRONI_POSTGRESQL_DATA_DIR}/postgresql.conf"
     fi
-    
+
     manual_start_pg_ctl_options=""
     # detect if this is a server that needs to entre recovery mode, which is
     # what might happen after an instance is cloned.
