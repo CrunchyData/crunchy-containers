@@ -5,7 +5,7 @@ MAINTAINER Crunchy Data <info@crunchydata.com>
 LABEL name="crunchydata/restore" \
         vendor="crunchy data" \
 	PostgresVersion="9.6" \
-	PostgresFullVersion="9.6.16" \
+	PostgresFullVersion="9.6.17" \
 	Version="7.7" \
 	Release="4.1.2" \
         url="https://crunchydata.com" \

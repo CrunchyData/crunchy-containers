@@ -19,7 +19,7 @@ The following features are supported by the `crunchy-pgbench` container:
 
 The crunchy-pgbench Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* pgBench (12.1, 11.6, 10.11, 9.6.16, 9.5.20)
+* pgBench (12.2, 11.7, 10.12, 9.6.17, 9.5.21)
 * CentOS7 - publicly available
 * RHEL7 - customers only
 
