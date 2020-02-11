@@ -51,7 +51,7 @@
                         "env": [
                             {
                                 "name": "BACKUP_PATH",
-                                "value": "primary-backups/2019-05-08-18-28-45"
+                                "value": "primary-backups/2020-02-08-18-28-45"
                             },
                             {
                                 "name": "PGDATA_PATH",
