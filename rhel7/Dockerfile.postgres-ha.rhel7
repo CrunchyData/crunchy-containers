@@ -29,6 +29,7 @@ RUN yum -y install \
 		postgresql${PG_MAJOR//.}-plpython3 \
 		psmisc \
 		rsync \
+		less \
 	&& yum -y install \
 		--setopt=tsflags='' \
 		--enablerepo="epel" \
