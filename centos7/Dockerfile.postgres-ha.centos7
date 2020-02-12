@@ -25,6 +25,7 @@ RUN yum -y install \
 	postgresql${PG_MAJOR//.}-plpython3 \
 	psmisc \
 	rsync \
+	less \
 	&& yum -y clean all
 
 # ===== Steps unique to this image after here =====
