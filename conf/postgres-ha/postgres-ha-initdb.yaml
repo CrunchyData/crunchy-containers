@@ -4,6 +4,7 @@ bootstrap:
     postgresql:
       use_pg_rewind: true
       parameters:
+        archive_timeout: 60
         log_directory: pg_log
         shared_buffers: 128MB
         temp_buffers: 8MB
