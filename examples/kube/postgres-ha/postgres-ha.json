@@ -98,7 +98,7 @@
                         "readinessProbe": {
                             "exec": {
                                 "command": [
-                                    "/opt/cpm/bin/pgha-readiness.sh"
+                                    "/opt/cpm/bin/health/pgha-readiness.sh"
                                 ]
                             },
                             "initialDelaySeconds": 30
@@ -374,7 +374,7 @@
                         "readinessProbe": {
                             "exec": {
                                 "command": [
-                                    "/opt/cpm/bin/pgha-readiness.sh"
+                                    "/opt/cpm/bin/health/pgha-readiness.sh"
                                 ]
                             },
                             "initialDelaySeconds": 30
