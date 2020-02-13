@@ -147,7 +147,7 @@ remove_patroni_pause_key()  {
 }
 
 # Configure users and groups
-source /opt/cpm/bin/uid_postgres_no_exec.sh
+source /opt/cpm/bin/common/uid_postgres_no_exec.sh
 
 # Perform cluster pre-initialization (set defaults, load secrets, peform validation, log config details, etc.)
 source /opt/cpm/bin/bootstrap/pre-bootstrap.sh
