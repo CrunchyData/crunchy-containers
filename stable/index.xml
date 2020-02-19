@@ -45,7 +45,7 @@ Features The following features are supported and required by the crunchy-backre
       <description>The crunchy-pgbasebackup-restore container restores a database using a pg_basebackup backup. Specifically, the container uses rsync to copy a pg_basebackup backup into a specified /pgdata directory.
 The crunchy-pgbasebackup-restore does not support point-in-time-recovery (PITR). If you would to create an environment that allows you to use PostgreSQL&amp;rsquo;s point-in-time-recovery capabilities, please use the crunchy-backrest-restore container with a corresponding pgBackRest repository.
 Packages The crunchy-pgbasebackup-restore Docker image contains the following packages:
- rsync CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     BACKUP_PATH None The path under the /backup volume containing the pg_basebackup that will be used for the restore (/backup should be excluded when providing the path)   PGDATA_PATH None The path under the /pgdata volume containing the restored database (/pgdata should be excluded when providing the path).</description>
+ rsync CentOS7 - publicly available UBI7 - customers only  Environment Variables Required    Name Default Description     BACKUP_PATH None The path under the /backup volume containing the pg_basebackup that will be used for the restore (/backup should be excluded when providing the path)   PGDATA_PATH None The path under the /pgdata volume containing the restored database (/pgdata should be excluded when providing the path).</description>
     </item>
     
     <item>
@@ -55,9 +55,7 @@ Packages The crunchy-pgbasebackup-restore Docker image contains the following pa
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/overview/overview/</guid>
       <description>Overview The following provides a high level overview of each of the container images.
-CentOS vs RHEL Images The Crunchy Container suite provides two different OS images: centos7 and rhel7. These images are indentical except for the packages used by yum to install the software.
-The centos7 images, yum is configured to use PostgreSQL RPM Building Project.
-The rhel7 images use Crunchy Certified RPMs and are only available to active Crunchy Data customers.</description>
+CentOS vs Red Hat UBI Images The Crunchy Container suite provides two different OS images: centos7 and ubi7. Both images utilize Crunchy Ceritifed RPM&amp;rsquo;s for the installation of PostgreSQL, and outside of the base images utilized to build the containers and any packages included within them (either CentOS or UBI), both are effectively the same. The ubi7 images are available to active Crunchy Data Customers only, and are built using the Red Hat Universal Base Image (UBI).</description>
     </item>
     
     <item>
@@ -80,7 +78,7 @@ If you mount a /pgconf volume, crunchy-postgres will look at that directory for 
       <description>The crunchy-backup container executes a full backup against another database container using the standard pg_basebackup utility that is included with PostgreSQL.
 Features The following features are supported by the crunchy-backup container:
  Backup and restoration from: pg_basebackup  Packages The crunchy-backup Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (12.2, 11.7, 10.12, 9.6.17 and 9.5.21) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     BACKUP_LABEL crunchy-backup The label for the backup.</description>
+ PostgreSQL (12.2, 11.7, 10.12, 9.6.17 and 9.5.21) CentOS7 - publicly available UBI7 - customers only  Environment Variables Required    Name Default Description     BACKUP_LABEL crunchy-backup The label for the backup.</description>
     </item>
     
     <item>
@@ -215,7 +213,7 @@ psql -h postgres-gis -U testuser userdb -c &#39;\dx&#39;  To validate that PostG
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgdump/</guid>
       <description>The crunchy-pgdump container executes either a pg_dump or pg_dumpall database backup against another PostgreSQL database.
 Packages The crunchy-pgdump Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (12.2, 11.7, 10.12, 9.6.17 and 9.5.21) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGDUMP_DB None Name of the database the backup is being performed on.</description>
+ PostgreSQL (12.2, 11.7, 10.12, 9.6.17 and 9.5.21) CentOS7 - publicly available UBI7 - customers only  Environment Variables Required    Name Default Description     PGDUMP_DB None Name of the database the backup is being performed on.</description>
     </item>
     
     <item>
@@ -237,7 +235,7 @@ The default pgPool examples use a Secret to hold the set of pgPool configuration
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgrestore/</guid>
       <description>The restore image provides a means of performing a restore of a dump from pg_dump or pg_dumpall via psql or pg_restore to a PostgreSQL container database.
 Packages The crunchy-pgrestore Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (12.2, 11.7, 10.12, 9.6.17 and 9.5.21) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGRESTORE_DB None Name of the database to connect to.</description>
+ PostgreSQL (12.2, 11.7, 10.12, 9.6.17 and 9.5.21) CentOS7 - publicly available UBI7 - customers only  Environment Variables Required    Name Default Description     PGRESTORE_DB None Name of the database to connect to.</description>
     </item>
     
     <item>
@@ -298,7 +296,7 @@ Features The following features are supported by the crunchy-postgres container:
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/</guid>
       <description>The Crunchy Scheduler container provides a cronlike microservice for automating pgBaseBackup and pgBackRest backups within a single namespace. The scheduler watches Kubernetes for config maps with the label crunchy-scheduler=true. If found the scheduler parses a JSON object contained in the config map and converts it into an scheduled task.
 Packages The Crunchy Scheduler Docker image contains the following packages:
- CentOS7 - publicly available RHEL7 - customers only Scheduler App  Environment Variables Required    Name Default Description     NAMESPACE None The namespace the microservice should watch.</description>
+ CentOS7 - publicly available UBI7 - customers only Scheduler App  Environment Variables Required    Name Default Description     NAMESPACE None The namespace the microservice should watch.</description>
     </item>
     
     <item>
