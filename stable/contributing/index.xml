@@ -16,9 +16,9 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/contributing/building/</guid>
-      <description>Build From Source This section of the documentation assumes you have followed the Installation Guide. Because the build pulls down some kubernetes dependencies, you will need sudo&amp;rsquo;ers privileges to do a build.
+      <description>Build From Source Please be sure to have your GPG Key and .repo file in the conf directory before proceeding. This section of the documentation assumes you have followed the Installation Guide. Because the build pulls down some Kubernetes dependencies, you will need sudo&amp;rsquo;ers privileges to do a build.
 You should do the following in order to build the containers locally and be able to submit patches:
- Fork the Crunchy-Containers GitHub repository. Containers builds are installed via a Makefile. You will need to run the following commands:</description>
+ Fork the Crunchy-Containers GitHub repository.</description>
     </item>
     
     <item>

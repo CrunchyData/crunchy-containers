@@ -33,7 +33,7 @@ For all environments, the script additionally creates:
       <description>The crunchy-backrest-restore container executes the pgBackRest utility, allowing FULL and DELTA restore capability. See the pgBackRest guide for more details.
 Features The following features are supported and required by the crunchy-backrest-restore container:
  Mounted pgbackrest.conf configuration file via the /pgconf volume Mounted /backrestrepo for access to pgBackRest archives  Packages The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (12.1, 11.6, 10.11, 9.</description>
+ PostgreSQL (12.2, 11.7, 10.12, 9.</description>
     </item>
     
     <item>
@@ -80,7 +80,7 @@ If you mount a /pgconf volume, crunchy-postgres will look at that directory for 
       <description>The crunchy-backup container executes a full backup against another database container using the standard pg_basebackup utility that is included with PostgreSQL.
 Features The following features are supported by the crunchy-backup container:
  Backup and restoration from: pg_basebackup  Packages The crunchy-backup Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (12.1, 11.6, 10.11, 9.6.16 and 9.5.20) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     BACKUP_LABEL crunchy-backup The label for the backup.</description>
+ PostgreSQL (12.2, 11.7, 10.12, 9.6.17 and 9.5.21) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     BACKUP_LABEL crunchy-backup The label for the backup.</description>
     </item>
     
     <item>
@@ -215,7 +215,7 @@ psql -h postgres-gis -U testuser userdb -c &#39;\dx&#39;  To validate that PostG
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgdump/</guid>
       <description>The crunchy-pgdump container executes either a pg_dump or pg_dumpall database backup against another PostgreSQL database.
 Packages The crunchy-pgdump Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (12.1, 11.6, 10.11, 9.6.16 and 9.5.20) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGDUMP_DB None Name of the database the backup is being performed on.</description>
+ PostgreSQL (12.2, 11.7, 10.12, 9.6.17 and 9.5.21) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGDUMP_DB None Name of the database the backup is being performed on.</description>
     </item>
     
     <item>
@@ -237,7 +237,7 @@ The default pgPool examples use a Secret to hold the set of pgPool configuration
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgrestore/</guid>
       <description>The restore image provides a means of performing a restore of a dump from pg_dump or pg_dumpall via psql or pg_restore to a PostgreSQL container database.
 Packages The crunchy-pgrestore Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (12.1, 11.6, 10.11, 9.6.16 and 9.5.20) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGRESTORE_DB None Name of the database to connect to.</description>
+ PostgreSQL (12.2, 11.7, 10.12, 9.6.17 and 9.5.21) CentOS7 - publicly available RHEL7 - customers only  Environment Variables Required    Name Default Description     PGRESTORE_DB None Name of the database to connect to.</description>
     </item>
     
     <item>
@@ -453,7 +453,7 @@ For this test, we place pg_audit statements within a SQL script and verify that 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/examples/administration/upgrade/</guid>
-      <description>Major Upgrade This example assumes you have run primary using a PostgreSQL 11 or 12 image such as centos7-12.1-4.2.0 prior to running this upgrade. The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
+      <description>Major Upgrade This example assumes you have run primary using a PostgreSQL 11 or 12 image such as centos7-12.2-4.2.2 prior to running this upgrade. The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
     </item>
     
     <item>
@@ -495,9 +495,9 @@ The Crunchy Container Suite is tested, developed, and examples are provided that
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/contributing/building/</guid>
-      <description>Build From Source This section of the documentation assumes you have followed the Installation Guide. Because the build pulls down some kubernetes dependencies, you will need sudo&amp;rsquo;ers privileges to do a build.
+      <description>Build From Source Please be sure to have your GPG Key and .repo file in the conf directory before proceeding. This section of the documentation assumes you have followed the Installation Guide. Because the build pulls down some Kubernetes dependencies, you will need sudo&amp;rsquo;ers privileges to do a build.
 You should do the following in order to build the containers locally and be able to submit patches:
- Fork the Crunchy-Containers GitHub repository. Containers builds are installed via a Makefile. You will need to run the following commands:</description>
+ Fork the Crunchy-Containers GitHub repository.</description>
     </item>
     
     <item>
