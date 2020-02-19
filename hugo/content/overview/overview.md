@@ -9,16 +9,19 @@ weight: 2
 
 The following provides a high level overview of each of the container images.
 
-## CentOS vs RHEL Images
+## CentOS vs Red Hat UBI Images
 
-The Crunchy Container suite provides two different OS images: `centos7` and `rhel7`.
-These images are indentical except for the packages used by `yum` to install the
-software.
+The Crunchy Container suite provides two different OS images: `centos7` and `ubi7`.  Both images
+utilize Crunchy Ceritifed RPM's for the installation of PostgreSQL, and outside of the base images
+utilized to build the containers and any packages included within them (either CentOS or UBI), both
+are effectively the same.  The `ubi7` images are available to active Crunchy Data Customers only,
+and are built using the Red Hat Universal Base Image (UBI).
 
-The `centos7` images, `yum` is configured to use PostgreSQL RPM Building Project.
+Please note that as of version 4.2.2 of the Crunchy Containers Suite, the `ubi7` images have
+replaced the `rhel7` images included in previous versions of the container suite.  For more
+information on Red Hat UBI, please see the following link:
 
-The `rhel7` images use Crunchy Certified RPMs and are only available to active
-Crunchy Data customers.
+https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image
 
 ## Database Images
 
