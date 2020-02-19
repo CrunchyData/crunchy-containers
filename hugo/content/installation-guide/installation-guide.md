@@ -94,7 +94,7 @@ line starting with #:
     export GOPATH=$HOME/cdev        # set path to your new Go workspace
     export GOBIN=$GOPATH/bin        # set bin path
     export PATH=$PATH:$GOBIN        # add Go bin path to your overall path
-    export CCP_BASEOS=centos7       # centos7 for Centos, rhel7 for Redhat
+    export CCP_BASEOS=centos7       # centos7 for Centos, ubi7 for Red Hat Universal Base Image
     export CCP_PGVERSION=10         # The PostgreSQL major version
     export CCP_PG_FULLVERSION=10.11
     export CCP_VERSION=4.3.0
@@ -112,10 +112,10 @@ effect.
 
 At this point we have almost all the prequesites required to build the Crunchy Container Suite.
 
-# Building RHEL Containers With Supported Crunchy Enterprise Software
+# Building UBI Containers With Supported Crunchy Enterprise Software
 
-Before you can build supported containers on RHEL and Crunchy Supported Software, you need
-to add the Crunchy repositories to your approved Yum repositories. Crunchy Enterprise Customer running on RHEL
+Before you can build supported containers on UBI and Crunchy Supported Software, you need
+to add the Crunchy repositories to your approved Yum repositories. Crunchy Enterprise Customer running on UBI
 can login and download the Crunchy repository key and yum repository from <https://access.crunchydata.com/>
 on the downloads page. Once the files are downloaded please place them into the `$CCPROOT/conf` directory (defined
 above in the environment variable section).

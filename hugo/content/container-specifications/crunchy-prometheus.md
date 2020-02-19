@@ -32,7 +32,7 @@ The crunchy-prometheus Docker image contains the following packages:
 
 * [Prometheus](https://prometheus.io)
 * CentOS7 - publicly available
-* RHEL7 - customers only
+* UBI7 - customers only
 
 ## Environment Variables
 

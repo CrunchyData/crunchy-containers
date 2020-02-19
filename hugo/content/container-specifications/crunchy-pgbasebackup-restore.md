@@ -16,7 +16,7 @@ The crunchy-pgbasebackup-restore Docker image contains the following packages:
 
 * rsync
 * CentOS7 - publicly available
-* RHEL7 - customers only
+* UBI7 - customers only
 
 ## Environment Variables
 
