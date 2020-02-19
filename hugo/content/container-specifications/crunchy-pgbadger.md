@@ -23,7 +23,7 @@ The crunchy-badger Docker image contains the following packages:
 
 * [pgBadger](http://dalibo.github.io/pgbadger)
 * CentOS7 - publicly available
-* RHEL7 - customers only
+* UBI7 - customers only
 
 ## Environment Variables
 

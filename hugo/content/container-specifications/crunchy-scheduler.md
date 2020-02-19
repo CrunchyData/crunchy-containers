@@ -16,7 +16,7 @@ converts it into an scheduled task.
 The Crunchy Scheduler Docker image contains the following packages:
 
 * CentOS7 - publicly available
-* RHEL7 - customers only
+* UBI7 - customers only
 * Scheduler App
 
 ## Environment Variables
