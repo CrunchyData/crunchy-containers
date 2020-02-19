@@ -30,7 +30,7 @@ The crunchy-pgpool Docker image contains the following packages (versions vary d
 * PostgreSQL (12.2, 11.7, 10.12, 9.6.17 and 9.5.21)
 * [pgPool II](http://www.pgpool.net/mediawiki/index.php/Main_Page)
 * CentOS7 - publicly available
-* RHEL7 - customers only
+* UBI7 - customers only
 
 ## Environment Variables
 

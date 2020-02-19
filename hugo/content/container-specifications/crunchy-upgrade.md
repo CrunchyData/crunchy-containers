@@ -37,7 +37,7 @@ The crunchy-upgrade Docker image contains the following packages (versions vary 
 
 * PostgreSQL (12.2, 11.7, 10.12, 9.6.17 and 9.5.21)
 * CentOS7 - publicly available
-* RHEL7 - customers only
+* UBI7 - customers only
 
 ## Environment Variables
 
