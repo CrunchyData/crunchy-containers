@@ -77,6 +77,12 @@ set_default_pgha_autoconfig_env()  {
         default_pgha_autoconfig_env_vars+=("PGHA_SYNC_REPLICATION")
     fi
 
+    if [[ ! -v PGHA_STANDBY ]]
+    then
+        export PGHA_STANDBY="false"
+        default_pgha_autoconfig_env_vars+=("PGHA_STANDBY")
+    fi
+
     if [[ ! ${#default_pgha_autoconfig_env_vars[@]} -eq 0 ]]
     then
         pgha_autoconfig_env_vars=$(printf ', %s' "${default_pgha_autoconfig_env_vars[@]}")
@@ -336,6 +342,12 @@ build_bootstrap_config_file() {
         echo_info "PGDATA directory is empty on node identifed as Primary"
         echo_info "initdb configuration will be applied to intitilize a new database"
         /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-initdb.yaml"
+    fi
+
+    if [[ "${PGHA_STANDBY}" == "true" ]]
+    then
+        echo_info "Applying configuration to bootstrap a standby cluster"
+        /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-standby.yaml"
     fi
 
     if [[ "${PGHA_SYNC_REPLICATION}" == "true" ]]

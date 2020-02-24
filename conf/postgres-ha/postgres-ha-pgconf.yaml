@@ -9,6 +9,11 @@ postgresql:
     command: '/opt/cpm/bin/pgbackrest/pgbackrest-create-replica.sh'
     keep_data: true
     no_params: true
+  pgbackrest_standby:
+    command: '/opt/cpm/bin/pgbackrest-create-replica.sh'
+    keep_data: true
+    no_params: true
+    no_master: 1
   remove_data_directory_on_rewind_failure: true
   callbacks:
     on_role_change: /opt/cpm/bin/callbacks/pgha-on-role-change.sh

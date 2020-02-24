@@ -1,0 +1,7 @@
+---
+bootstrap:
+  dcs:
+    standby_cluster:
+      create_replica_methods:
+        - pgbackrest_standby
+      restore_command: 'source /tmp/pgbackrest_env.sh && pgbackrest archive-get %f "%p"'
