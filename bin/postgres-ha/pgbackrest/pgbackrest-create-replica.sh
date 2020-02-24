@@ -54,8 +54,20 @@ else
     echo_info "Replica PGDATA cleaned, a non-delta restore will be peformed"
 fi
 
+# obtain the type of repo to use for replica creation (e.g. AWS S3 or local) using the value set
+# the 'replica-bootstrap-repo-type' configuration file (if present), and then set the repo type
+# for the pgBackRest restore command as applicable using the --repo-type option
+if [[ -f /pgconf/replica-bootstrap-repo-type ]]
+then
+    replica_bootstrap_repo_type="$(cat /pgconf/replica-bootstrap-repo-type)"
+    if [[ "${replica_bootstrap_repo_type}" != "" ]]
+    then
+        restore_cmd_repo_type="--repo-type=${replica_bootstrap_repo_type}"
+    fi
+fi
+
 # perform the restore, setting the "--delta" option if populated
-pgbackrest restore ${delta}
+pgbackrest restore ${delta} ${restore_cmd_repo_type}
 err_check "$?" "pgBackRest Replica Creation" "pgBackRest restore failed when creating replica"
 
 echo_info "Replica pgBackRest restore complete"
