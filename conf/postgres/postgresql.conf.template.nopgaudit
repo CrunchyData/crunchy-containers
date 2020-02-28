@@ -60,8 +60,8 @@ listen_addresses = '*'		# what IP address(es) to listen on;
 					# comma-separated list of addresses;
 					# defaults to 'localhost'; use '*' for all
 					# (change requires restart)
-port = PG_PRIMARY_PORT				# (change requires restart)
-max_connections = MAX_CONNECTIONS			# (change requires restart)
+port = $PG_PRIMARY_PORT				# (change requires restart)
+max_connections = $MAX_CONNECTIONS			# (change requires restart)
 #superuser_reserved_connections = 3	# (change requires restart)
 unix_socket_directories = '/tmp'	# comma-separated list of directories
 					# (change requires restart)
@@ -110,16 +110,16 @@ unix_socket_permissions = 0777		# begin with 0 to use octal notation
 
 # - Memory -
 
-shared_buffers = SHARED_BUFFERS			# min 128kB
+shared_buffers = $SHARED_BUFFERS			# min 128kB
 					# (change requires restart)
 #huge_pages = try			# on, off, or try
 					# (change requires restart)
-temp_buffers = TEMP_BUFFERS			# min 800kB
+temp_buffers = $TEMP_BUFFERS			# min 800kB
 #max_prepared_transactions = 0		# zero disables the feature
 					# (change requires restart)
 # Caution: it is not advisable to set max_prepared_transactions nonzero unless
 # you actively intend to use prepared transactions.
-work_mem = WORK_MEM				# min 64kB
+work_mem = $WORK_MEM				# min 64kB
 #maintenance_work_mem = 64MB		# min 1MB
 #replacement_sort_tuples = 150000	# limits use of replacement selection sort
 #autovacuum_work_mem = -1		# min 1MB, or -1 to use maintenance_work_mem
