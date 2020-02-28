@@ -288,12 +288,7 @@ function initialize_replica_pre12() {
     echo_info "Setting up recovery using methodology for PostgreSQL 11 and below."
     # Basically, we have a preconfigured recovery file with some settings in it,
     # And we substitute out some of the settings
-    cp /opt/cpm/conf/pgrepl-recovery.conf /tmp
-    sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pgrepl-recovery.conf
-    sed -i "s/PG_PRIMARY_HOST/$PG_PRIMARY_HOST/g" /tmp/pgrepl-recovery.conf
-    sed -i "s/PG_PRIMARY_PORT/$PG_PRIMARY_PORT/g" /tmp/pgrepl-recovery.conf
-    sed -i "s/APPLICATION_NAME/$APPLICATION_NAME/g" /tmp/pgrepl-recovery.conf
-    cp /tmp/pgrepl-recovery.conf $PGDATA/recovery.conf
+    envsubst < /opt/cpm/conf/pgrepl-recovery.conf > $PGDATA/recovery.conf
 }
 
 # Function to create the database if the PGDATA folder is empty, or do nothing if PGDATA

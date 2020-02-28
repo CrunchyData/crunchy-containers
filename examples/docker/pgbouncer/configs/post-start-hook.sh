@@ -24,8 +24,7 @@ then
 
     pgisready 'postgres' ${PGHOST?} "${PG_PRIMARY_PORT}" 'postgres'	
 
-    cp /pgconf/pgbouncer-auth.sql /tmp
-    sed -i "s/PGBOUNCER_PASSWORD/${PGBOUNCER_PASSWORD?}/g" /tmp/pgbouncer-auth.sql	
+    envsubst < /pgconf/pgbouncer-auth.sql > /tmp/pgbouncer-auth.sql
 
     for DB in $(psql --port="${PG_PRIMARY_PORT}" -t -c "SELECT datname FROM pg_database WHERE datname NOT IN ('template0', 'template1')")
     do
