@@ -35,21 +35,22 @@ then
     echo_info "Custom configuration detected.."
     CONF_DIR='/conf'
 else
+    set -a
+    : "${SCRAPE_INTERVAL:-10s}"
+    : "${SCRAPE_TIMEOUT:-10s}"
+    : "${JOB_NAME:-crunchy-collect}"
+    set +a
     # Check if a kube deployment
     if [[ -d /var/run/secrets/kubernetes.io ]]
     then
         echo_info "Kube deployment detected.  Applying kube default config.."
-        cp /opt/cpm/conf/prometheus-kube.yml /data/prometheus.yml
+        envsubst < /opt/cpm/conf/prometheus-kube.yml > /data/prometheus.yml
     # Docker deployment
     else
         echo_info "Docker deployment detected.  Applying docker default config.."
-        cp /opt/cpm/conf/prometheus-docker.yml /data/prometheus.yml
         env_check_err "COLLECT_HOST"
-        sed -i "s|COLLECT_HOST|${COLLECT_HOST?}|g" /data/prometheus.yml
+        envsubst < /opt/cpm/conf/prometheus-docker.yml > /data/prometheus.yml
     fi
-    sed -i "s|SCRAPE_INTERVAL|${SCRAPE_INTERVAL:-10s}|g" /data/prometheus.yml
-    sed -i "s|SCRAPE_TIMEOUT|${SCRAPE_TIMEOUT:-10s}|g" /data/prometheus.yml
-    sed -i "s|JOB_NAME|${JOB_NAME:-crunchy-collect}|g" /data/prometheus.yml
 fi
 
 echo_info "Starting Prometheus.."

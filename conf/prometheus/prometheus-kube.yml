@@ -1,11 +1,11 @@
 ---
 global:
-  scrape_interval: SCRAPE_INTERVAL
-  scrape_timeout: SCRAPE_TIMEOUT
+  scrape_interval: $SCRAPE_INTERVAL
+  scrape_timeout: $SCRAPE_TIMEOUT
   evaluation_interval: 5s
 
 scrape_configs:
-- job_name: 'JOB_NAME'
+- job_name: '$JOB_NAME'
   kubernetes_sd_configs:
   - role: pod
 
