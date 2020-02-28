@@ -228,19 +228,13 @@ function initialize_primary() {
 
 
         echo_info "Loading setup.sql.." >> /tmp/start-db.log
-        cp /opt/cpm/bin/setup.sql /tmp
         if [ -f /pgconf/setup.sql ]; then
             echo_info "Using setup.sql from /pgconf.."
-            cp /pgconf/setup.sql /tmp
+            envsubst < /pgconf/setup.sql > /tmp/setup.sql
         else
             echo_info "Using the /opt/cpm/bin/setup.sql"
+            envsubst < /opt/cpm/bin/setup.sql > /tmp/setup.sql
         fi
-        sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/setup.sql
-        sed -i "s/PG_PRIMARY_PASSWORD/$PG_PRIMARY_PASSWORD/g" /tmp/setup.sql
-        sed -i "s/PG_USER/$PG_USER/g" /tmp/setup.sql
-        sed -i "s/PG_PASSWORD/$PG_PASSWORD/g" /tmp/setup.sql
-        sed -i "s/PG_DATABASE/$PG_DATABASE/g" /tmp/setup.sql
-        sed -i "s/PG_ROOT_PASSWORD/$PG_ROOT_PASSWORD/g" /tmp/setup.sql
 
         # Set PGHOST to use the socket in /tmp. unix_socket_directory is changed
         # to use /tmp instead of /var/run.
