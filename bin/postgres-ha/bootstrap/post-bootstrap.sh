@@ -24,16 +24,11 @@ echo_info "postgres-ha post-bootstrap starting"
 if [[ -f "/pgconf/setup.sql" ]]
 then
     echo_info "Using custom setup.sql"
-    cp "/pgconf/setup.sql" "/tmp"
+    envsubst < "/pgconf/setup.sql" > "/tmp/setup.sql"
 else
     echo_info "Using default setup.sql"
-    cp "/opt/cpm/bin/sql/setup.sql" "/tmp"
+    envsubst < "/opt/cpm/bin/sql/setup.sql" > "/tmp/setup.sql"
 fi
-
-# Always replace PGHA_USER_PASSWORD before PGHA_USER
-sed -i "s/PGHA_USER_PASSWORD/$PGHA_USER_PASSWORD/g" "/tmp/setup.sql"
-sed -i "s/PGHA_USER/$PGHA_USER/g" "/tmp/setup.sql"
-sed -i "s/PGHA_DATABASE/$PGHA_DATABASE/g" "/tmp/setup.sql"
 
 echo_info "Running setup.sql file"
 psql < "/tmp/setup.sql"
