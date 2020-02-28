@@ -49,21 +49,23 @@ then
     echo_info "Custom pgbouncer.ini file detected.."
 else
     echo_info "No custom pgbouncer.ini detected.  Applying default config.."
-    cp /opt/cpm/conf/pgbouncer.ini ${CONF_DIR?}/pgbouncer.ini
+    touch ${CONF_DIR?}/pgbouncer.ini
 
     env_check_err "PG_SERVICE"
 
-    sed -i "s/DEFAULT_POOL_SIZE/${DEFAULT_POOL_SIZE:-20}/g" ${CONF_DIR?}/pgbouncer.ini
-    sed -i "s/MAX_CLIENT_CONN/${MAX_CLIENT_CONN:-100}/g" ${CONF_DIR?}/pgbouncer.ini
-    sed -i "s/MAX_DB_CONNECTIONS/${MAX_DB_CONNECTIONS:-0}/g" ${CONF_DIR?}/pgbouncer.ini
-    sed -i "s/MIN_POOL_SIZE/${MIN_POOL_SIZE:-0}/g" ${CONF_DIR?}/pgbouncer.ini
-    sed -i "s/POOL_MODE/${POOL_MODE:-session}/g" ${CONF_DIR?}/pgbouncer.ini
-    sed -i "s/PG_SERVICE/${PG_SERVICE}/g" ${CONF_DIR?}/pgbouncer.ini
-    sed -i "s/RESERVE_POOL_SIZE/${RESERVE_POOL_SIZE:-0}/g" ${CONF_DIR?}/pgbouncer.ini
-    sed -i "s/RESERVE_POOL_TIMEOUT/${RESERVE_POOL_TIMEOUT:-5}/g" ${CONF_DIR?}/pgbouncer.ini
-    sed -i "s/QUERY_TIMEOUT/${QUERY_TIMEOUT:-0}/g" ${CONF_DIR?}/pgbouncer.ini
-    sed -i "s/IGNORE_STARTUP_PARAMETERS/${IGNORE_STARTUP_PARAMETERS:-extra_float_digits}/g" ${CONF_DIR?}/pgbouncer.ini
-    sed -i "s/PG_PORT/${PG_PORT:-5432}/g" ${CONF_DIR?}/pgbouncer.ini
+    set -a
+    : "${DEFAULT_POOL_SIZE:-20}"
+    : "${MAX_CLIENT_CONN:-100}"
+    : "${MAX_DB_CONNECTIONS:-0}"
+    : "${MIN_POOL_SIZE:-0}"
+    : "${POOL_MODE:-session}"
+    : "${RESERVE_POOL_SIZE:-0}"
+    : "${RESERVE_POOL_TIMEOUT:-5}"
+    : "${QUERY_TIMEOUT:-0}"
+    : "${IGNORE_STARTUP_PARAMETERS:-extra_float_digits}"
+    : "${PG_PORT:-5432}"
+    set +a
+    envsubst < /opt/cpm/conf/pgbouncer.ini > ${CONF_DIR?}/pgbouncer.ini
 
     echo "${PG_SERVICE}:${PG_PORT:-5432}:*:pgbouncer:${PGBOUNCER_PASSWORD}" >> /tmp/.pgpass
 fi
