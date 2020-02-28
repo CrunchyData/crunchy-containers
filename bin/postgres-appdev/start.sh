@@ -127,9 +127,7 @@ function initdb_logic() {
     echo_info "Overlaying PostgreSQL's default configuration with customized settings.."
     cp /tmp/postgresql.conf $PGDATA
 
-    cp /opt/cpm/conf/pg_hba.conf /tmp
-    sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pg_hba.conf
-    cp /tmp/pg_hba.conf $PGDATA
+    envsubst < /opt/cpm/conf/pg_hba.conf > $PGDATA/pg_hba.conf
 }
 
 function fill_conf_file() {
