@@ -32,6 +32,14 @@ trap 'trap_sigterm' SIGINT SIGTERM
 env_check_err "PGADMIN_SETUP_EMAIL"
 env_check_err "PGADMIN_SETUP_PASSWORD"
 
+if [[ -z "${SERVER_PATH}" ]]
+then
+    sed -i "/RedirectMatch/d" /var/lib/pgadmin/pgadmin.conf
+fi
+set -a
+: "${SERVER_PATH:-/}"
+: "${SERVER_PORT:-5050}"
+set +a
 if [[ ${ENABLE_TLS:-false} == 'true' ]]
 then
     echo_info "TLS enabled. Applying https configuration.."
@@ -40,20 +48,14 @@ then
         echo_err "ENABLE_TLS true but /certs/server.key or /certs/server.crt not found, aborting"
         exit 1
     fi
-    cp /opt/cpm/conf/pgadmin-https.conf /var/lib/pgadmin/pgadmin.conf
+    envsubst < /opt/cpm/conf/pgadmin-https.conf > /var/lib/pgadmin/pgadmin.conf
 else
     echo_info "TLS disabled. Applying http configuration.."
-    cp /opt/cpm/conf/pgadmin-http.conf /var/lib/pgadmin/pgadmin.conf
+    envsubst < /opt/cpm/conf/pgadmin-http.conf > /var/lib/pgadmin/pgadmin.conf
 fi
 
 cp /opt/cpm/conf/config_local.py /var/lib/pgadmin/config_local.py
 
-if [[ -z "${SERVER_PATH}" ]]
-then
-    sed -i "/RedirectMatch/d" /var/lib/pgadmin/pgadmin.conf
-fi
-sed -i "s|SERVER_PATH|${SERVER_PATH:-/}|g" /var/lib/pgadmin/pgadmin.conf
-sed -i "s|SERVER_PORT|${SERVER_PORT:-5050}|g" /var/lib/pgadmin/pgadmin.conf
 sed -i "s/^DEFAULT_SERVER_PORT.*/DEFAULT_SERVER_PORT = ${SERVER_PORT:-5050}/" /var/lib/pgadmin/config_local.py
 sed -i "s|\"pg\":.*|\"pg\": \"/usr/pgsql-${PGVERSION?}/bin\",|g" /var/lib/pgadmin/config_local.py
 
