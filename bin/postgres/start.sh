@@ -149,24 +149,23 @@ function initdb_logic() {
 }
 
 function fill_conf_file() {
-    env_check_info "TEMP_BUFFERS" "Setting TEMP_BUFFERS to ${TEMP_BUFFERS:-8MB}."
-    env_check_info "LOG_MIN_DURATION_STATEMENT" "Setting LOG_MIN_DURATION_STATEMENT to ${LOG_MIN_DURATION_STATEMENT:-60000}."
-    env_check_info "LOG_STATEMENT" "Setting LOG_STATEMENT to ${LOG_STATEMENT:-none}."
-    env_check_info "MAX_CONNECTIONS" "Setting MAX_CONNECTIONS to ${MAX_CONNECTIONS:-100}."
-    env_check_info "SHARED_BUFFERS" "Setting SHARED_BUFFERS to ${SHARED_BUFFERS:-128MB}."
-    env_check_info "WORK_MEM" "Setting WORK_MEM to ${WORK_MEM:-4MB}."
-    env_check_info "MAX_WAL_SENDERS" "Setting MAX_WAL_SENDERS to ${MAX_WAL_SENDERS:-6}."
+    : "${TEMP_BUFFERS:-8MB}"
+    : "${LOG_MIN_DURATION_STATEMENT:-60000}"
+    : "${LOG_STATEMENT:-none}"
+    : "${MAX_CONNECTIONS:-100}"
+    : "${SHARED_BUFFERS:-128MB}"
+    : "${WORK_MEM:-4MB}"
+    : "${MAX_WAL_SENDERS:-6}"
 
-    cp /opt/cpm/conf/postgresql.conf.template /tmp/postgresql.conf
+    env_check_info "TEMP_BUFFERS" "Setting TEMP_BUFFERS to $TEMP_BUFFERS."
+    env_check_info "LOG_MIN_DURATION_STATEMENT" "Setting LOG_MIN_DURATION_STATEMENT to $LOG_MIN_DURATION_STATEMENT."
+    env_check_info "LOG_STATEMENT" "Setting LOG_STATEMENT to $LOG_STATEMENT."
+    env_check_info "MAX_CONNECTIONS" "Setting MAX_CONNECTIONS to $MAX_CONNECTIONS."
+    env_check_info "SHARED_BUFFERS" "Setting SHARED_BUFFERS to $SHARED_BUFFERS."
+    env_check_info "WORK_MEM" "Setting WORK_MEM to $WORK_MEM."
+    env_check_info "MAX_WAL_SENDERS" "Setting MAX_WAL_SENDERS to $MAX_WAL_SENDERS."
 
-    sed -i "s/TEMP_BUFFERS/${TEMP_BUFFERS:-8MB}/g" /tmp/postgresql.conf
-    sed -i "s/LOG_MIN_DURATION_STATEMENT/${LOG_MIN_DURATION_STATEMENT:-60000}/g" /tmp/postgresql.conf
-    sed -i "s/LOG_STATEMENT/${LOG_STATEMENT:-none}/g" /tmp/postgresql.conf
-    sed -i "s/MAX_CONNECTIONS/${MAX_CONNECTIONS:-100}/g" /tmp/postgresql.conf
-    sed -i "s/SHARED_BUFFERS/${SHARED_BUFFERS:-128MB}/g" /tmp/postgresql.conf
-    sed -i "s/WORK_MEM/${WORK_MEM:-4MB}/g" /tmp/postgresql.conf
-    sed -i "s/MAX_WAL_SENDERS/${MAX_WAL_SENDERS:-6}/g" /tmp/postgresql.conf
-    sed -i "s/PG_PRIMARY_PORT/${PG_PRIMARY_PORT}/g" /tmp/postgresql.conf
+    envsubst < /opt/cpm/conf/postgresql.conf.template > /tmp/postgresql.conf
 }
 
 function create_pgpass() {

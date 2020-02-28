@@ -60,8 +60,8 @@ listen_addresses = '*'		# what IP address(es) to listen on;
 					# comma-separated list of addresses;
 					# defaults to 'localhost'; use '*' for all
 					# (change requires restart)
-port = PG_PRIMARY_PORT				# (change requires restart)
-max_connections = MAX_CONNECTIONS			# (change requires restart)
+port = $PG_PRIMARY_PORT				# (change requires restart)
+max_connections = $MAX_CONNECTIONS			# (change requires restart)
 #superuser_reserved_connections = 3	# (change requires restart)
 unix_socket_directories = '/tmp'	# comma-separated list of directories
 					# (change requires restart)
@@ -110,16 +110,16 @@ unix_socket_permissions = 0777		# begin with 0 to use octal notation
 
 # - Memory -
 
-shared_buffers = SHARED_BUFFERS			# min 128kB
+shared_buffers = $SHARED_BUFFERS			# min 128kB
 					# (change requires restart)
 #huge_pages = try			# on, off, or try
 					# (change requires restart)
-temp_buffers = TEMP_BUFFERS			# min 800kB
+temp_buffers = $TEMP_BUFFERS			# min 800kB
 #max_prepared_transactions = 0		# zero disables the feature
 					# (change requires restart)
 # Caution: it is not advisable to set max_prepared_transactions nonzero unless
 # you actively intend to use prepared transactions.
-work_mem = WORK_MEM				# min 64kB
+work_mem = $WORK_MEM				# min 64kB
 #maintenance_work_mem = 64MB		# min 1MB
 #replacement_sort_tuples = 150000	# limits use of replacement selection sort
 #autovacuum_work_mem = -1		# min 1MB, or -1 to use maintenance_work_mem
@@ -229,7 +229,7 @@ wal_level = hot_standby			# minimal, replica, or logical
 
 # Set these on the master and on any standby that will send replication data.
 
-max_wal_senders = MAX_WAL_SENDERS		# max number of walsender processes
+max_wal_senders = $MAX_WAL_SENDERS		# max number of walsender processes
 				# (change requires restart)
 wal_keep_segments = 400		# in logfile segments, 16MB each; 0 disables
 #wal_sender_timeout = 60s	# in milliseconds; 0 disables
@@ -410,7 +410,7 @@ log_rotation_size = 0			# Automatic rotation of logfiles will
 					#   fatal
 					#   panic (effectively off)
 
-log_min_duration_statement = LOG_MIN_DURATION_STATEMENT	# -1 is disabled, 0 logs all statements
+log_min_duration_statement = $LOG_MIN_DURATION_STATEMENT	# -1 is disabled, 0 logs all statements
 					# and their durations, > 0 logs only
 					# statements running at least this number
 					# of milliseconds
@@ -450,7 +450,7 @@ log_line_prefix = '%t [%p]: [%l-1] user=%u,db=%d,app=%a,client=%h'			# special v
 					#   %% = '%'
 					# e.g. '<%u%%%d> '
 log_lock_waits = on			# log lock waits >= deadlock_timeout
-log_statement = 'LOG_STATEMENT'		# none, ddl, mod, all
+log_statement = '$LOG_STATEMENT'		# none, ddl, mod, all
 #log_replication_commands = off
 #log_temp_files = -1			# log temporary files equal or larger
 					# than the specified size in kilobytes;
