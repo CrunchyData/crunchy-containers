@@ -1,4 +1,4 @@
 ---
 bootstrap:
   initdb:
-  - waldir: PGHA_WALDIR
+  - waldir: $PGHA_WALDIR_ESCAPED

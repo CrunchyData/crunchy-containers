@@ -305,8 +305,8 @@ build_bootstrap_config_file() {
 
     if [[ "${PGHA_ENABLE_WALDIR}" == "true" ]]
     then
-        cp "/opt/cpm/conf/postgres-ha-waldir.yaml" "/tmp"
-        sed -i "s/PGHA_WALDIR/${PGHA_WALDIR//\//\\/}/g" "/tmp/postgres-ha-waldir.yaml"
+        export PGHA_WALDIR_ESCAPED="${PGHA_WALDIR//\//\\/}"
+        envsubst < "/opt/cpm/conf/postgres-ha-waldir.yaml" > "/tmp/postgres-ha-waldir.yaml"
         echo_info "Applying custom WAL dir to postgres-ha configuration"
         # append when merging initdb contents for WAL dir instead of overwriting
         /opt/cpm/bin/yq m -i -a "${bootstrap_file}" "/tmp/postgres-ha-waldir.yaml"
