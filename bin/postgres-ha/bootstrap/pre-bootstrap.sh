@@ -296,9 +296,7 @@ build_bootstrap_config_file() {
 
     if [[ "${PGHA_BASE_PG_CONFIG}" == "true" ]]
     then
-        cp "/opt/cpm/conf/postgres-ha-pgconf.yaml" "/tmp"
-        sed -i "s/PGHA_USER/$PGHA_USER/g" "/tmp/postgres-ha-pgconf.yaml"
-        sed -i "s/PATRONI_REPLICATION_USERNAME/$PATRONI_REPLICATION_USERNAME/g" "/tmp/postgres-ha-pgconf.yaml"
+        envsubst < "/opt/cpm/conf/postgres-ha-pgconf.yaml" > "/tmp/postgres-ha-pgconf.yaml"
         echo_info "Applying base postgres config to postgres-ha configuration"
         /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/tmp/postgres-ha-pgconf.yaml"
     else
