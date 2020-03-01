@@ -32,7 +32,7 @@ cluster="${3}"
 echo_info "${action} callback called (action=${action} role=${role} cluster=${cluster})"
 
 # get pgbackrest env vars
-source /opt/cpm/bin/pgbackrest-set-env.sh
+source /opt/cpm/bin/pgbackrest/pgbackrest-set-env.sh
 
 # if pgBackRest is enabled and the node has been promoted to "primary" (i.e. "master"), and if 
 # pgBackRest is enabled and is not utilizing a dedicated repository host, then take a new backup

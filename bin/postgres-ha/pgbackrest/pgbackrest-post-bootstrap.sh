@@ -74,7 +74,7 @@ create_initial_backup() {
 }
 
 # First load pgBackRest env vars set during pre-bootstrap
-source /opt/cpm/bin/pgbackrest-set-env.sh
+source /opt/cpm/bin/pgbackrest/pgbackrest-set-env.sh
 
 create_pgbackrest_dirs
 
