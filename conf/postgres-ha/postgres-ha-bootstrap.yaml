@@ -4,4 +4,5 @@ bootstrap:
     postgresql:
       parameters:
         unix_socket_directories: /tmp,/crunchyadm
+        wal_level: logical
   post_bootstrap: /opt/cpm/bin/bootstrap/post-bootstrap.sh
