@@ -3,4 +3,4 @@ bootstrap:
   dcs:
     postgresql:
       parameters:
-        archive_command: 'source /opt/cpm/bin/pgbackrest-set-env.sh && pgbackrest archive-push %p ; pgbackrest archive-push --repo-type=s3 %p'
+        archive_command: 'source /opt/cpm/bin/pgbackrest/pgbackrest-set-env.sh && pgbackrest archive-push %p ; pgbackrest archive-push --repo-type=s3 %p'
