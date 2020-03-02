@@ -419,6 +419,14 @@
   version = "v3.4.0"
 
 [[projects]]
+  branch = "v2"
+  digest = "1:e8c48aa61ea272e211858e52979ad4d114c60bfe6900d12431ac697482100b0a"
+  name = "gopkg.in/robfig/cron.v2"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "be2e0b0deed5a68ffee390b4583a13aff8321535"
+
+[[projects]]
   digest = "1:55b110c99c5fdc4f14930747326acce56b52cfce60b24b1c03ef686ac0e46bb1"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
@@ -623,6 +631,7 @@
     "github.com/sirupsen/logrus",
     "github.com/spf13/cobra",
     "gopkg.in/ory-am/dockertest.v3",
+    "gopkg.in/robfig/cron.v2",
     "k8s.io/api/apps/v1",
     "k8s.io/api/batch/v1",
     "k8s.io/api/core/v1",
