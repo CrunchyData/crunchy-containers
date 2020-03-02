@@ -35,6 +35,15 @@ function trap_sigterm() {
 
 # Set default env vars for the collect container
 set_default_collect_env() {
+    if [[ ! -v POSTGRES_EXPORTER_PORT ]]
+    then
+        export POSTGRES_EXPORTER_PORT="9187"
+        default_collect_env_vars+=("POSTGRES_EXPORTER_PORT=${POSTGRES_EXPORTER_PORT}")
+    fi
+}
+
+# Set default PG env vars for the collect container
+set_default_pg_collect_env() {
 
     if [[ ! -v COLLECT_PG_HOST ]]
     then
@@ -59,18 +68,6 @@ set_default_collect_env() {
         export COLLECT_PG_USER="ccp_monitoring"
         default_collect_env_vars+=("COLLECT_PG_USER=${COLLECT_PG_USER}")
     fi
-
-    if [[ ! -v POSTGRES_EXPORTER_PORT ]]
-    then
-        export POSTGRES_EXPORTER_PORT="9187"
-        default_collect_env_vars+=("POSTGRES_EXPORTER_PORT=${POSTGRES_EXPORTER_PORT}")
-    fi
-
-    if [[ ! ${#default_collect_env_vars[@]} -eq 0 ]]
-    then
-        echo_info "Defaults have been set for the following collect env vars:"
-        echo_info "[${default_collect_env_vars[*]}]"
-    fi
 }
 
 # Set the PG user credentials for use in the postgres exporter PG connection string
@@ -92,16 +89,26 @@ set_collect_pg_credentials() {
 
 trap 'trap_sigterm' SIGINT SIGTERM
 
+set_default_collect_env
+
 if [[ ! -v DATA_SOURCE_NAME ]]
 then
     set_collect_pg_credentials
-    set_default_collect_env
+    set_default_pg_collect_env
     if [[ ! -z "${COLLECT_PG_PARAMS}" ]]
     then
         COLLECT_PG_PARAMS="?${COLLECT_PG_PARAMS}"
     fi
     export DATA_SOURCE_NAME="postgresql://${COLLECT_PG_USER}:${COLLECT_PG_PASSWORD}\
 @${COLLECT_PG_HOST}:${COLLECT_PG_PORT}/${COLLECT_PG_DATABASE}${COLLECT_PG_PARAMS}"
+fi
+
+
+
+if [[ ! ${#default_collect_env_vars[@]} -eq 0 ]]
+then
+    echo_info "Defaults have been set for the following collect env vars:"
+    echo_info "[${default_collect_env_vars[*]}]"
 fi
 
 # Check that postgres is accepting connections.
