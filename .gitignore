@@ -1,12 +1,9 @@
-*.whl
-.asciidoc/
 bootstrap-*.zip*
 grafana.tar.gz*
 prometheus.tar.gz*
-bin/crunchy-sim
 postgres_exporter
 postgres_exporter.tar.gz*
 tools/test-harness/vendor
 tools/pgmonitor/
-public
 yq
+/vendor/
