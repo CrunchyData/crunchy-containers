@@ -22,7 +22,7 @@ fi
 echo "Moving to the Hugo subdirectory..."
 
 # Navigate to directory containing Hugo files
-cd ${CCPROOT?}/hugo/
+cd ${CCPROOT?}/docs/
 
 # Generate documents under /docs/
 echo "Generating Hugo webpages..."
