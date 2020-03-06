@@ -17,7 +17,7 @@ enableMissingTranslationPlaceholders = false
 timeout=20000
 
 [params]
-editURL = "https://github.com/CrunchyData/crunchy-containers/edit/master/hugo/content/"
+editURL = "https://github.com/CrunchyData/crunchy-containers/edit/master/docs/content/"
 showVisitedLinks = false # default is false
 themeStyle = "flex" # "original" or "flex" # default "flex"
 themeVariant = "" # choose theme variant "green", "gold" , "gray", "blue" (default)

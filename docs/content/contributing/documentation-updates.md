@@ -17,7 +17,7 @@ git submodule update
 You can then start the server by running the following commands -
 
 ```bash
-cd $CCPROOT/hugo/
+cd $CCPROOT/docs/
 hugo server
 ```
 
