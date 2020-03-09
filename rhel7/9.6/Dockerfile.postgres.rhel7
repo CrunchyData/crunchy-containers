@@ -67,14 +67,6 @@ RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
     chmod -R g=u /opt/cpm /var/lib/pgsql \
     /pgdata /pgwal /pgconf /recover /backrestrepo
 
-# add volumes to allow override of pg_hba.conf and postgresql.conf
-# add volumes to offer a restore feature
-# add volumes to allow storage of postgres WAL segment files
-# add volumes to locate WAL files to recover with
-# add volumes for pgbackrest to write to
-
-VOLUME ["/sshd", "/pgconf", "/pgdata", "/pgwal", "/recover", "/backrestrepo"]
-
 # open up the postgres port
 EXPOSE 5432
 
@@ -87,6 +79,14 @@ RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
 
 RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh
+
+# add volumes to allow override of pg_hba.conf and postgresql.conf
+# add volumes to offer a restore feature
+# add volumes to allow storage of postgres WAL segment files
+# add volumes to locate WAL files to recover with
+# add volumes for pgbackrest to write to
+
+VOLUME ["/sshd", "/pgconf", "/pgdata", "/pgwal", "/recover", "/backrestrepo"]
 
 ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
 
