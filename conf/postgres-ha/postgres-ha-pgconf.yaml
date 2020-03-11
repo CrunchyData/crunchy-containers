@@ -10,7 +10,7 @@ postgresql:
     keep_data: true
     no_params: true
   pgbackrest_standby:
-    command: '/opt/cpm/bin/pgbackrest-create-replica.sh'
+    command: '/opt/cpm/bin/pgbackrest/pgbackrest-create-replica.sh'
     keep_data: true
     no_params: true
     no_master: 1
