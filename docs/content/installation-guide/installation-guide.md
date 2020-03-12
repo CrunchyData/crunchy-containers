@@ -54,14 +54,14 @@ not plan on building the containers then installing _git_ is sufficient.
 
 ## CentOS 7 only
 
-    $ sudo yum -y install epel-release --enablerepo=extras
+    $ sudo yum -y install epel-release
     $ sudo yum -y install golang git
 
 ## RHEL 7 only
 
-    $ sudo subscription-manager repos --enable=rhel-7-server-optional-rpms
-    $ sudo yum-config-manager --enable rhel-7-server-extras-rpms
-    $ sudo yum -y install git golang
+    $ sudo subscription-manager repos --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-optional-rpms"
+    $ sudo yum -y install epel-release
+    $ sudo yum -y install golang git
 
 # Clone GitHub repository
 
