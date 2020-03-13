@@ -62,6 +62,10 @@ initialization_monitor() {
             sleep 1
             echo "${init_role} not yet inititialized, retrying" >> "/tmp/patroni_initialize_check.log"
 
+            # Refresh the role of the local node, i.e. primary (master) or replica
+            init_role=$(curl --silent "127.0.0.1:${PGHA_PATRONI_PORT}/patroni" --stderr - | \
+                /opt/cpm/bin/yq r - role)
+
             status_code=$(curl -o /dev/stderr -w "%{http_code}" "127.0.0.1:${PGHA_PATRONI_PORT}/${init_role}" 2> /dev/null)
         done
 
