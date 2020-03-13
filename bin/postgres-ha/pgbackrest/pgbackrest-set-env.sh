@@ -13,7 +13,7 @@ source /tmp/pgbackrest_env.sh
 # is within the environment.  
 #
 # For instance, when bootstrapping and fetching archives for a standby cluster, it is necessary
-# to ensure only "s3" is utilized for pgBackResr 'restore' and 'archive-get' commands.  However, 
+# to ensure only "s3" is utilized for pgBackRest 'restore' and 'archive-get' commands.  However, 
 # when the cluster is no longer a standby, this override setting can be removed, and the original
 # value for PGBACKREST_REPO_TYPE can be used instead.  This effectively allows this setting to be
 # changed dynamically without requiring a container restart to update the PGBACKREST_REPO_TYPE env
