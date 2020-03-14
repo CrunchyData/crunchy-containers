@@ -280,6 +280,9 @@ build_bootstrap_config_file() {
     bootstrap_file="/tmp/postgres-ha-bootstrap.yaml"
     echo "---" >> "${bootstrap_file}"
 
+    pghba_file="/tmp/postgres-ha-pghba.yaml"
+    cat "/opt/cpm/conf/postgres-ha-pghba-bootstrap.yaml" >> "${pghba_file}"
+
     if [[ -f "/pgconf/postgresql.conf" ]]
     then
         echo_info "Setting custom 'postgresql.conf' as base config using 'custom_conf'"
@@ -340,6 +343,29 @@ build_bootstrap_config_file() {
         echo_info "Applying synchronous replication settings to postgres-ha configuration"
         /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-sync.yaml"
     fi
+
+    # set up the pg_hba.conf file, based on if the user has enabled TLS, and if
+    # TLS is required. This involves appending data to the special pghba_file
+    # and then finally merging it into the main file
+    #
+    # Additionally, this will also merge append the TLS settings to the main
+    # postgresql.conf file
+    if [[ "${PGHA_TLS_ENABLED}" == "true" ]]
+    then
+      echo_info "Applying TLS remote connection configuration to pg_hba.conf"
+      /opt/cpm/bin/yq m -i -a "${pghba_file}" "/opt/cpm/conf/postgres-ha-pghba-tls.yaml"
+      echo_info "Enabling TLS in postgresql.conf"
+      /opt/cpm/bin/yq m -i -a "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-pgconf-tls.yaml"
+    fi
+
+    if [[ "${PGHA_TLS_ONLY}" != "true" ]]
+    then
+      echo_info "Applying standard (non-TLS) remote connection configuration to pg_hba.conf"
+      /opt/cpm/bin/yq m -i -a "${pghba_file}" "/opt/cpm/conf/postgres-ha-pghba-notls.yaml"
+    fi
+
+    # merge the pg_hba.conf settings into the main boostrap file
+    /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "${pghba_file}"
 
     if [[ -f "/pgconf/postgres-ha.yaml" ]]
     then

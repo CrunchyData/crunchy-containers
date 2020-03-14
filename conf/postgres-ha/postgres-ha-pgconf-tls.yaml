@@ -1,0 +1,9 @@
+---
+bootstrap:
+  dcs:
+    postgresql:
+      parameters:
+        ssl: "on"
+        ssl_cert_file: "/pgconf/tls/tls.crt"
+        ssl_key_file: "/pgconf/tls/tls.key"
+        ssl_ca_file: "/pgconf/tls/ca.crt"
