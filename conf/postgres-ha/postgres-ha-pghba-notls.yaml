@@ -1,0 +1,6 @@
+---
+postgresql:
+  pg_hba:
+    - host replication PATRONI_REPLICATION_USERNAME 0.0.0.0/0 md5
+    - host all PATRONI_REPLICATION_USERNAME 0.0.0.0/0 reject
+    - host all all 0.0.0.0/0 md5
