@@ -43,30 +43,13 @@ trap_sigterm() {
 initialization_monitor() {
     echo_info "Starting background process to monitor Patroni initization and restart the database if needed"
     {
-        # Wait for the local node to enter a "running" state
-        while [[ $(curl --silent "127.0.0.1:${PGHA_PATRONI_PORT}/patroni" --stderr - \
-            | /opt/cpm/bin/yq r - state 2> /dev/null) != "running" ]]
-        do
-            sleep 1
-            echo "Cluster not yet inititialized, retrying" >> "/tmp/patroni_initialize_check.log"
-        done
-
-        # Identify the role of the local node, i.e. primary (master) or replica
-        init_role=$(curl --silent "127.0.0.1:${PGHA_PATRONI_PORT}/patroni" --stderr - | \
-            /opt/cpm/bin/yq r - role)
-
-        # Wait until the local primary or replica returns 200 indicating it is running
-        status_code=$(curl -o /dev/stderr -w "%{http_code}" "127.0.0.1:${PGHA_PATRONI_PORT}/${init_role}" 2> /dev/null)
+        # Wait until the health endpoint for the local primary or replica to return 200 indicating it is running
+        status_code=$(curl -o /dev/stderr -w "%{http_code}" "127.0.0.1:${PGHA_PATRONI_PORT}/health" 2> /dev/null)
         until [[ "${status_code}" == "200" ]]
         do
             sleep 1
-            echo "${init_role} not yet inititialized, retrying" >> "/tmp/patroni_initialize_check.log"
-
-            # Refresh the role of the local node, i.e. primary (master) or replica
-            init_role=$(curl --silent "127.0.0.1:${PGHA_PATRONI_PORT}/patroni" --stderr - | \
-                /opt/cpm/bin/yq r - role)
-
-            status_code=$(curl -o /dev/stderr -w "%{http_code}" "127.0.0.1:${PGHA_PATRONI_PORT}/${init_role}" 2> /dev/null)
+            echo "Cluster not yet inititialized, retrying" >> "/tmp/patroni_initialize_check.log"
+            status_code=$(curl -o /dev/stderr -w "%{http_code}" "127.0.0.1:${PGHA_PATRONI_PORT}/health" 2> /dev/null)
         done
 
         # Apply custom configuration other than custom 'postgres-ha.yaml', e.g. custom keys and
@@ -74,10 +57,15 @@ initialization_monitor() {
         source /opt/cpm/bin/bootstrap/ssl-config.sh
         echo_info "SSL config is: ${PGHA_SSL_CONFIG}"
 
-        if [[ "${init_role}" == "master" ]]
+        # Enable pgbackrest
+        if [[ "${PGHA_PGBACKREST}" == "true" ]]
         then
-            echo_info "Detected that the local node has been initialized as 'master'"
-            echo_info "Now executing the post-init process to fully initialize the cluster"
+            source "/opt/cpm/bin/pgbackrest/pgbackrest-post-bootstrap.sh"
+        fi
+
+        if [[ "${PGHA_INIT}" == "true" ]]
+        then
+            echo_info "PGHA_INIT is '${PGHA_INIT}', executing post-init process to fully initialize the cluster"
             if [[ -f "/crunchyadm/pgha_manual_init" ]]
             then
                 echo_info "Executing Patroni restart to restart database and update configuration"
@@ -86,12 +74,6 @@ initialization_monitor() {
                 echo_info "The database has been restarted"
             else
                 echo "Pending restart not detected, will not restart" >> "/tmp/patroni_initialize_check.log"
-            fi
-
-            # Enable pgbackrest
-            if [[ "${PGHA_PGBACKREST}" == "true" ]]
-            then
-                source "/opt/cpm/bin/pgbackrest/pgbackrest-post-bootstrap.sh"
             fi
 
             # Create the crunchyadm user
@@ -113,8 +95,7 @@ initialization_monitor() {
                 curl -X POST --silent "127.0.0.1:${PGHA_PATRONI_PORT}/restart"
             fi
         else
-            echo_info "Detected that the local node has been initialized as 'replica'"
-            echo_info "The post-init process is not executed for replicas and will be skipped"
+            echo_info "PGHA_INIT is '${PGHA_INIT}', skipping post-init process "
         fi
 
         touch "/crunchyadm/pgha_initialized"  # write file to indicate the cluster is fully initialized
