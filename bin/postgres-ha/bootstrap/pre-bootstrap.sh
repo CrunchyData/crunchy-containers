@@ -365,6 +365,13 @@ build_bootstrap_config_file() {
       /opt/cpm/bin/yq m -i -a "${pghba_file}" "/opt/cpm/conf/postgres-ha-pghba-tls.yaml"
       echo_info "Enabling TLS in postgresql.conf"
       /opt/cpm/bin/yq m -i -a "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-pgconf-tls.yaml"
+
+      # The CRL file may not be present, so we only want to apply if if we have
+      # the CRL file present
+      if [[ -f "/pgconf/tls/ca.crl" ]]
+      then
+        /opt/cpm/bin/yq w -i "${bootstrap_file}" bootstrap.dcs.postgresql.parameters.ssl_crl_file "/pgconf/tls/ca.crl"
+      fi
     fi
 
     if [[ "${PGHA_TLS_ONLY}" != "true" ]]
