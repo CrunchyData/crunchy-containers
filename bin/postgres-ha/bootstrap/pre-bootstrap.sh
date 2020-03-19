@@ -230,29 +230,6 @@ set_pg_user_credentials() {
     then
         echo_info "Setting 'replicator' credentials using file system"
 
-        # Configure certificate-based authentication for replication if proper certs are available.
-        # Otherwise use a password
-        if [[ -f "/pgconf/replicator.key" ]] && [[ -f "/pgconf/replicator.crt" ]]
-        then
-            export PATRONI_REPLICATION_SSLKEY="${PATRONI_POSTGRESQL_DATA_DIR}/replicator.key"
-            export PATRONI_REPLICATION_SSLCERT="${PATRONI_POSTGRESQL_DATA_DIR}/replicator.crt"
-        else
-            PATRONI_REPLICATION_PASSWORD=$(cat /pgconf/pgreplicator/password)
-            err_check "$?" "Set replication user password" "Unable to set PATRONI_REPLICATION_PASSWORD using secret"
-            export PATRONI_REPLICATION_PASSWORD
-        fi
-
-        # set the server CA for the replication user if present
-        if [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}/ca.crt" ]]
-        then
-            export PATRONI_REPLICATION_SSLROOTCERT="${PATRONI_POSTGRESQL_DATA_DIR}/ca.crt"
-        fi
-        # set the CRL for the replication user if present
-        if [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}/replicator.crl" ]]
-        then
-            export PATRONI_REPLICATION_SSLCRL="${PATRONI_POSTGRESQL_DATA_DIR}/replicator.crl"
-        fi
-
         PATRONI_REPLICATION_USERNAME=$(cat /pgconf/pgreplicator/username)
         err_check "$?" "Set replication user" "Unable to set PATRONI_REPLICATION_USERNAME using secret"
         export PATRONI_REPLICATION_USERNAME
