@@ -52,11 +52,6 @@ initialization_monitor() {
             status_code=$(curl -o /dev/stderr -w "%{http_code}" "127.0.0.1:${PGHA_PATRONI_PORT}/health" 2> /dev/null)
         done
 
-        # Apply custom configuration other than custom 'postgres-ha.yaml', e.g. custom keys and
-        # certificates to enable SSL
-        source /opt/cpm/bin/bootstrap/ssl-config.sh
-        echo_info "SSL config is: ${PGHA_SSL_CONFIG}"
-
         # Enable pgbackrest
         if [[ "${PGHA_PGBACKREST}" == "true" ]]
         then
@@ -74,7 +69,7 @@ initialization_monitor() {
                 echo "Not yet running as primary, retrying" >> "/tmp/patroni_initialize_check.log"
                 status_code=$(curl -o /dev/stderr -w "%{http_code}" "127.0.0.1:${PGHA_PATRONI_PORT}/master" 2> /dev/null)
             done
-            
+
             echo_info "PGHA_INIT is '${PGHA_INIT}', executing post-init process to fully initialize the cluster"
             if [[ -f "/crunchyadm/pgha_manual_init" ]]
             then
@@ -91,18 +86,6 @@ initialization_monitor() {
             then
                 echo_info "Creating user crunchyadm"
                 psql -c "CREATE USER crunchyadm LOGIN;"
-            fi
-
-            # If SSL certificates have been configured for the cluster, patch the cluster
-            # configuration to enable SSL and then restart the node
-            if [[ "${PGHA_SSL_CONFIG}" != "" ]]
-            then
-                echo_info "Now patching DCS to apply SSL configuration ${PGHA_SSL_CONFIG}"
-                curl -s -XPATCH -d \
-                    "{\"postgresql\":{\"parameters\":{\"ssl\":\"on\"${PGHA_SSL_CONFIG}}}}" \
-                    "127.0.0.1:${PGHA_PATRONI_PORT}/config"
-                echo_info "Executing Patroni restart to apply SSL configuration"
-                curl -X POST --silent "127.0.0.1:${PGHA_PATRONI_PORT}/restart"
             fi
         else
             echo_info "PGHA_INIT is '${PGHA_INIT}', skipping post-init process "
@@ -237,12 +220,6 @@ initialization_monitor
 
 # Remove the pause key from patroni.dynamic.json if it exists
 remove_patroni_pause_key
-
- # Ensure any existing SSL certificates in PGDATA have the proper permissions
-chmod -f 0600 "${PATRONI_POSTGRESQL_DATA_DIR}/server.key" "${PATRONI_POSTGRESQL_DATA_DIR}/server.crt" \
-    "${PATRONI_POSTGRESQL_DATA_DIR}/ca.crt" "${PATRONI_POSTGRESQL_DATA_DIR}/ca.crl" \
-    "${PATRONI_POSTGRESQL_DATA_DIR}/replicator.crt" "${PATRONI_POSTGRESQL_DATA_DIR}/replicator.key" \
-    "${PATRONI_POSTGRESQL_DATA_DIR}/replicator.crl"
 
 # Bootstrap the cluster
 bootstrap_cmd="$@ /tmp/postgres-ha-bootstrap.yaml"
