@@ -70,6 +70,3 @@ env | grep "^PGBACKREST" | while read line ;
 do
   echo "export ${line}" >> "/tmp/pgbackrest_env.sh"
 done
-
-echo_info "pgBackRest: The following pgbackrest env vars have been set:"
-env | grep "^PGBACKREST_"

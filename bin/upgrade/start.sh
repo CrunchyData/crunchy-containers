@@ -99,8 +99,6 @@ esac
 
 export PATH=/opt/cpm/bin:${PGBINNEW?}:$PATH
 
-env
-
 # Create a clean new data directory
 options=" "
 if [[ -v PG_LOCALE ]]; then
