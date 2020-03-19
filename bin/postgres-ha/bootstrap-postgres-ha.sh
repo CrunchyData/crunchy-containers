@@ -65,6 +65,16 @@ initialization_monitor() {
 
         if [[ "${PGHA_INIT}" == "true" ]]
         then
+            echo_info "PGHA_INIT is '${PGHA_INIT}', waiting to initialize as primary"
+            # Wait until the master endpoint returns 200 indicating the local node is running as the current primary
+            status_code=$(curl -o /dev/stderr -w "%{http_code}" "127.0.0.1:${PGHA_PATRONI_PORT}/master" 2> /dev/null)
+            until [[ "${status_code}" == "200" ]]
+            do
+                sleep 1
+                echo "Not yet running as primary, retrying" >> "/tmp/patroni_initialize_check.log"
+                status_code=$(curl -o /dev/stderr -w "%{http_code}" "127.0.0.1:${PGHA_PATRONI_PORT}/master" 2> /dev/null)
+            done
+            
             echo_info "PGHA_INIT is '${PGHA_INIT}', executing post-init process to fully initialize the cluster"
             if [[ -f "/crunchyadm/pgha_manual_init" ]]
             then
