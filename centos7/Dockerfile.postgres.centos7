@@ -2,6 +2,7 @@ ARG BASEOS
 ARG BASEVER
 ARG PG_FULL
 ARG PREFIX
+ARG LIBLLVM
 FROM ${PREFIX}/crunchy-pg-base:${BASEOS}-${PG_FULL}-${BASEVER}
 
 # ===== Early lines ordered for leveraging cache, reorder carefully =====
@@ -17,12 +18,13 @@ RUN yum -y install \
 	--setopt=skip_missing_names_on_install=False \
 	openssh-clients \
 	openssh-server \
-        pgaudit${PG_MAJOR//.} \
+	pgaudit${PG_MAJOR//.} \
 	crunchy-backrest-${BACKREST_VER} \
 	postgresql${PG_MAJOR//.}-contrib \
 	postgresql${PG_MAJOR//.}-server \
 	postgresql${PG_MAJOR//.}-plpython \
 	postgresql${PG_MAJOR//.}-plpython3 \
+	${LIBLLVM} \
 	psmisc \
 	rsync \
 	&& yum -y clean all
