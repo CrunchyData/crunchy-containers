@@ -233,6 +233,10 @@ set_pg_user_credentials() {
         PATRONI_REPLICATION_USERNAME=$(cat /pgconf/pgreplicator/username)
         err_check "$?" "Set replication user" "Unable to set PATRONI_REPLICATION_USERNAME using secret"
         export PATRONI_REPLICATION_USERNAME
+
+        PATRONI_REPLICATION_PASSWORD=$(cat /pgconf/pgreplicator/password)
+        err_check "$?" "Set replication user password" "Unable to set PATRONI_REPLICATION_PASSWORD using secret"
+        export PATRONI_REPLICATION_PASSWORD
     else
         env_check_err "PATRONI_REPLICATION_USERNAME"
         env_check_err "PATRONI_REPLICATION_PASSWORD"
