@@ -15,9 +15,6 @@ CCP_POSTGIS_VERSION ?= 2.5
 IMGBUILDER ?= buildah
 IMGCMDSTEM=sudo --preserve-env buildah bud --layers $(SQUASH)
 DFSET=$(CCP_BASEOS)
-# This gets set with the name of the PostgreSQL LLVM package to use, but unset
-# if it is unsupported
-CCP_LIBLLVM="postgresql$(CCP_PGVERSION)-llvmjit"
 
 # Allows simplification of IMGBUILDER switching
 ifeq ("$(IMGBUILDER)","docker")
@@ -27,16 +24,6 @@ endif
 # Allows consolidation of ubi/rhel Dockerfile sets
 ifeq ("$(CCP_BASEOS)", "ubi7")
 	DFSET=rhel7
-endif
-
-# Allows for selectively installing libllvm to support JIT in versions of
-# PostgreSQL 11 or greater
-ifeq ("$(CCP_PGVERSION)", "10")
-	CCP_LIBLLVM=""
-else ifeq ("$(CCP_PGVERSION)", "9.6")
-	CCP_LIBLLVM=""
-else ifeq ("$(CCP_PGVERSION)", "9.5")
-	CCP_LIBLLVM=""
 endif
 
 
@@ -150,7 +137,6 @@ postgres-pgimg-build: cc-pg-base-image commands $(CCPROOT)/$(DFSET)/Dockerfile.p
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		--build-arg BACKREST_VER=$(CCP_BACKREST_VERSION) \
-		--build-arg LIBLLVM=$(CCP_LIBLLVM) \
 		$(CCPROOT)
 
 postgres-pgimg-buildah: postgres-pgimg-build
@@ -170,7 +156,6 @@ postgres-gis-pgimg-build: postgres commands $(CCPROOT)/$(DFSET)/Dockerfile.postg
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		--build-arg POSTGIS_LBL=$(subst .,,$(CCP_POSTGIS_VERSION)) \
-		--build-arg LIBLLVM=$(CCP_LIBLLVM) \
 		$(CCPROOT)
 
 postgres-gis-pgimg-buildah: postgres-gis-pgimg-build
@@ -191,7 +176,6 @@ postgres-ha-pgimg-build: cc-pg-base-image commands $(CCPROOT)/$(DFSET)/Dockerfil
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		--build-arg BACKREST_VER=$(CCP_BACKREST_VERSION) \
 		--build-arg PATRONI_VER=$(CCP_PATRONI_VERSION) \
-		--build-arg LIBLLVM=$(CCP_LIBLLVM) \
 		$(CCPROOT)
 
 postgres-ha-pgimg-buildah: postgres-ha-pgimg-build
@@ -211,7 +195,6 @@ postgres-gis-ha-pgimg-build: postgres-ha commands $(CCPROOT)/$(DFSET)/Dockerfile
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		--build-arg POSTGIS_LBL=$(subst .,,$(CCP_POSTGIS_VERSION)) \
-		--build-arg LIBLLVM=$(CCP_LIBLLVM) \
 		$(CCPROOT)
 
 postgres-gis-ha-pgimg-buildah: postgres-gis-ha-pgimg-build
