@@ -4,7 +4,7 @@ endif
 
 # Default values if not already set
 CCP_BASEOS ?= centos7
-CCP_PG_VERSION ?= 12
+CCP_PGVERSION ?= 12
 CCP_PG_FULLVERSION ?= 12.2
 CCP_PATRONI_VERSION ?= 1.6.4
 CCP_BACKREST_VERSION ?= 2.24
@@ -17,7 +17,7 @@ IMGCMDSTEM=sudo --preserve-env buildah bud --layers $(SQUASH)
 DFSET=$(CCP_BASEOS)
 # This gets set with the name of the PostgreSQL LLVM package to use, but unset
 # if it is unsupported
-CCP_LIBLLVM="postgresql$(CCP_PG_VERSION)-llvmjit"
+CCP_LIBLLVM="postgresql$(CCP_PGVERSION)-llvmjit"
 
 # Allows simplification of IMGBUILDER switching
 ifeq ("$(IMGBUILDER)","docker")
@@ -31,11 +31,11 @@ endif
 
 # Allows for selectively installing libllvm to support JIT in versions of
 # PostgreSQL 11 or greater
-ifeq ("$(CCP_PG_VERSION)", "10")
+ifeq ("$(CCP_PGVERSION)", "10")
 	CCP_LIBLLVM=""
-else ifeq ("$(CCP_PG_VERSION)", "9.6")
+else ifeq ("$(CCP_PGVERSION)", "9.6")
 	CCP_LIBLLVM=""
-else ifeq ("$(CCP_PG_VERSION)", "9.5")
+else ifeq ("$(CCP_PGVERSION)", "9.5")
 	CCP_LIBLLVM=""
 endif
 
