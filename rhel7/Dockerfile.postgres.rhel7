@@ -18,6 +18,7 @@ ARG PGAUDIT_LBL
 
 # Separate yum run matching postgres-ha image, leverages cached layer
 RUN yum -y install \
+		--enablerepo="epel" \
 		--setopt=skip_missing_names_on_install=False \
 		openssh-clients \
 		openssh-server \
