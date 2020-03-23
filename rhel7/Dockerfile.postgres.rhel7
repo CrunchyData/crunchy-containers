@@ -2,7 +2,6 @@ ARG BASEOS
 ARG BASEVER
 ARG PG_FULL
 ARG PREFIX
-ARG LIBLLVM
 FROM ${PREFIX}/crunchy-pg-base:${BASEOS}-${PG_FULL}-${BASEVER}
 
 # ===== Early lines ordered for leveraging cache, reorder carefully =====
@@ -29,7 +28,7 @@ RUN yum -y install \
 		postgresql${PG_MAJOR//.}-server \
 		postgresql${PG_MAJOR//.}-plpython \
 		postgresql${PG_MAJOR//.}-plpython3 \
-		${LIBLLVM} \
+		$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
 		psmisc \
 		rsync \
 	&& yum -y install \
