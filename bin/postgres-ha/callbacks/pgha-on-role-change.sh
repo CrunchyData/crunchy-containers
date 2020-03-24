@@ -17,6 +17,7 @@ source /opt/cpm/bin/common/common_lib.sh
 enable_debugging
 
 source /opt/cpm/bin/common/pgha-common.sh
+source /opt/cpm/bin/common/pgha-tablespaces.sh
 
 # set the Patroni port
 export $(get_patroni_port)
@@ -24,7 +25,7 @@ export $(get_patroni_port)
 # set PGHA_PGBACKREST to determine if backrest is enabled
 export $(get_pgbackrest_enabled)
 
-# get the node's current role (e.g. "replica") from the second parameter provided by Patroni when 
+# get the node's current role (e.g. "replica") from the second parameter provided by Patroni when
 # calling this callback script
 action="${1}"
 role="${2}"
@@ -34,14 +35,14 @@ echo_info "${action} callback called (action=${action} role=${role} cluster=${cl
 # get pgbackrest env vars
 source /opt/cpm/bin/pgbackrest/pgbackrest-set-env.sh
 
-# if pgBackRest is enabled and the node has been promoted to "primary" (i.e. "master"), and if 
+# if pgBackRest is enabled and the node has been promoted to "primary" (i.e. "master"), and if
 # pgBackRest is enabled and is not utilizing a dedicated repository host, then take a new backup
-# to ensure the proper creation of replicas.  Also, write a tag to the DCS while the backup is in 
-# progress to inform other nodes that a backup is in progress.  If a dedicated repository host 
-# is being utilized (e.g. with the PostgreSQL Operator), then this process will be handled 
+# to ensure the proper creation of replicas.  Also, write a tag to the DCS while the backup is in
+# progress to inform other nodes that a backup is in progress.  If a dedicated repository host
+# is being utilized (e.g. with the PostgreSQL Operator), then this process will be handled
 # externally (e.g. within the PostgreSQL Operator when the repo host is updated following the
 # promotion of a replica to primary)
-if [[ "${role}" ==  "master" && "${PGHA_PGBACKREST}" == "true" ]] 
+if [[ "${role}" ==  "master" && "${PGHA_PGBACKREST}" == "true" ]]
 then
     curl -s -XPATCH -d '{"tags":{"primary_on_role_change":"true"}}' "localhost:${PGHA_PATRONI_PORT}/config"
     if [[ ! -v PGBACKREST_REPO1_HOST && ! -v PGBACKREST_REPO_HOST ]]
@@ -49,4 +50,21 @@ then
         pgbackrest backup
         curl -s -XPATCH -d '{"tags":{"primary_on_role_change":null}}' "localhost:${PGHA_PATRONI_PORT}/config"
     fi
+fi
+
+if [[ "${role}" == "master" ]]
+then
+  # For commands that need to directly access the database cluster, ensure the
+  # cluster is no longer in recovery
+  is_in_recovery=$(psql -At -c "SELECT pg_catalog.pg_is_in_recovery()")
+  until [[ "${is_in_recovery}" == "f" ]]
+  do
+      echo_info "New primary still in recovery, waiting one second..."
+      sleep 1
+      is_in_recovery=$(psql -At -c "SELECT pg_catalog.pg_is_in_recovery()")
+  done
+
+  # if a new tablespace has been added and this is the "primary" node, we need to
+  # create the object in the PostgreSQL cluster. This allows us to do so
+  tablespaces_create_postgresql_objects "${PGHA_USER}"
 fi
