@@ -412,22 +412,9 @@ build_bootstrap_config_file
 mkdir -p "${PATRONI_POSTGRESQL_DATA_DIR}"
 chmod 0700 "${PATRONI_POSTGRESQL_DATA_DIR}"
 
-# If a list of tablespaces has been passed in, create these names in the
-#tablespace directory, which are in the format:
-#
-# tablespace1,tablespace2
-IFS=',' read -r -a TABLESPACES <<< "${PGHA_TABLESPACES}"
-# Next, iterate through the list, especially if any tablespaces were found
-for TABLESPACE in "${TABLESPACES[@]}"
-do
-  TABLESPACE_PATH="/tablespaces/${TABLESPACE}/${TABLESPACE}"
-  echo_info "create directory for tablespace \"${TABLESPACE}\" on mount point \"${TABLESPACE_PATH}\""
-  # create the folder that the tablespace will be mounted to as well as set its
-  # permissions correctly. This has to go "two deep" in order to account for
-  # the direcory structure of the mounted file system
-  mkdir -p "${TABLESPACE_PATH}"
-  chmod 0700 "${TABLESPACE_PATH}"
-done
+# create any tablespace directories, if they have not been created yet
+source /opt/cpm/bin/common/pgha-tablespaces.sh
+tablespaces_create_directory
 
 echo_info "postgres-ha pre-bootstrap complete!  The following configuration will be utilized to initialize " \
 "this postgres-ha node:"

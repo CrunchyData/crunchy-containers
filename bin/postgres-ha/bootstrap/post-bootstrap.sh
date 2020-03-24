@@ -38,21 +38,10 @@ sed -i "s/PGHA_DATABASE/$PGHA_DATABASE/g" "/tmp/setup.sql"
 echo_info "Running setup.sql file"
 psql < "/tmp/setup.sql"
 
-# If there are any tablespaces, create them as a convenience to the user
-IFS=',' read -r -a TABLESPACES <<< "${PGHA_TABLESPACES}"
-# Iterate through the list and both create the tablespace in the PostgreSQL
-# instance, and ensure the PGHA_USER is able to utilize them
-for TABLESPACE in "${TABLESPACES[@]}"
-do
-  TABLESPACE_PATH="/tablespaces/${TABLESPACE}/${TABLESPACE}"
-  echo_info "Adding \"${TABLESPACE}\" at location \"${TABLESPACE_PATH}\" to PostgreSQL"
-
-  TABLESESPACE_SQL="CREATE TABLESPACE \"${TABLESPACE}\" LOCATION '${TABLESPACE_PATH}';"
-  psql -c "${TABLESESPACE_SQL}"
-
-  TABLESPACE_GRANT_SQL="GRANT CREATE ON TABLESPACE \"${TABLESPACE}\" TO \"${PGHA_USER}\";"
-  psql -c "${TABLESPACE_GRANT_SQL}"
-done
+# If there are any tablespaces, create them as a convenience to the user, both
+# the directories and the PostgreSQL objects
+source /opt/cpm/bin/common/pgha-tablespaces.sh
+tablespaces_create_postgresql_objects "${PGHA_USER}"
 
 # Run audit.sql file if exists
 if [[ -f "/pgconf/audit.sql" ]]
