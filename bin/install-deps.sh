@@ -35,9 +35,29 @@ wget -O $CCPROOT/yq https://github.com/mikefarah/yq/releases/download/${YQ_VERSI
 
 which buildah
 if [ $? -eq 1 ]; then
-        echo "installing buildah"
-        sudo subscription-manager repos --enable=rhel-7-server-extras-rpms
-        sudo yum -y install buildah
+  echo "installing buildah"
+
+  source /etc/os-release
+
+  if [[ "${VERSION_ID}" == "7" ]]
+  then
+    cd /etc/yum.repos.d/
+    sudo wget https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/CentOS_7/devel:kubic:libcontainers:stable.repo
+    cd $OLDPWD
+    sudo yum -y install buildah
+  elif [[ "${VERSION_ID}" == "8" ]]
+  then
+    sudo dnf -y module disable container-tools
+    sudo dnf -y install 'dnf-command(copr)'
+    sudo dnf -y copr enable rhcontainerbot/container-selinux
+    cd /etc/yum.repos.d
+    sudo wget https://download.opensuse.org/repositories/devel:kubic:libcontainers:stable/CentOS_8/devel:kubic:libcontainers:stable.repo
+    cd $OLDPWD
+    sudo dnf -y install buildah
+  else
+    sudo subscription-manager repos --enable=rhel-7-server-extras-rpms
+    sudo yum -y install buildah
+  fi
 fi
 
 FILE='openshift-origin-client.tgz'
