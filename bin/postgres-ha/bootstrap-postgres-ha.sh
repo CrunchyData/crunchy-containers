@@ -14,6 +14,7 @@
 # limitations under the License.
 
 export PGHOST="/tmp"
+export PGPORT="$PGHA_PG_PORT"
 
 source /opt/cpm/bin/common_lib.sh
 enable_debugging
@@ -78,7 +79,7 @@ initialization_monitor() {
             then
                 echo_info "Executing Patroni restart to restart database and update configuration"
                 curl -X POST --silent "127.0.0.1:${PGHA_PATRONI_PORT}/restart"
-                test_server "postgres" "${PGHOST}" "${PGHA_PG_PORT}" "postgres"
+                test_server "postgres" "${PGHOST}" "${PGPORT}" "postgres"
                 echo_info "The database has been restarted"
             else
                 echo "Pending restart not detected, will not restart" >> "/tmp/patroni_initialize_check.log"
@@ -190,32 +191,28 @@ then
         > "${PATRONI_POSTGRESQL_DATA_DIR}/postgresql.conf"
     fi
 
-    manual_start_pg_ctl_options=""
-    # detect if this is a server that needs to entre recovery mode, which is
-    # what might happen after an instance is cloned.
-    # if this is the case, we will want to have a warm standby
-    if [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}/recovery.conf" || -f "${PATRONI_POSTGRESQL_DATA_DIR}/recovery.signal" ]]
-    then
-      echo_info "Discovered presence of a recovery.conf or recovery.signal file"
-      echo_info "Setting hot_standby=\"off\" until PostgreSQL reaches a consistent state"
-      manual_start_pg_ctl_options="-c hot_standby=off"
-    fi
-
     echo_info "Starting database manually prior to starting Patroni"
-    pg_ctl -D "${PATRONI_POSTGRESQL_DATA_DIR}" -o "-c unix_socket_directories='/tmp'" -o "${manual_start_pg_ctl_options}" start
-    echo_info "Database manually started"
-
-    echo_info "Waiting to reach a consistent state"
-    until pg_isready --dbname="postgres" --host="${PGHOST}" --port="${PGHA_PG_PORT}" --username="postgres"
+    while :
     do
-        echo_info "Database has not reached a consistent state, sleeping..."
-        # sleep to give recovery a chance to complete
-        sleep 5
-        # if no postgres process is running at this point then assume a failed start and attempt to
-        # start again.  Otherwise check once again to see if recovery is complete
-        if ! pgrep postgres
+        if ! pgrep --exact postgres &> /dev/null
         then
-            pg_ctl -D "${PATRONI_POSTGRESQL_DATA_DIR}" -o "${manual_start_pg_ctl_options}" start
+            # Start PostgreSQL in the background any time it is not running. It will exit if there
+            # is an error during recovery, so start it again to retry. Allow only local connections
+            # for now. PostgreSQL is restarted later, through Patroni, without these settings.
+            pg_ctl start --silent -D "${PATRONI_POSTGRESQL_DATA_DIR}" \
+                -o "-c listen_addresses='' -c unix_socket_directories='${PGHOST}'"
+        fi
+
+        # Check for ongoing recovery once connected. Since PostgreSQL 10, a hot standby allows
+        # connections during recovery:
+        # https://postgr.es/m/CABUevEyFk2cbpqqNDVLrgbHPEGLa%2BBV7nu4HAETBL8rK9Df_LA%40mail.gmail.com
+        if pg_isready --quiet --username="postgres" &&
+            [ "$(psql --quiet --username="postgres" -Atc 'SELECT pg_is_in_recovery()')" = 'f' ]
+        then
+            break
+        else
+            echo_info "Database has not reached a consistent state, sleeping..."
+            sleep 5
         fi
     done
     echo_info "Reached a consistent state"
