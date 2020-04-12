@@ -215,11 +215,11 @@ set_pg_user_credentials() {
         echo_info "Setting 'superuser' credentials using file system"
 
         PATRONI_SUPERUSER_USERNAME=$(cat /pgconf/pgsuper/username)
-        err_check "$?" "Set superuser" "Unable to set PGHA_USER_PASSWORD using secret"
+        err_check "$?" "Set superuser" "Unable to set PATRONI_SUPERUSER_USERNAME using secret"
         export PATRONI_SUPERUSER_USERNAME
 
         PATRONI_SUPERUSER_PASSWORD=$(cat /pgconf/pgsuper/password)
-        err_check "$?" "Set superuser password" "Unable to set PGHA_USER_PASSWORD using secret"
+        err_check "$?" "Set superuser password" "Unable to set PATRONI_SUPERUSER_PASSWORD using secret"
         export PATRONI_SUPERUSER_PASSWORD
     else
         env_check_err "PATRONI_SUPERUSER_USERNAME"

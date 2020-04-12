@@ -204,12 +204,7 @@ then
     else
         post_existing_init_file="/opt/cpm/bin/sql/post-existing-init.sql"
     fi
-    sed -e "s/\${PATRONI_SUPERUSER_USERNAME}/${PATRONI_SUPERUSER_USERNAME}/" \
-        -e "s/\${PATRONI_SUPERUSER_PASSWORD}/${PATRONI_SUPERUSER_PASSWORD}/" \
-        -e "s/\${PATRONI_REPLICATION_USERNAME}/${PATRONI_REPLICATION_USERNAME}/" \
-        -e "s/\${PATRONI_REPLICATION_PASSWORD}/${PATRONI_REPLICATION_PASSWORD}/" \
-        ${post_existing_init_file} | \
-        psql -f -
+    envsubst < ${post_existing_init_file} | psql -f -
 fi
 
 # Moinitor for the intialization of the cluster
