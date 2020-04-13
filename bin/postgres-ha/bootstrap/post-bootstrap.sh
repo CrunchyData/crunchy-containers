@@ -30,13 +30,8 @@ else
     cp "/opt/cpm/bin/sql/setup.sql" "/tmp"
 fi
 
-# Always replace PGHA_USER_PASSWORD before PGHA_USER
-sed -i "s/PGHA_USER_PASSWORD/$PGHA_USER_PASSWORD/g" "/tmp/setup.sql"
-sed -i "s/PGHA_USER/$PGHA_USER/g" "/tmp/setup.sql"
-sed -i "s/PGHA_DATABASE/$PGHA_DATABASE/g" "/tmp/setup.sql"
-
 echo_info "Running setup.sql file"
-psql < "/tmp/setup.sql"
+envsubst < /tmp/setup.sql | psql -f -
 
 # If there are any tablespaces, create them as a convenience to the user, both
 # the directories and the PostgreSQL objects
