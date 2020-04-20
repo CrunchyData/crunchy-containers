@@ -40,12 +40,6 @@ set_default_pgha_autoconfig_env()  {
         default_pgha_autoconfig_env_vars+=("PGHA_BASE_PG_CONFIG")
     fi
 
-    if [[ ! -v PGHA_ENABLE_WALDIR ]]
-    then
-        export PGHA_ENABLE_WALDIR="false"
-        default_pgha_autoconfig_env_vars+=("PGHA_ENABLE_WALDIR")
-    fi
-
     if [[ ! -v PGHA_PGBACKREST ]]
     then
         export PGHA_PGBACKREST="true"
@@ -109,18 +103,6 @@ set_default_pgha_env()  {
     then
         export PGHA_DATABASE="userdb"
         default_pgha_env_vars+=("PGHA_DATABASE")
-    fi
-
-    if [[ "${PGHA_ENABLE_WALDIR}" == "true" ]]  # set PGHA_ENABLE_WALDIR to "false" if not "true"
-    then
-        if [[ ! -v PGHA_WALDIR ]]
-        then
-            export PGHA_WALDIR="/pgwal/${HOSTNAME}-wal"
-            default_pgha_env_vars+=("PGHA_WALDIR")
-        fi
-    else
-        echo_info "The use of the /pgwal directory for writing WAL is not enabled"
-        echo_info "A default value will not be set for PGHA_WALDIR and any value provided for will be ignored"
     fi
 
     if [[ ! -v PGHA_REPLICA_REINIT_ON_START_FAIL ]]
@@ -251,7 +233,7 @@ validate_env() {
         echo_err "The PGDATA directory provided using PATRONI_POSTGRESQL_DATA_DIR must be a subdirectory of volume /pgdata"
         exit 1
     fi
-    if [[ "${PGHA_ENABLE_WALDIR}" == "true" ]]
+    if [[ -n "${PGHA_WALDIR}" ]]
     then
         if [[ "${PGHA_WALDIR}" == "/pgwal" || "${PGHA_WALDIR}" == "/pgwal/" || ! "${PGHA_WALDIR:0:7}" == "/pgwal/" ]]
         then
@@ -286,7 +268,7 @@ build_bootstrap_config_file() {
         echo_info "Base PG config for postgres-ha configuration disabled"
     fi
 
-    if [[ "${PGHA_ENABLE_WALDIR}" == "true" ]]
+    if [[ -n "${PGHA_WALDIR}" ]]
     then
         cp "/opt/cpm/conf/postgres-ha-waldir.yaml" "/tmp"
         sed -i "s/PGHA_WALDIR/${PGHA_WALDIR//\//\\/}/g" "/tmp/postgres-ha-waldir.yaml"
