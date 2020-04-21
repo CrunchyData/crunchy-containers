@@ -1,4 +1,0 @@
----
-bootstrap:
-  initdb:
-  - waldir: PGHA_WALDIR
