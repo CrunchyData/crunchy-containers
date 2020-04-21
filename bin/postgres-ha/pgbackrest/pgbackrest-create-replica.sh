@@ -19,6 +19,8 @@ enable_debugging
 source /opt/cpm/bin/common/pgha-common.sh
 export $(get_patroni_pgdata_dir)
 
+restore_cmd_args=()
+
 # If the PGDATA directory is empty or contains a valid PG database, then perform a delta restore.
 # If the PGDATA directory for the replica is invalid according to pgBackRest, then clear out
 # the directory and then perform a regular (i.e. non-delta) pgBackRest restore.  pgBackRest
@@ -31,7 +33,7 @@ if [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}"/PG_VERSION ||
     -f "${PATRONI_POSTGRESQL_DATA_DIR}"/backup.manifest ]]
 then
     echo_info "Valid PGDATA dir found for replica, a delta restore will be peformed"
-    delta="--delta"
+    restore_cmd_args+=("--delta")
 elif [[ -z "$(ls -A ${PATRONI_POSTGRESQL_DATA_DIR})" ]]
 then
     echo_info "Empty PGDATA dir found for replica, a non-delta restore will be peformed"
@@ -62,12 +64,24 @@ then
     replica_bootstrap_repo_type="$(cat /pgconf/replica-bootstrap-repo-type)"
     if [[ "${replica_bootstrap_repo_type}" != "" ]]
     then
-        restore_cmd_repo_type="--repo-type=${replica_bootstrap_repo_type}"
+        restore_cmd_args+=("--repo-type=${replica_bootstrap_repo_type}")
     fi
 fi
 
-# perform the restore, setting the "--delta" option if populated
-pgbackrest restore ${delta} ${restore_cmd_repo_type}
+# Retain and reconfigure existing WAL directory symlink. (By default symlinked directories and
+# files are restored as normal directories and files.)
+if [[ -n "${PGHA_WALDIR}" ]]
+then
+    if printf '10\n'${PGVERSION} | sort -VC
+    then
+        restore_cmd_args+=("--link-map=pg_wal=${PGHA_WALDIR}")
+    else
+        restore_cmd_args+=("--link-map=pg_xlog=${PGHA_WALDIR}")
+    fi
+fi
+
+# perform the restore
+pgbackrest restore "${restore_cmd_args[@]}"
 err_check "$?" "pgBackRest Replica Creation" "pgBackRest restore failed when creating replica"
 
 echo_info "Replica pgBackRest restore complete"

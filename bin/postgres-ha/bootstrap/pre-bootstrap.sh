@@ -268,17 +268,6 @@ build_bootstrap_config_file() {
         echo_info "Base PG config for postgres-ha configuration disabled"
     fi
 
-    if [[ -n "${PGHA_WALDIR}" ]]
-    then
-        cp "/opt/cpm/conf/postgres-ha-waldir.yaml" "/tmp"
-        sed -i "s/PGHA_WALDIR/${PGHA_WALDIR//\//\\/}/g" "/tmp/postgres-ha-waldir.yaml"
-        echo_info "Applying custom WAL dir to postgres-ha configuration"
-        # append when merging initdb contents for WAL dir instead of overwriting
-        /opt/cpm/bin/yq m -i -a "${bootstrap_file}" "/tmp/postgres-ha-waldir.yaml"
-    else
-        echo_info "Default WAL directory will be utilized.  Any value provided for PGHA_WALDIR will be ignored"
-    fi
-
     if [[ "${PGHA_PGBACKREST}" == "true" ]]
     then
         echo_info "Applying pgbackrest config to postgres-ha configuration"
@@ -296,6 +285,17 @@ build_bootstrap_config_file() {
         echo_info "PGDATA directory is empty on node identifed as Primary"
         echo_info "initdb configuration will be applied to intitilize a new database"
         /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-initdb.yaml"
+
+        if [[ -n "${PGHA_WALDIR}" ]]
+        then
+            echo_info "Applying custom WAL dir to postgres-ha configuration"
+            if printf '10\n'${PGVERSION} | sort -VC
+            then
+                /opt/cpm/bin/yq w -i "${bootstrap_file}" 'bootstrap.initdb[+].waldir' "${PGHA_WALDIR}"
+            else
+                /opt/cpm/bin/yq w -i "${bootstrap_file}" 'bootstrap.initdb[+].xlogdir' "${PGHA_WALDIR}"
+            fi
+        fi
     fi
 
     if [[ "${PGHA_STANDBY}" == "true" ]]
