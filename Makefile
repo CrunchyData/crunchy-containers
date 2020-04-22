@@ -126,7 +126,7 @@ cc-pg-base-image-buildah: cc-pg-base-image-build
 cc-pg-base-image-docker: cc-pg-base-image-build
 
 # ----- Special case pg-based image (postgres) -----
-# Special case args: BACKREST_VER, PGAUDIT_LBL
+# Special case args: BACKREST_VER
 postgres-pgimg-build: cc-pg-base-image commands $(CCPROOT)/$(DFSET)/Dockerfile.postgres.$(DFSET)
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/$(DFSET)/Dockerfile.postgres.$(DFSET) \
@@ -164,7 +164,7 @@ postgres-gis-pgimg-buildah: postgres-gis-pgimg-build
 postgres-gis-pgimg-docker: postgres-gis-pgimg-build
 
 # ----- Special case pg-based image (postgres-ha) -----
-# Special case args: BACKREST_VER, PGAUDIT_LBL, PATRONI_VER
+# Special case args: BACKREST_VER, PATRONI_VER
 postgres-ha-pgimg-build: cc-pg-base-image commands $(CCPROOT)/$(DFSET)/Dockerfile.postgres-ha.$(DFSET)
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/$(DFSET)/Dockerfile.postgres-ha.$(DFSET) \
