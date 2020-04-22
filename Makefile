@@ -259,26 +259,10 @@ backrest-restore-pgimg-docker: backrest-restore-pgimg-build
 # ----- Upgrade Images -----
 upgrade: upgrade-$(CCP_PGVERSION)
 
-upgrade-%: upgrade-%-pgimg-$(IMGBUILDER) ;
+upgrade-%: upgrade-pgimg-$(IMGBUILDER) ;
 
 upgrade-9.5: # Do nothing but log to avoid erroring out on missing Dockerfile
 	$(info Upgrade build skipped for 9.5)
-
-upgrade-%-pgimg-build: cc-pg-base-image $(CCPROOT)/$(DFSET)/Dockerfile.upgrade-%.$(DFSET)
-	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/$(DFSET)/Dockerfile.upgrade-$*.$(DFSET) \
-		-t $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG) \
-		--build-arg BASEOS=$(CCP_BASEOS) \
-		--build-arg BASEVER=$(CCP_VERSION) \
-		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
-		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
-		$(CCPROOT)
-
-upgrade-%-pgimg-buildah: upgrade-%-pgimg-build
-	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG)
-
-upgrade-%-pgimg-docker: upgrade-%-pgimg-build ;
-
 
 #=================
 # Utility targets
