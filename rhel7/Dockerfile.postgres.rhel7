@@ -11,9 +11,6 @@ ARG PG_MAJOR
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
 
 ARG BACKREST_VER
-# Used by Makefile to process pgdg naming, not used here, listed to
-# suppress warning regarding unused passed vars
-ARG PGAUDIT_LBL
 
 # Separate yum run matching postgres-ha image, leverages cached layer
 RUN yum -y install \
