@@ -270,12 +270,6 @@ build_bootstrap_config_file() {
     pghba_file="/tmp/postgres-ha-pghba.yaml"
     cat "/opt/cpm/conf/postgres-ha-pghba-bootstrap.yaml" >> "${pghba_file}"
 
-    if [[ -f "/pgconf/postgresql.conf" ]]
-    then
-        echo_info "Setting custom 'postgresql.conf' as base config using 'custom_conf'"
-        /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-custom-pgconf.yaml"
-    fi
-
     if [[ "${PGHA_BASE_BOOTSTRAP_CONFIG}" == "true" ]]
     then
         echo_info "Applying base bootstrap config to postgres-ha configuration"
