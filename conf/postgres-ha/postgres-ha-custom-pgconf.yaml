@@ -1,3 +1,0 @@
----
-postgresql:
-  custom_conf: /pgconf/postgresql.conf
