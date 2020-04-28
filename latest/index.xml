@@ -471,9 +471,8 @@ The Crunchy Container Suite is tested, developed, and examples are provided that
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/latest/contributing/building/</guid>
-      <description>Build From Source Please be sure to have your GPG Key and .repo file in the conf directory before proceeding. This section of the documentation assumes you have followed the Installation Guide. Because the build pulls down some Kubernetes dependencies, you will need sudo&amp;rsquo;ers privileges to do a build.
-You should do the following in order to build the containers locally and be able to submit patches:
- Fork the Crunchy-Containers GitHub repository.</description>
+      <description>Build From Source There are many cases where you may want to build the containers from source, such as working on a patch to contribute a feature. This guide provides the instructions to get you set up to build from source.
+Requirements  CentOS 7 or Red Hat 7 environment. The instructions below are set up for CentOS 7, but you can read the installation guide for additional instructions go version 1.</description>
     </item>
     
     <item>
