@@ -26,7 +26,7 @@ RUN yum -y install \
 	&& yum -y clean all --enablerepo="epel,rhel-7-server-extras-rpms"
 
 # Preserving PGVERSION out of paranoia
-ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="PG_MAJOR"
+ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
 
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /var/lib/pgadmin /var/log/pgadmin \
 	/certs /run/httpd
