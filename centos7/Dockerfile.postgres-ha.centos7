@@ -64,8 +64,7 @@ RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backrestrepo \
 RUN chown -R postgres:postgres /opt/cpm /var/lib/pgsql \
 	/pgdata /pgwal /pgconf /backrestrepo /crunchyadm /tablespaces &&  \
 	chmod -R g=u /opt/cpm /var/lib/pgsql \
-	/pgdata /pgwal /pgconf /backrestrepo /crunchyadm && \
-	chmod -R u=rwx,go= /tablespaces
+	/pgdata /pgwal /pgconf /backrestrepo /crunchyadm /tablespaces
 
 # open up the postgres port
 EXPOSE 5432
