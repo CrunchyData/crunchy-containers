@@ -20,7 +20,7 @@ RUN yum -y install \
 		mod_ssl \
 		mod_wsgi \
 		openssl \
-		pgadmin4-web \
+		pgadmin4-web-4.18 \
 		postgresql${PG_MAJOR//.}-devel \
 		postgresql${PG_MAJOR//.}-server \
 	&& yum -y clean all --enablerepo="epel,rhel-7-server-extras-rpms"
