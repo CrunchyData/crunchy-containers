@@ -135,17 +135,6 @@ This example assumes you have configured a storage filesystem as described in th
     </item>
     
     <item>
-      <title>Scheduler</title>
-      <link>https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/scheduler/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/scheduler/</guid>
-      <description>Crunchy Scheduler The Crunchy Scheduler container implements a cronlike microservice within a namespace to automate backups of a PostgreSQL database.
-Currently Crunchy Scheduler only supports two types of tasks:
- pgBackRest pgBaseBackup  This service watches Kubernetes for config maps with the label crunchy-scheduler=true. If found the scheduler will parse the data found in the config map (json object) and convert it to a scheduled task. If the config map is removed, the scheduler will delete the task.</description>
-    </item>
-    
-    <item>
       <title>pgBouncer</title>
       <link>https://crunchydata.github.io/crunchy-containers/stable/examples/poolers/pgbouncer/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -214,7 +203,7 @@ For this test, we place pg_audit statements within a SQL script and verify that 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/examples/administration/upgrade/</guid>
-      <description>Major Upgrade This example assumes you have run primary using a PostgreSQL 11 or 12 image such as centos7-12.2-4.2.2 prior to running this upgrade. The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
+      <description>Major Upgrade This example assumes you have run primary using a PostgreSQL 11 or 12 image such as centos7-12.2-4.3.0 prior to running this upgrade. The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
     </item>
     
     <item>

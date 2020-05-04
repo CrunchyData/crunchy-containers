@@ -16,9 +16,8 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/contributing/building/</guid>
-      <description>Build From Source Please be sure to have your GPG Key and .repo file in the conf directory before proceeding. This section of the documentation assumes you have followed the Installation Guide. Because the build pulls down some Kubernetes dependencies, you will need sudo&amp;rsquo;ers privileges to do a build.
-You should do the following in order to build the containers locally and be able to submit patches:
- Fork the Crunchy-Containers GitHub repository.</description>
+      <description>Build From Source There are many cases where you may want to build the containers from source, such as working on a patch to contribute a feature. This guide provides the instructions to get you set up to build from source.
+Requirements  CentOS 7 or Red Hat 7 environment. The instructions below are set up for CentOS 7, but you can read the installation guide for additional instructions go version 1.</description>
     </item>
     
     <item>
@@ -52,7 +51,7 @@ If you have any questions, you can submit a Support - Question and Answer issue 
 Hosting Hugo Locally (Optional) If you would like to build the documentation locally, view the official Installing Hugo guide to set up Hugo locally.
 The git submodule for the crunchy-hugo-theme has to be synched -
 cd $CCPROOT/ git submodule init git submodule update You can then start the server by running the following commands -
-cd $CCPROOT/hugo/ hugo server The local version of the Hugo server is accessible by default from localhost:1313.</description>
+cd $CCPROOT/docs/ hugo server The local version of the Hugo server is accessible by default from localhost:1313.</description>
     </item>
     
   </channel>

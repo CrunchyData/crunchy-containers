@@ -229,13 +229,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/scheduler/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/scheduler/">
-            Scheduler
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/examples/poolers/pgbouncer/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/poolers/pgbouncer/">
@@ -433,13 +426,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
             crunchy-prometheus
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/">
-            crunchy-scheduler
           </a>
         </div>
     </li>
@@ -675,7 +661,7 @@ image but additionally provides the following geospatial extensions:</p>
 <p><em>Physical</em> backup and restoration tools included in the Crunchy Container suite are:</p>
 
 <ul>
-<li><a href="2.20">pgBackRest</a>
+<li><a href="2.25">pgBackRest</a>
 PostgreSQL images</li>
 <li><a href="https://www.postgresql.org/docs/current/app-pgbasebackup.html">pg_basebackup</a> -
 provided by the Crunchy Backup image</li>
@@ -746,15 +732,6 @@ via a graphical user interface web application.</p>
 <p><img src="https://crunchydata.github.io/crunchy-containers/stable/pgadmin4.png" alt="pgadmin4" title="pgAdmin4" /></p>
 
 <p>Visit the official pgAdmin4 website for more information: <a href="https://www.pgadmin.org/">https://www.pgadmin.org/</a></p>
-
-<h3 id="crunchy-scheduler">Crunchy Scheduler</h3>
-
-<p>The Crunchy Scheduler image provides a cronlike microservice for automating
-<code>pg_basebackup</code> and <code>pgBackRest</code> backups within a single Kubernetes namespace.</p>
-
-<p>The scheduler watches Kubernetes for config maps with the label <code>crunchy-scheduler=true</code>.
-If found the scheduler parses a JSON object contained in the config map and converts
-it into an scheduled task.</p>
 
 <h3 id="crunchy-upgrade">Crunchy Upgrade</h3>
 

@@ -289,17 +289,6 @@ Features The following features are supported by the crunchy-postgres container:
     </item>
     
     <item>
-      <title>crunchy-scheduler</title>
-      <link>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/</guid>
-      <description>The Crunchy Scheduler container provides a cronlike microservice for automating pgBaseBackup and pgBackRest backups within a single namespace. The scheduler watches Kubernetes for config maps with the label crunchy-scheduler=true. If found the scheduler parses a JSON object contained in the config map and converts it into an scheduled task.
-Packages The Crunchy Scheduler Docker image contains the following packages:
- CentOS7 - publicly available UBI7 - customers only Scheduler App  Environment Variables Required    Name Default Description     NAMESPACE None The namespace the microservice should watch.</description>
-    </item>
-    
-    <item>
       <title>crunchy-upgrade</title>
       <link>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-upgrade/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -349,17 +338,6 @@ A successful backup will perform pg_basebackup on the primary container and stor
       <description>pgDump &amp;amp; pgRestore Examples The following examples will demonstrate how the crunchy-pgdump container can be utilized to create a database backup using the pg_dump utility, while also demonstrating how the backup created can then be utilized to restore the database using the pg_restore utility.
 Backup (pg_dump) The script assumes you are going to backup the primary example and that container is running.
 This example assumes you have configured a storage filesystem as described in the Storage Configuration document.</description>
-    </item>
-    
-    <item>
-      <title>Scheduler</title>
-      <link>https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/scheduler/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/scheduler/</guid>
-      <description>Crunchy Scheduler The Crunchy Scheduler container implements a cronlike microservice within a namespace to automate backups of a PostgreSQL database.
-Currently Crunchy Scheduler only supports two types of tasks:
- pgBackRest pgBaseBackup  This service watches Kubernetes for config maps with the label crunchy-scheduler=true. If found the scheduler will parse the data found in the config map (json object) and convert it to a scheduled task. If the config map is removed, the scheduler will delete the task.</description>
     </item>
     
     <item>
@@ -451,7 +429,7 @@ For this test, we place pg_audit statements within a SQL script and verify that 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/examples/administration/upgrade/</guid>
-      <description>Major Upgrade This example assumes you have run primary using a PostgreSQL 11 or 12 image such as centos7-12.2-4.2.2 prior to running this upgrade. The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
+      <description>Major Upgrade This example assumes you have run primary using a PostgreSQL 11 or 12 image such as centos7-12.2-4.3.0 prior to running this upgrade. The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
     </item>
     
     <item>
@@ -493,9 +471,8 @@ The Crunchy Container Suite is tested, developed, and examples are provided that
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/contributing/building/</guid>
-      <description>Build From Source Please be sure to have your GPG Key and .repo file in the conf directory before proceeding. This section of the documentation assumes you have followed the Installation Guide. Because the build pulls down some Kubernetes dependencies, you will need sudo&amp;rsquo;ers privileges to do a build.
-You should do the following in order to build the containers locally and be able to submit patches:
- Fork the Crunchy-Containers GitHub repository.</description>
+      <description>Build From Source There are many cases where you may want to build the containers from source, such as working on a patch to contribute a feature. This guide provides the instructions to get you set up to build from source.
+Requirements  CentOS 7 or Red Hat 7 environment. The instructions below are set up for CentOS 7, but you can read the installation guide for additional instructions go version 1.</description>
     </item>
     
     <item>
@@ -529,7 +506,7 @@ If you have any questions, you can submit a Support - Question and Answer issue 
 Hosting Hugo Locally (Optional) If you would like to build the documentation locally, view the official Installing Hugo guide to set up Hugo locally.
 The git submodule for the crunchy-hugo-theme has to be synched -
 cd $CCPROOT/ git submodule init git submodule update You can then start the server by running the following commands -
-cd $CCPROOT/hugo/ hugo server The local version of the Hugo server is accessible by default from localhost:1313.</description>
+cd $CCPROOT/docs/ hugo server The local version of the Hugo server is accessible by default from localhost:1313.</description>
     </item>
     
   </channel>

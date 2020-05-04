@@ -186,17 +186,6 @@ Features The following features are supported by the crunchy-postgres container:
     </item>
     
     <item>
-      <title>crunchy-scheduler</title>
-      <link>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/</guid>
-      <description>The Crunchy Scheduler container provides a cronlike microservice for automating pgBaseBackup and pgBackRest backups within a single namespace. The scheduler watches Kubernetes for config maps with the label crunchy-scheduler=true. If found the scheduler parses a JSON object contained in the config map and converts it into an scheduled task.
-Packages The Crunchy Scheduler Docker image contains the following packages:
- CentOS7 - publicly available UBI7 - customers only Scheduler App  Environment Variables Required    Name Default Description     NAMESPACE None The namespace the microservice should watch.</description>
-    </item>
-    
-    <item>
       <title>crunchy-upgrade</title>
       <link>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-upgrade/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

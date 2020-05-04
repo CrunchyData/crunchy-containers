@@ -140,10 +140,6 @@
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/</loc>
-  </url>
-  
-  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-upgrade/</loc>
   </url>
   
@@ -161,10 +157,6 @@
   
   <url>
     <loc>https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/pgdump-pgrestore/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/scheduler/</loc>
   </url>
   
   <url>

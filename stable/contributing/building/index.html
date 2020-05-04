@@ -228,13 +228,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/scheduler/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/backup-restoration/scheduler/">
-            Scheduler
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/examples/poolers/pgbouncer/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/poolers/pgbouncer/">
@@ -435,13 +428,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-scheduler/">
-            crunchy-scheduler
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-upgrade/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-upgrade/">
@@ -596,36 +582,89 @@
 
 <h1 id="build-from-source">Build From Source</h1>
 
-<div class="notices tip" >Please be sure to have your GPG Key and <code>.repo</code> file in the <code>conf</code> directory
-before proceeding.</div>
+<p>There are many cases where you may want to build the containers from source,
+such as working on a patch to contribute a feature. This guide provides the
+instructions to get you set up to build from source.</p>
 
-<p>This section of the documentation assumes you have followed the <a href="https://crunchydata.github.io/crunchy-containers/stable/installation-guide/installation-guide">Installation Guide</a>.
-Because the build pulls down some Kubernetes dependencies, you will need sudo&rsquo;ers privileges to do a build.</p>
+<h2 id="requirements">Requirements</h2>
 
-<p>You should do the following in order to build the containers locally and be able to submit patches:</p>
+<ul>
+<li>CentOS 7 or Red Hat 7 environment. The instructions below are set up for
+CentOS 7, but you can read the <a href="https://crunchydata.github.io/crunchy-containers/stable/installation-guide/installation-guide">installation guide</a>
+for additional instructions</li>
+<li><a href="https://golang.org/"><code>go</code></a> version 1.13+</li>
+<li><a href="https://buildah.io/"><code>buildah</code></a> 1.9+</li>
+<li><a href="http://git-scm.org/"><code>git</code></a></li>
+</ul>
+
+<h2 id="setup">Setup</h2>
 
 <ol>
-<li>Fork the <a href="https://github.com/CrunchyData/crunchy-containers">Crunchy-Containers</a> GitHub repository.</li>
-
-<li><p>Containers builds are installed via a Makefile. You will need to run the following commands:</p>
-
-<pre><code>cd $CCPROOT
-make setup
-make all
-</code></pre></li>
+<li>On your system, be sure you have installed the requirements. You can do so
+with the following commands:</li>
 </ol>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">sudo yum -y install epel-release
+sudo yum -y install golang git buildah</code></pre></div>
+<ol>
+<li>Create a fork of the <a href="https://github.com/CrunchyData/crunchy-containers">Crunchy Container Suite</a>
+repository and clone it to the environment using the following commands below:</li>
+</ol>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">mkdir -p <span style="color:#111">$HOME</span>/cdev/src/github.com/crunchydata <span style="color:#111">$HOME</span>/cdev/pkg <span style="color:#111">$HOME</span>/cdev/bin
+<span style="color:#111">cd</span> <span style="color:#111">$HOME</span>/cdev/src/github.com/crunchydata
+git clone https://github.com/crunchydata/crunchy-containers
+<span style="color:#111">cd</span> crunchy-containers</code></pre></div>
+<ol>
+<li>Set up your local environmental variables to reference the containers you
+want to build. For instance, to build the latest version, you would use the
+following variables:</li>
+</ol>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#111">export</span> <span style="color:#111">GOPATH</span><span style="color:#f92672">=</span><span style="color:#111">$HOME</span>/cdev        <span style="color:#75715e"># set path to your new Go workspace</span>
+<span style="color:#111">export</span> <span style="color:#111">GOBIN</span><span style="color:#f92672">=</span><span style="color:#111">$GOPATH</span>/bin        <span style="color:#75715e"># set bin path</span>
+<span style="color:#111">export</span> <span style="color:#111">PATH</span><span style="color:#f92672">=</span><span style="color:#111">$PATH</span>:<span style="color:#111">$GOBIN</span>        <span style="color:#75715e"># add Go bin path to your overall path</span>
+<span style="color:#111">export</span> <span style="color:#111">CCP_BASEOS</span><span style="color:#f92672">=</span>centos7       <span style="color:#75715e"># centos7 for Centos, ubi7 for Red Hat Universal Base Image</span>
+<span style="color:#111">export</span> <span style="color:#111">CCP_PGVERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>        <span style="color:#75715e"># The PostgreSQL major version</span>
+<span style="color:#111">export</span> <span style="color:#111">CCP_PG_FULLVERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>.2
+<span style="color:#111">export</span> <span style="color:#111">CCP_VERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>.3.0
+<span style="color:#111">export</span> <span style="color:#111">CCP_IMAGE_PREFIX</span><span style="color:#f92672">=</span>crunchydata <span style="color:#75715e"># Prefix to put before all the container image names</span>
+<span style="color:#111">export</span> <span style="color:#111">CCP_IMAGE_TAG</span><span style="color:#f92672">=</span><span style="color:#111">$CCP_BASEOS</span>-<span style="color:#111">$CCP_PG_FULLVERSION</span>-<span style="color:#111">$CCP_VERSION</span>   <span style="color:#75715e"># Used to tag the images</span>
+<span style="color:#111">export</span> <span style="color:#111">CCPROOT</span><span style="color:#f92672">=</span><span style="color:#111">$GOPATH</span>/src/github.com/crunchydata/crunchy-containers    <span style="color:#75715e"># The base of the clone github repo</span></code></pre></div>
+<p>You can save these variables to be set each time you open up your shell by
+adding them to your <code>.bashrc</code> file:</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell">cat &gt;&gt; ~/.bashrc <span style="color:#d88200">&lt;&lt;-EOF
+</span><span style="color:#d88200">export GOPATH=$HOME/cdev
+</span><span style="color:#d88200">export GOBIN=$GOPATH/bin
+</span><span style="color:#d88200">export PATH=$PATH:$GOBIN
+</span><span style="color:#d88200">export CCP_BASEOS=centos7
+</span><span style="color:#d88200">export CCP_PGVERSION=12
+</span><span style="color:#d88200">export CCP_PG_FULLVERSION=12.2
+</span><span style="color:#d88200">export CCP_VERSION=4.3.0
+</span><span style="color:#d88200">export CCP_IMAGE_PREFIX=crunchydata
+</span><span style="color:#d88200">export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
+</span><span style="color:#d88200">export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
+</span><span style="color:#d88200">EOF</span></code></pre></div>
+<ol>
+<li>Download the GPG Keys and repository files that are required to pull in the
+packages used to build the containers:</li>
+</ol>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#111">cd</span> <span style="color:#111">$CCPROOT</span>
+curl https://api.developers.crunchydata.com/downloads/repo/rpm-centos/postgresql12/crunchypg12.repo &gt; conf/crunchypg12.repo
+curl https://api.developers.crunchydata.com/downloads/repo/rpm-centos/postgresql11/crunchypg11.repo &gt; conf/crunchypg11.repo
+curl https://api.developers.crunchydata.com/downloads/gpg/RPM-GPG-KEY-crunchydata-dev &gt; conf/RPM-GPG-KEY-crunchydata-dev</code></pre></div>
+<ol>
+<li>Run the setup script to download the remaining dependencies</li>
+</ol>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#111">cd</span> <span style="color:#111">$CCPROOT</span>
+make setup</code></pre></div>
+<h2 id="build">Build</h2>
 
-<p>if you want to build an individual container, such as Postgresql, you can do:</p>
-
-<pre><code>cd $CCPROOT
-make setup
-make postgres
-</code></pre>
-
-<p>You can find all the make targets in the Makefile.</p>
-
-<p>After this, you will have all the Crunchy containers built and are ready
-for use in a <em>standalone Docker</em> environment.</p>
+<p>You can now build the containers:</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#111">cd</span> <span style="color:#111">$CCPROOT</span>
+make all</code></pre></div>
+<p>if you want to build an individual container such as <a href="https://www.crunchydata.com/developers/download-postgres/containers/postgresql12"><code>crunchy-postgres</code></a>, you need to reference the individual name:</p>
+<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-shell" data-lang="shell"><span style="color:#111">cd</span> <span style="color:#111">$CCPROOT</span>
+make postgres</code></pre></div>
+<p>To learn how to build each container, please review the Makefile targets within
+the Makefile in the repository.</p>
 
 
 
