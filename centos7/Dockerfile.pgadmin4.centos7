@@ -13,6 +13,12 @@ LABEL name="pgadmin4" \
 	io.k8s.display-name="pgAdmin 4" \
 	io.openshift.tags="postgresql,postgres,monitoring,pgadmin4,pgadmin,database,crunchy"
 
+# required for pgAdmin 4 dependencies with LLVM, this line needs to be here and
+# before the next install line
+RUN yum -y install \
+		--setopt=skip_missing_names_on_install=False \
+		centos-release-scl
+
 RUN yum -y install \
 		--setopt=skip_missing_names_on_install=False \
 		gcc \
