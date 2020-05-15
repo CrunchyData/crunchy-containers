@@ -15,7 +15,7 @@ LABEL name="pgadmin4" \
 
 RUN yum -y install \
 		--setopt=skip_missing_names_on_install=False \
-		--enablerepo="epel,rhel-7-server-extras-rpms,rhel-7-server-devtools-rpms" \
+		--enablerepo="epel,rhel-7-server-devtools-rpms,rhel-7-server-extras-rpms,rhel-7-server-optional-rpms" \
 		gcc \
 		mod_ssl \
 		mod_wsgi \
