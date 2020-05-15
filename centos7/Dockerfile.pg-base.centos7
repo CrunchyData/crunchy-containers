@@ -20,6 +20,10 @@ RUN rpm --import RPM-GPG-KEY-crunchydata*
 
 RUN yum -y install \
 		--setopt=skip_missing_names_on_install=False \
+		centos-release-scl
+
+RUN yum -y install \
+		--setopt=skip_missing_names_on_install=False \
 		--disablerepo=crunchypg* \
 		--enablerepo="crunchypg${PG_LBL}" \
 		postgresql${PG_LBL} \
