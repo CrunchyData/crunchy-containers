@@ -42,7 +42,7 @@ source /opt/cpm/bin/pgbackrest/pgbackrest-set-env.sh
 # is being utilized (e.g. with the PostgreSQL Operator), then this process will be handled
 # externally (e.g. within the PostgreSQL Operator when the repo host is updated following the
 # promotion of a replica to primary)
-if [[ "${role}" ==  "master" && "${PGHA_PGBACKREST}" == "true" ]]
+if [[ -f "/crunchyadm/pgha_initialized" && "${role}" ==  "master" && "${PGHA_PGBACKREST}" == "true" ]]
 then
     curl -s -XPATCH -d '{"tags":{"primary_on_role_change":"true"}}' "localhost:${PGHA_PATRONI_PORT}/config"
     if [[ ! -v PGBACKREST_REPO1_HOST && ! -v PGBACKREST_REPO_HOST ]]

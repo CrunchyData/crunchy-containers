@@ -47,18 +47,11 @@ then
         cp "${function_file}" "/tmp/setup_pg.sql"
         sed -i "s/\/usr\/bin\/pgbackrest-info.sh/\/opt\/cpm\/bin\/pgbackrest\/pgbackrest_info.sh/g" "/tmp/setup_pg.sql"
 
-        # TODO Add ON_ERROR_STOP and single transaction when
-        # upstream pgmonitor changes setup SQL to check if the
-        # role exists prior to creating it.
         psql -U postgres --port="${PG_PRIMARY_PORT}" -d postgres \
             < "/tmp/setup_pg.sql" > /tmp/pgmonitor-setup.stdout 2> /tmp/pgmonitor-setup.stderr
-
-        #err_check "$?" "pgMonitor Setup" "Could not load pgMonitor functions: \n$(cat /tmp/pgmonitor.stderr)"
 
         psql -U postgres --port="${PG_PRIMARY_PORT}" -d postgres \
             -c "ALTER ROLE ccp_monitoring PASSWORD '${PGMONITOR_PASSWORD?}'" \
             > /tmp/pgmonitor-alter-role.stdout 2> /tmp/pgmonitor-alter-role.stderr
-
-        #err_check "$?" "pgMonitor User Setup" "Could not alter ccp_monitor user's password: \n$(cat /tmp/pgmonitor.stderr)"
     fi
 fi
