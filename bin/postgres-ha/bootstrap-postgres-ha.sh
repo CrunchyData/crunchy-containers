@@ -72,7 +72,7 @@ initialization_monitor() {
             done
 
             echo_info "PGHA_INIT is '${PGHA_INIT}', executing post-init process to fully initialize the cluster"
-            if [[ -f "/crunchyadm/pgha_manual_init" ]]
+            if [[ -f "/crunchyadm/pgha_convert_standalone" ]]
             then
                 echo_info "Executing Patroni restart to restart database and update configuration"
                 curl -X POST --silent "127.0.0.1:${PGHA_PATRONI_PORT}/restart"
@@ -82,12 +82,13 @@ initialization_monitor() {
                 echo "Pending restart not detected, will not restart" >> "/tmp/patroni_initialize_check.log"
             fi
 
-            # Create the crunchyadm user
-            if [[ "${PGHA_CRUNCHYADM}" == "true" ]]
-            then
-                echo_info "Creating user crunchyadm"
-                psql -c "CREATE USER crunchyadm LOGIN;"
-            fi
+            # Apply enhancement modules
+            echo_info "Applying enahncement modules"
+            for module in /opt/cpm/bin/modules/*.sh
+            do
+                echo_info "Applying module ${module}"
+                source "${module}"
+            done
         else
             echo_info "PGHA_INIT is '${PGHA_INIT}', skipping post-init process "
         fi
@@ -120,9 +121,31 @@ primary_initialization_monitor() {
 remove_patroni_pause_key()  {
     if [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}/patroni.dynamic.json" ]]
     then
-        echo "Now removing \"pause\" key from patroni.dynamic.json configuration file if present"
+        echo_info "Now removing \"pause\" key from patroni.dynamic.json configuration file if present"
         sed -i -e "s/\"pause\":\s*true,*\s*//" "${PATRONI_POSTGRESQL_DATA_DIR}/patroni.dynamic.json"
     fi
+}
+
+# Checks to see if a PostgreSQL server (v12 or above) is configured for a PITR recovery. This is
+# done by checking whether or not a 'recovery.signal' file is present, along with whether or not
+# 'recovery_target' settings are present in the 'postgresql.auto.conf' file (as configured by
+# pgBackRest during a restore).
+is_pg_in_pitr_recovery() {
+    [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}/recovery.signal" ]] && has_recovery_target "postgresql.auto.conf"
+}
+
+# Checks to see if a PostgreSQL server (v11 or less) is configured for a PITR recovery.  This is
+# done by checking whether or not a 'recovery.conf' file is present, along with whether or not
+# 'recovery_target' settings are present in the 'recovery.conf' file (as configured by pgBackRest
+# during a restore).
+is_pg_in_pitr_recovery_legacy() {
+    [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}/recovery.conf" ]] && has_recovery_target "recovery.conf"
+}
+
+# Checks to see if any "recovery_target" settings are present in the PG config file provided,
+# such as a postgresql.conf file (PG 12 and greater) or a recovery.conf file (PG 11 and less)
+has_recovery_target() {
+    grep -E '^recovery_target' "${PATRONI_POSTGRESQL_DATA_DIR}/$1"
 }
 
 # Configure users and groups
@@ -145,31 +168,35 @@ then
     primary_initialization_monitor
 fi
 
-# Start the database manually if creating a cluster from an existing database and not intitilizing a new one
-if [[ ! -f "/crunchyadm/pgha_initialized" && "${PGHA_INIT}" == "true" && \
-    -f "${PATRONI_POSTGRESQL_DATA_DIR}/PG_VERSION" ]]
+# Determine if the database is configured for a PITR.  If so, the database will be started
+# manually to ensure the propery recovery target is achieved.  Otherwise, if not perorming
+# a PITR, Patroni will handle any recovery and start the database.
+if is_pg_in_pitr_recovery || is_pg_in_pitr_recovery_legacy
 then
-    echo_info "Existing database found in PGDATA directory of initialization node"
+    echo_info "Detected PITR recovery, will start database manually prior to starting Patroni"
+    manual_start=true
 
-    # If the Patroni bootstap configuration file is configured to use a custom PG config file using
-    # the custom_config parameter, or if a postgresql.base.conf file is present in the PGDATA
-    # directory, then assume those files are the base postgresql.conf parameters for the database
-    # in accordance with the Patroni documentation for applying PG configuration to a cluster, and
-    # therefore cleans out the contents of the existing postgresql.conf file if it exists (otherwise
-    # an empty file will simply be created).  This ensures that the settings from previous Patroni
-    # clusters that may no longer be valid (e.g. invalid dir names) do not prevent the DB from
-    # starting successfully.  Once Patroni is initialized, the postgresql.conf will be populated
-    # with the dynamic configuration defined for the cluster.
-    # If a custom or base config file is not found, then the postgresql.conf will remain untouched,
-    # and will then become the base configuration is accordance with the Patroni documentation.
-    if [[ $(/opt/cpm/bin/yq r "/tmp/postgres-ha-bootstrap.yaml" postgresql.custom_conf) != "null" ]] ||
-        [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}/postgresql.base.conf" ]]
-    then
-        echo_info "Detected existing or custom base configuration for Patroni, cleaning postgresql.conf"
-        > "${PATRONI_POSTGRESQL_DATA_DIR}/postgresql.conf"
-    fi
+    echo_info "Removing 'hba_file' and 'ident_file' settings from postgres.conf to ensure a clean start"
+    sed -i -E '/^hba_file|^ident_file/d' "${PATRONI_POSTGRESQL_DATA_DIR}/postgresql.conf"
+fi
 
-    echo_info "Starting database manually prior to starting Patroni"
+# Detect if converting a non-Patroni standalone database to a Patroni cluster, which will result
+# in a manual start of the database along with the execution of the 'post-existing-init.sql' script.  
+# This is done by detecting whether or not there is an existing PGDATA directory which does not 
+# contain a patroni.dynamic.json.  If this file is present, an existing Patroni cluster is assumed
+# and Patroni will handle the recovery.
+if [[ "${PGHA_INIT}" == "true" && -f "${PATRONI_POSTGRESQL_DATA_DIR}/PG_VERSION" &&
+    ! -f "${PATRONI_POSTGRESQL_DATA_DIR}/patroni.dynamic.json" ]]
+then
+    echo_info "Non-Patroni database detected during init, will start manually prior to starting Patroni"
+    manual_start=true
+    convert_standalone=true
+fi
+
+# Start the database manually if needed (e.g. if performing a PITR or converting a non-Patroni
+# standalone database).
+if [[ "${manual_start}" == "true" ]]
+then
     while :
     do
         if ! pgrep --exact postgres &> /dev/null
@@ -194,8 +221,13 @@ then
         fi
     done
     echo_info "Reached a consistent state"
+fi
 
-    touch "/crunchyadm/pgha_manual_init"
+# Run the post-existing-init.sql file if converting a non-Patroni standalone database to a Patroni
+# cluster.
+if [[ "${convert_standalone}" == "true" ]]
+then
+    touch "/crunchyadm/pgha_convert_standalone"
     echo_info "Manually creating Patroni accounts and proceeding with Patroni initialization"
 
     if [[ -f "/pgconf/post-existing-init.sql" ]]
