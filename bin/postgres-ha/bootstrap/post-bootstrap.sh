@@ -45,12 +45,4 @@ then
     psql < "/pgconf/audit.sql"
 fi
 
-# Apply enhancement modules
-echo_info "Applying enahncement modules"
-for module in /opt/cpm/bin/modules/*.sh
-do
-    echo_info "Applying module ${module}"
-    source "${module}"
-done
-
 echo_info "postgres-ha post-bootstrap complete"
