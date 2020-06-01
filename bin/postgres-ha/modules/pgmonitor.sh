@@ -15,43 +15,39 @@
 
 if [[ -v PGMONITOR_PASSWORD ]]
 then
-    if [[ ${PGHA_INIT?} == "true" ]]
+    echo_info "PGMONITOR_PASSWORD detected.  Enabling pgMonitor support."
+
+    source /opt/cpm/bin/common/common_lib.sh
+    export PGHOST="/tmp"
+
+    test_server "postgres" "${PGHOST?}" "${PGHA_PG_PORT}" "postgres"
+    VERSION=$(psql --port="${PG_PRIMARY_PORT}" -d postgres -qtAX -c "SELECT current_setting('server_version_num')")
+
+    if (( ${VERSION?} >= 90500 )) && (( ${VERSION?} < 90600 ))
     then
-
-        echo_info "PGMONITOR_PASSWORD detected.  Enabling pgMonitor support."
-
-        source /opt/cpm/bin/common/common_lib.sh
-        export PGHOST="/tmp"
-
-        test_server "postgres" "${PGHOST?}" "${PGHA_PG_PORT}" "postgres"
-        VERSION=$(psql --port="${PG_PRIMARY_PORT}" -d postgres -qtAX -c "SELECT current_setting('server_version_num')")
-
-        if (( ${VERSION?} >= 90500 )) && (( ${VERSION?} < 90600 ))
-        then
-            function_file='/opt/cpm/bin/modules/pgexporter/setup_pg95.sql'
-        elif (( ${VERSION?} >= 90600 )) && (( ${VERSION?} < 100000 ))
-        then
-            function_file='/opt/cpm/bin/modules/pgexporter/setup_pg96.sql'
-        elif (( ${VERSION?} >= 100000 )) && (( ${VERSION?} < 110000 ))
-        then
-            function_file='/opt/cpm/bin/modules/pgexporter/setup_pg10.sql'
-        elif (( ${VERSION?} >= 110000 ))
-        then
-            function_file='/opt/cpm/bin/modules/pgexporter/setup_pg11.sql'
-        else
-            echo_err "Unknown or unsupported version of PostgreSQL.  Exiting.."
-            exit 1
-        fi
-
-        echo_info "Using setup file '${function_file}' for pgMonitor"
-        cp "${function_file}" "/tmp/setup_pg.sql"
-        sed -i "s/\/usr\/bin\/pgbackrest-info.sh/\/opt\/cpm\/bin\/pgbackrest\/pgbackrest_info.sh/g" "/tmp/setup_pg.sql"
-
-        psql -U postgres --port="${PG_PRIMARY_PORT}" -d postgres \
-            < "/tmp/setup_pg.sql" > /tmp/pgmonitor-setup.stdout 2> /tmp/pgmonitor-setup.stderr
-
-        psql -U postgres --port="${PG_PRIMARY_PORT}" -d postgres \
-            -c "SET log_statement TO 'none'; ALTER ROLE ccp_monitoring PASSWORD '${PGMONITOR_PASSWORD?}'" \
-            > /tmp/pgmonitor-alter-role.stdout 2> /tmp/pgmonitor-alter-role.stderr
+        function_file='/opt/cpm/bin/modules/pgexporter/setup_pg95.sql'
+    elif (( ${VERSION?} >= 90600 )) && (( ${VERSION?} < 100000 ))
+    then
+        function_file='/opt/cpm/bin/modules/pgexporter/setup_pg96.sql'
+    elif (( ${VERSION?} >= 100000 )) && (( ${VERSION?} < 110000 ))
+    then
+        function_file='/opt/cpm/bin/modules/pgexporter/setup_pg10.sql'
+    elif (( ${VERSION?} >= 110000 ))
+    then
+        function_file='/opt/cpm/bin/modules/pgexporter/setup_pg11.sql'
+    else
+        echo_err "Unknown or unsupported version of PostgreSQL.  Exiting.."
+        exit 1
     fi
+
+    echo_info "Using setup file '${function_file}' for pgMonitor"
+    cp "${function_file}" "/tmp/setup_pg.sql"
+    sed -i "s/\/usr\/bin\/pgbackrest-info.sh/\/opt\/cpm\/bin\/pgbackrest\/pgbackrest_info.sh/g" "/tmp/setup_pg.sql"
+
+    psql -U postgres --port="${PG_PRIMARY_PORT}" -d postgres \
+        < "/tmp/setup_pg.sql" > /tmp/pgmonitor-setup.stdout 2> /tmp/pgmonitor-setup.stderr
+
+    psql -U postgres --port="${PG_PRIMARY_PORT}" -d postgres \
+        -c "SET log_statement TO 'none'; ALTER ROLE ccp_monitoring PASSWORD '${PGMONITOR_PASSWORD?}'" \
+        > /tmp/pgmonitor-alter-role.stdout 2> /tmp/pgmonitor-alter-role.stderr
 fi
