@@ -17,8 +17,8 @@ username="crunchyadm"
 
 # Create the crunchyadm user if it doesn't already exist
 if [[ "${PGHA_CRUNCHYADM}" == "true" ]] &&
-    ! psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='${username}'" | grep -q 1
+    [[ $(psql -v "username=${username}" -tA -f - <<< "SELECT 1 FROM pg_roles WHERE rolname=:'username'") != 1 ]]
 then
     echo_info "Creating user ${username}"
-    psql -c "CREATE USER ${username} LOGIN;"
+    psql -v "username=${username}" -tA -f - <<< "CREATE ROLE :username LOGIN"
 fi
