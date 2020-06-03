@@ -598,14 +598,14 @@
 <h2 id="major-upgrade">Major Upgrade</h2>
 
 <div class="notices tip" >This example assumes you have run <em>primary</em> using a PostgreSQL 11 or 12 image
-such as <code>centos7-12.3-4.3.1</code> prior to running this upgrade.</div>
+such as <code>centos7-12.3-4.3.2</code> prior to running this upgrade.</div>
 
 <p>The upgrade container will let you perform a <code>pg_upgrade</code> from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</p>
 
 <p>Prior to running this example, make sure your <code>CCP_IMAGE_TAG</code>
 environment variable is using the next major version of PostgreSQL that you
 want to upgrade to. For example, if you&rsquo;re upgrading from 11 to 12, make
-sure the variable references a PostgreSQL 12 image such as <code>centos7-12.3-4.3.1</code>.</p>
+sure the variable references a PostgreSQL 12 image such as <code>centos7-12.3-4.3.2</code>.</p>
 
 <p>This will create the following in your Kubernetes environment:</p>
 
