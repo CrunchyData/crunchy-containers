@@ -422,7 +422,7 @@ esac
 fill_conf_file
 
 case "$PG_MODE" in
-    "replica"|"slave")
+    "replica")
     echo_info "Working on replica.."
     create_pgpass
     export PGPASSFILE=/tmp/.pgpass
@@ -430,7 +430,7 @@ case "$PG_MODE" in
         initialize_replica
     fi
     ;;
-    "primary"|"master")
+    "primary")
     echo_info "Working on primary.."
     initialize_primary
     ;;
