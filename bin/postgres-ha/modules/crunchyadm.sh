@@ -20,5 +20,5 @@ if [[ "${PGHA_CRUNCHYADM}" == "true" ]] &&
     [[ $(psql -v "username=${username}" -tA -f - <<< "SELECT 1 FROM pg_roles WHERE rolname=:'username'") != 1 ]]
 then
     echo_info "Creating user ${username}"
-    psql -v "username=${username}" -tA -f - <<< "CREATE ROLE :username LOGIN"
+    psql -v "username=${username}" -tA -f - <<< 'CREATE ROLE :"username" LOGIN'
 fi
