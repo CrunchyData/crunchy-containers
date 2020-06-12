@@ -15,7 +15,7 @@
 
 if [[ -v PGMONITOR_PASSWORD ]]
 then
-    if [[ ${PG_MODE?} == "primary" ]] || [[ ${PG_MODE?} == "master" ]]
+    if [[ ${PG_MODE?} == "primary" ]]
     then
 
         echo_info "PGMONITOR_PASSWORD detected.  Enabling pgMonitor support."
