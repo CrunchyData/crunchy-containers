@@ -27,4 +27,4 @@ then
     exit 1
 fi
 
-expenv -f $DIR/pgbench.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/pgbench.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

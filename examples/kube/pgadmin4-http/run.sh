@@ -32,4 +32,4 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgadmin4-http-se
 ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
     pgadmin4-http-secrets cleanup=${CCP_NAMESPACE?}-pgadmin4-http
 
-expenv -f $DIR/pgadmin4-http.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/pgadmin4-http.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

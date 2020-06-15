@@ -41,4 +41,4 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic pgadmin4-https-t
 ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
     pgadmin4-https-tls cleanup=${CCP_NAMESPACE?}-pgadmin4-https
 
-expenv -f $DIR/pgadmin4-https.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/pgadmin4-https.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

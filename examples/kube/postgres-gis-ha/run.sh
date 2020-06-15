@@ -26,7 +26,7 @@ then
     exit 1
 fi
 
-expenv -f $DIR/postgres-gis-ha-rbac.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/postgres-gis-ha-rbac.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 
 ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic ${CONTAINER_NAME?}-pguser \
     --from-file=username=${DIR?}/credentials/pguser/username \
@@ -49,4 +49,4 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic ${CONTAINER_NAME
 ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
     ${CONTAINER_NAME?}-pgreplicator cleanup=${CCP_NAMESPACE?}-${CONTAINER_NAME?}
 
-expenv -f $DIR/postgres-gis-ha.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/postgres-gis-ha.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

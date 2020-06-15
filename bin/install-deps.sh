@@ -48,9 +48,6 @@ sudo cp /tmp/openshift-*/oc /usr/bin/oc
 # Install dep
 go get github.com/golang/dep/cmd/dep
 
-# install expenv binary for running examples
-go get github.com/blang/expenv
-
 # manually install certstrap into $GOBIN for running the SSL examples
 wget -O $CCPROOT/certstrap https://github.com/square/certstrap/releases/download/v${CERTSTRAP_VERSION}/certstrap-v${CERTSTRAP_VERSION}-linux-amd64 && \
     mv $CCPROOT/certstrap $GOBIN && \

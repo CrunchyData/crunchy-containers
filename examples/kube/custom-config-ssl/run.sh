@@ -49,7 +49,7 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} secret generic ${CONTAINER_NAME
 ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
     ${CONTAINER_NAME?}-secrets cleanup=${CCP_NAMESPACE?}-${CONTAINER_NAME?}
 
-expenv -f $DIR/custom-config-ssl.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/custom-config-ssl.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 
 echo ""
 echo "To connect via SSL, run the following once the DB is ready: "

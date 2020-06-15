@@ -20,4 +20,4 @@ $DIR/cleanup.sh
 
 echo_info "Creating the example components.."
 
-expenv -f $DIR/secret.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/secret.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

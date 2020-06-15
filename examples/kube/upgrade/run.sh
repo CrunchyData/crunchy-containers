@@ -25,4 +25,4 @@ then
     exit 1
 fi
 
-expenv -f $DIR/upgrade.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/upgrade.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

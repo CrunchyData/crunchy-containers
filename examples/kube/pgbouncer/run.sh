@@ -49,7 +49,7 @@ ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
 ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} secret \
     pgsql-secrets cleanup=${CCP_NAMESPACE?}-pgbouncer
 
-expenv -f $DIR/primary.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
-expenv -f $DIR/replica.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
-expenv -f $DIR/pgbouncer-primary.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
-expenv -f $DIR/pgbouncer-replica.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/primary.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/replica.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/pgbouncer-primary.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/pgbouncer-replica.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

@@ -27,4 +27,4 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap pgaudit-pgconf \
 ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
     pgaudit-pgconf cleanup=${CCP_NAMESPACE?}-pgaudit
 
-expenv -f $DIR/pgaudit.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE} -f -
+cat $DIR/pgaudit.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE} -f -

@@ -20,4 +20,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # CCP_PG_IMAGE='-gis'.
 export CCP_PG_IMAGE=${CCP_PG_IMAGE:-}
 
-expenv -f $DIR/backrest-restored.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/backrest-restored.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
