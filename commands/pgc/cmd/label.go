@@ -46,7 +46,7 @@ Usage:
 
 Example:
 
-  pgc label --overwrite pod postres-primary environment=prod 
+  pgc label --overwrite pod postgres-primary environment=prod 
 
 .`,
 	Run: func(cmd *cobra.Command, args []string) {
