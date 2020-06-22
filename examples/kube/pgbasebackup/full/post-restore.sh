@@ -20,4 +20,4 @@ echo_info "Cleaning up.."
 
 cleanup "${CCP_NAMESPACE?}-pgbasebackup-full-restored"
 
-expenv -f $DIR/full-restored.json | ${CCP_CLI?} create --namespace="${CCP_NAMESPACE?}" -f -
+cat $DIR/full-restored.json | envsubst | ${CCP_CLI?} create --namespace="${CCP_NAMESPACE?}" -f -

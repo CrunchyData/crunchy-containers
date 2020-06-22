@@ -36,4 +36,4 @@ ${DIR}/cleanup.sh
 # Cleanup backrest pods if they're running from backup examples
 ${CCP_CLI?} delete --namespace=${CCP_NAMESPACE?} deployment,service backrest
 
-expenv -f $DIR/delta-restore.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/delta-restore.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

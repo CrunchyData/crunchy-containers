@@ -73,11 +73,6 @@ Make directories to hold the GitHub clone that also work with the Go workspace s
     $ cd crunchy-containers
     $ git checkout v4.3.2
 
-We also need to go fetch a Go module for expanding environement variables
-
-    $ go get github.com/blang/expenv  
-
-
 # Your Shell Environment
 
 We have found, that because of the way Go handles different projects, you may want to create a separate account

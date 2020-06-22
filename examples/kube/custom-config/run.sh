@@ -36,4 +36,4 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap custom-config-pgconf 
 ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
     custom-config-pgconf cleanup=${CCP_NAMESPACE?}-custom-config
 
-expenv -f $DIR/custom-config.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/custom-config.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

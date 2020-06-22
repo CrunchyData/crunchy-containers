@@ -38,4 +38,4 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap pgbench-custom-pgconf
 ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap \
     pgbench-custom-pgconf cleanup=${CCP_NAMESPACE?}-pgbench-custom
 
-expenv -f $DIR/pgbench.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/pgbench.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
