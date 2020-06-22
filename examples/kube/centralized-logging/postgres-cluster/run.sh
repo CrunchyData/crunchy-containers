@@ -31,4 +31,4 @@ ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} configmap postgres-cluster-pgco
 ${CCP_CLI?} label --namespace=${CCP_NAMESPACE?} configmap postgres-cluster-pgconf \
     cleanup=$CCP_NAMESPACE-postgres-cluster
 
-expenv -f $DIR/postgres-cluster.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/postgres-cluster.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

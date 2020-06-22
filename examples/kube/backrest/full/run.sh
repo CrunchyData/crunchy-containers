@@ -34,4 +34,4 @@ then
     exit 1
 fi
 
-expenv -f $DIR/full-restore.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/full-restore.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

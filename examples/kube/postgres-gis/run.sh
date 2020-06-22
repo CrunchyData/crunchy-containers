@@ -20,4 +20,4 @@ $DIR/cleanup.sh
 
 echo_info "Creating the example components.."
 
-expenv -f $DIR/postgres-gis.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/postgres-gis.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

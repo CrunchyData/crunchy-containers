@@ -16,4 +16,4 @@ source ${CCPROOT}/examples/common.sh
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-expenv -f $DIR/primary-upgraded.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/primary-upgraded.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -

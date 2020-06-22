@@ -28,12 +28,12 @@ then
     fi
 fi
 
-expenv -f $DIR/statefulset-sa.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
-expenv -f $DIR/statefulset-services.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/statefulset-sa.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/statefulset-services.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 
 if [[ -v CCP_STORAGE_CLASS ]]
 then
-    expenv -f $DIR/statefulset-sc.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+    cat $DIR/statefulset-sc.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 else
-    expenv -f $DIR/statefulset.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+    cat $DIR/statefulset.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
 fi

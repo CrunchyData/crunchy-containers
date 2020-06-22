@@ -33,4 +33,4 @@ fi
 
 ${DIR}/cleanup.sh
 
-expenv -f $DIR/pitr-restore.json | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
+cat $DIR/pitr-restore.json | envsubst | ${CCP_CLI?} create --namespace=${CCP_NAMESPACE?} -f -
