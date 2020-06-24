@@ -318,8 +318,47 @@ build_bootstrap_config_file() {
     # postgresql.conf file
     if [[ "${PGHA_TLS_ENABLED}" == "true" ]]
     then
+      echo_info "Enabling TLS"
+      pghba_tls_file="/opt/cpm/conf/postgres-ha-pghba-tls.yaml"
+
+      # if there is a TLS keypair for a replication user detected, we will need
+      # to copy this to a special mount in order to properly enable
+      # certificate-based authentication between replicas. This is due to
+      # PostgreSQL requiring a client's TLS key to have permissions no less strict
+      # than 0600. In this case, the client is the "postgres" user, and because
+      # Kubernetes Secrets are owned by the group, we need to create a copy of
+      # this key with the correct permissions
+      if [[ -f "/pgconf/tls/tls-replication.key" ]] && [[ -f "/pgconf/tls/tls-replication.crt" ]]
+      then
+        echo_info "Enabling certificate-based authentication for replication"
+
+        tls_replication_key_file="/pgconf/tls-replication/tls.key"
+        tls_replication_cert_file="/pgconf/tls-replication/tls.crt"
+        touch "${tls_replication_key_file}" "${tls_replication_cert_file}"
+        install -m 0600 /pgconf/tls/tls-replication.key "${tls_replication_key_file}"
+        install -m 0600 /pgconf/tls/tls-replication.crt "${tls_replication_cert_file}"
+
+        # update the bootstrap parameters to set the certificate-based
+        # authentication settings
+        /opt/cpm/bin/yq w -i "${bootstrap_file}" postgresql.authentication.replication.sslkey "${tls_replication_key_file}"
+        /opt/cpm/bin/yq w -i "${bootstrap_file}" postgresql.authentication.replication.sslcert "${tls_replication_cert_file}"
+        /opt/cpm/bin/yq w -i "${bootstrap_file}" postgresql.authentication.replication.sslrootcert "/pgconf/tls/ca.crt"
+        # as we have the CA available, we can make the TLS mode "verify-ca" by
+        # default
+        /opt/cpm/bin/yq w -i "${bootstrap_file}" postgresql.authentication.replication.sslmode "verify-ca"
+        # if a CRL file is provided, add this to the stanza as well
+        if [[ -f "/pgconf/tls/ca.crl" ]]
+        then
+          /opt/cpm/bin/yq w -i "${bootstrap_file}" postgresql.authentication.replication.sslcrl "/pgconf/tls/ca.crl"
+        fi
+
+        # use an updated pg_hba.conf file that enforces certificate based
+        # authentication
+        pghba_tls_file="/opt/cpm/conf/postgres-ha-pghba-tls-auth.yaml"
+      fi
+
       echo_info "Applying TLS remote connection configuration to pg_hba.conf"
-      /opt/cpm/bin/yq m -i -a "${pghba_file}" "/opt/cpm/conf/postgres-ha-pghba-tls.yaml"
+      /opt/cpm/bin/yq m -i -a "${pghba_file}" "${pghba_tls_file}"
       echo_info "Enabling TLS in postgresql.conf"
       /opt/cpm/bin/yq m -i -a "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-pgconf-tls.yaml"
 
