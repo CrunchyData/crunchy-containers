@@ -42,8 +42,8 @@ func setup(t *testing.T, timeout time.Duration, cleanup bool) *harness {
 
 	t.Log("Running Initialization Checks...")
 	envs := []string{
-		"CCPROOT", "CCP_BASEOS", "CCP_PGVERSION",
-		"CCP_IMAGE_PREFIX", "CCP_IMAGE_TAG",
+		"CCPROOT", "CCP_BASEOS", "CCP_PGVERSION", "CCP_POSTGIS_VERSION",
+		"CCP_IMAGE_PREFIX", "CCP_IMAGE_TAG", "CCP_POSTGIS_IMAGE_TAG",
 		"CCP_STORAGE_MODE", "CCP_STORAGE_CAPACITY", "CCP_CLI"}
 
 	if err := runner.GetEnv(envs); err != nil {

@@ -93,7 +93,7 @@
                 "containers": [
                     {
                         "name": "postgres",
-                        "image": "$CCP_IMAGE_PREFIX/crunchy-postgres-gis-ha:$CCP_IMAGE_TAG",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-postgres-gis-ha:$CCP_POSTGIS_IMAGE_TAG",
                         "securityContext": {
                             "runAsUser": 26
                         },
@@ -362,7 +362,7 @@
                 "containers": [
                     {
                         "name": "postgres",
-                        "image": "$CCP_IMAGE_PREFIX/crunchy-postgres-gis-ha:$CCP_IMAGE_TAG",
+                        "image": "$CCP_IMAGE_PREFIX/crunchy-postgres-gis-ha:$CCP_POSTGIS_IMAGE_TAG",
                         "securityContext": {
                             "runAsUser": 26
                         },
