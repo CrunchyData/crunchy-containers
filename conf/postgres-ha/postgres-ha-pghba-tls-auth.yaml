@@ -1,0 +1,6 @@
+---
+postgresql:
+  pg_hba:
+    - hostssl replication PATRONI_REPLICATION_USERNAME 0.0.0.0/0 cert
+    - hostssl all PATRONI_REPLICATION_USERNAME 0.0.0.0/0 reject
+    - hostssl all all 0.0.0.0/0 md5
