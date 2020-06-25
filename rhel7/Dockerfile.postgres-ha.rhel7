@@ -48,14 +48,13 @@ LABEL name="postgres-ha" \
 RUN yum -y install \
 	--enablerepo="epel,rhel-7-server-optional-rpms" \
 	--setopt=skip_missing_names_on_install=False \
-	gcc \
-	python3-devel \
 	python3-pip \
+	python3-psutil \
 	python3-psycopg2 \
 	&& yum -y clean all --enablerepo="epel,rhel-7-server-optional-rpms"
 
 # install patroni for Kube
-RUN pip3 install --upgrade setuptools python-dateutil \
+RUN pip3 install --upgrade python-dateutil \
 	&& pip3 install patroni[kubernetes]=="${PATRONI_VER}"
 
 RUN useradd crunchyadm -g 0 -u 17

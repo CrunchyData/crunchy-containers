@@ -21,7 +21,6 @@ RUN yum -y install \
 
 RUN yum -y install \
 		--setopt=skip_missing_names_on_install=False \
-		gcc \
 		mod_ssl \
 		mod_wsgi \
 		openssl \
