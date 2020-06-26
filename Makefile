@@ -207,7 +207,7 @@ postgres-gis-ha-pgimg-docker: postgres-gis-ha-pgimg-build
 backrest-restore-pgimg-build: cc-pg-base-image $(CCPROOT)/$(DFSET)/Dockerfile.backrest-restore.$(DFSET)
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/$(DFSET)/Dockerfile.backrest-restore.$(DFSET) \
-		-t $(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_POSTGIS_IMAGE_TAG) \
+		-t $(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG) \
 		--build-arg BASEOS=$(CCP_BASEOS) \
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
