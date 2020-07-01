@@ -1,5 +1,9 @@
 ---
 bootstrap:
+  method: PGHA_BOOTSTRAP_METHOD
+  pgbackrest_init:
+    command: '/opt/cpm/bin/pgbackrest/pgbackrest-create-replica.sh primary'
+    keep_existing_recovery_conf: true
   dcs:
     postgresql:
       parameters:

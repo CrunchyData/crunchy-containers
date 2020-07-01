@@ -71,24 +71,46 @@ initialization_monitor() {
                 status_code=$(curl -o /dev/stderr -w "%{http_code}" "127.0.0.1:${PGHA_PATRONI_PORT}/master" 2> /dev/null)
             done
 
-            echo_info "PGHA_INIT is '${PGHA_INIT}', executing post-init process to fully initialize the cluster"
-            if [[ -f "/crunchyadm/pgha_convert_standalone" ]]
-            then
-                echo_info "Executing Patroni restart to restart database and update configuration"
-                curl -X POST --silent "127.0.0.1:${PGHA_PATRONI_PORT}/restart"
-                test_server "postgres" "${PGHOST}" "${PGPORT}" "postgres"
-                echo_info "The database has been restarted"
-            else
-                echo "Pending restart not detected, will not restart" >> "/tmp/patroni_initialize_check.log"
-            fi
-
-            # Apply enhancement modules
-            echo_info "Applying enahncement modules"
-            for module in /opt/cpm/bin/modules/*.sh
+            # Ensure the cluster is no longer in recovery
+            until [[ $(psql -At -c "SELECT pg_catalog.pg_is_in_recovery()") == "f" ]]
             do
-                echo_info "Applying module ${module}"
-                source "${module}"
+                echo_info "Detected recovery during cluster init, waiting one second..."
+                sleep 1
             done
+
+            # if the bootstrap method is not "initdb", we assume we're running an init job and now
+            # proceed with shutting down Patroni and the database
+            if [[ "${PGHA_BOOTSTRAP_METHOD}" == "initdb" ]]
+            then
+                # Apply enhancement modules
+                echo_info "Applying enahncement modules"
+                for module in /opt/cpm/bin/modules/*.sh
+                do
+                    echo_info "Applying module ${module}"
+                    source "${module}"
+                done
+
+                # If there are any tablespaces, create them as a convenience to the user, both
+                # the directories and the PostgreSQL objects
+                source /opt/cpm/bin/common/pgha-tablespaces.sh
+                tablespaces_create_postgresql_objects "${PGHA_USER}"
+
+                # Run audit.sql file if exists
+                if [[ -f "/pgconf/audit.sql" ]]
+                then
+                    echo_info "Running custom audit.sql file"
+                    psql < "/pgconf/audit.sql"
+                fi
+            else
+                echo_info "Init job completed, killing Patroni to gracefully shutdown PostgreSQL"
+                killall patroni
+                killall sshd
+
+                while killall -0 patroni; do
+                    echo_info "Waiting for Patroni to terminate following init job..."
+                    sleep 1
+                done
+            fi
         else
             echo_info "PGHA_INIT is '${PGHA_INIT}', skipping post-init process "
         fi
@@ -180,19 +202,6 @@ then
     sed -i -E '/^hba_file|^ident_file/d' "${PATRONI_POSTGRESQL_DATA_DIR}/postgresql.conf"
 fi
 
-# Detect if converting a non-Patroni standalone database to a Patroni cluster, which will result
-# in a manual start of the database along with the execution of the 'post-existing-init.sql' script.  
-# This is done by detecting whether or not there is an existing PGDATA directory which does not 
-# contain a patroni.dynamic.json.  If this file is present, an existing Patroni cluster is assumed
-# and Patroni will handle the recovery.
-if [[ "${PGHA_INIT}" == "true" && -f "${PATRONI_POSTGRESQL_DATA_DIR}/PG_VERSION" &&
-    ! -f "${PATRONI_POSTGRESQL_DATA_DIR}/patroni.dynamic.json" ]]
-then
-    echo_info "Non-Patroni database detected during init, will start manually prior to starting Patroni"
-    manual_start=true
-    convert_standalone=true
-fi
-
 # Start the database manually if needed (e.g. if performing a PITR or converting a non-Patroni
 # standalone database).
 if [[ "${manual_start}" == "true" ]]
@@ -223,22 +232,6 @@ then
     echo_info "Reached a consistent state"
 fi
 
-# Run the post-existing-init.sql file if converting a non-Patroni standalone database to a Patroni
-# cluster.
-if [[ "${convert_standalone}" == "true" ]]
-then
-    touch "/crunchyadm/pgha_convert_standalone"
-    echo_info "Manually creating Patroni accounts and proceeding with Patroni initialization"
-
-    if [[ -f "/pgconf/post-existing-init.sql" ]]
-    then
-        post_existing_init_file="/pgconf/post-existing-init.sql"
-    else
-        post_existing_init_file="/opt/cpm/bin/sql/post-existing-init.sql"
-    fi
-    envsubst < ${post_existing_init_file} | psql -f -
-fi
-
 # Moinitor for the intialization of the cluster
 initialization_monitor
 
@@ -248,7 +241,10 @@ remove_patroni_pause_key
 # Bootstrap the cluster
 bootstrap_cmd="$@ /tmp/postgres-ha-bootstrap.yaml"
 echo_info "Initializing cluster bootstrap with command: '${bootstrap_cmd}'"
-if [[ "$$" == 1 ]]
+# If PID 1 and bootstrapping from scratch via initdb, then run patroni as PID 1.  Otherwise, if
+# running as an init job (e.g. to perform a pgbackrest restore) do not run as a PID 1 to ensure
+# the container exits with a non-zero exit code in the event the pgbackrest restore fails
+if [[ "$$" == 1 && "${PGHA_BOOTSTRAP_METHOD}" == "initdb" ]]
 then
     echo_info "Running Patroni as PID 1"
     exec ${bootstrap_cmd}

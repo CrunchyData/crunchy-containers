@@ -20,29 +20,33 @@ enable_debugging
 
 echo_info "postgres-ha post-bootstrap starting"
 
-# Run either a custom or the defaul setup.sql file
-if [[ -f "/pgconf/setup.sql" ]]
+if [[ "${PGHA_BOOTSTRAP_METHOD}" == "initdb" ]]
 then
-    echo_info "Using custom setup.sql"
-    cp "/pgconf/setup.sql" "/tmp"
+    # Run either a custom or the defaul setup.sql file
+    if [[ -f "/pgconf/setup.sql" ]]
+    then
+        echo_info "Using custom setup.sql"
+        setup_file="/pgconf/setup.sql"
+    else
+        echo_info "Using default setup.sql"
+        setup_file="/opt/cpm/bin/sql/setup.sql"
+    fi
 else
-    echo_info "Using default setup.sql"
-    cp "/opt/cpm/bin/sql/setup.sql" "/tmp"
+    if [[ -f "/pgconf/post-existing-init.sql" ]]
+    then
+        echo_info "Using custom post-existing-init.sql"
+        setup_file="/pgconf/post-existing-init.sql"
+    else
+        echo_info "Using default post-existing-init.sql"
+        setup_file="/opt/cpm/bin/sql/post-existing-init.sql"
+    fi
+    # make sure backrest is stopped before writing to the db in the even we are connected to an
+    # active repostiory for another cluster, such as when bootstrapping using 'pgbackrest_init'
+    pgbackrest stop
+    err_check "$?" "post bootstrap" "Could not stop pgBackRest, ${setup_file}" will not be run
 fi
 
-echo_info "Running setup.sql file"
-envsubst < /tmp/setup.sql | psql -f -
-
-# If there are any tablespaces, create them as a convenience to the user, both
-# the directories and the PostgreSQL objects
-source /opt/cpm/bin/common/pgha-tablespaces.sh
-tablespaces_create_postgresql_objects "${PGHA_USER}"
-
-# Run audit.sql file if exists
-if [[ -f "/pgconf/audit.sql" ]]
-then
-    echo_info "Running custom audit.sql file"
-    psql < "/pgconf/audit.sql"
-fi
+echo_info "Running ${setup_file} file"
+envsubst < "${setup_file}" | psql -f -
 
 echo_info "postgres-ha post-bootstrap complete"
