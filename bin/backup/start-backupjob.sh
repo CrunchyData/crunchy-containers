@@ -40,7 +40,11 @@ env_check_info "BACKUP_LABEL" "BACKUP_LABEL is set to ${BACKUP_LABEL}."
 env_check_info "BACKUP_PATH" "BACKUP_PATH is set to ${BACKUP_PATH}."
 env_check_info "BACKUP_OPTS" "BACKUP_OPTS is set to ${BACKUP_OPTS}."
 
-echo "*:*:*:"${BACKUP_USER?}":"${BACKUP_PASS?} >> ${PGPASSFILE?}
+# escape any instances of ':' or '\' with '\' in the provided password
+# before storing the value in the password file
+ESCAPED_PASSWORD=$(sed <<< "${BACKUP_PASS?}" 's/[:\\]/\\&/g')
+
+echo "*:*:*:${BACKUP_USER?}:${ESCAPED_PASSWORD?}" >> ${PGPASSFILE?}
 chmod 600 ${PGPASSFILE?}
 
 pg_basebackup --label=${BACKUP_LABEL?} -X fetch \
