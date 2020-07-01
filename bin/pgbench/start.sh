@@ -42,8 +42,13 @@ fi
 
 function create_pgpass() {
     cd /tmp
+
+# escape any instances of ':' or '\' with '\' in the provided password
+# before storing the value in the password file
+ESCAPED_PASSWORD=$(sed <<< "${PG_PASSWORD?}" 's/[:\\]/\\&/g')
+
 cat >> ".pgpass" <<-EOF
-*:*:*:${PG_USERNAME?}:${PG_PASSWORD?}
+*:*:*:${PG_USERNAME?}:${ESCAPED_PASSWORD?}
 EOF
     chmod 0600 .pgpass
 }

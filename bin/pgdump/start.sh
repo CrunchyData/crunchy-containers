@@ -32,8 +32,12 @@ env_check_err "PGDUMP_USER"
 # Todo: Add SSL support
 conn_opts="-h ${PGDUMP_HOST?} -p ${PGDUMP_PORT?} -U ${PGDUMP_USER?}"
 
+# escape any instances of ':' or '\' with '\' in the provided password
+# before storing the value in the password file
+ESCAPED_PASSWORD=$(sed <<< "${PGDUMP_PASS?}" 's/[:\\]/\\&/g')
+
 cat >> "${PGPASSFILE?}" <<-EOF
-*:*:*:${PGDUMP_USER?}:${PGDUMP_PASS?}
+*:*:*:${PGDUMP_USER?}:${ESCAPED_PASSWORD?}
 EOF
 
 chmod 600 ${PGPASSFILE?}
