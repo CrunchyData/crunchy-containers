@@ -34,8 +34,12 @@ PGDUMP_BACKUP_HOST="${PGDUMP_BACKUP_HOST:-${PGRESTORE_HOST?}}"
 # Todo: Add SSL support
 conn_opts="-h ${PGRESTORE_HOST?} -p ${PGRESTORE_PORT?} -U ${PGRESTORE_USER?} -d ${PGRESTORE_DB?}"
 
+# escape any instances of ':' or '\' with '\' in the provided password
+# before storing the value in the password file
+ESCAPED_PASSWORD=$(sed <<< "${PGRESTORE_PASS?}" 's/[:\\]/\\&/g')
+
 cat >> "${PGPASSFILE?}" <<-EOF
-*:*:*:${PGRESTORE_USER?}:${PGRESTORE_PASS?}
+*:*:*:${PGRESTORE_USER?}:${ESCAPED_PASSWORD?}
 EOF
 
 chmod 600 ${PGPASSFILE?}
