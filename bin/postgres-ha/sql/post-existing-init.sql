@@ -13,5 +13,9 @@
  * limitations under the License.
  */
 
-CREATE USER ${PATRONI_SUPERUSER_USERNAME} WITH SUPERUSER PASSWORD $$${PATRONI_SUPERUSER_PASSWORD}$$;
-CREATE USER ${PATRONI_REPLICATION_USERNAME} WITH REPLICATION PASSWORD $$${PATRONI_REPLICATION_PASSWORD}$$;
+/**
+ * Create the PGHA user and then alter its password.  This ensures the password is updated
+ * in the event the user already exists.
+ */
+CREATE ROLE "${PGHA_USER}" WITH LOGIN PASSWORD $$${PGHA_USER_PASSWORD}$$;
+ALTER ROLE "${PGHA_USER}" WITH PASSWORD $$${PGHA_USER_PASSWORD}$$;

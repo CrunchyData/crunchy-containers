@@ -19,6 +19,7 @@ enable_debugging
 source /opt/cpm/bin/common/pgha-common.sh
 export $(get_patroni_pgdata_dir)
 
+bootstrap_role=$1
 restore_cmd_args=()
 
 # If the PGDATA directory is empty or contains a valid PG database, then perform a delta restore.
@@ -32,11 +33,11 @@ restore_cmd_args=()
 if [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}"/PG_VERSION || 
     -f "${PATRONI_POSTGRESQL_DATA_DIR}"/backup.manifest ]]
 then
-    echo_info "Valid PGDATA dir found for replica, a delta restore will be peformed"
+    echo_info "Valid PGDATA dir found for ${bootstrap_role}, a delta restore will be peformed"
     restore_cmd_args+=("--delta")
 elif [[ -z "$(ls -A ${PATRONI_POSTGRESQL_DATA_DIR})" ]]
 then
-    echo_info "Empty PGDATA dir found for replica, a non-delta restore will be peformed"
+    echo_info "Empty PGDATA dir found for ${bootstrap_role}, a non-delta restore will be peformed"
 
     # create the PGDATA directory if needed (e.g. in the event it was deleted)
     # and set the proper permissions
@@ -46,14 +47,14 @@ then
         chmod 0700 "${PATRONI_POSTGRESQL_DATA_DIR}"
     fi
 else
-    echo_info "Invalid PGDATA directory found for replica, cleaning prior to restore"
+    echo_info "Invalid PGDATA directory found for ${bootstrap_role}, cleaning prior to restore"
     while [[ ! -z "$(ls -A ${PATRONI_POSTGRESQL_DATA_DIR})" ]]
     do
         echo_info "Files still found in PGDATA, attempting cleanup"
         rm -rf "${PATRONI_POSTGRESQL_DATA_DIR:?}"/*
         sleep 3
     done
-    echo_info "Replica PGDATA cleaned, a non-delta restore will be peformed"
+    echo_info "${bootstrap_role} PGDATA cleaned, a non-delta restore will be peformed"
 fi
 
 # obtain the type of repo to use for replica creation (e.g. AWS S3 or local) using the value set
@@ -81,7 +82,7 @@ then
 fi
 
 # perform the restore
-pgbackrest restore "${restore_cmd_args[@]}"
-err_check "$?" "pgBackRest Replica Creation" "pgBackRest restore failed when creating replica"
+eval "pgbackrest restore ${restore_cmd_args[*]} ${RESTORE_OPTS}"
+err_check "$?" "pgBackRest ${bootstrap_role} Creation" "pgBackRest restore failed when creating ${bootstrap_role}"
 
-echo_info "Replica pgBackRest restore complete"
+echo_info "${bootstrap_role} pgBackRest restore complete"

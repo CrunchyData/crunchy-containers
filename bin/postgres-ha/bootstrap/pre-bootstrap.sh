@@ -111,6 +111,12 @@ set_default_pgha_env()  {
         pgha_env_vars+=("PGHA_REPLICA_REINIT_ON_START_FAIL")
     fi
 
+    if [[ ! -v PGHA_BOOTSTRAP_METHOD ]]
+    then
+        export PGHA_BOOTSTRAP_METHOD="initdb"
+        pgha_env_vars+=("PGHA_BOOTSTRAP_METHOD")
+    fi
+
     if [[ ! ${#default_pgha_env_vars[@]} -eq 0 ]]
     then
         pgha_env_vars=$(printf ', %s' "${default_pgha_env_vars[@]}")
@@ -256,6 +262,8 @@ build_bootstrap_config_file() {
     then
         echo_info "Applying base bootstrap config to postgres-ha configuration"
         /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-bootstrap.yaml"
+        # set the configured bootstrap method (e.g. initdb or pgbackrest)
+        sed -i "s/PGHA_BOOTSTRAP_METHOD/$PGHA_BOOTSTRAP_METHOD/g" "${bootstrap_file}"
     else
         echo_info "Base bootstrap config for postgres-ha configuration disabled"
     fi
@@ -376,7 +384,16 @@ build_bootstrap_config_file() {
       /opt/cpm/bin/yq m -i -a "${pghba_file}" "/opt/cpm/conf/postgres-ha-pghba-notls.yaml"
     fi
 
-    # merge the pg_hba.conf settings into the main boostrap file
+    # Disable archive_mode to prevent WAL from being pushed while potentially still connected
+    # to another pgBackRest repository while initializing (e.g. while performing a pgBackRest
+    # restore)
+    if [[ "${PGHA_BOOTSTRAP_METHOD}" != "initdb" ]]
+    then
+      echo_info "Disabling archive mode for bootstrap method ${PGHA_BOOTSTRAP_METHOD}"
+      /opt/cpm/bin/yq w -i "${bootstrap_file}" postgresql.parameters.archive_mode "off"
+    fi
+
+    # merge the pg_hba.conf settings into the main bootstrap file
     sed -i "s/PATRONI_REPLICATION_USERNAME/$PATRONI_REPLICATION_USERNAME/g" "${pghba_file}"
     /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "${pghba_file}"
 
