@@ -39,7 +39,7 @@ RUN yum -y install \
 ARG PATRONI_VER
 
 LABEL name="postgres-ha" \
-	summary="PostgreSQL ${PG_FULL} (PGDG) with Patroni" \
+	summary="PostgreSQL ${PG_FULL} with Patroni" \
 	description="Used for the deployment and management of highly-available PostgreSQL clusters using Patroni." \
 	io.k8s.description="Crunchy PostgreSQL optimized for high-availability (HA)" \
 	io.k8s.display-name="Crunchy PostgreSQL - HA Optimized" \
