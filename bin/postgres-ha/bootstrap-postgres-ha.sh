@@ -70,7 +70,13 @@ initialization_monitor() {
                 echo "Not yet running as primary, retrying" >> "/tmp/patroni_initialize_check.log"
                 status_code=$(curl -o /dev/stderr -w "%{http_code}" "127.0.0.1:${PGHA_PATRONI_PORT}/master" 2> /dev/null)
             done
+        fi
 
+        # The following logic only applies to bootstrapping and initializing clusters that are
+        # not standby clusters.  Specifically, this logic expects the database to exit recovery
+        # and become writable.
+        if [[ "${PGHA_INIT}" == "true" && "${PGHA_STANDBY}" != "true" ]]
+        then
             # Ensure the cluster is no longer in recovery
             until [[ $(psql -At -c "SELECT pg_catalog.pg_is_in_recovery()") == "f" ]]
             do
@@ -111,8 +117,6 @@ initialization_monitor() {
                     sleep 1
                 done
             fi
-        else
-            echo_info "PGHA_INIT is '${PGHA_INIT}', skipping post-init process "
         fi
 
         touch "/crunchyadm/pgha_initialized"  # write file to indicate the cluster is fully initialized
