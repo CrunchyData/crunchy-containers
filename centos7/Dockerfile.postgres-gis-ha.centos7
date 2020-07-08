@@ -19,6 +19,7 @@ USER 0
 RUN yum -y install \
 		--setopt=skip_missing_names_on_install=False \
 		libRmath \
+		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
 		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \

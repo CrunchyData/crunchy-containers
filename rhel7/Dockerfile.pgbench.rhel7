@@ -12,7 +12,7 @@ RUN yum -y install \
 	&& yum -y clean all
 
 LABEL name="pgbench" \
-	summary="pgBench ${PG_FULL} (PGDG) on a Centos7 base image" \
+	summary="pgBench ${PG_FULL} on a Red Hat 7 base image" \
 	description="pgbench is a simple program for running benchmark tests on PostgreSQL. It runs the same sequence of SQL commands over and over, possibly in multiple concurrent database sessions, and then calculates the average transaction rate (transactions per second)." \
 	io.k8s.description="pgbench container" \
 	io.k8s.display-name="pgbench container" \

@@ -36,7 +36,7 @@ RUN yum -y install \
 
 # ===== Steps unique to this image after here =====
 LABEL name="postgres" \
-	summary="PostgreSQL ${PG_FULL} (PGDG) on a Centos7 base image" \
+	summary="PostgreSQL ${PG_FULL} on a Red Hat 7 base image" \
 	description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
 	io.k8s.description="Crunchy PostgreSQL is the trusted open source distribution of PostgreSQL" \
 	io.k8s.display-name="Crunchy PostgreSQL" \
