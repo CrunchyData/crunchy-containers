@@ -55,7 +55,7 @@ export CCP_POSTGIS_VERSION=3.0
 export CCP_VERSION=4.4.0-beta.2
 export CCP_IMAGE_PREFIX=crunchydata # Prefix to put before all the container image names
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION   # Used to tag the images
-export CCP_POSTGIS_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_POSTGIS_VERSION-$CCPVERSION # Used to tag images that include PostGIS
+export CCP_POSTGIS_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_POSTGIS_VERSION-$CCP_VERSION # Used to tag images that include PostGIS
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers    # The base of the clone github repo
 ```
 
@@ -74,7 +74,7 @@ export CCP_POSTGIS_VERSION=3.0
 export CCP_VERSION=4.4.0-beta.2
 export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
-export CCP_POSTGIS_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_POSTGIS_VERSION-$CCPVERSION
+export CCP_POSTGIS_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_POSTGIS_VERSION-$CCP_VERSION
 export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers
 EOF
 ```
