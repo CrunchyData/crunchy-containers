@@ -19,6 +19,8 @@ enable_debugging
 source /opt/cpm/bin/common/pgha-common.sh
 export $(get_patroni_pgdata_dir)
 
+source /opt/cpm/bin/pgbackrest/pgbackrest-set-env.sh
+
 bootstrap_role=$1
 restore_cmd_args=()
 
@@ -65,8 +67,15 @@ then
     replica_bootstrap_repo_type="$(cat /pgconf/replica-bootstrap-repo-type)"
     if [[ "${replica_bootstrap_repo_type}" != "" ]]
     then
-        restore_cmd_args+=("--repo-type=${replica_bootstrap_repo_type}")
+        restore_cmd_args+=("--repo1-type=${replica_bootstrap_repo_type}")
     fi
+fi
+
+# for an S3 repo, if TLS verification is disabled, pass in the appropriate flag
+# otherwise, leave the default behavior and verify the S3 server certificate
+if [[ ${replica_bootstrap_repo_type} == "s3" && ${PGHA_PGBACKREST_S3_VERIFY_TLS} == "false" ]]
+then
+    restore_cmd_args+=("--no-repo1-s3-verify-tls")
 fi
 
 # Retain and reconfigure existing WAL directory symlink. (By default symlinked directories and

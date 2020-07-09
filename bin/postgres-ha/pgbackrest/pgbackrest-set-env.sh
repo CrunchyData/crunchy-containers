@@ -23,6 +23,13 @@ then
     replica_bootstrap_repo_type="$(cat /pgconf/replica-bootstrap-repo-type)"
     if [[ "${replica_bootstrap_repo_type}" != "" ]]
     then
-        export PGBACKREST_REPO_TYPE=${replica_bootstrap_repo_type}
+        export PGBACKREST_REPO1_TYPE=${replica_bootstrap_repo_type}
     fi
+fi
+
+# for an S3 repo, if TLS verification is disabled, pass in the appropriate flag
+# otherwise, leave the default behavior and verify the S3 server certificate
+if [[ $PGBACKREST_REPO_TYPE == "s3" && $PGHA_PGBACKREST_S3_VERIFY_TLS == "false" ]]
+then
+    export PGBACKREST_REPO1_S3_VERIFY_TLS="n"
 fi
