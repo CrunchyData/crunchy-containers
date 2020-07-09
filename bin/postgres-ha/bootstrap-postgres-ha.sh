@@ -84,6 +84,14 @@ initialization_monitor() {
                 sleep 1
             done
 
+            if [[ "${manual_start}" == "true" ]]
+            then
+                echo_info "Executing Patroni restart to restart database and update configuration"
+                curl -X POST --silent "127.0.0.1:${PGHA_PATRONI_PORT}/restart"
+                test_server "postgres" "${PGHOST}" "${PGPORT}" "postgres"
+                echo_info "The database has been restarted"
+            fi
+
             # if the bootstrap method is not "initdb", we assume we're running an init job and now
             # proceed with shutting down Patroni and the database
             if [[ "${PGHA_BOOTSTRAP_METHOD}" == "initdb" ]]
