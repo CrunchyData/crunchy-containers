@@ -8,7 +8,7 @@ CCP_PGVERSION ?= 12
 CCP_PG_FULLVERSION ?= 12.3
 CCP_PATRONI_VERSION ?= 1.6.5
 CCP_BACKREST_VERSION ?= 2.27
-CCP_VERSION ?= 4.4.0-beta.1
+CCP_VERSION ?= 4.4.0-beta.2
 CCP_POSTGIS_VERSION ?= 3.0
 
 # Valid values: buildah (default), docker
