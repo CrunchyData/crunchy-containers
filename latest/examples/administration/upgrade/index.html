@@ -552,7 +552,7 @@
             <i class="fa fa-info-circle"></i>
             
           </a>
-          <a class="github-link" href="https://github.com/CrunchyData/crunchy-containers/edit/master/hugo/content/examples/administration/upgrade.md" target="blank">
+          <a class="github-link" href="https://github.com/CrunchyData/crunchy-containers/edit/master/docs/content/examples/administration/upgrade.md" target="blank">
             <i class="fa fa-code-fork"></i>
             
           </a>
@@ -597,8 +597,10 @@
 
 <h2 id="major-upgrade">Major Upgrade</h2>
 
-<div class="notices tip" >This example assumes you have run <em>primary</em> using a PostgreSQL 11 or 12 image
-such as <code>centos7-12.3-4.4.0-beta.2</code> prior to running this upgrade.</div>
+<div class="notices tip" >
+This example assumes you have run *primary* using a PostgreSQL 11 or 12 image
+such as `centos7-12.3-4.4.0-beta.2` prior to running this upgrade.
+</div>
 
 <p>The upgrade container will let you perform a <code>pg_upgrade</code> from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</p>
 
@@ -614,15 +616,19 @@ sure the variable references a PostgreSQL 12 image such as <code>centos7-12.3-4.
 <li>a new data directory name <em>upgrade</em> found in the <em>pgnewdata</em> PVC</li>
 </ul>
 
-<div class="notices tip" >Data checksums on the Crunchy PostgreSQL container were enabled by default in version 2.1.0.
-When trying to upgrade, it&rsquo;s required that both the old database and the new database
-have the same data checksums setting.  Prior to upgrade, check if <code>data_checksums</code>
-were enabled on the database by running the following SQL: <code>SHOW data_checksums</code></div>
+<div class="notices tip" >
+Data checksums on the Crunchy PostgreSQL container were enabled by default in version 2.1.0.
+When trying to upgrade, it's required that both the old database and the new database
+have the same data checksums setting.  Prior to upgrade, check if `data_checksums`
+were enabled on the database by running the following SQL: `SHOW data_checksums`
+</div>
 
 <h2 id="kubernetes-and-openshift">Kubernetes and OpenShift</h2>
 
-<div class="notices tip" >Before running the example, ensure you edit <code>upgrade.json</code> and update the <code>OLD_VERSION</code>
-and <code>NEW_VERSION</code> parameters to the major release version relevant to your situation.</div>
+<div class="notices tip" >
+Before running the example, ensure you edit `upgrade.json` and update the `OLD_VERSION`
+and `NEW_VERSION` parameters to the major release version relevant to your situation.
+</div>
 
 <p>First, delete the existing primary deployment:</p>
 

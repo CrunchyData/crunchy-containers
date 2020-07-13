@@ -535,7 +535,7 @@
             <i class="fa fa-info-circle"></i>
             
           </a>
-          <a class="github-link" href="https://github.com/CrunchyData/crunchy-containers/edit/master/hugo/content/installation-guide/installation-guide.md" target="blank">
+          <a class="github-link" href="https://github.com/CrunchyData/crunchy-containers/edit/master/docs/content/installation-guide/installation-guide.md" target="blank">
             <i class="fa fa-code-fork"></i>
             
           </a>
@@ -622,8 +622,12 @@ Docker CE or EE on your machine, please create a VM for this work or uninstall D
 
 <h1 id="initial-installs">Initial Installs</h1>
 
-<div class="notices tip" >Please note that <em>golang</em> is only required if you are building the containers from source. If you do
-not plan on building the containers then installing <em>git</em> is sufficient.</div>
+<div class="notices tip" >
+
+Please note that _golang_ is only required if you are building the containers from source. If you do
+not plan on building the containers then installing _git_ is sufficient.
+
+</div>
 
 <h2 id="centos-7-only">CentOS 7 only</h2>
 
@@ -697,14 +701,17 @@ above in the environment variable section).</p>
 
 <h2 id="install-docker">Install Docker</h2>
 
-<div class="notices info" ><p>The OpenShift and Kubernetes (KubeAdm) instructions both have a section for installing docker. Installing
-docker now won&rsquo;t cause any issues but you may wish to configure Docker storage before bringing
-everything up. Configuring Docker Storage is different from <em>Storage Configuration</em> referenced later in the
-instructions and is not covered here.</p>
+<div class="notices info" >
 
-<p>For a basic docker installation, you can follow the instructions below. Please refer to
+The OpenShift and Kubernetes (KubeAdm) instructions both have a section for installing docker. Installing
+docker now won't cause any issues but you may wish to configure Docker storage before bringing
+everything up. Configuring Docker Storage is different from *Storage Configuration* referenced later in the
+instructions and is not covered here.
+
+For a basic docker installation, you can follow the instructions below. Please refer to
 the respective installation guide for the version of Kubernetes you are installing for
-more specific details.</p>
+more specific details.
+
 </div>
 
 <p>Install Docker</p>
@@ -727,13 +734,21 @@ sudo usermod -a -G docker &lt;username&gt;
 sudo systemctl start docker.service
 </code></pre>
 
-<div class="notices info" >At this point you should be able to build the containers. Please to go to <a href="https://crunchydata.github.io/crunchy-containers/latest/contributing/building/">Building the Containers</a>
-page and continue from there.</div>
+<div class="notices info" >
+
+At this point you should be able to build the containers. Please to go to [Building the Containers](/contributing/building/)
+page and continue from there.
+
+</div>
 
 <h2 id="install-postgresql">Install PostgreSQL</h2>
 
-<div class="notices tip" >You only need to install PostgreSQL locally if you want to use the examples - it is not required for
-either building the containers or installing the containers into Kubernetes.</div>
+<div class="notices tip" >
+
+You only need to install PostgreSQL locally if you want to use the examples - it is not required for
+either building the containers or installing the containers into Kubernetes.
+
+</div>
 
 <p>These installation instructions
 assume the installation of PostgreSQL 10 through the official Postgresql Development Group (PGDG) repository.
@@ -807,14 +822,15 @@ to choose the proper version of OpenShift you want to install. The main instruct
 
 <h2 id="kubernetes-installation">Kubernetes Installation</h2>
 
-<div class="notices warning" ><p>Make sure your hostname resolves to a single IP address in your
+<div class="notices warning" >
+Make sure your hostname resolves to a single IP address in your
 /etc/hosts file. The NFS examples will not work otherwise and other problems
-with installation can occur unless you have a resolving hostname.</p>
+with installation can occur unless you have a resolving hostname.
 
-<p>You should see a single IP address returned from this command:</p>
+You should see a single IP address returned from this command:
 
-<pre><code>$ hostname --ip-address
-</code></pre>
+    $ hostname --ip-address
+
 </div>
 
 <h3 id="installing-kubernetes">Installing Kubernetes</h3>
@@ -889,11 +905,13 @@ created resources or components into individual logically grouped partitions. In
 <p>It is considered a best practice to have dedicated namespaces for projects in
 both testing and production environments.</p>
 
-<div class="notices info" >All examples in the Crunchy Container Suite operate within the namespace
-defined by the environment variable <code>$CCP_NAMESPACE</code>. The default we use for namespace
-is &lsquo;demo&rsquo; but it can be set to any valid namespace name. The instructions below
+<div class="notices info" >
+All examples in the Crunchy Container Suite operate within the namespace
+defined by the environment variable `$CCP_NAMESPACE`. The default we use for namespace
+is 'demo' but it can be set to any valid namespace name. The instructions below
 illustrate how to set up and work within new namespaces or projects in both
-Kubernetes and OpenShift.</div>
+Kubernetes and OpenShift.
+</div>
 
 <h2 id="kubernetes">Kubernetes</h2>
 
@@ -921,8 +939,12 @@ demo      Active    7s
 
 <p>Then set the namespace as the default for the current context:</p>
 
-<div class="notices tip" >When a namespace is not explicitly stated for a command, Kubernetes uses the namespace
-specified by the currently set context.</div>
+<div class="notices tip" >
+
+When a namespace is not explicitly stated for a command, Kubernetes uses the namespace
+specified by the currently set context.
+
+</div>
 
 <pre><code>$ kubectl config set-context $(kubectl config current-context) --namespace=demo
 </code></pre>
@@ -946,8 +968,10 @@ Authorization policy of <code>AllowAll</code> as documented here:</p>
 <p>We do not recommend this authentication policy for a production
 deployment of OCP.</p>
 
-<div class="notices tip" >For the best results, it is recommended that you run the examples with a user that has <strong>NOT</strong> been
-assigned the <strong>cluster-admin</strong> cluster role.</div>
+<div class="notices tip" >
+For the best results, it is recommended that you run the examples with a user that has **NOT** been
+assigned the **cluster-admin** cluster role.
+</div>
 
 <p>Log into the system as a user:</p>
 
@@ -989,11 +1013,13 @@ needed. Specifically, a new role is needed that can both create and delete <stro
 <p>Using the following two commands, create a new Cluster Role that has the ability to create and delete
 persistent volumes, and then assign that role to your current user:</p>
 
-<div class="notices warning" >Please be aware that the following two commands require privileges that your current user may not
+<div class="notices warning" >
+Please be aware that the following two commands require privileges that your current user may not
 have. In the event that you are unable to run these commands, and do not have access to a user
-that is able to run them (e.g., the <strong>system:admin</strong> user that is created by default when
+that is able to run them (e.g., the **system:admin** user that is created by default when
 installing OCP), please contact your local OCP administrator to run the commands on your behalf, or
-grant you the access required to run them yourself.</div>
+grant you the access required to run them yourself.
+</div>
 
 <pre><code>$ oc create clusterrole crunchytester --verb=&quot;list,create,delete&quot; --resource=persistentvolumes
 clusterrole &quot;crunchytester&quot; created
