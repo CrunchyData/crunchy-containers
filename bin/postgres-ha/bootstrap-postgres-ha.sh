@@ -171,7 +171,7 @@ fi
 # Determine if the database is configured for a PITR.  If so, the database will be started
 # manually to ensure the propery recovery target is achieved.  Otherwise, if not perorming
 # a PITR, Patroni will handle any recovery and start the database.
-if is_pg_in_pitr_recovery || is_pg_in_pitr_recovery_legacy
+if [[ "${PGHA_INIT}" == "true" ]] && (is_pg_in_pitr_recovery || is_pg_in_pitr_recovery_legacy)
 then
     echo_info "Detected PITR recovery, will start database manually prior to starting Patroni"
     manual_start=true
