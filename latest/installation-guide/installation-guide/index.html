@@ -750,56 +750,11 @@ either building the containers or installing the containers into Kubernetes.
 
 </div>
 
-<p>These installation instructions
-assume the installation of PostgreSQL 10 through the official Postgresql Development Group (PGDG) repository.
-View the documentation located <a href="https://wiki.postgresql.org/wiki/YUM_Installation">here</a> in
-order to view more detailed notes or install a different version of PostgreSQL.</p>
+<p>There are a variety of ways you can <a href="https://www.crunchydata.com/developers/download-postgres">download PostgreSQL</a>.</p>
 
-<p>Locate and edit your distribution’s <code>.repo</code> file, located:</p>
+<p>For specific installation instructions for <a href="https://www.crunchydata.com/developers/download-postgres/binaries/postgresql12">installing PostgreSQL 12 on CentOS</a>, please visit the <a href="https://www.crunchydata.com/developers">Crunchy Data Developer Portal</a>:</p>
 
-<ul>
-<li><p>On <strong>CentOS</strong>: /etc/yum.repos.d/CentOS-Base.repo, [base] and [updates] sections</p></li>
-
-<li><p>On <strong>RHEL</strong>: /etc/yum/pluginconf.d/rhnplugin.conf [main] section</p></li>
-</ul>
-
-<p>To the section(s) identified above, depending on OS being used, you need to append a line to prevent dependencies
-from getting resolved to the PostgreSQL supplied by the base repository:</p>
-
-<ul>
-<li><p>On <strong>CentOS</strong> and <strong>RHEL</strong>:</p>
-
-<p>exclude=postgresql*</p></li>
-</ul>
-
-<p>Next, install the RPM relating to the base operating system and PostgreSQL version
-you wish to install. The RPMs can be found <a href="https://yum.postgresql.org/repopackages.php">here</a>.
-Below we chose Postgresql 10 for the example (change if you need different version):</p>
-
-<p>On <strong>CentOS</strong> system:</p>
-
-<pre><code>sudo yum -y install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm
-</code></pre>
-
-<p>On  <strong>RHEL</strong> system:</p>
-
-<pre><code>sudo yum -y install https://download.postgresql.org/pub/repos/yum/testing/10/redhat/rhel-7-x86_64/pgdg-redhat10-10-2.noarch.rpm
-</code></pre>
-
-<p>Update the system:</p>
-
-<pre><code>sudo yum -y update
-</code></pre>
-
-<p>Install the PostgreSQL server package.</p>
-
-<pre><code>sudo yum -y install postgresql10-server.x86_64
-</code></pre>
-
-<p>Update the system:</p>
-
-<pre><code>sudo yum -y update
-</code></pre>
+<p><a href="https://www.crunchydata.com/developers/download-postgres/binaries/postgresql12">https://www.crunchydata.com/developers/download-postgres/binaries/postgresql12</a></p>
 
 <h2 id="configuring-storage-for-kubernetes-based-systems">Configuring Storage for Kubernetes Based Systems</h2>
 
