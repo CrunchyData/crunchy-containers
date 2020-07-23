@@ -25,7 +25,6 @@ RUN yum -y install \
 		mod_wsgi \
 		openssl \
 		--setopt=obsoletes=0 pgadmin4-web-4.18 \
-		postgresql${PG_MAJOR//.}-devel \
 		postgresql${PG_MAJOR//.}-server \
 	&& yum -y clean all
 
