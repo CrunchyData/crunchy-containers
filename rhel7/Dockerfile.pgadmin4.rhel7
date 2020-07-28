@@ -15,14 +15,13 @@ LABEL name="pgadmin4" \
 
 RUN yum -y install \
 		--setopt=skip_missing_names_on_install=False \
-		--enablerepo="epel,rhel-7-server-devtools-rpms,rhel-7-server-extras-rpms,rhel-7-server-optional-rpms" \
+		--enablerepo="epel,rhel-7-server-extras-rpms,rhel-7-server-optional-rpms" \
 		mod_ssl \
 		mod_wsgi \
 		openssl \
 		--setopt=obsoletes=0 pgadmin4-web-4.18 \
-		postgresql${PG_MAJOR//.}-devel \
 		postgresql${PG_MAJOR//.}-server \
-	&& yum -y clean all --enablerepo="epel,rhel-7-server-extras-rpms"
+	&& yum -y clean all --enablerepo="epel,rhel-7-server-extras-rpms,rhel-7-server-optional-rpms"
 
 # Preserving PGVERSION out of paranoia
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
