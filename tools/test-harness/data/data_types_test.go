@@ -16,7 +16,7 @@ limitations under the License.
 */
 
 import (
-	dockertest "gopkg.in/ory-am/dockertest.v3"
+	dockertest "github.com/ory/dockertest/v3"
 )
 
 var tag = "centos7-11.8-4.4.0"

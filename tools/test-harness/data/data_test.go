@@ -20,7 +20,7 @@ import (
 	"strconv"
 	"testing"
 
-	dockertest "gopkg.in/ory-am/dockertest.v3"
+	dockertest "github.com/ory/dockertest/v3"
 )
 
 func preparePostgresTestContainer(t *testing.T, opts *dockertest.RunOptions, c *Connection) func() {
