@@ -86,26 +86,6 @@ if [[ -v ARCHIVE_MODE ]]; then
     fi
 fi
 
-## where pg-wrapper is called
-function role_discovery() {
-    PATH=$PATH:/opt/cpm/bin
-    ordinal=${HOSTNAME##*-}
-    echo_info "Ordinal is set to ${ordinal?}."
-    if [ $ordinal -eq 0 ]; then
-        pgc label --overwrite=true pod $HOSTNAME  name=$PG_PRIMARY_HOST > /tmp/pgc.stdout 2> /tmp/pgc.stderr
-        err_check "$?" "Statefulset Role Discovery (primary)" \
-            "Unable to set mode on pod, label command failed: \n$(cat /tmp/pgc.stderr)"
-        export PG_MODE=primary
-    else
-        pgc label --overwrite=true pod $HOSTNAME  name=$PG_REPLICA_HOST > /tmp/pgc.stdout 2> /tmp/pgc.stderr
-        err_check "$?" "Statefulset Role Discovery (replica)" \
-            "Unable to set mode on pod, label command failed: \n$(cat /tmp/pgc.stderr)"
-        export PG_MODE=replica
-    fi
-
-    echo_info "Setting PG_MODE to ${PG_MODE?}"
-}
-
 function initdb_logic() {
     echo_info "Starting initdb.."
 
@@ -411,13 +391,6 @@ fi
 # export LD_PRELOAD=libnss_wrapper.so NSS_WRAPPER_PASSWD=/tmp/passwd  NSS_WRAPPER_GROUP=/etc/group
 ID="$(id)"
 echo_info "User ID is set to ${ID}."
-
-# For Kube Statefulset support.
-case "$PG_MODE" in
-    "set")
-    role_discovery
-    ;;
-esac
 
 fill_conf_file
 

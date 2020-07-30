@@ -39,16 +39,6 @@ pg-independent-images: backup pgadmin4 pgbadger pgbasebackuprestore pgbench pgbo
 pgimages: postgres postgres-ha backrestrestore collect crunchyadm postgres-gis postgres-gis-ha pgdump pgrestore upgrade
 
 
-#===========================================
-# Targets generating commands
-#===========================================
-
-commands: pgc
-
-pgc:
-	cd $(CCPROOT)/commands/pgc && go build pgc.go && mv pgc $(GOBIN)/pgc
-	cp $(GOBIN)/pgc bin/postgres
-
 
 #===========================================
 # Targets generating pg-based images

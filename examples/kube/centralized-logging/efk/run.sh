@@ -18,7 +18,6 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ${DIR}/cleanup.sh
 
-${CCP_CLI?} create -f ${DIR?}/elasticsearch-statefulset.yaml
 ${CCP_CLI?} create -f ${DIR?}/fluentd-configmap.yaml
 ${CCP_CLI?} create -f ${DIR?}/fluentd-daemonset.yaml
 ${CCP_CLI?} create -f ${DIR?}/kibana-deployment.yaml
