@@ -32,9 +32,12 @@ then
     elif (( ${VERSION?} >= 100000 )) && (( ${VERSION?} < 110000 ))
     then
         function_file='/opt/cpm/bin/modules/pgexporter/setup_pg10.sql'
-    elif (( ${VERSION?} >= 110000 ))
+    elif (( ${VERSION?} >= 110000 )) && (( ${VERSION?} < 120000 ))
     then
         function_file='/opt/cpm/bin/modules/pgexporter/setup_pg11.sql'
+    elif (( ${VERSION?} >= 120000 ))
+    then
+        function_file='/opt/cpm/bin/modules/pgexporter/setup_pg12.sql'
     else
         echo_err "Unknown or unsupported version of PostgreSQL.  Exiting.."
         exit 1
