@@ -16,13 +16,13 @@ source ${CCPROOT}/examples/common.sh
 echo_info "Cleaning up.."
 
 ${CCP_CLI?} delete --namespace=kube-system \
-    service,deployment,pod,daemonset,configmap,secret,serviceaccount,pvc \
+    service,statefulset,deployment,pod,daemonset,configmap,secret,serviceaccount,pvc \
     --selector=k8s-app=elasticsearch-logging
 
 ${CCP_CLI?} delete --namespace=kube-system \
-    service,deployment,pod,daemonset,configmap,secret,serviceaccount,pvc \
+    service,statefulset,deployment,pod,daemonset,configmap,secret,serviceaccount,pvc \
     --selector=k8s-app=fluentd-es
 
 ${CCP_CLI?} delete --namespace=kube-system \
-    service,deployment,pod,daemonset,configmap,secret,serviceaccount,pvc \
+    service,statefulset,deployment,pod,daemonset,configmap,secret,serviceaccount,pvc \
     --selector=k8s-app=kibana-logging
