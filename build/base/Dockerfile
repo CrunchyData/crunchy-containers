@@ -54,6 +54,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
         && ${PACKAGER} -y install \
                 --setopt=skip_missing_names_on_install=False \
                 ${EPEL8_RPM} \
+		glibc-langpack-en \
                 bind-utils \
                 gettext \
                 hostname \
@@ -62,7 +63,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
         && ${PACKAGER} -y clean all ; \
 fi
 
-RUN if [ "$DFSET" = "centos" ] ; then \
+RUN if [ "$BASEOS" = "centos7" ] ; then \
         ${PACKAGER} -y update \
         && ${PACKAGER} -y install \
                 --setopt=skip_missing_names_on_install=False \
@@ -72,5 +73,18 @@ RUN if [ "$DFSET" = "centos" ] ; then \
                 hostname \
                 procps-ng \
         && ${PACKAGER} -y clean all ; \
+fi
+
+RUN if [ "$BASEOS" = "centos8" ] ; then \
+	${PACKAGER} -y update \
+	&& ${PACKAGER} -y install \
+		--setopt=skip_missing_names_on_install=False \
+		epel-release \
+		glibc-langpack-en \
+		bind-utils \
+		gettext \
+		hostname \
+		procps-ng \
+	&& ${PACKAGER} -y clean all ; \
 fi
 
