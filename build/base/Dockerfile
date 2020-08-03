@@ -20,13 +20,14 @@ COPY licenses /licenses
 ENV LC_ALL en_US.utf-8
 ENV LANG en_US.utf-8
 
-ARG EPEL_RPM=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+ARG EPEL7_RPM=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+ARG EPEL8_RPM=https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 
 RUN if [ "$BASEOS" = "rhel7" ] ; then \
         ${PACKAGER} -y --enablerepo=rhel-7-server-ose-3.11-rpms update \
         && ${PACKAGER} -y install \
                 --setopt=skip_missing_names_on_install=False \
-                epel-release \
+                ${EPEL7_RPM} \
                 bind-utils \
                 gettext \
                 hostname \
@@ -39,7 +40,7 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
         ${PACKAGER} -y --enablerepo=rhel-7-server-ose-3.11-rpms update \
         && ${PACKAGER} -y install \
                 --setopt=skip_missing_names_on_install=False \
-                epel-release \
+                ${EPEL7_RPM} \
                 bind-utils \
                 gettext \
                 hostname \
@@ -52,7 +53,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
         ${PACKAGER} -y update \
         && ${PACKAGER} -y install \
                 --setopt=skip_missing_names_on_install=False \
-                epel-release \
+                ${EPEL8_RPM} \
                 bind-utils \
                 gettext \
                 hostname \

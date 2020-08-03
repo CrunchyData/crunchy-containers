@@ -153,7 +153,7 @@ cc-pg-base-image-docker: cc-pg-base-image-build
 # Special case args: BACKREST_VER
 postgres-pgimg-build: cc-pg-base-image commands $(CCPROOT)/build/postgres/Dockerfile
 	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/biuld/postgres/Dockerfile \
+		-f $(CCPROOT)/build/postgres/Dockerfile \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG) \
 		--build-arg BASEOS=$(CCP_BASEOS) \
 		--build-arg BASEVER=$(CCP_VERSION) \
