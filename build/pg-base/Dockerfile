@@ -18,13 +18,21 @@ LABEL postgresql.version.major="${PG_MAJOR}" \
 # of this container. PG 11+ requires RPM-GPG-KEY-crunchydata
 # PG 9.5, 9.6 and 10 require CRUNCHY-GPG-KEY.public
 ADD conf/RPM-GPG-KEY-crunchydata*  /
-ADD if [ "$DFSET" = "rhel" ] ; then conf/CRUNCHY-GPG-KEY.public  / ; fi
+COPY conf/CRUNCHY-GPG-KEY.public  /
+
+#ADD if [ "$DFSET" = "rhel" ] ; then conf/CRUNCHY-GPG-KEY.public  / ; fi
 
 # Add any available Crunchy PG repo files
 ADD conf/crunchypg${PG_LBL}.repo /etc/yum.repos.d/
 # Import both keys to support all required repos
 RUN rpm --import RPM-GPG-KEY-crunchydata*
 RUN if [ "$DFSET" = "rhel" ] ; then rpm --import CRUNCHY-GPG-KEY.public ; fi
+
+RUN if [ "$BASEOS" = "ubi8" ] ; then \
+        subscription-manager repos --enable=rhel-8-for-x86_64-appstream-rpms \
+        && subscription-manager repos --enable=codeready-builder-for-rhel-8-x86_64-rpms \
+        && ${PACKAGER} -qy module disable postgresql ; \
+fi
 
 RUN ${PACKAGER} -y install \
 		--setopt=skip_missing_names_on_install=False \
