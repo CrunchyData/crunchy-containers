@@ -14,7 +14,6 @@
 # limitations under the License.
 
 # Dependency Versions
-POSTGRES_EXPORTER_VERSION=0.8.0
 PGMONITOR_COMMIT='v4.2'
 OPENSHIFT_CLIENT='https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz'
 CERTSTRAP_VERSION=1.1.1
@@ -25,7 +24,6 @@ sudo yum -y install net-tools bind-utils wget unzip git
 #
 # download the yq container dependency
 #
-wget -O $CCPROOT/postgres_exporter.tar.gz https://github.com/wrouesnel/postgres_exporter/releases/download/v${POSTGRES_EXPORTER_VERSION?}/postgres_exporter_v${POSTGRES_EXPORTER_VERSION?}_linux-amd64.tar.gz
 wget -O $CCPROOT/yq https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64
 
 which buildah
