@@ -64,7 +64,7 @@ all: cc-pg-base-image pgimages pg-independent-images
 pg-independent-images: backup pgadmin4 pgbadger pgbasebackuprestore pgbench pgbouncer pgpool
 
 # Build images that require a specific postgres version - ordered for potential concurrent benefits
-pgimages: postgres postgres-ha backrestrestore collect crunchyadm postgres-gis postgres-gis-ha pgdump pgrestore upgrade
+pgimages: postgres postgres-ha backrestrestore crunchyadm postgres-gis postgres-gis-ha pgdump pgrestore upgrade
 
 #===========================================
 # Targets generating pg-based images
@@ -72,7 +72,6 @@ pgimages: postgres postgres-ha backrestrestore collect crunchyadm postgres-gis p
 
 backrestrestore: backrest-restore-pgimg-$(IMGBUILDER)
 backup:	backup-pgimg-$(IMGBUILDER)
-collect: collect-pgimg-$(IMGBUILDER)
 crunchyadm: admin-pgimg-$(IMGBUILDER)
 pgadmin4: pgadmin4-pgimg-$(IMGBUILDER)
 pgbadger: pgbadger-pgimg-$(IMGBUILDER)

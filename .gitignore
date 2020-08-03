@@ -1,6 +1,4 @@
 bootstrap-*.zip*
-postgres_exporter
-postgres_exporter.tar.gz*
 tools/test-harness/vendor
 tools/pgmonitor/
 yq
