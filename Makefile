@@ -40,10 +40,12 @@ endif
 
 ifeq ("$(CCP_BASEOS)", "rhel8")
         DFSET=rhel
+	PACKAGER=dnf
 endif
 
 ifeq ("$(CCP_BASEOS)", "ubi8")
         DFSET=rhel
+	PACKAGER=dnf
 endif
 
 ifeq ("$(CCP_BASEOS)", "centos7")
@@ -52,6 +54,7 @@ endif
 
 ifeq ("$(CCP_BASEOS)", "centos8")
         DFSET=centos
+	PACKAGER=dnf
 endif
 
 .PHONY:	all pg-independent-images pgimages
