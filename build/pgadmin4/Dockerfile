@@ -5,6 +5,7 @@ ARG PREFIX
 FROM ${PREFIX}/crunchy-pg-base:${BASEOS}-${PG_FULL}-${BASEVER}
 
 # For RHEL8 all arguments used in main code has to be specified after FROM
+ARG BASEOS
 ARG DFSET
 ARG PACKAGER
 ARG PG_MAJOR
@@ -16,7 +17,10 @@ LABEL name="pgadmin4" \
 	io.k8s.display-name="pgAdmin 4" \
 	io.openshift.tags="postgresql,postgres,monitoring,pgadmin4,pgadmin,database,crunchy"
 
-RUN if [ "$DFSET" = "centos" ] ; then \
+RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /var/lib/pgadmin /var/log/pgadmin \
+        /certs /run/httpd
+
+RUN if [ "$BASEOS" = "centos7" ] ; then \
         ${PACKAGER} -y install \
                 --setopt=skip_missing_names_on_install=False \
                 gcc \
@@ -25,24 +29,94 @@ RUN if [ "$DFSET" = "centos" ] ; then \
                 openssl \
                 --setopt=obsoletes=0 pgadmin4-web-4.18 \
                 postgresql${PG_MAJOR//.}-server \
-        && ${PACKAGER} -y clean all ; \
-else \
+        && ${PACKAGER} -y clean all  \
+        && chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
+                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd \
+                /var/log/httpd \
+        && chmod -R g=u /usr/lib/python2.7/site-packages/pgadmin4-web \
+                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
+        && ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
+        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf ; \
+fi
+
+RUN if [ "$BASEOS" = "centos8" ] ; then \
         ${PACKAGER} -y install \
-		--setopt=skip_missing_names_on_install=False \
-		--enablerepo="epel,rhel-7-server-extras-rpms" \
-		mod_ssl \
-		mod_wsgi \
-		openssl \
-		--setopt=obsoletes=0 pgadmin4-web-4.18 \
-		postgresql${PG_MAJOR//.}-server \
-	&& ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-extras-rpms" ; \
+                --setopt=skip_missing_names_on_install=False \
+                gcc \
+                mod_ssl \
+                mod_wsgi \
+                openssl \
+                --setopt=obsoletes=0 pgadmin4-web-4.18 \
+                postgresql${PG_MAJOR//.}-server \
+        && ${PACKAGER} -y clean all \
+        && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
+                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd \
+                /var/log/httpd \
+        && chmod -R g=u /usr/lib/python3.6/site-packages/pgadmin4-web \
+                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
+        && ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python3.6/site-packages/pgadmin4-web/config_local.py \
+        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf ; \
+fi
+
+RUN if [ "$BASEOS" = "rhel7" ] ; then \
+        ${PACKAGER} -y install \
+                --setopt=skip_missing_names_on_install=False \
+                --enablerepo="epel,rhel-7-server-extras-rpms" \
+                mod_ssl \
+                mod_wsgi \
+                openssl \
+                --setopt=obsoletes=0 pgadmin4-web-4.18 \
+                postgresql${PG_MAJOR//.}-server \
+        && ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-extras-rpms" \
+        && chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
+                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd \
+                /var/log/httpd \
+        && chmod -R g=u /usr/lib/python2.7/site-packages/pgadmin4-web \
+                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
+        && ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
+        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf ; \
+fi
+
+RUN if [ "$BASEOS" = "ubi7" ] ; then \
+        ${PACKAGER} -y install \
+                --setopt=skip_missing_names_on_install=False \
+                --enablerepo="epel,rhel-7-server-extras-rpms" \
+                mod_ssl \
+                mod_wsgi \
+                openssl \
+                --setopt=obsoletes=0 pgadmin4-web-4.18 \
+                postgresql${PG_MAJOR//.}-server \
+        && ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-extras-rpms" \
+        && chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
+                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd \
+                /var/log/httpd \
+        && chmod -R g=u /usr/lib/python2.7/site-packages/pgadmin4-web \
+                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
+        && ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
+        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf ; \
+fi
+
+RUN if [ "$BASEOS" = "ubi8" ] ; then \
+        ${PACKAGER} -y install \
+                --setopt=skip_missing_names_on_install=False \
+                --enablerepo="epel" \
+                mod_ssl \
+                python3-mod_wsgi \
+                openssl \
+                --setopt=obsoletes=0 pgadmin4-web-4.20 \
+                postgresql${PG_MAJOR//.}-server \
+        && ${PACKAGER} -y clean all --enablerepo="epel" \
+        && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
+                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd \
+                /var/log/httpd \
+        && chmod -R g=u /usr/lib/python3.6/site-packages/pgadmin4-web \
+                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
+        && ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python3.6/site-packages/pgadmin4-web/config_local.py \
+        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf ; \
 fi
 
 # Preserving PGVERSION out of paranoia
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
-
-RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /var/lib/pgadmin /var/log/pgadmin \
-	/certs /run/httpd
 
 ADD bin/pgadmin4/ /opt/cpm/bin
 ADD bin/common /opt/cpm/bin
@@ -50,15 +124,6 @@ ADD conf/pgadmin4/ /opt/cpm/conf
 
 RUN cp /opt/cpm/conf/httpd.conf /etc/httpd/conf/httpd.conf \
 	&& rm /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/ssl.conf
-
-RUN chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
-		/var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd \
-		/var/log/httpd \
-	&& chmod -R g=u /usr/lib/python2.7/site-packages/pgadmin4-web \
-		/var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd
-
-RUN ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
-	&& ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf
 
 EXPOSE 5050
 

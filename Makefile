@@ -300,7 +300,7 @@ backrest-restore-pgimg-docker: backrest-restore-pgimg-build
 		--build-arg PACKAGER=$(PACKAGER) \
 		$(CCPROOT)
 
-%-pgimg-buildah: %-pgimg-build
+%-pgimg-buildah: %-pgimg-build ;
 # only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
 ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG)
@@ -322,7 +322,7 @@ endif
 		--build-arg PACKAGER=$(PACKAGER) \
 		$(CCPROOT)
 
-%-img-buildah: %-img-build
+%-img-buildah: %-img-build ;
 # only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
 ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG)

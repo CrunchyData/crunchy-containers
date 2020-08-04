@@ -1,16 +1,16 @@
+ARG BASEOS
+ARG BASEVER
+ARG PG_FULL
+ARG PREFIX
 FROM golang:1.13.1 as badgerserver-build
 WORKDIR /go/src/github.com/crunchydata/crunchy-containers
 ADD . .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -o badgerserver ./badger
 
-ARG BASEOS
-ARG BASEVER
-ARG PG_FULL
-ARG PREFIX
-
 FROM ${PREFIX}/crunchy-pg-base:${BASEOS}-${PG_FULL}-${BASEVER}
 
 # For RHEL8 all arguments used in main code has to be specified after FROM
+ARG BASEOS
 ARG DFSET
 ARG PACKAGER
 
@@ -25,15 +25,34 @@ LABEL name="pgbadger" \
 
 RUN if [ "$DFSET" = "centos" ] ; then \
        ${PACKAGER} -y install \
+                --enablerepo="epel" \
                 --setopt=skip_missing_names_on_install=False \
                 pgbadger \
         && yum -y clean all ; \
-else \
+fi
+
+RUN if [ "$BASEOS" = "rhel7" ] ; then \
        ${PACKAGER} -y install \
-		--enablerepo="rhel-7-server-optional-rpms" \
-		--setopt=skip_missing_names_on_install=False \
-		pgbadger \
-	&& yum -y clean all --enablerepo="rhel-7-server-optional-rpms" ; \
+                --enablerepo="rhel-7-server-optional-rpms" \
+                --setopt=skip_missing_names_on_install=False \
+                pgbadger \
+        && yum -y clean all --enablerepo="rhel-7-server-optional-rpms" ; \
+fi
+
+RUN if [ "$BASEOS" = "ubi7" ] ; then \
+       ${PACKAGER} -y install \
+                --enablerepo="rhel-7-server-optional-rpms" \
+                --setopt=skip_missing_names_on_install=False \
+                pgbadger \
+        && yum -y clean all --enablerepo="rhel-7-server-optional-rpms" ; \
+fi
+
+RUN if [ "$BASEOS" = "ubi8" ] ; then \
+       ${PACKAGER} -y install \
+                --enablerepo="epel" \
+                --setopt=skip_missing_names_on_install=False \
+                pgbadger \
+        && yum -y clean all ; \
 fi
 
 # Preserving PGVERSION out of paranoia
