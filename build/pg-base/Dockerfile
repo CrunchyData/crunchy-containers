@@ -2,9 +2,13 @@ ARG BASEOS
 ARG BASEVER
 ARG PG_FULL
 ARG PREFIX
+FROM ${PREFIX}/crunchy-base:${BASEOS}-${PG_FULL}-${BASEVER}
+
+# For RHEL8 all arguments used in main code has to be specified after FROM
+ARG PG_FULL
+ARG BASEOS
 ARG DFSET
 ARG PACKAGER
-FROM ${PREFIX}/crunchy-base:${BASEOS}-${PG_FULL}-${BASEVER}
 
 ARG PG_MAJOR
 # Needed due to lack of environment substitution trick on ADD

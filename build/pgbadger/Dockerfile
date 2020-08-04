@@ -1,17 +1,18 @@
-ARG BASEOS
-ARG BASEVER
-ARG PG_FULL
-ARG PREFIX
-ARG DFSET
-ARG PACKAGER
-
 FROM golang:1.13.1 as badgerserver-build
 WORKDIR /go/src/github.com/crunchydata/crunchy-containers
 ADD . .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -o badgerserver ./badger
 
+ARG BASEOS
+ARG BASEVER
+ARG PG_FULL
+ARG PREFIX
 
 FROM ${PREFIX}/crunchy-pg-base:${BASEOS}-${PG_FULL}-${BASEVER}
+
+# For RHEL8 all arguments used in main code has to be specified after FROM
+ARG DFSET
+ARG PACKAGER
 
 ARG PG_MAJOR
 

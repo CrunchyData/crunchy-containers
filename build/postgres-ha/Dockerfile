@@ -2,11 +2,13 @@ ARG BASEOS
 ARG BASEVER
 ARG PG_FULL
 ARG PREFIX
-ARG DFSET
-ARG PACKAGER
 FROM ${PREFIX}/crunchy-pg-base:${BASEOS}-${PG_FULL}-${BASEVER}
 
 # ===== Early lines ordered for leveraging cache, reorder carefully =====
+# For RHEL8 all arguments used in main code has to be specified after FROM
+ARG PG_FULL
+ARG DFSET
+ARG PACKAGER
 ARG PG_MAJOR
 
 # Preserving PGVERSION out of paranoia
