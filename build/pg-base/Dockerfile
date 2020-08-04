@@ -33,9 +33,7 @@ RUN rpm --import RPM-GPG-KEY-crunchydata*
 RUN if [ "$DFSET" = "rhel" ] ; then rpm --import CRUNCHY-GPG-KEY.public ; fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-	subscription-manager repos --enable=rhel-8-for-x86_64-appstream-rpms \
-	&& subscription-manager repos --enable=codeready-builder-for-rhel-8-x86_64-rpms \
-	&& ${PACKAGER} -qy module disable postgresql ; \
+	${PACKAGER} -qy module disable postgresql ; \
 fi
 
 RUN ${PACKAGER} -y install \

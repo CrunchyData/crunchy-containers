@@ -5,6 +5,7 @@ ARG PREFIX
 FROM ${PREFIX}/crunchy-postgres-ha:${BASEOS}-${PG_FULL}-${BASEVER}
 
 # For RHEL8 all arguments used in main code has to be specified after FROM
+ARG BASEOS
 ARG DFSET
 ARG PACKAGER
 ARG PG_MAJOR
@@ -20,18 +21,19 @@ LABEL name="postgres-gis-ha" \
 USER 0
 
 RUN if [ "$DFSET" = "centos" ] ; then \
-       ${PACKAGER} -y install \
-                --setopt=skip_missing_names_on_install=False \
-                libRmath \
-                pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
-                plr${PG_MAJOR//.} \
-                postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
-                postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
-                R-core \
-       && ${PACKAGER} -y clean all ; \
+	${PACKAGER} -y install \
+		--setopt=skip_missing_names_on_install=False \
+		libRmath \
+		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
+		plr${PG_MAJOR//.} \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
+		R-core \
+	&& ${PACKAGER} -y clean all ; \
+fi
 
-else \
-       ${PACKAGER} -y install \
+RUN if [ "$BASEOS" = "rhel7" ] ; then \
+	${PACKAGER} -y install \
 		--enablerepo="epel,rhel-7-server-optional-rpms" \
 		--setopt=skip_missing_names_on_install=False \
 		libRmath \
@@ -43,6 +45,36 @@ else \
 		texinfo-tex \
 		texlive-epsf \
 	&& ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
+fi
+
+RUN if [ "$BASEOS" = "ubi7" ] ; then \
+	${PACKAGER} -y install \
+		--enablerepo="epel,rhel-7-server-optional-rpms" \
+		--setopt=skip_missing_names_on_install=False \
+		libRmath \
+		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
+		plr${PG_MAJOR//.} \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
+		R-core \
+		texinfo-tex \
+		texlive-epsf \
+	&& ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
+fi
+
+RUN if [ "$BASEOS" = "ubi8" ] ; then \
+	${PACKAGER} -y install \
+		--enablerepo="epel" \
+		--setopt=skip_missing_names_on_install=False \
+		libRmath \
+		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
+		plr${PG_MAJOR//.} \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
+		R-core \
+		texinfo-tex \
+		texlive-epsf \
+	&& ${PACKAGER} -y clean all --enablerepo="epel" ; \
 fi
 
 # open up the postgres port

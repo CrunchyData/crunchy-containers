@@ -6,6 +6,7 @@ FROM ${PREFIX}/crunchy-pg-base:${BASEOS}-${PG_FULL}-${BASEVER}
 
 # ===== Early lines ordered for leveraging cache, reorder carefully =====
 # For RHEL8 all arguments used in main code has to be specified after FROM
+ARG BASEOS
 ARG PG_FULL
 ARG DFSET
 ARG PACKAGER
@@ -67,13 +68,44 @@ LABEL name="postgres-ha" \
 	io.k8s.display-name="Crunchy PostgreSQL - HA Optimized" \
 	io.openshift.tags="postgresql,postgres,postgis,sql,nosql,database,ha,crunchy"
 
-RUN yum -y install \
-	--enablerepo="epel,rhel-7-server-optional-rpms" \
-	--setopt=skip_missing_names_on_install=False \
-	python3-pip \
-	python3-psutil \
-	python3-psycopg2 \
-	&& yum -y clean all --enablerepo="epel,rhel-7-server-optional-rpms"
+RUN if [ "$DFSET" = "centos" ] ; then \
+	${PACKAGER} -y install \
+		--setopt=skip_missing_names_on_install=False \
+		python3-pip \
+		python3-psutil \
+		python3-psycopg2 \
+	&& yum -y clean all ; \
+fi
+
+RUN if [ "$BASEOS" = "rhel7" ] ; then \
+	yum -y install \
+		--enablerepo="epel,rhel-7-server-optional-rpms" \
+		--setopt=skip_missing_names_on_install=False \
+		python3-pip \
+		python3-psutil \
+		python3-psycopg2 \
+	&& yum -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
+fi
+
+RUN if [ "$BASEOS" = "ubi7" ] ; then \
+	yum -y install \
+		--enablerepo="epel,rhel-7-server-optional-rpms" \
+		--setopt=skip_missing_names_on_install=False \
+		python3-pip \
+		python3-psutil \
+		python3-psycopg2 \
+	&& yum -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
+fi
+
+RUN if [ "$BASEOS" = "ubi8" ] ; then \
+	yum -y install \
+		--enablerepo="epel" \
+		--setopt=skip_missing_names_on_install=False \
+		python3-pip \
+		python3-psutil \
+		python3-psycopg2 \
+	&& yum -y clean all --enablerepo="epel" ; \
+fi
 
 # install patroni for Kube
 RUN pip3 install --upgrade python-dateutil \
