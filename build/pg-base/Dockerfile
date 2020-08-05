@@ -20,11 +20,8 @@ LABEL postgresql.version.major="${PG_MAJOR}" \
 # Crunchy Postgres repo GPG Keys
 # Both keys are added to support building all PG versions
 # of this container. PG 11+ requires RPM-GPG-KEY-crunchydata
-# PG 9.5, 9.6 and 10 require CRUNCHY-GPG-KEY.public
-ADD conf/RPM-GPG-KEY-crunchydata*  /
-COPY conf/CRUNCHY-GPG-KEY.public  /
-
-#ADD if [ "$DFSET" = "rhel" ] ; then conf/CRUNCHY-GPG-KEY.public  / ; fi
+# PG 9.5, 9.6 and 10 require CRUNCHY-GPG-KEY.public on RHEL machines
+COPY conf/RPM-GPG-KEY-crunchydata*  conf/CRUNCHY-GPG-KEY.public* /
 
 # Add any available Crunchy PG repo files
 ADD conf/crunchypg${PG_LBL}.repo /etc/yum.repos.d/
