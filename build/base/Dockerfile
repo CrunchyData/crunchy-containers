@@ -1,5 +1,6 @@
 ARG BASEOS
-FROM registry.access.redhat.com/${BASEOS}
+ARG DOCKERBASEREGISTRY
+FROM $(DOCKERBASEREGISTRY)/${BASEOS}
 
 # For RHEL8 all arguments used in main code has to be specified after FROM
 ARG BASEOS
