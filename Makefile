@@ -20,7 +20,7 @@ IMGBUILDER ?= buildah
 IMG_PUSH_TO_DOCKER_DAEMON ?= true
 IMGCMDSTEM=sudo --preserve-env buildah bud --layers $(SQUASH)
 DFSET=$(CCP_BASEOS)
-DOCKERBASEREGISTRY=registry.access.redhat.com
+DOCKERBASEREGISTRY=registry.access.redhat.com/
 
 # Default the buildah format to docker to ensure it is possible to pull the images from a docker
 # repository using docker (otherwise the images may not be recognized)
@@ -52,13 +52,13 @@ endif
 
 ifeq ("$(CCP_BASEOS)", "centos7")
         DFSET=centos
-	DOCKERBASEREGISTRY=centos
+	DOCKERBASEREGISTRY=centos:
 endif
 
 ifeq ("$(CCP_BASEOS)", "centos8")
         DFSET=centos
 	PACKAGER=dnf
-	DOCKERBASEREGISTRY=centos
+	DOCKERBASEREGISTRY=centos:
 endif
 
 .PHONY:	all pg-independent-images pgimages
