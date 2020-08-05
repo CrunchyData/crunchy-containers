@@ -46,7 +46,7 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
                 mod_ssl \
                 mod_wsgi \
                 openssl \
-                --setopt=obsoletes=0 pgadmin4-web-4.18 \
+                --setopt=obsoletes=0 pgadmin4-web-4.20 \
                 postgresql${PG_MAJOR//.}-server \
         && ${PACKAGER} -y clean all \
         && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
