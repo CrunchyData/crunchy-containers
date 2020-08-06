@@ -10,7 +10,6 @@ CCP_PATRONI_VERSION ?= 1.6.5
 CCP_BACKREST_VERSION ?= 2.27
 CCP_VERSION ?= 4.4.0
 CCP_POSTGIS_VERSION ?= 3.0
-CCP_BASEREGISTRY ?= 
 PACKAGER ?= yum
 
 # Valid values: buildah (default), docker

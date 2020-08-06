@@ -28,7 +28,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
                 --enablerepo="epel" \
                 --setopt=skip_missing_names_on_install=False \
                 pgbadger \
-        && yum -y clean all ; \
+        && ${PACKAGER} -y clean all ; \
 fi
 
 RUN if [ "$BASEOS" = "rhel7" ] ; then \
@@ -36,7 +36,7 @@ RUN if [ "$BASEOS" = "rhel7" ] ; then \
                 --enablerepo="rhel-7-server-optional-rpms" \
                 --setopt=skip_missing_names_on_install=False \
                 pgbadger \
-        && yum -y clean all --enablerepo="rhel-7-server-optional-rpms" ; \
+        && ${PACKAGER} -y clean all --enablerepo="rhel-7-server-optional-rpms" ; \
 fi
 
 RUN if [ "$BASEOS" = "ubi7" ] ; then \
@@ -44,7 +44,7 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
                 --enablerepo="rhel-7-server-optional-rpms" \
                 --setopt=skip_missing_names_on_install=False \
                 pgbadger \
-        && yum -y clean all --enablerepo="rhel-7-server-optional-rpms" ; \
+        && ${PACKAGER} -y clean all --enablerepo="rhel-7-server-optional-rpms" ; \
 fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
@@ -52,7 +52,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
                 --enablerepo="epel" \
                 --setopt=skip_missing_names_on_install=False \
                 pgbadger \
-        && yum -y clean all ; \
+        && ${PACKAGER} -y clean all ; \
 fi
 
 # Preserving PGVERSION out of paranoia
