@@ -74,37 +74,37 @@ RUN if [ "$DFSET" = "centos" ] ; then \
 		python3-pip \
 		python3-psutil \
 		python3-psycopg2 \
-	&& yum -y clean all ; \
+	&& ${PACKAGER} -y clean all ; \
 fi
 
 RUN if [ "$BASEOS" = "rhel7" ] ; then \
-	yum -y install \
+	${PACKAGER} -y install \
 		--enablerepo="epel,rhel-7-server-optional-rpms" \
 		--setopt=skip_missing_names_on_install=False \
 		python3-pip \
 		python3-psutil \
 		python3-psycopg2 \
-	&& yum -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
+	&& ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
 fi
 
 RUN if [ "$BASEOS" = "ubi7" ] ; then \
-	yum -y install \
+	${PACKAGER} -y install \
 		--enablerepo="epel,rhel-7-server-optional-rpms" \
 		--setopt=skip_missing_names_on_install=False \
 		python3-pip \
 		python3-psutil \
 		python3-psycopg2 \
-	&& yum -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
+	&& ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
 fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-	yum -y install \
+	${PACKAGER} -y install \
 		--enablerepo="epel" \
 		--setopt=skip_missing_names_on_install=False \
 		python3-pip \
 		python3-psutil \
 		python3-psycopg2 \
-	&& yum -y clean all --enablerepo="epel" ; \
+	&& ${PACKAGER} -y clean all --enablerepo="epel" ; \
 fi
 
 # install patroni for Kube
