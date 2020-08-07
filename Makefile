@@ -61,7 +61,7 @@ endif
 all: cc-pg-base-image pgimages pg-independent-images
 
 # Build images that either don't have a PG dependency or using the latest PG version is all that is needed
-pg-independent-images: backup pgadmin4 pgbadger pgbasebackuprestore pgbench pgbouncer pgpool grafana prometheus
+pg-independent-images: backup pgadmin4 pgbadger pgbasebackuprestore pgbench pgbouncer pgpool
 
 # Build images that require a specific postgres version - ordered for potential concurrent benefits
 pgimages: postgres postgres-ha backrestrestore collect crunchyadm postgres-gis postgres-gis-ha pgdump pgrestore upgrade
@@ -105,9 +105,7 @@ postgres-appdev: commands postgres-appdev-pgimg-$(IMGBUILDER)
 # Targets generating non-pg-based images
 #===========================================
 
-grafana: grafana-img-$(IMGBUILDER)
 pgbasebackuprestore: pgbasebackup-restore-img-$(IMGBUILDER)
-prometheus: prometheus-img-$(IMGBUILDER)
 
 
 #===========================================
