@@ -39,11 +39,6 @@ ifeq ("$(CCP_BASEOS)", "ubi7")
         DFSET=rhel
 endif
 
-ifeq ("$(CCP_BASEOS)", "rhel8")
-        DFSET=rhel
-	PACKAGER=dnf
-endif
-
 ifeq ("$(CCP_BASEOS)", "ubi8")
         DFSET=rhel
 	PACKAGER=dnf
