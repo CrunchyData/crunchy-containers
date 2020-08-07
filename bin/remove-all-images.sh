@@ -14,7 +14,7 @@
 # limitations under the License.
 
 for i in \
-restore pgdump pgrestore postgres-gis prometheus grafana collect pgbadger pgpool \
+restore pgdump pgrestore postgres-gis collect pgbadger pgpool \
 watch backup postgres pgbouncer pgadmin4 upgrade backrest-restore pgbench \
 pgbasebackup-restore postgres-ha postgres-gis-ha
 do

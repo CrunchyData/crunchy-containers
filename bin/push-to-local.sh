@@ -9,7 +9,6 @@ IMAGES=(
     crunchy-backrest-restore
     crunchy-backup
     crunchy-collect
-    crunchy-grafana
     crunchy-pgadmin4
     crunchy-pgbadger
     crunchy-pgbench
@@ -18,7 +17,6 @@ IMAGES=(
     crunchy-pgpool
     crunchy-pgrestore
     crunchy-postgres
-    crunchy-prometheus
     crunchy-upgrade
     crunchy-pgbasebackup-restore
     crunchy-postgres-ha

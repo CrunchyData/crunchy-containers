@@ -10,7 +10,6 @@ weight: 6
 * [Crunchy backup](crunchy-backup)
 * [Crunchy pgbasebackup restore](crunchy-pgbasebackup-restore)
 * [Crunchy collect](crunchy-collect)
-* [Crunchy grafana](crunchy-grafana)
 * [Crunchy pgadmin4](crunchy-pgadmin4)
 * [Crunchy pgbadger](crunchy-pgbadger)
 * [Crunchy pgbench](crunchy-pgbench)
@@ -21,5 +20,4 @@ weight: 6
 * [Crunchy postgres-appdev](crunchy-postgres-appdev)
 * [Crunchy postgres-gis](crunchy-postgres-gis)
 * [Crunchy postgres](crunchy-postgres)
-* [Crunchy prometheus](crunchy-prometheus)
 * [Crunchy upgrade](crunchy-upgrade)
