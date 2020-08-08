@@ -59,16 +59,6 @@ Custom queries to collect metrics can be specified by the user.</description>
     </item>
     
     <item>
-      <title>crunchy-grafana</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-grafana/</link>
-      <pubDate>Thu, 24 May 2018 10:06:17 -0700</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-grafana/</guid>
-      <description>Visual dashboards are created from the collected and stored data that crunchy-collect and crunchy-prometheus provide for the crunchy-grafana container, which hosts an open source web-based graphing dashboard called Grafana.
-Grafana is a platform which can then apply the defined metrics and visualize information through various tools. It is extremely flexible with a powerful query and transformation language, producing beautiful and easily understandable graphics to analyze and monitor your data.</description>
-    </item>
-    
-    <item>
       <title>crunchy-pgadmin4</title>
       <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgadmin4/</link>
       <pubDate>Thu, 24 May 2018 12:05:42 -0700</pubDate>
@@ -174,15 +164,6 @@ Features The following features are supported by the crunchy-pgbench container:
       <description>PostgreSQL (pronounced &amp;ldquo;post-gress-Q-L&amp;rdquo;) is an open source, ACID compliant, relational database management system (RDBMS) developed by a worldwide team of volunteers. The crunchy-postgres container image is unmodified, open source PostgreSQL packaged and maintained by professionals.
 Features The following features are supported by the crunchy-postgres container:
  Kubernetes and OpenShift secrets Backup and restoration from various tools: pgbackrest, pg_basebackup and pg_dump/pg_restore. Custom mounted configuration files (see below) Async and Sync Replication  Packages The crunchy-postgres Docker image contains the following packages (versions vary depending on PostgreSQL version):</description>
-    </item>
-    
-    <item>
-      <title>crunchy-prometheus</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/</guid>
-      <description>Prometheus is a multi-dimensional time series data model with an elastic query language. It is used in collaboration with Grafana in this metrics suite. Overall, it’s reliable, manageable, and operationally simple for efficiently storing and analyzing data for large-scale environments. It scraps metrics from exporters such as the ones utilized by the crunchy-collect container. The crunchy-prometheus container must be able to reach the crunchy-collect container in order to to scrape metrics.</description>
     </item>
     
     <item>

@@ -147,17 +147,6 @@ The following examples create the following containers:
     </item>
     
     <item>
-      <title>Metrics and Performance</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/examples/metrics/metrics/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/examples/metrics/metrics/</guid>
-      <description>Metrics Collection You can collect various PostgreSQL metrics from your database container by running a crunchy-collect container that points to your database container.
-This example starts up 5 containers:
- Collect (crunchy-collect) Grafana (crunchy-grafana) PostgreSQL (crunchy-postgres) Prometheus (crunchy-prometheus)  Every 10 seconds by default, Prometheus will scrape the Collect container for metrics. These metrics will then be visualized by Grafana, which by default can be accessed with the following credentials:</description>
-    </item>
-    
-    <item>
       <title>pgBadger</title>
       <link>https://crunchydata.github.io/crunchy-containers/latest/examples/metrics/pgbadger/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

@@ -53,11 +53,6 @@
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-grafana/</loc>
-    <lastmod>2018-05-24T10:06:17-07:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/examples/</loc>
   </url>
   
@@ -136,10 +131,6 @@
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/</loc>
-  </url>
-  
-  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-upgrade/</loc>
   </url>
   
@@ -169,10 +160,6 @@
   
   <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/examples/poolers/pgbouncer/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/examples/metrics/metrics/</loc>
   </url>
   
   <url>

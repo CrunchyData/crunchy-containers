@@ -115,16 +115,6 @@ This example can be run as follows for the Docker environment:</description>
     </item>
     
     <item>
-      <title>crunchy-grafana</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-grafana/</link>
-      <pubDate>Thu, 24 May 2018 10:06:17 -0700</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-grafana/</guid>
-      <description>Visual dashboards are created from the collected and stored data that crunchy-collect and crunchy-prometheus provide for the crunchy-grafana container, which hosts an open source web-based graphing dashboard called Grafana.
-Grafana is a platform which can then apply the defined metrics and visualize information through various tools. It is extremely flexible with a powerful query and transformation language, producing beautiful and easily understandable graphics to analyze and monitor your data.</description>
-    </item>
-    
-    <item>
       <title>Primary and Streaming Replica Containers</title>
       <link>https://crunchydata.github.io/crunchy-containers/latest/examples/postgresql/primary-replica/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -280,15 +270,6 @@ Features The following features are supported by the crunchy-postgres container:
     </item>
     
     <item>
-      <title>crunchy-prometheus</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-prometheus/</guid>
-      <description>Prometheus is a multi-dimensional time series data model with an elastic query language. It is used in collaboration with Grafana in this metrics suite. Overall, it’s reliable, manageable, and operationally simple for efficiently storing and analyzing data for large-scale environments. It scraps metrics from exporters such as the ones utilized by the crunchy-collect container. The crunchy-prometheus container must be able to reach the crunchy-collect container in order to to scrape metrics.</description>
-    </item>
-    
-    <item>
       <title>crunchy-upgrade</title>
       <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-upgrade/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -370,17 +351,6 @@ Additionally, the examples located in the kube directory work on both Kubernetes
 The following examples create the following containers:
  pgBouncer Primary pgBouncer Replica PostgreSQL Primary PostgreSQL Replica  In Kubernetes and OpenShift, this example will also create:
  pgBouncer Primary Service pgBouncer Replica Service Primary Service Replica Service PostgreSQL Secrets pgBouncer Secrets  To cleanup the objects created by this example, run the following in the pgbouncer example directory:</description>
-    </item>
-    
-    <item>
-      <title>Metrics and Performance</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/examples/metrics/metrics/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/examples/metrics/metrics/</guid>
-      <description>Metrics Collection You can collect various PostgreSQL metrics from your database container by running a crunchy-collect container that points to your database container.
-This example starts up 5 containers:
- Collect (crunchy-collect) Grafana (crunchy-grafana) PostgreSQL (crunchy-postgres) Prometheus (crunchy-prometheus)  Every 10 seconds by default, Prometheus will scrape the Collect container for metrics. These metrics will then be visualized by Grafana, which by default can be accessed with the following credentials:</description>
     </item>
     
     <item>

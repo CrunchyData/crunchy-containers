@@ -18,7 +18,6 @@ content/examples/backup-restoration/pgbackrest.md
 content/examples/backup-restoration/pgbasebackup.md
 content/examples/backup-restoration/pgdump-pgrestore.md
 content/examples/poolers/pgbouncer.md
-content/examples/metrics/metrics.md
 content/examples/metrics/pgbadger.md
 content/examples/metrics/pgbench.md
 content/examples/logging/centralized-logging.md
@@ -33,7 +32,6 @@ content/container-specifications/crunchy-backrest-restore.md
 content/container-specifications/crunchy-pgbasebackup-restore.md
 content/container-specifications/crunchy-backup.md
 content/container-specifications/crunchy-collect.md
-content/container-specifications/crunchy-grafana.md
 content/container-specifications/crunchy-pgadmin4.md
 content/container-specifications/crunchy-pgbadger.md
 content/container-specifications/crunchy-pgbouncer.md
@@ -44,7 +42,6 @@ content/container-specifications/crunchy-postgres-appdev.md
 content/container-specifications/crunchy-postgres-gis.md
 content/container-specifications/crunchy-pgbench.md
 content/container-specifications/crunchy-postgres.md
-content/container-specifications/crunchy-prometheus.md
 content/container-specifications/crunchy-upgrade.md
 content/contributing/_index.md
 content/contributing/building.md
