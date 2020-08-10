@@ -59,7 +59,7 @@ fi
 # ===== Steps unique to this image after here =====
 LABEL name="postgres" \
 	summary="PostgreSQL ${PG_FULL}" \
-	description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas, and stateful sets. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
+	description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
 	io.k8s.description="Crunchy PostgreSQL is the trusted open source distribution of PostgreSQL" \
 	io.k8s.display-name="Crunchy PostgreSQL" \
 	io.openshift.tags="postgresql,postgres,sql,nosql,database,crunchy"

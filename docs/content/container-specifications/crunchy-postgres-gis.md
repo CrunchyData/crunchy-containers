@@ -57,7 +57,7 @@ The crunchy-postgres-gis Docker image contains the following packages (versions 
 **PG_REPLICA_HOST**|None|Set this value to specify the replica host label.  Note; used when `PG_MODE` is `set`
 **PGAUDIT_ANALYZE**|None|Set this to enable `pgaudit_analyze`
 **PGBOUNCER_PASSWORD**|None|Set this to enable `pgBouncer` support by creating a special `pgbouncer` user for authentication through the connection pooler.
-**PGDATA_PATH_OVERRIDE**|None|Set this value to override the `/pgdata` directory name.  By default `/pgdata` uses `hostname` of the container.  In some cases it may be required to override this with a custom name (such as in a Statefulset)
+**PGDATA_PATH_OVERRIDE**|None|Set this value to override the `/pgdata` directory name.  By default `/pgdata` uses `hostname` of the container.  In some cases it may be required to override this with a custom name 
 **SHARED_BUFFERS**|128MB|Set this value to configure `shared_buffers` in `postgresql.conf`
 **SYNC_REPLICA**|None|Set this value to specify the names of replicas that should use synchronized replication
 **TEMP_BUFFERS**|8MB|Set this value to configure `temp_buffers` in `postgresql.conf`

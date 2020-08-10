@@ -98,7 +98,7 @@ function cleanup() {
     label="cleanup=${1?}"
 
     CONFIG="configmap,secret"
-    DEPLOY="deployment,daemonset,job,pod,replicaset,service,statefulset"
+    DEPLOY="deployment,daemonset,job,pod,replicaset,service"
     RBAC="role,rolebinding,serviceaccount"
     VOLUME="pvc,pv"
     OBJECTS="${CONFIG?},${DEPLOY?},${RBAC?},${VOLUME?}"
