@@ -18,7 +18,7 @@ The following features are supported and required by the crunchy-backrest-restor
 
 The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (12.3, 11.8, 10.13, 9.6.18 and 9.5.22)
+* PostgreSQL (12.4, 11.9, 10.14, 9.6.19 and 9.5.23)
 * [pgBackRest](https://pgbackrest.org/) (2.25)
 * CentOS7 - publicly available
 * UBI7 - customers only
