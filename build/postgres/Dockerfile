@@ -29,6 +29,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	postgresql${PG_MAJOR//.}-server \
         	postgresql${PG_MAJOR//.}-plpython \
         	postgresql${PG_MAJOR//.}-plpython3 \
+        	pgnodemx${PG_MAJOR//.} \
         	$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
         	psmisc \
         	rsync \
@@ -46,6 +47,7 @@ else \
 		postgresql${PG_MAJOR//.}-server \
 		postgresql${PG_MAJOR//.}-plpython \
 		postgresql${PG_MAJOR//.}-plpython3 \
+		pgnodemx${PG_MAJOR//.} \
 		$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
 		psmisc \
 		rsync \
