@@ -53,4 +53,7 @@ then
     psql -U postgres --port="${PG_PRIMARY_PORT}" -d postgres \
         -c "SET log_statement TO 'none'; ALTER ROLE ccp_monitoring PASSWORD '${PGMONITOR_PASSWORD?}'" \
         > /tmp/pgmonitor-alter-role.stdout 2> /tmp/pgmonitor-alter-role.stderr
+
+    psql -U postgres --port="${PG_PRIMARY_PORT}" -d postgres \
+        -c "CREATE EXTENSION IF NOT EXISTS pgnodemx WITH SCHEMA monitor;" > /tmp/pgmonitor-setup.stdout 2> /tmp/pgmonitor-setup.stderr
 fi
