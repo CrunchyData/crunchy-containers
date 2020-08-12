@@ -5,10 +5,10 @@ endif
 # Default values if not already set
 CCP_BASEOS ?= centos7
 CCP_PGVERSION ?= 12
-CCP_PG_FULLVERSION ?= 12.3
+CCP_PG_FULLVERSION ?= 12.4
 CCP_PATRONI_VERSION ?= 1.6.5
 CCP_BACKREST_VERSION ?= 2.27
-CCP_VERSION ?= 4.4.0
+CCP_VERSION ?= 4.4.1
 CCP_POSTGIS_VERSION ?= 3.0
 
 # Valid values: buildah (default), docker
