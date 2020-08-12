@@ -12,7 +12,7 @@ bootstrap:
         log_statement: none
         work_mem: 4MB
         max_wal_senders: 6
-        shared_preload_libraries: pgaudit.so,pg_stat_statements.so
+        shared_preload_libraries: pgaudit.so,pg_stat_statements.so,pgnodemx.so
   initdb:
   - encoding: UTF8
   - data-checksums
