@@ -71,17 +71,6 @@ cd $CCPROOT/examples/docker/sync ./run.sh  You can test the replication status o
     </item>
     
     <item>
-      <title>Statefulset PostgreSQL Cluster</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/examples/postgresql/statefulset-cluster/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/examples/postgresql/statefulset-cluster/</guid>
-      <description>Statefulsets This example deploys a statefulset named statefulset. The statefulset is a new feature in Kubernetes as of version 1.5 and in OpenShift Origin as of version 3.5. Statefulsets have replaced PetSets going forward.
-Please view this Kubernetes description to better understand what a Statefulset is and how it works.
-This example creates 2 PostgreSQL containers to form the set. At startup, each container will examine its hostname to determine if it is the first container within the set of containers.</description>
-    </item>
-    
-    <item>
       <title>PostGIS Container</title>
       <link>https://crunchydata.github.io/crunchy-containers/latest/examples/postgresql/postgis/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -192,7 +181,7 @@ For this test, we place pg_audit statements within a SQL script and verify that 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/latest/examples/administration/upgrade/</guid>
-      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 11 or 12 image such as `centos7-12.3-4.4.0` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
+      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 11 or 12 image such as `centos7-12.4-4.4.0` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
     </item>
     
     <item>

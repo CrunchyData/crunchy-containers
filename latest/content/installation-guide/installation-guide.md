@@ -91,7 +91,7 @@ line starting with #:
     export PATH=$PATH:$GOBIN        # add Go bin path to your overall path
     export CCP_BASEOS=centos7       # centos7 for Centos, ubi7 for Red Hat Universal Base Image
     export CCP_PGVERSION=12         # The PostgreSQL major version
-    export CCP_PG_FULLVERSION=12.3
+    export CCP_PG_FULLVERSION=12.4
     export CCP_POSTGIS_VERSION=3.0  # The PostGIS version
     export CCP_VERSION=4.4.0
     export CCP_IMAGE_PREFIX=crunchydata # Prefix to put before all the container image names

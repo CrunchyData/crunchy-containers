@@ -87,10 +87,6 @@
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/examples/postgresql/statefulset-cluster/</loc>
-  </url>
-  
-  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbouncer/</loc>
   </url>
   

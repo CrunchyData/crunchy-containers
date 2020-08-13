@@ -20,7 +20,7 @@ The following features are supported by the `crunchy-postgres` container:
 
 The crunchy-postgres Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (12.3, 11.8, 10.13, 9.6.18 and 9.5.22)
+* PostgreSQL (12.4, 11.9, 10.14, 9.6.19 and 9.5.23)
 * [pgBackRest](https://pgbackrest.org/) (2.27)
 * CentOS7 - publicly available
 * UBI7 - customers only
@@ -56,7 +56,7 @@ The crunchy-postgres Docker image contains the following packages (versions vary
 **PGAUDIT_ANALYZE**|None|Set this to enable `pgaudit_analyze`
 **PGBOUNCER_PASSWORD**|None|Set this to enable `pgBouncer` support by creating a special `pgbouncer` user for authentication through the connection pooler.
 **PGMONITOR_PASSWORD**|None|Set this to enable `pgMonitor` support by creating a special `ccp_monitoring` user for collecting metrics from PostgreSQL servers.  Required for the `crunchy-collect` container.
-**PGDATA_PATH_OVERRIDE**|None|Set this value to override the `/pgdata` directory name.  By default `/pgdata` uses `hostname` of the container.  In some cases it may be required to override this with a custom name (such as in a Statefulset)
+**PGDATA_PATH_OVERRIDE**|None|Set this value to override the `/pgdata` directory name.  By default `/pgdata` uses `hostname` of the container.  In some cases it may be required to override this with a custom name
 **SHARED_BUFFERS**|128MB|Set this value to configure `shared_buffers` in `postgresql.conf`
 **SYNC_REPLICA**|None|Set this value to specify the names of replicas that should use synchronized replication
 **TEMP_BUFFERS**|8MB|Set this value to configure `temp_buffers` in `postgresql.conf`
