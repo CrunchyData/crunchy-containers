@@ -23,7 +23,7 @@ The following features are supported by the `crunchy-postgres-gis` container:
 The crunchy-postgres-gis Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
 * PostgreSQL (12.4, 11.9, 10.14, 9.6.19 and 9.5.23)
-* [pgBackRest](https://pgbackrest.org/) (2.27)
+* [pgBackRest](https://pgbackrest.org/) (2.28)
 * CentOS7 - publicly available
 * UBI7 - customers only
 
