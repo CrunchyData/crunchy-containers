@@ -55,7 +55,7 @@ The crunchy-postgres Docker image contains the following packages (versions vary
 **PG_REPLICA_HOST**|None|Set this value to specify the replica host label.  Note; used when `PG_MODE` is `set`
 **PGAUDIT_ANALYZE**|None|Set this to enable `pgaudit_analyze`
 **PGBOUNCER_PASSWORD**|None|Set this to enable `pgBouncer` support by creating a special `pgbouncer` user for authentication through the connection pooler.
-**PGMONITOR_PASSWORD**|None|Set this to enable `pgMonitor` support by creating a special `ccp_monitoring` user for collecting metrics from PostgreSQL servers.  Required for the `crunchy-collect` container.
+**PGMONITOR_PASSWORD**|None|Set this to enable `pgMonitor` support by creating a special `ccp_monitoring` user for collecting metrics from PostgreSQL servers.  Required for the `crunchy-postgres-exporter` container.
 **PGDATA_PATH_OVERRIDE**|None|Set this value to override the `/pgdata` directory name.  By default `/pgdata` uses `hostname` of the container.  In some cases it may be required to override this with a custom name
 **SHARED_BUFFERS**|128MB|Set this value to configure `shared_buffers` in `postgresql.conf`
 **SYNC_REPLICA**|None|Set this value to specify the names of replicas that should use synchronized replication
