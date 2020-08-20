@@ -19,7 +19,7 @@ import (
 	dockertest "gopkg.in/ory-am/dockertest.v3"
 )
 
-var tag = "centos7-12.8-4.2.3"
+var tag = "centos7-11.9-4.2.4"
 
 var primaryEnv = []string{
 	"TEMP_BUFFERS=9MB",

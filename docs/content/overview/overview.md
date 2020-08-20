@@ -17,7 +17,7 @@ utilized to build the containers and any packages included within them (either C
 are effectively the same.  The `ubi7` images are available to active Crunchy Data Customers only,
 and are built using the Red Hat Universal Base Image (UBI).
 
-Please note that as of version 4.2.3 of the Crunchy Containers Suite, the `ubi7` images have
+Please note that as of version 4.2.4 of the Crunchy Containers Suite, the `ubi7` images have
 replaced the `rhel7` images included in previous versions of the container suite.  For more
 information on Red Hat UBI, please see the following link:
 
