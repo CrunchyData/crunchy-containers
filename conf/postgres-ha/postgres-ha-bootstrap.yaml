@@ -4,6 +4,9 @@ bootstrap:
   pgbackrest_init:
     command: '/opt/cpm/bin/pgbackrest/pgbackrest-create-replica.sh primary'
     keep_existing_recovery_conf: true
+  existing_init:
+    command: '/opt/cpm/bin/bootstrap/create-from-existing.sh'
+    keep_existing_recovery_conf: true
   dcs:
     postgresql:
       parameters:

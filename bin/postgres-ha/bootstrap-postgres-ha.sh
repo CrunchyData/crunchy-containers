@@ -84,17 +84,9 @@ initialization_monitor() {
                 sleep 1
             done
 
-            if [[ "${manual_start}" == "true" ]]
-            then
-                echo_info "Executing Patroni restart to restart database and update configuration"
-                curl -X POST --silent "127.0.0.1:${PGHA_PATRONI_PORT}/restart"
-                test_server "postgres" "${PGHOST}" "${PGPORT}" "postgres"
-                echo_info "The database has been restarted"
-            fi
-
             # if the bootstrap method is not "initdb", we assume we're running an init job and now
             # proceed with shutting down Patroni and the database
-            if [[ "${PGHA_BOOTSTRAP_METHOD}" == "initdb" ]]
+            if [[ "${PGHA_BOOTSTRAP_METHOD}" != "pgbackrest_init" ]]
             then
                 # Apply enhancement modules
                 echo_info "Applying enahncement modules"
@@ -116,7 +108,17 @@ initialization_monitor() {
                     psql < "/pgconf/audit.sql"
                 fi
             else
-                echo_info "Init job completed, killing Patroni to gracefully shutdown PostgreSQL"
+                echo_info "Init job completed, shutting down the cluster and removing from the DCS"
+
+                # pause Patroni, stop the database, and then remove the cluster from the DCS
+                patronictl pause
+                patronictl reload "${PATRONI_SCOPE}" --force &> /dev/null
+                pg_ctl stop -m fast -D "${PATRONI_POSTGRESQL_DATA_DIR}"
+                printf '%s\nYes I am aware\n%s\n' "${PATRONI_SCOPE}" "${PATRONI_NAME}" | patronictl remove "${PATRONI_SCOPE}" &> /dev/null
+                err_check "$?" "Remove from DCS" "Unable to remove cluster from the DCS following init job"
+                echo_info "Successfully removed cluster from the DCS"
+
+                # now kill patroni and sshd
                 killall patroni
                 killall sshd
 
@@ -160,28 +162,6 @@ remove_patroni_pause_key()  {
     fi
 }
 
-# Checks to see if a PostgreSQL server (v12 or above) is configured for a PITR recovery. This is
-# done by checking whether or not a 'recovery.signal' file is present, along with whether or not
-# 'recovery_target' settings are present in the 'postgresql.auto.conf' file (as configured by
-# pgBackRest during a restore).
-is_pg_in_pitr_recovery() {
-    [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}/recovery.signal" ]] && has_recovery_target "postgresql.auto.conf"
-}
-
-# Checks to see if a PostgreSQL server (v11 or less) is configured for a PITR recovery.  This is
-# done by checking whether or not a 'recovery.conf' file is present, along with whether or not
-# 'recovery_target' settings are present in the 'recovery.conf' file (as configured by pgBackRest
-# during a restore).
-is_pg_in_pitr_recovery_legacy() {
-    [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}/recovery.conf" ]] && has_recovery_target "recovery.conf"
-}
-
-# Checks to see if any "recovery_target" settings are present in the PG config file provided,
-# such as a postgresql.conf file (PG 12 and greater) or a recovery.conf file (PG 11 and less)
-has_recovery_target() {
-    grep -E '^recovery_target' "${PATRONI_POSTGRESQL_DATA_DIR}/$1"
-}
-
 # Configure users and groups
 source /opt/cpm/bin/common/uid_postgres_no_exec.sh
 
@@ -202,48 +182,6 @@ then
     primary_initialization_monitor
 fi
 
-# Determine if the database is configured for a PITR.  If so, the database will be started
-# manually to ensure the propery recovery target is achieved.  Otherwise, if not perorming
-# a PITR, Patroni will handle any recovery and start the database.
-if [[ "${PGHA_INIT}" == "true" ]] && (is_pg_in_pitr_recovery || is_pg_in_pitr_recovery_legacy)
-then
-    echo_info "Detected PITR recovery, will start database manually prior to starting Patroni"
-    manual_start=true
-
-    echo_info "Removing 'hba_file' and 'ident_file' settings from postgres.conf to ensure a clean start"
-    sed -i -E '/^hba_file|^ident_file/d' "${PATRONI_POSTGRESQL_DATA_DIR}/postgresql.conf"
-fi
-
-# Start the database manually if needed (e.g. if performing a PITR or converting a non-Patroni
-# standalone database).
-if [[ "${manual_start}" == "true" ]]
-then
-    while :
-    do
-        if ! pgrep --exact postgres &> /dev/null
-        then
-            # Start PostgreSQL in the background any time it is not running. It will exit if there
-            # is an error during recovery, so start it again to retry. Allow only local connections
-            # for now. PostgreSQL is restarted later, through Patroni, without these settings.
-            pg_ctl start --silent -D "${PATRONI_POSTGRESQL_DATA_DIR}" \
-                -o "-c listen_addresses='' -c unix_socket_directories='${PGHOST}'"
-        fi
-
-        # Check for ongoing recovery once connected. Since PostgreSQL 10, a hot standby allows
-        # connections during recovery:
-        # https://postgr.es/m/CABUevEyFk2cbpqqNDVLrgbHPEGLa%2BBV7nu4HAETBL8rK9Df_LA%40mail.gmail.com
-        if pg_isready --quiet --username="postgres" &&
-            [ "$(psql --quiet --username="postgres" -Atc 'SELECT pg_is_in_recovery()')" = 'f' ]
-        then
-            break
-        else
-            echo_info "Database has not reached a consistent state, sleeping..."
-            sleep 5
-        fi
-    done
-    echo_info "Reached a consistent state"
-fi
-
 # Moinitor for the intialization of the cluster
 initialization_monitor
 
@@ -256,7 +194,7 @@ echo_info "Initializing cluster bootstrap with command: '${bootstrap_cmd}'"
 # If PID 1 and bootstrapping from scratch via initdb, then run patroni as PID 1.  Otherwise, if
 # running as an init job (e.g. to perform a pgbackrest restore) do not run as a PID 1 to ensure
 # the container exits with a non-zero exit code in the event the pgbackrest restore fails
-if [[ "$$" == 1 && "${PGHA_BOOTSTRAP_METHOD}" == "initdb" ]]
+if [[ "$$" == 1 && "${PGHA_BOOTSTRAP_METHOD}" != "pgbackrest_init" ]]
 then
     echo_info "Running Patroni as PID 1"
     exec ${bootstrap_cmd}

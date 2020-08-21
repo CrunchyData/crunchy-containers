@@ -111,12 +111,6 @@ set_default_pgha_env()  {
         pgha_env_vars+=("PGHA_REPLICA_REINIT_ON_START_FAIL")
     fi
 
-    if [[ ! -v PGHA_BOOTSTRAP_METHOD ]]
-    then
-        export PGHA_BOOTSTRAP_METHOD="initdb"
-        pgha_env_vars+=("PGHA_BOOTSTRAP_METHOD")
-    fi
-
     if [[ ! ${#default_pgha_env_vars[@]} -eq 0 ]]
     then
         pgha_env_vars=$(printf ', %s' "${default_pgha_env_vars[@]}")
@@ -228,6 +222,21 @@ set_pg_user_credentials() {
     else
         env_check_err "PATRONI_REPLICATION_USERNAME"
         env_check_err "PATRONI_REPLICATION_PASSWORD"
+    fi
+}
+
+# Sets the bootstrap method for the cluster.  Can either be 'initdb' to initialize a new cluster
+# from scratch, 'pgbackrest_init' to initialize using a pgBackRest restore, or 'existing_init' to
+# initialize from an existing PGDATA directory.
+set_bootstrap_method() {
+    if [[ ! -v PGHA_BOOTSTRAP_METHOD ]]
+    then
+        if [[ -n "$(ls -A "${PATRONI_POSTGRESQL_DATA_DIR}")" ]]
+        then
+            export PGHA_BOOTSTRAP_METHOD="existing_init"
+        else
+            export PGHA_BOOTSTRAP_METHOD="initdb"
+        fi
     fi
 }
 
@@ -387,7 +396,7 @@ build_bootstrap_config_file() {
     # Disable archive_mode to prevent WAL from being pushed while potentially still connected
     # to another pgBackRest repository while initializing (e.g. while performing a pgBackRest
     # restore)
-    if [[ "${PGHA_BOOTSTRAP_METHOD}" != "initdb" ]]
+    if [[ "${PGHA_BOOTSTRAP_METHOD}" == "pgbackrest_init" ]]
     then
       echo_info "Disabling archive mode for bootstrap method ${PGHA_BOOTSTRAP_METHOD}"
       /opt/cpm/bin/yq w -i "${bootstrap_file}" postgresql.parameters.archive_mode "off"
@@ -434,15 +443,31 @@ patroni_print_env=$(env | grep "^PATRONI_")  # capture Patroni env prior to sett
 # Set user credentials using the file system (e.g. Kube secrets) if provided
 set_pg_user_credentials
 
+# Sets the proper bootstrap method for the cluster ('initdb', 'pgbackrest_init' or 'existing_init')
+set_bootstrap_method
+
 # Perform any additional validation of env vars required
 validate_env
 
 # Create the Patroni bootstrap configuration file
 build_bootstrap_config_file
 
-# Create the pgdata directory if it doesn't exist
-mkdir -p "${PATRONI_POSTGRESQL_DATA_DIR}"
-chmod 0700 "${PATRONI_POSTGRESQL_DATA_DIR}"
+# If the PGHA_INIT flag is 'true' and we're initializing from an existing PGDATA directory, then
+# proceed with preparing the PGDATA directory for the 'existing_init' bootstrap method.
+# Specifically, temporarily rename the existing PGDATA directory so that the true PGDATA 
+# directory remains empty.  This will allow the 'existing_init' bootstrap method to be called,
+# which will undo the directory name change and allow initialization to proceed using the data 
+# contained within the existing PGDATA directory.
+if [[ "${PGHA_INIT}" == "true" ]] && [[ "${PGHA_BOOTSTRAP_METHOD}" == "existing_init" ]]
+then
+    echo_info "Detected cluster initialization using an existing PGDATA directory"
+    mv "${PATRONI_POSTGRESQL_DATA_DIR}" "${PATRONI_POSTGRESQL_DATA_DIR}_tmp"
+    err_check "$?" "Initialize Existing PGDATA" "Could not move the existing PGDATA directory as needed to initialize"
+else
+    # Create the pgdata directory if it doesn't exist
+    mkdir -p "${PATRONI_POSTGRESQL_DATA_DIR}"
+    chmod 0700 "${PATRONI_POSTGRESQL_DATA_DIR}"
+fi
 
 # create any tablespace directories, if they have not been created yet
 source /opt/cpm/bin/common/pgha-tablespaces.sh
@@ -458,6 +483,8 @@ echo "******************************"
 echo "Patroni env vars:"
 echo "******************************"
 echo "${patroni_print_env}"
+echo "******************************"
+echo "Patroni bootstrap method: ${PGHA_BOOTSTRAP_METHOD}"
 echo "******************************"
 echo "Patroni configuration file:"
 echo "******************************"
