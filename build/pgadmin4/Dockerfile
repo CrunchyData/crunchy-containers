@@ -44,7 +44,7 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
                 --setopt=skip_missing_names_on_install=False \
                 gcc \
                 mod_ssl \
-                mod_wsgi \
+                python3-mod_wsgi \
                 openssl \
                 --setopt=obsoletes=0 pgadmin4-web-4.20 \
                 postgresql${PG_MAJOR//.}-server \

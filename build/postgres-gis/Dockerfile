@@ -20,9 +20,22 @@ LABEL name="postgres-gis" \
 
 USER 0
 
-RUN if [ "$DFSET" = "centos" ] ; then \
+RUN if [ "$BASEOS" = "centos7" ] ; then \
 	${PACKAGER} -y install \
 		--setopt=skip_missing_names_on_install=False \
+		libRmath \
+		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
+		plr${PG_MAJOR//.} \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
+		R-core \
+	&& ${PACKAGER} -y clean all ; \
+fi
+
+RUN if [ "$BASEOS" = "centos8" ] ; then \
+	${PACKAGER} -y install \
+		--setopt=skip_missing_names_on_install=False \
+		--enablerepo="PowerTools" \
 		libRmath \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
 		plr${PG_MAJOR//.} \

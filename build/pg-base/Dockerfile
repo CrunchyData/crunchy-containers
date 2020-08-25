@@ -29,6 +29,10 @@ ADD conf/crunchypg${PG_LBL}.repo /etc/yum.repos.d/
 RUN rpm --import RPM-GPG-KEY-crunchydata*
 RUN if [ "$DFSET" = "rhel" ] ; then rpm --import CRUNCHY-GPG-KEY.public ; fi
 
+RUN if [ "$BASEOS" = "centos8" ] ; then \
+	${PACKAGER} -qy module disable postgresql ; \
+fi
+
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
 	${PACKAGER} -qy module disable postgresql ; \
 fi
