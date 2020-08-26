@@ -142,7 +142,7 @@ RUN chmod +x /opt/cpm/bin/yq
 RUN chmod g=u /etc/passwd \
  && chmod g=u /etc/group
 
-RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh
+RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh && rm -f /run/nologin
 
 # The VOLUME directive must appear after all RUN directives to ensure the proper
 # volume permissions are applied when building the image

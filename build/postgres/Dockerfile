@@ -94,7 +94,7 @@ ADD tools/pgmonitor/exporter/postgres /opt/cpm/bin/modules/pgexporter
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
 
-RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh
+RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh && rm -f /run/nologin
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
 # add volumes to offer a restore feature
