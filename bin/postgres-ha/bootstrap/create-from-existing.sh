@@ -24,4 +24,7 @@ echo_info "Bootstrapping a new PostgreSQL cluster using an existing PGDATA direc
 mv "${PATRONI_POSTGRESQL_DATA_DIR}_tmp" "${PATRONI_POSTGRESQL_DATA_DIR}"
 err_check "$?" "Initialize Existing PGDATA" "Could not initialize cluster using existing PGDATA directory"
 
+# ensure the PGDATA directory has the proper permissions
+chmod u+rwx,go-rwx "${PATRONI_POSTGRESQL_DATA_DIR}"
+
 echo_info "Finished bootstrapping a new PostgreSQL cluster using an existing PGDATA directory"
