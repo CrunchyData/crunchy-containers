@@ -17,7 +17,7 @@ instructions to get you set up to build from source.
 CentOS 7, but you can read the [installation guide](/installation-guide/installation-guide)
 for additional instructions
 - [`go`](https://golang.org/) version 1.13+
-- [`buildah`](https://buildah.io/) 1.9+
+- [`buildah`](https://buildah.io/) 1.14.9+
 - [`git`](http://git-scm.org/)
 
 ## Setup
