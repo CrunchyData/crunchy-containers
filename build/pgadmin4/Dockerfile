@@ -27,7 +27,8 @@ RUN if [ "$BASEOS" = "centos7" ] ; then \
                 mod_ssl \
                 mod_wsgi \
                 openssl \
-                --setopt=obsoletes=0 pgadmin4-web-4.18 \
+                pgadmin4-web-4.20 \
+                --setopt=obsoletes=0 \
                 postgresql${PG_MAJOR//.}-server \
         && ${PACKAGER} -y clean all  \
         && chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
@@ -46,7 +47,8 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
                 mod_ssl \
                 python3-mod_wsgi \
                 openssl \
-                --setopt=obsoletes=0 pgadmin4-web-4.20 \
+                pgadmin4-web-4.20 \
+                --setopt=obsoletes=0 \
                 postgresql${PG_MAJOR//.}-server \
         && ${PACKAGER} -y clean all \
         && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
@@ -58,25 +60,6 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
         && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf ; \
 fi
 
-RUN if [ "$BASEOS" = "rhel7" ] ; then \
-        ${PACKAGER} -y install \
-                --setopt=skip_missing_names_on_install=False \
-                --enablerepo="epel,rhel-7-server-extras-rpms" \
-                mod_ssl \
-                mod_wsgi \
-                openssl \
-                --setopt=obsoletes=0 pgadmin4-web-4.18 \
-                postgresql${PG_MAJOR//.}-server \
-        && ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-extras-rpms" \
-        && chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
-                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd \
-                /var/log/httpd \
-        && chmod -R g=u /usr/lib/python2.7/site-packages/pgadmin4-web \
-                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
-        && ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python2.7/site-packages/pgadmin4-web/config_local.py \
-        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf ; \
-fi
-
 RUN if [ "$BASEOS" = "ubi7" ] ; then \
         ${PACKAGER} -y install \
                 --setopt=skip_missing_names_on_install=False \
@@ -84,7 +67,8 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
                 mod_ssl \
                 mod_wsgi \
                 openssl \
-                --setopt=obsoletes=0 pgadmin4-web-4.18 \
+                pgadmin4-web-4.20 \
+                --setopt=obsoletes=0 \
                 postgresql${PG_MAJOR//.}-server \
         && ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-extras-rpms" \
         && chown -R 2:0 /usr/lib/python2.7/site-packages/pgadmin4-web \
@@ -103,7 +87,8 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
                 mod_ssl \
                 python3-mod_wsgi \
                 openssl \
-                --setopt=obsoletes=0 pgadmin4-web-4.20 \
+                pgadmin4-web-4.20 \
+                --setopt=obsoletes=0 \
                 postgresql${PG_MAJOR//.}-server \
         && ${PACKAGER} -y clean all --enablerepo="epel" \
         && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
