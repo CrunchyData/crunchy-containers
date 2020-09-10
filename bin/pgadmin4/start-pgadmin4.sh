@@ -17,7 +17,7 @@ source /opt/cpm/bin/common_lib.sh
 enable_debugging
 
 export PATH=$PATH:/usr/pgsql-*/bin
-PGADMIN_DIR='/usr/lib/python2.7/site-packages/pgadmin4-web'
+PGADMIN_DIR=/usr/lib/python3.6/site-packages/pgadmin4-web
 APACHE_PIDFILE='/tmp/httpd.pid'
 
 function trap_sigterm() {
@@ -62,7 +62,7 @@ cd ${PGADMIN_DIR?}
 if [[ ! -f /var/lib/pgadmin/pgadmin4.db ]]
 then
     echo_info "Setting up pgAdmin4 database.."
-    python setup.py > /tmp/pgadmin4.stdout 2> /tmp/pgadmin4.stderr
+    python3 setup.py > /tmp/pgadmin4.stdout 2> /tmp/pgadmin4.stderr
     err_check "$?" "pgAdmin4 Database Setup" "Could not create pgAdmin4 database: \n$(cat /tmp/pgadmin4.stderr)"
 fi
 
