@@ -44,6 +44,7 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
                 mod_ssl \
                 python3-mod_wsgi \
                 openssl \
+                sqlite \
                 --setopt=obsoletes=0 pgadmin4 \
                 postgresql${PG_MAJOR//.}-server \
         && ${PACKAGER} -y clean all \
@@ -82,6 +83,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
                 mod_ssl \
                 python3-mod_wsgi \
                 openssl \
+                sqlite \
                 --setopt=obsoletes=0 pgadmin4 \
                 postgresql${PG_MAJOR//.}-server \
         && ${PACKAGER} -y clean all --enablerepo="epel" \
