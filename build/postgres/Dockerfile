@@ -33,6 +33,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
         	psmisc \
         	rsync \
+        	wal2json${PG_MAJOR//.} \
         && ${PACKAGER} -y clean all ; \
 else \
         ${PACKAGER} -y install \
@@ -51,6 +52,7 @@ else \
 		$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
 		psmisc \
 		rsync \
+		wal2json${PG_MAJOR//.} \
 	&& ${PACKAGER} -y install \
 		--setopt=tsflags='' \
 		--enablerepo="epel" \
