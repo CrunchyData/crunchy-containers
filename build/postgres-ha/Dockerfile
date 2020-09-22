@@ -27,8 +27,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	crunchy-backrest-${BACKREST_VER} \
         	postgresql${PG_MAJOR//.}-contrib \
         	postgresql${PG_MAJOR//.}-server \
-        	postgresql${PG_MAJOR//.}-plpython \
-        	postgresql${PG_MAJOR//.}-plpython3 \
+        	postgresql${PG_MAJOR//.}-plpython* \
         	pgnodemx${PG_MAJOR//.} \
         	$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
         	psmisc \
@@ -47,8 +46,7 @@ else \
 		crunchy-backrest-${BACKREST_VER} \
 		postgresql${PG_MAJOR//.}-contrib \
 		postgresql${PG_MAJOR//.}-server \
-		postgresql${PG_MAJOR//.}-plpython \
-		postgresql${PG_MAJOR//.}-plpython3 \
+		postgresql${PG_MAJOR//.}-plpython* \
 		pgnodemx${PG_MAJOR//.} \
 		$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
 		psmisc \
