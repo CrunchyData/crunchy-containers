@@ -25,8 +25,7 @@ RUN ${PACKAGER} -y install \
 	postgis25_${PG_MAJOR//.} \
 	postgis25_${PG_MAJOR//.}-client \
 	postgresql${PG_MAJOR//.}-contrib \
-	postgresql${PG_MAJOR//.}-plpython \
-	postgresql${PG_MAJOR//.}-plpython3 \
+	postgresql${PG_MAJOR//.}-plpython* \
 	postgresql${PG_MAJOR//.}-server \
 	R-core \
 	rsync \
