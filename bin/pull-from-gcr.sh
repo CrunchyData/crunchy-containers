@@ -8,7 +8,6 @@ GIS_VERSION=${CCP_POSTGIS_IMAGE_TAG?}
 IMAGES=(
     crunchy-backrest-restore
     crunchy-backup
-    crunchy-collect
     crunchy-pgadmin4
     crunchy-pgbadger
     crunchy-pgbench

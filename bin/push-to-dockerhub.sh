@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-docker push  $CCP_IMAGE_PREFIX/crunchy-collect:$CCP_IMAGE_TAG
 docker push  $CCP_IMAGE_PREFIX/crunchy-pgbadger:$CCP_IMAGE_TAG
 docker push  $CCP_IMAGE_PREFIX/crunchy-pgpool:$CCP_IMAGE_TAG
 docker push  $CCP_IMAGE_PREFIX/crunchy-backup:$CCP_IMAGE_TAG
