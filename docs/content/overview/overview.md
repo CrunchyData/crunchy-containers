@@ -158,18 +158,6 @@ PostgreSQL containers.  The following upgrade versions of PostgreSQL are availab
 The following images can be used to understand how Crunchy PostgreSQL containers
 are performing over time using tools such as pgBadger.
 
-### Crunchy Collect
-
-The Crunchy Collect image exports metric data of Crunchy PostgreSQL containers which
-can is scraped and stored by Crunchy Prometheus timeseries database via a web API.
-
-Crunchy Collect contains the following exporter:
-
-* [PostgreSQL Exporter](https://github.com/wrouesnel/postgres_exporter) - PostgreSQL-specific metrics
-
-This image also contains custom PostgreSQL queries for additional metrics provided
-by [Crunchy pgMonitor](https://github.com/CrunchyData/pgmonitor).
-
 ### Crunchy pgBadger
 
 The Crunchy pgBadger image provides a tool that parses PostgreSQL logs and generates
