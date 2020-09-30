@@ -30,7 +30,6 @@ content/container-specifications/_index.md
 content/container-specifications/crunchy-backrest-restore.md
 content/container-specifications/crunchy-pgbasebackup-restore.md
 content/container-specifications/crunchy-backup.md
-content/container-specifications/crunchy-collect.md
 content/container-specifications/crunchy-pgadmin4.md
 content/container-specifications/crunchy-pgbadger.md
 content/container-specifications/crunchy-pgbouncer.md

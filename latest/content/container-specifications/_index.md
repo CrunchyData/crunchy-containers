@@ -9,7 +9,6 @@ weight: 6
 * [Crunchy backrest restore](crunchy-backrest-restore)
 * [Crunchy backup](crunchy-backup)
 * [Crunchy pgbasebackup restore](crunchy-pgbasebackup-restore)
-* [Crunchy collect](crunchy-collect)
 * [Crunchy pgadmin4](crunchy-pgadmin4)
 * [Crunchy pgbadger](crunchy-pgbadger)
 * [Crunchy pgbench](crunchy-pgbench)

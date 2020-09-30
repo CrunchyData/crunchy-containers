@@ -82,17 +82,6 @@ Features The following features are supported by the crunchy-backup container:
     </item>
     
     <item>
-      <title>crunchy-collect</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-collect/</link>
-      <pubDate>Thu, 24 May 2018 10:06:13 -0700</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-collect/</guid>
-      <description>The crunchy-collect container provides real time metrics about the PostgreSQL database via an API. These metrics are scraped and stored by a Prometheus time-series database and are then graphed and visualized through the open source data visualizer Grafana.
-The crunchy-collect container uses pgMonitor for advanced metric collection. It is required that the crunchy-postgres container has the PGMONITOR_PASSWORD environment variable to create the appropriate user (ccp_monitoring) to collect metrics.
-Custom queries to collect metrics can be specified by the user.</description>
-    </item>
-    
-    <item>
       <title>Custom Configuration of PostgreSQL Container with SSL</title>
       <link>https://crunchydata.github.io/crunchy-containers/latest/examples/postgresql/custom-config-ssl/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -388,7 +377,7 @@ For this test, we place pg_audit statements within a SQL script and verify that 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/latest/examples/administration/upgrade/</guid>
-      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 11 or 12 image such as `centos7-12.4-4.5.0-beta.1` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
+      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 11 or 12 image such as `centos7-12.4-4.5.0-rc.1` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
     </item>
     
     <item>

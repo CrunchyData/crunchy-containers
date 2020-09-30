@@ -324,13 +324,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-collect/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-collect/">
-            crunchy-collect
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgadmin4/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgadmin4/">
@@ -722,20 +715,6 @@ PostgreSQL containers.  The following upgrade versions of PostgreSQL are availab
 
 <p>The following images can be used to understand how Crunchy PostgreSQL containers
 are performing over time using tools such as pgBadger.</p>
-
-<h3 id="crunchy-collect">Crunchy Collect</h3>
-
-<p>The Crunchy Collect image exports metric data of Crunchy PostgreSQL containers which
-can is scraped and stored by Crunchy Prometheus timeseries database via a web API.</p>
-
-<p>Crunchy Collect contains the following exporter:</p>
-
-<ul>
-<li><a href="https://github.com/wrouesnel/postgres_exporter">PostgreSQL Exporter</a> - PostgreSQL-specific metrics</li>
-</ul>
-
-<p>This image also contains custom PostgreSQL queries for additional metrics provided
-by <a href="https://github.com/CrunchyData/pgmonitor">Crunchy pgMonitor</a>.</p>
 
 <h3 id="crunchy-pgbadger">Crunchy pgBadger</h3>
 
