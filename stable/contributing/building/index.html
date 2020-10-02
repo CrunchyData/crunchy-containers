@@ -186,13 +186,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/statefulset-cluster/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/statefulset-cluster/">
-            Statefulset PostgreSQL Cluster
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/postgis/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/postgis/">
@@ -232,13 +225,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/poolers/pgbouncer/">
             pgBouncer
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/examples/metrics/metrics/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/metrics/metrics/">
-            Metrics and Performance
           </a>
         </div>
     </li>
@@ -337,20 +323,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-collect/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-collect/">
-            crunchy-collect
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-grafana/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-grafana/">
-            crunchy-grafana
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgadmin4/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgadmin4/">
@@ -418,13 +390,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/">
             crunchy-postgres
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
-            crunchy-prometheus
           </a>
         </div>
     </li>
@@ -593,7 +558,7 @@ instructions to get you set up to build from source.</p>
 CentOS 7, but you can read the <a href="https://crunchydata.github.io/crunchy-containers/stable/installation-guide/installation-guide">installation guide</a>
 for additional instructions</li>
 <li><a href="https://golang.org/"><code>go</code></a> version 1.13+</li>
-<li><a href="https://buildah.io/"><code>buildah</code></a> 1.9+</li>
+<li><a href="https://buildah.io/"><code>buildah</code></a> 1.14.9+</li>
 <li><a href="http://git-scm.org/"><code>git</code></a></li>
 </ul>
 
@@ -625,7 +590,7 @@ following variables:</li>
 <span style="color:#111">export</span> <span style="color:#111">CCP_PGVERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>        <span style="color:#75715e"># The PostgreSQL major version</span>
 <span style="color:#111">export</span> <span style="color:#111">CCP_PG_FULLVERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>.4
 <span style="color:#111">export</span> <span style="color:#111">CCP_POSTGIS_VERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>.0
-<span style="color:#111">export</span> <span style="color:#111">CCP_VERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>.4.1
+<span style="color:#111">export</span> <span style="color:#111">CCP_VERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>.5.0
 <span style="color:#111">export</span> <span style="color:#111">CCP_IMAGE_PREFIX</span><span style="color:#f92672">=</span>crunchydata <span style="color:#75715e"># Prefix to put before all the container image names</span>
 <span style="color:#111">export</span> <span style="color:#111">CCP_IMAGE_TAG</span><span style="color:#f92672">=</span><span style="color:#111">$CCP_BASEOS</span>-<span style="color:#111">$CCP_PG_FULLVERSION</span>-<span style="color:#111">$CCP_VERSION</span>   <span style="color:#75715e"># Used to tag the images</span>
 <span style="color:#111">export</span> <span style="color:#111">CCP_POSTGIS_IMAGE_TAG</span><span style="color:#f92672">=</span><span style="color:#111">$CCP_BASEOS</span>-<span style="color:#111">$CCP_PG_FULLVERSION</span>-<span style="color:#111">$CCP_POSTGIS_VERSION</span>-<span style="color:#111">$CCP_VERSION</span> <span style="color:#75715e"># Used to tag images that include PostGIS</span>
@@ -640,7 +605,7 @@ adding them to your <code>.bashrc</code> file:</p>
 </span><span style="color:#d88200">export CCP_PGVERSION=12
 </span><span style="color:#d88200">export CCP_PG_FULLVERSION=12.4
 </span><span style="color:#d88200">export CCP_POSTGIS_VERSION=3.0
-</span><span style="color:#d88200">export CCP_VERSION=4.4.1
+</span><span style="color:#d88200">export CCP_VERSION=4.5.0
 </span><span style="color:#d88200">export CCP_IMAGE_PREFIX=crunchydata
 </span><span style="color:#d88200">export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 </span><span style="color:#d88200">export CCP_POSTGIS_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_POSTGIS_VERSION-$CCP_VERSION

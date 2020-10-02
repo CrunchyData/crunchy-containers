@@ -36,11 +36,6 @@
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-collect/</loc>
-    <lastmod>2018-05-24T10:06:13-07:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/stable/client-user-guide/</loc>
   </url>
   
@@ -50,11 +45,6 @@
   
   <url>
     <loc>https://crunchydata.github.io/crunchy-containers/stable/overview/supported/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-grafana/</loc>
-    <lastmod>2018-05-24T10:06:17-07:00</lastmod>
   </url>
   
   <url>
@@ -89,10 +79,6 @@
   
   <url>
     <loc>https://crunchydata.github.io/crunchy-containers/stable/contributing/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/statefulset-cluster/</loc>
   </url>
   
   <url>
@@ -136,10 +122,6 @@
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/</loc>
-  </url>
-  
-  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-upgrade/</loc>
   </url>
   
@@ -169,10 +151,6 @@
   
   <url>
     <loc>https://crunchydata.github.io/crunchy-containers/stable/examples/poolers/pgbouncer/</loc>
-  </url>
-  
-  <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/stable/examples/metrics/metrics/</loc>
   </url>
   
   <url>

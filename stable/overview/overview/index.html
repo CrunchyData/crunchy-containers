@@ -187,13 +187,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/statefulset-cluster/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/statefulset-cluster/">
-            Statefulset PostgreSQL Cluster
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/postgis/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/postgis/">
@@ -233,13 +226,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/poolers/pgbouncer/">
             pgBouncer
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/examples/metrics/metrics/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/metrics/metrics/">
-            Metrics and Performance
           </a>
         </div>
     </li>
@@ -338,20 +324,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-collect/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-collect/">
-            crunchy-collect
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-grafana/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-grafana/">
-            crunchy-grafana
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgadmin4/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgadmin4/">
@@ -419,13 +391,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/">
             crunchy-postgres
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
-            crunchy-prometheus
           </a>
         </div>
     </li>
@@ -661,7 +626,7 @@ image but additionally provides the following geospatial extensions:</p>
 <p><em>Physical</em> backup and restoration tools included in the Crunchy Container suite are:</p>
 
 <ul>
-<li><a href="2.27">pgBackRest</a>
+<li><a href="2.29">pgBackRest</a>
 PostgreSQL images</li>
 <li><a href="https://www.postgresql.org/docs/current/app-pgbasebackup.html">pg_basebackup</a> -
 provided by the Crunchy Backup image</li>
@@ -749,51 +714,7 @@ PostgreSQL containers.  The following upgrade versions of PostgreSQL are availab
 <h2 id="performance-and-monitoring">Performance and Monitoring</h2>
 
 <p>The following images can be used to understand how Crunchy PostgreSQL containers
-are performing over time using tools such as Grafana, Prometheus and pgBadger.</p>
-
-<h3 id="crunchy-collect">Crunchy Collect</h3>
-
-<p>The Crunchy Collect image exports metric data of Crunchy PostgreSQL containers which
-can is scraped and stored by Crunchy Prometheus timeseries database via a web API.</p>
-
-<p>Crunchy Collect contains the following exporter:</p>
-
-<ul>
-<li><a href="https://github.com/wrouesnel/postgres_exporter">PostgreSQL Exporter</a> - PostgreSQL-specific metrics</li>
-</ul>
-
-<p>This image also contains custom PostgreSQL queries for additional metrics provided
-by <a href="https://github.com/CrunchyData/pgmonitor">Crunchy pgMonitor</a>.</p>
-
-<h3 id="crunchy-grafana">Crunchy Grafana</h3>
-
-<p>The Crunchy Grafana image provides a web interface for users to explore metric data gathered and stored by
-Prometheus.  Crunchy Grafana comes with the following features:</p>
-
-<ul>
-<li>Premade dashboards tuned for PostgreSQL metrics</li>
-<li>Automatic datasource registration</li>
-<li>Automatic administrator user setup</li>
-</ul>
-
-<p><img src="https://crunchydata.github.io/crunchy-containers/stable/grafana.png" alt="grafana" title="grafana" /></p>
-
-<p>Visit the official Grafana website for more information: <a href="https://grafana.com">https://grafana.com</a></p>
-
-<h3 id="crunchy-prometheus">Crunchy Prometheus</h3>
-
-<p>The Crunchy Prometheus image provides a time series databases for storing metric
-data gathered from Crunchy PostgreSQL containers.  Metrics can be explored via
-queries in the Prometheus graphical user interface and visualized using Crunchy
-Grafana.  Crunchy Prometheus supports the following features:</p>
-
-<ul>
-<li>Auto discovers metric exporters in Kubernetes by searching for pods with the label
-<code>crunchy-collect=true</code></li>
-<li>Relabels metrics metadata for easier Crunchy Grafana integration</li>
-</ul>
-
-<p>Visit the official Prometheus website for more information: <a href="https://prometheus.io">https://prometheus.io</a></p>
+are performing over time using tools such as pgBadger.</p>
 
 <h3 id="crunchy-pgbadger">Crunchy pgBadger</h3>
 

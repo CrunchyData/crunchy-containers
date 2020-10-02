@@ -71,17 +71,6 @@ cd $CCPROOT/examples/docker/sync ./run.sh  You can test the replication status o
     </item>
     
     <item>
-      <title>Statefulset PostgreSQL Cluster</title>
-      <link>https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/statefulset-cluster/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/statefulset-cluster/</guid>
-      <description>Statefulsets This example deploys a statefulset named statefulset. The statefulset is a new feature in Kubernetes as of version 1.5 and in OpenShift Origin as of version 3.5. Statefulsets have replaced PetSets going forward.
-Please view this Kubernetes description to better understand what a Statefulset is and how it works.
-This example creates 2 PostgreSQL containers to form the set. At startup, each container will examine its hostname to determine if it is the first container within the set of containers.</description>
-    </item>
-    
-    <item>
       <title>PostGIS Container</title>
       <link>https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/postgis/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -147,17 +136,6 @@ The following examples create the following containers:
     </item>
     
     <item>
-      <title>Metrics and Performance</title>
-      <link>https://crunchydata.github.io/crunchy-containers/stable/examples/metrics/metrics/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/stable/examples/metrics/metrics/</guid>
-      <description>Metrics Collection You can collect various PostgreSQL metrics from your database container by running a crunchy-collect container that points to your database container.
-This example starts up 5 containers:
- Collect (crunchy-collect) Grafana (crunchy-grafana) PostgreSQL (crunchy-postgres) Prometheus (crunchy-prometheus)  Every 10 seconds by default, Prometheus will scrape the Collect container for metrics. These metrics will then be visualized by Grafana, which by default can be accessed with the following credentials:</description>
-    </item>
-    
-    <item>
       <title>pgBadger</title>
       <link>https://crunchydata.github.io/crunchy-containers/stable/examples/metrics/pgbadger/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -203,7 +181,7 @@ For this test, we place pg_audit statements within a SQL script and verify that 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/examples/administration/upgrade/</guid>
-      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 11 or 12 image such as `centos7-12.4-4.4.1` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
+      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 11 or 12 image such as `centos7-12.4-4.5.0` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
     </item>
     
     <item>

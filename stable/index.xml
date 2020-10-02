@@ -82,17 +82,6 @@ Features The following features are supported by the crunchy-backup container:
     </item>
     
     <item>
-      <title>crunchy-collect</title>
-      <link>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-collect/</link>
-      <pubDate>Thu, 24 May 2018 10:06:13 -0700</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-collect/</guid>
-      <description>The crunchy-collect container provides real time metrics about the PostgreSQL database via an API. These metrics are scraped and stored by a Prometheus time-series database and are then graphed and visualized through the open source data visualizer Grafana.
-The crunchy-collect container uses pgMonitor for advanced metric collection. It is required that the crunchy-postgres container has the PGMONITOR_PASSWORD environment variable to create the appropriate user (ccp_monitoring) to collect metrics.
-Custom queries to collect metrics can be specified by the user.</description>
-    </item>
-    
-    <item>
       <title>Custom Configuration of PostgreSQL Container with SSL</title>
       <link>https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/custom-config-ssl/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -112,16 +101,6 @@ This example can be run as follows for the Docker environment:</description>
       <guid>https://crunchydata.github.io/crunchy-containers/stable/overview/supported/</guid>
       <description> Supported Platforms Crunchy Container Suite supports the following platforms:
  Docker 1.13+ Kubernetes 1.12+ OpenShift Container Platform 3.11 VMWare Enterprise PKS 1.3+  </description>
-    </item>
-    
-    <item>
-      <title>crunchy-grafana</title>
-      <link>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-grafana/</link>
-      <pubDate>Thu, 24 May 2018 10:06:17 -0700</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-grafana/</guid>
-      <description>Visual dashboards are created from the collected and stored data that crunchy-collect and crunchy-prometheus provide for the crunchy-grafana container, which hosts an open source web-based graphing dashboard called Grafana.
-Grafana is a platform which can then apply the defined metrics and visualize information through various tools. It is extremely flexible with a powerful query and transformation language, producing beautiful and easily understandable graphics to analyze and monitor your data.</description>
     </item>
     
     <item>
@@ -169,17 +148,6 @@ cd $CCPROOT/examples/docker/sync ./run.sh  You can test the replication status o
       <description>The crunchy-pgbadger container executes the pgBadger utility, which generates a PostgreSQL log analysis report using a small HTTP server running on the container. This log report can be accessed through the URL http://&amp;lt;&amp;gt;:10000/api/badgergenerate.
 Features The following features are supported by the crunchy-pgbadger container:
  Generate a full report by default Optional custom options for more advanced use cases (such as incremental reports) Report persistence on a volume  Packages The crunchy-badger Docker image contains the following packages:</description>
-    </item>
-    
-    <item>
-      <title>Statefulset PostgreSQL Cluster</title>
-      <link>https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/statefulset-cluster/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/statefulset-cluster/</guid>
-      <description>Statefulsets This example deploys a statefulset named statefulset. The statefulset is a new feature in Kubernetes as of version 1.5 and in OpenShift Origin as of version 3.5. Statefulsets have replaced PetSets going forward.
-Please view this Kubernetes description to better understand what a Statefulset is and how it works.
-This example creates 2 PostgreSQL containers to form the set. At startup, each container will examine its hostname to determine if it is the first container within the set of containers.</description>
     </item>
     
     <item>
@@ -280,15 +248,6 @@ Features The following features are supported by the crunchy-postgres container:
     </item>
     
     <item>
-      <title>crunchy-prometheus</title>
-      <link>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/</guid>
-      <description>Prometheus is a multi-dimensional time series data model with an elastic query language. It is used in collaboration with Grafana in this metrics suite. Overall, it’s reliable, manageable, and operationally simple for efficiently storing and analyzing data for large-scale environments. It scraps metrics from exporters such as the ones utilized by the crunchy-collect container. The crunchy-prometheus container must be able to reach the crunchy-collect container in order to to scrape metrics.</description>
-    </item>
-    
-    <item>
       <title>crunchy-upgrade</title>
       <link>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-upgrade/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -373,17 +332,6 @@ The following examples create the following containers:
     </item>
     
     <item>
-      <title>Metrics and Performance</title>
-      <link>https://crunchydata.github.io/crunchy-containers/stable/examples/metrics/metrics/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/stable/examples/metrics/metrics/</guid>
-      <description>Metrics Collection You can collect various PostgreSQL metrics from your database container by running a crunchy-collect container that points to your database container.
-This example starts up 5 containers:
- Collect (crunchy-collect) Grafana (crunchy-grafana) PostgreSQL (crunchy-postgres) Prometheus (crunchy-prometheus)  Every 10 seconds by default, Prometheus will scrape the Collect container for metrics. These metrics will then be visualized by Grafana, which by default can be accessed with the following credentials:</description>
-    </item>
-    
-    <item>
       <title>pgBadger</title>
       <link>https://crunchydata.github.io/crunchy-containers/stable/examples/metrics/pgbadger/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -429,7 +377,7 @@ For this test, we place pg_audit statements within a SQL script and verify that 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/examples/administration/upgrade/</guid>
-      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 11 or 12 image such as `centos7-12.4-4.4.1` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
+      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 11 or 12 image such as `centos7-12.4-4.5.0` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
     </item>
     
     <item>

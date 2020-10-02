@@ -187,13 +187,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/statefulset-cluster/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/statefulset-cluster/">
-            Statefulset PostgreSQL Cluster
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/postgis/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/postgresql/postgis/">
@@ -233,13 +226,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/poolers/pgbouncer/">
             pgBouncer
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/examples/metrics/metrics/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/examples/metrics/metrics/">
-            Metrics and Performance
           </a>
         </div>
     </li>
@@ -338,20 +324,6 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-collect/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-collect/">
-            crunchy-collect
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-grafana/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-grafana/">
-            crunchy-grafana
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgadmin4/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgadmin4/">
@@ -419,13 +391,6 @@
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/">
             crunchy-postgres
-          </a>
-        </div>
-    </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-prometheus/">
-            crunchy-prometheus
           </a>
         </div>
     </li>
@@ -511,14 +476,12 @@
       <option value="/examples/postgresql/custom-config-ssl/" >- Custom Configuration of PostgreSQL Container with SSL</option>
       <option value="/examples/postgresql/primary-replica/" >- Primary and Streaming Replica Containers</option>
       <option value="/examples/postgresql/sync-replica/" >- Synchronous Replication</option>
-      <option value="/examples/postgresql/statefulset-cluster/" >- Statefulset PostgreSQL Cluster</option>
       <option value="/examples/postgresql/postgis/" >- PostGIS Container</option>
       <option value="/examples/poolers/pgpool/" >- pgPool II</option>
       <option value="/examples/backup-restoration/pgbackrest/" >- pgBackRest</option>
       <option value="/examples/backup-restoration/pgbasebackup/" >- pgBaseBackup</option>
       <option value="/examples/backup-restoration/pgdump-pgrestore/" >- pgDump &amp; pgRestore</option>
       <option value="/examples/poolers/pgbouncer/" >- pgBouncer</option>
-      <option value="/examples/metrics/metrics/" >- Metrics and Performance</option>
       <option value="/examples/metrics/pgbadger/" >- pgBadger</option>
       <option value="/examples/metrics/pgbench/" >- pgBench</option>
       <option value="/examples/logging/centralized-logging/" >- Centralized Logging</option>
@@ -599,7 +562,7 @@
 
 <div class="notices tip" >
 This example assumes you have run *primary* using a PostgreSQL 11 or 12 image
-such as `centos7-12.4-4.4.1` prior to running this upgrade.
+such as `centos7-12.4-4.5.0` prior to running this upgrade.
 </div>
 
 <p>The upgrade container will let you perform a <code>pg_upgrade</code> from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</p>
@@ -607,7 +570,7 @@ such as `centos7-12.4-4.4.1` prior to running this upgrade.
 <p>Prior to running this example, make sure your <code>CCP_IMAGE_TAG</code>
 environment variable is using the next major version of PostgreSQL that you
 want to upgrade to. For example, if you&rsquo;re upgrading from 11 to 12, make
-sure the variable references a PostgreSQL 12 image such as <code>centos7-12.4-4.4.1</code>.</p>
+sure the variable references a PostgreSQL 12 image such as <code>centos7-12.4-4.5.0</code>.</p>
 
 <p>This will create the following in your Kubernetes environment:</p>
 
