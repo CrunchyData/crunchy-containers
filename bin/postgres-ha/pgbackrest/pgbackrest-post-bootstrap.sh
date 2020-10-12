@@ -6,7 +6,7 @@ source /opt/cpm/bin/common/common_lib.sh
 create_pgbackrest_dirs() {
 
     # only create repo dir if using local storage (not if using a central repo or 's3')
-    if [[ ! -v PGBACKREST_REPO1_HOST && "${PGBACKREST_REPO_TYPE}" != "s3" ]]
+    if [[ ! -v PGBACKREST_REPO1_HOST && "${PGBACKREST_REPO1_TYPE}" != "s3" ]]
     then
         if [[ -v PGBACKREST_REPO_PATH ]]
         then
