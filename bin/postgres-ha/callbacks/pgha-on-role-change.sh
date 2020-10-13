@@ -13,11 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/cpm/bin/common/common_lib.sh
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+source "${CRUNCHY_DIR}/bin/common_lib.sh"
 enable_debugging
 
-source /opt/cpm/bin/common/pgha-common.sh
-source /opt/cpm/bin/common/pgha-tablespaces.sh
+source "${CRUNCHY_DIR}/bin/postgres-ha/common/pgha-common.sh"
+source "${CRUNCHY_DIR}/bin/postgres-ha/common/pgha-tablespaces.sh"
 
 # set the Patroni port
 export $(get_patroni_port)
@@ -33,7 +34,7 @@ cluster="${3}"
 echo_info "${action} callback called (action=${action} role=${role} cluster=${cluster})"
 
 # get pgbackrest env vars
-source /opt/cpm/bin/pgbackrest/pgbackrest-set-env.sh
+source "${CRUNCHY_DIR}/bin/postgres-ha/pgbackrest/pgbackrest-set-env.sh"
 
 # if pgBackRest is enabled and the node has been promoted to "primary" (i.e. "master"), and if
 # pgBackRest is enabled and is not utilizing a dedicated repository host, then take a new backup

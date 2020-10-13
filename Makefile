@@ -67,39 +67,27 @@ endif
 all: cc-pg-base-image pgimages pg-independent-images
 
 # Build images that either don't have a PG dependency or using the latest PG version is all that is needed
-pg-independent-images: backup pgadmin4 pgbadger pgbasebackuprestore pgbench pgbouncer pgpool
+pg-independent-images: pgadmin4 pgbadger pgbouncer pgpool
 
 # Build images that require a specific postgres version - ordered for potential concurrent benefits
-pgimages: postgres postgres-ha backrestrestore crunchyadm postgres-gis postgres-gis-ha pgdump pgrestore upgrade
+pgimages: postgres postgres-ha backrestrestore crunchyadm postgres-gis postgres-gis-ha upgrade
 
 #===========================================
 # Targets generating pg-based images
 #===========================================
 
 backrestrestore: backrest-restore-pgimg-$(IMGBUILDER)
-backup:	backup-pgimg-$(IMGBUILDER)
 crunchyadm: admin-pgimg-$(IMGBUILDER)
 pgadmin4: pgadmin4-pgimg-$(IMGBUILDER)
 pgbadger: pgbadger-pgimg-$(IMGBUILDER)
-pgbench: pgbench-pgimg-$(IMGBUILDER)
 pgbouncer: pgbouncer-pgimg-$(IMGBUILDER)
-pgdump: pgdump-pgimg-$(IMGBUILDER)
 pgpool: pgpool-pgimg-$(IMGBUILDER)
-pgrestore: pgrestore-pgimg-$(IMGBUILDER)
 postgres: postgres-pgimg-$(IMGBUILDER)
 postgres-ha: postgres-ha-pgimg-$(IMGBUILDER)
 postgres-gis: postgres-gis-pgimg-$(IMGBUILDER)
 postgres-gis-ha: postgres-gis-ha-pgimg-$(IMGBUILDER)
 
 postgres-appdev: commands postgres-appdev-pgimg-$(IMGBUILDER)
-
-
-#===========================================
-# Targets generating non-pg-based images
-#===========================================
-
-pgbasebackuprestore: pgbasebackup-restore-img-$(IMGBUILDER)
-
 
 #===========================================
 # Pattern-based image generation targets
@@ -157,13 +145,14 @@ cc-pg-base-image-docker: cc-pg-base-image-build
 
 # ----- Special case pg-based image (postgres) -----
 # Special case args: BACKREST_VER
-postgres-pgimg-build: cc-pg-base-image commands $(CCPROOT)/build/postgres/Dockerfile
+postgres-pgimg-build: ccbase-image commands $(CCPROOT)/build/postgres/Dockerfile
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/build/postgres/Dockerfile \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG) \
 		--build-arg BASEOS=$(CCP_BASEOS) \
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
+		--build-arg PG_LBL=${subst .,,$(CCP_PGVERSION)} \
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		--build-arg BACKREST_VER=$(CCP_BACKREST_VERSION) \
@@ -205,7 +194,7 @@ postgres-gis-pgimg-docker: postgres-gis-pgimg-build
 
 # ----- Special case pg-based image (postgres-ha) -----
 # Special case args: BACKREST_VER, PATRONI_VER
-postgres-ha-pgimg-build: cc-pg-base-image commands $(CCPROOT)/build/postgres-ha/Dockerfile
+postgres-ha-pgimg-build: postgres-pgimg-build commands $(CCPROOT)/build/postgres-ha/Dockerfile
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/build/postgres-ha/Dockerfile \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) \
@@ -214,7 +203,6 @@ postgres-ha-pgimg-build: cc-pg-base-image commands $(CCPROOT)/build/postgres-ha/
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
-		--build-arg BACKREST_VER=$(CCP_BACKREST_VERSION) \
 		--build-arg PATRONI_VER=$(CCP_PATRONI_VERSION) \
 		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \

@@ -4,7 +4,7 @@ bootstrap:
     postgresql:
       parameters:
         archive_mode: on
-        archive_command: 'source /opt/cpm/bin/pgbackrest/pgbackrest-set-env.sh && pgbackrest archive-push "%p"'
+        archive_command: 'source /opt/crunchy/bin/postgres-ha/pgbackrest/pgbackrest-set-env.sh && pgbackrest archive-push "%p"'
       use_slots: false
       recovery_conf:
-        restore_command: 'source /opt/cpm/bin/pgbackrest/pgbackrest-set-env.sh && pgbackrest archive-get %f "%p"'
+        restore_command: 'source /opt/crunchy/bin/postgres-ha/pgbackrest/pgbackrest-set-env.sh && pgbackrest archive-get %f "%p"'

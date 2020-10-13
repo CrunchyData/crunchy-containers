@@ -18,6 +18,8 @@ GREEN="\033[0;32m"
 YELLOW="\033[0;33m"
 RESET="\033[0m"
 
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+
 function enable_debugging() {
     if [[ ${CRUNCHY_DEBUG:-false} == "true" ]]
     then
@@ -25,13 +27,6 @@ function enable_debugging() {
         export PS4='+(${BASH_SOURCE}:${LINENO})> ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
         set -x
     fi
-}
-
-function ose_hack() {
-    export USER_ID=$(id -u)
-    export GROUP_ID=$(id -g)
-    envsubst < /opt/cpm/conf/passwd.template > /tmp/passwd
-    envsubst < /opt/cpm/conf/group.template > /tmp/group
 }
 
 function env_check_err() {

@@ -13,13 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/cpm/bin/common/common_lib.sh
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+source "${CRUNCHY_DIR}/bin/common_lib.sh"
 enable_debugging
 
-source /opt/cpm/bin/common/pgha-common.sh
+source "${CRUNCHY_DIR}/bin/postgres-ha/common/pgha-common.sh"
 export $(get_patroni_pgdata_dir)
 
-source /opt/cpm/bin/pgbackrest/pgbackrest-set-env.sh
+source "${CRUNCHY_DIR}/bin/postgres-ha/pgbackrest/pgbackrest-set-env.sh"
 
 bootstrap_role=$1
 restore_cmd_args=()

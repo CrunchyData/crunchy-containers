@@ -2,14 +2,14 @@
 bootstrap:
   method: PGHA_BOOTSTRAP_METHOD
   pgbackrest_init:
-    command: '/opt/cpm/bin/pgbackrest/pgbackrest-create-replica.sh primary'
+    command: '/opt/crunchy/bin/postgres-ha/pgbackrest/pgbackrest-create-replica.sh primary'
     keep_existing_recovery_conf: true
   existing_init:
-    command: '/opt/cpm/bin/bootstrap/create-from-existing.sh'
+    command: '/opt/crunchy/bin/postgres-ha/bootstrap/create-from-existing.sh'
     keep_existing_recovery_conf: true
   dcs:
     postgresql:
       parameters:
         unix_socket_directories: /tmp,/crunchyadm
         wal_level: logical
-  post_bootstrap: /opt/cpm/bin/bootstrap/post-bootstrap.sh
+  post_bootstrap: /opt/crunchy/bin/postgres-ha/bootstrap/post-bootstrap.sh

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2020 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2020 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -17,15 +17,17 @@ CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
 source "${CRUNCHY_DIR}/bin/common_lib.sh"
 enable_debugging
 
-source "${CRUNCHY_DIR}/bin/postgres-ha/common/pgha-common.sh"
-export $(get_patroni_pgdata_dir)
-
-echo_info "Bootstrapping a new PostgreSQL cluster using an existing PGDATA directory"
-
-mv "${PATRONI_POSTGRESQL_DATA_DIR}_tmp" "${PATRONI_POSTGRESQL_DATA_DIR}"
-err_check "$?" "Initialize Existing PGDATA" "Could not initialize cluster using existing PGDATA directory"
-
-# ensure the PGDATA directory has the proper permissions
-chmod u+rwx,go-rwx "${PATRONI_POSTGRESQL_DATA_DIR}"
-
-echo_info "Finished bootstrapping a new PostgreSQL cluster using an existing PGDATA directory"
+if [ -d "/pguser" ]; then
+	echo_info "The PGUSER secret exists."
+	export PG_USER=$(cat /pguser/username)
+	export PG_PASSWORD=$(cat /pguser/password)
+fi
+if [ -d "/pgroot" ]; then
+	echo_info "The PGROOT secret exists."
+	export PG_ROOT_PASSWORD=$(cat /pgroot/password)
+fi
+if [ -d "/pgprimary" ]; then
+	echo_info "The PGPRIMARY secret exists."
+	export PG_PRIMARY_USER=$(cat /pgprimary/username)
+	export PG_PRIMARY_PASSWORD=$(cat /pgprimary/password)
+fi
