@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2020 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2020 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -17,15 +17,18 @@ CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
 source "${CRUNCHY_DIR}/bin/common_lib.sh"
 enable_debugging
 
-source "${CRUNCHY_DIR}/bin/postgres-ha/common/pgha-common.sh"
-export $(get_patroni_pgdata_dir)
+export PGROOT=$(find /usr/ -type d -name 'pgsql-*')
 
-echo_info "Bootstrapping a new PostgreSQL cluster using an existing PGDATA directory"
+echo_info "Setting PGROOT to ${PGROOT?}."
 
-mv "${PATRONI_POSTGRESQL_DATA_DIR}_tmp" "${PATRONI_POSTGRESQL_DATA_DIR}"
-err_check "$?" "Initialize Existing PGDATA" "Could not initialize cluster using existing PGDATA directory"
+export PGDATA=/pgdata/$HOSTNAME
+export PGWAL=/pgwal/$HOSTNAME-wal
+export CHECKSUMS=${CHECKSUMS:-true}
 
-# ensure the PGDATA directory has the proper permissions
-chmod u+rwx,go-rwx "${PATRONI_POSTGRESQL_DATA_DIR}"
+if [[ -v PGDATA_PATH_OVERRIDE ]]; then
+    export PGDATA=/pgdata/$PGDATA_PATH_OVERRIDE
+    export PGWAL=/pgwal/$PGDATA_PATH_OVERRIDE-wal
+fi
 
-echo_info "Finished bootstrapping a new PostgreSQL cluster using an existing PGDATA directory"
+export PATH="${CRUNCHY_DIR}/bin/postgres:$PGROOT/bin:$PATH"
+export LD_LIBRARY_PATH=$PGROOT/lib

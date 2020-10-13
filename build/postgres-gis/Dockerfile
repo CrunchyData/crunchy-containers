@@ -105,10 +105,10 @@ fi
 # open up the postgres port
 EXPOSE 5432
 
-ADD bin/postgres-gis /opt/cpm/bin
+ADD bin/postgres-gis /opt/crunchy/bin/postgres
 
-ENTRYPOINT ["/opt/cpm/bin/uid_postgres.sh"]
+ENTRYPOINT ["/opt/crunchy/bin/uid_postgres.sh"]
 
 USER 26
 
-CMD ["/opt/cpm/bin/start.sh"]
+CMD ["/opt/crunchy/bin/start.sh"]

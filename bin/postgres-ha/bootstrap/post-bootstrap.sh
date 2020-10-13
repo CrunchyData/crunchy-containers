@@ -15,7 +15,8 @@
 
 export PGHOST="/tmp"
 
-source /opt/cpm/bin/common/common_lib.sh
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+source "${CRUNCHY_DIR}/bin/common_lib.sh"
 enable_debugging
 
 echo_info "postgres-ha post-bootstrap starting"
@@ -41,7 +42,7 @@ then
         setup_file="/pgconf/setup.sql"
     else
         echo_info "Using default setup.sql"
-        setup_file="/opt/cpm/bin/sql/setup.sql"
+        setup_file="${CRUNCHY_DIR}/bin/postgres-ha/sql/setup.sql"
     fi
 else
     if [[ -f "/pgconf/post-existing-init.sql" ]]
@@ -50,7 +51,7 @@ else
         setup_file="/pgconf/post-existing-init.sql"
     else
         echo_info "Using default post-existing-init.sql"
-        setup_file="/opt/cpm/bin/sql/post-existing-init.sql"
+        setup_file="${CRUNCHY_DIR}/bin/postgres-ha/sql/post-existing-init.sql"
     fi
 fi
 

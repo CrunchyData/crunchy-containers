@@ -103,9 +103,9 @@ fi
 # open up the postgres port
 EXPOSE 5432
 
-ADD bin/postgres-gis-ha /opt/cpm/bin
+ADD bin/postgres-gis-ha /opt/crunchy/bin/postgres-ha
 
-ENTRYPOINT ["/opt/cpm/bin/bootstrap-postgres-ha.sh"]
+ENTRYPOINT ["/opt/crunchy/bin/postgres-ha/bootstrap-postgres-ha.sh"]
 
 USER 26
 

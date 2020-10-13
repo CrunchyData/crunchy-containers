@@ -13,9 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-echo "Cleaning up..."
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+source "${CRUNCHY_DIR}/bin/common_lib.sh"
+enable_debugging
 
-docker stop pgdump
-docker rm -v pgdump
-docker volume rm pgdump
-docker network rm pgnet
+source "${CRUNCHY_DIR}/bin/postgres/setenv.sh"
+
+PGCTLTIMEOUT=${PG_CTL_PROMOTE_TIMEOUT} pg_ctl promote

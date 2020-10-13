@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/cpm/bin/common/common_lib.sh
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+source "${CRUNCHY_DIR}/bin/common_lib.sh"
 enable_debugging
 
-source /opt/cpm/bin/common/pgha-common.sh
+source "${CRUNCHY_DIR}/bin/postgres-ha/common/pgha-common.sh"
 
 # set the Patroni port
 export $(get_patroni_port)
@@ -30,13 +31,13 @@ export $(get_patroni_name)
 
 # get the role and state of the local Patroni node by calling the "patroni" endpoint
 local_node_json=$(curl --silent "127.0.0.1:${PGHA_PATRONI_PORT}/patroni" --stderr - )
-role=$(echo "${local_node_json}" | /opt/cpm/bin/yq r - role)
-state=$(echo "${local_node_json}" | /opt/cpm/bin/yq r - state)
+role=$(echo "${local_node_json}" | "${CRUNCHY_DIR}/bin/yq" r - role)
+state=$(echo "${local_node_json}" | "${CRUNCHY_DIR}/bin/yq" r - state)
 
 # determine if a backup is in progress following a failover (i.e. the promotion of a replica)
 # by looking for the "failover_backup_status" tag in the DCS
 primary_on_role_change=$(curl --silent "127.0.0.1:${PGHA_PATRONI_PORT}/config" \
-    | /opt/cpm/bin/yq r - tags.primary_on_role_change)
+    | "${CRUNCHY_DIR}/bin/yq" r - tags.primary_on_role_change)
             
 # if configured to reinit a replica when a "start failed" state is detected, and if a backup
 # is not current in progress following a failover, then reinitialize the replica by calling

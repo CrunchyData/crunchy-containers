@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/cpm/bin/common/common_lib.sh
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+source "${CRUNCHY_DIR}/bin/postgres-ha/common/common_lib.sh"
 
 bootstrap_file="/tmp/postgres-ha-bootstrap.yaml"
 bootstrap_file_bak="${bootstrap_file}.bak"
@@ -59,7 +60,7 @@ touch "${lock_file}"
 
 # if no diff's detected when comparing the server's configMap content to it's current local
 # config, then just exit.  Otherwise proceed with updating and reloading the config.
-if echo "${conf_content}" | /opt/cpm/bin/yq x --tojson - "${bootstrap_file}" postgresql
+if echo "${conf_content}" | "${CRUNCHY_DIR}/bin/yq" x --tojson - "${bootstrap_file}" postgresql
 then
     cleanup
     exit 0
@@ -73,8 +74,8 @@ handle_error_and_revert "$?" "Unable backup configuration"
 
 # now merge the files conf_file
 echo "${conf_content}" > "${merge_file}"
-/opt/cpm/bin/yq d -i "${bootstrap_file}" postgresql && \
-    /opt/cpm/bin/yq m -i "${bootstrap_file}" "${merge_file}"
+"${CRUNCHY_DIR}/bin/yq" d -i "${bootstrap_file}" postgresql && \
+    "${CRUNCHY_DIR}/bin/yq" m -i "${bootstrap_file}" "${merge_file}"
 handle_error_and_revert "$?" "Unable to merge files"
 
 # Now issue a patroni reload
