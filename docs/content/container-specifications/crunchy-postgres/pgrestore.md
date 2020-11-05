@@ -1,27 +1,19 @@
 ---
-title: "crunchy-pgrestore"
-date:
-draft: false
-weight: 10
+title: "pgrestore"
 ---
 
-The restore image provides a means of performing a restore
-of a dump from pg_dump or pg_dumpall via psql or pg_restore
+The restore running mode provides a means of performing a restore
+of a dump from `pg_dump` or `pg_dumpall` via `psql` or `pg_restore`
 to a PostgreSQL container database.
 
-## Packages
-
-The crunchy-pgrestore Docker image contains the following packages (versions vary depending on PostgreSQL version):
-
-* PostgreSQL (13.1, 12.5, 11.10, 10.15, 9.6.20 and 9.5.24)
-* CentOS 7, CentOS 8 - publicly available
-* UBI 7, UBI 8 - customers only
+MODE: `pgrestore`
 
 ## Environment Variables
 
 ### Required
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
+**MODE**|None|Set to `pgrestore` to run as pg_restore job
 **PGRESTORE_DB**|None|Name of the database to connect to.
 **PGRESTORE_HOST**|None|Hostname of the database to connect to.
 **PGRESTORE_PASS**|None|Password for the PostgreSQL role being used.
@@ -39,12 +31,6 @@ The crunchy-pgrestore Docker image contains the following packages (versions var
 {{% notice tip %}}
 For a list of advanced options for configuring the `PGRESTORE_CUSTOM_OPTS` variable, see the [official documentation](https://www.postgresql.org/docs/current/static/app-pgrestore.html).
 {{% /notice %}}
-
-## Volumes
-
-**Name**|**Description**
-:-----|:-----
-**/pgdata**|Volume used to store the data directory contents for the PostgreSQL database.
 
 ## Dump-file Input Location
 
