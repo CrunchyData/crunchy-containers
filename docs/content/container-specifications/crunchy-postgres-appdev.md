@@ -2,7 +2,6 @@
 title: "crunchy-postgres-appdev"
 date:
 draft: false
-weight: 11
 ---
 
 PostgreSQL (pronounced "post-gress-Q-L") is an open source, ACID compliant, relational database management system (RDBMS) developed by a worldwide team of volunteers. The crunchy-postgres-appdev container image is unmodified, open source PostgreSQL packaged and maintained by professionals.

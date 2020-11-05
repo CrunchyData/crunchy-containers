@@ -2,7 +2,6 @@
 title: "crunchy-upgrade"
 date:  
 draft: false
-weight: 15
 ---
 
 The crunchy-upgrade container contains multiple versions of PostgreSQL in order

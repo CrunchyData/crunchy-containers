@@ -1,26 +1,18 @@
 ---
-title: "crunchy-pgdump"
-date:
-draft: false
-weight: 8
+title: "pgdump"
 ---
 
-The crunchy-pgdump container executes either a pg_dump or pg_dumpall database backup against another
+The pgdump running mode executes either a pg_dump or pg_dumpall database backup against another
 PostgreSQL database.
 
-## Packages
-
-The crunchy-pgdump Docker image contains the following packages (versions vary depending on PostgreSQL version):
-
-* PostgreSQL (13.1, 12.5, 11.10, 10.15, 9.6.20 and 9.5.24)
-* CentOS 7, CentOS 8 - publicly available
-* UBI 7, UBI 8 - customers only
+MODE: `pgdump`
 
 ## Environment Variables
 
 ### Required
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
+**MODE**|None|Set to `pgdump` to run as pg_dump job
 **PGDUMP_DB**|None|Name of the database the backup is being performed on.
 **PGDUMP_HOST**|None|Hostname of the database the backup is being performed on.
 **PGDUMP_PASS**|None|Password for the PostgreSQL role being used.
@@ -42,12 +34,6 @@ https://www.postgresql.org/docs/current/static/app-pgdump.html
 
 https://www.postgresql.org/docs/current/static/app-pg-dumpall.html
 {{% /notice %}}
-
-## Volumes
-
-**Name**|**Description**
-:-----|:-----
-**/pgdata**|Volume used to store the data directory contents for the PostgreSQL database.
 
 ## Dump Location
 

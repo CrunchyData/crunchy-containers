@@ -1,27 +1,10 @@
 ---
-title: "crunchy-pgbench"
-date:
-draft: false
-weight: 12
+title: "pgbench"
 ---
 
 pgBench is a simple program for running benchmark tests on PostgreSQL. It runs the same sequence of SQL commands over and over, possibly in multiple concurrent database sessions, and then calculates the average transaction rate (transactions per second).
 
-## Features
-
-The following features are supported by the `crunchy-pgbench` container:
-
-* Kubernetes and OpenShift secrets
-* Custom mounted transaction files (see below)
-* Configurable benchmarking options
-
-## Packages
-
-The crunchy-pgbench Docker image contains the following packages (versions vary depending on PostgreSQL version):
-
-* pgBench (13.1, 12.5, 11.10, 10.15, 9.6.20 and 9.5.24)
-* CentOS 7, CentOS 8 - publicly available
-* UBI 7, UBI 8 - customers only
+MODE: `pgbench`
 
 ## Environment Variables
 
@@ -36,6 +19,7 @@ The crunchy-pgbench Docker image contains the following packages (versions vary 
 ### Optional
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
+**MODE**|None|Set to `pgbench` to run as pg_bench job
 **PGBENCH_BENCHMARK_OPTS**|none|Set this value to specify custom benchmark parameters to pass to pgBench.
 **PGBENCH_CLIENTS**|1|Set this value to the number of clients to use for the benchmark.
 **PGBENCH_INIT_OPTS**|none|Set this value to specify custom initialization parameters for pgBench.
@@ -50,12 +34,6 @@ For a list of advanced options for configuring the `PGBENCH_BENCHMARK_OPTS` vari
 
 https://www.postgresql.org/docs/current/pgbench.html
 {{% /notice %}}
-
-## Volumes
-
-**Name**|**Description**
-:-----|:-----
-**/pgconf**|Volume used to store custom transaction files mounted to the container.
 
 ## Custom Configuration
 

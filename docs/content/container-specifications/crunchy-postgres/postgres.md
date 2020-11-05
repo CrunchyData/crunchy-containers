@@ -1,35 +1,18 @@
 ---
-title: "crunchy-postgres"
-date:
-draft: false
-weight: 12
+title: "postgres"
+weight: 1
 ---
 
 PostgreSQL (pronounced "post-gress-Q-L") is an open source, ACID compliant, relational database management system (RDBMS) developed by a worldwide team of volunteers. The crunchy-postgres container image is unmodified, open source PostgreSQL packaged and maintained by professionals.
 
-## Features
-
-The following features are supported by the `crunchy-postgres` container:
-
-* Kubernetes and OpenShift secrets
-* Backup and restoration from various tools: `pgbackrest`, `pg_basebackup` and `pg_dump`/`pg_restore`.
-* Custom mounted configuration files (see below)
-* Async and Sync Replication
-
-## Packages
-
-The crunchy-postgres Docker image contains the following packages (versions vary depending on PostgreSQL version):
-
-* PostgreSQL (13.1, 12.5, 11.10, 10.15, 9.6.20 and 9.5.24)
-* [pgBackRest](https://pgbackrest.org/) (2.29)
-* CentOS 7, CentOS 8 - publicly available
-* UBI 7, UBI 8 - customers only
+MODE: `postgres`
 
 ## Environment Variables
 
 ### Required
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
+**MODE**|None|Set to `postgres` to run as PostgreSQL database
 **PG_DATABASE**|None|Set this value to create an initial database
 **PG_PRIMARY_PORT**|None|Set this value to configure the primary PostgreSQL port.  It is recommended to use 5432.
 **PG_MODE**|None|Set to `primary`, `replica` or `set` to specify the mode of the database
@@ -68,16 +51,6 @@ The crunchy-postgres Docker image contains the following packages (versions vary
 **PG_CTL_START_TIMEOUT**|60| Set this value to determine how long pg_ctl will wait for start to complete. This is set to 60 by default, which is the default value set in PostgreSQL.
 **PG_CTL_STOP_TIMEOUT**|60| Set this value to determine how long pg_ctl will wait for shutdown to complete after the container is terminated. This is set to 60 by default, which is the default value set in PostgreSQL. It is recommended that in a Kubernetes environment that you set the `terminationGracePeriodSeconds` parameter to be two (2) seconds higher than this value.
 **PG_CTL_PROMOTE_TIMEOUT**|60| Set this value to determine how long pg_ctl will wait for a promotion to complete. This is set to 60 by default, which is the default value set in PostgreSQL.
-
-## Volumes
-
-**Name**|**Description**
-:-----|:-----
-**/backrestrepo**|Volume used by the `pgbackrest` backup tool to store physical backups.
-**/pgconf**|Volume used to store custom configuration files mounted to the container.
-**/pgdata**|Volume used to store the data directory contents for the PostgreSQL database.
-**/pgwal**|Volume used to store Write Ahead Log (WAL) when `XLOGDIR` environment variable is set to `true.`
-**/recover**|Volume used for Point In Time Recovery (PITR) during startup of the PostgreSQL database.
 
 ## Custom Configuration
 
