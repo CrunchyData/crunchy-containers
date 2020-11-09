@@ -28,6 +28,8 @@ RUN if [ "$BASEOS" = "centos7" ] ; then \
 		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
+		postgresql${PG_MAJOR//.}-plperl \
+		perl \
 		R-core \
 	&& ${PACKAGER} -y clean all ; \
 fi
@@ -41,6 +43,8 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
 		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
+		postgresql${PG_MAJOR//.}-plperl \
+		perl \
 		R-core \
 	&& ${PACKAGER} -y clean all ; \
 fi
@@ -54,6 +58,8 @@ RUN if [ "$BASEOS" = "rhel7" ] ; then \
 		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
+		postgresql${PG_MAJOR//.}-plperl \
+		perl \
 		R-core \
 		texinfo-tex \
 		texlive-epsf \
@@ -69,6 +75,8 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
 		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
+		postgresql${PG_MAJOR//.}-plperl \
+		perl \
 		R-core \
 		texinfo-tex \
 		texlive-epsf \
@@ -87,6 +95,8 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
+		postgresql${PG_MAJOR//.}-plperl \
+		perl \
 		R-core \
 		texlive-epsf \
 	&& ${PACKAGER} -y clean all --enablerepo="epel,codeready-builder-for-rhel-8-x86_64-rpms" ; \
