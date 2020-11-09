@@ -66,7 +66,5 @@ set_pgbackrest_env_vars() {
 
 set_pgbackrest_env_vars
 
-env | grep "^PGBACKREST" | while read line ;
-do
-  echo "export ${line}" >> "/tmp/pgbackrest_env.sh"
-done
+# save pgbackrest env vars so they can be restored as needed to execute pgbackrest commands
+export -p | grep "^declare -x PGBACKREST" > "/tmp/pgbackrest_env.sh"
