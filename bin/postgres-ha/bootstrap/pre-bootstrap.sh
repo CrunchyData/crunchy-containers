@@ -299,8 +299,6 @@ build_bootstrap_config_file() {
 
     if [[ "${PGHA_INIT}" == "true" ]]
     then
-        echo_info "PGDATA directory is empty on node identifed as Primary"
-        echo_info "initdb configuration will be applied to intitilize a new database"
         /opt/cpm/bin/yq m -i -x "${bootstrap_file}" "/opt/cpm/conf/postgres-ha-initdb.yaml"
 
         if [[ -n "${PGHA_WALDIR}" ]]
@@ -455,7 +453,7 @@ build_bootstrap_config_file
 # If the PGHA_INIT flag is 'true' and we're initializing from an existing PGDATA directory, then
 # proceed with preparing the PGDATA directory for the 'existing_init' bootstrap method.
 # Specifically, temporarily rename the existing PGDATA directory so that the true PGDATA 
-# directory remains empty.  This will allow the 'existing_init' bootstrap method to be called,
+# directory remains empty.  This will cause Patroni to call the 'existing_init' bootstrap method,
 # which will undo the directory name change and allow initialization to proceed using the data 
 # contained within the existing PGDATA directory.
 if [[ "${PGHA_INIT}" == "true" ]] && [[ "${PGHA_BOOTSTRAP_METHOD}" == "existing_init" ]]
