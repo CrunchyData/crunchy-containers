@@ -79,6 +79,8 @@ pgimages: postgres postgres-ha backrestrestore crunchyadm postgres-gis postgres-
 backrestrestore: backrest-restore-pgimg-$(IMGBUILDER)
 crunchyadm: admin-pgimg-$(IMGBUILDER)
 pgadmin4: pgadmin4-pgimg-$(IMGBUILDER)
+pgbackrest: pgbackrest-pgimg-$(IMGBUILDER)
+pgbackrest-repo: pgbackrest-repo-pgimg-$(IMGBUILDER)
 pgbadger: pgbadger-pgimg-$(IMGBUILDER)
 pgbouncer: pgbouncer-pgimg-$(IMGBUILDER)
 pgpool: pgpool-pgimg-$(IMGBUILDER)
@@ -263,6 +265,62 @@ ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 endif
 
 backrest-restore-pgimg-docker: backrest-restore-pgimg-build
+
+# ----- Special case image (pgbackrest) -----
+
+# build the needed binary
+build-pgbackrest:
+	go build -o bin/pgbackrest/pgbackrest ./cmd/pgbackrest
+
+# Special case args: BACKREST_VER
+pgbackrest-pgimg-build: ccbase-image build-pgbackrest $(CCPROOT)/build/pgbackrest/Dockerfile
+	$(IMGCMDSTEM) \
+		-f $(CCPROOT)/build/pgbackrest/Dockerfile \
+		-t $(CCP_IMAGE_PREFIX)/crunchy-pgbackrest:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
+		--build-arg BASEVER=$(CCP_VERSION) \
+		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
+		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
+		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
+		--build-arg BACKREST_VER=$(CCP_BACKREST_VERSION) \
+		--build-arg DFSET=$(DFSET) \
+		--build-arg PACKAGER=$(PACKAGER) \
+		$(CCPROOT)
+
+pgbackrest-pgimg-buildah: pgbackrest-pgimg-build ;
+# only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
+ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
+	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-pgbackrest:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-pgbackrest:$(CCP_IMAGE_TAG)
+endif
+
+pgbackrest-pgimg-docker: pgbackrest-pgimg-build
+
+
+# ----- Special case image (pgbackrest-repo) -----
+
+# Special case args: BACKREST_VER
+pgbackrest-repo-pgimg-build: ccbase-image build-pgbackrest pgbackrest $(CCPROOT)/build/pgbackrest-repo/Dockerfile
+	$(IMGCMDSTEM) \
+		-f $(CCPROOT)/build/pgbackrest-repo/Dockerfile \
+		-t $(CCP_IMAGE_PREFIX)/crunchy-pgbackrest-repo:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
+		--build-arg BASEVER=$(CCP_VERSION) \
+		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
+		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
+		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
+		--build-arg BACKREST_VER=$(CCP_BACKREST_VERSION) \
+		--build-arg DFSET=$(DFSET) \
+		--build-arg PACKAGER=$(PACKAGER) \
+		$(CCPROOT)
+
+pgbackrest-repo-pgimg-buildah: pgbackrest-repo-pgimg-build ;
+# only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
+ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
+	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-pgbackrest-repo:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-pgbackrest-repo:$(CCP_IMAGE_TAG)
+endif
+
+pgbackrest-repo-pgimg-docker: pgbackrest-repo-pgimg-build
+
 
 # ----- All other pg-based images ----
 %-pgimg-build: cc-pg-base-image $(CCPROOT)/build/%/Dockerfile
