@@ -80,6 +80,13 @@ initialization_monitor() {
             done
         fi
 
+        # Patroni's bootstrap succeeded. Clear the initialization marker from
+        # the volume.
+        if [[ "${PGHA_INIT}" == "true" && -f "${PATRONI_POSTGRESQL_DATA_DIR}.initializing" ]]
+        then
+            rm "${PATRONI_POSTGRESQL_DATA_DIR}.initializing"
+        fi
+
         # The following logic only applies to bootstrapping and initializing clusters that are
         # not standby clusters.  Specifically, this logic expects the database to exit recovery
         # and become writable.
@@ -169,6 +176,26 @@ remove_patroni_pause_key()  {
         sed -i -e "s/\"pause\":\s*true,*\s*//" "${PATRONI_POSTGRESQL_DATA_DIR}/patroni.dynamic.json"
     fi
 }
+
+# If there was a prior attempt to initialize, repeatedly log some advice.
+# Otherwise, mark the volume to indicate initialization will soon take place.
+# This is outside of PATRONI_POSTGRESQL_DATA_DIR so that Patroni does not move
+# it when bootstrap fails.
+if [[ "${PGHA_INIT}" == "true" ]]
+then
+    if [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}.initializing" ]]
+    then
+        while
+            echo_warn "Detected an earlier failed attempt to initialize"
+            echo_info "Correct the issue, remove '${PATRONI_POSTGRESQL_DATA_DIR}.initializing', and try again"
+            echo_info "Your data might be in: $(echo ${PATRONI_POSTGRESQL_DATA_DIR}_*)"
+        do
+            sleep 10 & wait $!
+        done
+    fi
+
+    date --iso-8601=ns --utc > "${PATRONI_POSTGRESQL_DATA_DIR}.initializing"
+fi
 
 # Configure users and groups
 source /opt/cpm/bin/common/uid_postgres_no_exec.sh
