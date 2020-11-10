@@ -118,7 +118,7 @@ for what you're working on.
 Overall, release tags attempt to follow the
 [semantic versioning](https://semver.org) scheme. The Crunchy Container Suite is
 closely related to the
-[PostgreSQL Operator](https://github.com/CrunchyData/postgres-operator) and in
+[PostgreSQL Operator](https://github.com/CrunchyData/crunchy-containers) and in
 some cases may not fully follow semantic versioning if a change in the
 PostgreSQL Operator project necessitates a major or minor version change.
 
