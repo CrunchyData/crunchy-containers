@@ -22,8 +22,8 @@ The following features are supported by the crunchy-pgbadger container:
 The crunchy-badger Docker image contains the following packages:
 
 * [pgBadger](http://dalibo.github.io/pgbadger)
-* CentOS7 - publicly available
-* UBI7 - customers only
+* CentOS 7, CentOS 8 - publicly available
+* UBI 7, UBI 8 - customers only
 
 ## Environment Variables
 

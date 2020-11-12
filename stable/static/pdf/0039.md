@@ -29,7 +29,7 @@ The crunchy-postgres-ppdev Docker image contains the following packages (version
 
 * Latest PostgreSQL 
 * Latest PostGIS
-* CentOS7 - publicly available
+* CentOS 7, CentOS 8 - publicly available
 
 ## Environment Variables
 

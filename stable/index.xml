@@ -33,7 +33,7 @@ For all environments, the script additionally creates:
       <description>The crunchy-backrest-restore container executes the pgBackRest utility, allowing FULL and DELTA restore capability. See the pgBackRest guide for more details.
 Features The following features are supported and required by the crunchy-backrest-restore container:
  Mounted pgbackrest.conf configuration file via the /pgconf volume Mounted /backrestrepo for access to pgBackRest archives  Packages The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (12.4, 11.9, 10.14, 9.</description>
+ PostgreSQL (13.1, 12.5, 11.10, 10.</description>
     </item>
     
     <item>
@@ -45,7 +45,7 @@ Features The following features are supported and required by the crunchy-backre
       <description>The crunchy-pgbasebackup-restore container restores a database using a pg_basebackup backup. Specifically, the container uses rsync to copy a pg_basebackup backup into a specified /pgdata directory.
 The crunchy-pgbasebackup-restore does not support point-in-time-recovery (PITR). If you would to create an environment that allows you to use PostgreSQL&amp;rsquo;s point-in-time-recovery capabilities, please use the crunchy-backrest-restore container with a corresponding pgBackRest repository.
 Packages The crunchy-pgbasebackup-restore Docker image contains the following packages:
- rsync CentOS7 - publicly available UBI7 - customers only  Environment Variables Required    Name Default Description     BACKUP_PATH None The path under the /backup volume containing the pg_basebackup that will be used for the restore (/backup should be excluded when providing the path)   PGDATA_PATH None The path under the /pgdata volume containing the restored database (/pgdata should be excluded when providing the path).</description>
+ rsync CentOS 7, CentOS 8 - publicly available UBI 7, UBI 8 - customers only  Environment Variables Required    Name Default Description     BACKUP_PATH None The path under the /backup volume containing the pg_basebackup that will be used for the restore (/backup should be excluded when providing the path)   PGDATA_PATH None The path under the /pgdata volume containing the restored database (/pgdata should be excluded when providing the path).</description>
     </item>
     
     <item>
@@ -78,7 +78,7 @@ If you mount a /pgconf volume, crunchy-postgres will look at that directory for 
       <description>The crunchy-backup container executes a full backup against another database container using the standard pg_basebackup utility that is included with PostgreSQL.
 Features The following features are supported by the crunchy-backup container:
  Backup and restoration from: pg_basebackup  Packages The crunchy-backup Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (12.4, 11.9, 10.14, 9.6.19 and 9.5.23) CentOS7 - publicly available UBI7 - customers only  Environment Variables Required    Name Default Description     BACKUP_LABEL crunchy-backup The label for the backup.</description>
+ PostgreSQL (13.1, 12.5, 11.10, 10.15, 9.6.20 and 9.5.24) CentOS 7, CentOS 8 - publicly available UBI 7, UBI 8 - customers only  Environment Variables Required    Name Default Description     BACKUP_LABEL crunchy-backup The label for the backup.</description>
     </item>
     
     <item>
@@ -181,7 +181,7 @@ psql -h postgres-gis -U testuser userdb -c &#39;\dx&#39;  To validate that PostG
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgdump/</guid>
       <description>The crunchy-pgdump container executes either a pg_dump or pg_dumpall database backup against another PostgreSQL database.
 Packages The crunchy-pgdump Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (12.4, 11.9, 10.14, 9.6.19 and 9.5.23) CentOS7 - publicly available UBI7 - customers only  Environment Variables Required    Name Default Description     PGDUMP_DB None Name of the database the backup is being performed on.</description>
+ PostgreSQL (13.1, 12.5, 11.10, 10.15, 9.6.20 and 9.5.24) CentOS 7, CentOS 8 - publicly available UBI 7, UBI 8 - customers only  Environment Variables Required    Name Default Description     PGDUMP_DB None Name of the database the backup is being performed on.</description>
     </item>
     
     <item>
@@ -203,7 +203,7 @@ The default pgPool examples use a Secret to hold the set of pgPool configuration
       <guid>https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-pgrestore/</guid>
       <description>The restore image provides a means of performing a restore of a dump from pg_dump or pg_dumpall via psql or pg_restore to a PostgreSQL container database.
 Packages The crunchy-pgrestore Docker image contains the following packages (versions vary depending on PostgreSQL version):
- PostgreSQL (12.4, 11.9, 10.14, 9.6.19 and 9.5.23) CentOS7 - publicly available UBI7 - customers only  Environment Variables Required    Name Default Description     PGRESTORE_DB None Name of the database to connect to.</description>
+ PostgreSQL (13.1, 12.5, 11.10, 10.15, 9.6.20 and 9.5.24) CentOS 7, CentOS 8 - publicly available UBI 7, UBI 8 - customers only  Environment Variables Required    Name Default Description     PGRESTORE_DB None Name of the database to connect to.</description>
     </item>
     
     <item>
@@ -377,7 +377,7 @@ For this test, we place pg_audit statements within a SQL script and verify that 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/stable/examples/administration/upgrade/</guid>
-      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 11 or 12 image such as `centos7-12.4-4.5.0` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
+      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 11 or 12 image such as `centos7-12.5-4.5.1` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
     </item>
     
     <item>
