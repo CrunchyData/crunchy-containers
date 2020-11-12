@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/cpm/bin/common_lib.sh
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+source "${CRUNCHY_DIR}/bin/common_lib.sh"
 enable_debugging
 export BADGER_CUSTOM_OPTS=${BADGER_CUSTOM_OPTS:-}
 
