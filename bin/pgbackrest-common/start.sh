@@ -1,6 +1,22 @@
 #!/bin/bash
+
+# Copyright 2019 - 2020 Crunchy Data Solutions, Inc.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
 # Start script for the compacted pgBackRest image
-# Used to run correct start script based on MODE
+# Used to run correct start script based on the MODE
+# environment variable
 
 CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
 source "${CRUNCHY_DIR}/bin/common_lib.sh"
@@ -10,18 +26,9 @@ env_check_err "MODE"
 
 echo_info "Image mode found: ${MODE}"
 
-# sleep infinity
-
 case $MODE in 
     pgbackrest)
       echo_info "Starting in 'pgbackrest' mode"
-
-#      if [ "$COMMAND" == "backup" ]
-#      then
-#        echo_info "BACKUP command called...."
-#        sleep infinity
-#      fi
-
       "${CRUNCHY_DIR}/bin/pgbackrest"
       ;;
     pgbackrest-repo)

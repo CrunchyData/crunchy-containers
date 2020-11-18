@@ -29,24 +29,14 @@ RUN rpm --import RPM-GPG-KEY-crunchydata*
 # Run postgres install in separate transaction ahead of backrest for postgres user
 RUN ${PACKAGER} -y install  \
 	--setopt=skip_missing_names_on_install=False \
-	#--enablerepo="epel" \
-	#nss_wrapper \
-	#hostname \
 	openssh-clients \
 	openssh-server \
-	#procps-ng \
-	#psmisc \
-	#rsync \
-	#postgresql${PG_MAJOR_VERSION//.}-server \
 	crunchy-backrest-${BACKREST_VER} \
 	&& ${PACKAGER} -y clean all
 
 
 # add postgres user and group
 RUN groupadd postgres -g 26 && useradd postgres -u 26 -g 26
-
-# add path settings for postgres user
-#ADD conf/.bash_profile /var/lib/pgsql/
 
 # set up crunchy directory
 RUN mkdir -p /opt/crunchy/bin /opt/crunchy/conf /pgdata /backrestrepo \
