@@ -108,15 +108,6 @@ LABEL name="postgres" \
 	io.k8s.display-name="Crunchy PostgreSQL" \
 	io.openshift.tags="postgresql,postgres,sql,nosql,database,crunchy"
 
-# add path settings for postgres user
-# bash_profile is loaded in login, but not with exec
-# bashrc to set permissions in OCP when using exec
-# HOME is / in OCP
-ADD conf/.bash_profile /var/lib/pgsql/
-ADD conf/.bashrc /var/lib/pgsql
-ADD conf/.bash_profile /
-ADD conf/.bashrc /
-
 # set up crunchy directory
 RUN mkdir -p /opt/crunchy/bin /opt/crunchy/conf /pgdata /pgwal /pgconf /recover /backrestrepo
 
