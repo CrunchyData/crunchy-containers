@@ -64,19 +64,21 @@ endif
 .PHONY:	all pg-independent-images pgimages
 
 # Default target
-all: cc-pg-base-image pgimages pg-independent-images
+all: cc-pg-base-image pgimages pg-independent-images pgbackrest-images
 
 # Build images that either don't have a PG dependency or using the latest PG version is all that is needed
 pg-independent-images: pgadmin4 pgbadger pgbouncer pgpool
 
 # Build images that require a specific postgres version - ordered for potential concurrent benefits
-pgimages: postgres postgres-ha backrestrestore crunchyadm postgres-gis postgres-gis-ha upgrade
+pgimages: postgres postgres-ha crunchyadm postgres-gis postgres-gis-ha upgrade
+
+# Build images based on pgBackRest
+pgbackrest-images: pgbackrest pgbackrest-repo
 
 #===========================================
 # Targets generating pg-based images
 #===========================================
 
-backrestrestore: backrest-restore-pgimg-$(IMGBUILDER)
 crunchyadm: admin-pgimg-$(IMGBUILDER)
 pgadmin4: pgadmin4-pgimg-$(IMGBUILDER)
 pgbackrest: pgbackrest-pgimg-$(IMGBUILDER)

@@ -50,7 +50,7 @@ type KubeAPI struct {
 }
 
 func main() {
-	log.Info("pgo-backrest starts")
+	log.Info("crunchy-pgbackrest starts")
 
 	config, err := NewConfig()
 	if err != nil {
@@ -108,13 +108,6 @@ func main() {
 	// explicitly set
 	S3VerifyTLS, _ := strconv.ParseBool(os.Getenv("PGHA_PGBACKREST_S3_VERIFY_TLS"))
 	log.Debugf("setting PGHA_PGBACKREST_S3_VERIFY_TLS to %v", S3VerifyTLS)
-
-	/*
-		client, err := kubeapi.NewClient()
-		if err != nil {
-			panic(err)
-		}
-	*/
 
 	bashcmd := make([]string, 1)
 	bashcmd[0] = "bash"
@@ -176,7 +169,7 @@ func main() {
 	log.Info("output=[" + output + "]")
 	log.Info("stderr=[" + stderr + "]")
 
-	log.Info("pgo-backrest ends")
+	log.Info("crunchy-pgbackrest ends")
 
 }
 
