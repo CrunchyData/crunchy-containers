@@ -7,19 +7,16 @@ VERSION=${CCP_IMAGE_TAG?}
 GIS_VERSION=${CCP_POSTGIS_IMAGE_TAG?}
 IMAGES=(
     crunchy-backrest-restore
-    crunchy-backup
     crunchy-pgadmin4
     crunchy-pgbadger
-    crunchy-pgbench
     crunchy-pgbouncer
-    crunchy-pgdump
     crunchy-pgpool
-    crunchy-pgrestore
     crunchy-postgres
     crunchy-upgrade
-    crunchy-pgbasebackup-restore
     crunchy-postgres-ha
     crunchy-admin
+    crunchy-pgbackrest
+    crunchy-pgbackrest-repo
 )
 
 GIS_IMAGES=(

@@ -47,12 +47,11 @@ ADD bin/pgbackrest-restore /opt/crunchy/bin
 ADD conf/pgbackrest-restore /opt/crunchy/conf
 
 # add pgbackrest files
-ADD bin/pgbackrest/ /opt/crunchy/bin
-ADD bin/uid_postgres.sh /opt/crunchy/bin
+ADD bin/pgbackrest /opt/crunchy/bin
 
 # add pgbackrest-common files
-ADD bin/common/ /opt/crunchy/bin
-ADD bin/pgbackrest-common/ /opt/crunchy/bin
+ADD bin/common /opt/crunchy/bin
+ADD bin/pgbackrest-common /opt/crunchy/bin
 
 # set user and group ownership
 RUN chown -R postgres:postgres /opt/crunchy  \

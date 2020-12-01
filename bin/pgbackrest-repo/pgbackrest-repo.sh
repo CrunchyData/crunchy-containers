@@ -69,7 +69,6 @@ fi
 
 mkdir -p ~/.ssh/
 cp $CONFIG/config ~/.ssh/
-#cp $CONFIG/authorized_keys ~/.ssh/
 cp $CONFIG/id_ed25519 /tmp
 chmod 400 /tmp/id_ed25519 ~/.ssh/config
 

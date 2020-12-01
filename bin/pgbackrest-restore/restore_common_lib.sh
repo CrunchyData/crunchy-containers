@@ -15,10 +15,6 @@
 
 CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
 
-#export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
-#export NSS_WRAPPER_PASSWD=/tmp/passwd
-#export NSS_WRAPPER_GROUP=/tmp/group
-
 RED="\033[0;31m"
 GREEN="\033[0;32m"
 YELLOW="\033[0;33m"

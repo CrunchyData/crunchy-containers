@@ -29,15 +29,15 @@ echo_info "Image mode found: ${MODE}"
 case $MODE in 
     pgbackrest)
       echo_info "Starting in 'pgbackrest' mode"
-      "${CRUNCHY_DIR}/bin/pgbackrest"
+      exec "${CRUNCHY_DIR}/bin/pgbackrest"
       ;;
     pgbackrest-repo)
       echo_info "Starting in 'pgbackrest-repo' mode"
-      /bin/bash "/usr/local/bin/pgbackrest-repo.sh"
+      exec "/usr/local/bin/pgbackrest-repo.sh"
       ;;
     pgbackrest-restore)
       echo_info "Starting in 'pgbackrest-restore' mode"
-      /bin/bash "${CRUNCHY_DIR}/bin/pgbackrest-restore.sh"
+      exec "${CRUNCHY_DIR}/bin/pgbackrest-restore.sh"
       ;;
     *)
       echo_err "Invalid Image Mode; Please set the MODE environment variable to a supported mode"

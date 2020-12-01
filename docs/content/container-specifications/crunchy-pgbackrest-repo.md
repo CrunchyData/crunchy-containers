@@ -37,5 +37,3 @@ The crunchy-backrest-repo image contains the following packages:
 **PGBACKREST_PG1_SOCKET_PATH**|None|PostgreSQL unix socket path.
 **PGBACKREST_REPO_PATH**|None|Path where backups and archive are stored.
 **PGBACKREST_STANZA**|None|Defines the backup configuration for a specific PostgreSQL database cluster. Must be set to the desired stanza for restore.
-
-SSHD_PORT= (not sure about this, but there are references to this in the Operator code. did a test, seems you can set the variable, but it doesn't do anything)
