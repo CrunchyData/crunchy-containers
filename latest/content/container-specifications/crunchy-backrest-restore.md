@@ -2,7 +2,6 @@
 title: "crunchy-backrest-restore"
 date:
 draft: false
-weight: 1
 ---
 
 The crunchy-backrest-restore container executes the pgBackRest utility, allowing FULL and DELTA restore capability. See the [pgBackRest](https://github.com/pgbackrest/pgbackrest) guide for more details.

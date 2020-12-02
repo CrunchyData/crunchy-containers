@@ -56,6 +56,52 @@ It supports the following features:
 * Enhanced audit logging from the pgAudit extension
 * Enhanced database statistics from the pg_stat_tatements extensions
 * Python Procedural Language from the PL/Python extensions
+* Backups
+  * Logical: `pg_dump` and `pg_restore` are included as logical backup and restore tools. These can be used to export and import SQL that recreates the database
+  * Physical: `pg_basebackup` is included as a physical backup tool. This can be used to backup the files that comprise the database
+* Benchmarking with `pgbench`
+
+#### Running Modes
+
+The Crunchy PostgreSQL container can be run in modes, specified by setting the `MODE` environment variable, enabling different features. Detailed information for configuring the `crunchy-postgres` container running modes can be found in the container specification [documentation]({{< relref "/container-specifications/crunchy-postgres" >}}).
+
+###### Backup
+
+The `backup` mode allows users to create [pg_basebackup](https://www.postgresql.org/docs/current/app-pgbasebackup.html)
+physical backups.  The backups created by Crunchy Backup can be mounted to the Crunchy
+PostgreSQL container to restore databases.
+
+###### pgBasebackup-restore
+
+The `pgbasebasebackup-restore` mode allows users to restore from a [pg_basebackup](https://www.postgresql.org/docs/current/app-pgbasebackup.html)
+physical backup using `rsync`.
+
+###### pgDump
+
+The `pgdump` mode creates a logical backup of the database using the
+[pg_dump](https://www.postgresql.org/docs/current/app-pgdump.html) tool.  It
+supports the following features:
+
+* `pg_dump` individual databases
+* `pg_dump` all databases
+* various formats of backups: plain (SQL), custom (compressed archive), directory
+  (directory with one file for each table and blob being dumped with a table of
+  contents) and tar (uncompressed tar archive)
+* Logical backups of database sections such as: DDL, data only, indexes, schema
+
+###### pgRestore
+
+The `pgrestore` mode allows users to restore a PostgreSQL database from
+`pg_dump` logical backups using the [pg_restore](https://www.postgresql.org/docs/current/app-pgrestore.html) tool.
+
+###### Sqlrunner
+
+The `sqlrunner` mode uses [psql](https://www.postgresql.org/docs/current/app-psql.html) to run all of the SQL files that are provided in the `/pgconf` volume. 
+
+###### pgBench
+
+The `pgbench` mode allows users to run benchmarking tests on PostgreSQL using [pgbench](https://www.postgresql.org/docs/current/pgbench.html)
+
 
 ### Crunchy PostgreSQL PostGIS
 
@@ -68,9 +114,9 @@ image but additionally provides the following geospatial extensions:
 * FuzzyStrMatch
 * PLR
 
-## Backup and Restoration Images
+## Backup and Restoration Options
 
-Crunchy Container Suite provides two types of backup images:
+Crunchy Container Suite provides support for two types of backups:
 
 * Physical - backups of the files that comprise the database
 * Logical - an export of the SQL that recreates the database
@@ -80,20 +126,14 @@ Crunchy Container Suite provides two types of backup images:
 * [pgBackRest](2.29)
   PostgreSQL images
 * [pg_basebackup](https://www.postgresql.org/docs/current/app-pgbasebackup.html) -
-  provided by the Crunchy Backup image
+  provided by the Crunchy PostgreSQL image
 
 *Logical* backup and restoration tools are:
 
 * [pg_dump](https://www.postgresql.org/docs/current/app-pgdump.html) - provided by
-  the Crunchy pgDump image
+  the Crunchy PostgreSQL image
 * [pg_restore](https://www.postgresql.org/docs/current/app-pgrestore.html) - provided by
-  the Crunchy pgRestore image
-
-### Crunchy Backup
-
-The Crunchy Backup image allows users to create [pg_basebackup](https://www.postgresql.org/docs/current/app-pgbasebackup.html)
-physical backups.  The backups created by Crunchy Backup can be mounted to the Crunchy
-PostgreSQL container to restore databases.
+  the Crunchy PostgreSQL image
 
 ### Crunchy BackRest Restore
 
@@ -109,24 +149,6 @@ physical backups.  This image supports the following types of restores:
   replays Write Ahead Logs (WAL) to a specific point in time.
 
 Visit the official pgBackRest website for more information: https://pgbackrest.org/
-
-### Crunchy pgDump
-
-The Crunchy pgDump image creates a logical backup of the database using the
-[pg_dump](https://www.postgresql.org/docs/current/app-pgdump.html) tool.  It
-supports the following features:
-
-* `pg_dump` individual databases
-* `pg_dump` all databases
-* various formats of backups: plain (SQL), custom (compressed archive), directory
-  (directory with one file for each table and blob being dumped with a table of
-  contents) and tar (uncompressed tar archive)
-* Logical backups of database sections such as: DDL, data only, indexes, schema
-
-### Crunchy pgRestore
-
-The Crunchy pgRestore image allows users to restore a PostgreSQL database from
-`pg_dump` logical backups using the [pg_restore](https://www.postgresql.org/docs/current/app-pgrestore.html) tool.
 
 ## Administration
 
