@@ -232,7 +232,7 @@ set_pg_user_credentials() {
 set_bootstrap_method() {
     if [[ ! -v PGHA_BOOTSTRAP_METHOD ]]
     then
-        if [[ -n "$(ls -A "${PATRONI_POSTGRESQL_DATA_DIR}")" ]]
+        if [[ -d "${PATRONI_POSTGRESQL_DATA_DIR}" && -n "$(ls -A "${PATRONI_POSTGRESQL_DATA_DIR}")" ]]
         then
             export PGHA_BOOTSTRAP_METHOD="existing_init"
         else
@@ -459,7 +459,8 @@ build_bootstrap_config_file
 # remains empty.  This will cause Patroni to bootstrap a new PostgreSQL cluster from scratch, while
 # still allowing the configured bootstrap method to leverage any existing data within the PGDATA
 # directory as needed.
-if [[ "${PGHA_INIT}" == "true" ]] && [[ -n "$(ls -A "${PATRONI_POSTGRESQL_DATA_DIR}")" ]]
+if [[ "${PGHA_INIT}" == "true" ]] && 
+    [[ -d "${PATRONI_POSTGRESQL_DATA_DIR}" && -n "$(ls -A "${PATRONI_POSTGRESQL_DATA_DIR}")" ]]
 then
     echo_info "Detected cluster initialization using an existing PGDATA directory"
     mv "${PATRONI_POSTGRESQL_DATA_DIR}" "${PATRONI_POSTGRESQL_DATA_DIR}_tmp"
