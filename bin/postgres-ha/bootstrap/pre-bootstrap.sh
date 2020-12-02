@@ -451,13 +451,15 @@ validate_env
 # Create the Patroni bootstrap configuration file
 build_bootstrap_config_file
 
-# If the PGHA_INIT flag is 'true' and we're initializing from an existing PGDATA directory, then
-# proceed with preparing the PGDATA directory for the 'existing_init' bootstrap method.
-# Specifically, temporarily rename the existing PGDATA directory so that the true PGDATA 
-# directory remains empty.  This will cause Patroni to call the 'existing_init' bootstrap method,
-# which will undo the directory name change and allow initialization to proceed using the data 
-# contained within the existing PGDATA directory.
-if [[ "${PGHA_INIT}" == "true" ]] && [[ "${PGHA_BOOTSTRAP_METHOD}" == "existing_init" ]]
+# If the PGHA_INIT flag is 'true' and data exists within the PGDATA directory, then proceed with
+# preparing the PGDATA directory for cluster bootstrap.  Specifically, assume we are using a
+# bootstrap method that is able to leverage an existing PGDATA directory (for instance, if starting
+# the database that already exists within the PGDATA directory, or if performing a pgBackRest delta
+# restore), and temporarily rename the existing PGDATA directory so that the true PGDATA directory
+# remains empty.  This will cause Patroni to bootstrap a new PostgreSQL cluster from scratch, while
+# still allowing the configured bootstrap method to leverage any existing data within the PGDATA
+# directory as needed.
+if [[ "${PGHA_INIT}" == "true" ]] && [[ -n "$(ls -A "${PATRONI_POSTGRESQL_DATA_DIR}")" ]]
 then
     echo_info "Detected cluster initialization using an existing PGDATA directory"
     mv "${PATRONI_POSTGRESQL_DATA_DIR}" "${PATRONI_POSTGRESQL_DATA_DIR}_tmp"

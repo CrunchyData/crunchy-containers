@@ -25,6 +25,16 @@ source "${CRUNCHY_DIR}/bin/postgres-ha/pgbackrest/pgbackrest-set-env.sh"
 bootstrap_role=$1
 restore_cmd_args=()
 
+# If initializing a primary for a new cluster and a 'tmp' PGDATA directory exists, then rename
+# the 'tmp' directory back to the actual PGDATA directory name in order to perform a delta restore
+# below.
+tmp_dir="${PATRONI_POSTGRESQL_DATA_DIR}_tmp"
+if [[ "${bootstrap_role}" == "primary" ]] && [[ -d "${tmp_dir}" ]]
+then
+    mv "${tmp_dir}" "${PATRONI_POSTGRESQL_DATA_DIR}"
+    err_check "$?" "pgBackRest ${bootstrap_role} Creation" "Could not move PGDATA directory for delta restore"
+fi
+
 # If the PGDATA directory is empty or contains a valid PG database, then perform a delta restore.
 # If the PGDATA directory for the replica is invalid according to pgBackRest, then clear out
 # the directory and then perform a regular (i.e. non-delta) pgBackRest restore.  pgBackRest
