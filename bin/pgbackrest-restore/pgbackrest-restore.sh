@@ -18,7 +18,6 @@ set -e
 CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
 source "${CRUNCHY_DIR}/bin/restore_common_lib.sh"
 enable_debugging
-ose_hack
 
 # Warn the user of any deprecated env vars due to full transition to env vars for configuring 
 check_for_deprecated_env_vars()  {
