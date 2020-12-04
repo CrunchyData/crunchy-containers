@@ -29,13 +29,6 @@ function enable_debugging() {
     fi
 }
 
-function ose_hack() {
-    export USER_ID=$(id -u)
-    export GROUP_ID=$(id -g)
-    envsubst < "${CRUNCHY_DIR}/conf/passwd.template" > /tmp/passwd
-    envsubst < "${CRUNCHY_DIR}/conf/group.template" > /tmp/group
-}
-
 function env_check_err() {
     if [[ -z ${!1} ]]
     then
