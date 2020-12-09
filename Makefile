@@ -244,29 +244,6 @@ endif
 
 postgres-gis-ha-pgimg-docker: postgres-gis-ha-pgimg-build
 
-# ----- Special case pg-based image (backrest-restore) -----
-# Special case args: BACKREST_VER
-backrest-restore-pgimg-build: cc-pg-base-image $(CCPROOT)/build/backrest-restore/Dockerfile
-	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/build/backrest-restore/Dockerfile \
-		-t $(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG) \
-		--build-arg BASEOS=$(CCP_BASEOS) \
-		--build-arg BASEVER=$(CCP_VERSION) \
-		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
-		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
-		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
-		--build-arg BACKREST_VER=$(CCP_BACKREST_VERSION) \
-		--build-arg DFSET=$(DFSET) \
-		--build-arg PACKAGER=$(PACKAGER) \
-		$(CCPROOT)
-
-backrest-restore-pgimg-buildah: backrest-restore-pgimg-build ;
-# only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
-ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
-	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-backrest-restore:$(CCP_IMAGE_TAG)
-endif
-
-backrest-restore-pgimg-docker: backrest-restore-pgimg-build
 
 # ----- Special case image (pgbackrest) -----
 
