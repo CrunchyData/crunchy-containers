@@ -37,7 +37,7 @@ fi
 RUN if [ "$BASEOS" = "centos8" ] ; then \
 	${PACKAGER} -y install \
 		--setopt=skip_missing_names_on_install=False \
-		--enablerepo="PowerTools" \
+		--enablerepo="powertools" \
 		libRmath \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
 		plr${PG_MAJOR//.} \
