@@ -162,11 +162,15 @@
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-backrest-restore/</loc>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgadmin4/</loc>
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgadmin4/</loc>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbackrest/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbackrest-repo/</loc>
   </url>
   
   <url>

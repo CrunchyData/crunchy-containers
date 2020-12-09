@@ -7,7 +7,7 @@
       <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="generator" content="Hugo 0.55.6" />
-<title>Container Specifications :: Crunchy Data Container Suite Documentation</title>
+<title>crunchy-pgbackrest :: Crunchy Data Container Suite Documentation</title>
 <link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/latest/favicon.png" type="image/x-icon" />
 <link href="https://crunchydata.github.io/crunchy-containers/latest/css/nucleus.css" rel="stylesheet">
 <link href="https://crunchydata.github.io/crunchy-containers/latest/theme-flex/style.css" rel="stylesheet">
@@ -29,7 +29,7 @@
 
     
   </head>
-  <body data-url="/container-specifications/">
+  <body data-url="/container-specifications/crunchy-pgbackrest/">
     
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
   
@@ -295,7 +295,7 @@
     </li>
         </ul>
     </li>
-    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/" class="dd-item parent active haschildren
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/" class="dd-item parent haschildren
         ">
       <div>
       <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/">Container Specifications</a>
@@ -310,7 +310,7 @@
           </a>
         </div>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbackrest/" class="dd-item">
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbackrest/" class="dd-item active">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbackrest/">
             crunchy-pgbackrest
@@ -496,10 +496,10 @@
    Examples</option>
     <option value="/installation-guide/" >
    Installation Guide</option>
-    <option value="/container-specifications/"  selected>
+    <option value="/container-specifications/" >
    Container Specifications</option> 
       <option value="/container-specifications/crunchy-pgadmin4/" >- crunchy-pgadmin4</option>
-      <option value="/container-specifications/crunchy-pgbackrest/" >- crunchy-pgbackrest</option>
+      <option value="/container-specifications/crunchy-pgbackrest/"  selected>- crunchy-pgbackrest</option>
       <option value="/container-specifications/crunchy-pgbackrest-repo/" >- crunchy-pgbackrest-repo</option>
       <option value="/container-specifications/crunchy-pgbadger/" >- crunchy-pgbadger</option>
       <option value="/container-specifications/crunchy-pgbouncer/" >- crunchy-pgbouncer</option>
@@ -533,7 +533,7 @@
             <i class="fa fa-info-circle"></i>
             
           </a>
-          <a class="github-link" href="https://github.com/CrunchyData/crunchy-containers/edit/master/docs/content/container-specifications/_index.md" target="blank">
+          <a class="github-link" href="https://github.com/CrunchyData/crunchy-containers/edit/master/docs/content/container-specifications/crunchy-pgbackrest.md" target="blank">
             <i class="fa fa-code-fork"></i>
             
           </a>
@@ -550,7 +550,12 @@
 
 
 
- <a href='https://crunchydata.github.io/crunchy-containers/latest/'>Introduction</a> > Container Specifications
+
+
+
+ <a href='https://crunchydata.github.io/crunchy-containers/latest/'>Introduction</a> > <a href='https://crunchydata.github.io/crunchy-containers/latest/container-specifications/'>Container Specifications</a> > crunchy-pgbackrest
+
+ 
 
  
 
@@ -564,33 +569,295 @@
     
     <div id="body-inner">
 
-    <h1>Container Specifications</h1>
+    <h1>crunchy-pgbackrest</h1>
 
     
 
     
+    
+
+<p>The <code>crunchy-pgbackrest</code> container is used for pgBackRest functions including backup, restore, info, stanza creation and as the pgBackRest remote repository.</p>
+
+<p>See the <a href="https://github.com/pgbackrest/pgbackrest">pgBackRest</a> guide for more details.</p>
+
+<h2 id="running-modes">Running Modes</h2>
+
+<p>The <code>crunchy-pgbackrest</code> image can be run in modes to enable different functionality.
+The <code>MODE</code> environment variable must be set to run the image in the required mode. Each mode uses environment variables to configure how the container will be run.</p>
+
+<table>
+<thead>
+<tr>
+<th>Running Mode</th>
+<th><code>MODE</code> setting</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>pgBackRest mode is used for taking pgBackRest backups, retrieving info and stanza creation.</td>
+<td><code>pgbackrest</code></td>
+</tr>
+
+<tr>
+<td>pgBackRest Repo mode acts as a pgBackRest remote repository for the Postgres cluster to use for storing archive files and backups.</td>
+<td><code>pgbackrest-repo</code></td>
+</tr>
+
+<tr>
+<td>pgBackRest Restore mode executes a pgBackRest restore independent of the Crunchy PostgreSQL Operator.</td>
+<td><code>pgbackrest-restore</code></td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="volumes">Volumes</h2>
+
+<p>The following volumes are mounted by the <code>crunchy-pgbackrest</code> container:</p>
 
 <ul>
-<li><a href="crunchy-pgadmin4">Crunchy pgadmin4</a></li>
-<li><a href="crunchy-pgbackrest">Crunchy pgbackrest</a></li>
-<li><a href="crunchy-pgbackrest-repo">Crunchy pgbackrest-repo</a></li>
-<li><a href="crunchy-pgbadger">Crunchy pgbadger</a></li>
-<li><a href="crunchy-pgbouncer">Crunchy pgbouncer</a></li>
-<li><a href="crunchy-pgpool">Crunchy pgpool</a></li>
-<li><a href="crunchy-postgres-appdev">Crunchy postgres-appdev</a></li>
-<li><a href="crunchy-postgres-gis">Crunchy postgres-gis</a></li>
-<li><a href="crunchy-postgres">Crunchy postgres</a></li>
-<li><a href="crunchy-upgrade">Crunchy upgrade</a></li>
+<li>Mounted <code>pgbackrest.conf</code> configuration file via the <code>/pgconf</code> volume (? not sure about this)</li>
+<li><code>/backrestrepo</code> volume used by the pgbackrest backup tool to store pgBackRest archives</li>
+<li><code>/pgdata</code> volume used to store the data directory contents for the PostgreSQL database</li>
+<li><code>/sshd</code> volume that contains the SSHD configuration from the <code>backrest-repo-config</code> secret</li>
 </ul>
 
+<h2 id="major-packages">Major Packages</h2>
+
+<p>The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):</p>
+
+<ul>
+<li>PostgreSQL (13.1, 12.5, 11.10, 10.15, 9.6.20 and 9.5.24)</li>
+<li><a href="https://pgbackrest.org/">pgBackRest</a> (2.29)</li>
+<li>CentOS 7, CentOS 8 - publicly available</li>
+<li>UBI 7, UBI 8 - customers only</li>
+</ul>
+
+<h2 id="environment-variables">Environment Variables</h2>
+
+<h3 id="pgbackrest-mode">pgbackrest Mode</h3>
+
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Name</strong></th>
+<th align="left"><strong>Default</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><strong>COMMAND</strong></td>
+<td align="left">None</td>
+<td align="left">Stores the pgBackRest command to execute.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>COMMAND_OPTS</strong></td>
+<td align="left">None</td>
+<td align="left">Options to append the the chosen pgbackrest command.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>CRUNCHY_DEBUG</strong></td>
+<td align="left">FALSE</td>
+<td align="left">Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>MODE</strong></td>
+<td align="left">None</td>
+<td align="left">Sets the container mode. Accepted values are <code>pgbackrest</code>, <code>pgbackrest-repo</code> and <code>pgbackrest-restore</code>.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>NAMESPACE</strong></td>
+<td align="left">None</td>
+<td align="left">Namespace where the pod lives.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_DB_PATH</strong></td>
+<td align="left">None</td>
+<td align="left">PostgreSQL data directory. (deprecated)</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_REPO_PATH</strong></td>
+<td align="left">None</td>
+<td align="left">Path where backups and archive are stored.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_REPO_TYPE</strong></td>
+<td align="left">None</td>
+<td align="left">Type of storage used for the repository.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_STANZA</strong></td>
+<td align="left">None</td>
+<td align="left">Defines the backup configuration for a specific PostgreSQL database cluster.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGHA_PGBACKREST_LOCAL_S3_STORAGE</strong></td>
+<td align="left">None</td>
+<td align="left">Indicates whether or not local and s3 storage should be enabled for pgBackRest.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGHA_PGBACKREST_S3_VERIFY_TLS</strong></td>
+<td align="left">None</td>
+<td align="left">Indicates whether or not TLS should be verified when making connections to S3 storage.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PITR_TARGET</strong></td>
+<td align="left">None</td>
+<td align="left">Store the PITR target for a pgBackRest restore.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PODNAME</strong></td>
+<td align="left">None</td>
+<td align="left">Stores the name of the pod to exec into for command execution.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="pgbackrest-repo-mode">pgbackrest-repo Mode</h3>
+
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Name</strong></th>
+<th align="left"><strong>Default</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><strong>CRUNCHY_DEBUG</strong></td>
+<td align="left">FALSE</td>
+<td align="left">Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>MODE</strong></td>
+<td align="left">None</td>
+<td align="left">Sets the container mode. Accepted values are <code>pgbackrest</code>, <code>pgbackrest-repo</code> and <code>pgbackrest-restore</code>.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_DB_PATH</strong></td>
+<td align="left">None</td>
+<td align="left">PostgreSQL data directory. (deprecated)</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_DB_HOST</strong></td>
+<td align="left">None</td>
+<td align="left">PostgreSQL host for operating remotely via SSH. (deprecated)</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_LOG_PATH</strong></td>
+<td align="left">None</td>
+<td align="left">Path where log files are stored.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_PG1_PORT</strong></td>
+<td align="left">None</td>
+<td align="left">Port that PostgreSQL is running on.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_PG1_SOCKET_PATH</strong></td>
+<td align="left">None</td>
+<td align="left">PostgreSQL unix socket path.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_REPO_PATH</strong></td>
+<td align="left">None</td>
+<td align="left">Path where backups and archive are stored.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_STANZA</strong></td>
+<td align="left">None</td>
+<td align="left">Defines the backup configuration for a specific PostgreSQL database cluster. Must be set to the desired stanza for restore.</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="pgbackrest-restore-mode">pgbackrest-restore Mode</h3>
+
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Name</strong></th>
+<th align="left"><strong>Default</strong></th>
+<th align="left"><strong>Description</strong></th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left"><strong>CRUNCHY_DEBUG</strong></td>
+<td align="left">FALSE</td>
+<td align="left">Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>MODE</strong></td>
+<td align="left">None</td>
+<td align="left">Sets the container mode. Accepted values are <code>pgbackrest</code>, <code>pgbackrest-repo</code> and <code>pgbackrest-restore</code>.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>BACKREST_CUSTOM_OPTS</strong></td>
+<td align="left">None</td>
+<td align="left">Custom pgBackRest options can be added here to customize pgBackRest restores.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_DELTA</strong></td>
+<td align="left">None</td>
+<td align="left">Enables pgBackRest delta restore mode.  Used when a user needs to restore to a volume that already contains PostgreSQL data files.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_PG1_PATH</strong></td>
+<td align="left">None</td>
+<td align="left">Path where PostgreSQL data directory can be found.  This variable can also be used to setup a new PostgreSQL data directory on an empty volume.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_STANZA</strong></td>
+<td align="left">None</td>
+<td align="left">Must be set to the desired stanza for restore.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGBACKREST_TARGET</strong></td>
+<td align="left">None</td>
+<td align="left">PostgreSQL timestamp used when restoring up to a point in time. Required for Point In Time Recovery (PITR) restores.</td>
+</tr>
+</tbody>
+</table>
 
 
 
     
         <div class="chevrons">
     <div id="navigation">
-<a class="nav nav-prev" href="https://crunchydata.github.io/crunchy-containers/latest/installation-guide/storage-configuration/" title="Storage Configuration"> <i class="fa fa-chevron-left"></i><label>Storage Configuration</label></a>
-    <a class="nav nav-next" href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgadmin4/" title="crunchy-pgadmin4" style="margin-right: 0px;"><label>crunchy-pgadmin4</label><i class="fa fa-chevron-right"></i></a></div>
+<a class="nav nav-prev" href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgadmin4/" title="crunchy-pgadmin4"> <i class="fa fa-chevron-left"></i><label>crunchy-pgadmin4</label></a>
+    <a class="nav nav-next" href="https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbackrest-repo/" title="crunchy-pgbackrest-repo" style="margin-right: 0px;"><label>crunchy-pgbackrest-repo</label><i class="fa fa-chevron-right"></i></a></div>
   </div>
 
   </section>
