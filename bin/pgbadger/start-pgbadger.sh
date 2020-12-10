@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/cpm/bin/common_lib.sh
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+source "${CRUNCHY_DIR}/bin/common_lib.sh"
 enable_debugging
 
-export PATH=$PATH:/opt/cpm/bin
+export PATH="${PATH}:${CRUNCHY_DIR}/bin"
 export PIDFILE=/tmp/badgerserver.pid
 
 function trap_sigterm() {
@@ -30,7 +31,7 @@ trap 'trap_sigterm' SIGINT SIGTERM
 env_check_info "BADGER_TARGET" "Overriding BADGER_TARGET environment variable and setting to ${BADGER_TARGET}."
 
 echo_info "Starting pgBadger server.."
-/opt/cpm/bin/badgerserver &
+"${CRUNCHY_DIR}/bin/badgerserver" &
 echo $! > $PIDFILE
 
 wait

@@ -83,8 +83,8 @@ crunchyadm: admin-pgimg-$(IMGBUILDER)
 pgadmin4: pgadmin4-pgimg-$(IMGBUILDER)
 pgbackrest: pgbackrest-pgimg-$(IMGBUILDER)
 pgbackrest-repo: pgbackrest-repo-pgimg-$(IMGBUILDER)
-pgbadger: pgbadger-pgimg-$(IMGBUILDER)
-pgbouncer: pgbouncer-pgimg-$(IMGBUILDER)
+pgbadger: pgbadger-img-$(IMGBUILDER)
+pgbouncer: pgbouncer-img-$(IMGBUILDER)
 pgpool: pgpool-pgimg-$(IMGBUILDER)
 postgres: postgres-pgimg-$(IMGBUILDER)
 postgres-ha: postgres-ha-pgimg-$(IMGBUILDER)
@@ -336,6 +336,7 @@ pgbackrest-repo-pgimg-docker: pgbackrest-repo-pgimg-build
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \
+		--build-arg PG_LBL=${subst .,,$(CCP_PGVERSION)} \
 		$(CCPROOT)
 
 %-pgimg-buildah: %-pgimg-build ;
@@ -358,6 +359,7 @@ endif
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \
+		--build-arg PG_LBL=${subst .,,$(CCP_PGVERSION)} \
 		$(CCPROOT)
 
 %-img-buildah: %-img-build ;
