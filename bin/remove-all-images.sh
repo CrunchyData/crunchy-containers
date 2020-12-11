@@ -15,7 +15,7 @@
 
 for i in \
 restore pgdump pgrestore postgres-gis pgbadger pgpool \
-watch backup postgres pgbouncer pgadmin4 upgrade backrest-restore pgbench \
+watch backup postgres pgbouncer pgadmin4 upgrade pgbench \
 pgbasebackup-restore postgres-ha postgres-gis-ha
 do
 	docker rmi -f  $CCP_IMAGE_PREFIX/crunchy-$i:$CCP_IMAGE_TAG
