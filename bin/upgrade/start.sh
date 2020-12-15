@@ -132,6 +132,9 @@ rm ${PGDATAOLD?}/postmaster.pid
 # changing to /tmp is necessary since pg_upgrade has to have write access
 cd /tmp
 
+# pg_upgrade expects the old pgdata directory to have u=rwx (0700) permissions
+chmod 0700 ${PGDATAOLD?}
+
 ${PGBINNEW?}/pg_upgrade
 rc=$?
 if (( $rc ==  0 )); then
