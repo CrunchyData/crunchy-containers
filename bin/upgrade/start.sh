@@ -25,7 +25,8 @@
 # $NEW_VERSION (e.g. 9.6)
 #
 
-source /opt/cpm/bin/common_lib.sh
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+source "${CRUNCHY_DIR}/bin/common_lib.sh"
 enable_debugging
 
 function trap_sigterm() {
@@ -97,7 +98,7 @@ case $OLD_VERSION in
     ;;
 esac
 
-export PATH=/opt/cpm/bin:${PGBINNEW?}:$PATH
+export PATH="${CRUNCHY_DIR}/bin:${PGBINNEW?}:$PATH"
 
 # Create a clean new data directory
 options=" "

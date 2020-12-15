@@ -350,7 +350,7 @@ endif
 # ----- Upgrade Images -----
 upgrade: upgrade-$(CCP_PGVERSION)
 
-upgrade-%: upgrade-pgimg-$(IMGBUILDER) ;
+upgrade-%: upgrade-img-$(IMGBUILDER) ;
 
 upgrade-9.5: # Do nothing but log to avoid erroring out on missing Dockerfile
 	$(info Upgrade build skipped for 9.5)

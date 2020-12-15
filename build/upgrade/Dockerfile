@@ -2,12 +2,16 @@ ARG BASEOS
 ARG BASEVER
 ARG PG_FULL
 ARG PREFIX
-FROM ${PREFIX}/crunchy-pg-base:${BASEOS}-${PG_FULL}-${BASEVER}
+FROM ${PREFIX}/crunchy-base:${BASEOS}-${PG_FULL}-${BASEVER}
 
 # For RHEL8 all arguments used in main code has to be specified after FROM
+ARG BASEOS
 ARG DFSET
 ARG PACKAGER
 ARG PG_MAJOR
+
+# Needed due to lack of environment substitution trick on ADD
+ARG PG_LBL
 
 LABEL name="upgrade" \
 	summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
@@ -16,8 +20,26 @@ LABEL name="upgrade" \
 	io.k8s.display-name="Crunchy PostgreSQL upgrade container" \
 	io.openshift.tags="postgresql,postgres,upgrade,database,crunchy"
 
+# Crunchy Postgres repo GPG Keys
+# Both keys are added to support building all PG versions
+# of this container. PG 11+ requires RPM-GPG-KEY-crunchydata
+# PG 9.5, 9.6 and 10 require CRUNCHY-GPG-KEY.public on RHEL machines
+ADD conf/*KEY* /
+
 # Add in the repository files with the correct PostgreSQL versions
 ADD conf/crunchypg*.repo /etc/yum.repos.d/
+
+# Import both keys to support all required repos
+RUN rpm --import RPM-GPG-KEY-crunchydata*
+RUN if [ "$DFSET" = "rhel" ] ; then rpm --import CRUNCHY-GPG-KEY.public ; fi
+
+RUN if [ "$BASEOS" = "centos8" ] ; then \
+	${PACKAGER} -qy module disable postgresql ; \
+fi
+
+RUN if [ "$BASEOS" = "ubi8" ] ; then \
+	${PACKAGER} -qy module disable postgresql ; \
+fi
 
 # install the highest version of PostgreSQL + pgAudit and its dependencies as
 # well as unzip
@@ -44,13 +66,13 @@ RUN ${PACKAGER} -y install \
 	pgaudit[1-9][0-9] \
 	&& ${PACKAGER} -y clean all
 
-RUN mkdir -p /opt/cpm/bin /pgolddata /pgnewdata /opt/cpm/conf
-ADD bin/upgrade/ /opt/cpm/bin
-ADD bin/common /opt/cpm/bin
-ADD conf/upgrade/ /opt/cpm/conf
+RUN mkdir -p /opt/crunchy/bin /pgolddata /pgnewdata /opt/crunchy/conf
+ADD bin/upgrade/ /opt/crunchy/bin
+ADD bin/common /opt/crunchy/bin
+ADD conf/upgrade/ /opt/crunchy/conf
 
-RUN chown -R postgres:postgres /opt/cpm /pgolddata /pgnewdata && \
-	chmod -R g=u /opt/cpm /pgolddata /pgnewdata
+RUN chown -R postgres:postgres /opt/crunchy /pgolddata /pgnewdata && \
+	chmod -R g=u /opt/crunchy /pgolddata /pgnewdata
 
 RUN chmod g=u /etc/passwd && \
 	chmod g=u /etc/group
@@ -59,8 +81,8 @@ RUN chmod g=u /etc/passwd && \
 # volume permissions are applied when building the image
 VOLUME /pgolddata /pgnewdata
 
-ENTRYPOINT ["opt/cpm/bin/uid_postgres.sh"]
+ENTRYPOINT ["opt/crunchy/bin/uid_postgres.sh"]
 
 USER 26
 
-CMD ["/opt/cpm/bin/start.sh"]
+CMD ["/opt/crunchy/bin/start.sh"]
