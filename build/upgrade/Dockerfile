@@ -29,6 +29,7 @@ RUN ${PACKAGER} -y install \
 	"postgresql${PG_MAJOR//.}-contrib" \
 	"postgresql${PG_MAJOR//.}-server" \
 	"pgaudit${PG_MAJOR//.}*" \
+	"pgnodemx${PG_MAJOR//.}" \
 	unzip \
 	&& ${PACKAGER} -y clean all
 
@@ -42,6 +43,7 @@ RUN ${PACKAGER} -y install \
 	postgresql[1-9][0-9]-contrib \
 	postgresql[1-9][0-9]-server \
 	pgaudit[1-9][0-9] \
+	pgnodemx[1-9][0-9] \
 	&& ${PACKAGER} -y clean all
 
 RUN mkdir -p /opt/cpm/bin /pgolddata /pgnewdata /opt/cpm/conf
