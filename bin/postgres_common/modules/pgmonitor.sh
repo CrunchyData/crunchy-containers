@@ -49,7 +49,7 @@ then
 
     echo_info "Using setup file '${function_file}' for pgMonitor"
     cp "${function_file}" "/tmp/setup_pg.sql"
-    sed -i "s,/usr/bin/pgbackrest-info.sh,${CRUNCHY_DIR}/postgres-ha/bin/pgbackrest/pgbackrest_info.sh,g" "/tmp/setup_pg.sql"
+    sed -i "s,/usr/bin/pgbackrest-info.sh,${CRUNCHY_DIR}/bin/postgres-ha/pgbackrest/pgbackrest_info.sh,g" "/tmp/setup_pg.sql"
 
     psql -U postgres --port="${PG_PRIMARY_PORT}" -d postgres \
         < "/tmp/setup_pg.sql" > /tmp/pgmonitor-setup.stdout 2> /tmp/pgmonitor-setup.stderr
