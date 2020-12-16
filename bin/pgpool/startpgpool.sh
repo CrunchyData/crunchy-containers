@@ -15,10 +15,11 @@
 
 set -e
 
-source /opt/cpm/bin/common_lib.sh
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+source "${CRUNCHY_DIR}/bin/common_lib.sh"
 enable_debugging
 
-CONF_DIR=/opt/cpm/conf
+CONF_DIR="${CRUNCHY_DIR}/conf"
 CONFIGS=/tmp
 PGPOOL_PIDFILE=/tmp/pgpool-script.pid
 
