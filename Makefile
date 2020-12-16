@@ -80,7 +80,7 @@ pgbackrest-images: pgbackrest pgbackrest-repo
 #===========================================
 
 crunchyadm: admin-pgimg-$(IMGBUILDER)
-pgadmin4: pgadmin4-pgimg-$(IMGBUILDER)
+pgadmin4: pgadmin4-img-$(IMGBUILDER)
 pgbackrest: pgbackrest-pgimg-$(IMGBUILDER)
 pgbackrest-repo: pgbackrest-repo-pgimg-$(IMGBUILDER)
 pgbadger: pgbadger-img-$(IMGBUILDER)
