@@ -10,6 +10,7 @@ bootstrap:
   dcs:
     postgresql:
       parameters:
+        jit: off
         unix_socket_directories: /tmp,/crunchyadm
         wal_level: logical
   post_bootstrap: /opt/crunchy/bin/postgres-ha/bootstrap/post-bootstrap.sh
