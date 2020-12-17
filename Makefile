@@ -61,16 +61,16 @@ ifeq ("$(CCP_BASEOS)", "centos8")
 	DOCKERBASEREGISTRY=centos:
 endif
 
-.PHONY:	all pg-independent-images pgimages
+.PHONY:	all pgbackrest-images pg-independent-images pgimages
 
 # Default target
-all: cc-pg-base-image pgimages pg-independent-images pgbackrest-images
+all: pgimages pg-independent-images pgbackrest-images
 
 # Build images that either don't have a PG dependency or using the latest PG version is all that is needed
 pg-independent-images: pgadmin4 pgbadger pgbouncer pgpool
 
 # Build images that require a specific postgres version - ordered for potential concurrent benefits
-pgimages: postgres postgres-ha crunchyadm postgres-gis postgres-gis-ha upgrade
+pgimages: postgres postgres-ha postgres-gis postgres-gis-ha upgrade
 
 # Build images based on pgBackRest
 pgbackrest-images: pgbackrest pgbackrest-repo
@@ -115,41 +115,16 @@ ccbase-image-build: $(CCPROOT)/build/base/Dockerfile
 		$(CCPROOT)
 
 ccbase-image-buildah: ccbase-image-build ;
-# only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
+# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
 ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-base:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-base:$(CCP_IMAGE_TAG)
 endif
 
 ccbase-image-docker: ccbase-image-build
 
-# ----- PG Base Image -----
-cc-pg-base-image: cc-pg-base-image-$(IMGBUILDER)
-
-cc-pg-base-image-build: ccbase-image $(CCPROOT)/build/pg-base/Dockerfile
-	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/build/pg-base/Dockerfile \
-		-t $(CCP_IMAGE_PREFIX)/crunchy-pg-base:$(CCP_IMAGE_TAG) \
-		--build-arg BASEOS=$(CCP_BASEOS) \
-		--build-arg BASEVER=$(CCP_VERSION) \
-		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
-		--build-arg PG_LBL=$(subst .,,$(CCP_PGVERSION)) \
-		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
-		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
-		--build-arg DFSET=$(DFSET) \
-		--build-arg PACKAGER=$(PACKAGER) \
-		$(CCPROOT)
-
-cc-pg-base-image-buildah: cc-pg-base-image-build ;
-# only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
-ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
-	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-pg-base:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-pg-base:$(CCP_IMAGE_TAG)
-endif
-
-cc-pg-base-image-docker: cc-pg-base-image-build
-
 # ----- Special case pg-based image (postgres) -----
 # Special case args: BACKREST_VER
-postgres-pgimg-build: ccbase-image commands $(CCPROOT)/build/postgres/Dockerfile
+postgres-pgimg-build: ccbase-image $(CCPROOT)/build/postgres/Dockerfile
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/build/postgres/Dockerfile \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG) \
@@ -165,7 +140,7 @@ postgres-pgimg-build: ccbase-image commands $(CCPROOT)/build/postgres/Dockerfile
 		$(CCPROOT)
 
 postgres-pgimg-buildah: postgres-pgimg-build ;
-# only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
+# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
 ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres:$(CCP_IMAGE_TAG)
 endif
@@ -174,7 +149,7 @@ postgres-pgimg-docker: postgres-pgimg-build
 
 # ----- Special case pg-based image (postgres-gis) -----
 # Special case args: POSTGIS_LBL
-postgres-gis-pgimg-build: postgres commands $(CCPROOT)/build/postgres-gis/Dockerfile
+postgres-gis-pgimg-build: postgres-pgimg-build $(CCPROOT)/build/postgres-gis/Dockerfile
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/build/postgres-gis/Dockerfile \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_POSTGIS_IMAGE_TAG) \
@@ -189,7 +164,7 @@ postgres-gis-pgimg-build: postgres commands $(CCPROOT)/build/postgres-gis/Docker
 		$(CCPROOT)
 
 postgres-gis-pgimg-buildah: postgres-gis-pgimg-build ;
-# only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
+# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
 ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_POSTGIS_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_POSTGIS_IMAGE_TAG)
 endif
@@ -198,7 +173,7 @@ postgres-gis-pgimg-docker: postgres-gis-pgimg-build
 
 # ----- Special case pg-based image (postgres-ha) -----
 # Special case args: BACKREST_VER, PATRONI_VER
-postgres-ha-pgimg-build: postgres-pgimg-build commands $(CCPROOT)/build/postgres-ha/Dockerfile
+postgres-ha-pgimg-build: postgres-pgimg-build $(CCPROOT)/build/postgres-ha/Dockerfile
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/build/postgres-ha/Dockerfile \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) \
@@ -213,7 +188,7 @@ postgres-ha-pgimg-build: postgres-pgimg-build commands $(CCPROOT)/build/postgres
 		$(CCPROOT)
 
 postgres-ha-pgimg-buildah: postgres-ha-pgimg-build ;
-# only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
+# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
 ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG)
 endif
@@ -222,7 +197,7 @@ postgres-ha-pgimg-docker: postgres-ha-pgimg-build
 
 # ----- Special case pg-based image (postgres-gis-ha) -----
 # Special case args: POSTGIS_LBL
-postgres-gis-ha-pgimg-build: postgres-ha commands $(CCPROOT)/build/postgres-gis-ha/Dockerfile
+postgres-gis-ha-pgimg-build: postgres-ha-pgimg-build $(CCPROOT)/build/postgres-gis-ha/Dockerfile
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/build/postgres-gis-ha/Dockerfile \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_POSTGIS_IMAGE_TAG) \
@@ -237,7 +212,7 @@ postgres-gis-ha-pgimg-build: postgres-ha commands $(CCPROOT)/build/postgres-gis-
 		$(CCPROOT)
 
 postgres-gis-ha-pgimg-buildah: postgres-gis-ha-pgimg-build ;
-# only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
+# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
 ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_POSTGIS_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_POSTGIS_IMAGE_TAG)
 endif
@@ -262,12 +237,11 @@ pgbackrest-pgimg-build: ccbase-image build-pgbackrest $(CCPROOT)/build/pgbackres
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		--build-arg BACKREST_VER=$(CCP_BACKREST_VERSION) \
-		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \
 		$(CCPROOT)
 
 pgbackrest-pgimg-buildah: pgbackrest-pgimg-build ;
-# only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
+# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
 ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-pgbackrest:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-pgbackrest:$(CCP_IMAGE_TAG)
 endif
@@ -293,36 +267,12 @@ pgbackrest-repo-pgimg-build: ccbase-image build-pgbackrest pgbackrest $(CCPROOT)
 		$(CCPROOT)
 
 pgbackrest-repo-pgimg-buildah: pgbackrest-repo-pgimg-build ;
-# only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
+# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
 ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-pgbackrest-repo:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-pgbackrest-repo:$(CCP_IMAGE_TAG)
 endif
 
 pgbackrest-repo-pgimg-docker: pgbackrest-repo-pgimg-build
-
-
-# ----- All other pg-based images ----
-%-pgimg-build: cc-pg-base-image $(CCPROOT)/build/%/Dockerfile
-	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/build/$*/Dockerfile \
-		-t $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) \
-		--build-arg BASEOS=$(CCP_BASEOS) \
-		--build-arg BASEVER=$(CCP_VERSION) \
-		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
-		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
-		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
-		--build-arg DFSET=$(DFSET) \
-		--build-arg PACKAGER=$(PACKAGER) \
-		--build-arg PG_LBL=${subst .,,$(CCP_PGVERSION)} \
-		$(CCPROOT)
-
-%-pgimg-buildah: %-pgimg-build ;
-# only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
-ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
-	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG)
-endif
-
-%-pgimg-docker: %-pgimg-build ;
 
 # ----- Extra images -----
 %-img-build: ccbase-image $(CCPROOT)/build/%/Dockerfile
@@ -340,7 +290,7 @@ endif
 		$(CCPROOT)
 
 %-img-buildah: %-img-build ;
-# only push to docker daemon if variable PGO_PUSH_TO_DOCKER_DAEMON is set to "true"
+# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
 ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-$*:$(CCP_IMAGE_TAG)
 endif
