@@ -79,7 +79,7 @@ pgbackrest-images: pgbackrest pgbackrest-repo
 # Targets generating pg-based images
 #===========================================
 
-crunchyadm: admin-pgimg-$(IMGBUILDER)
+crunchyadm: admin-img-$(IMGBUILDER)
 pgadmin4: pgadmin4-img-$(IMGBUILDER)
 pgbackrest: pgbackrest-pgimg-$(IMGBUILDER)
 pgbackrest-repo: pgbackrest-repo-pgimg-$(IMGBUILDER)
