@@ -33,15 +33,6 @@ RUN ${PACKAGER} -y install \
 
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}"
 
-# add path settings for postgres user
-# bash_profile is loaded in login, but not with exec
-# bashrc to set permissions in OCP when using exec
-# HOME is / in OCP
-ADD conf/.bash_profile /var/lib/pgsql/
-ADD conf/.bashrc /var/lib/pgsql
-ADD conf/.bash_profile /
-ADD conf/.bashrc /
-
 #RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgwal /pgconf /backup /recover /backrestrepo
 RUN mkdir -p /opt/cpm/bin /opt/cpm/conf /pgdata /pgconf
 
