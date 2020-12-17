@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-source /opt/cpm/bin/common_lib.sh
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+source "${CRUNCHY_DIR}/bin/common_lib.sh"
 
 enable_debugging
 
@@ -22,7 +23,7 @@ export PGROOT=$(find /usr/ -type d -name 'pgsql-*')
 echo_info "Setting PGROOT to ${PGROOT?}."
 
 export PGDATA=/pgdata/$HOSTNAME
-export PATH=/opt/cpm/bin:$PGROOT/bin:$PATH
+export PATH="${CRUMCHY_DIR}/bin:$PGROOT/bin:$PATH"
 export LD_LIBRARY_PATH=$PGROOT/lib
 
 #chown postgres $PGDATA
