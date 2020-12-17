@@ -16,7 +16,8 @@
 ### TODO gonna need this shell script to also fire up pgadmin4 as well
 
 
-source /opt/cpm/bin/common_lib.sh
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+source "${CRUNCHY_DIR}/bin/common_lib.sh"
 enable_debugging
 
 function trap_sigterm() {
@@ -40,7 +41,7 @@ function trap_sigterm() {
 trap 'trap_sigterm' SIGINT SIGTERM
 
 # Only sets path and hostname information (I think)
-source /opt/cpm/bin/setenv.sh
+source "${CRUNCHY_DIR}/bin/setenv.sh"
 
 ### TODO I think this next line is only for running in Kube - we should delete it
 source check-for-secrets.sh
@@ -127,7 +128,7 @@ function initdb_logic() {
     echo_info "Overlaying PostgreSQL's default configuration with customized settings.."
     cp /tmp/postgresql.conf $PGDATA
 
-    cp /opt/cpm/conf/pg_hba.conf /tmp
+    cp "${CRUNCHY_DIR}/conf/pg_hba.conf" /tmp
     sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/pg_hba.conf
     cp /tmp/pg_hba.conf $PGDATA
 }
@@ -141,7 +142,7 @@ function fill_conf_file() {
     env_check_info "WORK_MEM" "Setting WORK_MEM to ${WORK_MEM:-4MB}."
     env_check_info "MAX_WAL_SENDERS" "Setting MAX_WAL_SENDERS to ${MAX_WAL_SENDERS:-6}."
 
-    cp /opt/cpm/conf/postgresql.conf.template.nopgaudit /tmp/postgresql.conf
+    cp "${CRUNCHY_DIR}/conf/postgresql.conf.template.nopgaudit" /tmp/postgresql.conf
 
     sed -i "s/TEMP_BUFFERS/${TEMP_BUFFERS:-8MB}/g" /tmp/postgresql.conf
     sed -i "s/LOG_MIN_DURATION_STATEMENT/${LOG_MIN_DURATION_STATEMENT:-60000}/g" /tmp/postgresql.conf
@@ -176,7 +177,7 @@ function waitforpg() {
     done
 
     while true; do
-        psql -h $PG_PRIMARY_HOST -p $PG_PRIMARY_PORT -U $PG_PRIMARY_USER $PG_DATABASE -f /opt/cpm/bin/readiness.sql
+        psql -h $PG_PRIMARY_HOST -p $PG_PRIMARY_PORT -U $PG_PRIMARY_USER $PG_DATABASE -f "${CRUNCHY_DIR}/bin/readiness.sql"
         if [ $? -eq 0 ]; then
             echo_info "The database is ready."
             CONNECTED=true
@@ -227,12 +228,12 @@ function initialize_primary() {
 
 
         echo_info "Loading setup.sql.." >> /tmp/start-db.log
-        cp /opt/cpm/bin/setup.sql /tmp
+        cp "${CRUNCHY_DIR}/bin/setup.sql" /tmp
         if [ -f /pgconf/setup.sql ]; then
             echo_info "Using setup.sql from /pgconf.."
             cp /pgconf/setup.sql /tmp
         else
-            echo_info "Using the /opt/cpm/bin/setup.sql"
+            echo_info "Using the ${CRUNCHY_DIR}/bin/setup.sql"
         fi
         sed -i "s/PG_PRIMARY_USER/$PG_PRIMARY_USER/g" /tmp/setup.sql
         sed -i "s/PG_PRIMARY_PASSWORD/$PG_PRIMARY_PASSWORD/g" /tmp/setup.sql
@@ -263,21 +264,16 @@ then
     rm $PGDATA/postmaster.pid
 fi
 
-# The standard PostgreSQL startup sequence:
-# export USER_ID=$(id -u)
-# cp /opt/cpm/conf/passwd /tmp
-# sed -i "s/USERID/$USER_ID/g" /tmp/passwd
-# export LD_PRELOAD=libnss_wrapper.so NSS_WRAPPER_PASSWD=/tmp/passwd  NSS_WRAPPER_GROUP=/etc/group
 ID="$(id)"
 echo_info "User ID is set to ${ID}."
 
 fill_conf_file
 initialize_primary
 
-source /opt/cpm/bin/custom-configs.sh
+source "${CRUNCHY_DIR}/bin/custom-configs.sh"
 
 ######### Start up PGadmin4
-########   source /opt/cpm/bin/start-pgadmin4.sh
+########   source "${CRUNCHY_DIR}/bin/start-pgadmin4.sh"
 
 
 # Run pre-start hook if it exists
@@ -287,13 +283,13 @@ then
 fi
 
 # Start SSHD if necessary prior to starting PG
-source /opt/cpm/bin/sshd.sh
+source "${CRUNCHY_DIR}/bin/sshd.sh"
 
 echo_info "Starting PostgreSQL.."
 postgres -D $PGDATA &
 
 # Apply enhancement modules
-for module in /opt/cpm/bin/modules/*.sh
+for module in "${CRUNCHY_DIR}/bin/modules/*.sh"
 do
     source ${module?}
 done
