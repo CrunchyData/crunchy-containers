@@ -15,9 +15,6 @@ ARG PG_MAJOR
 # Needed due to lack of environment substitution trick on ADD
 ARG PG_LBL
 
-LABEL postgresql.version.major="${PG_MAJOR}" \
-	postgresql.version="${PG_FULL}"
-
 RUN ${PACKAGER} -y install \
 	--setopt=skip_missing_names_on_install=False \
 	--disablerepo=crunchypg* \
@@ -83,7 +80,7 @@ fi
 # ===== Steps unique to this image after here =====
 LABEL name="postgres" \
 	summary="PostgreSQL ${PG_FULL}" \
-	description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas. Includes utilities for Auditing (pgaudit), statement tracking, and Backup / Restore (pgbackrest, pg_basebackup)." \
+	description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas. Includes utilities and tools for Auditing (pgaudit), statement tracking,  Backup/Restore (pgbackrest, pg_basebackup, pgdump, pgrestore) and Benchmarking (pgbench)." \
 	io.k8s.description="Crunchy PostgreSQL is the trusted open source distribution of PostgreSQL" \
 	io.k8s.display-name="Crunchy PostgreSQL" \
 	io.openshift.tags="postgresql,postgres,sql,nosql,database,crunchy"

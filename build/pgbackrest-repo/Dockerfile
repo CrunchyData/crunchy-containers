@@ -5,8 +5,8 @@ ARG PREFIX
 FROM ${PREFIX}/crunchy-pgbackrest:${BASEOS}-${PG_FULL}-${BASEVER}
 
 LABEL name="pgbackrest-repo" \
-	summary="NEEDS UPDATE Allows full, delta & point-in-time-recovery restore capabilities with pgBackRest." \
-	description="NEEDS UPDATE Allows full, delta & point-in-time-recovery restore capabilities with pgBackRest. Capable of mounting the /backrestrepo for access to pgbackrest archives, while allowing for the configuration of pgBackRest using applicable pgBackRest environment variables." \
+	summary="Crunchy pgBackRest-repo" \
+	description="Capable of mounting the /backrestrepo for access to pgbackrest archives, while allowing for the configuration of pgBackRest using applicable pgBackRest environment variables." \
 	io.k8s.description="pgBackRest-repo" \
 	io.k8s.display-name="Crunchy pgBackRest-repo" \
 	io.openshift.tags="postgresql,postgres,pgbackrest,backup,database,crunchy"
