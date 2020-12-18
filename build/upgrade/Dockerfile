@@ -10,9 +10,6 @@ ARG DFSET
 ARG PACKAGER
 ARG PG_MAJOR
 
-# Needed due to lack of environment substitution trick on ADD
-ARG PG_LBL
-
 LABEL name="upgrade" \
 	summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
 	description="Provides a means to perform a major PostgreSQL upgrade from an earlier version to PostgreSQL ${PG_MAJOR}." \
@@ -20,26 +17,8 @@ LABEL name="upgrade" \
 	io.k8s.display-name="Crunchy PostgreSQL upgrade container" \
 	io.openshift.tags="postgresql,postgres,upgrade,database,crunchy"
 
-# Crunchy Postgres repo GPG Keys
-# Both keys are added to support building all PG versions
-# of this container. PG 11+ requires RPM-GPG-KEY-crunchydata
-# PG 9.5, 9.6 and 10 require CRUNCHY-GPG-KEY.public on RHEL machines
-ADD conf/*KEY* /
-
 # Add in the repository files with the correct PostgreSQL versions
 ADD conf/crunchypg*.repo /etc/yum.repos.d/
-
-# Import both keys to support all required repos
-RUN rpm --import RPM-GPG-KEY-crunchydata*
-RUN if [ "$DFSET" = "rhel" ] ; then rpm --import CRUNCHY-GPG-KEY.public ; fi
-
-RUN if [ "$BASEOS" = "centos8" ] ; then \
-	${PACKAGER} -qy module disable postgresql ; \
-fi
-
-RUN if [ "$BASEOS" = "ubi8" ] ; then \
-	${PACKAGER} -qy module disable postgresql ; \
-fi
 
 # install the highest version of PostgreSQL + pgAudit and its dependencies as
 # well as unzip
