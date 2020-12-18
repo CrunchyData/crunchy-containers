@@ -9,8 +9,8 @@ ARG PACKAGER
 ARG BACKREST_VER
 
 LABEL name="pgbackrest" \
-	summary="Crunchy Containers - pgBackRest" \
-	description="The Crunchy pgBackRest container that supports pgBackRest backups, restores and repo functionality modes." \
+	summary="Crunchy pgBackRest ${BACKREST_VER}" \
+	description="The Crunchy pgBackRest container that supports pgBackRest backups, restores, and repo functionality modes." \
 	io.k8s.description="pgBackRest" \
 	io.k8s.display-name="Crunchy pgBackRest" \
 	io.openshift.tags="postgresql,postgres,pgbackrest,backup,database,crunchy"
