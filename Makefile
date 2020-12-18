@@ -112,6 +112,7 @@ ccbase-image-build: $(CCPROOT)/build/base/Dockerfile
 		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \
 		--build-arg DOCKERBASEREGISTRY=$(DOCKERBASEREGISTRY) \
+		--build-arg PG_LBL=${subst .,,$(CCP_PGVERSION)} \
 		$(CCPROOT)
 
 ccbase-image-buildah: ccbase-image-build ;
@@ -286,7 +287,6 @@ pgbackrest-repo-pgimg-docker: pgbackrest-repo-pgimg-build
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \
-		--build-arg PG_LBL=${subst .,,$(CCP_PGVERSION)} \
 		$(CCPROOT)
 
 %-img-buildah: %-img-build ;

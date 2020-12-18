@@ -1,14 +1,11 @@
 ARG BASEOS
 ARG BASEVER
 ARG PG_FULL
-ARG PG_MAJOR
 ARG PREFIX
 FROM ${PREFIX}/crunchy-base:${BASEOS}-${PG_FULL}-${BASEVER}
 
 # For RHEL8 all arguments used in main code has to be specified after FROM
-ARG DFSET
 ARG PACKAGER
-ARG PG_MAJOR
 ARG BACKREST_VER
 
 LABEL name="pgbackrest" \
@@ -17,14 +14,6 @@ LABEL name="pgbackrest" \
 	io.k8s.description="pgBackRest" \
 	io.k8s.display-name="Crunchy pgBackRest" \
 	io.openshift.tags="postgresql,postgres,pgbackrest,backup,database,crunchy"
-
-
-# Crunchy PostgreSQL repository configuration
-ADD conf/RPM-GPG-KEY-crunchydata* /
-ADD conf/crunchypg${PG_MAJOR}.repo /etc/yum.repos.d/
-
-# Import both keys to support all required repos
-RUN rpm --import RPM-GPG-KEY-crunchydata*
 
 # Run postgres install in separate transaction ahead of backrest for postgres user
 RUN ${PACKAGER} -y install  \
