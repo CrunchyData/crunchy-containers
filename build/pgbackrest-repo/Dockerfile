@@ -4,12 +4,6 @@ ARG PG_FULL
 ARG PREFIX
 FROM ${PREFIX}/crunchy-pgbackrest:${BASEOS}-${PG_FULL}-${BASEVER}
 
-# For RHEL8 all arguments used in main code has to be specified after FROM
-ARG DFSET
-ARG PACKAGER
-ARG PG_MAJOR_VERSION
-ARG BACKREST_VER
-
 LABEL name="pgbackrest-repo" \
 	summary="NEEDS UPDATE Allows full, delta & point-in-time-recovery restore capabilities with pgBackRest." \
 	description="NEEDS UPDATE Allows full, delta & point-in-time-recovery restore capabilities with pgBackRest. Capable of mounting the /backrestrepo for access to pgbackrest archives, while allowing for the configuration of pgBackRest using applicable pgBackRest environment variables." \
