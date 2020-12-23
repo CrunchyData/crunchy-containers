@@ -197,8 +197,8 @@ endif
 postgres-ha-pgimg-docker: postgres-ha-pgimg-build
 
 # ----- Special case pg-based image (postgres-gis-ha) -----
-# Special case args: POSTGIS_LBL
-postgres-gis-ha-pgimg-build: postgres-ha-pgimg-build $(CCPROOT)/build/postgres-gis-ha/Dockerfile
+# Special case args: PATRONI_VER
+postgres-gis-ha-pgimg-build: postgres-gis-pgimg-build $(CCPROOT)/build/postgres-gis-ha/Dockerfile
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/build/postgres-gis-ha/Dockerfile \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_POSTGIS_IMAGE_TAG) \
@@ -206,8 +206,9 @@ postgres-gis-ha-pgimg-build: postgres-ha-pgimg-build $(CCPROOT)/build/postgres-g
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
+		--build-arg PATRONI_VER=$(CCP_PATRONI_VERSION) \
+		--build-arg POSTGIS_VER=$(CCP_POSTGIS_VERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
-		--build-arg POSTGIS_LBL=$(subst .,,$(CCP_POSTGIS_VERSION)) \
 		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \
 		$(CCPROOT)
