@@ -71,8 +71,6 @@ fi
 RUN pip3 install --upgrade python-dateutil \
 	&& pip3 install patroni[kubernetes]=="${PATRONI_VER}"
 
-RUN useradd crunchyadm -g 0 -u 17
-
 ENV PATH="${PGROOT}/bin:${PATH}"
 
 RUN mkdir -p /crunchyadm /tablespaces

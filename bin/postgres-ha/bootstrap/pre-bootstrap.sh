@@ -60,12 +60,6 @@ set_default_pgha_autoconfig_env()  {
         echo_info "PGHA_PGBACKREST_LOCAL_S3_STORAGE and PGHA_PGBACKREST_INITIALIZE will be ignored if provided"
     fi
 
-    if [[ ! -v PGHA_CRUNCHYADM ]]
-    then
-        export PGHA_CRUNCHYADM="false"
-        default_pgha_autoconfig_env_vars+=("PGHA_CRUNCHYADM")
-    fi
-
     if [[ ! -v PGHA_SYNC_REPLICATION ]]
     then
         export PGHA_SYNC_REPLICATION="false"
@@ -459,7 +453,7 @@ build_bootstrap_config_file
 # remains empty.  This will cause Patroni to bootstrap a new PostgreSQL cluster from scratch, while
 # still allowing the configured bootstrap method to leverage any existing data within the PGDATA
 # directory as needed.
-if [[ "${PGHA_INIT}" == "true" ]] && 
+if [[ "${PGHA_INIT}" == "true" ]] &&
     [[ -d "${PATRONI_POSTGRESQL_DATA_DIR}" && -n "$(ls -A "${PATRONI_POSTGRESQL_DATA_DIR}")" ]]
 then
     echo_info "Detected cluster initialization using an existing PGDATA directory"

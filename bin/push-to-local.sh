@@ -15,7 +15,6 @@ IMAGES=(
     crunchy-postgres
     crunchy-upgrade
     crunchy-postgres-ha
-    crunchy-admin
 )
 
 GIS_IMAGES=(

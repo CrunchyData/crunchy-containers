@@ -22,6 +22,5 @@ docker push $CCP_IMAGE_PREFIX/crunchy-pgadmin4:$CCP_IMAGE_TAG
 docker push $CCP_IMAGE_PREFIX/crunchy-upgrade:$CCP_IMAGE_TAG
 docker push $CCP_IMAGE_PREFIX/crunchy-postgres-ha:$CCP_IMAGE_TAG
 docker push $CCP_IMAGE_PREFIX/crunchy-postgres-gis-ha:$CCP_POSTGIS_IMAGE_TAG
-docker push $CCP_IMAGE_PREFIX/crunchy-admin:$CCP_IMAGE_TAG
 docker push $CCP_IMAGE_PREFIX/crunchy-pgbackrest:$CCP_IMAGE_TAG
 docker push $CCP_IMAGE_PREFIX/crunchy-pgbackrest-repo:$CCP_IMAGE_TAG
