@@ -2,7 +2,7 @@ ARG BASEOS
 ARG BASEVER
 ARG PG_FULL
 ARG PREFIX
-FROM ${PREFIX}/crunchy-postgres:${BASEOS}-${PG_FULL}-${BASEVER}
+FROM ${PREFIX}/crunchy-postgres-gis-base:${BASEOS}-${PG_FULL}-${BASEVER}
 
 # For RHEL8 all arguments used in main code has to be specified after FROM
 ARG BASEOS
@@ -23,14 +23,11 @@ USER 0
 RUN if [ "$BASEOS" = "centos7" ] ; then \
 	${PACKAGER} -y install \
 		--setopt=skip_missing_names_on_install=False \
-		libRmath \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
 		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
 		postgresql${PG_MAJOR//.}-plperl \
-		perl \
-		R-core \
 	&& ${PACKAGER} -y clean all ; \
 fi
 
@@ -38,48 +35,23 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
 	${PACKAGER} -y install \
 		--setopt=skip_missing_names_on_install=False \
 		--enablerepo="powertools" \
-		libRmath \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
 		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
 		postgresql${PG_MAJOR//.}-plperl \
-		perl \
-		R-core \
 	&& ${PACKAGER} -y clean all ; \
-fi
-
-RUN if [ "$BASEOS" = "rhel7" ] ; then \
-	${PACKAGER} -y install \
-		--enablerepo="epel,rhel-7-server-optional-rpms" \
-		--setopt=skip_missing_names_on_install=False \
-		libRmath \
-		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
-		plr${PG_MAJOR//.} \
-		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
-		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
-		postgresql${PG_MAJOR//.}-plperl \
-		perl \
-		R-core \
-		texinfo-tex \
-		texlive-epsf \
-	&& ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
 fi
 
 RUN if [ "$BASEOS" = "ubi7" ] ; then \
 	${PACKAGER} -y install \
 		--enablerepo="epel,rhel-7-server-optional-rpms" \
 		--setopt=skip_missing_names_on_install=False \
-		libRmath \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
 		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
 		postgresql${PG_MAJOR//.}-plperl \
-		perl \
-		R-core \
-		texinfo-tex \
-		texlive-epsf \
 	&& ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
 fi
 
@@ -88,17 +60,11 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 	&& ${PACKAGER} -y install \
 		--enablerepo="epel" \
 		--setopt=skip_missing_names_on_install=False \
-		libRmath \
-		hdf5 \
-		openldap \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
 		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
 		postgresql${PG_MAJOR//.}-plperl \
-		perl \
-		R-core \
-		texlive-epsf \
 	&& ${PACKAGER} -y clean all --enablerepo="epel,codeready-builder-for-rhel-8-x86_64-rpms" ; \
 fi
 
