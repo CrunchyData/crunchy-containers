@@ -13,7 +13,6 @@ IMAGES=(
     crunchy-postgres
     crunchy-upgrade
     crunchy-postgres-ha
-    crunchy-admin
     crunchy-pgbackrest
     crunchy-pgbackrest-repo
 )

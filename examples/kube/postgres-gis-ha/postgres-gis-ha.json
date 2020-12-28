@@ -247,38 +247,6 @@
                         ],
                         "resources": {},
                         "imagePullPolicy": "IfNotPresent"
-                    },
-                    {
-                        "name": "crunchyadm",
-                        "image": "$CCP_IMAGE_PREFIX/crunchy-admin:$CCP_IMAGE_TAG",
-                        "securityContext": {
-                            "runAsUser": 17
-                        },
-                        "readinessProbe": {
-                            "exec": {
-                                "command": [
-                                    "/bin/bash",
-                                    "-c",
-                                    "[[ -f '/crunchyadm/pgha_initialized' ]]",
-                                    "&& pg_isready -h /crunchyadm -U crunchyready"
-                                ]
-                            },
-                            "initialDelaySeconds": 30,
-                            "timeoutSeconds": 8
-                        },
-                        "env": [
-                            {
-                                "name": "PGHOST",
-                                "value": "/crunchyadm"
-                            }
-                        ],
-                        "volumeMounts": [
-                            {
-                                "mountPath": "/crunchyadm",
-                                "name": "crunchyadm"
-                            }
-                        ],
-                        "imagePullPolicy": "IfNotPresent"
                     }
                 ],
                 "volumes": [
@@ -451,38 +419,6 @@
                             }
                         ],
                         "resources": {},
-                        "imagePullPolicy": "IfNotPresent"
-                    },
-                    {
-                        "name": "crunchyadm",
-                        "image": "$CCP_IMAGE_PREFIX/crunchy-admin:$CCP_IMAGE_TAG",
-                        "securityContext": {
-                            "runAsUser": 17
-                        },
-                        "readinessProbe": {
-                            "exec": {
-                                "command": [
-                                    "/bin/bash",
-                                    "-c",
-                                    "[[ -f '/crunchyadm/pgha_initialized' ]]",
-                                    "&& pg_isready -h /crunchyadm -U crunchyready"
-                                ]
-                            },
-                            "initialDelaySeconds": 30,
-                            "timeoutSeconds": 8
-                        },
-                        "env": [
-                            {
-                                "name": "PGHOST",
-                                "value": "/crunchyadm"
-                            }
-                        ],
-                        "volumeMounts": [
-                            {
-                                "mountPath": "/crunchyadm",
-                                "name": "crunchyadm"
-                            }
-                        ],
                         "imagePullPolicy": "IfNotPresent"
                     }
                 ],

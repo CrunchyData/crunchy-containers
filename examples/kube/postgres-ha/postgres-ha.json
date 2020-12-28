@@ -255,35 +255,6 @@
                         ],
                         "resources": {},
                         "imagePullPolicy": "IfNotPresent"
-                    },
-                    {
-                        "name": "crunchyadm",
-                        "image": "$CCP_IMAGE_PREFIX/crunchy-admin:$CCP_IMAGE_TAG",
-                        "securityContext": {
-                            "runAsUser": 17
-                        },
-                        "readinessProbe": {
-                            "exec": {
-                                "command": [
-                                    "/opt/cpm/bin/crunchyadm-readiness.sh"
-                                ]
-                            },
-                            "initialDelaySeconds": 30,
-                            "timeoutSeconds": 10
-                        },
-                        "env": [
-                            {
-                                "name": "PGHOST",
-                                "value": "/crunchyadm"
-                            }
-                        ],
-                        "volumeMounts": [
-                            {
-                                "mountPath": "/crunchyadm",
-                                "name": "crunchyadm"
-                            }
-                        ],
-                        "imagePullPolicy": "IfNotPresent"
                     }
                 ],
                 "volumes": [
@@ -458,35 +429,6 @@
                             }
                         ],
                         "resources": {},
-                        "imagePullPolicy": "IfNotPresent"
-                    },
-                    {
-                        "name": "crunchyadm",
-                        "image": "$CCP_IMAGE_PREFIX/crunchy-admin:$CCP_IMAGE_TAG",
-                        "securityContext": {
-                            "runAsUser": 17
-                        },
-                        "readinessProbe": {
-                            "exec": {
-                                "command": [
-                                    "/opt/cpm/bin/crunchyadm-readiness.sh"
-                                ]
-                            },
-                            "initialDelaySeconds": 30,
-                            "timeoutSeconds": 10
-                        },
-                        "env": [
-                            {
-                                "name": "PGHOST",
-                                "value": "/crunchyadm"
-                            }
-                        ],
-                        "volumeMounts": [
-                            {
-                                "mountPath": "/crunchyadm",
-                                "name": "crunchyadm"
-                            }
-                        ],
                         "imagePullPolicy": "IfNotPresent"
                     }
                 ],

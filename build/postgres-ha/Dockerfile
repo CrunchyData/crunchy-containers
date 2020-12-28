@@ -4,7 +4,7 @@ ARG PG_FULL
 ARG PREFIX
 
 FROM ${PREFIX}/crunchy-postgres:${BASEOS}-${PG_FULL}-${BASEVER}
-# crunchy-postgres image runs as USER 26, switch back to install packages 
+# crunchy-postgres image runs as USER 26, switch back to install packages
 USER 0
 
 # ===== Early lines ordered for leveraging cache, reorder carefully =====
@@ -70,8 +70,6 @@ fi
 # install patroni for Kube
 RUN pip3 install --upgrade python-dateutil \
 	&& pip3 install patroni[kubernetes]=="${PATRONI_VER}"
-
-RUN useradd crunchyadm -g 0 -u 17
 
 ENV PATH="${PGROOT}/bin:${PATH}"
 
