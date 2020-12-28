@@ -17,6 +17,8 @@ IMGBUILDER ?= buildah
 # Determines whether or not images should be pushed to the local docker daemon when building with
 # a tool other than docker (e.g. when building with buildah)
 IMG_PUSH_TO_DOCKER_DAEMON ?= true
+# The utility to use when pushing/pulling to and from an image repo (e.g. docker or buildah)
+IMG_PUSHER_PULLER ?= docker
 # Defines the sudo command that should be prepended to various build commands when rootless builds are
 # not enabled
 IMGCMDSUDO=
@@ -62,6 +64,17 @@ ifeq ("$(CCP_BASEOS)", "centos8")
 endif
 
 .PHONY:	all pgbackrest-images pg-independent-images pgimages
+
+# list of image names, helpful in pushing
+images = crunchy-postgres \
+	crunchy-postgres-ha \
+	crunchy-upgrade \
+	crunchy-pgbackrest \
+	crunchy-pgbackrest-repo \
+	crunchy-pgadmin4 \
+	crunchy-pgbadger \
+	crunchy-pgbouncer \
+	crunchy-pgpool
 
 # Default target
 all: pgimages pg-independent-images pgbackrest-images
@@ -355,7 +368,13 @@ setup:
 docbuild:
 	cd $(CCPROOT) && ./generate-docs.sh
 
-push:
-	./bin/push-to-dockerhub.sh
+push: push-gis $(images:%=push-%) ;
+
+push-gis:
+	$(IMG_PUSHER_PULLER) push $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_POSTGIS_IMAGE_TAG)
+	$(IMG_PUSHER_PULLER) push $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_POSTGIS_IMAGE_TAG)
+
+push-%:
+	$(IMG_PUSHER_PULLER) push $(CCP_IMAGE_PREFIX)/$*:$(CCP_IMAGE_TAG)
 
 -include Makefile.build
