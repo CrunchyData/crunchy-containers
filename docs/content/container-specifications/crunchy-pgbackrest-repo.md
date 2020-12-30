@@ -20,7 +20,7 @@ The following volumes are mounted by the `crunchy-pgbackrest-repo` container:
 
 The crunchy-backrest-repo image contains the following packages:
 
-* [pgBackRest](https://pgbackrest.org/) (2.29)
+* [pgBackRest](https://pgbackrest.org/) (2.31)
 * CentOS 7, CentOS 8 - publicly available
 * UBI 7, UBI 8 - customers only
 

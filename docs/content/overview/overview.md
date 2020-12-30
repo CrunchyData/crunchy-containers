@@ -123,7 +123,7 @@ Crunchy Container Suite provides support for two types of backups:
 
 *Physical* backup and restoration tools included in the Crunchy Container suite are:
 
-* [pgBackRest](2.29)
+* [pgBackRest](2.31)
   PostgreSQL images
 * [pg_basebackup](https://www.postgresql.org/docs/current/app-pgbasebackup.html) -
   provided by the Crunchy PostgreSQL image
