@@ -31,22 +31,44 @@ import (
 	"k8s.io/client-go/tools/remotecommand"
 )
 
-const backrestCommand = "pgbackrest"
-
-const backrestBackupCommand = `backup`
-const backrestInfoCommand = `info`
-const backrestStanzaCreateCommand = `stanza-create`
-const containername = "database"
-const repoTypeFlagS3 = "--repo1-type=s3"
-const noRepoS3VerifyTLS = "--no-repo1-s3-verify-tls"
-
-const PgtaskBackrestStanzaCreate = "stanza-create"
-const PgtaskBackrestInfo = "info"
-const PgtaskBackrestBackup = "backup"
-
 type KubeAPI struct {
 	Client *kubernetes.Clientset
 	Config *rest.Config
+}
+
+const backrestCommand = "pgbackrest"
+
+const (
+	backrestBackupCommand       = "backup"
+	backrestInfoCommand         = "info"
+	backrestStanzaCreateCommand = "stanza-create"
+)
+
+const (
+	repoTypeFlagS3    = "--repo1-type=s3"
+	noRepoS3VerifyTLS = "--no-repo1-s3-verify-tls"
+)
+
+const containerName = "database"
+
+const (
+	pgtaskBackrestStanzaCreate = "stanza-create"
+	pgtaskBackrestInfo         = "info"
+	pgtaskBackrestBackup       = "backup"
+)
+
+// getEnvRequired attempts to get an environmental variable that is required
+// by this program. If this cannot happen, we fatally exit
+func getEnvRequired(envVar string) string {
+	val := strings.TrimSpace(os.Getenv(envVar))
+
+	if val == "" {
+		log.Fatalf("required environmental variable %q not set, exiting.", envVar)
+	}
+
+	log.Debugf("%s set to: %s", envVar, val)
+
+	return val
 }
 
 func main() {
@@ -62,94 +84,67 @@ func main() {
 		panic(err)
 	}
 
-	debugFlag := os.Getenv("CRUNCHY_DEBUG")
-	if debugFlag == "true" {
+	debugFlag, _ := strconv.ParseBool(os.Getenv("CRUNCHY_DEBUG"))
+	if debugFlag {
 		log.SetLevel(log.DebugLevel)
-		log.Debug("debug flag set to true")
-	} else {
-		log.Info("debug flag set to false")
 	}
+	log.Info("debug flag set to %t", debugFlag)
 
-	Namespace := os.Getenv("NAMESPACE")
-	log.Debugf("setting NAMESPACE to %s", Namespace)
-	if Namespace == "" {
-		log.Error("NAMESPACE env var not set")
-		os.Exit(2)
-	}
+	namespace := getEnvRequired("NAMESPACE")
+	command := getEnvRequired("COMMAND")
+	podName := getEnvRequired("PODNAME")
 
-	Command := os.Getenv("COMMAND")
-	log.Debugf("setting COMMAND to %s", Command)
-	if Command == "" {
-		log.Error("COMMAND env var not set")
-		os.Exit(2)
-	}
+	commandOpts := os.Getenv("COMMAND_OPTS")
+	log.Debugf("COMMAND_OPTS set to: %s", commandOpts)
 
-	CommandOpts := os.Getenv("COMMAND_OPTS")
-	log.Debugf("setting COMMAND_OPTS to %s", CommandOpts)
-
-	PodName := os.Getenv("PODNAME")
-	log.Debugf("setting PODNAME to %s", PodName)
-	if PodName == "" {
-		log.Error("PODNAME env var not set")
-		os.Exit(2)
-	}
-
-	RepoType := os.Getenv("PGBACKREST_REPO_TYPE")
-	log.Debugf("setting REPO_TYPE to %s", RepoType)
+	repoType := os.Getenv("PGBACKREST_REPO1_TYPE")
+	log.Debugf("PGBACKREST_REPO1_TYPE set to: %s", repoType)
 
 	// determine the setting of PGHA_PGBACKREST_LOCAL_S3_STORAGE
 	// we will discard the error and treat the value as "false" if it is not
 	// explicitly set
-	LocalS3Storage, _ := strconv.ParseBool(os.Getenv("PGHA_PGBACKREST_LOCAL_S3_STORAGE"))
-	log.Debugf("setting PGHA_PGBACKREST_LOCAL_S3_STORAGE to %v", LocalS3Storage)
+	localS3Storage, _ := strconv.ParseBool(os.Getenv("PGHA_PGBACKREST_LOCAL_S3_STORAGE"))
+	log.Debugf("PGHA_PGBACKREST_LOCAL_S3_STORAGE set to: %t", localS3Storage)
 
 	// parse the environment variable and store the appropriate boolean value
 	// we will discard the error and treat the value as "false" if it is not
 	// explicitly set
-	S3VerifyTLS, _ := strconv.ParseBool(os.Getenv("PGHA_PGBACKREST_S3_VERIFY_TLS"))
-	log.Debugf("setting PGHA_PGBACKREST_S3_VERIFY_TLS to %v", S3VerifyTLS)
+	s3VerifyTLS, _ := strconv.ParseBool(os.Getenv("PGHA_PGBACKREST_S3_VERIFY_TLS"))
+	log.Debugf("PGHA_PGBACKREST_S3_VERIFY_TLS set to: %t", s3VerifyTLS)
 
-	bashcmd := make([]string, 1)
-	bashcmd[0] = "bash"
-	cmdStrs := make([]string, 0)
+	bashCmd := []string{"bash"}
+	cmdStrs := []string{backrestCommand}
 
-	switch Command {
-	case PgtaskBackrestStanzaCreate:
-		log.Info("backrest stanza-create command requested")
-		cmdStrs = append(cmdStrs, backrestCommand)
-		cmdStrs = append(cmdStrs, backrestStanzaCreateCommand)
-		cmdStrs = append(cmdStrs, CommandOpts)
-	case PgtaskBackrestInfo:
-		log.Info("backrest info command requested")
-		cmdStrs = append(cmdStrs, backrestCommand)
-		cmdStrs = append(cmdStrs, backrestInfoCommand)
-		cmdStrs = append(cmdStrs, CommandOpts)
-	case PgtaskBackrestBackup:
-		log.Info("backrest backup command requested")
-		cmdStrs = append(cmdStrs, backrestCommand)
-		cmdStrs = append(cmdStrs, backrestBackupCommand)
-		cmdStrs = append(cmdStrs, CommandOpts)
+	switch command {
 	default:
-		log.Error("unsupported backup command specified " + Command)
-		os.Exit(2)
+		log.Fatalf("unsupported backup command specified: %s", command)
+	case pgtaskBackrestStanzaCreate:
+		log.Info("backrest stanza-create command requested")
+		cmdStrs = append(cmdStrs, backrestStanzaCreateCommand, commandOpts)
+	case pgtaskBackrestInfo:
+		log.Info("backrest info command requested")
+		cmdStrs = append(cmdStrs, backrestInfoCommand, commandOpts)
+	case pgtaskBackrestBackup:
+		log.Info("backrest backup command requested")
+		cmdStrs = append(cmdStrs, backrestBackupCommand, commandOpts)
 	}
 
-	if LocalS3Storage {
-		firstCmd := cmdStrs
-		cmdStrs = append(cmdStrs, "&&")
-		cmdStrs = append(cmdStrs, strings.Join(firstCmd, " "))
-		cmdStrs = append(cmdStrs, repoTypeFlagS3)
+	if localS3Storage {
+		// if the first backup fails, still attempt the 2nd one
+		cmdStrs = append(cmdStrs, ";")
+		cmdStrs = append(cmdStrs, cmdStrs...)
+		cmdStrs[len(cmdStrs)-1] = repoTypeFlagS3 // a trick to overwite the second ";"
 		// pass in the flag to disable TLS verification, if set
 		// otherwise, maintain default behavior and verify TLS
-		if !S3VerifyTLS {
+		if !s3VerifyTLS {
 			cmdStrs = append(cmdStrs, noRepoS3VerifyTLS)
 		}
 		log.Info("backrest command will be executed for both local and s3 storage")
-	} else if RepoType == "s3" {
+	} else if repoType == "s3" {
 		cmdStrs = append(cmdStrs, repoTypeFlagS3)
 		// pass in the flag to disable TLS verification, if set
 		// otherwise, maintain default behavior and verify TLS
-		if !S3VerifyTLS {
+		if !s3VerifyTLS {
 			cmdStrs = append(cmdStrs, noRepoS3VerifyTLS)
 		}
 		log.Info("s3 flag enabled for backrest command")
@@ -157,14 +152,12 @@ func main() {
 
 	log.Infof("command to execute is [%s]", strings.Join(cmdStrs, " "))
 
-	log.Infof("command is %s ", strings.Join(cmdStrs, " "))
 	reader := strings.NewReader(strings.Join(cmdStrs, " "))
-	output, stderr, err := k.Exec(Namespace, PodName, containername, reader, bashcmd)
+	output, stderr, err := k.Exec(namespace, podName, containerName, reader, bashCmd)
 	if err != nil {
 		log.Info("output=[" + output + "]")
 		log.Info("stderr=[" + stderr + "]")
-		log.Error(err)
-		os.Exit(2)
+		log.Fatal(err)
 	}
 	log.Info("output=[" + output + "]")
 	log.Info("stderr=[" + stderr + "]")
@@ -173,7 +166,8 @@ func main() {
 
 }
 
-// exec returns the stdout and stderr from running a command inside an existing container.
+// Exec returns the stdout and stderr from running a command inside an existing
+// container.
 func (k *KubeAPI) Exec(namespace, pod, container string, stdin io.Reader, command []string) (string, string, error) {
 	var stdout, stderr bytes.Buffer
 
