@@ -89,7 +89,7 @@ line starting with #:
     export GOPATH=$HOME/cdev        # set path to your new Go workspace
     export GOBIN=$GOPATH/bin        # set bin path
     export PATH=$PATH:$GOBIN        # add Go bin path to your overall path
-    export CCP_BASEOS=centos7       # centos7 for Centos, ubi7 for Red Hat Universal Base Image
+    export CCP_BASEOS=centos8       # centos8 for CentOS, ubi8 for Red Hat Universal Base Image
     export CCP_PGVERSION=12         # The PostgreSQL major version
     export CCP_PG_FULLVERSION=13.1
     export CCP_POSTGIS_VERSION=3.0  # The PostGIS version

@@ -3,7 +3,7 @@ ifndef CCPROOT
 endif
 
 # Default values if not already set
-CCP_BASEOS ?= centos7
+CCP_BASEOS ?= centos8
 CCP_PGVERSION ?= 12
 CCP_PG_FULLVERSION ?= 13.1
 CCP_PATRONI_VERSION ?= 2.0.1
