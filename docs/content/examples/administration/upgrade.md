@@ -8,16 +8,16 @@ weight: 81
 ## Major Upgrade
 
 {{% notice tip %}}
-This example assumes you have run *primary* using a PostgreSQL 11 or 12 image
-such as `centos7-12.5-4.5.1` prior to running this upgrade.
+This example assumes you have run *primary* using a PostgreSQL 12 or 13 image
+such as `centos7-13.1-4.5.1` prior to running this upgrade.
 {{% /notice %}}
 
-The upgrade container will let you perform a `pg_upgrade` from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.
+The upgrade container will let you perform a `pg_upgrade` from a PostgreSQL version 9.5, 9.6, 10, 11, 12, or 13 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, 12, and 13. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.
 
 Prior to running this example, make sure your `CCP_IMAGE_TAG`
 environment variable is using the next major version of PostgreSQL that you
-want to upgrade to. For example, if you're upgrading from 11 to 12, make
-sure the variable references a PostgreSQL 12 image such as `centos7-12.5-4.5.1`.
+want to upgrade to. For example, if you're upgrading from 12 to 13, make
+sure the variable references a PostgreSQL 13 image such as `centos7-13.1-4.5.1`.
 
 This will create the following in your Kubernetes environment:
 
