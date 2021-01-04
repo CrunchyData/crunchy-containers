@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2019 - 2020 Crunchy Data Solutions, Inc.
+# Copyright 2019 - 2021 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -452,9 +452,9 @@ build_bootstrap_config_file
 
 # If the PGHA_INIT flag is 'true' and we're initializing from an existing PGDATA directory, then
 # proceed with preparing the PGDATA directory for the 'existing_init' bootstrap method.
-# Specifically, temporarily rename the existing PGDATA directory so that the true PGDATA 
+# Specifically, temporarily rename the existing PGDATA directory so that the true PGDATA
 # directory remains empty.  This will cause Patroni to call the 'existing_init' bootstrap method,
-# which will undo the directory name change and allow initialization to proceed using the data 
+# which will undo the directory name change and allow initialization to proceed using the data
 # contained within the existing PGDATA directory.
 if [[ "${PGHA_INIT}" == "true" ]] && [[ "${PGHA_BOOTSTRAP_METHOD}" == "existing_init" ]]
 then
