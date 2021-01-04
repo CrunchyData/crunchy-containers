@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2019 - 2020 Crunchy Data Solutions, Inc.
+# Copyright 2019 - 2021 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -26,7 +26,7 @@ env_check_err "MODE"
 
 echo_info "Image mode found: ${MODE}"
 
-case $MODE in 
+case $MODE in
     pgbackrest)
       echo_info "Starting in 'pgbackrest' mode"
       exec "${CRUNCHY_DIR}/bin/pgbackrest"

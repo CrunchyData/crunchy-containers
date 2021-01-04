@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2019 - 2020 Crunchy Data Solutions, Inc.
+# Copyright 2019 - 2021 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -38,7 +38,7 @@ state=$(echo "${local_node_json}" | "${CRUNCHY_DIR}/bin/yq" r - state)
 # by looking for the "failover_backup_status" tag in the DCS
 primary_on_role_change=$(curl --silent "127.0.0.1:${PGHA_PATRONI_PORT}/config" \
     | "${CRUNCHY_DIR}/bin/yq" r - tags.primary_on_role_change)
-            
+
 # if configured to reinit a replica when a "start failed" state is detected, and if a backup
 # is not current in progress following a failover, then reinitialize the replica by calling
 # the "reinitialize" endpoint on the local Patroni node
