@@ -12,6 +12,7 @@ the following combinations:
 - PostgreSQL 9.6 / PostgreSQL 10
 - PostgreSQL 10 / PostgreSQL 11
 - PostgreSQL 11 / PostgreSQL 12
+- PostgreSQL 12 / PostgreSQL 13
 
 ## Features
 
@@ -29,6 +30,7 @@ The following features are supported by the crunchy-upgrade container:
  - 9.6 to 10
  - 10 to 11
  - 11 to 12
+ - 12 to 13
 
 ## Packages
 

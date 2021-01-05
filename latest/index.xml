@@ -41,7 +41,7 @@ Environment Variables Required    Name Default Description     MODE None Set to 
       
       <guid>https://crunchydata.github.io/crunchy-containers/latest/overview/overview/</guid>
       <description>Overview The following provides a high level overview of each of the container images.
-CentOS vs Red Hat UBI Images The Crunchy Container suite provides two different OS images: centos7 and ubi7. Both images utilize Crunchy Ceritifed RPM&amp;rsquo;s for the installation of PostgreSQL, and outside of the base images utilized to build the containers and any packages included within them (either CentOS or UBI), both are effectively the same. The ubi7 images are available to active Crunchy Data Customers only, and are built using the Red Hat Universal Base Image (UBI).</description>
+CentOS vs Red Hat UBI Images The Crunchy Container suite provides four different OS images: centos7, centos8, ubi7, and ubi8. Both images utilize Crunchy Ceritifed RPM&amp;rsquo;s for the installation of PostgreSQL, and outside of the base images utilized to build the containers and any packages included within them (either CentOS or UBI), both are effectively the same.</description>
     </item>
     
     <item>
@@ -232,7 +232,7 @@ For this test, we place pg_audit statements within a SQL script and verify that 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/latest/examples/administration/upgrade/</guid>
-      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 11 or 12 image such as `centos7-12.5-4.5.1` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
+      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 12 or 13 image such as `centos8-13.1-4.6.0-beta.1` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11, 12, or 13 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, 12, and 13. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
     </item>
     
     <item>
@@ -417,7 +417,7 @@ This image is identical to the crunchy-postgres-gis image except it is built spe
       
       <guid>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-upgrade/</guid>
       <description>The crunchy-upgrade container contains multiple versions of PostgreSQL in order to perform a pg_upgrade between major versions of PostgreSQL. This includes the following combinations:
- PostgreSQL 9.5 / PostgreSQL 9.6 PostgreSQL 9.6 / PostgreSQL 10 PostgreSQL 10 / PostgreSQL 11 PostgreSQL 11 / PostgreSQL 12  Features The following features are supported by the crunchy-upgrade container:
+ PostgreSQL 9.5 / PostgreSQL 9.6 PostgreSQL 9.6 / PostgreSQL 10 PostgreSQL 10 / PostgreSQL 11 PostgreSQL 11 / PostgreSQL 12 PostgreSQL 12 / PostgreSQL 13  Features The following features are supported by the crunchy-upgrade container:
  Supports a pg_upgrade of the PostgreSQL database. Doesn&amp;rsquo;t alter the old database files.</description>
     </item>
     

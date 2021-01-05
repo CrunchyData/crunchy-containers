@@ -11,10 +11,10 @@ The following provides a high level overview of each of the container images.
 
 ## CentOS vs Red Hat UBI Images
 
-The Crunchy Container suite provides two different OS images: `centos7` and `ubi7`.  Both images
+The Crunchy Container suite provides four different OS images: `centos7`, `centos8`, `ubi7`, and `ubi8`.  Both images
 utilize Crunchy Ceritifed RPM's for the installation of PostgreSQL, and outside of the base images
 utilized to build the containers and any packages included within them (either CentOS or UBI), both
-are effectively the same.  The `ubi7` images are available to active Crunchy Data Customers only,
+are effectively the same.  The `ubi7` and `ubi8` images are available to active Crunchy Data Customers only,
 and are built using the Red Hat Universal Base Image (UBI).
 
 Please note that as of version 4.2.2 of the Crunchy Containers Suite, the `ubi7` images have
@@ -32,11 +32,11 @@ Crunchy Container Suite provides two types of PostgreSQL database images:
 
 Supported major versions of these images are:
 
+- 13
 - 12
 - 11
 - 10
 - 9.6
-- 9.5
 
 ### Crunchy PostgreSQL
 
@@ -96,7 +96,7 @@ The `pgrestore` mode allows users to restore a PostgreSQL database from
 
 ###### Sqlrunner
 
-The `sqlrunner` mode uses [psql](https://www.postgresql.org/docs/current/app-psql.html) to run all of the SQL files that are provided in the `/pgconf` volume. 
+The `sqlrunner` mode uses [psql](https://www.postgresql.org/docs/current/app-psql.html) to run all of the SQL files that are provided in the `/pgconf` volume.
 
 ###### pgBench
 
@@ -169,6 +169,7 @@ Visit the official pgAdmin4 website for more information: https://www.pgadmin.or
 The Crunchy Upgrade image allows users to perform major upgrades of their Crunchy
 PostgreSQL containers.  The following upgrade versions of PostgreSQL are available:
 
+- 13
 - 12
 - 11
 - 10
