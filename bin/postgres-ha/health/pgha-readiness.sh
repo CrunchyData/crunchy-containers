@@ -22,7 +22,7 @@ source "${CRUNCHY_DIR}/bin/postgres-ha/common/pgha-common.sh"
 # while the cluster is initializing, readiness is determined based on whether or not the
 # 'pgha_initialized' file exists.  Once the cluster has been initialized and this file has been
 # created, the Patroni "health" endpoint will then be utilized for any future readiness checks.
-if [[ -f "/crunchyadm/pgha_initialized" ]]
+if [[ -f "/tmp/pgha_initialized" ]]
 then
 
     # set the Patroni port
@@ -33,7 +33,7 @@ then
 
     # the local node is considered heathly if the HTTP status code returned from the local "health"
     # endpoint is greated than 200 or less than 400, in accordance with the Kubernetes documenation
-    # for HTTP readiness checks, i.e. per the docs "any code greater than or equal to 200 and less 
+    # for HTTP readiness checks, i.e. per the docs "any code greater than or equal to 200 and less
     # than 400 indicates success. Any other code indicates failure."
     if [[ $status_code -ge 200 && $status_code -lt 400 ]]
     then

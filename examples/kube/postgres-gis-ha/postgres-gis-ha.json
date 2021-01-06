@@ -102,8 +102,8 @@
                                 "command": [
                                     "/bin/bash",
                                     "-c",
-                                    "[[ -f '/crunchyadm/pgha_initialized' ]]",
-                                    "&& pg_isready -h /crunchyadm -U crunchyready"
+                                    "[[ -f '/tmp/pgha_initialized' ]]",
+                                    "&& pg_isready -h /tmp"
                                 ]
                             },
                             "initialDelaySeconds": 30,
@@ -201,10 +201,6 @@
                             {
                                 "name": "PGHA_INIT",
                                 "value": "true"
-                            },
-                            {
-                                "name": "PGHA_CRUNCHYADM",
-                                "value": "true"
                             }
                         ],
                         "volumeMounts": [
@@ -229,10 +225,6 @@
                             {
                                 "mountPath": "/pgconf/pgreplicator",
                                 "name": "pgreplicator"
-                            },
-                            {
-                                "mountPath": "/crunchyadm",
-                                "name": "crunchyadm"
                             }
                         ],
                         "ports": [
@@ -279,10 +271,6 @@
                         "secret": {
                             "secretName": "postgres-gis-ha-pgreplicator"
                         }
-                    },
-                    {
-                        "name": "crunchyadm",
-                        "emptyDir": {}
                     }
                 ],
                 "restartPolicy": "Always",
@@ -339,8 +327,8 @@
                                 "command": [
                                     "/bin/bash",
                                     "-c",
-                                    "[[ -f '/crunchyadm/pgha_initialized' ]]",
-                                    "&& pg_isready -h /crunchyadm -U crunchyready"
+                                    "[[ -f '/tmp/pgha_initialized' ]]",
+                                    "&& pg_isready -h /tmp"
                                 ]
                             },
                             "initialDelaySeconds": 30,
@@ -366,10 +354,6 @@
                             {
                                 "name": "PATRONI_POSTGRESQL_DATA_DIR",
                                 "value": "/pgdata/postgres-gis-ha-02"
-                            },
-                            {
-                                "name": "PGHA_CRUNCHYADM",
-                                "value": "true"
                             },
                             {
                                 "name": "PATRONI_SCOPE",
@@ -402,10 +386,6 @@
                             {
                                 "mountPath": "/pgconf/pgreplicator",
                                 "name": "pgreplicator"
-                            },
-                            {
-                                "mountPath": "/crunchyadm",
-                                "name": "crunchyadm"
                             }
                         ],
                         "ports": [
@@ -452,10 +432,6 @@
                         "secret": {
                             "secretName": "postgres-gis-ha-pgreplicator"
                         }
-                    },
-                    {
-                        "name": "crunchyadm",
-                        "emptyDir": {}
                     }
                 ],
                 "restartPolicy": "Always",
