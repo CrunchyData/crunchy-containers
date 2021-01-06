@@ -207,10 +207,6 @@
                                 "value": "true"
                             },
                             {
-                                "name": "PGHA_CRUNCHYADM",
-                                "value": "true"
-                            },
-                            {
                                 "name": "PGHA_REPLICA_REINIT_ON_START_FAIL",
                                 "value": "true"
                             }
@@ -237,10 +233,6 @@
                             {
                                 "mountPath": "/pgconf/pgreplicator",
                                 "name": "pgreplicator"
-                            },
-                            {
-                                "mountPath": "/crunchyadm",
-                                "name": "crunchyadm"
                             }
                         ],
                         "ports": [
@@ -287,10 +279,6 @@
                         "secret": {
                             "secretName": "postgres-ha-pgreplicator"
                         }
-                    },
-                    {
-                        "name": "crunchyadm",
-                        "emptyDir": {}
                     }
                 ],
                 "restartPolicy": "Always",
@@ -382,10 +370,6 @@
                                 "value": "/pgdata/postgres-ha-02"
                             },
                             {
-                                "name": "PGHA_CRUNCHYADM",
-                                "value": "true"
-                            },
-                            {
                                 "name": "PGHA_REPLICA_REINIT_ON_START_FAIL",
                                 "value": "true"
                             }
@@ -412,10 +396,6 @@
                             {
                                 "mountPath": "/pgconf/pgreplicator",
                                 "name": "pgreplicator"
-                            },
-                            {
-                                "mountPath": "/crunchyadm",
-                                "name": "crunchyadm"
                             }
                         ],
                         "ports": [
@@ -462,10 +442,6 @@
                         "secret": {
                             "secretName": "postgres-ha-pgreplicator"
                         }
-                    },
-                    {
-                        "name": "crunchyadm",
-                        "emptyDir": {}
                     }
                 ],
                 "restartPolicy": "Always",

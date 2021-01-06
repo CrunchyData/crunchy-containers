@@ -145,7 +145,7 @@ initialization_monitor() {
             fi
         fi
 
-        touch "/crunchyadm/pgha_initialized"  # write file to indicate the cluster is fully initialized
+        touch "/tmp/pgha_initialized"  # write file to indicate the cluster is fully initialized
         echo_info "Node ${PATRONI_NAME} fully initialized for cluster ${PATRONI_SCOPE} and is ready for use"
     } &
 }

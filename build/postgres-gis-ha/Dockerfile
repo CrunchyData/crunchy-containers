@@ -73,13 +73,13 @@ RUN pip3 install --upgrade python-dateutil \
 
 ENV PATH="${PGROOT}/bin:${PATH}"
 
-RUN mkdir -p /crunchyadm /tablespaces
+RUN mkdir -p /tablespaces
 
 # Adjust ownership for the folders to be the "postgres" user and allow the group
 # permissions to match the user ones EXCEPT for the /tablespaces folder, which
 # will only have permissions on the user
-RUN chown -R postgres:postgres /crunchyadm /tablespaces && \
-	chmod -R g=u /crunchyadm /tablespaces
+RUN chown -R postgres:postgres /tablespaces && \
+	chmod -R g=u /tablespaces
 
 # open up the postgres port
 EXPOSE 5432
