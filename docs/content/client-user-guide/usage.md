@@ -55,7 +55,7 @@ in the various environments shown in this guide:
 - [Docker Cheat Sheet](http://www.bogotobogo.com/DevOps/Docker/Docker-Cheat-Sheet.php)
 - [Kubectl Cheat Sheet](https://kubernetes.io/docs/user-guide/kubectl-cheatsheet/)
 - [OpenShift Cheat Sheet](https://github.com/nekop/openshift-sandbox/blob/master/docs/command-cheatsheet.md)
-- [Helm Cheat Sheet](https://github.com/kubernetes/helm/blob/master/docs/using_helm.md)
+- [Helm Cheat Sheet](https://github.com/helm/helm-www/blob/master/content/en/docs/intro/using_helm.md)
 
 ## <a name="crunchy-container-suite-examples"></a>Crunchy Container Suite Examples
 
