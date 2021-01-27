@@ -84,7 +84,9 @@ LABEL name="postgres" \
 	description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas. Includes utilities and tools for Auditing (pgaudit), statement tracking,  Backup/Restore (pgbackrest, pg_basebackup, pgdump, pgrestore) and Benchmarking (pgbench)." \
 	io.k8s.description="Crunchy PostgreSQL is the trusted open source distribution of PostgreSQL" \
 	io.k8s.display-name="Crunchy PostgreSQL" \
-	io.openshift.tags="postgresql,postgres,sql,nosql,database,crunchy"
+	io.openshift.tags="postgresql,postgres,sql,nosql,database,crunchy" \
+	postgresql.version.major="${PG_MAJOR}" \
+	postgresql.version="${PG_FULL}"
 
 # set up crunchy directory
 RUN mkdir -p /opt/crunchy/bin /opt/crunchy/conf /pgdata /pgwal /pgconf /recover /backrestrepo
