@@ -19,8 +19,8 @@ LABEL name="pgpool" \
 
 RUN ${PACKAGER} -y install \
 		--setopt=skip_missing_names_on_install=False \
-		pgpool-II-${PG_MAJOR//.} \
-		pgpool-II-${PG_MAJOR//.}-extensions \
+		pgpool-II_${PG_MAJOR//.} \
+		pgpool-II_${PG_MAJOR//.}-extensions \
 	&& ${PACKAGER} -y clean all
 
 # Preserving PGVERSION out of paranoia
@@ -32,8 +32,8 @@ ADD bin/pgpool /opt/crunchy/bin
 ADD bin/common /opt/crunchy/bin
 ADD conf/pgpool /opt/crunchy/conf
 
-RUN ln -sf /opt/crunchy/conf/pool_hba.conf /etc/pgpool-II-${PG_MAJOR//.}/pool_hba.conf \
-	&& ln -sf /opt/crunchy/conf/pgpool/pool_passwd /etc/pgpool-II-${PG_MAJOR//.}/pool_passwd
+RUN ln -sf /opt/crunchy/conf/pool_hba.conf /etc/pgpool-II_${PG_MAJOR//.}/pool_hba.conf \
+	&& ln -sf /opt/crunchy/conf/pgpool/pool_passwd /etc/pgpool-II_${PG_MAJOR//.}/pool_passwd
 
 RUN chgrp -R 0 /opt/crunchy && \
 	chmod -R g=u /opt/crunchy
