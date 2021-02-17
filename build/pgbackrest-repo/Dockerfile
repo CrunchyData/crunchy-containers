@@ -27,7 +27,8 @@ ADD bin/pgbackrest-repo/uid_pgbackrest.sh /opt/crunchy/bin
 # set permissions for pgbackrest user
 RUN chmod g=u /etc/passwd \
 	&& chmod g=u /etc/group \
-	&& chmod -R g=u /etc/pgbackrest
+	&& chmod -R g=u /etc/pgbackrest \
+	&& rm -f /run/nologin
 
 # set ownership to pgbackrest user
 RUN chown pgbackrest:pgbackrest /.ssh && chmod o+rwx /.ssh
