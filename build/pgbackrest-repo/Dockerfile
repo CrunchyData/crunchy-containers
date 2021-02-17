@@ -19,7 +19,7 @@ RUN groupadd pgbackrest -g 2000 && useradd pgbackrest -u 2000 -g 2000
 
 # set ownership and permissions for pgbackrest user and group
 RUN chown -R pgbackrest:pgbackrest /opt/crunchy \
-	&& chown -R pgbackrest:pgbackrest /etc/pgbackrest
+	&& chown -R root:pgbackrest /etc/pgbackrest
 
 # add pgbackrest user and group script
 ADD bin/pgbackrest-repo/uid_pgbackrest.sh /opt/crunchy/bin
