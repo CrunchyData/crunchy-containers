@@ -42,8 +42,23 @@ else
     fi
     # make sure backrest is stopped before writing to the db in the even we are connected to an
     # active repostiory for another cluster, such as when bootstrapping using 'pgbackrest_init'
-    pgbackrest stop
-    err_check "$?" "post bootstrap" "Could not stop pgBackRest, ${setup_file}" will not be run
+    # get the name of the cluster source from the pgBackRest repository
+    if [[ "${PGBACKREST_REPO1_PATH}" =~ \/backrestrepo\/(.*)-backrest-shared-repo$ ]];
+    then
+        bootstrap_cluster_source="${BASH_REMATCH[1]}"
+    fi
+
+    # get the name of the cluster target
+    if [[ "${PGBACKREST_DB_PATH}" =~ \/pgdata\/(.*)$ ]];
+    then
+        bootstrap_cluster_target="${BASH_REMATCH[1]}"
+    fi
+
+    if [[ "${bootstrap_cluster_source}" != "${bootstrap_cluster_target}" ]];
+    then
+        pgbackrest stop
+        err_check "$?" "post bootstrap" "Could not stop pgBackRest, ${setup_file} will not be run"
+    fi
 fi
 
 echo_info "Running ${setup_file} file"

@@ -384,13 +384,34 @@ build_bootstrap_config_file() {
       /opt/cpm/bin/yq m -i -a "${pghba_file}" "/opt/cpm/conf/postgres-ha-pghba-notls.yaml"
     fi
 
-    # Disable archive_mode to prevent WAL from being pushed while potentially still connected
-    # to another pgBackRest repository while initializing (e.g. while performing a pgBackRest
-    # restore)
+    # If this is being restored to a new cluster, disable archive_mode to
+    # prevent WAL from being pushed while potentiallystill connected to another
+    # pgBackRest repository while initializing (e.g. while performing a
+    # pgBackRest restore).
+    #
+    # Otherwise, ensure that archive_mode is set explicitly to on.
     if [[ "${PGHA_BOOTSTRAP_METHOD}" != "initdb" ]]
     then
-      echo_info "Disabling archive mode for bootstrap method ${PGHA_BOOTSTRAP_METHOD}"
-      /opt/cpm/bin/yq w -i "${bootstrap_file}" postgresql.parameters.archive_mode "off"
+        # get the name of the cluster source from the pgBackRest repository
+        if [[ "${PGBACKREST_REPO1_PATH}" =~ \/backrestrepo\/(.*)-backrest-shared-repo$ ]];
+        then
+            bootstrap_cluster_source="${BASH_REMATCH[1]}"
+        fi
+
+        # get the name of the cluster target
+        if [[ "${PGBACKREST_DB_PATH}" =~ \/pgdata\/(.*)$ ]];
+        then
+            bootstrap_cluster_target="${BASH_REMATCH[1]}"
+        fi
+
+        if [[ "${bootstrap_cluster_source}" != "${bootstrap_cluster_target}" ]];
+        then
+            echo_info "Disabling archive mode for bootstrap method ${PGHA_BOOTSTRAP_METHOD}"
+            "${CRUNCHY_DIR}/bin/yq" w -i "${bootstrap_file}" postgresql.parameters.archive_mode "off"
+        else
+            echo_info "Enabling archive mode for bootstrap method ${PGHA_BOOTSTRAP_METHOD}"
+            "${CRUNCHY_DIR}/bin/yq" w -i "${bootstrap_file}" postgresql.parameters.archive_mode "on"
+        fi
     fi
 
     # merge the pg_hba.conf settings into the main bootstrap file
