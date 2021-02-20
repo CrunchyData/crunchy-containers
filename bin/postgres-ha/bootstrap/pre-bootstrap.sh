@@ -413,11 +413,8 @@ build_bootstrap_config_file() {
 
         if [[ "${bootstrap_cluster_source}" != "${bootstrap_cluster_target}" ]];
         then
-            echo_info "Disabling archive mode for bootstrap method ${PGHA_BOOTSTRAP_METHOD}"
-            "${CRUNCHY_DIR}/bin/yq" w -i "${bootstrap_file}" postgresql.parameters.archive_mode "off"
-        else
-            echo_info "Enabling archive mode for bootstrap method ${PGHA_BOOTSTRAP_METHOD}"
-            "${CRUNCHY_DIR}/bin/yq" w -i "${bootstrap_file}" postgresql.parameters.archive_mode "on"
+            echo_info "Disabling archiving for bootstrap method ${PGHA_BOOTSTRAP_METHOD}"
+            /opt/cpm/bin/yq w -i --style=single "${bootstrap_file}" postgresql.parameters.archive_command "false"
         fi
     fi
 
