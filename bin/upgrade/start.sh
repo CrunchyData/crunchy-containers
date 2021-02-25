@@ -53,7 +53,17 @@ dir_check_err "${PGDATANEW?}"
 
 # Set the postgres binary to match the NEW_VERSION
 
-case $NEW_VERSION in
+  case $NEW_VERSION in
+"13")
+    echo_info "Setting PGBINNEW to ${NEW_VERSION}."
+    export PGBINNEW=/usr/pgsql-13/bin
+    export LD_LIBRARY_PATH=/usr/pgsql-13/lib
+    ;;
+"12")
+    echo_info "Setting PGBINNEW to ${NEW_VERSION}."
+    export PGBINNEW=/usr/pgsql-12/bin
+    export LD_LIBRARY_PATH=/usr/pgsql-12/lib
+    ;;
 "11")
     echo_info "Setting PGBINNEW to ${NEW_VERSION}."
     export PGBINNEW=/usr/pgsql-11/bin
@@ -80,6 +90,14 @@ case $NEW_VERSION in
     ;;
 esac
 case $OLD_VERSION in
+"12")
+    echo_info "Setting PGBINOLD to ${OLD_VERSION}."
+    export PGBINOLD=/usr/pgsql-12/bin
+    ;;
+"11")
+    echo_info "Setting PGBINOLD to ${OLD_VERSION}."
+    export PGBINOLD=/usr/pgsql-11/bin
+    ;;
 "10")
     echo_info "Setting PGBINOLD to ${OLD_VERSION}."
     export PGBINOLD=/usr/pgsql-10/bin
