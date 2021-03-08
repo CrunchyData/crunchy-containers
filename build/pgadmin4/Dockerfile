@@ -56,7 +56,8 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
         && chmod -R g=u /usr/lib/python3.6/site-packages/pgadmin4-web \
                 /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
         && ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python3.6/site-packages/pgadmin4-web/config_local.py \
-        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf ; \
+        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf \
+        && alternatives --set python /usr/bin/python3 ; \
 fi
 
 RUN if [ "$BASEOS" = "ubi7" ] ; then \
@@ -95,7 +96,8 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
         && chmod -R g=u /usr/lib/python3.6/site-packages/pgadmin4-web \
                 /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
         && ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python3.6/site-packages/pgadmin4-web/config_local.py \
-        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf ; \
+        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf \
+        && alternatives --set python /usr/bin/python3 ; \
 fi
 
 # Preserving PGVERSION out of paranoia
