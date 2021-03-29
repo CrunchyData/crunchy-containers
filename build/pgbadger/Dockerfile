@@ -75,12 +75,12 @@ RUN chown -R postgres:postgres /opt/crunchy /report /bin && \
 # pgbadger port
 EXPOSE 10000
 
-RUN chmod g=u /etc/passwd && \
-	chmod g=u /etc/group
-
 # The VOLUME directive must appear after all RUN directives to ensure the proper
 # volume permissions are applied when building the image
 VOLUME ["/pgdata", "/report"]
+
+# Defines a unique directory name that will be utilized by the nss_wrapper in the UID script
+ENV NSS_WRAPPER_SUBDIR="pgbadger"
 
 ENTRYPOINT ["opt/crunchy/bin/uid_postgres.sh"]
 

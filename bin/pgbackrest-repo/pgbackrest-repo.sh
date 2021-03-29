@@ -13,6 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# define the default nss_wrapper dir for this container and the ssh nss_wrapper dir
+NSS_WRAPPER_DEFAULT_DIR="/tmp/nss_wrapper/pgbackrest-repo"
+NSS_WRAPPER_SSH_DIR="/tmp/nss_wrapper/ssh"
+
+# Configures nss_wrapper passwd and group files for SSH connections
+function nss_wrapper_ssh() {
+    mkdir -p "${NSS_WRAPPER_SSH_DIR}"
+    cp "${NSS_WRAPPER_DEFAULT_DIR}/passwd" "${NSS_WRAPPER_SSH_DIR}"
+    cp "${NSS_WRAPPER_DEFAULT_DIR}/group" "${NSS_WRAPPER_SSH_DIR}"
+}
 
 function trap_sigterm() {
 	echo "Signal trap triggered, beginning shutdown.."
@@ -22,6 +32,10 @@ function trap_sigterm() {
 trap 'trap_sigterm' SIGINT SIGTERM
 
 echo "Starting the pgBackRest repo"
+
+# configure nss_wrapper files for ssh connections
+nss_wrapper_ssh
+echo "nss_wrapper: ssh configured"
 
 CONFIG=/sshd
 REPO=/backrestrepo
@@ -67,10 +81,8 @@ then
 	
 fi
 
-mkdir -p ~/.ssh/
-cp $CONFIG/config ~/.ssh/
 cp $CONFIG/id_ed25519 /tmp
-chmod 400 /tmp/id_ed25519 ~/.ssh/config
+chmod 400 /tmp/id_ed25519
 
 # start sshd which is used by pgbackrest for remote connections
 /usr/sbin/sshd -D -f $CONFIG/sshd_config   &

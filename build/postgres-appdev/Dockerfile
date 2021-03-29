@@ -75,15 +75,15 @@ ADD conf/postgres_common/postgres /opt/crunchy/conf
 
 ADD tools/pgmonitor/exporter/postgres /opt/crunchy/bin/modules/pgexporter
 
-RUN chmod g=u /etc/passwd && \
-	chmod g=u /etc/group
-
 RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
 # The VOLUME directive must appear after all RUN directives to ensure the proper
 # volume permissions are applied when building the image
 VOLUME ["/pgconf", "/pgdata"]
+
+# Defines a unique directory name that will be utilized by the nss_wrapper in the UID script
+ENV NSS_WRAPPER_SUBDIR="postgres-appdev"
 
 ENTRYPOINT ["/opt/crunchy/bin/uid_postgres.sh"]
 

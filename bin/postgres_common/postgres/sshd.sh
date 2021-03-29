@@ -13,9 +13,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# define the default nss_wrapper dir for this container and the ssh nss_wrapper dir
+NSS_WRAPPER_DEFAULT_DIR="/tmp/nss_wrapper/postgres"
+NSS_WRAPPER_SSH_DIR="/tmp/nss_wrapper/ssh"
+
+# Configures nss_wrapper passwd and group files for SSH connections
+function nss_wrapper_ssh() {
+    mkdir -p "${NSS_WRAPPER_SSH_DIR}"
+    cp "${NSS_WRAPPER_DEFAULT_DIR}/passwd" "${NSS_WRAPPER_SSH_DIR}"
+    cp "${NSS_WRAPPER_DEFAULT_DIR}/group" "${nss_wrappeNSS_WRAPPER_SSH_DIRr_ssh_dir}"
+}
+
 if [[ ${ENABLE_SSHD} == "true" ]]
 then
     echo_info "Applying SSHD.."
+
+    # configure nss_wrapper files for ssh connections
+    nss_wrapper_ssh
+    echo_info "nss_wrapper: ssh configured"
+
     echo_info 'Checking for SSH Host Keys in /sshd..'
 
     if [[ ! -f /sshd/ssh_host_ed25519_key ]]; then

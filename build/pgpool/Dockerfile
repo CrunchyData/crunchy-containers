@@ -42,12 +42,13 @@ RUN chgrp -R 0 /opt/crunchy && \
 # open up the postgres port
 EXPOSE 5432
 
-RUN chmod g=u /etc/passwd
-
 # add volumes to allow override of pgpool config files
 # The VOLUME directive must appear after all RUN directives to ensure the proper
 # volume permissions are applied when building the image
 VOLUME ["/pgconf"]
+
+# Defines a unique directory name that will be utilized by the nss_wrapper in the UID script
+ENV NSS_WRAPPER_SUBDIR="pgpool"
 
 ENTRYPOINT ["opt/crunchy/bin/uid_daemon.sh"]
 

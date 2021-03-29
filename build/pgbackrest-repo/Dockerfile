@@ -25,9 +25,7 @@ RUN chown -R pgbackrest:pgbackrest /opt/crunchy \
 ADD bin/pgbackrest-repo/uid_pgbackrest.sh /opt/crunchy/bin
 
 # set permissions for pgbackrest user
-RUN chmod g=u /etc/passwd \
-	&& chmod g=u /etc/group \
-	&& chmod -R g=u /etc/pgbackrest \
+RUN chmod -R g=u /etc/pgbackrest \
 	&& rm -f /run/nologin
 
 # set ownership to pgbackrest user
@@ -35,6 +33,9 @@ RUN chown pgbackrest:pgbackrest /.ssh && chmod o+rwx /.ssh
 
 # set user to pgbackrest user
 USER 2000
+
+# Defines a unique directory name that will be utilized by the nss_wrapper in the UID script
+ENV NSS_WRAPPER_SUBDIR="pgbackrest-repo"
 
 ENTRYPOINT ["/opt/crunchy/bin/uid_pgbackrest.sh"]
 
