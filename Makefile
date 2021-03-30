@@ -91,8 +91,6 @@ postgres-ha: postgres-ha-pgimg-$(IMGBUILDER)
 postgres-gis: postgres-gis-pgimg-$(IMGBUILDER)
 postgres-gis-ha: postgres-gis-ha-pgimg-$(IMGBUILDER)
 
-postgres-appdev: commands postgres-appdev-pgimg-$(IMGBUILDER)
-
 
 #===========================================
 # Targets generating non-pg-based images
