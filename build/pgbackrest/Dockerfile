@@ -53,9 +53,7 @@ RUN chmod +x /usr/local/bin/pgbackrest-repo.sh /usr/local/bin/archive-push-s3.sh
 	&& mkdir -p /etc/pgbackrest \
 	&& chown -R postgres:postgres /etc/pgbackrest
 
-RUN chmod g=u /etc/passwd \
-	&& chmod g=u /etc/group \
-	&& chmod -R g=u /etc/pgbackrest \
+RUN chmod -R g=u /etc/pgbackrest \
 	&& rm -f /run/nologin
 
 RUN mkdir /.ssh && chown postgres:postgres /.ssh && chmod o+rwx /.ssh
@@ -70,6 +68,9 @@ RUN mkdir /.ssh && chown postgres:postgres /.ssh && chmod o+rwx /.ssh
 VOLUME ["/sshd", "/pgdata", "/backrestrepo"]
 
 USER 26
+
+# Defines a unique directory name that will be utilized by the nss_wrapper in the UID script
+ENV NSS_WRAPPER_SUBDIR="pgbackrest"
 
 ENTRYPOINT ["/opt/crunchy/bin/uid_postgres.sh"]
 

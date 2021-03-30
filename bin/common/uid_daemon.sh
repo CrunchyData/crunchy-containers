@@ -13,9 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if ! whoami &> /dev/null; then
-  if [ -w /etc/passwd ]; then
-    echo "${USER_NAME:-default}:x:$(id -u):0:${USER_NAME:-default} user:${HOME}:/bin/bash" >> /etc/passwd
-  fi
-fi
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+    
+export CRUNCHY_NSS_USERNAME="${USER_NAME:-default}"
+export CRUNCHY_NSS_USER_DESC="${USER_NAME:-default} user"
+    
+source "${CRUNCHY_DIR}/bin/nss_wrapper.sh"
+
 exec "$@"

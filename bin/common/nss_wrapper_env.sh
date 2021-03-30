@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2018 - 2021 Crunchy Data Solutions, Inc.
+# Copyright 2021 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,8 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
-    
-source "${CRUNCHY_DIR}/bin/uid_postgres_no_exec.sh"
+# define nss_wrapper directory and passwd & group files that will be utilized by nss_wrapper
+NSS_WRAPPER_DIR="/tmp/nss_wrapper/${NSS_WRAPPER_SUBDIR}"
+NSS_WRAPPER_PASSWD="${NSS_WRAPPER_DIR}/passwd"
+NSS_WRAPPER_GROUP="${NSS_WRAPPER_DIR}/group"
 
-exec "$@"
+export LD_PRELOAD=/usr/lib64/libnss_wrapper.so
+export NSS_WRAPPER_PASSWD="${NSS_WRAPPER_PASSWD}"
+export NSS_WRAPPER_GROUP="${NSS_WRAPPER_GROUP}"

@@ -39,13 +39,14 @@ ARG EPEL8_RPM=https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch
 
 RUN if [ "$BASEOS" = "rhel7" ] ; then \
 	${PACKAGER} -y --enablerepo=rhel-7-server-ose-3.11-rpms update \
+        && ${PACKAGER} -y install ${EPEL7_RPM} \
 	&& ${PACKAGER} -y install \
 		--setopt=skip_missing_names_on_install=False \
-		${EPEL7_RPM} \
 		bind-utils \
 		gettext \
 		hostname \
 		procps-ng \
+		nss_wrapper \
 	&& sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/epel*.repo \
 	&& ${PACKAGER} -y clean all --enablerepo=rhel-7-server-ose-3.11-rpms ; \
 fi
@@ -59,6 +60,7 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
                 gettext \
                 hostname \
                 procps-ng \
+                nss_wrapper \
         && sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/epel*.repo \
         && ${PACKAGER} -y clean all --enablerepo=rhel-7-server-ose-3.11-rpms ; \
 fi
@@ -72,19 +74,21 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
                 gettext \
                 hostname \
                 procps-ng \
+                nss_wrapper \
         && sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/epel*.repo \
         && ${PACKAGER} -y clean all ; \
 fi
 
 RUN if [ "$BASEOS" = "centos7" ] ; then \
         ${PACKAGER} -y update \
+        && ${PACKAGER} -y install epel-release \
         && ${PACKAGER} -y install \
                 --setopt=skip_missing_names_on_install=False \
-                epel-release \
                 bind-utils \
                 gettext \
                 hostname \
                 procps-ng \
+                nss_wrapper \
         && ${PACKAGER} -y clean all ; \
 fi
 
@@ -98,6 +102,7 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
 		gettext \
 		hostname \
 		procps-ng \
+		nss_wrapper \
 	&& ${PACKAGER} -y clean all ; \
 fi
 

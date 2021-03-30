@@ -55,12 +55,12 @@ ADD conf/upgrade/ /opt/crunchy/conf
 RUN chown -R postgres:postgres /opt/crunchy /pgolddata /pgnewdata && \
 	chmod -R g=u /opt/crunchy /pgolddata /pgnewdata
 
-RUN chmod g=u /etc/passwd && \
-	chmod g=u /etc/group
-
 # The VOLUME directive must appear after all RUN directives to ensure the proper
 # volume permissions are applied when building the image
 VOLUME /pgolddata /pgnewdata
+
+# Defines a unique directory name that will be utilized by the nss_wrapper in the UID script
+ENV NSS_WRAPPER_SUBDIR="upgrade"
 
 ENTRYPOINT ["opt/crunchy/bin/uid_postgres.sh"]
 

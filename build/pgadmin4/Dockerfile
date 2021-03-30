@@ -112,11 +112,12 @@ RUN cp /opt/crunchy/conf/httpd.conf /etc/httpd/conf/httpd.conf \
 
 EXPOSE 5050
 
-RUN chmod g=u /etc/passwd
-
 # The VOLUME directive must appear after all RUN directives to ensure the proper
 # volume permissions are applied when building the image
 VOLUME ["/var/lib/pgadmin", "/certs", "/run/httpd"]
+
+# Defines a unique directory name that will be utilized by the nss_wrapper in the UID script
+ENV NSS_WRAPPER_SUBDIR="pgadmin"
 
 ENTRYPOINT ["opt/crunchy/bin/uid_daemon.sh"]
 
