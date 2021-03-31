@@ -190,10 +190,6 @@
   </url>
   
   <url>
-    <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres-appdev/</loc>
-  </url>
-  
-  <url>
     <loc>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres-gis/</loc>
   </url>
   

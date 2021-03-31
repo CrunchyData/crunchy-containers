@@ -33,7 +33,6 @@ content/container-specifications/crunchy-pgbackrest.md
 content/container-specifications/crunchy-pgbadger.md
 content/container-specifications/crunchy-pgbouncer.md
 content/container-specifications/crunchy-pgpool.md
-content/container-specifications/crunchy-postgres-appdev.md
 content/container-specifications/crunchy-postgres-gis.md
 content/container-specifications/crunchy-upgrade.md
 content/contributing/_index.md
