@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # define the default nss_wrapper dir for this container and the ssh nss_wrapper dir
-NSS_WRAPPER_DEFAULT_DIR="/tmp/nss_wrapper/postgres-ha"
+NSS_WRAPPER_DEFAULT_DIR="/tmp/nss_wrapper/postgres"
 NSS_WRAPPER_SSH_DIR="/tmp/nss_wrapper/ssh"
 
 # Configures nss_wrapper passwd and group files for SSH connections
