@@ -60,7 +60,7 @@ fi
 mkdir -p /tmp/pg1path
 if ! grep -Fxq "[${PGBACKREST_STANZA}]" "/etc/pgbackrest/pgbackrest.conf" 2> /dev/null
 then
-    
+
 	printf "[%s]\npg1-path=/tmp/pg1path\n" "$PGBACKREST_STANZA" > /etc/pgbackrest/pgbackrest.conf
 
 	# Additionally, if the PGBACKREST S3 variables are set, add them here
@@ -78,7 +78,17 @@ then
 	then
 		printf "repo1-s3-uri-style=%s\n" "${PGBACKREST_REPO1_S3_URI_STYLE}" >> /etc/pgbackrest/pgbackrest.conf
 	fi
-	
+
+  # and GCS variables
+  if [[ "${PGBACKREST_REPO1_GCS_BUCKET}" != "" ]]
+  then
+    printf "repo1-gcs-bucket=%s\n" "${PGBACKREST_REPO1_GCS_BUCKET}" >> /etc/pgbackrest/pgbackrest.conf
+  fi
+
+  if [[ "${PGBACKREST_REPO1_GCS_KEY}" != "" ]]
+  then
+    printf "repo1-gcs-key=%s\n" "${PGBACKREST_REPO1_GCS_KEY}" >> /etc/pgbackrest/pgbackrest.conf
+  fi
 fi
 
 cp $CONFIG/id_ed25519 /tmp

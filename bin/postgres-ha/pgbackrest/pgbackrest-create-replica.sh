@@ -39,11 +39,11 @@ fi
 # If the PGDATA directory for the replica is invalid according to pgBackRest, then clear out
 # the directory and then perform a regular (i.e. non-delta) pgBackRest restore.  pgBackRest
 # specifically determines whether or not a PGDATA directory is valid by checking "for the
-# for the presence of PG_VERSION or backup.manifest (left over from an aborted restore). 
+# for the presence of PG_VERSION or backup.manifest (left over from an aborted restore).
 # If neither file is found then --delta and --force will be disabled but the restore will proceed
 # unless there are files in the $PGDATA directory (or any tablespace directories) in which case the
 # operation will be aborted" (https://pgbackrest.org/release.html).
-if [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}"/PG_VERSION || 
+if [[ -f "${PATRONI_POSTGRESQL_DATA_DIR}"/PG_VERSION ||
     -f "${PATRONI_POSTGRESQL_DATA_DIR}"/backup.manifest ]]
 then
     echo_info "Valid PGDATA dir found for ${bootstrap_role}, a delta restore will be peformed"
@@ -70,7 +70,7 @@ else
     echo_info "${bootstrap_role} PGDATA cleaned, a non-delta restore will be peformed"
 fi
 
-# obtain the type of repo to use for replica creation (e.g. AWS S3 or local) using the value set
+# obtain the type of repo to use for replica creation (e.g. AWS S3, GCS, or local) using the value set
 # the 'replica-bootstrap-repo-type' configuration file (if present), and then set the repo type
 # for the pgBackRest restore command as applicable using the --repo-type option
 if [[ -f /pgconf/replica-bootstrap-repo-type ]]

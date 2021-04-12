@@ -50,6 +50,7 @@ RUN chown -R postgres:postgres /opt/crunchy  \
 # set the appropriate permissions and ownership
 ADD bin/pgbackrest-repo /usr/local/bin
 RUN chmod +x /usr/local/bin/pgbackrest-repo.sh /usr/local/bin/archive-push-s3.sh \
+		/usr/local/bin/archive-push-gcs.sh \
 	&& mkdir -p /etc/pgbackrest \
 	&& chown -R postgres:postgres /etc/pgbackrest
 

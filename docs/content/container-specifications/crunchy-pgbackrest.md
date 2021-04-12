@@ -11,7 +11,7 @@ See the [pgBackRest](https://github.com/pgbackrest/pgbackrest) guide for more de
 
 ## Running Modes
 
-The `crunchy-pgbackrest` image can be run in modes to enable different functionality. 
+The `crunchy-pgbackrest` image can be run in modes to enable different functionality.
 The `MODE` environment variable must be set to run the image in the required mode. Each mode uses environment variables to configure how the container will be run.
 
 | Running Mode | `MODE` setting |
@@ -53,6 +53,7 @@ The crunchy-backrest-restore Docker image contains the following packages (versi
 **PGBACKREST_REPO_PATH**|None|Path where backups and archive are stored.
 **PGBACKREST_REPO_TYPE**|None|Type of storage used for the repository.
 **PGBACKREST_STANZA**|None|Defines the backup configuration for a specific PostgreSQL database cluster.
+**PGHA_PGBACKREST_LOCAL_GCS_STORAGE**|None|Indicates whether or not local and gcs storage should be enabled for pgBackRest.
 **PGHA_PGBACKREST_LOCAL_S3_STORAGE**|None|Indicates whether or not local and s3 storage should be enabled for pgBackRest.
 **PGHA_PGBACKREST_S3_VERIFY_TLS**|None|Indicates whether or not TLS should be verified when making connections to S3 storage.
 **PITR_TARGET**|None|Store the PITR target for a pgBackRest restore.
