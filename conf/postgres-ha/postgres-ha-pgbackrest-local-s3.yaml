@@ -4,3 +4,4 @@ bootstrap:
     postgresql:
       parameters:
         archive_command: "source /opt/crunchy/bin/postgres-ha/pgbackrest/pgbackrest-archive-push-local-s3.sh %p"
+ 

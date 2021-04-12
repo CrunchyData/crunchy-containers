@@ -45,6 +45,7 @@ const (
 )
 
 const (
+	repoTypeFlagGCS   = "--repo1-type=gcs"
 	repoTypeFlagS3    = "--repo1-type=s3"
 	noRepoS3VerifyTLS = "--no-repo1-s3-verify-tls"
 )
@@ -88,7 +89,7 @@ func main() {
 	if debugFlag {
 		log.SetLevel(log.DebugLevel)
 	}
-	log.Info("debug flag set to %t", debugFlag)
+	log.Infof("debug flag set to %t", debugFlag)
 
 	namespace := getEnvRequired("NAMESPACE")
 	command := getEnvRequired("COMMAND")
@@ -105,6 +106,12 @@ func main() {
 	// explicitly set
 	localS3Storage, _ := strconv.ParseBool(os.Getenv("PGHA_PGBACKREST_LOCAL_S3_STORAGE"))
 	log.Debugf("PGHA_PGBACKREST_LOCAL_S3_STORAGE set to: %t", localS3Storage)
+
+	// determine the setting of PGHA_PGBACKREST_LOCAL_GCS_STORAGE
+	// we will discard the error and treat the value as "false" if it is not
+	// explicitly set
+	localGCSStorage, _ := strconv.ParseBool(os.Getenv("PGHA_PGBACKREST_LOCAL_GCS_STORAGE"))
+	log.Debugf("PGHA_PGBACKREST_LOCAL_GCS_STORAGE set to: %t", localGCSStorage)
 
 	// parse the environment variable and store the appropriate boolean value
 	// we will discard the error and treat the value as "false" if it is not
@@ -148,6 +155,17 @@ func main() {
 			cmdStrs = append(cmdStrs, noRepoS3VerifyTLS)
 		}
 		log.Info("s3 flag enabled for backrest command")
+	}
+
+	if localGCSStorage {
+		// if the first backup fails, still attempt the 2nd one
+		cmdStrs = append(cmdStrs, ";")
+		cmdStrs = append(cmdStrs, cmdStrs...)
+		cmdStrs[len(cmdStrs)-1] = repoTypeFlagGCS // a trick to overwite the second ";"
+		log.Info("backrest command will be executed for both local and gcs storage")
+	} else if repoType == "gcs" {
+		cmdStrs = append(cmdStrs, repoTypeFlagGCS)
+		log.Info("gcs flag enabled for backrest command")
 	}
 
 	log.Infof("command to execute is [%s]", strings.Join(cmdStrs, " "))

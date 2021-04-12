@@ -50,6 +50,11 @@ set_default_pgha_autoconfig_env()  {
             export PGHA_PGBACKREST_LOCAL_S3_STORAGE="false"
             default_pgha_autoconfig_env_vars+=("PGHA_PGBACKREST_LOCAL_S3_STORAGE")
         fi
+        if [[ ! -v PGHA_PGBACKREST_LOCAL_GCS_STORAGE ]]
+        then
+            export PGHA_PGBACKREST_LOCAL_GCS_STORAGE="false"
+            default_pgha_autoconfig_env_vars+=("PGHA_PGBACKREST_LOCAL_GCS_STORAGE")
+        fi
         if [[ ! -v PGHA_PGBACKREST_INITIALIZE ]]
         then
             export PGHA_PGBACKREST_INITIALIZE="false"
@@ -57,7 +62,7 @@ set_default_pgha_autoconfig_env()  {
         fi
     else
         echo_info "pgBackRest auto-config disabled"
-        echo_info "PGHA_PGBACKREST_LOCAL_S3_STORAGE and PGHA_PGBACKREST_INITIALIZE will be ignored if provided"
+        echo_info "PGHA_PGBACKREST_LOCAL_S3_STORAGE, PGHA_PGBACKREST_LOCAL_GCS_STORAGE and PGHA_PGBACKREST_INITIALIZE will be ignored if provided"
     fi
 
     if [[ ! -v PGHA_SYNC_REPLICATION ]]
@@ -287,6 +292,10 @@ build_bootstrap_config_file() {
         if [[ "${PGHA_PGBACKREST_LOCAL_S3_STORAGE}" == "true" ]]
         then
             ${CRUNCHY_DIR}/bin/yq m -i -x "${bootstrap_file}" "${CRUNCHY_DIR}/conf/postgres-ha/postgres-ha-pgbackrest-local-s3.yaml"
+        fi
+        if [[ "${PGHA_PGBACKREST_LOCAL_GCS_STORAGE}" == "true" ]]
+        then
+            ${CRUNCHY_DIR}/bin/yq m -i -x "${bootstrap_file}" "${CRUNCHY_DIR}/conf/postgres-ha/postgres-ha-pgbackrest-local-gcs.yaml"
         fi
     else
         echo_info "pgBackRest config for postgres-ha configuration disabled"

@@ -1,0 +1,6 @@
+---
+bootstrap:
+  dcs:
+    postgresql:
+      parameters:
+        archive_command: "source /opt/crunchy/bin/postgres-ha/pgbackrest/pgbackrest-archive-push-local-gcs.sh %p"
