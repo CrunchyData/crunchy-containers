@@ -22,6 +22,10 @@ COPY redhat/atomic/help.1 /help.1
 COPY redhat/atomic/help.md /help.md
 COPY licenses /licenses
 
+RUN if [ "$BASEOS" = "ubi8" ] ; then \
+        microdnf install -y dnf ;
+fi
+
 # Have to install glibc-langpack-en on UBI8 otherwise en_US.utf-8 does not exist
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
         echo "INSIDE UBI8" \
@@ -63,10 +67,6 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
                 nss_wrapper \
         && sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/epel*.repo \
         && ${PACKAGER} -y clean all --enablerepo=rhel-7-server-ose-3.11-rpms ; \
-fi
-
-RUN if [ "$BASEOS" = "ubi8" ] ; then \
-        microdnf install -y dnf ;
 fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
