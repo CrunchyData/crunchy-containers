@@ -4,6 +4,7 @@ endif
 
 # Default values if not already set
 CCP_BASEOS ?= centos8
+BASE_IMAGE_OS ?= $(CCP_BASEOS)
 CCP_PGVERSION ?= 13
 CCP_PG_FULLVERSION ?= 13.2
 CCP_PATRONI_VERSION ?= 2.0.2
@@ -49,18 +50,19 @@ endif
 
 ifeq ("$(CCP_BASEOS)", "ubi8")
         DFSET=rhel
-	PACKAGER=dnf
+        PACKAGER=dnf
+        BASE_IMAGE_OS=ubi8-minimal
 endif
 
 ifeq ("$(CCP_BASEOS)", "centos7")
         DFSET=centos
-	DOCKERBASEREGISTRY=centos:
+        DOCKERBASEREGISTRY=centos:
 endif
 
 ifeq ("$(CCP_BASEOS)", "centos8")
         DFSET=centos
-	PACKAGER=dnf
-	DOCKERBASEREGISTRY=centos:
+        PACKAGER=dnf
+        DOCKERBASEREGISTRY=centos:
 endif
 
 .PHONY:	all pgbackrest-images pg-independent-images pgimages
@@ -122,6 +124,7 @@ ccbase-image-build: $(CCPROOT)/build/base/Dockerfile
 		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \
 		--build-arg DOCKERBASEREGISTRY=$(DOCKERBASEREGISTRY) \
+		--build-arg BASE_IMAGE_OS=$(BASE_IMAGE_OS) \
 		--build-arg PG_LBL=${subst .,,$(CCP_PGVERSION)} \
 		$(CCPROOT)
 
