@@ -18,7 +18,6 @@ LABEL name="pgpool" \
 	io.openshift.tags="postgresql,postgres,pgpool,database,crunchy"
 
 RUN ${PACKAGER} -y install \
-		--setopt=skip_missing_names_on_install=False \
 		pgpool-II_${PG_MAJOR//.} \
 		pgpool-II_${PG_MAJOR//.}-extensions \
 	&& ${PACKAGER} -y clean all

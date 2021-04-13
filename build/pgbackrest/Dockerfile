@@ -16,12 +16,20 @@ LABEL name="pgbackrest" \
 	io.openshift.tags="postgresql,postgres,pgbackrest,backup,database,crunchy"
 
 # Run postgres install in separate transaction ahead of backrest for postgres user
-RUN ${PACKAGER} -y install  \
-	--setopt=skip_missing_names_on_install=False \
-	openssh-clients \
-	openssh-server \
-	crunchy-backrest-${BACKREST_VER} \
-	&& ${PACKAGER} -y clean all
+RUN if [ "$BASEOS" = "ubi8" ] ; then \
+	${PACKAGER} -y install  \
+		openssh-clients \
+		openssh-server \
+		crunchy-backrest-${BACKREST_VER} \
+		&& ${PACKAGER} -y clean all ; \
+else \
+	${PACKAGER} -y install  \
+		--setopt=skip_missing_names_on_install=False \
+		openssh-clients \
+		openssh-server \
+		crunchy-backrest-${BACKREST_VER} \
+		&& ${PACKAGER} -y clean all ; \
+fi
 
 
 # add postgres user and group

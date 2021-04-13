@@ -17,7 +17,6 @@ ARG PG_MAJOR
 ARG PG_LBL
 
 RUN ${PACKAGER} -y install \
-	--setopt=skip_missing_names_on_install=False \
 	--disablerepo=crunchypg* \
 	--enablerepo="crunchypg${PG_LBL}" \
 	postgresql${PG_LBL} \
@@ -55,7 +54,6 @@ RUN if [ "$DFSET" = "centos" ] ; then \
 else \
         ${PACKAGER} -y install \
 		--enablerepo="epel" \
-		--setopt=skip_missing_names_on_install=False \
 		openssh-clients \
 		openssh-server \
 		pgaudit${PG_MAJOR//.} \
