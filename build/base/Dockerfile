@@ -23,7 +23,7 @@ COPY redhat/atomic/help.md /help.md
 COPY licenses /licenses
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-        microdnf install -y dnf ;
+        microdnf install -y dnf ; \
 fi
 
 # Have to install glibc-langpack-en on UBI8 otherwise en_US.utf-8 does not exist
