@@ -66,6 +66,10 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
 fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
+        microdnf install -y dnf ;
+fi
+
+RUN if [ "$BASEOS" = "ubi8" ] ; then \
         ${PACKAGER} -y update \
         && ${PACKAGER} -y install \
                 --setopt=skip_missing_names_on_install=False \

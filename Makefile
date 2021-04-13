@@ -50,7 +50,7 @@ endif
 
 ifeq ("$(CCP_BASEOS)", "ubi8")
         DFSET=rhel
-        PACKAGER=microdnf
+        PACKAGER=dnf
         BASE_IMAGE_OS=ubi8-minimal
 endif
 
