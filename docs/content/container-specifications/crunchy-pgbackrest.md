@@ -35,7 +35,7 @@ The following volumes are mounted by the `crunchy-pgbackrest` container:
 The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
 * PostgreSQL (13.2, 12.6, 11.11, 10.16, 9.6.21 and 9.5.25)
-* [pgBackRest](https://pgbackrest.org/) (2.31)
+* [pgBackRest](https://pgbackrest.org/) (2.33)
 * CentOS 7, CentOS 8 - publicly available
 * UBI 7, UBI 8 - customers only
 
