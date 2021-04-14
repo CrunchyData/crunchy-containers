@@ -7,6 +7,7 @@ FROM ${PREFIX}/crunchy-base:${BASEOS}-${PG_FULL}-${BASEVER}
 # For RHEL8 all arguments used in main code has to be specified after FROM
 ARG PACKAGER
 ARG BACKREST_VER
+ARG BASEOS
 
 LABEL name="pgbackrest" \
 	summary="Crunchy pgBackRest ${BACKREST_VER}" \
@@ -20,6 +21,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 	${PACKAGER} -y install  \
 		openssh-clients \
 		openssh-server \
+                shadow-utils \
 		crunchy-backrest-${BACKREST_VER} \
 		&& ${PACKAGER} -y clean all ; \
 else \

@@ -50,6 +50,7 @@ fi
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
        ${PACKAGER} -y install \
                 --enablerepo="epel" \
+                shadow-utils \
                 pgbadger \
         && ${PACKAGER} -y clean all ; \
 fi
