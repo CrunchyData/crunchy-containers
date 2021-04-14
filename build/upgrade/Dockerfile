@@ -59,7 +59,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 		pgaudit[1-9][0-9] \
 		pgnodemx[1-9][0-9] \
 		&& ${PACKAGER} -y clean all ; \
-else
+else \
 	${PACKAGER} -y install \
 		--setopt=skip_missing_names_on_install=False \
 		--disablerepo=* \

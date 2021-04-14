@@ -21,7 +21,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 	${PACKAGER} -y install  \
 		openssh-clients \
 		openssh-server \
-                shadow-utils \
+		shadow-utils \
 		crunchy-backrest-${BACKREST_VER} \
 		&& ${PACKAGER} -y clean all ; \
 else \
