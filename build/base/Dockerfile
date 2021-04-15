@@ -22,17 +22,20 @@ COPY redhat/atomic/help.1 /help.1
 COPY redhat/atomic/help.md /help.md
 COPY licenses /licenses
 
-RUN if [ "$BASEOS" = "ubi8" ] ; then \
-        microdnf install -y dnf ; \
-fi
-
 # Have to install glibc-langpack-en on UBI8 otherwise en_US.utf-8 does not exist
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-        echo "INSIDE UBI8" \
         ${PACKAGER} -y update \
         && ${PACKAGER} -y install \
-                --setopt=skip_missing_names_on_install=False \
                 glibc-langpack-en ; \
+fi
+
+# Temporary HACK to disable postgres module
+RUN if [ "$BASEOS" = "ubi8" ] ; then \
+        echo "[postgresql]"  >> /etc/dnf/modules.d/postgresql.module \
+        && echo "name=postgresql"  >> /etc/dnf/modules.d/postgresql.module \
+        && echo "stream=10"  >> /etc/dnf/modules.d/postgresql.module \
+        && echo "profiles="  >> /etc/dnf/modules.d/postgresql.module \
+        && echo "state=disabled"  >> /etc/dnf/modules.d/postgresql.module ; \
 fi
 
 ENV LC_ALL en_US.utf-8
@@ -70,10 +73,9 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
 fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
+        rpm -ivh ${EPEL8_RPM} && \
         ${PACKAGER} -y update \
         && ${PACKAGER} -y install \
-                --setopt=skip_missing_names_on_install=False \
-                ${EPEL8_RPM} \
                 bind-utils \
                 gettext \
                 hostname \
@@ -123,9 +125,5 @@ RUN rpm --import RPM-GPG-KEY-crunchydata*
 RUN if [ "$DFSET" = "rhel" ] ; then rpm --import CRUNCHY-GPG-KEY.public ; fi
 
 RUN if [ "$BASEOS" = "centos8" ] ; then \
-	${PACKAGER} -qy module disable postgresql ; \
-fi
-
-RUN if [ "$BASEOS" = "ubi8" ] ; then \
 	${PACKAGER} -qy module disable postgresql ; \
 fi

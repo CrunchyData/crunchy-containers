@@ -56,16 +56,15 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
 fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-	${PACKAGER} -y --enablerepo="epel,codeready-builder-for-rhel-8-x86_64-rpms" install libaec libdap armadillo \
+	${PACKAGER} -y --enablerepo="epel" --enablerepo="codeready-builder-for-rhel-8-x86_64-rpms" install libaec libdap armadillo \
 	&& ${PACKAGER} -y install \
 		--enablerepo="epel" \
-		--setopt=skip_missing_names_on_install=False \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
 		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
 		postgresql${PG_MAJOR//.}-plperl \
-	&& ${PACKAGER} -y clean all --enablerepo="epel,codeready-builder-for-rhel-8-x86_64-rpms" ; \
+	&& ${PACKAGER} -y clean all --enablerepo="epel" --enablerepo="codeready-builder-for-rhel-8-x86_64-rpms" ; \
 fi
 
 # open up the postgres port

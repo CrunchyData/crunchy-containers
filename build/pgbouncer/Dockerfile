@@ -19,7 +19,6 @@ LABEL name="pgbouncer" \
 
 RUN ${PACKAGER} -y install \
 	--disablerepo="epel" \
-	--setopt=skip_missing_names_on_install=False \
 	pgbouncer \
 	&& ${PACKAGER} -y clean all
 

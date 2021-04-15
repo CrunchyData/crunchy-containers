@@ -7,6 +7,7 @@ FROM ${PREFIX}/crunchy-base:${BASEOS}-${PG_FULL}-${BASEVER}
 # For RHEL8 all arguments used in main code has to be specified after FROM
 ARG PACKAGER
 ARG BACKREST_VER
+ARG BASEOS
 
 LABEL name="pgbackrest" \
 	summary="Crunchy pgBackRest ${BACKREST_VER}" \
@@ -16,12 +17,21 @@ LABEL name="pgbackrest" \
 	io.openshift.tags="postgresql,postgres,pgbackrest,backup,database,crunchy"
 
 # Run postgres install in separate transaction ahead of backrest for postgres user
-RUN ${PACKAGER} -y install  \
-	--setopt=skip_missing_names_on_install=False \
-	openssh-clients \
-	openssh-server \
-	crunchy-backrest-${BACKREST_VER} \
-	&& ${PACKAGER} -y clean all
+RUN if [ "$BASEOS" = "ubi8" ] ; then \
+	${PACKAGER} -y install  \
+		openssh-clients \
+		openssh-server \
+		shadow-utils \
+		crunchy-backrest-${BACKREST_VER} \
+		&& ${PACKAGER} -y clean all ; \
+else \
+	${PACKAGER} -y install  \
+		--setopt=skip_missing_names_on_install=False \
+		openssh-clients \
+		openssh-server \
+		crunchy-backrest-${BACKREST_VER} \
+		&& ${PACKAGER} -y clean all ; \
+fi
 
 
 # add postgres user and group

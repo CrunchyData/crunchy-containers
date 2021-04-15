@@ -60,7 +60,6 @@ fi
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
 	${PACKAGER} -y install \
 		--enablerepo="epel" \
-		--setopt=skip_missing_names_on_install=False \
 		python3-pip \
 		python3-psutil \
 		python3-psycopg2 \

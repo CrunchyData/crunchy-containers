@@ -81,13 +81,12 @@ fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
         ${PACKAGER} -y install \
-                --setopt=skip_missing_names_on_install=False \
                 --enablerepo="epel" \
                 mod_ssl \
                 python3-mod_wsgi \
                 openssl \
                 sqlite \
-                --setopt=obsoletes=0 pgadmin4 \
+                pgadmin4 \
                 postgresql${PG_MAJOR//.}-server \
         && ${PACKAGER} -y clean all --enablerepo="epel" \
         && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \

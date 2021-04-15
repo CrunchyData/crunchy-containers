@@ -14,6 +14,12 @@ LABEL name="pgbackrest-repo" \
 # run the following at root user
 USER 0
 
+RUN if [ "$BASEOS" = "ubi8" ] ; then \
+        ${PACKAGER} -y install  \
+                shadow-utils \
+                && ${PACKAGER} -y clean all ; \
+fi
+
 # add pgbackrest user and group
 RUN groupadd pgbackrest -g 2000 && useradd pgbackrest -u 2000 -g 2000
 
