@@ -92,7 +92,7 @@ line starting with #:
     export CCP_BASEOS=centos8       # centos8 for CentOS, ubi8 for Red Hat Universal Base Image
     export CCP_PGVERSION=12         # The PostgreSQL major version
     export CCP_PG_FULLVERSION=13.2
-    export CCP_POSTGIS_VERSION=3.0  # The PostGIS version
+    export CCP_POSTGIS_VERSION=3.1  # The PostGIS version
     export CCP_VERSION=4.6.2
     export CCP_IMAGE_PREFIX=crunchydata # Prefix to put before all the container image names
     export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION   # Used to tag the images
