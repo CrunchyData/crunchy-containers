@@ -1,0 +1,8 @@
+---
+postgresql:
+  parameters:
+    ssl: "off"
+    ssl_cert_file: ""
+    ssl_key_file: ""
+    ssl_ca_file: ""
+    ssl_crl_file: ""

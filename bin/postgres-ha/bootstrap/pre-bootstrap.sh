@@ -386,7 +386,11 @@ build_bootstrap_config_file() {
       if [[ -f "/pgconf/tls/ca.crl" ]]
       then
         "${CRUNCHY_DIR}/bin/yq" w -i "${bootstrap_file}" bootstrap.dcs.postgresql.parameters.ssl_crl_file "/pgconf/tls/ca.crl"
+        "${CRUNCHY_DIR}/bin/yq" w -i "${bootstrap_file}" postgresql.parameters.ssl_crl_file "/pgconf/tls/ca.crl"
       fi
+    else
+      echo_info "Disabling TLS in postgresql.conf"
+      "${CRUNCHY_DIR}/bin/yq" m -i -a "${bootstrap_file}" "${CRUNCHY_DIR}/conf/postgres-ha/postgres-ha-pgconf-notls.yaml"
     fi
 
     if [[ "${PGHA_TLS_ONLY}" != "true" ]]
