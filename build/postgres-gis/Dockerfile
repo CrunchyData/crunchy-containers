@@ -24,7 +24,6 @@ RUN if [ "$BASEOS" = "centos7" ] ; then \
 	${PACKAGER} -y install \
 		--setopt=skip_missing_names_on_install=False \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
-		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
 		postgresql${PG_MAJOR//.}-plperl \
@@ -36,7 +35,6 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
 		--setopt=skip_missing_names_on_install=False \
 		--enablerepo="powertools" \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
-		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
 		postgresql${PG_MAJOR//.}-plperl \
@@ -48,7 +46,6 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
 		--enablerepo="epel,rhel-7-server-optional-rpms" \
 		--setopt=skip_missing_names_on_install=False \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
-		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
 		postgresql${PG_MAJOR//.}-plperl \
@@ -60,7 +57,6 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 	&& ${PACKAGER} -y install \
 		--enablerepo="epel" \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
-		plr${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
 		postgresql${PG_MAJOR//.}-plperl \
