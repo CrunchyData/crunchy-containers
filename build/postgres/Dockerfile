@@ -35,6 +35,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	openssh-server \
         	pgaudit${PG_MAJOR//.} \
         	pgaudit${PG_MAJOR//.}_set_user \
+        	pg_partman_${PG_MAJOR//.} \
         	crunchy-backrest-${BACKREST_VER} \
         	postgresql${PG_MAJOR//.}-contrib \
         	postgresql${PG_MAJOR//.}-server \
@@ -58,6 +59,7 @@ else \
 		openssh-server \
 		pgaudit${PG_MAJOR//.} \
 		pgaudit${PG_MAJOR//.}_set_user \
+		pg_partman_${PG_MAJOR//.} \
 		crunchy-backrest-${BACKREST_VER} \
 		postgresql${PG_MAJOR//.}-contrib \
 		postgresql${PG_MAJOR//.}-server \
