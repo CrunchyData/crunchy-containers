@@ -45,6 +45,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
         	psmisc \
         	rsync \
+        	$( printf '11\n'${PG_MAJOR} | sort -VC && echo timescaledb_${PG_MAJOR} ) \
         	wal2json${PG_MAJOR//.} \
         	file \
         	gettext \
@@ -70,6 +71,7 @@ else \
 		$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
 		psmisc \
 		rsync \
+		$( printf '11\n'${PG_MAJOR} | sort -VC && echo timescaledb_${PG_MAJOR} ) \
 		wal2json${PG_MAJOR//.} \
 		file \
 		unzip \
