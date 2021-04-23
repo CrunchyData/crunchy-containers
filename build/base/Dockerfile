@@ -16,7 +16,6 @@ LABEL vendor="Crunchy Data" \
 	org.opencontainers.image.vendor="Crunchy Data" \
 	os.version="7.7"
 
-COPY conf/licenses /licenses
 COPY redhat/atomic/help.1 /help.1
 COPY redhat/atomic/help.md /help.md
 COPY licenses /licenses
