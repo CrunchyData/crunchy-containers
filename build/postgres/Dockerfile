@@ -106,7 +106,8 @@ EXPOSE 5432
 ADD bin/postgres_common /opt/crunchy/bin
 ADD bin/common /opt/crunchy/bin
 ADD conf/postgres_common /opt/crunchy/conf
-ADD tools/pgmonitor/exporter/postgres /opt/crunchy/bin/modules/pgexporter
+ADD tools/pgmonitor/postgres_exporter/common /opt/crunchy/bin/modules/pgexporter
+ADD tools/pgmonitor/postgres_exporter/linux /opt/crunchy/bin/modules/pgexporter
 
 RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh && rm -f /run/nologin
 
