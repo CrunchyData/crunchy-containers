@@ -65,7 +65,7 @@ ifeq ("$(CCP_BASEOS)", "centos8")
         DOCKERBASEREGISTRY=centos:
 endif
 
-.PHONY:	all pgbackrest-images pg-independent-images pgimages
+.PHONY:	all license pgbackrest-images pg-independent-images pgimages
 
 # list of image names, helpful in pushing
 images = crunchy-postgres \
@@ -115,7 +115,7 @@ $(CCPROOT)/build/%/Dockerfile:
 # ----- Base Image -----
 ccbase-image: ccbase-image-$(IMGBUILDER)
 
-ccbase-image-build: $(CCPROOT)/build/base/Dockerfile
+ccbase-image-build: build-pgbackrest license $(CCPROOT)/build/base/Dockerfile
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/build/base/Dockerfile \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-base:$(CCP_IMAGE_TAG) \
@@ -368,6 +368,9 @@ setup:
 
 docbuild:
 	cd $(CCPROOT) && ./generate-docs.sh
+
+license:
+	./bin/license_aggregator.sh
 
 push: push-gis $(images:%=push-%) ;
 
