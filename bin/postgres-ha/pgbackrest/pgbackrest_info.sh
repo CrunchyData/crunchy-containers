@@ -15,4 +15,12 @@
 
 source /tmp/pgbackrest_env.sh > /tmp/pgbackrest_env.stdout 2> /tmp/pgbackrest_env.stderr
 
-echo $(echo -n "$conf|" | tr '/' '_'; pgbackrest --output=json info | tr -d '\n')
+cmd_args=()
+# if TLS verification is disabled, pass in the appropriate flag
+# otherwise, leave the default behavior and verify TLS
+if [[ "${PGHA_PGBACKREST_S3_VERIFY_TLS}" == "false" ]]
+then
+    cmd_args+=("--no-repo1-s3-verify-tls")
+fi
+
+echo $(echo -n "$conf|" | tr '/' '_'; pgbackrest --output=json ${cmd_args[*]} info | tr -d '\n')
