@@ -53,6 +53,8 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	procps-ng \
         	pgaudit_analyze \
         	unzip \
+        	bzip2 \
+        	lz4 \
         && ${PACKAGER} -y clean all ; \
 else \
         ${PACKAGER} -y install \
@@ -75,6 +77,9 @@ else \
 		wal2json${PG_MAJOR//.} \
 		file \
 		unzip \
+		tar \
+		bzip2 \
+		lz4 \
 	&& ${PACKAGER} -y install \
 		--setopt=tsflags='' \
 		--enablerepo="epel" \
