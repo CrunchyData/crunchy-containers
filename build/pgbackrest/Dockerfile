@@ -22,6 +22,9 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 		openssh-clients \
 		openssh-server \
 		shadow-utils \
+		tar \
+		bzip2 \
+		lz4 \
 		crunchy-backrest-${BACKREST_VER} \
 		&& ${PACKAGER} -y clean all ; \
 else \
@@ -29,6 +32,8 @@ else \
 		--setopt=skip_missing_names_on_install=False \
 		openssh-clients \
 		openssh-server \
+		bzip2 \
+		lz4 \
 		crunchy-backrest-${BACKREST_VER} \
 		&& ${PACKAGER} -y clean all ; \
 fi
