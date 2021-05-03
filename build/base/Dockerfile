@@ -80,6 +80,9 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
                 hostname \
                 procps-ng \
                 nss_wrapper \
+                less \
+                vim-minimal \
+        && ${PACKAGER} reinstall tzdata -y \
         && sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/epel*.repo \
         && ${PACKAGER} -y clean all ; \
 fi
