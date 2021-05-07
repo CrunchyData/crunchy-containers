@@ -26,7 +26,7 @@ function nss_wrapper_ssh() {
 
 function trap_sigterm() {
 	echo "Signal trap triggered, beginning shutdown.."
-	killall sshd
+	pkill sshd
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM

@@ -24,16 +24,16 @@ trap_sigterm() {
 
     echo_warn "Signal trap triggered, beginning shutdown.." | tee -a "${PATRONI_POSTGRESQL_DATA_DIR}"/trap.output
 
-    killall patroni
+    pkill patroni
     echo_warn "Killed Patroni to gracefully shutdown PG" | tee -a "${PATRONI_POSTGRESQL_DATA_DIR}"/trap.output
 
     if [[ ${ENABLE_SSHD} == "true" ]]
     then
         echo_info "Killing SSHD.."
-        killall sshd
+        pkill sshd
     fi
 
-    while killall -0 patroni; do
+    while pkill -0 patroni; do
         echo_info "Waiting for Patroni to terminate.."
         sleep 1
     done
@@ -135,10 +135,10 @@ initialization_monitor() {
                 echo_info "Successfully removed cluster from the DCS"
 
                 # now kill patroni and sshd
-                killall patroni
-                killall sshd
+                pkill patroni
+                pkill sshd
 
-                while killall -0 patroni; do
+                while pkill -0 patroni; do
                     echo_info "Waiting for Patroni to terminate following init job..."
                     sleep 1
                 done

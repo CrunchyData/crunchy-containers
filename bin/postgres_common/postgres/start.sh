@@ -31,7 +31,7 @@ function trap_sigterm() {
     fi
     if [[ ${ENABLE_SSHD} == "true" ]]; then
         echo_info "killing SSHD.."
-        killall sshd
+        pkill sshd
     fi
 }
 
