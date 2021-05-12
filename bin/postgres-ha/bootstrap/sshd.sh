@@ -53,6 +53,8 @@ then
         exit 1
     fi
 
+    # remove the file before copying if it already exists (e.g. after a restart)
+    rm -f /tmp/id_ed25519
     cp /sshd/id_ed25519 /tmp
     chmod 400 /tmp/id_ed25519
 
