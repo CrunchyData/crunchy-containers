@@ -38,12 +38,14 @@ then
     fi
 
     echo_info "setting up .ssh directory"
-    if [ -d "${HOME}/.ssh" ]; then 
+    if [ -d "${HOME}/.ssh" ]; then
         echo_info ".ssh directory already exists and will not be created"
-    else 
+    else
         mkdir ~/.ssh
     fi
     cp /sshd/config ~/.ssh/
+    # remove the file before copying if it already exists (e.g. after a restart)
+    rm -f /tmp/id_ed25519
     cp /sshd/id_ed25519 /tmp
     chmod 400 /tmp/id_ed25519 ~/.ssh/config
 

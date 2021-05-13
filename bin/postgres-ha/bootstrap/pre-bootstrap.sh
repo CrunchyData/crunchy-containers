@@ -257,10 +257,10 @@ validate_env() {
 build_bootstrap_config_file() {
 
     bootstrap_file="/tmp/postgres-ha-bootstrap.yaml"
-    echo "---" >> "${bootstrap_file}"
+    echo "---" > "${bootstrap_file}"
 
     pghba_file="/tmp/postgres-ha-pghba.yaml"
-    cat "${CRUNCHY_DIR}/conf/postgres-ha/postgres-ha-pghba-bootstrap.yaml" >> "${pghba_file}"
+    cat "${CRUNCHY_DIR}/conf/postgres-ha/postgres-ha-pghba-bootstrap.yaml" > "${pghba_file}"
 
     if [[ "${PGHA_BASE_BOOTSTRAP_CONFIG}" == "true" ]]
     then

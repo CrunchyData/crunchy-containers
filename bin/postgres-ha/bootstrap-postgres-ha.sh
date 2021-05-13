@@ -201,6 +201,9 @@ fi
 # Configure users and groups
 source "${CRUNCHY_DIR}/bin/uid_postgres_no_exec.sh"
 
+# remove the "initialized" file and initialize logs if they already exist (e.g. after a restart)
+rm -f "/tmp/pgha_initialized" "/tmp/patroni_initialize_check.log"
+
 # Perform cluster pre-initialization (set defaults, load secrets, peform validation, log config details, etc.)
 source "${CRUNCHY_DIR}/bin/postgres-ha/bootstrap/pre-bootstrap.sh"
 
