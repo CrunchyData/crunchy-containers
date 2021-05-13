@@ -21,7 +21,7 @@ CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
 # Define nss_wrapper directory and passwd & group files that will be utilized by nss_wrapper.  The
 # nss_wrapper_env.sh script (which also sets these vars) isn't sourced here since the nss_wrapper
 # has not yet been setup, and we therefore don't yet want the nss_wrapper vars in the environment.
-mkdir /tmp/nss_wrapper
+mkdir -p /tmp/nss_wrapper
 chmod g+rwx /tmp/nss_wrapper
 
 NSS_WRAPPER_DIR="/tmp/nss_wrapper/${NSS_WRAPPER_SUBDIR}"
