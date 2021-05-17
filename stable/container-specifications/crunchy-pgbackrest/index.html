@@ -403,13 +403,6 @@
     </li>
         </ul>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-appdev/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-appdev/">
-            crunchy-postgres-appdev
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/">
@@ -507,7 +500,6 @@
     <option value="/container-specifications/crunchy-postgres/" >
   - 
    crunchy-postgres</option>
-      <option value="/container-specifications/crunchy-postgres-appdev/" >- crunchy-postgres-appdev</option>
       <option value="/container-specifications/crunchy-postgres-gis/" >- crunchy-postgres-gis</option>
       <option value="/container-specifications/crunchy-upgrade/" >- crunchy-upgrade</option>
   
@@ -627,8 +619,8 @@ The <code>MODE</code> environment variable must be set to run the image in the r
 <p>The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):</p>
 
 <ul>
-<li>PostgreSQL (13.2, 12.6, 11.11, 10.16, 9.6.21 and 9.5.25)</li>
-<li><a href="https://pgbackrest.org/">pgBackRest</a> (2.31)</li>
+<li>PostgreSQL (13.3, 12.7, 11.12, 10.17, and 9.6.22)</li>
+<li><a href="https://pgbackrest.org/">pgBackRest</a> (2.33)</li>
 <li>CentOS 7, CentOS 8 - publicly available</li>
 <li>UBI 7, UBI 8 - customers only</li>
 </ul>
@@ -699,6 +691,12 @@ The <code>MODE</code> environment variable must be set to run the image in the r
 <td align="left"><strong>PGBACKREST_STANZA</strong></td>
 <td align="left">None</td>
 <td align="left">Defines the backup configuration for a specific PostgreSQL database cluster.</td>
+</tr>
+
+<tr>
+<td align="left"><strong>PGHA_PGBACKREST_LOCAL_GCS_STORAGE</strong></td>
+<td align="left">None</td>
+<td align="left">Indicates whether or not local and gcs storage should be enabled for pgBackRest.</td>
 </tr>
 
 <tr>

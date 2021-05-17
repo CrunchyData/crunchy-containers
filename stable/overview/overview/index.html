@@ -403,13 +403,6 @@
     </li>
         </ul>
     </li>
-      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-appdev/" class="dd-item">
-        <div>
-          <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-appdev/">
-            crunchy-postgres-appdev
-          </a>
-        </div>
-    </li>
       <li data-nav-id="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/" class="dd-item">
         <div>
           <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres-gis/">
@@ -572,10 +565,10 @@
 
 <h2 id="centos-vs-red-hat-ubi-images">CentOS vs Red Hat UBI Images</h2>
 
-<p>The Crunchy Container suite provides four different OS images: <code>centos7</code>, <code>centos8</code>, <code>ubi7</code>, and <code>ubi8</code>.  Both images
+<p>The Crunchy Container suite provides four different OS images: <code>centos7</code>, <code>centos8</code>, <code>ubi7</code>, and <code>ubi8-minimal</code>.  Both images
 utilize Crunchy Ceritifed RPM&rsquo;s for the installation of PostgreSQL, and outside of the base images
 utilized to build the containers and any packages included within them (either CentOS or UBI), both
-are effectively the same.  The <code>ubi7</code> and <code>ubi8</code> images are available to active Crunchy Data Customers only,
+are effectively the same.  The <code>ubi7</code> and <code>ubi8-minimal</code> images are available to active Crunchy Data Customers only,
 and are built using the Red Hat Universal Base Image (UBI).</p>
 
 <p>Please note that as of version 4.2.2 of the Crunchy Containers Suite, the <code>ubi7</code> images have
@@ -699,7 +692,7 @@ image but additionally provides the following geospatial extensions:</p>
 <p><em>Physical</em> backup and restoration tools included in the Crunchy Container suite are:</p>
 
 <ul>
-<li><a href="2.31">pgBackRest</a>
+<li><a href="2.33">pgBackRest</a>
 PostgreSQL images</li>
 <li><a href="https://www.postgresql.org/docs/current/app-pgbasebackup.html">pg_basebackup</a> -
 provided by the Crunchy PostgreSQL image</li>
