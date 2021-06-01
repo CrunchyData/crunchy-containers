@@ -109,7 +109,7 @@ $(CCPROOT)/build/%/Dockerfile:
 # ----- Base Image -----
 ccbase-image: ccbase-image-$(IMGBUILDER)
 
-ccbase-image-build: build-pgbackrest license $(CCPROOT)/build/base/Dockerfile
+ccbase-image-build: license $(CCPROOT)/build/base/Dockerfile
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/build/base/Dockerfile \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-base:$(CCP_IMAGE_TAG) \
