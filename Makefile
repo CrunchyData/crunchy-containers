@@ -61,7 +61,7 @@ ifeq ("$(CCP_BASEOS)", "centos8")
 	DOCKERBASEREGISTRY=centos:
 endif
 
-.PHONY:	all license pg-independent-images pgimages
+.PHONY:	all pg-independent-images pgimages
 
 # Default target
 all: cc-pg-base-image pgimages pg-independent-images
@@ -109,7 +109,7 @@ $(CCPROOT)/build/%/Dockerfile:
 # ----- Base Image -----
 ccbase-image: ccbase-image-$(IMGBUILDER)
 
-ccbase-image-build: license $(CCPROOT)/build/base/Dockerfile
+ccbase-image-build: $(CCPROOT)/build/base/Dockerfile
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/build/base/Dockerfile \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-base:$(CCP_IMAGE_TAG) \
@@ -334,9 +334,6 @@ setup:
 
 docbuild:
 	cd $(CCPROOT) && ./generate-docs.sh
-
-license:
-	./bin/license_aggregator.sh
 
 push:
 	./bin/push-to-dockerhub.sh
