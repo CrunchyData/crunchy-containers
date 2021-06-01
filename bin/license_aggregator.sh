@@ -14,7 +14,7 @@
 # limitations under the License.
 
 # Inputs / outputs
-SCAN_DIR=${PGOROOT:-~/go/src/github.com/crunchydata/postgres-operator}/vendor
+SCAN_DIR=${CCPROOT:-~/go/src/github.com/crunchydata/crunchy-containers}/vendor
 OUT_DIR=licenses
 
 # Fail on error
