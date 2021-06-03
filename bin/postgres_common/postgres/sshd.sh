@@ -21,7 +21,7 @@ NSS_WRAPPER_SSH_DIR="/tmp/nss_wrapper/ssh"
 function nss_wrapper_ssh() {
     mkdir -p "${NSS_WRAPPER_SSH_DIR}"
     cp "${NSS_WRAPPER_DEFAULT_DIR}/passwd" "${NSS_WRAPPER_SSH_DIR}"
-    cp "${NSS_WRAPPER_DEFAULT_DIR}/group" "${nss_wrappeNSS_WRAPPER_SSH_DIRr_ssh_dir}"
+    cp "${NSS_WRAPPER_DEFAULT_DIR}/group" "${NSS_WRAPPER_SSH_DIR}"
 }
 
 if [[ ${ENABLE_SSHD} == "true" ]]
