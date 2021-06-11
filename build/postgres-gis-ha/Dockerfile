@@ -31,8 +31,9 @@ LABEL name="postgres-gis-ha" \
 RUN if [ "$DFSET" = "centos" ] ; then \
 	${PACKAGER} -y install \
 		--setopt=skip_missing_names_on_install=False \
+		gcc \
+		python3-devel \
 		python3-pip \
-		python3-psutil \
 		python3-psycopg2 \
 	&& ${PACKAGER} -y clean all ; \
 fi
@@ -41,8 +42,9 @@ RUN if [ "$BASEOS" = "rhel7" ] ; then \
 	${PACKAGER} -y install \
 		--enablerepo="epel,rhel-7-server-optional-rpms" \
 		--setopt=skip_missing_names_on_install=False \
+		gcc \
+		python3-devel \
 		python3-pip \
-		python3-psutil \
 		python3-psycopg2 \
 	&& ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
 fi
@@ -51,8 +53,9 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
 	${PACKAGER} -y install \
 		--enablerepo="epel,rhel-7-server-optional-rpms" \
 		--setopt=skip_missing_names_on_install=False \
+		gcc \
+		python3-devel \
 		python3-pip \
-		python3-psutil \
 		python3-psycopg2 \
 	&& ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
 fi
@@ -60,8 +63,9 @@ fi
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
 	${PACKAGER} -y install \
 		--enablerepo="epel" \
+		gcc \
+		python3-devel \
 		python3-pip \
-		python3-psutil \
 		python3-psycopg2 \
 	&& ${PACKAGER} -y clean all --enablerepo="epel" ; \
 fi
