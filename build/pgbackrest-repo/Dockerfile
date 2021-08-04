@@ -4,6 +4,10 @@ ARG PG_FULL
 ARG PREFIX
 FROM ${PREFIX}/crunchy-pgbackrest:${BASEOS}-${PG_FULL}-${BASEVER}
 
+# For RHEL8 all arguments used in main code has to be specified after FROM
+ARG BASEOS
+ARG PACKAGER
+
 LABEL name="pgbackrest-repo" \
 	summary="Crunchy pgBackRest-repo" \
 	description="Capable of mounting the /backrestrepo for access to pgbackrest archives, while allowing for the configuration of pgBackRest using applicable pgBackRest environment variables." \
