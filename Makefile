@@ -320,6 +320,7 @@ pgbackrest-repo-pgimg-build: ccbase-image build-pgbackrest pgbackrest $(CCPROOT)
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
+		--build-arg PACKAGER=$(PACKAGER) \
 		$(CCPROOT)
 
 pgbackrest-repo-pgimg-buildah: pgbackrest-repo-pgimg-build ;
