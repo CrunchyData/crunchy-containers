@@ -37,12 +37,12 @@ For instance, if your service has an address as follows:
 ```
 ${CCP_CLI} get service
 NAME                CLUSTER-IP       EXTERNAL-IP   PORT(S)                   AGE
-custom-config-ssl   172.30.211.128   <none>        5432/TCP
+custom-config-ssl   172.30.211.138   <none>        5432/TCP
 ```
 
 Then your `/etc/hosts` file needs an entry like this:
 ```
-172.30.211.128 custom-config-ssl
+172.30.211.138 custom-config-ssl
 ```
 
 For production Kubernetes and OpenShift installations, it will likely be preferred for DNS
@@ -83,7 +83,7 @@ sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key"
 
 You should see a connection that looks like the following:
 ```
-psql (11.12)
+psql (11.13)
 SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
 Type "help" for help.
 
