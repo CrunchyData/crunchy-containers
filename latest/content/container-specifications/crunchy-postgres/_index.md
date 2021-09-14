@@ -17,9 +17,9 @@ The following features are supported by the `crunchy-postgres` container:
 
 The crunchy-postgres Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (13.3, 12.7, 11.12, 10.17, and 9.6.22)
+* PostgreSQL (13.4, 12.8, 11.13, 10.18, and 9.6.23)
 * [pgBackRest](https://pgbackrest.org/) (2.33)
-* pgBench (13.3, 12.7, 11.12, 10.17, and 9.6.22)
+* pgBench (13.4, 12.8, 11.13, 10.18, and 9.6.23)
 * rsync
 * CentOS 7, CentOS 8 - publicly available
 * UBI 7, UBI 8 - customers only
