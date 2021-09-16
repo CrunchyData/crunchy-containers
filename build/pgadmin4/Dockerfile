@@ -23,7 +23,7 @@ RUN mkdir -p /opt/crunchy/bin /opt/crunchy/conf /var/lib/pgadmin /var/log/pgadmi
         /certs /run/httpd
 
 RUN if [ "$BASEOS" = "centos7" ] ; then \
-        ${PACKAGER} -y install \
+        ${PACKAGER} -y install --nodocs \
                 --setopt=skip_missing_names_on_install=False \
                 mod_ssl \
                 mod_wsgi \
@@ -41,7 +41,7 @@ RUN if [ "$BASEOS" = "centos7" ] ; then \
 fi
 
 RUN if [ "$BASEOS" = "centos8" ] ; then \
-        ${PACKAGER} -y install \
+        ${PACKAGER} -y install --nodocs \
                 --setopt=skip_missing_names_on_install=False \
                 mod_ssl \
                 python3-mod_wsgi \
@@ -61,7 +61,7 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
 fi
 
 RUN if [ "$BASEOS" = "ubi7" ] ; then \
-        ${PACKAGER} -y install \
+        ${PACKAGER} -y install --nodocs \
                 --setopt=skip_missing_names_on_install=False \
                 --enablerepo="epel,rhel-7-server-extras-rpms" \
                 mod_ssl \
@@ -80,7 +80,7 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
 fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-        ${PACKAGER} -y install \
+        ${PACKAGER} -y install --nodocs \
                 --enablerepo="epel" \
                 mod_ssl \
                 python3-mod_wsgi \

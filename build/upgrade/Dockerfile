@@ -23,7 +23,7 @@ ADD conf/crunchypg*.repo /etc/yum.repos.d/
 # install the highest version of PostgreSQL + pgAudit and its dependencies as
 # well as unzip
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-	${PACKAGER} -y install \
+	${PACKAGER} -y install --nodocs \
 		--disablerepo=crunchypg* \
 		--enablerepo="crunchypg${PG_MAJOR//.}" \
 		"postgresql${PG_MAJOR//.}" \
@@ -34,7 +34,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 		unzip \
 		&& ${PACKAGER} -y clean all ; \
 else \
-	${PACKAGER} -y install \
+	${PACKAGER} -y install --nodocs \
 		--setopt=skip_missing_names_on_install=False \
 		--disablerepo=crunchypg* \
 		--enablerepo="crunchypg${PG_MAJOR//.}" \
@@ -50,7 +50,7 @@ fi
 # add in all of the earlier version of PostgreSQL. It will install the version
 # above, but the dependencies are handled
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-	${PACKAGER} -y install \
+	${PACKAGER} -y install --nodocs \
 		--disablerepo=* \
 		--enablerepo=crunchypg* \
 		postgresql[1-9][0-9] \
@@ -60,7 +60,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 		pgnodemx[1-9][0-9] \
 		&& ${PACKAGER} -y clean all ; \
 else \
-	${PACKAGER} -y install \
+	${PACKAGER} -y install --nodocs \
 		--setopt=skip_missing_names_on_install=False \
 		--disablerepo=* \
 		--enablerepo=crunchypg* \

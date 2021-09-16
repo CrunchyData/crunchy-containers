@@ -29,7 +29,7 @@ LABEL name="postgres-gis-ha" \
 	io.openshift.tags="postgresql,postgres,postgis,spatial,geospatial,gis,map,database,ha,crunchy"
 
 RUN if [ "$DFSET" = "centos" ] ; then \
-	${PACKAGER} -y install \
+	${PACKAGER} -y install --nodocs \
 		--setopt=skip_missing_names_on_install=False \
 		python3-pip \
 		python3-psutil \
@@ -38,7 +38,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
 fi
 
 RUN if [ "$BASEOS" = "rhel7" ] ; then \
-	${PACKAGER} -y install \
+	${PACKAGER} -y install --nodocs \
 		--enablerepo="epel,rhel-7-server-optional-rpms" \
 		--setopt=skip_missing_names_on_install=False \
 		python3-pip \
@@ -48,7 +48,7 @@ RUN if [ "$BASEOS" = "rhel7" ] ; then \
 fi
 
 RUN if [ "$BASEOS" = "ubi7" ] ; then \
-	${PACKAGER} -y install \
+	${PACKAGER} -y install --nodocs \
 		--enablerepo="epel,rhel-7-server-optional-rpms" \
 		--setopt=skip_missing_names_on_install=False \
 		python3-pip \
@@ -58,7 +58,7 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
 fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-	${PACKAGER} -y install \
+	${PACKAGER} -y install --nodocs \
 		--enablerepo="epel" \
 		python3-pip \
 		python3-psutil \

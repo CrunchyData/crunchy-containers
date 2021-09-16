@@ -16,7 +16,7 @@ ARG PG_MAJOR
 # Needed due to lack of environment substitution trick on ADD
 ARG PG_LBL
 
-RUN ${PACKAGER} -y install \
+RUN ${PACKAGER} -y install --nodocs \
 	--disablerepo=crunchypg* \
 	--enablerepo="crunchypg${PG_LBL}" \
 	postgresql${PG_LBL} \
@@ -29,7 +29,7 @@ ARG BACKREST_VER
 
 # Separate yum run matching postgres-ha image, leverages cached layer
 RUN if [ "$DFSET" = "centos" ] ; then \
-        ${PACKAGER} -y install \
+        ${PACKAGER} -y install --nodocs \
         	--setopt=skip_missing_names_on_install=False \
         	openssh-clients \
         	openssh-server \
@@ -57,7 +57,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	lz4 \
         && ${PACKAGER} -y clean all ; \
 else \
-        ${PACKAGER} -y install \
+        ${PACKAGER} -y install --nodocs \
 		--enablerepo="epel" \
 		openssh-clients \
 		openssh-server \
@@ -80,7 +80,7 @@ else \
 		tar \
 		bzip2 \
 		lz4 \
-	&& ${PACKAGER} -y install \
+	&& ${PACKAGER} -y install --nodocs \
 		--setopt=tsflags='' \
 		--enablerepo="epel" \
 		pgaudit_analyze \

@@ -13,14 +13,14 @@ LABEL name="crunchy-base-ext" \
 	description="Includes base extensions required to load in additional PostgreSQL extensions."
 
 RUN if [ "$BASEOS" = "centos7" ] ; then \
-	${PACKAGER} -y install \
+	${PACKAGER} -y install --nodocs \
 		--setopt=skip_missing_names_on_install=False \
 		perl \
 	&& ${PACKAGER} -y clean all ; \
 fi
 
 RUN if [ "$BASEOS" = "centos8" ] ; then \
-	${PACKAGER} -y install \
+	${PACKAGER} -y install --nodocs \
 		--setopt=skip_missing_names_on_install=False \
 		--enablerepo="powertools" \
 		perl \
@@ -28,7 +28,7 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
 fi
 
 RUN if [ "$BASEOS" = "ubi7" ] ; then \
-	${PACKAGER} -y install \
+	${PACKAGER} -y install --nodocs \
 		--enablerepo="epel,rhel-7-server-optional-rpms" \
 		--setopt=skip_missing_names_on_install=False \
 		perl \
@@ -36,8 +36,8 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
 fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-	${PACKAGER} -y --enablerepo="epel" --enablerepo="codeready-builder-for-rhel-8-x86_64-rpms" install libaec libdap armadillo \
-	&& ${PACKAGER} -y install \
+	${PACKAGER} -y --enablerepo="epel" --enablerepo="codeready-builder-for-rhel-8-x86_64-rpms" --nodocs install libaec libdap armadillo \
+	&& ${PACKAGER} -y install --nodocs \
 		--enablerepo="epel" \
 		hdf5 \
 		openldap \
