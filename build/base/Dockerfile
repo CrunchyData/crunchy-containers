@@ -40,41 +40,10 @@ fi
 ENV LC_ALL en_US.utf-8
 ENV LANG en_US.utf-8
 
-ARG EPEL7_RPM=https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 ARG EPEL8_RPM=https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 
-RUN if [ "$BASEOS" = "rhel7" ] ; then \
-	${PACKAGER} -y --enablerepo=rhel-7-server-ose-3.11-rpms update --nodocs \
-        && ${PACKAGER} -y --nodocs install ${EPEL7_RPM} \
-	&& ${PACKAGER} -y install \
-		--setopt=skip_missing_names_on_install=False \
-		bind-utils \
-		gettext \
-		hostname \
-		procps-ng \
-		nss_wrapper \
-	&& sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/epel*.repo \
-	&& ${PACKAGER} -y clean all --enablerepo=rhel-7-server-ose-3.11-rpms ; \
-fi
-
-RUN if [ "$BASEOS" = "ubi7" ] ; then \
-        ${PACKAGER} -y --enablerepo=rhel-7-server-ose-3.11-rpms update --nodocs \
-        && ${PACKAGER} -y install \
-                --setopt=skip_missing_names_on_install=False \
-                --nodocs \
-                ${EPEL7_RPM} \
-                bind-utils \
-                gettext \
-                hostname \
-                procps-ng \
-                nss_wrapper \
-        && sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/epel*.repo \
-        && ${PACKAGER} -y clean all --enablerepo=rhel-7-server-ose-3.11-rpms ; \
-fi
-
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-        rpm -ivh ${EPEL8_RPM} && \
-        ${PACKAGER} -y update --nodocs \
+        rpm -ivh ${EPEL8_RPM} \
         && ${PACKAGER} -y install --nodocs \
                 bind-utils \
                 gettext \
@@ -85,20 +54,6 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
                 vim-minimal \
         && ${PACKAGER} reinstall tzdata -y --nodocs \
         && sed -i 's/enabled=1/enabled=0/' /etc/yum.repos.d/epel*.repo \
-        && ${PACKAGER} -y clean all ; \
-fi
-
-RUN if [ "$BASEOS" = "centos7" ] ; then \
-        ${PACKAGER} -y update --nodocs \
-        && ${PACKAGER} -y install epel-release --nodocs \
-        && ${PACKAGER} -y install \
-                --setopt=skip_missing_names_on_install=False \
-                --nodocs \
-                bind-utils \
-                gettext \
-                hostname \
-                procps-ng \
-                nss_wrapper \
         && ${PACKAGER} -y clean all ; \
 fi
 
