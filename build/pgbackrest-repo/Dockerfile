@@ -19,7 +19,7 @@ LABEL name="pgbackrest-repo" \
 USER 0
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-        ${PACKAGER} -y install  \
+        ${PACKAGER} -y install --nodocs \
                 shadow-utils \
                 && ${PACKAGER} -y clean all ; \
 fi
