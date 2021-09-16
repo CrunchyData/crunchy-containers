@@ -56,13 +56,13 @@ endif
 
 ifeq ("$(CCP_BASEOS)", "centos7")
         DFSET=centos
-        DOCKERBASEREGISTRY=centos:
+        DOCKERBASEREGISTRY=docker.io/centos:
 endif
 
 ifeq ("$(CCP_BASEOS)", "centos8")
         DFSET=centos
         PACKAGER=dnf
-        DOCKERBASEREGISTRY=centos:
+        DOCKERBASEREGISTRY=docker.io/centos:
 endif
 
 .PHONY:	all license pgbackrest-images pg-independent-images pgimages
