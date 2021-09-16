@@ -69,7 +69,6 @@ endif
 
 # list of image names, helpful in pushing
 images = crunchy-postgres \
-	crunchy-postgres-ha \
 	crunchy-upgrade \
 	crunchy-pgbackrest \
 	crunchy-pgbackrest-repo \
@@ -85,7 +84,7 @@ all: pgimages pg-independent-images pgbackrest-images
 pg-independent-images: pgadmin4 pgbadger pgbouncer pgpool
 
 # Build images that require a specific postgres version - ordered for potential concurrent benefits
-pgimages: postgres postgres-ha postgres-gis postgres-gis-ha upgrade
+pgimages: postgres postgres-gis upgrade
 
 # Build images based on pgBackRest
 pgbackrest-images: pgbackrest pgbackrest-repo
@@ -101,9 +100,7 @@ pgbadger: pgbadger-img-$(IMGBUILDER)
 pgbouncer: pgbouncer-img-$(IMGBUILDER)
 pgpool: pgpool-img-$(IMGBUILDER)
 postgres: postgres-pgimg-$(IMGBUILDER)
-postgres-ha: postgres-ha-pgimg-$(IMGBUILDER)
 postgres-gis: postgres-gis-pgimg-$(IMGBUILDER)
-postgres-gis-ha: postgres-gis-ha-pgimg-$(IMGBUILDER)
 
 #===========================================
 # Pattern-based image generation targets
@@ -172,6 +169,7 @@ postgres-pgimg-build: ccbase-image $(CCPROOT)/build/postgres/Dockerfile
 		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \
 		--build-arg BASE_IMAGE_NAME=crunchy-base \
+		--build-arg PATRONI_VER=$(CCP_PATRONI_VERSION) \
 		$(CCPROOT)
 
 postgres-pgimg-buildah: postgres-pgimg-build ;
@@ -197,6 +195,7 @@ postgres-gis-base-pgimg-build: ccbase-ext-image-build $(CCPROOT)/build/postgres/
 		--build-arg BACKREST_VER=$(CCP_BACKREST_VERSION) \
 		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \
+		--build-arg PATRONI_VER=$(CCP_PATRONI_VERSION) \
 		--build-arg BASE_IMAGE_NAME=crunchy-base-ext \
 		$(CCPROOT)
 
@@ -229,56 +228,6 @@ ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 endif
 
 postgres-gis-pgimg-docker: postgres-gis-pgimg-build
-
-# ----- Special case pg-based image (postgres-ha) -----
-# Special case args: BACKREST_VER, PATRONI_VER
-postgres-ha-pgimg-build: postgres-pgimg-build $(CCPROOT)/build/postgres-ha/Dockerfile
-	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/build/postgres-ha/Dockerfile \
-		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) \
-		--build-arg BASEOS=$(CCP_BASEOS) \
-		--build-arg BASEVER=$(CCP_VERSION) \
-		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
-		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
-		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
-		--build-arg PATRONI_VER=$(CCP_PATRONI_VERSION) \
-		--build-arg DFSET=$(DFSET) \
-		--build-arg PACKAGER=$(PACKAGER) \
-		$(CCPROOT)
-
-postgres-ha-pgimg-buildah: postgres-ha-pgimg-build ;
-# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
-ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
-	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG)
-endif
-
-postgres-ha-pgimg-docker: postgres-ha-pgimg-build
-
-# ----- Special case pg-based image (postgres-gis-ha) -----
-# Special case args: PATRONI_VER
-postgres-gis-ha-pgimg-build: postgres-gis-pgimg-build $(CCPROOT)/build/postgres-gis-ha/Dockerfile
-	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/build/postgres-gis-ha/Dockerfile \
-		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_POSTGIS_IMAGE_TAG) \
-		--build-arg BASEOS=$(CCP_BASEOS) \
-		--build-arg BASEVER=$(CCP_VERSION) \
-		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
-		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
-		--build-arg PATRONI_VER=$(CCP_PATRONI_VERSION) \
-		--build-arg POSTGIS_VER=$(CCP_POSTGIS_VERSION) \
-		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
-		--build-arg DFSET=$(DFSET) \
-		--build-arg PACKAGER=$(PACKAGER) \
-		$(CCPROOT)
-
-postgres-gis-ha-pgimg-buildah: postgres-gis-ha-pgimg-build ;
-# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
-ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
-	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_POSTGIS_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_POSTGIS_IMAGE_TAG)
-endif
-
-postgres-gis-ha-pgimg-docker: postgres-gis-ha-pgimg-build
-
 
 # ----- Special case image (pgbackrest) -----
 
@@ -377,7 +326,6 @@ push: push-gis $(images:%=push-%) ;
 
 push-gis:
 	$(IMG_PUSHER_PULLER) push $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_POSTGIS_IMAGE_TAG)
-	$(IMG_PUSHER_PULLER) push $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_POSTGIS_IMAGE_TAG)
 
 push-%:
 	$(IMG_PUSHER_PULLER) push $(CCP_IMAGE_PREFIX)/$*:$(CCP_IMAGE_TAG)

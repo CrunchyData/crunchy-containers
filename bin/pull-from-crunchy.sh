@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 REG_CCP_IMAGE_PREFIX=registry.crunchydata.com/crunchydata
-for CONTAINER in crunchy-pgbackrest crunchy-pgbackrest-repo crunchy-upgrade crunchy-pgbadger crunchy-pgpool crunchy-postgres crunchy-pgbouncer crunchy-pgadmin4 crunchy-postgres-ha
+for CONTAINER in crunchy-pgbackrest crunchy-pgbackrest-repo crunchy-upgrade crunchy-pgbadger crunchy-pgpool crunchy-postgres crunchy-pgbouncer crunchy-pgadmin4
 do
 	echo $CONTAINER is the container
 	docker pull $REG_CCP_IMAGE_PREFIX/$CONTAINER:$CCP_IMAGE_TAG
@@ -21,7 +21,7 @@ do
 done
 
 # Now pull the PostGIS containers, which are tagged to include their PostGIS version
-for GIS_CONTAINER in crunchy-postgres-gis crunchy-postgres-gis-ha
+for GIS_CONTAINER in crunchy-postgres-gis
 do
 	echo $GIS_CONTAINER is the container
 	docker pull $REG_CCP_IMAGE_PREFIX/$CONTAINER:$CCP_POSTGIS_IMAGE_TAG

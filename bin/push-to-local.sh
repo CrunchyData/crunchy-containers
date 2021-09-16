@@ -14,12 +14,10 @@ IMAGES=(
     crunchy-pgpool
     crunchy-postgres
     crunchy-upgrade
-    crunchy-postgres-ha
 )
 
 GIS_IMAGES=(
     crunchy-postgres-gis
-    crunchy-postgres-gis-ha
 )
 
 function echo_green() {

@@ -25,6 +25,7 @@ RUN ${PACKAGER} -y install --nodocs \
 # Preserving PGVERSION out of paranoia
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
 
+ARG PATRONI_VER
 ARG BACKREST_VER
 
 # Separate yum run matching postgres-ha image, leverages cached layer
@@ -44,6 +45,9 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	pgnodemx${PG_MAJOR//.} \
         	$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
         	psmisc \
+        	python3-pip \
+        	python3-psutil \
+        	python3-psycopg2 \
         	rsync \
         	$( printf '11\n'${PG_MAJOR} | sort -VC && echo timescaledb_${PG_MAJOR} ) \
         	wal2json${PG_MAJOR//.} \
@@ -72,6 +76,9 @@ else \
 		pgnodemx${PG_MAJOR//.} \
 		$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
 		psmisc \
+		python3-pip \
+		python3-psutil \
+		python3-psycopg2 \
 		rsync \
 		$( printf '11\n'${PG_MAJOR} | sort -VC && echo timescaledb_${PG_MAJOR} ) \
 		wal2json${PG_MAJOR//.} \
@@ -87,23 +94,28 @@ else \
 	&& ${PACKAGER} -y clean all --enablerepo="epel" ; \
 fi
 
-# ===== Steps unique to this image after here =====
+# install patroni for Kube
+RUN pip3 install --upgrade python-dateutil \
+	&& pip3 install patroni[kubernetes]=="${PATRONI_VER}"
+
+ENV PATH="${PGROOT}/bin:${PATH}"
+
 LABEL name="postgres" \
-	summary="PostgreSQL ${PG_FULL}" \
-	description="Allows multiple deployment methods for PostgreSQL, including basic single primary, streaming replication with synchronous and asynchronous replicas. Includes utilities and tools for Auditing (pgaudit), statement tracking,  Backup/Restore (pgbackrest, pg_basebackup, pgdump, pgrestore) and Benchmarking (pgbench)." \
-	io.k8s.description="Crunchy PostgreSQL is the trusted open source distribution of PostgreSQL" \
+	summary="Crunchy PostgreSQL ${PG_FULL}" \
+	description="Postgres ready for production: high availability, disaster recovery, monitoring, security, and performance. Works with PGO, the open source Postgres Operator from Crunchy Data." \
+	io.k8s.description="Crunchy PostgreSQL is ready for production: the trusted open source distribution of PostgreSQL. Works with PGO, the open source Postgres Operator from Crunchy Data." \
 	io.k8s.display-name="Crunchy PostgreSQL" \
-	io.openshift.tags="postgresql,postgres,sql,nosql,database,crunchy" \
+	io.openshift.tags="postgresql,postgres,postgis,sql,nosql,database,ha,crunchy" \
 	postgresql.version.major="${PG_MAJOR}" \
 	postgresql.version="${PG_FULL}"
 
 # set up crunchy directory
-RUN mkdir -p /opt/crunchy/bin /opt/crunchy/conf /pgdata /pgwal /pgconf /recover /backrestrepo
+RUN mkdir -p /opt/crunchy/bin /opt/crunchy/conf /pgdata /pgwal /pgconf /backrestrepo
 
 RUN chown -R postgres:postgres /opt/crunchy /var/lib/pgsql \
-		/pgdata /pgwal /pgconf /recover /backrestrepo &&  \
+		/pgdata /pgwal /pgconf /backrestrepo &&  \
 	chmod -R g=u /opt/crunchy /var/lib/pgsql \
-		/pgdata /pgwal /pgconf /recover /backrestrepo
+		/pgdata /pgwal /pgconf /backrestrepo
 
 # open up the postgres port
 EXPOSE 5432
@@ -117,13 +129,12 @@ ADD tools/pgmonitor/postgres_exporter/linux /opt/crunchy/bin/modules/pgexporter
 RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh && rm -f /run/nologin
 
 # add volumes to allow override of pg_hba.conf and postgresql.conf
-# add volumes to offer a restore feature
 # add volumes to allow storage of postgres WAL segment files
 # add volumes to locate WAL files to recover with
 # add volumes for pgbackrest to write to
 # The VOLUME directive must appear after all RUN directives to ensure the proper
 # volume permissions are applied when building the image
-VOLUME ["/sshd", "/pgconf", "/pgdata", "/pgwal", "/recover", "/backrestrepo"]
+VOLUME ["/pgdata", "/pgwal", "/pgconf", "/backrestrepo", "/sshd"]
 
 # Defines a unique directory name that will be utilized by the nss_wrapper in the UID script
 ENV NSS_WRAPPER_SUBDIR="postgres"

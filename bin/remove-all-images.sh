@@ -14,19 +14,9 @@
 # limitations under the License.
 
 for i in \
-restore pgdump pgrestore postgres-gis pgbadger pgpool \
-watch backup postgres pgbouncer pgadmin4 upgrade pgbench \
-pgbasebackup-restore postgres-ha postgres-gis-ha
+postgres-gis pgbadger pgpool postgres pgbouncer pgadmin4 upgrade
 do
 	docker rmi -f  $CCP_IMAGE_PREFIX/crunchy-$i:$CCP_IMAGE_TAG
-	docker rmi -f  crunchy-$i
-#	docker rmi -f  registry.crunchydata.openshift.com/jeff-project/crunchy-$i:$CCP_IMAGE_TAG
-done
-
-for i in \
-postgres-gis postgres-gis-ha
-do
-	docker rmi -f  $CCP_IMAGE_PREFIX/crunchy-$i:$CCP_POSTGIS_IMAGE_TAG
 	docker rmi -f  crunchy-$i
 done
 

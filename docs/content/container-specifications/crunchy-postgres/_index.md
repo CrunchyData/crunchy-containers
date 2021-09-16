@@ -46,4 +46,3 @@ The crunchy-postgres Docker image can be run in the modes to enable functionalit
 **/pgconf**|Volume used to store custom configuration files mounted to the container.
 **/pgdata**|Volume used to store the data directory contents for the PostgreSQL database.
 **/pgwal**|Volume used to store Write Ahead Log (WAL) when `XLOGDIR` environment variable is set to `true.`
-**/recover**|Volume used for Point In Time Recovery (PITR) during startup of the PostgreSQL database.
