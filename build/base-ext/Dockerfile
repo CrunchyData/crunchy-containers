@@ -12,27 +12,12 @@ LABEL name="crunchy-base-ext" \
 	summary="Includes base extensions required to load in additional PostgreSQL extensions." \
 	description="Includes base extensions required to load in additional PostgreSQL extensions."
 
-RUN if [ "$BASEOS" = "centos7" ] ; then \
-	${PACKAGER} -y install --nodocs \
-		--setopt=skip_missing_names_on_install=False \
-		perl \
-	&& ${PACKAGER} -y clean all ; \
-fi
-
 RUN if [ "$BASEOS" = "centos8" ] ; then \
 	${PACKAGER} -y install --nodocs \
 		--setopt=skip_missing_names_on_install=False \
 		--enablerepo="powertools" \
 		perl \
 	&& ${PACKAGER} -y clean all ; \
-fi
-
-RUN if [ "$BASEOS" = "ubi7" ] ; then \
-	${PACKAGER} -y install --nodocs \
-		--enablerepo="epel,rhel-7-server-optional-rpms" \
-		--setopt=skip_missing_names_on_install=False \
-		perl \
-	&& ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
 fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \

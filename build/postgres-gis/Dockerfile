@@ -20,17 +20,6 @@ LABEL name="postgres-gis" \
 
 USER 0
 
-RUN if [ "$BASEOS" = "centos7" ] ; then \
-	${PACKAGER} -y install --nodocs \
-		--setopt=skip_missing_names_on_install=False \
-		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
-		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
-		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
-		postgresql${PG_MAJOR//.}-plperl \
-		postgresql${PG_MAJOR//.}-pltcl \
-	&& ${PACKAGER} -y clean all ; \
-fi
-
 RUN if [ "$BASEOS" = "centos8" ] ; then \
 	${PACKAGER} -y install --nodocs \
 		--setopt=skip_missing_names_on_install=False \
@@ -41,18 +30,6 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
 		postgresql${PG_MAJOR//.}-plperl \
 		postgresql${PG_MAJOR//.}-pltcl \
 	&& ${PACKAGER} -y clean all ; \
-fi
-
-RUN if [ "$BASEOS" = "ubi7" ] ; then \
-	${PACKAGER} -y install --nodocs \
-		--enablerepo="epel,rhel-7-server-optional-rpms" \
-		--setopt=skip_missing_names_on_install=False \
-		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
-		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
-		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
-		postgresql${PG_MAJOR//.}-plperl \
-		postgresql${PG_MAJOR//.}-pltcl \
-	&& ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
 fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \

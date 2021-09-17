@@ -31,22 +31,6 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         && ${PACKAGER} -y clean all ; \
 fi
 
-RUN if [ "$BASEOS" = "rhel7" ] ; then \
-       ${PACKAGER} -y install --nodocs \
-                --enablerepo="rhel-7-server-optional-rpms" \
-                --setopt=skip_missing_names_on_install=False \
-                pgbadger \
-        && ${PACKAGER} -y clean all --enablerepo="rhel-7-server-optional-rpms" ; \
-fi
-
-RUN if [ "$BASEOS" = "ubi7" ] ; then \
-       ${PACKAGER} -y install --nodocs \
-                --enablerepo="rhel-7-server-optional-rpms" \
-                --setopt=skip_missing_names_on_install=False \
-                pgbadger \
-        && ${PACKAGER} -y clean all --enablerepo="rhel-7-server-optional-rpms" ; \
-fi
-
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
        ${PACKAGER} -y install --nodocs \
                 --enablerepo="epel" \
