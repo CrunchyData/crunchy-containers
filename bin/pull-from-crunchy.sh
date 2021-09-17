@@ -13,7 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 REG_CCP_IMAGE_PREFIX=registry.crunchydata.com/crunchydata
-for CONTAINER in crunchy-pgbackrest crunchy-pgbackrest-repo crunchy-upgrade crunchy-pgbadger crunchy-pgpool crunchy-postgres crunchy-pgbouncer crunchy-pgadmin4
+# crunchy-pgbadger crunchy-pgpool crunchy-pgadmin4
+for CONTAINER in crunchy-pgbackrest crunchy-pgbackrest-repo crunchy-upgrade crunchy-postgres crunchy-pgbouncer
 do
 	echo $CONTAINER is the container
 	docker pull $REG_CCP_IMAGE_PREFIX/$CONTAINER:$CCP_IMAGE_TAG

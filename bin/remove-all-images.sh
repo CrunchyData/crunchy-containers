@@ -13,8 +13,9 @@
 # See the License for the specific language governing permi -fssions and
 # limitations under the License.
 
+# pgadmin4 pgbadger pgpool
 for i in \
-postgres-gis pgbadger pgpool postgres pgbouncer pgadmin4 upgrade
+postgres-gis postgres pgbouncer upgrade
 do
 	docker rmi -f  $CCP_IMAGE_PREFIX/crunchy-$i:$CCP_IMAGE_TAG
 	docker rmi -f  crunchy-$i

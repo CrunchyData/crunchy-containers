@@ -25,12 +25,12 @@ if [ -z "$CCP_IMAGE_PREFIX" ]; then
 	echo "CCP_IMAGE_PREFIX not set"
 	exit 1
 fi
-docker pull $CCP_IMAGE_PREFIX/crunchy-pgadmin4:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-pgbackrest:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-pgbackrest-repo:$CCP_IMAGE_TAG
-docker pull $CCP_IMAGE_PREFIX/crunchy-pgbadger:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-pgbouncer:$CCP_IMAGE_TAG
-docker pull $CCP_IMAGE_PREFIX/crunchy-pgpool:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-postgres:$CCP_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-postgres-gis:$CCP_POSTGIS_IMAGE_TAG
 docker pull $CCP_IMAGE_PREFIX/crunchy-upgrade:$CCP_IMAGE_TAG
+# docker pull $CCP_IMAGE_PREFIX/crunchy-pgadmin4:$CCP_IMAGE_TAG
+# docker pull $CCP_IMAGE_PREFIX/crunchy-pgbadger:$CCP_IMAGE_TAG
+# docker pull $CCP_IMAGE_PREFIX/crunchy-pgpool:$CCP_IMAGE_TAG
