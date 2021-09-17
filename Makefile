@@ -40,23 +40,10 @@ ifeq ("$(IMGBUILDER)","docker")
 endif
 
 # Allows consolidation of ubi/rhel Dockerfile sets
-ifeq ("$(CCP_BASEOS)", "rhel7")
-        DFSET=rhel
-endif
-
-ifeq ("$(CCP_BASEOS)", "ubi7")
-        DFSET=rhel
-endif
-
 ifeq ("$(CCP_BASEOS)", "ubi8")
         DFSET=rhel
         PACKAGER=microdnf
         BASE_IMAGE_OS=ubi8-minimal
-endif
-
-ifeq ("$(CCP_BASEOS)", "centos7")
-        DFSET=centos
-        DOCKERBASEREGISTRY=docker.io/centos:
 endif
 
 ifeq ("$(CCP_BASEOS)", "centos8")
