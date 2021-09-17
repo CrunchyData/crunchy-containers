@@ -72,16 +72,17 @@ images = crunchy-postgres \
 	crunchy-upgrade \
 	crunchy-pgbackrest \
 	crunchy-pgbackrest-repo \
-	crunchy-pgadmin4 \
-	crunchy-pgbadger \
-	crunchy-pgbouncer \
-	crunchy-pgpool
+	crunchy-pgbouncer
+	# crunchy-pgadmin4
+	# crunchy-pgbadger
+	# crunchy-pgpool
 
 # Default target
 all: pgimages pg-independent-images pgbackrest-images
 
 # Build images that either don't have a PG dependency or using the latest PG version is all that is needed
-pg-independent-images: pgadmin4 pgbadger pgbouncer pgpool
+pg-independent-images: pgbouncer
+# pg-independent-images: pgadmin4 pgbadger pgbouncer pgpool
 
 # Build images that require a specific postgres version - ordered for potential concurrent benefits
 pgimages: postgres postgres-gis upgrade

@@ -6,14 +6,14 @@ REGISTRY='us.gcr.io/container-suite'
 VERSION=${CCP_IMAGE_TAG?}
 GIS_VERSION=${CCP_POSTGIS_IMAGE_TAG?}
 IMAGES=(
-    crunchy-pgadmin4
-    crunchy-pgbadger
     crunchy-pgbouncer
-    crunchy-pgpool
     crunchy-postgres
     crunchy-upgrade
     crunchy-pgbackrest
     crunchy-pgbackrest-repo
+    # crunchy-pgadmin4
+    # crunchy-pgbadger
+    # crunchy-pgpool
 )
 
 GIS_IMAGES=(
