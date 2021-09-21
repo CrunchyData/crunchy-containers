@@ -7,7 +7,6 @@ VERSION=${CCP_IMAGE_TAG?}
 GIS_VERSION=${CCP_POSTGIS_IMAGE_TAG?}
 IMAGES=(
     crucnhy-pgbackrest
-    crunchy-pgbackrest-repo
     crunchy-pgbouncer
     crunchy-postgres
     crunchy-upgrade

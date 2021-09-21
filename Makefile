@@ -58,7 +58,6 @@ endif
 images = crunchy-postgres \
 	crunchy-upgrade \
 	crunchy-pgbackrest \
-	crunchy-pgbackrest-repo \
 	crunchy-pgbouncer
 	# crunchy-pgadmin4
 	# crunchy-pgbadger
@@ -75,7 +74,7 @@ pg-independent-images: pgbouncer
 pgimages: postgres postgres-gis upgrade
 
 # Build images based on pgBackRest
-pgbackrest-images: pgbackrest pgbackrest-repo
+pgbackrest-images: pgbackrest
 
 #===========================================
 # Targets generating pg-based images
@@ -83,7 +82,6 @@ pgbackrest-images: pgbackrest pgbackrest-repo
 
 pgadmin4: pgadmin4-img-$(IMGBUILDER)
 pgbackrest: pgbackrest-pgimg-$(IMGBUILDER)
-pgbackrest-repo: pgbackrest-repo-pgimg-$(IMGBUILDER)
 pgbadger: pgbadger-img-$(IMGBUILDER)
 pgbouncer: pgbouncer-img-$(IMGBUILDER)
 pgpool: pgpool-img-$(IMGBUILDER)
@@ -244,29 +242,6 @@ ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 endif
 
 pgbackrest-pgimg-docker: pgbackrest-pgimg-build
-
-
-# ----- Special case image (pgbackrest-repo) -----
-
-# Special case args: BACKREST_VER
-pgbackrest-repo-pgimg-build: ccbase-image build-pgbackrest pgbackrest $(CCPROOT)/build/pgbackrest-repo/Dockerfile
-	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/build/pgbackrest-repo/Dockerfile \
-		-t $(CCP_IMAGE_PREFIX)/crunchy-pgbackrest-repo:$(CCP_IMAGE_TAG) \
-		--build-arg BASEOS=$(CCP_BASEOS) \
-		--build-arg BASEVER=$(CCP_VERSION) \
-		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
-		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
-		--build-arg PACKAGER=$(PACKAGER) \
-		$(CCPROOT)
-
-pgbackrest-repo-pgimg-buildah: pgbackrest-repo-pgimg-build ;
-# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
-ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
-	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-pgbackrest-repo:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-pgbackrest-repo:$(CCP_IMAGE_TAG)
-endif
-
-pgbackrest-repo-pgimg-docker: pgbackrest-repo-pgimg-build
 
 # ----- Extra images -----
 %-img-build: ccbase-image $(CCPROOT)/build/%/Dockerfile
