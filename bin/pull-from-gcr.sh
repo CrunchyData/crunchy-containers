@@ -10,7 +10,6 @@ IMAGES=(
     crunchy-postgres
     crunchy-upgrade
     crunchy-pgbackrest
-    crunchy-pgbackrest-repo
     # crunchy-pgadmin4
     # crunchy-pgbadger
     # crunchy-pgpool
