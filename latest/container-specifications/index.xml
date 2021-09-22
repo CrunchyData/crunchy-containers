@@ -34,18 +34,6 @@ Running Modes The crunchy-pgbackrest image can be run in modes to enable differe
     </item>
     
     <item>
-      <title>crunchy-pgbackrest-repo</title>
-      <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbackrest-repo/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbackrest-repo/</guid>
-      <description>The crunchy-pgbackrest-repo container acts as a pgBackRest remote repository for the Postgres cluster to use for storing archive files and backups.
-See the pgBackRest guide for more details.
-Volumes The following volumes are mounted by the crunchy-pgbackrest-repo container:
- /backrestrepo volume used by the pgbackrest backup tool to store pgBackRest archives /pgdata volume is not used by this container, but required by the crunchy-pgbackrest parent container. /sshd volume that contains the SSHD configuration from the backrest-repo-config secret  Packages The crunchy-backrest-repo image contains the following packages:</description>
-    </item>
-    
-    <item>
       <title>crunchy-pgbadger</title>
       <link>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-pgbadger/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>

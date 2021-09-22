@@ -28,7 +28,6 @@ content/installation-guide/installation-guide.md
 content/installation-guide/storage-configuration.md
 content/container-specifications/_index.md
 content/container-specifications/crunchy-pgadmin4.md
-content/container-specifications/crunchy-pgbackrest-repo.md
 content/container-specifications/crunchy-pgbackrest.md
 content/container-specifications/crunchy-pgbadger.md
 content/container-specifications/crunchy-pgbouncer.md
