@@ -118,8 +118,7 @@ Crunchy Container Suite provides support for two types of backups:
 
 *Physical* backup and restoration tools included in the Crunchy Container suite are:
 
-* [pgBackRest](2.33)
-  PostgreSQL images
+* [pgBackRest](https://pgbackrest.org/) (2.35)
 * [pg_basebackup](https://www.postgresql.org/docs/current/app-pgbasebackup.html) -
   provided by the Crunchy PostgreSQL image
 
@@ -164,6 +163,7 @@ Visit the official pgAdmin4 website for more information: https://www.pgadmin.or
 The Crunchy Upgrade image allows users to perform major upgrades of their Crunchy
 PostgreSQL containers.  The following upgrade versions of PostgreSQL are available:
 
+- 14
 - 13
 - 12
 - 11
