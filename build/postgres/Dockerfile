@@ -128,6 +128,10 @@ ADD tools/pgmonitor/postgres_exporter/linux /opt/crunchy/bin/modules/pgexporter
 
 RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh && rm -f /run/nologin
 
+# remove the default spool directory so that pgBackRest does not attempt to look there when
+# performing a restore (pgBackRest will not have permissions to access to this dir in all envs)
+RUN rm -rf /var/spool/pgbackrest
+
 # add volumes to allow override of pg_hba.conf and postgresql.conf
 # add volumes to allow storage of postgres WAL segment files
 # add volumes to locate WAL files to recover with
