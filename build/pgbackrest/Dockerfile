@@ -74,6 +74,10 @@ RUN chmod -R g=u /etc/pgbackrest \
 
 RUN mkdir /.ssh && chown postgres:postgres /.ssh && chmod o+rwx /.ssh
 
+# remove the default spool directory so that pgBackRest does not attempt to look there when
+# performing a restore (pgBackRest will not have permissions to access to this dir in all envs)
+RUN rm -rf /var/spool/pgbackrest
+
 # create necessary volumes for all modes
 #
 # /sshd and /backrestrepo required for the pgBackRest repo mode
