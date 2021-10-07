@@ -112,7 +112,6 @@ image but additionally provides the following geospatial extensions:
 * PostGIS Topology
 * PostGIS Tiger Geocoder
 * FuzzyStrMatch
-* PLR
 
 ## Backup and Restoration Options
 
