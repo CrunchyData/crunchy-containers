@@ -385,7 +385,8 @@ The default pgPool examples use a Secret to hold the set of pgPool configuration
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/latest/container-specifications/crunchy-postgres-gis/</guid>
-      <description>PostgreSQL (pronounced &amp;ldquo;post-gress-Q-L&amp;rdquo;) is an open source, ACID compliant, relational database management system (RDBMS) developed by a worldwide team of volunteers. The crunchy-postgres-gis container image is unmodified, open source PostgreSQL packaged and maintained by professionals. This image is identical to the crunchy-postgres image except it includes the open source geospatial extension PostGIS for PostgreSQL in addition to the language extension PL/R which allows for writing functions in the R statistical computing language.</description>
+      <description>PostgreSQL (pronounced &amp;ldquo;post-gress-Q-L&amp;rdquo;) is an open source, ACID compliant, relational database management system (RDBMS) developed by a worldwide team of volunteers. The crunchy-postgres-gis container image is unmodified, open source PostgreSQL packaged and maintained by professionals. This image is identical to the crunchy-postgres image except it includes the open source geospatial extension PostGIS for PostgreSQL.
+For more information about configuration options for the crunchy-postgres-gis please reference the crunchy-postgres documentation. The crunchy-postgres-gis image is built using the crunchy-postgres image and supports the same features, packages, running modes, and volumes.</description>
     </item>
     
     <item>
