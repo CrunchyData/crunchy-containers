@@ -9,6 +9,7 @@ ARG BASEOS
 ARG DFSET
 ARG PACKAGER
 ARG PG_MAJOR
+ARG UPGRADE_PG_VERSIONS
 
 LABEL name="upgrade" \
 	summary="Provides a pg_upgrade capability that performs a major PostgreSQL upgrade." \
@@ -49,28 +50,28 @@ fi
 
 # add in all of the earlier version of PostgreSQL. It will install the version
 # above, but the dependencies are handled
-RUN if [ "$BASEOS" = "ubi8" ] ; then \
-	${PACKAGER} -y install --nodocs \
-		--disablerepo=* \
-		--enablerepo=crunchypg* \
-		postgresql[1-9][0-9] \
-		postgresql[1-9][0-9]-contrib \
-		postgresql[1-9][0-9]-server \
-		pgaudit[1-9][0-9] \
-		pgnodemx[1-9][0-9] \
-		&& ${PACKAGER} -y clean all ; \
-else \
-	${PACKAGER} -y install --nodocs \
-		--setopt=skip_missing_names_on_install=False \
-		--disablerepo=* \
-		--enablerepo=crunchypg* \
-		postgresql[1-9][0-9] \
-		postgresql[1-9][0-9]-contrib \
-		postgresql[1-9][0-9]-server \
-		pgaudit[1-9][0-9] \
-		pgnodemx[1-9][0-9] \
-		&& ${PACKAGER} -y clean all ; \
-fi
+RUN for pg_version in $UPGRADE_PG_VERSIONS; do \
+        if [ "$BASEOS" = "ubi8" ] ; then \
+            ${PACKAGER} -y install --nodocs \
+                --disablerepo=* \
+                --enablerepo=crunchypg* \
+                postgresql${pg_version} \
+                postgresql${pg_version}-contrib \
+                postgresql${pg_version}-server \
+                pgaudit${pg_version} \
+                pgnodemx${pg_version} ; \
+        else \
+            ${PACKAGER} -y install --nodocs \
+                --setopt=skip_missing_names_on_install=False \
+                --disablerepo=* \
+                --enablerepo=crunchypg* \
+                postgresql${pg_version} \
+                postgresql${pg_version}-contrib \
+                postgresql${pg_version}-server \
+                pgaudit${pg_version} \
+                pgnodemx${pg_version} ; \
+        fi \
+	done && ${PACKAGER} -y clean all ;
 
 RUN mkdir -p /opt/crunchy/bin /pgolddata /pgnewdata /opt/crunchy/conf
 ADD bin/upgrade/ /opt/crunchy/bin
