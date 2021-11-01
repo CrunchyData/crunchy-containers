@@ -243,6 +243,32 @@ endif
 
 pgbackrest-pgimg-docker: pgbackrest-pgimg-build
 
+# ----- Special case image (upgrade) -----
+
+# Special case args: UPGRADE_PG_VERSIONS (defines all versions of PG that will be installed) 
+upgrade-img-build: ccbase-image $(CCPROOT)/build/upgrade/Dockerfile
+	$(IMGCMDSTEM) \
+		-f $(CCPROOT)/build/upgrade/Dockerfile \
+		-t $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
+		--build-arg BASEVER=$(CCP_VERSION) \
+		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
+		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
+		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
+		--build-arg DFSET=$(DFSET) \
+		--build-arg PACKAGER=$(PACKAGER) \
+		--build-arg UPGRADE_PG_VERSIONS="$(shell find $(CCPROOT)/conf -type f -name "crunchypg*.repo" | \
+			grep -o [1-9][0-9])" \
+		$(CCPROOT)
+
+upgrade-img-buildah: upgrade-img-build ;
+# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
+ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
+	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG)
+endif
+
+upgrade-img-docker: upgrade-img-build
+
 # ----- Extra images -----
 %-img-build: ccbase-image $(CCPROOT)/build/%/Dockerfile
 	$(IMGCMDSTEM) \
