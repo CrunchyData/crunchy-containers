@@ -14,7 +14,7 @@
 # limitations under the License.
 
 CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
-source "${CRUNCHY_DIR}/bin/postgres-ha/common/common_lib.sh"
+source "${CRUNCHY_DIR}/bin/common_lib.sh"
 
 bootstrap_file="/tmp/postgres-ha-bootstrap.yaml"
 bootstrap_file_bak="${bootstrap_file}.bak"
@@ -25,7 +25,7 @@ lock_file="${bootstrap_file}.lock"
 # be merged into the local configuration file
 conf_content="${1?}"
 
-# a temporary file used to store the conf that needs to be merged into the current local 
+# a temporary file used to store the conf that needs to be merged into the current local
 # configuration
 merge_file="${bootstrap_file}.merge"
 
@@ -33,7 +33,7 @@ patroni_port="${2?}"
 
 # cleans up any resources and releases the file lock
 cleanup() {
-    rm -f "${lock_file}" 
+    rm -f "${lock_file}"
 }
 
 # reverts any changes to the local config file, then handles the error and exits
