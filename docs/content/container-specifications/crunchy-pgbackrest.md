@@ -27,8 +27,6 @@ The following volumes are mounted by the `crunchy-pgbackrest` container:
  * Mounted `pgbackrest.conf` configuration file via the `/pgconf` volume (? not sure about this)
  * `/backrestrepo` volume used by the pgbackrest backup tool to store pgBackRest archives
  * `/pgdata` volume used to store the data directory contents for the PostgreSQL database
- * `/sshd` volume that contains the SSHD configuration from the `backrest-repo-config` secret
-
 
 ## Major Packages
 

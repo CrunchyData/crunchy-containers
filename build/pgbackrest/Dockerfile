@@ -19,8 +19,6 @@ LABEL name="pgbackrest" \
 # Run postgres install in separate transaction ahead of backrest for postgres user
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
 	${PACKAGER} -y install --nodocs \
-		openssh-clients \
-		openssh-server \
 		shadow-utils \
 		tar \
 		bzip2 \
@@ -30,8 +28,6 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 else \
 	${PACKAGER} -y install --nodocs  \
 		--setopt=skip_missing_names_on_install=False \
-		openssh-clients \
-		openssh-server \
 		bzip2 \
 		lz4 \
 		crunchy-backrest-${BACKREST_VER} \
@@ -72,20 +68,18 @@ RUN chmod +x /usr/local/bin/pgbackrest-repo.sh /usr/local/bin/archive-push-s3.sh
 RUN chmod -R g=u /etc/pgbackrest \
 	&& rm -f /run/nologin
 
-RUN mkdir /.ssh && chown postgres:postgres /.ssh && chmod o+rwx /.ssh
-
 # remove the default spool directory so that pgBackRest does not attempt to look there when
 # performing a restore (pgBackRest will not have permissions to access to this dir in all envs)
 RUN rm -rf /var/spool/pgbackrest
 
 # create necessary volumes for all modes
 #
-# /sshd and /backrestrepo required for the pgBackRest repo mode
+# /backrestrepo required for the pgBackRest repo mode
 # /pgdata required for the pgbackrest-restore mode
 #
 # The VOLUME directive must appear after all RUN directives to ensure the proper
 # volume permissions are applied when building the image
-VOLUME ["/sshd", "/pgdata", "/backrestrepo"]
+VOLUME ["/pgdata", "/backrestrepo"]
 
 USER 26
 

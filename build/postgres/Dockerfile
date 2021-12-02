@@ -32,8 +32,6 @@ ARG BACKREST_VER
 RUN if [ "$DFSET" = "centos" ] ; then \
         ${PACKAGER} -y install --nodocs \
         	--setopt=skip_missing_names_on_install=False \
-        	openssh-clients \
-        	openssh-server \
         	pgaudit${PG_MAJOR//.} \
         	pgaudit${PG_MAJOR//.}_set_user \
         	pg_partman_${PG_MAJOR//.} \
@@ -64,8 +62,6 @@ RUN if [ "$DFSET" = "centos" ] ; then \
 else \
         ${PACKAGER} -y install --nodocs \
 		--enablerepo="epel" \
-		openssh-clients \
-		openssh-server \
 		pgaudit${PG_MAJOR//.} \
 		pgaudit${PG_MAJOR//.}_set_user \
 		pg_partman_${PG_MAJOR//.} \
@@ -128,8 +124,6 @@ ADD conf/postgres_common /opt/crunchy/conf
 ADD tools/pgmonitor/postgres_exporter/common /opt/crunchy/bin/modules/pgexporter
 ADD tools/pgmonitor/postgres_exporter/linux /opt/crunchy/bin/modules/pgexporter
 
-RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh && rm -f /run/nologin
-
 # remove the default spool directory so that pgBackRest does not attempt to look there when
 # performing a restore (pgBackRest will not have permissions to access to this dir in all envs)
 RUN rm -rf /var/spool/pgbackrest
@@ -140,7 +134,7 @@ RUN rm -rf /var/spool/pgbackrest
 # add volumes for pgbackrest to write to
 # The VOLUME directive must appear after all RUN directives to ensure the proper
 # volume permissions are applied when building the image
-VOLUME ["/pgdata", "/pgwal", "/pgconf", "/backrestrepo", "/sshd"]
+VOLUME ["/pgdata", "/pgwal", "/pgconf", "/backrestrepo"]
 
 # Defines a unique directory name that will be utilized by the nss_wrapper in the UID script
 ENV NSS_WRAPPER_SUBDIR="postgres"
