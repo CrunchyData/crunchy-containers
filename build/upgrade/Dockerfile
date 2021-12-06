@@ -27,6 +27,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 	${PACKAGER} -y install --nodocs \
 		--disablerepo=crunchypg* \
 		--enablerepo="crunchypg${PG_MAJOR//.}" \
+		krb5-workstation \
 		"postgresql${PG_MAJOR//.}" \
 		"postgresql${PG_MAJOR//.}-contrib" \
 		"postgresql${PG_MAJOR//.}-server" \
@@ -39,6 +40,7 @@ else \
 		--setopt=skip_missing_names_on_install=False \
 		--disablerepo=crunchypg* \
 		--enablerepo="crunchypg${PG_MAJOR//.}" \
+		krb5-workstation \
 		"postgresql${PG_MAJOR//.}" \
 		"postgresql${PG_MAJOR//.}-contrib" \
 		"postgresql${PG_MAJOR//.}-server" \
