@@ -59,6 +59,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	unzip \
         	bzip2 \
         	lz4 \
+			krb5-workstation \
         && ${PACKAGER} -y clean all ; \
 else \
         ${PACKAGER} -y install --nodocs \
@@ -87,6 +88,7 @@ else \
 		tar \
 		bzip2 \
 		lz4 \
+		krb5-workstation \
 	&& ${PACKAGER} -y install --nodocs \
 		--setopt=tsflags='' \
 		--enablerepo="epel" \
