@@ -568,9 +568,15 @@
     
     
 
-<p>PostgreSQL (pronounced &ldquo;post-gress-Q-L&rdquo;) is an open source, ACID compliant, relational database management system (RDBMS) developed by a worldwide team of volunteers. The crunchy-postgres-gis container image is unmodified, open source PostgreSQL packaged and maintained by professionals. This image is identical to the crunchy-postgres image except it includes the open source geospatial extension <a href="https://postgis.net/">PostGIS</a> for PostgreSQL in addition to the language extension <a href="http://www.joeconway.com/plr.html">PL/R</a> which allows for writing functions in the R statistical computing language.</p>
+<p>PostgreSQL (pronounced &ldquo;post-gress-Q-L&rdquo;) is an open source, ACID compliant,
+relational database management system (RDBMS) developed by a worldwide team of volunteers.
+The crunchy-postgres-gis container image is unmodified, open source PostgreSQL packaged and maintained by professionals.
+This image is identical to the crunchy-postgres image except it includes the open source geospatial extension <a href="https://postgis.net/">PostGIS</a> for PostgreSQL.</p>
 
-<p>For more information about configuration options for the <code>crunchy-postgres-gis</code> please reference the <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/"><code>crunchy-postgres</code></a> docuentation. The <code>crunchy-postgres-gis</code> image is built using the <code>crunchy-postgres</code> image and supports the same features, packages, running modes, and volumes.</p>
+<p>For more information about configuration options for the <code>crunchy-postgres-gis</code>
+please reference the <a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/"><code>crunchy-postgres</code></a> documentation.
+The <code>crunchy-postgres-gis</code> image is built using the <code>crunchy-postgres</code> image and
+supports the same features, packages, running modes, and volumes.</p>
 
 <h2 id="features">Features</h2>
 
@@ -578,12 +584,14 @@
 
 <ul>
 <li>PostGIS</li>
-<li>PL/R</li>
 </ul>
 
 <h2 id="running-modes">Running Modes</h2>
 
-<p>The <code>crunchy-postgres-gis</code> Docker image can be run in modes to enable functionality. The <code>MODE</code> environment variable must be set to run the image in the correct mode. Each mode uses environment variables to configure how the container will be run, more information about these environment variables and custom configurations for each mode can be found in the following pages:</p>
+<p>The <code>crunchy-postgres-gis</code> Docker image can be run in modes to enable functionality.
+The <code>MODE</code> environment variable must be set to run the image in the correct mode.
+Each mode uses environment variables to configure how the container will be run.
+More information about these environment variables and custom configurations for each mode can be found in the following pages:</p>
 
 <ul>
 <li><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/">Crunchy PostgreSQL</a>: <code>postgres</code></li>
@@ -595,19 +603,6 @@
 <li><a href="https://crunchydata.github.io/crunchy-containers/stable/container-specifications/crunchy-postgres/sqlrunner/">Crunchy sqlrunner</a>: <code>sqlrunner</code></li>
 </ul>
 
-<h2 id="verifying-pl-r">Verifying PL/R</h2>
-
-<p>In order to verify the successful initialization of the PL/R extension, the following commands can be run:</p>
-<div class="highlight"><pre style="color:#272822;background-color:#fafafa;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#00a8c8">create</span> <span style="color:#111">extension</span> <span style="color:#111">plr</span><span style="color:#111">;</span>
-<span style="color:#00a8c8">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#00a8c8">FROM</span> <span style="color:#111">plr_environ</span><span style="color:#111">();</span>
-<span style="color:#00a8c8">SELECT</span> <span style="color:#111">load_r_typenames</span><span style="color:#111">();</span>
-<span style="color:#00a8c8">SELECT</span> <span style="color:#f92672">*</span> <span style="color:#00a8c8">FROM</span> <span style="color:#111">r_typenames</span><span style="color:#111">();</span>
-<span style="color:#00a8c8">SELECT</span> <span style="color:#111">plr_array_accum</span><span style="color:#111">(</span><span style="color:#d88200">&#39;{23,35}&#39;</span><span style="color:#111">,</span> <span style="color:#ae81ff">42</span><span style="color:#111">);</span>
-<span style="color:#00a8c8">CREATE</span> <span style="color:#00a8c8">OR</span> <span style="color:#00a8c8">REPLACE</span> <span style="color:#00a8c8">FUNCTION</span> <span style="color:#111">plr_array</span> <span style="color:#111">(</span><span style="color:#111">text</span><span style="color:#111">,</span> <span style="color:#111">text</span><span style="color:#111">)</span>
-<span style="color:#00a8c8">RETURNS</span> <span style="color:#111">text</span><span style="color:#111">[]</span>
-<span style="color:#00a8c8">AS</span> <span style="color:#d88200">&#39;$libdir/plr&#39;</span><span style="color:#111">,</span><span style="color:#d88200">&#39;plr_array&#39;</span>
-<span style="color:#00a8c8">LANGUAGE</span> <span style="color:#d88200">&#39;c&#39;</span> <span style="color:#00a8c8">WITH</span> <span style="color:#111">(</span><span style="color:#111">isstrict</span><span style="color:#111">);</span>
-<span style="color:#00a8c8">select</span> <span style="color:#111">plr_array</span><span style="color:#111">(</span><span style="color:#d88200">&#39;hello&#39;</span><span style="color:#111">,</span><span style="color:#d88200">&#39;world&#39;</span><span style="color:#111">);</span></code></pre></div>
 
 
     
