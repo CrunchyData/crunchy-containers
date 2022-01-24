@@ -29,6 +29,10 @@ function trap_sigterm() {
     if [ -f $PGDATA/postmaster.pid ]; then
             kill -SIGINT $(head -1 $PGDATA/postmaster.pid) >> $PGDATA/trap.output
     fi
+    if [[ ${ENABLE_SSHD} == "true" ]]; then
+        echo_info "killing SSHD.."
+        pkill sshd
+    fi
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
@@ -423,6 +427,9 @@ if [ -f /pgconf/pre-start-hook.sh ]
 then
 	source /pgconf/pre-start-hook.sh
 fi
+
+# Start SSHD if necessary prior to starting PG
+source "${CRUNCHY_DIR}/bin/postgres/sshd.sh"
 
 echo_info "Starting PostgreSQL.."
 postgres -D $PGDATA &
