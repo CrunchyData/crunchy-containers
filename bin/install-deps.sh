@@ -22,9 +22,17 @@ YQ_VERSION=3.3.0
 sudo yum -y install net-tools bind-utils wget unzip git
 
 #
-# download the yq container dependency
+# checkout and build the yq container dependency
 #
-wget -O $CCPROOT/yq https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64
+mkdir /tmp/yq
+cd /tmp/yq
+git clone https://github.com/mikefarah/yq.git
+cd yq
+git checkout ${YQ_VERSION}
+go build
+mv yq $CCPROOT/yq
+cd /tmp
+rm -rf yq
 
 which buildah
 if [ $? -eq 1 ]; then
