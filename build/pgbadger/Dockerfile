@@ -2,9 +2,11 @@ ARG BASEOS
 ARG BASEVER
 ARG PG_FULL
 ARG PREFIX
-FROM golang:1.15.5 as badgerserver-build
+ARG PGBADGER_GO_VER
+FROM golang:${PGBADGER_GO_VER} as badgerserver-build
 WORKDIR /go/src/github.com/crunchydata/crunchy-containers
 ADD ./badger ./badger
+COPY go.mod go.sum ./
 RUN CGO_ENABLED=0 GOOS=linux go build -a -o badgerserver ./badger
 
 FROM ${PREFIX}/crunchy-base:${BASEOS}-${PG_FULL}-${BASEVER}

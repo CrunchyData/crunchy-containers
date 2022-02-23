@@ -10,6 +10,7 @@ CCP_PATRONI_VERSION ?= 2.0.2
 CCP_BACKREST_VERSION ?= 2.31
 CCP_VERSION ?= 4.6.6
 CCP_POSTGIS_VERSION ?= 3.0
+CCP_PGBADGER_GO_VERSION ?= 1.17.7
 PACKAGER ?= yum
 
 # Valid values: buildah (default), docker
@@ -95,7 +96,7 @@ pgbackrest-images: pgbackrest pgbackrest-repo
 pgadmin4: pgadmin4-img-$(IMGBUILDER)
 pgbackrest: pgbackrest-pgimg-$(IMGBUILDER)
 pgbackrest-repo: pgbackrest-repo-pgimg-$(IMGBUILDER)
-pgbadger: pgbadger-img-$(IMGBUILDER)
+pgbadger: pgbadger-pgimg-$(IMGBUILDER)
 pgbouncer: pgbouncer-img-$(IMGBUILDER)
 pgpool: pgpool-img-$(IMGBUILDER)
 postgres: postgres-pgimg-$(IMGBUILDER)
@@ -356,6 +357,29 @@ upgrade-%: upgrade-img-$(IMGBUILDER) ;
 
 upgrade-9.5: # Do nothing but log to avoid erroring out on missing Dockerfile
 	$(info Upgrade build skipped for 9.5)
+
+# Special case args: PGBADGER_GO_VER
+pgbadger-pgimg-build: ccbase-image $(CCPROOT)/build/pgbadger/Dockerfile
+	$(IMGCMDSTEM) \
+		-f $(CCPROOT)/build/pgbadger/Dockerfile \
+		-t $(CCP_IMAGE_PREFIX)/crunchy-pgbadger:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
+		--build-arg BASEVER=$(CCP_VERSION) \
+		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
+		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
+		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
+		--build-arg DFSET=$(DFSET) \
+		--build-arg PACKAGER=$(PACKAGER) \
+		--build-arg PGBADGER_GO_VER=$(CCP_PGBADGER_GO_VERSION) \
+		$(CCPROOT)
+
+pgbadger-pgimg-buildah: pgbadger-pgimg-build ;
+# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
+ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
+	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-pgbadger:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-pgbadger:$(CCP_IMAGE_TAG)
+endif
+
+pgbadger-pgimg-docker: pgbadger-pgimg-build
 
 #=================
 # Utility targets
