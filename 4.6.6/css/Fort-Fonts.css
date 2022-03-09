@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'Fort';
+  src: url('../fonts/Fort-Light.eot');
+  src: url('../fonts/Fort-Light.eot?#iefix') format('embedded-opentype'), url('../fonts/Fort-Light.woff2') format('woff2'), url('../fonts/Fort-Light.woff') format('woff'), url('../fonts/Fort-Light.ttf') format('truetype'), url('../fonts/Fort-Light.svg#Fort-Light') format('svg');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fort';
+  src: url('../fonts/Fort-Extrabold.eot');
+  src: url('../fonts/Fort-Extrabold.eot?#iefix') format('embedded-opentype'), url('../fonts/Fort-Extrabold.woff2') format('woff2'), url('../fonts/Fort-Extrabold.woff') format('woff'), url('../fonts/Fort-Extrabold.ttf') format('truetype'), url('../fonts/Fort-Extrabold.svg#Fort-Extrabold') format('svg');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fort';
+  src: url('../fonts/Fort-Black.eot');
+  src: url('../fonts/Fort-Black.eot?#iefix') format('embedded-opentype'), url('../fonts/Fort-Black.woff2') format('woff2'), url('../fonts/Fort-Black.woff') format('woff'), url('../fonts/Fort-Black.ttf') format('truetype'), url('../fonts/Fort-Black.svg#Fort-Black') format('svg');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Fort';
+  src: url('/fonts/Fort-Medium.eot');
+  src: url('/fonts/Fort-Medium.eot?#iefix') format('embedded-opentype'), url('/fonts/Fort-Medium.woff2') format('woff2'), url('/fonts/Fort-Medium.woff') format('woff'), url('/fonts/Fort-Medium.ttf') format('truetype'), url('/fonts/Fort-Medium.svg#Fort-Medium') format('svg');
+  font-weight: 500;
+  font-style: normal;
+}
+
+body, h1, h2, h3, h4, h5, h6, article section.page h1:first-of-type {
+    font-family: Fort, sans-serif !important;
+}
