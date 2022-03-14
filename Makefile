@@ -10,6 +10,7 @@ CCP_PATRONI_VERSION ?= 2.0.2
 CCP_BACKREST_VERSION ?= 2.31
 CCP_VERSION ?= 4.6.6
 CCP_POSTGIS_VERSION ?= 3.0
+CCP_PGADMIN_VERSION ?= 4.20
 CCP_PGBADGER_GO_VERSION ?= 1.17.7
 PACKAGER ?= yum
 
@@ -327,6 +328,28 @@ ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 endif
 
 pgbackrest-repo-pgimg-docker: pgbackrest-repo-pgimg-build
+
+# Special case args: CCP_PGADMIN_VERSION
+pgadmin4-img-build: ccbase-image $(CCPROOT)/build/pgadmin4/Dockerfile
+	$(IMGCMDSTEM) \
+		-f $(CCPROOT)/build/pgadmin4/Dockerfile \
+		-t $(CCP_IMAGE_PREFIX)/crunchy-pgadmin4:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
+		--build-arg BASEVER=$(CCP_VERSION) \
+		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
+		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
+		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
+		--build-arg PGADMIN_VER=$(CCP_PGADMIN_VERSION) \
+		--build-arg PACKAGER=$(PACKAGER) \
+		$(CCPROOT)
+
+pgadmin4-img-buildah: pgadmin4-img-build ;
+# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
+ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
+	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-pgadmin4:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-pgadmin4:$(CCP_IMAGE_TAG)
+endif
+
+pgadmin4-img-docker: pgadmin-img-build
 
 # ----- Extra images -----
 %-img-build: ccbase-image $(CCPROOT)/build/%/Dockerfile
