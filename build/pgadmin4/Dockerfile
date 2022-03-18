@@ -25,6 +25,7 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
                 --setopt=skip_missing_names_on_install=False \
                 mod_ssl \
                 python3-mod_wsgi \
+                python3-gssapi \
                 openssl \
                 sqlite \
                 --setopt=obsoletes=0 pgadmin4-${PGADMIN_VER} \
@@ -45,6 +46,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
                 --enablerepo="epel" \
                 mod_ssl \
                 python3-mod_wsgi \
+                python3-gssapi \
                 openssl \
                 sqlite \
                 pgadmin4-${PGADMIN_VER} \
