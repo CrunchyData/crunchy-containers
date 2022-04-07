@@ -17,11 +17,11 @@ The following features are supported by the `crunchy-postgres` container:
 
 The crunchy-postgres Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (13.3, 12.7, 11.12, 10.17, and 9.6.22)
-* [pgBackRest](https://pgbackrest.org/) (2.33)
-* pgBench (13.3, 12.7, 11.12, 10.17, and 9.6.22)
+* PostgreSQL (14.2, 13.6, 12.10, 11.15 and 10.20)
+* [pgBackRest](https://pgbackrest.org/) (2.38)
+* pgBench (14.2, 13.6, 12.10, 11.15 and 10.20)
 * rsync
-* CentOS 7, CentOS 8 - publicly available
+* CentOS 7, UBI 8 - publicly available
 * UBI 7, UBI 8 - customers only
 
 ## Running Modes
@@ -46,4 +46,3 @@ The crunchy-postgres Docker image can be run in the modes to enable functionalit
 **/pgconf**|Volume used to store custom configuration files mounted to the container.
 **/pgdata**|Volume used to store the data directory contents for the PostgreSQL database.
 **/pgwal**|Volume used to store Write Ahead Log (WAL) when `XLOGDIR` environment variable is set to `true.`
-**/recover**|Volume used for Point In Time Recovery (PITR) during startup of the PostgreSQL database.

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2019 - 2021 Crunchy Data Solutions, Inc.
+# Copyright 2019 - 2022 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -43,7 +43,7 @@ fi
 
 echo_info "Using setup file '${function_file}' for pgMonitor"
 cp "${function_file}" "/tmp/setup_pg.sql"
-sed -i "s,/usr/bin/pgbackrest-info.sh,${CRUNCHY_DIR}/bin/postgres-ha/pgbackrest/pgbackrest_info.sh,g" "/tmp/setup_pg.sql"
+sed -i "s,/usr/bin/pgbackrest-info.sh,${CRUNCHY_DIR}/bin/postgres/pgbackrest_info.sh,g" "/tmp/setup_pg.sql"
 
 psql -U postgres --port="${PG_PRIMARY_PORT}" -d postgres \
     < "/tmp/setup_pg.sql" >> /tmp/pgmonitor-setup.stdout 2>> /tmp/pgmonitor-setup.stderr

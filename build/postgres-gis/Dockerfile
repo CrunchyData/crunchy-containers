@@ -20,46 +20,27 @@ LABEL name="postgres-gis" \
 
 USER 0
 
-RUN if [ "$BASEOS" = "centos7" ] ; then \
-	${PACKAGER} -y install \
-		--setopt=skip_missing_names_on_install=False \
-		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
-		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
-		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
-		postgresql${PG_MAJOR//.}-plperl \
-	&& ${PACKAGER} -y clean all ; \
-fi
-
 RUN if [ "$BASEOS" = "centos8" ] ; then \
-	${PACKAGER} -y install \
+	${PACKAGER} -y install --nodocs \
 		--setopt=skip_missing_names_on_install=False \
 		--enablerepo="powertools" \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
 		postgresql${PG_MAJOR//.}-plperl \
+		postgresql${PG_MAJOR//.}-pltcl \
 	&& ${PACKAGER} -y clean all ; \
 fi
 
-RUN if [ "$BASEOS" = "ubi7" ] ; then \
-	${PACKAGER} -y install \
-		--enablerepo="epel,rhel-7-server-optional-rpms" \
-		--setopt=skip_missing_names_on_install=False \
-		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
-		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
-		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
-		postgresql${PG_MAJOR//.}-plperl \
-	&& ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-optional-rpms" ; \
-fi
-
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-	${PACKAGER} -y --enablerepo="epel" --enablerepo="codeready-builder-for-rhel-8-x86_64-rpms" install libaec libdap armadillo \
-	&& ${PACKAGER} -y install \
+	${PACKAGER} -y --enablerepo="epel" --enablerepo="codeready-builder-for-rhel-8-x86_64-rpms" --nodocs install libaec libdap armadillo \
+	&& ${PACKAGER} -y install --nodocs \
 		--enablerepo="epel" \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
 		postgresql${PG_MAJOR//.}-plperl \
+		postgresql${PG_MAJOR//.}-pltcl \
 	&& ${PACKAGER} -y clean all --enablerepo="epel" --enablerepo="codeready-builder-for-rhel-8-x86_64-rpms" ; \
 fi
 

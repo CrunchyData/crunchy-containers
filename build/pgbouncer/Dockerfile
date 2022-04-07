@@ -17,7 +17,7 @@ LABEL name="pgbouncer" \
 	io.k8s.display-name="pgBouncer" \
 	io.openshift.tags="postgresql,postgres,pooling,pgbouncer,database,crunchy"
 
-RUN ${PACKAGER} -y install \
+RUN ${PACKAGER} -y install --nodocs \
 	--disablerepo="epel" \
 	pgbouncer \
 	&& ${PACKAGER} -y clean all

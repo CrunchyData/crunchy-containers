@@ -18,7 +18,7 @@ LABEL name="pgbackrest" \
 
 # Run postgres install in separate transaction ahead of backrest for postgres user
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-	${PACKAGER} -y install  \
+	${PACKAGER} -y install --nodocs \
 		openssh-clients \
 		openssh-server \
 		shadow-utils \
@@ -28,7 +28,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 		crunchy-backrest-${BACKREST_VER} \
 		&& ${PACKAGER} -y clean all ; \
 else \
-	${PACKAGER} -y install  \
+	${PACKAGER} -y install --nodocs  \
 		--setopt=skip_missing_names_on_install=False \
 		openssh-clients \
 		openssh-server \
@@ -73,6 +73,10 @@ RUN chmod -R g=u /etc/pgbackrest \
 	&& rm -f /run/nologin
 
 RUN mkdir /.ssh && chown postgres:postgres /.ssh && chmod o+rwx /.ssh
+
+# remove the default spool directory so that pgBackRest does not attempt to look there when
+# performing a restore (pgBackRest will not have permissions to access to this dir in all envs)
+RUN rm -rf /var/spool/pgbackrest
 
 # create necessary volumes for all modes
 #

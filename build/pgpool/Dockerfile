@@ -17,7 +17,7 @@ LABEL name="pgpool" \
 	io.k8s.display-name="pgpool II" \
 	io.openshift.tags="postgresql,postgres,pgpool,database,crunchy"
 
-RUN ${PACKAGER} -y install \
+RUN ${PACKAGER} -y install --nodocs \
 		pgpool-II_${PG_MAJOR//.} \
 		pgpool-II_${PG_MAJOR//.}-extensions \
 	&& ${PACKAGER} -y clean all
