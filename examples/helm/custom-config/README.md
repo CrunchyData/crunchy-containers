@@ -66,10 +66,10 @@ See `values.yaml` for configuration notes. Specify each parameter using the `--s
 
 ```console
 $ helm install custom-config --name custom-config \
-  --set Image.tag=centos8-13.1-4.6.0-beta.2
+  --set Image.tag=ubi8-13.6-5.1.0-0
 ```
 
-The above command changes the image tag of the container to of `centos8-13.1-4.6.0-beta.2`.
+The above command changes the image tag of the container to of `ubi8-13.6-5.1.0-0`.
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
 
@@ -84,7 +84,7 @@ The above command changes the image tag of the container to of `centos8-13.1-4.6
 | `.serviceType`      | The type of service      | `ClusterIP`               
 | `.image.repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
 | `.image.container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
-| `.image.tag` | The image tag to be used.    | `centos8-13.1-4.6.0-beta.2`                                                    |
+| `.image.tag` | The image tag to be used.    | `ubi8-13.6-5.1.0-0`                                                    |
 | `.resources.cpu` | Defines a limit for CPU    | `200m`                                                    |
 | `.resources.memory` | Defines a limit for memory    | `512Mi`                                                    |
 
@@ -98,7 +98,7 @@ $ helm install custom-config --name custom-config  \
 Legal Notices
 -------------
 
-Copyright 2018 - 2021 Crunchy Data Solutions, Inc.
+Copyright 2018 - 2022 Crunchy Data Solutions, Inc.
 
 CRUNCHY DATA SOLUTIONS, INC. PROVIDES THIS GUIDE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON INFRINGEMENT, MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
 

@@ -6,7 +6,6 @@ create extension fuzzystrmatch;
 create extension postgis_tiger_geocoder;
 create extension pg_stat_statements;
 create extension pgaudit;
-create extension plr;
 
 alter user postgres password 'PG_ROOT_PASSWORD';
 
@@ -28,7 +27,6 @@ create extension fuzzystrmatch;
 create extension postgis_tiger_geocoder;
 create extension pg_stat_statements;
 create extension pgaudit;
-create extension plr;
 
 \c "PG_DATABASE" "PG_USER";
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 - 2021 Crunchy Data Solutions, Inc.
+# Copyright 2016 - 2022 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,17 +14,12 @@
 # limitations under the License.
 
 # Dependency Versions
-PGMONITOR_COMMIT='v4.4'
+PGMONITOR_COMMIT='v4.5-RC3'
 OPENSHIFT_CLIENT='https://github.com/openshift/origin/releases/download/v3.11.0/openshift-origin-client-tools-v3.11.0-0cbc58b-linux-64bit.tar.gz'
 CERTSTRAP_VERSION=1.1.1
 YQ_VERSION=3.3.0
 
 sudo yum -y install net-tools bind-utils wget unzip git
-
-#
-# download the yq container dependency
-#
-wget -O $CCPROOT/yq https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64
 
 which buildah
 if [ $? -eq 1 ]; then

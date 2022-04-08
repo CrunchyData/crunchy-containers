@@ -17,10 +17,9 @@ LABEL name="pgpool" \
 	io.k8s.display-name="pgpool II" \
 	io.openshift.tags="postgresql,postgres,pgpool,database,crunchy"
 
-RUN ${PACKAGER} -y install \
-		--setopt=skip_missing_names_on_install=False \
-		pgpool-II-${PG_MAJOR//.} \
-		pgpool-II-${PG_MAJOR//.}-extensions \
+RUN ${PACKAGER} -y install --nodocs \
+		pgpool-II_${PG_MAJOR//.} \
+		pgpool-II_${PG_MAJOR//.}-extensions \
 	&& ${PACKAGER} -y clean all
 
 # Preserving PGVERSION out of paranoia
@@ -32,8 +31,8 @@ ADD bin/pgpool /opt/crunchy/bin
 ADD bin/common /opt/crunchy/bin
 ADD conf/pgpool /opt/crunchy/conf
 
-RUN ln -sf /opt/crunchy/conf/pool_hba.conf /etc/pgpool-II-${PG_MAJOR//.}/pool_hba.conf \
-	&& ln -sf /opt/crunchy/conf/pgpool/pool_passwd /etc/pgpool-II-${PG_MAJOR//.}/pool_passwd
+RUN ln -sf /opt/crunchy/conf/pool_hba.conf /etc/pgpool-II_${PG_MAJOR//.}/pool_hba.conf \
+	&& ln -sf /opt/crunchy/conf/pgpool/pool_passwd /etc/pgpool-II_${PG_MAJOR//.}/pool_passwd
 
 RUN chgrp -R 0 /opt/crunchy && \
 	chmod -R g=u /opt/crunchy
@@ -42,12 +41,13 @@ RUN chgrp -R 0 /opt/crunchy && \
 # open up the postgres port
 EXPOSE 5432
 
-RUN chmod g=u /etc/passwd
-
 # add volumes to allow override of pgpool config files
 # The VOLUME directive must appear after all RUN directives to ensure the proper
 # volume permissions are applied when building the image
 VOLUME ["/pgconf"]
+
+# Defines a unique directory name that will be utilized by the nss_wrapper in the UID script
+ENV NSS_WRAPPER_SUBDIR="pgpool"
 
 ENTRYPOINT ["opt/crunchy/bin/uid_daemon.sh"]
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2019 - 2021 Crunchy Data Solutions, Inc.
+# Copyright 2019 - 2022 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,22 +13,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if ! whoami &> /dev/null
-then
-    if [[ -w /etc/passwd ]]
-    then
-        sed  "/postgres:x:26:/d" /etc/passwd >> /tmp/uid.tmp
-        cp /tmp/uid.tmp /etc/passwd
-        rm -f /tmp/uid.tmp
-        echo "${USER_NAME:-postgres}:x:$(id -u):0:${USER_NAME:-postgres} user:${HOME}:/bin/bash" >> /etc/passwd
-    fi
-
-    if [[ -w /etc/group ]]
-    then
-        sed  "/postgres:x:26/d" /etc/group >> /tmp/gid.tmp
-        cp /tmp/gid.tmp /etc/group
-        rm -f /tmp/gid.tmp
-        echo "nfsnobody:x:65534:" >> /etc/group
-        echo "postgres:x:$(id -g):postgres" >> /etc/group
-    fi
-fi
+CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
+    
+export CRUNCHY_NSS_USERNAME="${USER_NAME:-postgres}"
+export CRUNCHY_NSS_USER_DESC="PostgreSQL Server"
+    
+source "${CRUNCHY_DIR}/bin/nss_wrapper.sh"

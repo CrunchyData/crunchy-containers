@@ -115,7 +115,7 @@ then
     echo_info "pgBackRest: BACKREST_SKIP_CREATE_STANZA is 'true'.  Skipping stanza creation.." 
 else
     echo_info "pgBackRest: The following pgbackrest env vars have been set:"
-    ( set -o posix ; set | grep -oP "^PGBACKREST.*" )
+    ( set -o posix ; set | grep -oP "^PGBACKREST.*" | sed -e 's/\(KEY\|PASS\|SECRET\)=.*/\1=*********/' )
 
     echo_info "pgBackRest: Executing 'stanza-create' to create stanza '${PGBACKREST_STANZA}'.."
     pgbackrest stanza-create --no-online --log-level-console=info \

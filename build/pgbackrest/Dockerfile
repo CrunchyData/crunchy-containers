@@ -7,6 +7,7 @@ FROM ${PREFIX}/crunchy-base:${BASEOS}-${PG_FULL}-${BASEVER}
 # For RHEL8 all arguments used in main code has to be specified after FROM
 ARG PACKAGER
 ARG BACKREST_VER
+ARG BASEOS
 
 LABEL name="pgbackrest" \
 	summary="Crunchy pgBackRest ${BACKREST_VER}" \
@@ -16,12 +17,26 @@ LABEL name="pgbackrest" \
 	io.openshift.tags="postgresql,postgres,pgbackrest,backup,database,crunchy"
 
 # Run postgres install in separate transaction ahead of backrest for postgres user
-RUN ${PACKAGER} -y install  \
-	--setopt=skip_missing_names_on_install=False \
-	openssh-clients \
-	openssh-server \
-	crunchy-backrest-${BACKREST_VER} \
-	&& ${PACKAGER} -y clean all
+RUN if [ "$BASEOS" = "ubi8" ] ; then \
+	${PACKAGER} -y install --nodocs \
+		openssh-clients \
+		openssh-server \
+		shadow-utils \
+		tar \
+		bzip2 \
+		lz4 \
+		crunchy-backrest-${BACKREST_VER} \
+		&& ${PACKAGER} -y clean all ; \
+else \
+	${PACKAGER} -y install --nodocs  \
+		--setopt=skip_missing_names_on_install=False \
+		openssh-clients \
+		openssh-server \
+		bzip2 \
+		lz4 \
+		crunchy-backrest-${BACKREST_VER} \
+		&& ${PACKAGER} -y clean all ; \
+fi
 
 
 # add postgres user and group
@@ -50,15 +65,18 @@ RUN chown -R postgres:postgres /opt/crunchy  \
 # set the appropriate permissions and ownership
 ADD bin/pgbackrest-repo /usr/local/bin
 RUN chmod +x /usr/local/bin/pgbackrest-repo.sh /usr/local/bin/archive-push-s3.sh \
+		/usr/local/bin/archive-push-gcs.sh \
 	&& mkdir -p /etc/pgbackrest \
 	&& chown -R postgres:postgres /etc/pgbackrest
 
-RUN chmod g=u /etc/passwd \
-	&& chmod g=u /etc/group \
-	&& chmod -R g=u /etc/pgbackrest \
+RUN chmod -R g=u /etc/pgbackrest \
 	&& rm -f /run/nologin
 
 RUN mkdir /.ssh && chown postgres:postgres /.ssh && chmod o+rwx /.ssh
+
+# remove the default spool directory so that pgBackRest does not attempt to look there when
+# performing a restore (pgBackRest will not have permissions to access to this dir in all envs)
+RUN rm -rf /var/spool/pgbackrest
 
 # create necessary volumes for all modes
 #
@@ -70,6 +88,9 @@ RUN mkdir /.ssh && chown postgres:postgres /.ssh && chmod o+rwx /.ssh
 VOLUME ["/sshd", "/pgdata", "/backrestrepo"]
 
 USER 26
+
+# Defines a unique directory name that will be utilized by the nss_wrapper in the UID script
+ENV NSS_WRAPPER_SUBDIR="pgbackrest"
 
 ENTRYPOINT ["/opt/crunchy/bin/uid_postgres.sh"]
 

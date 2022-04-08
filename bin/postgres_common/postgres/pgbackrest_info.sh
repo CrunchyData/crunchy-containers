@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2016 - 2021 Crunchy Data Solutions, Inc.
+# Copyright 2019 - 2022 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,7 +13,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-CRUNCHY_DIR=${CRUNCHY_DIR:-'/opt/crunchy'}
-source "${CRUNCHY_DIR}/bin/postgres/pgbackrest_env.sh" > /tmp/pgbackrest_env.stdout 2> /tmp/pgbackrest_env.stderr
+source /tmp/pgbackrest_env.sh > /tmp/pgbackrest_env.stdout 2> /tmp/pgbackrest_env.stderr
 
-echo $(echo -n "$conf|" | tr '/' '_'; pgbackrest --output=json info | tr -d '\n')
+cmd_args=()
+# if TLS verification is disabled, pass in the appropriate flag
+# otherwise, leave the default behavior and verify TLS
+if [[ "${PGHA_PGBACKREST_S3_VERIFY_TLS}" == "false" ]]
+then
+    cmd_args+=("--no-repo1-s3-verify-tls")
+fi
+
+echo $(echo -n "$conf|" | tr '/' '_'; pgbackrest --output=json ${cmd_args[*]} info | tr -d '\n')

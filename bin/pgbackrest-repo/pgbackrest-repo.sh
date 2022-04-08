@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Copyright 2019 - 2021 Crunchy Data Solutions, Inc.
+# Copyright 2019 - 2022 Crunchy Data Solutions, Inc.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -13,15 +13,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# define the default nss_wrapper dir for this container and the ssh nss_wrapper dir
+NSS_WRAPPER_DEFAULT_DIR="/tmp/nss_wrapper/pgbackrest-repo"
+NSS_WRAPPER_SSH_DIR="/tmp/nss_wrapper/ssh"
+
+# Configures nss_wrapper passwd and group files for SSH connections
+function nss_wrapper_ssh() {
+    mkdir -p "${NSS_WRAPPER_SSH_DIR}"
+    cp "${NSS_WRAPPER_DEFAULT_DIR}/passwd" "${NSS_WRAPPER_SSH_DIR}"
+    cp "${NSS_WRAPPER_DEFAULT_DIR}/group" "${NSS_WRAPPER_SSH_DIR}"
+}
 
 function trap_sigterm() {
 	echo "Signal trap triggered, beginning shutdown.."
-	killall sshd
+	pkill sshd
 }
 
 trap 'trap_sigterm' SIGINT SIGTERM
 
 echo "Starting the pgBackRest repo"
+
+# configure nss_wrapper files for ssh connections
+nss_wrapper_ssh
+echo "nss_wrapper: ssh configured"
 
 CONFIG=/sshd
 REPO=/backrestrepo
@@ -46,7 +60,7 @@ fi
 mkdir -p /tmp/pg1path
 if ! grep -Fxq "[${PGBACKREST_STANZA}]" "/etc/pgbackrest/pgbackrest.conf" 2> /dev/null
 then
-    
+
 	printf "[%s]\npg1-path=/tmp/pg1path\n" "$PGBACKREST_STANZA" > /etc/pgbackrest/pgbackrest.conf
 
 	# Additionally, if the PGBACKREST S3 variables are set, add them here
@@ -64,13 +78,21 @@ then
 	then
 		printf "repo1-s3-uri-style=%s\n" "${PGBACKREST_REPO1_S3_URI_STYLE}" >> /etc/pgbackrest/pgbackrest.conf
 	fi
-	
+
+  # and GCS variables
+  if [[ "${PGBACKREST_REPO1_GCS_BUCKET}" != "" ]]
+  then
+    printf "repo1-gcs-bucket=%s\n" "${PGBACKREST_REPO1_GCS_BUCKET}" >> /etc/pgbackrest/pgbackrest.conf
+  fi
+
+  if [[ "${PGBACKREST_REPO1_GCS_KEY}" != "" ]]
+  then
+    printf "repo1-gcs-key=%s\n" "${PGBACKREST_REPO1_GCS_KEY}" >> /etc/pgbackrest/pgbackrest.conf
+  fi
 fi
 
-mkdir -p ~/.ssh/
-cp $CONFIG/config ~/.ssh/
 cp $CONFIG/id_ed25519 /tmp
-chmod 400 /tmp/id_ed25519 ~/.ssh/config
+chmod 400 /tmp/id_ed25519
 
 # start sshd which is used by pgbackrest for remote connections
 /usr/sbin/sshd -D -f $CONFIG/sshd_config   &

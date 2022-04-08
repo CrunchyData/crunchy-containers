@@ -8,9 +8,7 @@ FROM ${PREFIX}/crunchy-base:${BASEOS}-${PG_FULL}-${BASEVER}
 ARG BASEOS
 ARG PACKAGER
 ARG PG_MAJOR
-
-# Needed due to lack of environment substitution trick on ADD
-ARG PG_LBL
+ARG PGADMIN_VER
 
 LABEL name="pgadmin4" \
 	summary="pgAdmin4 GUI utility" \
@@ -22,32 +20,15 @@ LABEL name="pgadmin4" \
 RUN mkdir -p /opt/crunchy/bin /opt/crunchy/conf /var/lib/pgadmin /var/log/pgadmin \
         /certs /run/httpd
 
-RUN if [ "$BASEOS" = "centos7" ] ; then \
-        ${PACKAGER} -y install \
-                --setopt=skip_missing_names_on_install=False \
-                mod_ssl \
-                mod_wsgi \
-                openssl \
-                --setopt=obsoletes=0 pgadmin4 \
-                postgresql${PG_MAJOR//.}-server \
-        && ${PACKAGER} -y clean all  \
-        && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
-                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd \
-                /var/log/httpd \
-        && chmod -R g=u /usr/lib/python3.6/site-packages/pgadmin4-web \
-                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
-        && ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python3.6/site-packages/pgadmin4-web/config_local.py \
-        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf ; \
-fi
-
 RUN if [ "$BASEOS" = "centos8" ] ; then \
-        ${PACKAGER} -y install \
+        ${PACKAGER} -y install --nodocs \
                 --setopt=skip_missing_names_on_install=False \
                 mod_ssl \
                 python3-mod_wsgi \
+                python3-gssapi \
                 openssl \
                 sqlite \
-                --setopt=obsoletes=0 pgadmin4 \
+                --setopt=obsoletes=0 pgadmin4-${PGADMIN_VER} \
                 postgresql${PG_MAJOR//.}-server \
         && ${PACKAGER} -y clean all \
         && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
@@ -56,37 +37,19 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
         && chmod -R g=u /usr/lib/python3.6/site-packages/pgadmin4-web \
                 /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
         && ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python3.6/site-packages/pgadmin4-web/config_local.py \
-        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf ; \
-fi
-
-RUN if [ "$BASEOS" = "ubi7" ] ; then \
-        ${PACKAGER} -y install \
-                --setopt=skip_missing_names_on_install=False \
-                --enablerepo="epel,rhel-7-server-extras-rpms" \
-                mod_ssl \
-                mod_wsgi \
-                openssl \
-                --setopt=obsoletes=0 pgadmin4 \
-                postgresql${PG_MAJOR//.}-server \
-        && ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-extras-rpms" \
-        && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
-                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd \
-                /var/log/httpd \
-        && chmod -R g=u /usr/lib/python3.6/site-packages/pgadmin4-web \
-                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
-        && ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python3.6/site-packages/pgadmin4-web/config_local.py \
-        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf ; \
+        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf \
+        && alternatives --set python /usr/bin/python3 ; \
 fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-        ${PACKAGER} -y install \
-                --setopt=skip_missing_names_on_install=False \
+        ${PACKAGER} -y install --nodocs \
                 --enablerepo="epel" \
                 mod_ssl \
                 python3-mod_wsgi \
+                python3-gssapi \
                 openssl \
                 sqlite \
-                --setopt=obsoletes=0 pgadmin4 \
+                pgadmin4-${PGADMIN_VER} \
                 postgresql${PG_MAJOR//.}-server \
         && ${PACKAGER} -y clean all --enablerepo="epel" \
         && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
@@ -95,7 +58,8 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
         && chmod -R g=u /usr/lib/python3.6/site-packages/pgadmin4-web \
                 /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
         && ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python3.6/site-packages/pgadmin4-web/config_local.py \
-        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf ; \
+        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf \
+        && alternatives --set python /usr/bin/python3 ; \
 fi
 
 # Preserving PGVERSION out of paranoia
@@ -110,11 +74,12 @@ RUN cp /opt/crunchy/conf/httpd.conf /etc/httpd/conf/httpd.conf \
 
 EXPOSE 5050
 
-RUN chmod g=u /etc/passwd
-
 # The VOLUME directive must appear after all RUN directives to ensure the proper
 # volume permissions are applied when building the image
 VOLUME ["/var/lib/pgadmin", "/certs", "/run/httpd"]
+
+# Defines a unique directory name that will be utilized by the nss_wrapper in the UID script
+ENV NSS_WRAPPER_SUBDIR="pgadmin"
 
 ENTRYPOINT ["opt/crunchy/bin/uid_daemon.sh"]
 

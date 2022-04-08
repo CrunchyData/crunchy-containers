@@ -17,9 +17,8 @@ LABEL name="pgbouncer" \
 	io.k8s.display-name="pgBouncer" \
 	io.openshift.tags="postgresql,postgres,pooling,pgbouncer,database,crunchy"
 
-RUN ${PACKAGER} -y install \
+RUN ${PACKAGER} -y install --nodocs \
 	--disablerepo="epel" \
-	--setopt=skip_missing_names_on_install=False \
 	pgbouncer \
 	&& ${PACKAGER} -y clean all
 
@@ -37,11 +36,12 @@ RUN chown -R 2:0 /opt/crunchy /pgconf && \
 
 EXPOSE 6432
 
-RUN chmod g=u /etc/passwd
-
 # The VOLUME directive must appear after all RUN directives to ensure the proper
 # volume permissions are applied when building the image
 VOLUME ["/pgconf"]
+
+# Defines a unique directory name that will be utilized by the nss_wrapper in the UID script
+ENV NSS_WRAPPER_SUBDIR="pgbouncer"
 
 ENTRYPOINT ["opt/crunchy/bin/uid_daemon.sh"]
 

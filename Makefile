@@ -3,13 +3,15 @@ ifndef CCPROOT
 endif
 
 # Default values if not already set
-CCP_BASEOS ?= centos8
-CCP_PGVERSION ?= 12
-CCP_PG_FULLVERSION ?= 13.1
-CCP_PATRONI_VERSION ?= 2.0.1
-CCP_BACKREST_VERSION ?= 2.31
-CCP_VERSION ?= 4.6.0-beta.2
-CCP_POSTGIS_VERSION ?= 3.0
+CCP_BASEOS ?= ubi8
+BASE_IMAGE_OS ?= $(CCP_BASEOS)
+CCP_PGVERSION ?= 13
+CCP_PG_FULLVERSION ?= 13.6
+CCP_PATRONI_VERSION ?= 2.1.3
+CCP_BACKREST_VERSION ?= 2.38
+CCP_VERSION ?= 5.1.0
+CCP_POSTGIS_VERSION ?= 3.1
+CCP_PGADMIN_VERSION ?= 4.30
 PACKAGER ?= yum
 
 # Valid values: buildah (default), docker
@@ -39,54 +41,41 @@ ifeq ("$(IMGBUILDER)","docker")
 endif
 
 # Allows consolidation of ubi/rhel Dockerfile sets
-ifeq ("$(CCP_BASEOS)", "rhel7")
-        DFSET=rhel
-endif
-
-ifeq ("$(CCP_BASEOS)", "ubi7")
-        DFSET=rhel
-endif
-
 ifeq ("$(CCP_BASEOS)", "ubi8")
         DFSET=rhel
-	PACKAGER=dnf
-endif
-
-ifeq ("$(CCP_BASEOS)", "centos7")
-        DFSET=centos
-	DOCKERBASEREGISTRY=centos:
+        PACKAGER=microdnf
+        BASE_IMAGE_OS=ubi8-minimal
 endif
 
 ifeq ("$(CCP_BASEOS)", "centos8")
         DFSET=centos
-	PACKAGER=dnf
-	DOCKERBASEREGISTRY=centos:
+        PACKAGER=dnf
+        DOCKERBASEREGISTRY=docker.io/centos:
 endif
 
-.PHONY:	all pgbackrest-images pg-independent-images pgimages
+.PHONY:	all license pgbackrest-images pg-independent-images pgimages
 
 # list of image names, helpful in pushing
 images = crunchy-postgres \
-	crunchy-postgres-ha \
 	crunchy-upgrade \
 	crunchy-pgbackrest \
-	crunchy-pgbackrest-repo \
-	crunchy-pgadmin4 \
-	crunchy-pgbadger \
 	crunchy-pgbouncer \
-	crunchy-pgpool
+	crunchy-pgadmin4
+	# crunchy-pgbadger
+	# crunchy-pgpool
 
 # Default target
 all: pgimages pg-independent-images pgbackrest-images
 
 # Build images that either don't have a PG dependency or using the latest PG version is all that is needed
-pg-independent-images: pgadmin4 pgbadger pgbouncer pgpool
+pg-independent-images: pgbouncer pgadmin4
+# pg-independent-images: pgbadger pgpool
 
 # Build images that require a specific postgres version - ordered for potential concurrent benefits
-pgimages: postgres postgres-ha postgres-gis postgres-gis-ha upgrade
+pgimages: postgres postgres-gis upgrade
 
 # Build images based on pgBackRest
-pgbackrest-images: pgbackrest pgbackrest-repo
+pgbackrest-images: pgbackrest
 
 #===========================================
 # Targets generating pg-based images
@@ -94,16 +83,11 @@ pgbackrest-images: pgbackrest pgbackrest-repo
 
 pgadmin4: pgadmin4-img-$(IMGBUILDER)
 pgbackrest: pgbackrest-pgimg-$(IMGBUILDER)
-pgbackrest-repo: pgbackrest-repo-pgimg-$(IMGBUILDER)
 pgbadger: pgbadger-img-$(IMGBUILDER)
 pgbouncer: pgbouncer-img-$(IMGBUILDER)
 pgpool: pgpool-img-$(IMGBUILDER)
 postgres: postgres-pgimg-$(IMGBUILDER)
-postgres-ha: postgres-ha-pgimg-$(IMGBUILDER)
 postgres-gis: postgres-gis-pgimg-$(IMGBUILDER)
-postgres-gis-ha: postgres-gis-ha-pgimg-$(IMGBUILDER)
-
-postgres-appdev: commands postgres-appdev-img-$(IMGBUILDER)
 
 #===========================================
 # Pattern-based image generation targets
@@ -115,7 +99,7 @@ $(CCPROOT)/build/%/Dockerfile:
 # ----- Base Image -----
 ccbase-image: ccbase-image-$(IMGBUILDER)
 
-ccbase-image-build: $(CCPROOT)/build/base/Dockerfile
+ccbase-image-build: build-pgbackrest license $(CCPROOT)/build/base/Dockerfile
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/build/base/Dockerfile \
 		-t $(CCP_IMAGE_PREFIX)/crunchy-base:$(CCP_IMAGE_TAG) \
@@ -124,6 +108,7 @@ ccbase-image-build: $(CCPROOT)/build/base/Dockerfile
 		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \
 		--build-arg DOCKERBASEREGISTRY=$(DOCKERBASEREGISTRY) \
+		--build-arg BASE_IMAGE_OS=$(BASE_IMAGE_OS) \
 		--build-arg PG_LBL=${subst .,,$(CCP_PGVERSION)} \
 		$(CCPROOT)
 
@@ -171,6 +156,7 @@ postgres-pgimg-build: ccbase-image $(CCPROOT)/build/postgres/Dockerfile
 		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \
 		--build-arg BASE_IMAGE_NAME=crunchy-base \
+		--build-arg PATRONI_VER=$(CCP_PATRONI_VERSION) \
 		$(CCPROOT)
 
 postgres-pgimg-buildah: postgres-pgimg-build ;
@@ -196,6 +182,7 @@ postgres-gis-base-pgimg-build: ccbase-ext-image-build $(CCPROOT)/build/postgres/
 		--build-arg BACKREST_VER=$(CCP_BACKREST_VERSION) \
 		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \
+		--build-arg PATRONI_VER=$(CCP_PATRONI_VERSION) \
 		--build-arg BASE_IMAGE_NAME=crunchy-base-ext \
 		$(CCPROOT)
 
@@ -229,56 +216,6 @@ endif
 
 postgres-gis-pgimg-docker: postgres-gis-pgimg-build
 
-# ----- Special case pg-based image (postgres-ha) -----
-# Special case args: BACKREST_VER, PATRONI_VER
-postgres-ha-pgimg-build: postgres-pgimg-build $(CCPROOT)/build/postgres-ha/Dockerfile
-	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/build/postgres-ha/Dockerfile \
-		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) \
-		--build-arg BASEOS=$(CCP_BASEOS) \
-		--build-arg BASEVER=$(CCP_VERSION) \
-		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
-		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
-		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
-		--build-arg PATRONI_VER=$(CCP_PATRONI_VERSION) \
-		--build-arg DFSET=$(DFSET) \
-		--build-arg PACKAGER=$(PACKAGER) \
-		$(CCPROOT)
-
-postgres-ha-pgimg-buildah: postgres-ha-pgimg-build ;
-# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
-ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
-	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres-ha:$(CCP_IMAGE_TAG)
-endif
-
-postgres-ha-pgimg-docker: postgres-ha-pgimg-build
-
-# ----- Special case pg-based image (postgres-gis-ha) -----
-# Special case args: PATRONI_VER
-postgres-gis-ha-pgimg-build: postgres-gis-pgimg-build $(CCPROOT)/build/postgres-gis-ha/Dockerfile
-	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/build/postgres-gis-ha/Dockerfile \
-		-t $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_POSTGIS_IMAGE_TAG) \
-		--build-arg BASEOS=$(CCP_BASEOS) \
-		--build-arg BASEVER=$(CCP_VERSION) \
-		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
-		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
-		--build-arg PATRONI_VER=$(CCP_PATRONI_VERSION) \
-		--build-arg POSTGIS_VER=$(CCP_POSTGIS_VERSION) \
-		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
-		--build-arg DFSET=$(DFSET) \
-		--build-arg PACKAGER=$(PACKAGER) \
-		$(CCPROOT)
-
-postgres-gis-ha-pgimg-buildah: postgres-gis-ha-pgimg-build ;
-# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
-ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
-	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_POSTGIS_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_POSTGIS_IMAGE_TAG)
-endif
-
-postgres-gis-ha-pgimg-docker: postgres-gis-ha-pgimg-build
-
-
 # ----- Special case image (pgbackrest) -----
 
 # build the needed binary
@@ -307,27 +244,53 @@ endif
 
 pgbackrest-pgimg-docker: pgbackrest-pgimg-build
 
+# ----- Special case image (upgrade) -----
 
-# ----- Special case image (pgbackrest-repo) -----
-
-# Special case args: BACKREST_VER
-pgbackrest-repo-pgimg-build: ccbase-image build-pgbackrest pgbackrest $(CCPROOT)/build/pgbackrest-repo/Dockerfile
+# Special case args: UPGRADE_PG_VERSIONS (defines all versions of PG that will be installed) 
+upgrade-img-build: ccbase-image $(CCPROOT)/build/upgrade/Dockerfile
 	$(IMGCMDSTEM) \
-		-f $(CCPROOT)/build/pgbackrest-repo/Dockerfile \
-		-t $(CCP_IMAGE_PREFIX)/crunchy-pgbackrest-repo:$(CCP_IMAGE_TAG) \
+		-f $(CCPROOT)/build/upgrade/Dockerfile \
+		-t $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG) \
 		--build-arg BASEOS=$(CCP_BASEOS) \
 		--build-arg BASEVER=$(CCP_VERSION) \
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
+		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
+		--build-arg DFSET=$(DFSET) \
+		--build-arg PACKAGER=$(PACKAGER) \
+		--build-arg UPGRADE_PG_VERSIONS="$(shell find $(CCPROOT)/conf -type f -name "crunchypg*.repo" | \
+			grep -o [1-9][0-9])" \
 		$(CCPROOT)
 
-pgbackrest-repo-pgimg-buildah: pgbackrest-repo-pgimg-build ;
+upgrade-img-buildah: upgrade-img-build ;
 # only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
 ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
-	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-pgbackrest-repo:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-pgbackrest-repo:$(CCP_IMAGE_TAG)
+	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-upgrade:$(CCP_IMAGE_TAG)
 endif
 
-pgbackrest-repo-pgimg-docker: pgbackrest-repo-pgimg-build
+upgrade-img-docker: upgrade-img-build
+
+# Special case args: CCP_PGADMIN_VERSION
+pgadmin4-img-build: ccbase-image $(CCPROOT)/build/pgadmin4/Dockerfile
+	$(IMGCMDSTEM) \
+		-f $(CCPROOT)/build/pgadmin4/Dockerfile \
+		-t $(CCP_IMAGE_PREFIX)/crunchy-pgadmin4:$(CCP_IMAGE_TAG) \
+		--build-arg BASEOS=$(CCP_BASEOS) \
+		--build-arg BASEVER=$(CCP_VERSION) \
+		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
+		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
+		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
+		--build-arg PGADMIN_VER=$(CCP_PGADMIN_VERSION) \
+		--build-arg PACKAGER=$(PACKAGER) \
+		$(CCPROOT)
+
+pgadmin4-img-buildah: pgadmin4-img-build ;
+# only push to docker daemon if variable IMG_PUSH_TO_DOCKER_DAEMON is set to "true"
+ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
+	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-pgadmin4:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-pgadmin4:$(CCP_IMAGE_TAG)
+endif
+
+pgadmin4-img-docker: pgadmin-img-build
 
 # ----- Extra images -----
 %-img-build: ccbase-image $(CCPROOT)/build/%/Dockerfile
@@ -368,11 +331,13 @@ setup:
 docbuild:
 	cd $(CCPROOT) && ./generate-docs.sh
 
+license:
+	./bin/license_aggregator.sh
+
 push: push-gis $(images:%=push-%) ;
 
 push-gis:
 	$(IMG_PUSHER_PULLER) push $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis:$(CCP_POSTGIS_IMAGE_TAG)
-	$(IMG_PUSHER_PULLER) push $(CCP_IMAGE_PREFIX)/crunchy-postgres-gis-ha:$(CCP_POSTGIS_IMAGE_TAG)
 
 push-%:
 	$(IMG_PUSHER_PULLER) push $(CCP_IMAGE_PREFIX)/$*:$(CCP_IMAGE_TAG)
