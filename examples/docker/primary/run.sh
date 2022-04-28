@@ -24,6 +24,7 @@ docker volume create --driver local --name=primary-pgdata
 docker run \
     -p 5432:5432 \
     -v primary-pgdata:/pgdata \
+    -e MODE=postgres \
     -e PG_MODE=primary \
     -e PG_USER=testuser \
     -e PG_PASSWORD=password \

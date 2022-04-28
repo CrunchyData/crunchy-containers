@@ -33,22 +33,26 @@ To shutdown the instance and remove the container for each example, run the foll
 ## Docker
 
 
-To create the example and run the container:
+To create the example and run the container first pick a tag from, for example, 
+https://www.crunchydata.com/developers/download-postgres/containers/postgresql14
+then run:
 ```
-cd $CCPROOT/examples/docker/primary
+cd examples/docker/primary
+export CCP_IMAGE_PREFIX=registry.developers.crunchydata.com/crunchydata
+export CCP_IMAGE_TAG=ubi8-14.2-1
 ./run.sh
 ```
 
 Connect from your local host as follows:
 ```
-psql -h localhost -U testuser -W userdb
+PGPASSWORD=password psql -h localhost -U primaryuser userdb
 ```
 
 ## Kubernetes and OpenShift
 
 To create the example:
 ```
-cd $CCPROOT/examples/kube/primary
+cd examples/kube/primary
 ./run.sh
 ```
 
@@ -59,5 +63,5 @@ psql -h primary -U postgres postgres
 
 ## Helm
 
-This example resides under the `$CCPROOT/examples/helm` directory. View the README to run this
+This example resides under the `examples/helm` directory. View the README to run this
 example using Helm [here](https://github.com/CrunchyData/crunchy-containers/blob/master/examples/helm/primary/README.md).
