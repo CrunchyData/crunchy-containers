@@ -13,8 +13,8 @@ instructions to get you set up to build from source.
 
 ## Requirements
 
-- CentOS 7 or Red Hat 7 environment. The instructions below are set up for
-CentOS 7, but you can read the [installation guide](/installation-guide/installation-guide)
+- Red Hat 7 environment. The instructions below are set up for
+Red Hat 7, but you can read the [installation guide](/installation-guide/installation-guide)
 for additional instructions
 - [`go`](https://golang.org/) version 1.13+
 - [`buildah`](https://buildah.io/) 1.14.9+
@@ -49,10 +49,10 @@ export GOPATH=$HOME/cdev        # set path to your new Go workspace
 export GOBIN=$GOPATH/bin        # set bin path
 export PATH=$PATH:$GOBIN        # add Go bin path to your overall path
 export CCP_BASEOS=ubi8          # ubi8 for Red Hat Universal Base Image
-export CCP_PGVERSION=13         # The PostgreSQL major version
-export CCP_PG_FULLVERSION=13.6
-export CCP_POSTGIS_VERSION=3.1
-export CCP_VERSION=5.1.0-0
+export CCP_PGVERSION=14         # The PostgreSQL major version
+export CCP_PG_FULLVERSION=14.3
+export CCP_POSTGIS_VERSION=3.2
+export CCP_VERSION=5.1.1-0
 export CCP_IMAGE_PREFIX=crunchydata # Prefix to put before all the container image names
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION   # Used to tag the images
 export CCP_POSTGIS_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_POSTGIS_VERSION-$CCP_VERSION # Used to tag images that include PostGIS
@@ -68,10 +68,10 @@ export GOPATH=$HOME/cdev
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 export CCP_BASEOS=ubi8
-export CCP_PGVERSION=13
-export CCP_PG_FULLVERSION=13.6
-export CCP_POSTGIS_VERSION=3.1
-export CCP_VERSION=5.1.0-0
+export CCP_PGVERSION=14
+export CCP_PG_FULLVERSION=14.3
+export CCP_POSTGIS_VERSION=3.2
+export CCP_VERSION=5.1.1-0
 export CCP_IMAGE_PREFIX=crunchydata
 export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 export CCP_POSTGIS_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_POSTGIS_VERSION-$CCP_VERSION
