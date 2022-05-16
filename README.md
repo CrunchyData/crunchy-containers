@@ -16,7 +16,7 @@ If you are interested in contributing, please read the [Contribution Guidelines]
 
 ## Getting Started
 
-Complete build and install documentation is found [here](https://access.crunchydata.com/documentation/crunchy-containers/latest/installation-guide/).  The provided Dockerfiles build the containers on a Centos 7 base image and use the community PostgreSQL RPMs.
+Complete build and install documentation is found [here](https://access.crunchydata.com/documentation/crunchy-containers/latest/installation-guide/).  The provided Dockerfiles build the containers on a Ubi 8 base image and use the community PostgreSQL RPMs.
 
 Crunchy provides a commercially supported version of these containers built upon RHEL 7 and the Crunchy supported PostgreSQL. Contact Crunchy for more details at:
 
