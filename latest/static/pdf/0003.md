@@ -9,13 +9,12 @@ weight: 2
 
 The following provides a high level overview of each of the container images.
 
-## CentOS vs Red Hat UBI Images
+## Red Hat UBI Images
 
-The Crunchy Container suite provides two different OS images: `centos8` and `ubi8-minimal`.  Both images
+The Crunchy Container suite provides OS image: `ubi8-minimal`.  The image
 utilize Crunchy Certified RPM's for the installation of PostgreSQL, and outside of the base images
-utilized to build the containers and any packages included within them (either CentOS or UBI), both
-are effectively the same.  The `ubi8-minimal` images are available to active Crunchy Data Customers only,
-and are built using the Red Hat Universal Base Image (UBI).
+utilized to build the containers and any packages included within them (UBI).  The `ubi8-minimal` 
+are built using the Red Hat Universal Base Image (UBI).
 
 https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image
 
@@ -28,6 +27,7 @@ Crunchy Container Suite provides two types of PostgreSQL database images:
 
 Supported major versions of these images are:
 
+- 14
 - 13
 - 12
 - 11

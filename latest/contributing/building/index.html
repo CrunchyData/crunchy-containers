@@ -563,8 +563,8 @@ instructions to get you set up to build from source.</p>
 <h2 id="requirements">Requirements</h2>
 
 <ul>
-<li>CentOS 7 or Red Hat 7 environment. The instructions below are set up for
-CentOS 7, but you can read the <a href="https://crunchydata.github.io/crunchy-containers/latest/installation-guide/installation-guide">installation guide</a>
+<li>Red Hat 7 environment. The instructions below are set up for
+Red Hat 7, but you can read the <a href="https://crunchydata.github.io/crunchy-containers/latest/installation-guide/installation-guide">installation guide</a>
 for additional instructions</li>
 <li><a href="https://golang.org/"><code>go</code></a> version 1.13+</li>
 <li><a href="https://buildah.io/"><code>buildah</code></a> 1.14.9+</li>
@@ -596,10 +596,10 @@ following variables:</li>
 <span style="color:#111">export</span> <span style="color:#111">GOBIN</span><span style="color:#f92672">=</span><span style="color:#111">$GOPATH</span>/bin        <span style="color:#75715e"># set bin path</span>
 <span style="color:#111">export</span> <span style="color:#111">PATH</span><span style="color:#f92672">=</span><span style="color:#111">$PATH</span>:<span style="color:#111">$GOBIN</span>        <span style="color:#75715e"># add Go bin path to your overall path</span>
 <span style="color:#111">export</span> <span style="color:#111">CCP_BASEOS</span><span style="color:#f92672">=</span>ubi8          <span style="color:#75715e"># ubi8 for Red Hat Universal Base Image</span>
-<span style="color:#111">export</span> <span style="color:#111">CCP_PGVERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">13</span>         <span style="color:#75715e"># The PostgreSQL major version</span>
-<span style="color:#111">export</span> <span style="color:#111">CCP_PG_FULLVERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">13</span>.6
-<span style="color:#111">export</span> <span style="color:#111">CCP_POSTGIS_VERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>.1
-<span style="color:#111">export</span> <span style="color:#111">CCP_VERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>.1.0-0
+<span style="color:#111">export</span> <span style="color:#111">CCP_PGVERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">14</span>         <span style="color:#75715e"># The PostgreSQL major version</span>
+<span style="color:#111">export</span> <span style="color:#111">CCP_PG_FULLVERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">14</span>.3
+<span style="color:#111">export</span> <span style="color:#111">CCP_POSTGIS_VERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>.2
+<span style="color:#111">export</span> <span style="color:#111">CCP_VERSION</span><span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>.1.1-0
 <span style="color:#111">export</span> <span style="color:#111">CCP_IMAGE_PREFIX</span><span style="color:#f92672">=</span>crunchydata <span style="color:#75715e"># Prefix to put before all the container image names</span>
 <span style="color:#111">export</span> <span style="color:#111">CCP_IMAGE_TAG</span><span style="color:#f92672">=</span><span style="color:#111">$CCP_BASEOS</span>-<span style="color:#111">$CCP_PG_FULLVERSION</span>-<span style="color:#111">$CCP_VERSION</span>   <span style="color:#75715e"># Used to tag the images</span>
 <span style="color:#111">export</span> <span style="color:#111">CCP_POSTGIS_IMAGE_TAG</span><span style="color:#f92672">=</span><span style="color:#111">$CCP_BASEOS</span>-<span style="color:#111">$CCP_PG_FULLVERSION</span>-<span style="color:#111">$CCP_POSTGIS_VERSION</span>-<span style="color:#111">$CCP_VERSION</span> <span style="color:#75715e"># Used to tag images that include PostGIS</span>
@@ -611,10 +611,10 @@ adding them to your <code>.bashrc</code> file:</p>
 </span><span style="color:#d88200">export GOBIN=$GOPATH/bin
 </span><span style="color:#d88200">export PATH=$PATH:$GOBIN
 </span><span style="color:#d88200">export CCP_BASEOS=ubi8
-</span><span style="color:#d88200">export CCP_PGVERSION=13
-</span><span style="color:#d88200">export CCP_PG_FULLVERSION=13.6
-</span><span style="color:#d88200">export CCP_POSTGIS_VERSION=3.1
-</span><span style="color:#d88200">export CCP_VERSION=5.1.0-0
+</span><span style="color:#d88200">export CCP_PGVERSION=14
+</span><span style="color:#d88200">export CCP_PG_FULLVERSION=14.3
+</span><span style="color:#d88200">export CCP_POSTGIS_VERSION=3.2
+</span><span style="color:#d88200">export CCP_VERSION=5.1.1-0
 </span><span style="color:#d88200">export CCP_IMAGE_PREFIX=crunchydata
 </span><span style="color:#d88200">export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION
 </span><span style="color:#d88200">export CCP_POSTGIS_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_POSTGIS_VERSION-$CCP_VERSION
