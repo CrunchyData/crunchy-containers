@@ -32,11 +32,10 @@ Crunchy Container Suite provides two types of PostgreSQL database images:
 
 Supported major versions of these images are:
 
+- 13
 - 12
 - 11
 - 10
-- 9.6
-- 9.5
 
 ### Crunchy PostgreSQL
 
@@ -147,6 +146,7 @@ Visit the official pgAdmin4 website for more information: https://www.pgadmin.or
 The Crunchy Upgrade image allows users to perform major upgrades of their Crunchy
 PostgreSQL containers.  The following upgrade versions of PostgreSQL are available:
 
+- 13
 - 12
 - 11
 - 10
