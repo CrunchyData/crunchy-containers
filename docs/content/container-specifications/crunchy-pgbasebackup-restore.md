@@ -15,7 +15,7 @@ The crunchy-pgbasebackup-restore does not support point-in-time-recovery (PITR).
 The crunchy-pgbasebackup-restore Docker image contains the following packages:
 
 * rsync
-* CentOS 7, CentOS 8 - publicly available
+* CentOS 7, UBI 8 - publicly available
 * UBI 7, UBI 8 - customers only
 
 ## Environment Variables
