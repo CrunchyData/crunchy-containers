@@ -33,7 +33,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	psmisc \
         	rsync \
         	less \
-        	wal2json${PG_MAJOR//.} \
+        	wal2json_${PG_MAJOR//.} \
         && ${PACKAGER} -y clean all ; \
 else \
        ${PACKAGER} -y install \
@@ -52,7 +52,7 @@ else \
 		psmisc \
 		rsync \
 		less \
-		wal2json${PG_MAJOR//.} \
+		wal2json_${PG_MAJOR//.} \
 	&& ${PACKAGER} -y install \
 		--setopt=tsflags='' \
 		--enablerepo="epel" \
