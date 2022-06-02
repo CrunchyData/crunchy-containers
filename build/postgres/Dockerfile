@@ -46,7 +46,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	psmisc \
         	rsync \
         	$( printf '11\n'${PG_MAJOR} | sort -VC && echo timescaledb_${PG_MAJOR} ) \
-        	wal2json${PG_MAJOR//.} \
+        	wal2json_${PG_MAJOR//.} \
         	file \
         	gettext \
         	hostname \
@@ -74,7 +74,7 @@ else \
 		psmisc \
 		rsync \
 		$( printf '11\n'${PG_MAJOR} | sort -VC && echo timescaledb_${PG_MAJOR} ) \
-		wal2json${PG_MAJOR//.} \
+		wal2json_${PG_MAJOR//.} \
 		file \
 		unzip \
 		tar \
