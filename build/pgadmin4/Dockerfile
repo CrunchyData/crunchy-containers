@@ -26,7 +26,9 @@ RUN if [ "$BASEOS" = "centos7" ] ; then \
                 mod_ssl \
                 mod_wsgi \
                 openssl \
-                --setopt=obsoletes=0 pgadmin4 \
+                --setopt=obsoletes=0 pgadmin4-${PGADMIN_VER} \
+                pgadmin4-web-${PGADMIN_VER} \
+                pgadmin4-docs-${PGADMIN_VER} \
                 postgresql${PG_MAJOR//.}-server \
         && ${PACKAGER} -y clean all  \
         && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
@@ -46,6 +48,8 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
                 openssl \
                 sqlite \
                 --setopt=obsoletes=0 pgadmin4-${PGADMIN_VER} \
+                pgadmin4-web-${PGADMIN_VER} \
+                pgadmin4-docs-${PGADMIN_VER} \
                 postgresql${PG_MAJOR//.}-server \
         && ${PACKAGER} -y clean all \
         && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
@@ -65,7 +69,9 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
                 mod_ssl \
                 mod_wsgi \
                 openssl \
-                --setopt=obsoletes=0 pgadmin4 \
+                --setopt=obsoletes=0 pgadmin4-${PGADMIN_VER} \
+                pgadmin4-web-${PGADMIN_VER} \
+                pgadmin4-docs-${PGADMIN_VER} \
                 postgresql${PG_MAJOR//.}-server \
         && ${PACKAGER} -y clean all --enablerepo="epel,rhel-7-server-extras-rpms" \
         && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
@@ -86,6 +92,8 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
                 openssl \
                 sqlite \
                 --setopt=obsoletes=0 pgadmin4-${PGADMIN_VER} \
+                pgadmin4-web-${PGADMIN_VER} \
+                pgadmin4-docs-${PGADMIN_VER} \
                 postgresql${PG_MAJOR//.}-server \
         && ${PACKAGER} -y clean all --enablerepo="epel" \
         && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
