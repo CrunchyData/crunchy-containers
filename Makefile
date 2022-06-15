@@ -268,6 +268,7 @@ postgres-gis-ha-pgimg-build: postgres-gis-pgimg-build $(CCPROOT)/build/postgres-
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
 		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \
+		--layers=false \
 		$(CCPROOT)
 
 postgres-gis-ha-pgimg-buildah: postgres-gis-ha-pgimg-build ;
