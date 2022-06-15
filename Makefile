@@ -242,6 +242,7 @@ postgres-gis-ha-pgimg-build: postgres-ha commands $(CCPROOT)/build/postgres-gis-
 		--build-arg POSTGIS_LBL=$(subst .,,$(CCP_POSTGIS_VERSION)) \
 		--build-arg DFSET=$(DFSET) \
 		--build-arg PACKAGER=$(PACKAGER) \
+		--layers=false \
 		$(CCPROOT)
 
 postgres-gis-ha-pgimg-buildah: postgres-gis-ha-pgimg-build ;
