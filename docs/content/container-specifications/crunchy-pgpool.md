@@ -18,7 +18,7 @@ for production environments. The pgpool container allows for local login with a 
 
 ## Features
 
-The following features are supported by the `crunchy-postgres` container:
+The following features are supported by the `crunchy-pgpool` container:
 
 * Basic invocation of pgPool II
 
