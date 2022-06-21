@@ -30,39 +30,39 @@ ARG BACKREST_VER
 
 # Separate yum run matching postgres-ha image, leverages cached layer
 RUN if [ "$DFSET" = "centos" ] ; then \
-        ${PACKAGER} -y install --nodocs \
-        	--setopt=skip_missing_names_on_install=False \
-        	openssh-clients \
-        	openssh-server \
-        	pgaudit${PG_MAJOR//.} \
-        	pgaudit${PG_MAJOR//.}_set_user \
-        	pg_partman_${PG_MAJOR//.} \
-        	pg_cron_${PG_MAJOR//.} \
-        	crunchy-backrest-${BACKREST_VER} \
-        	postgresql${PG_MAJOR//.}-contrib \
-        	postgresql${PG_MAJOR//.}-server \
-        	postgresql${PG_MAJOR//.}-plpython* \
-        	pgnodemx${PG_MAJOR//.} \
-        	$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
-        	psmisc \
-        	python3-pip \
-        	python3-psutil \
-        	python3-psycopg2 \
-        	rsync \
-        	$( printf '11\n'${PG_MAJOR} | sort -VC && echo timescaledb_${PG_MAJOR} ) \
-        	wal2json_${PG_MAJOR//.} \
-        	file \
-        	gettext \
-        	hostname \
-        	procps-ng \
-        	pgaudit_analyze \
-        	unzip \
-        	bzip2 \
-        	lz4 \
-			krb5-workstation \
-        && ${PACKAGER} -y clean all ; \
+	${PACKAGER} -y install --nodocs \
+		--setopt=skip_missing_names_on_install=False \
+		openssh-clients \
+		openssh-server \
+		pgaudit${PG_MAJOR//.} \
+		pgaudit${PG_MAJOR//.}_set_user \
+		pg_partman_${PG_MAJOR//.} \
+		pg_cron_${PG_MAJOR//.} \
+		crunchy-backrest-${BACKREST_VER} \
+		postgresql${PG_MAJOR//.}-contrib \
+		postgresql${PG_MAJOR//.}-server \
+		postgresql${PG_MAJOR//.}-plpython* \
+		pgnodemx${PG_MAJOR//.} \
+		$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
+		psmisc \
+		python3-pip \
+		python3-psutil \
+		python3-psycopg2 \
+		rsync \
+		$( printf '11\n'${PG_MAJOR} | sort -VC && echo timescaledb_${PG_MAJOR} ) \
+		wal2json_${PG_MAJOR//.} \
+		file \
+		gettext \
+		hostname \
+		procps-ng \
+		pgaudit_analyze \
+		unzip \
+		bzip2 \
+		lz4 \
+		krb5-workstation \
+	&& ${PACKAGER} -y clean all ; \
 else \
-        ${PACKAGER} -y install --nodocs \
+	${PACKAGER} -y install --nodocs \
 		--enablerepo="epel" \
 		openssh-clients \
 		openssh-server \
@@ -115,8 +115,8 @@ LABEL name="postgres" \
 RUN mkdir -p /opt/crunchy/bin /opt/crunchy/conf /pgdata /pgwal /pgconf /backrestrepo
 
 RUN chown -R postgres:postgres /opt/crunchy /var/lib/pgsql \
-		/pgdata /pgwal /pgconf /backrestrepo &&  \
-	chmod -R g=u /opt/crunchy /var/lib/pgsql \
+		/pgdata /pgwal /pgconf /backrestrepo \
+	&& chmod -R g=u /opt/crunchy /var/lib/pgsql \
 		/pgdata /pgwal /pgconf /backrestrepo
 
 # open up the postgres port
