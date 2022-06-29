@@ -38,7 +38,7 @@ The following features are supported by the crunchy-upgrade container:
 
 The crunchy-upgrade Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (14.3, 13.7, 12.11, 11.16 and 10.21)
+* PostgreSQL (14.4, 13.7, 12.11, 11.16 and 10.21)
 * UBI 8 - publicly available
 * UBI 8 - customers only
 
