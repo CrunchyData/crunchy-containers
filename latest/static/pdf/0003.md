@@ -68,7 +68,7 @@ PostgreSQL container to restore databases.
 
 ###### pgBasebackup-restore
 
-The `pgbasebasebackup-restore` mode allows users to restore from a [pg_basebackup](https://www.postgresql.org/docs/current/app-pgbasebackup.html)
+The `pgbasebackup-restore` mode allows users to restore from a [pg_basebackup](https://www.postgresql.org/docs/current/app-pgbasebackup.html)
 physical backup using `rsync`.
 
 ###### pgDump
