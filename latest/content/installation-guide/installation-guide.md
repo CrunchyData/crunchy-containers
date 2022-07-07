@@ -253,7 +253,7 @@ option for deploying the Container Suite.
     $CCPROOT/examples/helm/
 
 Once you have your Kubernetes environment configured, it is simple to get
-Helm up and running. Please refer to [this document](https://github.com/kubernetes/helm/blob/master/docs/install.md)
+Helm up and running. Please refer to [this document](https://github.com/helm/helm-www/blob/master/content/en/docs/intro/install.md)
 to get Helm installed and configured properly.
 
 # Configuring Namespace and Permissions
