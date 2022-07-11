@@ -34,7 +34,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 		"pgaudit${PG_MAJOR//.}*" \
 		"pgnodemx${PG_MAJOR//.}" \
 		unzip \
-		&& ${PACKAGER} -y clean all ; \
+	&& ${PACKAGER} -y clean all ; \
 else \
 	${PACKAGER} -y install --nodocs \
 		--setopt=skip_missing_names_on_install=False \
@@ -47,41 +47,41 @@ else \
 		"pgaudit${PG_MAJOR//.}*" \
 		"pgnodemx${PG_MAJOR//.}" \
 		unzip \
-		&& ${PACKAGER} -y clean all ; \
+	&& ${PACKAGER} -y clean all ; \
 fi
 
 # add in all of the earlier version of PostgreSQL. It will install the version
 # above, but the dependencies are handled
 RUN for pg_version in $UPGRADE_PG_VERSIONS; do \
-        if [ "$BASEOS" = "ubi8" ] ; then \
-            ${PACKAGER} -y install --nodocs \
-                --disablerepo=* \
-                --enablerepo=crunchypg* \
-                postgresql${pg_version} \
-                postgresql${pg_version}-contrib \
-                postgresql${pg_version}-server \
-                pgaudit${pg_version} \
-                pgnodemx${pg_version} ; \
-        else \
-            ${PACKAGER} -y install --nodocs \
-                --setopt=skip_missing_names_on_install=False \
-                --disablerepo=* \
-                --enablerepo=crunchypg* \
-                postgresql${pg_version} \
-                postgresql${pg_version}-contrib \
-                postgresql${pg_version}-server \
-                pgaudit${pg_version} \
-                pgnodemx${pg_version} ; \
-        fi \
-	done && ${PACKAGER} -y clean all ;
+	if [ "$BASEOS" = "ubi8" ] ; then \
+		${PACKAGER} -y install --nodocs \
+			--disablerepo=* \
+			--enablerepo=crunchypg* \
+			postgresql${pg_version} \
+			postgresql${pg_version}-contrib \
+			postgresql${pg_version}-server \
+			pgaudit${pg_version} \
+			pgnodemx${pg_version} ; \
+	else \
+		${PACKAGER} -y install --nodocs \
+			--setopt=skip_missing_names_on_install=False \
+			--disablerepo=* \
+			--enablerepo=crunchypg* \
+			postgresql${pg_version} \
+			postgresql${pg_version}-contrib \
+			postgresql${pg_version}-server \
+			pgaudit${pg_version} \
+			pgnodemx${pg_version} ; \
+	fi \
+done && ${PACKAGER} -y clean all ;
 
 RUN mkdir -p /opt/crunchy/bin /pgolddata /pgnewdata /opt/crunchy/conf
 ADD bin/upgrade/ /opt/crunchy/bin
 ADD bin/common /opt/crunchy/bin
 ADD conf/upgrade/ /opt/crunchy/conf
 
-RUN chown -R postgres:postgres /opt/crunchy /pgolddata /pgnewdata && \
-	chmod -R g=u /opt/crunchy /pgolddata /pgnewdata
+RUN chown -R postgres:postgres /opt/crunchy /pgolddata /pgnewdata \
+	&& chmod -R g=u /opt/crunchy /pgolddata /pgnewdata
 
 # The VOLUME directive must appear after all RUN directives to ensure the proper
 # volume permissions are applied when building the image

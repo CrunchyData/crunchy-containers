@@ -18,48 +18,48 @@ LABEL name="pgadmin4" \
 	io.openshift.tags="postgresql,postgres,monitoring,pgadmin4,pgadmin,database,crunchy"
 
 RUN mkdir -p /opt/crunchy/bin /opt/crunchy/conf /var/lib/pgadmin /var/log/pgadmin \
-        /certs /run/httpd
+		/certs /run/httpd
 
 RUN if [ "$BASEOS" = "centos8" ] ; then \
-        ${PACKAGER} -y install --nodocs \
-                --setopt=skip_missing_names_on_install=False \
-                mod_ssl \
-                python3-mod_wsgi \
-                python3-gssapi \
-                openssl \
-                sqlite \
-                --setopt=obsoletes=0 pgadmin4-${PGADMIN_VER} \
-                postgresql${PG_MAJOR//.}-server \
-        && ${PACKAGER} -y clean all \
-        && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
-                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd \
-                /var/log/httpd \
-        && chmod -R g=u /usr/lib/python3.6/site-packages/pgadmin4-web \
-                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
-        && ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python3.6/site-packages/pgadmin4-web/config_local.py \
-        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf \
-        && alternatives --set python /usr/bin/python3 ; \
+	${PACKAGER} -y install --nodocs \
+		--setopt=skip_missing_names_on_install=False \
+		mod_ssl \
+		python3-mod_wsgi \
+		python3-gssapi \
+		openssl \
+		sqlite \
+		--setopt=obsoletes=0 pgadmin4-${PGADMIN_VER} \
+		postgresql${PG_MAJOR//.}-server \
+	&& ${PACKAGER} -y clean all \
+	&& chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
+		/var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd \
+		/var/log/httpd \
+	&& chmod -R g=u /usr/lib/python3.6/site-packages/pgadmin4-web \
+		/var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
+	&& ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python3.6/site-packages/pgadmin4-web/config_local.py \
+	&& ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf \
+	&& alternatives --set python /usr/bin/python3 ; \
 fi
 
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
-        ${PACKAGER} -y install --nodocs \
-                --enablerepo="epel" \
-                mod_ssl \
-                python3-mod_wsgi \
-                python3-gssapi \
-                openssl \
-                sqlite \
-                pgadmin4-${PGADMIN_VER} \
-                postgresql${PG_MAJOR//.}-server \
-        && ${PACKAGER} -y clean all --enablerepo="epel" \
-        && chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
-                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd \
-                /var/log/httpd \
-        && chmod -R g=u /usr/lib/python3.6/site-packages/pgadmin4-web \
-                /var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
-        && ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python3.6/site-packages/pgadmin4-web/config_local.py \
-        && ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf \
-        && alternatives --set python /usr/bin/python3 ; \
+	${PACKAGER} -y install --nodocs \
+		--enablerepo="epel" \
+		mod_ssl \
+		python3-mod_wsgi \
+		python3-gssapi \
+		openssl \
+		sqlite \
+		pgadmin4-${PGADMIN_VER} \
+		postgresql${PG_MAJOR//.}-server \
+	&& ${PACKAGER} -y clean all --enablerepo="epel" \
+	&& chown -R 2:0 /usr/lib/python3.6/site-packages/pgadmin4-web \
+		/var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd \
+		/var/log/httpd \
+	&& chmod -R g=u /usr/lib/python3.6/site-packages/pgadmin4-web \
+		/var/lib/pgadmin /var/log/pgadmin /certs /etc/httpd /run/httpd /var/log/httpd \
+	&& ln -sf /var/lib/pgadmin/config_local.py /usr/lib/python3.6/site-packages/pgadmin4-web/config_local.py \
+	&& ln -sf /var/lib/pgadmin/pgadmin.conf /etc/httpd/conf.d/pgadmin.conf \
+	&& alternatives --set python /usr/bin/python3 ; \
 fi
 
 # Preserving PGVERSION out of paranoia
