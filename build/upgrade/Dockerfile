@@ -33,6 +33,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 		"postgresql${PG_MAJOR//.}-server" \
 		"pgaudit${PG_MAJOR//.}*" \
 		"pgnodemx${PG_MAJOR//.}" \
+		"orafce_${PG_MAJOR//.}" \
 		unzip \
 		&& ${PACKAGER} -y clean all ; \
 else \
@@ -46,6 +47,7 @@ else \
 		"postgresql${PG_MAJOR//.}-server" \
 		"pgaudit${PG_MAJOR//.}*" \
 		"pgnodemx${PG_MAJOR//.}" \
+		"orafce_${PG_MAJOR//.}" \
 		unzip \
 		&& ${PACKAGER} -y clean all ; \
 fi
@@ -61,7 +63,8 @@ RUN for pg_version in $UPGRADE_PG_VERSIONS; do \
                 postgresql${pg_version}-contrib \
                 postgresql${pg_version}-server \
                 pgaudit${pg_version} \
-                pgnodemx${pg_version} ; \
+                pgnodemx${pg_version} \
+				orafce_${pg_version} ; \
         else \
             ${PACKAGER} -y install --nodocs \
                 --setopt=skip_missing_names_on_install=False \
@@ -71,7 +74,8 @@ RUN for pg_version in $UPGRADE_PG_VERSIONS; do \
                 postgresql${pg_version}-contrib \
                 postgresql${pg_version}-server \
                 pgaudit${pg_version} \
-                pgnodemx${pg_version} ; \
+                pgnodemx${pg_version} \
+				orafce_${pg_version} ; \
         fi \
 	done && ${PACKAGER} -y clean all ;
 
