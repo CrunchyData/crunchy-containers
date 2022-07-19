@@ -60,6 +60,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	bzip2 \
         	lz4 \
 			krb5-workstation \
+			orafce_${PG_MAJOR//.} \
         && ${PACKAGER} -y clean all ; \
 else \
         ${PACKAGER} -y install --nodocs \
@@ -89,6 +90,7 @@ else \
 		bzip2 \
 		lz4 \
 		krb5-workstation \
+		orafce_${PG_MAJOR//.} \
 	&& ${PACKAGER} -y install --nodocs \
 		--setopt=tsflags='' \
 		--enablerepo="epel" \
