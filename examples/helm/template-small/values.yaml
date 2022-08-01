@@ -12,7 +12,7 @@ serviceType: ClusterIP
 image:
   repository: crunchydata
   container: crunchy-postgres
-  tag: ubi8-14.4-0
+  tag: ubi8-14.5-0
 resources:
   cpu: 200m
   memory: 512Mi
