@@ -26,21 +26,20 @@ not hurt you if you follow the directions exactly.
 
 These instructions are developed and on for the following operating systems:
 
-  - **CentOS 7**
+- **CentOS 7**
 
-  - **RHEL 7**
+- **RHEL 7**
 
 We also assume you are using the Docker provided with the distributions above. If you have installed
 Docker CE or EE on your machine, please create a VM for this work or uninstall Docker CE or EE.
 
-
 The images in Crunchy Container Suite can run on different environments including:
 
-  - **Docker 1.13+**
+- **Docker 1.13+**
 
-  - **OpenShift Container Platform 3.11**
+- **OpenShift Container Platform 3.11**
 
-  - **Kubernetes 1.8+**
+- **Kubernetes 1.8+**
 
 # Initial Installs
 
@@ -51,27 +50,26 @@ not plan on building the containers then installing _git_ is sufficient.
 
 {{% /notice %}}
 
-
 ## CentOS 7 only
 
-    $ sudo yum -y install epel-release
-    $ sudo yum -y install golang git
+    sudo yum -y install epel-release
+    sudo yum -y install golang git
 
 ## RHEL 7 only
 
-    $ sudo subscription-manager repos --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-optional-rpms"
-    $ sudo yum -y install epel-release
-    $ sudo yum -y install golang git
+    sudo subscription-manager repos --enable="rhel-7-server-extras-rpms" --enable="rhel-7-server-optional-rpms"
+    sudo yum -y install epel-release
+    sudo yum -y install golang git
 
 # Clone GitHub repository
 
 Make directories to hold the GitHub clone that also work with the Go workspace structure
 
-    $ mkdir -p $HOME/cdev/src/github.com/crunchydata $HOME/cdev/pkg $HOME/cdev/bin
-    $ cd $HOME/cdev/src/github.com/crunchydata
-    $ git clone https://github.com/crunchydata/crunchy-containers
-    $ cd crunchy-containers
-    $ git checkout v4.6.7
+    mkdir -p $HOME/cdev/src/github.com/crunchydata $HOME/cdev/pkg $HOME/cdev/bin
+    cd $HOME/cdev/src/github.com/crunchydata
+    git clone https://github.com/crunchydata/crunchy-containers
+    cd crunchy-containers
+    git checkout v4.6.8
 
 # Your Shell Environment
 
@@ -91,9 +89,9 @@ line starting with #:
     export PATH=$PATH:$GOBIN        # add Go bin path to your overall path
     export CCP_BASEOS=ubi8       # centos7 for CentOS, ubi8 for Red Hat Universal Base Image
     export CCP_PGVERSION=13         # The PostgreSQL major version
-    export CCP_PG_FULLVERSION=13.7
+    export CCP_PG_FULLVERSION=13.8
     export CCP_POSTGIS_VERSION=3.0  # The PostGIS version
-    export CCP_VERSION=4.6.7
+    export CCP_VERSION=4.6.8
     export CCP_IMAGE_PREFIX=crunchydata # Prefix to put before all the container image names
     export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION   # Used to tag the images
     export CCP_POSTGIS_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_POSTGIS_VERSION-$CCP_VERSION # Used to tag images that include PostGIS
@@ -123,7 +121,7 @@ above in the environment variable section).
 
 The OpenShift and Kubernetes (KubeAdm) instructions both have a section for installing docker. Installing
 docker now won't cause any issues but you may wish to configure Docker storage before bringing
-everything up. Configuring Docker Storage is different from *Storage Configuration* referenced later in the
+everything up. Configuring Docker Storage is different from _Storage Configuration_ referenced later in the
 instructions and is not covered here.
 
 For a basic docker installation, you can follow the instructions below. Please refer to
@@ -131,7 +129,6 @@ the respective installation guide for the version of Kubernetes you are installi
 more specific details.
 
 {{% /notice %}}
-
 
 Install Docker
 
@@ -156,7 +153,6 @@ At this point you should be able to build the containers. Please to go to [Build
 page and continue from there.
 
 {{% / notice %}}
-
 
 ## Install PostgreSQL
 
@@ -183,7 +179,6 @@ Don't forget to:
 
     source ~/.bashrc
 
-
 ## OpenShift Installation
 
 Use the OpenShift installation guide to install OpenShift Enterprise on your host. Make sure
@@ -191,7 +186,6 @@ to choose the proper version of OpenShift you want to install. The main instruct
 3.11 are here and you'll be able to select a different version there, if needed:
 
 <https://docs.openshift.com/container-platform/3.11/install/index.html>
-
 
 ## Kubernetes Installation
 
@@ -202,7 +196,7 @@ with installation can occur unless you have a resolving hostname.
 
 You should see a single IP address returned from this command:
 
-    $ hostname --ip-address
+    hostname --ip-address
 
 {{% /notice %}}
 
@@ -268,11 +262,10 @@ to get Helm installed and configured properly.
 
 In Kubernetes, a concept called a **namespace** provides the means to separate
 created resources or components into individual logically grouped partitions. In OpenShift,
-*namespace* is referred to as a *project*.
+_namespace_ is referred to as a _project_.
 
 It is considered a best practice to have dedicated namespaces for projects in
 both testing and production environments.
-
 
 {{% notice info %}}
 All examples in the Crunchy Container Suite operate within the namespace
@@ -313,8 +306,7 @@ specified by the currently set context.
 
 {{% /notice %}}
 
-
-    $ kubectl config set-context $(kubectl config current-context) --namespace=demo
+    kubectl config set-context $(kubectl config current-context) --namespace=demo
 
 We can verify that the namespace was set correctly through the following command:
 
@@ -341,8 +333,7 @@ assigned the **cluster-admin** cluster role.
 
 Log into the system as a user:
 
-    $ oc login -u <user>
-
+    oc login -u <user>
 
 The next step is to create a **demo** namespace to run the examples within. The
 name of this OCP project will be what you supply in the CCP\_NAMESPACE

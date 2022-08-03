@@ -4,58 +4,59 @@ version: "3.3"
 services:
   primary:
     hostname: 'primary'
-    image: crunchydata/crunchy-postgres:ubi8-13.7-4.6.7
+    image: crunchydata/crunchy-postgres:ubi8-13.8-4.6.8
     environment:
-    - PGHOST=/tmp
-    - MAX_CONNECTIONS=10
-    - MAX_WAL_SENDERS=5
-    - PG_MODE=primary
-    - PG_PRIMARY_USER=primaryuser
-    - PG_PRIMARY_PASSWORD=password
-    - PG_DATABASE=testdb
-    - PG_USER=testuser
-    - PG_PASSWORD=password
-    - PG_ROOT_PASSWORD=password
-    - PG_PRIMARY_PORT=5432
+      - PGHOST=/tmp
+      - MAX_CONNECTIONS=10
+      - MAX_WAL_SENDERS=5
+      - PG_MODE=primary
+      - PG_PRIMARY_USER=primaryuser
+      - PG_PRIMARY_PASSWORD=password
+      - PG_DATABASE=testdb
+      - PG_USER=testuser
+      - PG_PASSWORD=password
+      - PG_ROOT_PASSWORD=password
+      - PG_PRIMARY_PORT=5432
     volumes:
-    - pg-primary-vol:/pgdata
+      - pg-primary-vol:/pgdata
     ports:
-    - "5432"
+      - "5432"
     networks:
-    - crunchynet
+      - crunchynet
     deploy:
       placement:
         constraints:
-        - node.labels.type == primary
-        - node.role == worker
+          - node.labels.type == primary
+          - node.role == worker
   replica:
-    image: crunchydata/crunchy-postgres:ubi8-13.7-4.6.7
+    image: crunchydata/crunchy-postgres:ubi8-13.8-4.6.8
     environment:
-    - PGHOST=/tmp
-    - MAX_CONNECTIONS=10
-    - MAX_WAL_SENDERS=5
-    - PG_MODE=replica
-    - PG_PRIMARY_HOST=primary
-    - PG_PRIMARY_PORT=5432
-    - PG_PRIMARY_USER=primaryuser
-    - PG_PRIMARY_PASSWORD=password
-    - PG_DATABASE=testdb
-    - PG_USER=testuser
-    - PG_PASSWORD=password
-    - PG_ROOT_PASSWORD=password
+      - PGHOST=/tmp
+      - MAX_CONNECTIONS=10
+      - MAX_WAL_SENDERS=5
+      - PG_MODE=replica
+      - PG_PRIMARY_HOST=primary
+      - PG_PRIMARY_PORT=5432
+      - PG_PRIMARY_USER=primaryuser
+      - PG_PRIMARY_PASSWORD=password
+      - PG_DATABASE=testdb
+      - PG_USER=testuser
+      - PG_PASSWORD=password
+      - PG_ROOT_PASSWORD=password
     volumes:
-    - pg-replica-vol:/pgdata
+      - pg-replica-vol:/pgdata
     ports:
-    - "5432"
+      - "5432"
     networks:
-    - crunchynet
+      - crunchynet
     deploy:
       placement:
         constraints:
-        - node.labels.type != primary
-        - node.role == worker
+          - node.labels.type != primary
+          - node.role == worker
 networks:
   crunchynet:
+
 
 volumes:
   pg-primary-vol:

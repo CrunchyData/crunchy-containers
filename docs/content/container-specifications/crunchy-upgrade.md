@@ -18,31 +18,33 @@ the following combinations:
 
 The following features are supported by the crunchy-upgrade container:
 
- * Supports a pg_upgrade of the PostgreSQL database.
- * Doesn't alter the old database files.
- * Creates the new database directory.
+- Supports a pg_upgrade of the PostgreSQL database.
+- Doesn't alter the old database files.
+- Creates the new database directory.
 
 ## Restrictions
 
- * Does **not** currently support a PostGIS upgrade.
- * Supports upgrades from:
- - 9.5 to 9.6
- - 9.6 to 10
- - 10 to 11
- - 11 to 12
- - 12 to 13
+- Does **not** currently support a PostGIS upgrade.
+- Supports upgrades from:
+
+- 9.5 to 9.6
+- 9.6 to 10
+- 10 to 11
+- 11 to 12
+- 12 to 13
 
 ## Packages
 
 The crunchy-upgrade Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (13.7, 12.11, 11.16, and 10.21)
-* CentOS 7, UBI 8 - publicly available
-* UBI 7, UBI 8 - customers only
+- PostgreSQL (13.8, 12.12, 11.17, and 10.22)
+- CentOS 7, UBI 8 - publicly available
+- UBI 7, UBI 8 - customers only
 
 ## Environment Variables
 
 ### Required
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **OLD_DATABASE_NAME**|None|Refers to the database (pod) name that we want to convert.
@@ -51,6 +53,7 @@ The crunchy-upgrade Docker image contains the following packages (versions vary 
 **NEW_VERSION**|None|The PostgreSQL version of the new database.
 
 ### Optional
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PG_LOCALE**|Default locale|If set, the locale you want to create the database with.

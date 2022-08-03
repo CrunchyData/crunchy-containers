@@ -8,7 +8,6 @@ The `crunchy-pgbackrest` container is used for pgBackRest functions including ba
 
 See the [pgBackRest](https://github.com/pgbackrest/pgbackrest) guide for more details.
 
-
 ## Running Modes
 
 The `crunchy-pgbackrest` image can be run in modes to enable different functionality.
@@ -24,17 +23,16 @@ The `MODE` environment variable must be set to run the image in the required mod
 
 The following volumes are mounted by the `crunchy-pgbackrest` container:
 
- * Mounted `pgbackrest.conf` configuration file via the `/pgconf` volume (? not sure about this)
- * `/backrestrepo` volume used by the pgbackrest backup tool to store pgBackRest archives
- * `/pgdata` volume used to store the data directory contents for the PostgreSQL database
- * `/sshd` volume that contains the SSHD configuration from the `backrest-repo-config` secret
-
+* Mounted `pgbackrest.conf` configuration file via the `/pgconf` volume (? not sure about this)
+* `/backrestrepo` volume used by the pgbackrest backup tool to store pgBackRest archives
+* `/pgdata` volume used to store the data directory contents for the PostgreSQL database
+* `/sshd` volume that contains the SSHD configuration from the `backrest-repo-config` secret
 
 ## Major Packages
 
 The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (13.7, 12.11, 11.16, and 10.21)
+* PostgreSQL (13.8, 12.12, 11.17, and 10.22)
 * [pgBackRest](https://pgbackrest.org/) (2.31)
 * CentOS 7, UBI 8 - publicly available
 * UBI 7, UBI 8 - customers only
@@ -42,6 +40,7 @@ The crunchy-backrest-restore Docker image contains the following packages (versi
 ## Environment Variables
 
 ### pgbackrest Mode
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **COMMAND**|None|Stores the pgBackRest command to execute.
@@ -58,8 +57,8 @@ The crunchy-backrest-restore Docker image contains the following packages (versi
 **PITR_TARGET**|None|Store the PITR target for a pgBackRest restore.
 **PODNAME**|None|Stores the name of the pod to exec into for command execution.
 
-
 ### pgbackrest-repo Mode
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.
@@ -73,6 +72,7 @@ The crunchy-backrest-restore Docker image contains the following packages (versi
 **PGBACKREST_STANZA**|None|Defines the backup configuration for a specific PostgreSQL database cluster. Must be set to the desired stanza for restore.
 
 ### pgbackrest-restore Mode
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.
