@@ -17,7 +17,7 @@ enableMissingTranslationPlaceholders = false
 timeout=20000
 
 [params]
-containersVersion = "4.7.7"
+containersVersion = "4.5.8"
 postgresVersion = "13.8"
 postgresVersionShort = "13"
 postgresVersion13 = "13.8"
