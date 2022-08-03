@@ -18,12 +18,14 @@ The example creates a client certificate for the user `testuser`.  Furthermore,
 the server certificate is created for the server name `custom-config-ssl`.
 
 This example can be run as follows for the Docker environment:
+
 ```
 cd $CCPROOT/examples/docker/custom-config-ssl
 ./run.sh
 ```
 
 And the example can be run in the following directory for the Kubernetes and OpenShift environments:
+
 ```
 cd $CCPROOT/examples/kube/custom-config-ssl
 ./run.sh
@@ -34,6 +36,7 @@ in your `/etc/hosts` file an entry that maps `custom-config-ssl`
 to the service IP address for the container.
 
 For instance, if your service has an address as follows:
+
 ```
 ${CCP_CLI} get service
 NAME                CLUSTER-IP       EXTERNAL-IP   PORT(S)                   AGE
@@ -41,6 +44,7 @@ custom-config-ssl   172.30.211.128   <none>        5432/TCP
 ```
 
 Then your `/etc/hosts` file needs an entry like this:
+
 ```
 172.30.211.128 custom-config-ssl
 ```
@@ -82,8 +86,9 @@ sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key"
 ```
 
 You should see a connection that looks like the following:
+
 ```
-psql (11.16)
+psql (11.17)
 SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
 Type "help" for help.
 

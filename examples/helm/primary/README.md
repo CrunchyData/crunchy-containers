@@ -3,12 +3,11 @@ Crunchy Data Primary Helm Example
 
 [PostgreSQL](https://postgresql.org) is a powerful, open source object-relational database system. It has more than 15 years of active development and a proven architecture that has earned it a strong reputation for reliability, data integrity, and correctness.
 
-
-TL;DR;
+TL;DR
 ------
 
 ```console
-$ helm install primary --name primary
+helm install primary --name primary
 ```
 
 Introduction
@@ -18,10 +17,10 @@ This is an example of running the Crunchy PostgreSQL containers using the Helm p
 
 This example will create the following in your Kubernetes cluster:
 
- * Create a pod named *primary*
- * Create a service named *primary*
- * Create a release named *primary*
- * Initialize the database using the predefined environment variables
+* Create a pod named *primary*
+* Create a service named *primary*
+* Create a release named *primary*
+* Initialize the database using the predefined environment variables
 
 This example creates a simple PostgreSQL streaming replication deployment with a single primary (read-write).
 
@@ -31,7 +30,7 @@ Installing the Chart
 The chart can be installed as follows:
 
 ```console
-$ helm install primary --name primary
+helm install primary --name primary
 ```
 
 The command deploys both primary and replica pods on the Kubernetes cluster in the default configuration.
@@ -44,7 +43,7 @@ Using the Chart
 After the database starts up you can connect to it as follows:
 
 ```console
-$ psql -h primary -U postgres postgres
+psql -h primary -U postgres postgres
 ```
 
 Uninstalling the Chart
@@ -53,7 +52,7 @@ Uninstalling the Chart
 To uninstall/delete the `primary` deployment:
 
 ```console
-$ helm del --purge primary
+helm del --purge primary
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -65,10 +64,10 @@ See `values.yaml` for configuration notes. Specify each parameter using the `--s
 
 ```console
 $ helm install primary --name primary \
-  --set Image.tag=centos7-10.21-4.5.7
+  --set Image.tag=centos7-10.22-4.5.8
 ```
 
-The above command changes the image tag of the container from the default of `centos7-11.16-4.5.7` to `centos7-10.21-4.5.7`.
+The above command changes the image tag of the container from the default of `centos7-11.17-4.5.8` to `centos7-10.22-4.5.8`.
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
 
@@ -80,10 +79,10 @@ The above command changes the image tag of the container from the default of `ce
 | `.credentials.primary`                | Password for the primary user    | `password`                                                      |
 | `.credentials.root`            | Password for the root user        | `password`                                                      |
 | `.credentials.user`            | Password for the standard user   | `password`                                                      |
-| `.serviceType`      | The type of service      | `ClusterIP`               
+| `.serviceType`      | The type of service      | `ClusterIP`
 | `.image.repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
 | `.image.container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
-| `.image.tag` | The image tag to be used.    | `centos7-11.16-4.5.7`                                                    |
+| `.image.tag` | The image tag to be used.    | `centos7-11.17-4.5.8`                                                    |
 | `.resources.cpu` | Defines a limit for CPU    | `200m`                                                    |
 | `.resources.memory` | Defines a limit for memory    | `512Mi`                                                    |
 

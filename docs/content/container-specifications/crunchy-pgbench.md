@@ -19,13 +19,14 @@ The following features are supported by the `crunchy-pgbench` container:
 
 The crunchy-pgbench Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* pgBench (13.7, 12.11, 11.16, and 10.21)
+* pgBench (13.8, 12.12, 11.17, and 10.22)
 * CentOS 7, UBI 8 - publicly available
 * UBI 7, UBI 8 - customers only
 
 ## Environment Variables
 
 ### Required
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PG_DATABASE**|None|Set this value to the database which pgBench should use
@@ -34,6 +35,7 @@ The crunchy-pgbench Docker image contains the following packages (versions vary 
 **PG_PASSWORD**|None|Set this value to specify the password of the user to run the benchmark.
 
 ### Optional
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PGBENCH_BENCHMARK_OPTS**|none|Set this value to specify custom benchmark parameters to pass to pgBench.
@@ -48,7 +50,7 @@ The crunchy-pgbench Docker image contains the following packages (versions vary 
 {{% notice tip %}}
 For a list of advanced options for configuring the `PGBENCH_BENCHMARK_OPTS` variable, see the official documentation:
 
-https://www.postgresql.org/docs/current/pgbench.html
+<https://www.postgresql.org/docs/current/pgbench.html>
 {{% /notice %}}
 
 ## Volumes

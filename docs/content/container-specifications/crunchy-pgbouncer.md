@@ -11,37 +11,39 @@ weight: 7
 
 The following features are supported by the crunchy-pgbouncer container:
 
- * crunchy-pgbouncer uses `auth_query` to authenticate users.  This requires the `pgbouncer`
+* crunchy-pgbouncer uses `auth_query` to authenticate users.  This requires the `pgbouncer`
    username and password in `users.txt`.  Automatically generated from environment variables, see Restrictions.
- * Mount a custom `users.txt` and `pgbouncer.ini` configurations for advanced usage.
- * Tune pooling parameters via environment variables.
- * Connect to the administration database in pgBouncer to view statistics of the target databases.
+* Mount a custom `users.txt` and `pgbouncer.ini` configurations for advanced usage.
+* Tune pooling parameters via environment variables.
+* Connect to the administration database in pgBouncer to view statistics of the target databases.
 
 ## Packages
 
 The crunchy-pgbouncer Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (13.7, 12.11, 11.16, and 10.21)
+* PostgreSQL (13.8, 12.12, 11.17, and 10.22)
 * [pgBouncer](https://pgbouncer.github.io/)
 * CentOS 7, UBI 8 - publicly available
 * UBI 7, UBI 8 - customers only
 
 ## Restrictions
 
- * OpenShift: If custom configurations aren't being mounted, an **emptydir** volume is required
+* OpenShift: If custom configurations aren't being mounted, an **emptydir** volume is required
    to be mounted at `/pgconf`.
- * Superusers cannot connect through the connection pooler.
- * User is required to configure the database for auth_query, see pgbouncer.ini file for configuration details.
+* Superusers cannot connect through the connection pooler.
+* User is required to configure the database for auth_query, see pgbouncer.ini file for configuration details.
 
 ## Environment Variables
 
 ### Required
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PGBOUNCER_PASSWORD**|None|The password of the pgBouncer role in PostgreSQL. Must be also set on the primary database.
 **PG_SERVICE**|None|The hostname of the database service.
 
 ### Optional
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **DEFAULT_POOL_SIZE**|20|How many server connections to allow per user/database pair.

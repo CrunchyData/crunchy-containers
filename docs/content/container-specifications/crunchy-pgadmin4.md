@@ -16,19 +16,19 @@ sample screenshot is below:
 
 The following features are supported by the crunchy-pgadmin4 container:
 
- * Expose port (5050 by default) which is the web server port.
- * Mount a certificate and key to the `/certs` directory and set `ENABLE_TLS` to true to activate HTTPS mode.
- * Set username and password for login via environment variables.
+* Expose port (5050 by default) which is the web server port.
+* Mount a certificate and key to the `/certs` directory and set `ENABLE_TLS` to true to activate HTTPS mode.
+* Set username and password for login via environment variables.
 
 ## Restrictions
 
- * An emptyDir, with write access, must be mounted to the `/run/httpd` directory in OpenShift.
+* An emptyDir, with write access, must be mounted to the `/run/httpd` directory in OpenShift.
 
 ## Packages
 
 The crunchy-pgadmin4 Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (13.7, 12.11, 11.16, and 10.21)
+* PostgreSQL (13.8, 12.12, 11.17, and 10.22)
 * [pgAdmin4](https://www.pgadmin.org/)
 * CentOS 7, UBI 8 - publicly available
 * UBI 7, UBI 8 - customers only
@@ -36,6 +36,7 @@ The crunchy-pgadmin4 Docker image contains the following packages (versions vary
 ## Environment Variables
 
 ### Required
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PGADMIN_SETUP_EMAIL**|None|Set this value to the email address used for pgAdmin4 login.
@@ -45,6 +46,7 @@ The crunchy-pgadmin4 Docker image contains the following packages (versions vary
 **ENABLE_TLS**|FALSE|Set this value to true to enable HTTPS on the pgAdmin4 container. This requires a `server.key` and `server.crt` to be mounted on the `/certs` directory.
 
 ### Optional
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.

@@ -2,13 +2,13 @@ apiVersion: v1
 name: template-small
 description: The Crunchy template-small configuration includes a single primary with limited CPU and memory, suitable for development purposes.
 version: 1
-appVersion: 4.5.7
+appVersion: 4.5.8
 keywords:
-- postgresql
-- postgres
-- database
-- sql
+  - postgresql
+  - postgres
+  - database
+  - sql
 home: https://www.crunchydata.com/
 icon: https://www.crunchydata.com/images/logo.svg
 sources:
-- https://github.com/CrunchyData/crunchy-containers
+  - https://github.com/CrunchyData/crunchy-containers

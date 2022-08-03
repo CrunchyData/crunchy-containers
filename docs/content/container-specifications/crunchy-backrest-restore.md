@@ -11,14 +11,14 @@ The crunchy-backrest-restore container executes the pgBackRest utility, allowing
 
 The following features are supported and required by the crunchy-backrest-restore container:
 
- * Mounted `pgbackrest.conf` configuration file via the `/pgconf` volume
- * Mounted `/backrestrepo` for access to pgBackRest archives
+* Mounted `pgbackrest.conf` configuration file via the `/pgconf` volume
+* Mounted `/backrestrepo` for access to pgBackRest archives
 
 ## Packages
 
 The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (13.7, 12.11, 11.16, and 10.21)
+* PostgreSQL (13.8, 12.12, 11.17, and 10.22)
 * [pgBackRest](https://pgbackrest.org/) (2.29)
 * CentOS 7, UBI 8 - publicly available
 * UBI 7, UBI 8 - customers only
@@ -26,11 +26,13 @@ The crunchy-backrest-restore Docker image contains the following packages (versi
 ## Environment Variables
 
 ### Required
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PGBACKREST_STANZA**|None|Must be set to the desired stanza for restore.
 
 ### Optional
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PGBACKREST_DELTA**|None|Enables pgBackRest delta restore mode.  Used when a user needs to restore to a volume that already contains PostgreSQL data files.

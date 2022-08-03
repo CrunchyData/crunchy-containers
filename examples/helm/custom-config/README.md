@@ -3,12 +3,11 @@ Crunchy Data Custom Config Helm Example
 
 [PostgreSQL](https://postgresql.org) is a powerful, open source object-relational database system. It has more than 15 years of active development and a proven architecture that has earned it a strong reputation for reliability, data integrity, and correctness.
 
-
-TL;DR;
+TL;DR
 ------
 
 ```console
-$ helm install custom-config --name custom-config
+helm install custom-config --name custom-config
 ```
 
 Introduction
@@ -18,11 +17,11 @@ This is an example of running the Crunchy PostgreSQL containers using the Helm p
 
 This example will create the following in your Kubernetes cluster:
 
- * Create a configmap named *custom-config*
- * Create a pod named *custom-config*
- * Create a service named *custom-config*
- * Create a release named *custom-config*
- * Initialize the database using the predefined environment variables
+* Create a configmap named *custom-config*
+* Create a pod named *custom-config*
+* Create a service named *custom-config*
+* Create a release named *custom-config*
+* Initialize the database using the predefined environment variables
 
 This example creates a simple PostgreSQL deployment with a single primary using custom configurations.
 
@@ -32,7 +31,7 @@ Installing the Chart
 The chart can be installed as follows:
 
 ```console
-$ helm install custom-config --name custom-config
+helm install custom-config --name custom-config
 ```
 
 The command deploys a primary pod on the Kubernetes cluster using the custom configuration files.
@@ -45,7 +44,7 @@ Using the Chart
 After the database starts up you can connect to it as follows:
 
 ```console
-$ psql -h custom-config -U postgres postgres
+psql -h custom-config -U postgres postgres
 ```
 
 Uninstalling the Chart
@@ -54,7 +53,7 @@ Uninstalling the Chart
 To uninstall/delete the `custom-config` deployment:
 
 ```console
-$ helm del --purge custom-config
+helm del --purge custom-config
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -66,10 +65,10 @@ See `values.yaml` for configuration notes. Specify each parameter using the `--s
 
 ```console
 $ helm install custom-config --name custom-config \
-  --set Image.tag=centos7-11.16-4.5.7
+  --set Image.tag=centos7-11.17-4.5.8
 ```
 
-The above command changes the image tag of the container to of `centos7-11.16-4.5.7`.
+The above command changes the image tag of the container to of `centos7-11.17-4.5.8`.
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
 
@@ -81,10 +80,10 @@ The above command changes the image tag of the container to of `centos7-11.16-4.
 | `.credentials.primary`                | Password for the primary user    | `password`                                                      |
 | `.credentials.root`            | Password for the root user        | `password`                                                      |
 | `.credentials.user`            | Password for the standard user   | `password`                                                      |
-| `.serviceType`      | The type of service      | `ClusterIP`               
+| `.serviceType`      | The type of service      | `ClusterIP`
 | `.image.repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
 | `.image.container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
-| `.image.tag` | The image tag to be used.    | `centos7-11.16-4.5.7`                                                    |
+| `.image.tag` | The image tag to be used.    | `centos7-11.17-4.5.8`                                                    |
 | `.resources.cpu` | Defines a limit for CPU    | `200m`                                                    |
 | `.resources.memory` | Defines a limit for memory    | `512Mi`                                                    |
 

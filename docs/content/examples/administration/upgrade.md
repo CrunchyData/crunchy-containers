@@ -9,7 +9,7 @@ weight: 81
 
 {{% notice tip %}}
 This example assumes you have run *primary* using a PostgreSQL 11 or 12 image
-such as `centos7-12.11-4.5.7` prior to running this upgrade.
+such as `centos7-12.12-4.5.8` prior to running this upgrade.
 {{% /notice %}}
 
 The upgrade container will let you perform a `pg_upgrade` from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.
@@ -17,12 +17,12 @@ The upgrade container will let you perform a `pg_upgrade` from a PostgreSQL vers
 Prior to running this example, make sure your `CCP_IMAGE_TAG`
 environment variable is using the next major version of PostgreSQL that you
 want to upgrade to. For example, if you're upgrading from 11 to 12, make
-sure the variable references a PostgreSQL 12 image such as `centos7-12.11-4.5.7`.
+sure the variable references a PostgreSQL 12 image such as `centos7-12.12-4.5.8`.
 
 This will create the following in your Kubernetes environment:
 
- * a Kubernetes Job running the *crunchy-upgrade* container
- * a new data directory name *upgrade* found in the *pgnewdata* PVC
+* a Kubernetes Job running the *crunchy-upgrade* container
+* a new data directory name *upgrade* found in the *pgnewdata* PVC
 
 {{% notice tip %}}
 Data checksums on the Crunchy PostgreSQL container were enabled by default in version 2.1.0.
@@ -39,9 +39,11 @@ and `NEW_VERSION` parameters to the major release version relevant to your situa
 {{% /notice %}}
 
 First, delete the existing primary deployment:
+
 ```
 ${CCP_CLI} delete deployment primary
 ```
+
 Then start the upgrade as follows:
 
 ```
@@ -51,6 +53,7 @@ cd $CCPROOT/examples/kube/upgrade
 
 If successful, the Job will end with a **successful** status. Verify
 the results of the Job by examining the Job's pod log:
+
 ```
 ${CCP_CLI} get pod -l job-name=upgrade
 ${CCP_CLI} logs -l job-name=upgrade

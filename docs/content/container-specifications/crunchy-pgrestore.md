@@ -13,13 +13,14 @@ to a PostgreSQL container database.
 
 The crunchy-pgrestore Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (13.7, 12.11, 11.16, and 10.21)
+* PostgreSQL (13.8, 12.12, 11.17, and 10.22)
 * CentOS 7, UBI 8 - publicly available
 * UBI 7, UBI 8 - customers only
 
 ## Environment Variables
 
 ### Required
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PGRESTORE_DB**|None|Name of the database to connect to.
@@ -28,6 +29,7 @@ The crunchy-pgrestore Docker image contains the following packages (versions var
 **PGRESTORE_USER**|None|Username for the PostgreSQL role being used.
 
 ### Optional
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PGDUMP_BACKUP_HOST**|None|Hostname of the PostgreSQL server that was backed up by `pgdump` container.  Used when restoring a backup to a new host.

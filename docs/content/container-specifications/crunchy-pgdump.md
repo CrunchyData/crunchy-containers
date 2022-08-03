@@ -12,13 +12,14 @@ PostgreSQL database.
 
 The crunchy-pgdump Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (13.7, 12.11, 11.16, and 10.21)
+* PostgreSQL (13.8, 12.12, 11.17, and 10.22)
 * CentOS 7, UBI 8 - publicly available
 * UBI 7, UBI 8 - customers only
 
 ## Environment Variables
 
 ### Required
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PGDUMP_DB**|None|Name of the database the backup is being performed on.
@@ -27,6 +28,7 @@ The crunchy-pgdump Docker image contains the following packages (versions vary d
 **PGDUMP_USER**|None|Username for the PostgreSQL role being used.
 
 ### Optional
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **PGDUMP_ALL**|TRUE|Run `pg_dump` instead of `pg_dumpall`. Set to false to enable `pg_dump`.
@@ -38,9 +40,9 @@ The crunchy-pgdump Docker image contains the following packages (versions vary d
 {{% notice tip %}}
 For a list of advanced options for configuring the `PGDUMP_CUSTOM_OPTS` variable, see the official documentation:
 
-https://www.postgresql.org/docs/current/static/app-pgdump.html
+<https://www.postgresql.org/docs/current/static/app-pgdump.html>
 
-https://www.postgresql.org/docs/current/static/app-pg-dumpall.html
+<https://www.postgresql.org/docs/current/static/app-pg-dumpall.html>
 {{% /notice %}}
 
 ## Volumes

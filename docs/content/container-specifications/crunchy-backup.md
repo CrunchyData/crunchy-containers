@@ -19,13 +19,14 @@ The following features are supported by the `crunchy-backup` container:
 
 The crunchy-backup Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (13.7, 12.11, 11.16, and 10.21)
+* PostgreSQL (13.8, 12.12, 11.17, and 10.22)
 * CentOS 7, UBI 8 - publicly available
 * UBI 7, UBI 8 - customers only
 
 ## Environment Variables
 
 ### Required
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **BACKUP_LABEL**|crunchy-backup|The label for the backup.
@@ -35,6 +36,7 @@ The crunchy-backup Docker image contains the following packages (versions vary d
 **BACKUP_PORT**|5432|Database port used to do the backup.
 
 ### Optional
+
 **Name**|**Default**|**Description**
 :-----|:-----|:-----
 **CRUNCHY_DEBUG**|FALSE|Set this to true to enable debugging in logs. Note: this mode can reveal secrets in logs.

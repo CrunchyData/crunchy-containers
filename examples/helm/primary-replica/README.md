@@ -3,12 +3,11 @@ Crunchy Data Primary / Replica Helm Example
 
 [PostgreSQL](https://postgresql.org) is a powerful, open source object-relational database system. It has more than 15 years of active development and a proven architecture that has earned it a strong reputation for reliability, data integrity, and correctness.
 
-
-TL;DR;
+TL;DR
 ------
 
 ```console
-$ helm install primary-replica --name primary-replica
+helm install primary-replica --name primary-replica
 ```
 
 Introduction
@@ -18,12 +17,12 @@ This is an example of running the Crunchy PostgreSQL containers using the Helm p
 
 This example will create the following in your Kubernetes cluster:
 
- * Create a service named *primary*
- * Create a service named *replica*
- * Create a pod named *primary*
- * Create a deployment named *replica*
- * Create a persistent volume named *primary-pv* and a persistent volume claim of *primary-pvc*
- * Initialize the database using the predefined environment variables
+* Create a service named *primary*
+* Create a service named *replica*
+* Create a pod named *primary*
+* Create a deployment named *replica*
+* Create a persistent volume named *primary-pv* and a persistent volume claim of *primary-pvc*
+* Initialize the database using the predefined environment variables
 
 This example creates a simple PostgreSQL streaming replication deployment with a primary (read-write), and a single asynchronous replica (read-only). You can scale up the number of replicas dynamically.
 
@@ -33,7 +32,7 @@ Installing the Chart
 The chart can be installed as follows:
 
 ```console
-$ helm install primary-replica --name primary-replica
+helm install primary-replica --name primary-replica
 ```
 
 The command deploys both primary and replica pods on the Kubernetes cluster in the default configuration.
@@ -44,6 +43,7 @@ Using the Chart
 ----------------------
 
 After installing the Helm chart, you will see the following services:
+
 ```console
 $ kubectl get services
 NAME                          TYPE        CLUSTER-IP   EXTERNAL-IP      PORT(S)    AGE
@@ -57,28 +57,28 @@ primary.  To test out replication, see if replication is underway
 with this command, enter *password* for the password when prompted:
 
 ```console
-$ psql -h primary -U postgres postgres -c 'table pg_stat_replication'
+psql -h primary -U postgres postgres -c 'table pg_stat_replication'
 ```
 
 If you see a line returned from that query it means the primary is replicating
 to the replica.  Try creating some data on the primary:
 
 ```console
-$ psql -h primary -U postgres postgres -c 'create table foo (id int)'
-$ psql -h primary -U postgres postgres -c 'insert into foo values (1)'
+psql -h primary -U postgres postgres -c 'create table foo (id int)'
+psql -h primary -U postgres postgres -c 'insert into foo values (1)'
 ```
 
 Then verify that the data is replicated to the replica:
 
 ```console
-$ psql -h replica -U postgres postgres -c 'table foo'
+psql -h replica -U postgres postgres -c 'table foo'
 ```
 
 You can scale up the number of read-only replicas by running
 the following Kubernetes command:
 
 ```console
-$ kubectl scale deployment replica --replicas=2
+kubectl scale deployment replica --replicas=2
 ```
 
 It takes 60 seconds for the replica to start and begin replicating
@@ -90,7 +90,7 @@ Uninstalling the Chart
 To uninstall/delete the `primary-replica` deployment:
 
 ```console
-$ helm del --purge primary-replica
+helm del --purge primary-replica
 ```
 
 The command removes all the Kubernetes components associated with the chart and deletes the release.
@@ -102,10 +102,10 @@ See `values.yaml` for configuration notes. Specify each parameter using the `--s
 
 ```console
 $ helm install primary-replica --name primary-replica \
-  --set Image.tag=centos7-11.16-4.5.7
+  --set Image.tag=centos7-11.17-4.5.8
 ```
 
-The above command changes the image tag of the container to `centos7-11.16-4.5.7`.
+The above command changes the image tag of the container to `centos7-11.17-4.5.8`.
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
 
@@ -118,10 +118,10 @@ The above command changes the image tag of the container to `centos7-11.16-4.5.7
 | `.credentials.primary`                | Password for the primary user    | `password`                                                      |
 | `.credentials.root`            | Password for the root user        | `password`                                                      |
 | `.credentials.user`            | Password for the standard user   | `password`                                                      |
-| `.serviceType`      | The type of service      | `ClusterIP`               
+| `.serviceType`      | The type of service      | `ClusterIP`
 | `.image.repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
 | `.image.container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
-| `.image.tag` | The image tag to be used.    | `centos7-11.16-4.5.7`                                                    |
+| `.image.tag` | The image tag to be used.    | `centos7-11.17-4.5.8`                                                    |
 | `.pv.storage` | Size of persistent volume     | 400M                                                    |
 | `.pv.name` | Name of persistent volume    | `primary-pv`                                                    |
 | `.pv.mode` | The storage mode for the persistent volume    | `ReadWriteMany`                                                    |
