@@ -2,7 +2,7 @@ apiVersion: v1
 name: custom-config
 description: Deploys a basic single PostgreSQL primary database with custom configurations.
 version: 1
-appVersion: 4.7.6
+appVersion: 4.7.7
 keywords:
 - postgresql
 - postgres
