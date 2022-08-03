@@ -1,6 +1,3 @@
-[submodule "docs/crunchy-hugo-theme"]
-	path = docs/crunchy-hugo-theme
-	url = https://github.com/crunchydata/crunchy-hugo-theme
 [submodule "docs/themes/crunchy-hugo-theme"]
 	path = docs/themes/crunchy-hugo-theme
 	url = https://github.com/crunchydata/crunchy-hugo-theme
