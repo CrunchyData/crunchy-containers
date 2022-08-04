@@ -83,7 +83,7 @@ sslkey=$CCPROOT/examples/kube/custom-config-ssl/certs/client.key"
 
 You should see a connection that looks like the following:
 ```
-psql (11.16)
+psql ({{< param postgresVersion11 >}})  
 SSL connection (protocol: TLSv1.2, cipher: ECDHE-RSA-AES256-GCM-SHA384, bits: 256, compression: off)
 Type "help" for help.
 

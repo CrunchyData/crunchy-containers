@@ -2,7 +2,7 @@ apiVersion: v1
 name: basic
 description: Deploys a single PostgreSQL primary database
 version: 1
-appVersion: 4.5.7
+appVersion: 4.5.8
 keywords:
 - postgresql
 - postgres
