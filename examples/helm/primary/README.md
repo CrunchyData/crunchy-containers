@@ -65,7 +65,7 @@ See `values.yaml` for configuration notes. Specify each parameter using the `--s
 
 ```console
 $ helm install primary --name primary \
-  --set Image.tag=ubi8-13.7-4.6.7
+  --set Image.tag=ubi8-13.8-4.6.8
 ```
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
@@ -81,7 +81,7 @@ $ helm install primary --name primary \
 | `.serviceType`      | The type of service      | `ClusterIP`               
 | `.image.repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
 | `.image.container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
-| `.image.tag` | The image tag to be used.    | `ubi8-13.7-4.6.7`                                                    |
+| `.image.tag` | The image tag to be used.    | `ubi8-13.8-4.6.8`                                                    |
 | `.resources.cpu` | Defines a limit for CPU    | `200m`                                                    |
 | `.resources.memory` | Defines a limit for memory    | `512Mi`                                                    |
 
