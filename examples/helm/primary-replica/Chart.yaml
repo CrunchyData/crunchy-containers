@@ -2,7 +2,7 @@ apiVersion: v1
 name: primary-replica
 description: Deploy a basic crunchy primary and replica cluster
 version: 1
-appVersion: 4.7.6
+appVersion: 4.7.7
 keywords:
 - postgresql
 - postgres
