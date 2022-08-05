@@ -13,5 +13,5 @@ export CCPROOT=$GOPATH/src/github.com/crunchydata/crunchy-containers    # The ba
 export CCP_SECURITY_CONTEXT=""
 export CCP_CLI=kubectl          # kubectl for K8s, oc for OpenShift
 export CCP_NAMESPACE=postgres-operator       # Change this to whatever namespace/openshift project name you want to use
-export CCP_PG_EXTENSIONS="pg_stat_statements$CCP_PGVERSION pg_qualstats$CCP_PGVERSION hypopg$CCP_PGVERSION powa$CCP_PGVERSION pg_stat_kcache$CCP_PGVERSION"
+export CCP_PG_EXTENSIONS="pg_qualstats_$CCP_PGVERSION hypopg_$CCP_PGVERSION powa_$CCP_PGVERSION"
 export CCP_BACKREST_VERSION=2.36
