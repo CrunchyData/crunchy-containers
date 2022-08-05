@@ -15,10 +15,12 @@ ARG PACKAGER
 ARG PG_MAJOR
 # Needed due to lack of environment substitution trick on ADD
 ARG PG_LBL
+# Ability to install additional pg_extensions
+ARG CCP_PG_EXTENSIONS
 
 RUN ${PACKAGER} -y install --nodocs \
-	--disablerepo=crunchypg* \
-	--enablerepo="crunchypg${PG_LBL}" \
+	--disablerepo=crunchydata* \
+	--enablerepo="crunchydatadevpg${PG_LBL}" \
 	postgresql${PG_LBL} \
  && ${PACKAGER} -y clean all
 
@@ -43,7 +45,6 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	postgresql${PG_MAJOR//.}-server \
         	postgresql${PG_MAJOR//.}-plpython* \
         	pgnodemx${PG_MAJOR//.} \
-        	$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
         	psmisc \
         	python3-pip \
         	python3-psutil \
@@ -60,7 +61,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	bzip2 \
         	lz4 \
 			krb5-workstation \
-			orafce_${PG_MAJOR//.} \
+			${CCP_PG_EXTENSIONS} \
         && ${PACKAGER} -y clean all ; \
 else \
         ${PACKAGER} -y install --nodocs \

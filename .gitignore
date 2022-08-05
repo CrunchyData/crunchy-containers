@@ -5,3 +5,4 @@ yq
 /vendor/
 licenses/*
 !licenses/LICENSE.txt
+.envrc

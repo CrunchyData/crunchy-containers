@@ -57,12 +57,13 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
         && ${PACKAGER} -y clean all ; \
 fi
 
-RUN if [ "$BASEOS" = "centos8" ] ; then \
+RUN if [ "$BASEOS" = "centos8" ]  || [ "$BASEOS" = "rocky8" ]; then \
 	${PACKAGER} -y update --nodocs \
 	&& ${PACKAGER} -y install \
 		--setopt=skip_missing_names_on_install=False \
 		--nodocs \
-		epel-release \
+        https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm \
+        epel-release \
 		glibc-langpack-en \
 		bind-utils \
 		gettext \
@@ -76,14 +77,14 @@ fi
 # Both keys are added to support building all PG versions
 # of this container. PG 11+ requires RPM-GPG-KEY-crunchydata
 # PG 9.5, 9.6 and 10 require CRUNCHY-GPG-KEY.public on RHEL machines
-ADD conf/*KEY* /
+ADD conf/*KEY* /etc/pki/rpm-gpg/
 
 # Add any available Crunchy PG repo files
 ADD conf/crunchypg${PG_LBL}.repo /etc/yum.repos.d/
 # Import both keys to support all required repos
-RUN rpm --import RPM-GPG-KEY-crunchydata*
+RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-crunchydata*
 RUN if [ "$DFSET" = "rhel" ] ; then rpm --import CRUNCHY-GPG-KEY.public ; fi
 
-RUN if [ "$BASEOS" = "centos8" ] ; then \
+RUN if [ "$BASEOS" = "centos8" ]  || [ "$BASEOS" = "rocky8" ] ; then \
 	${PACKAGER} -qy module disable postgresql ; \
 fi

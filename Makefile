@@ -53,6 +53,13 @@ ifeq ("$(CCP_BASEOS)", "centos8")
         DOCKERBASEREGISTRY=docker.io/centos:
 endif
 
+ifeq ("$(CCP_BASEOS)", "rocky8")
+        DFSET=centos
+        PACKAGER=dnf
+        DOCKERBASEREGISTRY=rockylinux/rockylinux:
+        BASE_IMAGE_OS=8-minimal
+endif
+
 .PHONY:	all license pgbackrest-images pg-independent-images pgimages
 
 # list of image names, helpful in pushing
@@ -157,6 +164,7 @@ postgres-pgimg-build: ccbase-image $(CCPROOT)/build/postgres/Dockerfile
 		--build-arg PACKAGER=$(PACKAGER) \
 		--build-arg BASE_IMAGE_NAME=crunchy-base \
 		--build-arg PATRONI_VER=$(CCP_PATRONI_VERSION) \
+		--build-arg CCP_PG_EXTENSIONS="$(CCP_PG_EXTENSIONS)" \
 		$(CCPROOT)
 
 postgres-pgimg-buildah: postgres-pgimg-build ;
@@ -246,7 +254,7 @@ pgbackrest-pgimg-docker: pgbackrest-pgimg-build
 
 # ----- Special case image (upgrade) -----
 
-# Special case args: UPGRADE_PG_VERSIONS (defines all versions of PG that will be installed) 
+# Special case args: UPGRADE_PG_VERSIONS (defines all versions of PG that will be installed)
 upgrade-img-build: ccbase-image $(CCPROOT)/build/upgrade/Dockerfile
 	$(IMGCMDSTEM) \
 		-f $(CCPROOT)/build/upgrade/Dockerfile \
