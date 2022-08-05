@@ -57,7 +57,7 @@ ifeq ("$(CCP_BASEOS)", "rocky8")
         DFSET=centos
         PACKAGER=dnf
         DOCKERBASEREGISTRY=rockylinux/rockylinux:
-        BASE_IMAGE_OS=8-minimal
+        BASE_IMAGE_OS=8
 endif
 
 .PHONY:	all license pgbackrest-images pg-independent-images pgimages
