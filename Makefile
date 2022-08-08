@@ -192,6 +192,7 @@ postgres-gis-base-pgimg-build: ccbase-ext-image-build $(CCPROOT)/build/postgres/
 		--build-arg PACKAGER=$(PACKAGER) \
 		--build-arg PATRONI_VER=$(CCP_PATRONI_VERSION) \
 		--build-arg BASE_IMAGE_NAME=crunchy-base-ext \
+		--build-arg CCP_PG_EXTENSIONS="$(CCP_PG_EXTENSIONS)" \
 		$(CCPROOT)
 
 postgres-gis-base-pgimg-buildah: postgres-gis-base-pgimg-build ;

@@ -20,7 +20,7 @@ LABEL name="postgres-gis" \
 
 USER 0
 
-RUN if [ "$BASEOS" = "centos8" ] ; then \
+RUN if [ "$DFSET" = "centos" ] ; then \
 	${PACKAGER} -y install --nodocs \
 		--setopt=skip_missing_names_on_install=False \
 		--enablerepo="powertools" \
@@ -32,7 +32,7 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
 	&& ${PACKAGER} -y clean all ; \
 fi
 
-RUN if [ "$BASEOS" = "ubi8" ] ; then \
+RUN if [ "$DFSET" = "rhel" ] ; then \
 	${PACKAGER} -y --enablerepo="epel" --enablerepo="codeready-builder-for-rhel-8-x86_64-rpms" --nodocs install libaec libdap armadillo \
 	&& ${PACKAGER} -y install --nodocs \
 		--enablerepo="epel" \

@@ -25,8 +25,8 @@ ADD conf/crunchypg*.repo /etc/yum.repos.d/
 # well as unzip
 RUN if [ "$BASEOS" = "ubi8" ] ; then \
 	${PACKAGER} -y install --nodocs \
-		--disablerepo=crunchypg* \
-		--enablerepo="crunchypg${PG_MAJOR//.}" \
+		--disablerepo=crunchydata* \
+	    --enablerepo="crunchydatadevpg${PG_MAJOR//.}" \
 		krb5-workstation \
 		"postgresql${PG_MAJOR//.}" \
 		"postgresql${PG_MAJOR//.}-contrib" \
@@ -39,16 +39,16 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 else \
 	${PACKAGER} -y install --nodocs \
 		--setopt=skip_missing_names_on_install=False \
-		--disablerepo=crunchypg* \
-		--enablerepo="crunchypg${PG_MAJOR//.}" \
+		--disablerepo=crunchydata* \
+	    --enablerepo="crunchydatadevpg${PG_MAJOR//.}" \
 		krb5-workstation \
 		"postgresql${PG_MAJOR//.}" \
 		"postgresql${PG_MAJOR//.}-contrib" \
 		"postgresql${PG_MAJOR//.}-server" \
 		"pgaudit${PG_MAJOR//.}*" \
 		"pgnodemx${PG_MAJOR//.}" \
-		"orafce_${PG_MAJOR//.}" \
-		unzip \
+        ${CCP_PG_EXTENSIONS} \
+        unzip \
 		&& ${PACKAGER} -y clean all ; \
 fi
 
@@ -58,7 +58,7 @@ RUN for pg_version in $UPGRADE_PG_VERSIONS; do \
         if [ "$BASEOS" = "ubi8" ] ; then \
             ${PACKAGER} -y install --nodocs \
                 --disablerepo=* \
-                --enablerepo=crunchypg* \
+                --enablerepo=crunchydatadevpg* \
                 postgresql${pg_version} \
                 postgresql${pg_version}-contrib \
                 postgresql${pg_version}-server \
@@ -69,13 +69,12 @@ RUN for pg_version in $UPGRADE_PG_VERSIONS; do \
             ${PACKAGER} -y install --nodocs \
                 --setopt=skip_missing_names_on_install=False \
                 --disablerepo=* \
-                --enablerepo=crunchypg* \
+                --enablerepo=crunchydatadevpg* \
                 postgresql${pg_version} \
                 postgresql${pg_version}-contrib \
                 postgresql${pg_version}-server \
                 pgaudit${pg_version} \
-                pgnodemx${pg_version} \
-				orafce_${pg_version} ; \
+                pgnodemx${pg_version} ; \
         fi \
 	done && ${PACKAGER} -y clean all ;
 
