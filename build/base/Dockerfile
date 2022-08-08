@@ -22,14 +22,14 @@ COPY redhat/atomic/help.md /help.md
 COPY licenses /licenses
 
 # Have to install glibc-langpack-en on UBI8 otherwise en_US.utf-8 does not exist
-RUN if [ "$BASEOS" = "ubi8" ] ; then \
+RUN if [ "$DFSET" = "rhel" ] ; then \
         ${PACKAGER} -y update --nodocs \
         && ${PACKAGER} -y install --nodocs \
                 glibc-langpack-en ; \
 fi
 
 # Temporary HACK to disable postgres module
-RUN if [ "$BASEOS" = "ubi8" ] ; then \
+RUN if [ "$DFSET" = "rhel" ] ; then \
         echo "[postgresql]"  >> /etc/dnf/modules.d/postgresql.module \
         && echo "name=postgresql"  >> /etc/dnf/modules.d/postgresql.module \
         && echo "stream=10"  >> /etc/dnf/modules.d/postgresql.module \
@@ -42,7 +42,7 @@ ENV LANG en_US.utf-8
 
 ARG EPEL8_RPM=https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 
-RUN if [ "$BASEOS" = "ubi8" ] ; then \
+RUN if [ "$DFSET" = "rhel" ] ; then \
         rpm -ivh ${EPEL8_RPM} \
         && ${PACKAGER} -y install --nodocs \
                 bind-utils \
@@ -57,7 +57,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
         && ${PACKAGER} -y clean all ; \
 fi
 
-RUN if [ "$BASEOS" = "centos8" ]  || [ "$BASEOS" = "rocky8" ]; then \
+RUN if [ "$DFSET" = "centos" ]; then \
 	${PACKAGER} -y update --nodocs \
 	&& ${PACKAGER} -y install \
 		--setopt=skip_missing_names_on_install=False \
@@ -85,6 +85,6 @@ ADD conf/crunchypg${PG_LBL}.repo /etc/yum.repos.d/
 RUN rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-crunchydata*
 RUN if [ "$DFSET" = "rhel" ] ; then rpm --import CRUNCHY-GPG-KEY.public ; fi
 
-RUN if [ "$BASEOS" = "centos8" ]  || [ "$BASEOS" = "rocky8" ] ; then \
+RUN if [ "$DFSET" = "centos" ] ; then \
 	${PACKAGER} -qy module disable postgresql ; \
 fi
