@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+    <title>Crunchy Data Container Suite Documentation</title>
+    
+      <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="generator" content="Hugo 0.55.6" />
+<title>Container Images :: Crunchy Data Container Suite Documentation</title>
+<link rel="shortcut icon" href="https://crunchydata.github.io/crunchy-containers/4.7.7/favicon.png" type="image/x-icon" />
+<link href="https://crunchydata.github.io/crunchy-containers/4.7.7/css/nucleus.css" rel="stylesheet">
+<link href="https://crunchydata.github.io/crunchy-containers/4.7.7/theme-flex/style.css" rel="stylesheet">
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<link href="https://crunchydata.github.io/crunchy-containers/4.7.7/css/Fort-Fonts.css" rel="stylesheet">
+<link href="https://crunchydata.github.io/crunchy-containers/4.7.7/css/custom.css" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<script src="https://crunchydata.github.io/crunchy-containers/4.7.7/js/jquery-2.x.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.bundle.min.js" integrity="sha384-zDnhMsjVZfS3hiP7oCBRmfjkQC4fzxVxFhBx8Hkz2aZX8gEvA/jsP3eXRCvzTofP" crossorigin="anonymous"></script>
+<script src="https://crunchydata.github.io/crunchy-containers/4.7.7/js/main.js"></script>
+<script src="https://crunchydata.github.io/crunchy-containers/4.7.7/js/toc.js"></script>
+<script type="text/javascript">
+      var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/4.7.7";
+</script>
+<meta name="description" content="">
+
+
+
+    
+  </head>
+  <body data-url="/overview/overview/">
+    
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+  
+<a class="navbar-brand" href="https://www.crunchydata.com/"><img alt="Crunchy Data" src="https://crunchydata.github.io/crunchy-containers/4.7.7/images/logo.svg"></a>
+
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <ul class="navbar-nav mr-auto"></ul>
+  <span class="navbar-text">
+      <nav class="shortcuts">
+              <li class="" role="">
+                  <a href="https://github.com/CrunchyData/crunchy-containers" target="_blank" rel="noopener">
+                    <i class='fab fa-github'></i> <label>Source</label>
+                  </a>
+              </li>
+              <li class="" role="">
+                  <a href="https://kubernetes.io/docs/" target="_blank" rel="noopener">
+                    <i class='fas fa-bookmark'></i> <label>Kubernetes</label>
+                  </a>
+              </li>
+              <li class="" role="">
+                  <a href="https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md" target="_blank" rel="noopener">
+                    <i class='fas fa-file-contract'></i> <label>License</label>
+                  </a>
+              </li>
+      </nav>
+  </span>
+</nav>
+
+<article>
+  <aside>
+
+    <ul class="menu">
+      <div>
+        <div class="searchbox">
+          <input data-search-input id="search-by" type="text" placeholder="">
+        </div>
+        <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/4.7.7/js/lunr.min.js"></script>
+        <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/4.7.7/js/auto-complete.js"></script>
+        <link href="https://crunchydata.github.io/crunchy-containers/4.7.7/css/auto-complete.css" rel="stylesheet">
+        <script type="text/javascript">
+          
+              var baseurl = "https:\/\/crunchydata.github.io\/crunchy-containers\/4.7.7";
+          
+        </script>
+        <script type="text/javascript" src="https://crunchydata.github.io/crunchy-containers/4.7.7/js/search.js"></script>
+      </div>
+
+      <hr>
+      <a class="baselink" href="https://crunchydata.github.io/crunchy-containers/4.7.7/">Crunchy Data Container Suite Documentation</a>
+      <hr>
+        <b>Available Formats</b>
+        <nav class="downloads">
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/pdf/crunchy_containers.pdf" target="_blank" rel="noopener">
+                      <i class='fas fa-file-pdf'></i> <label>PDF</label>
+                    </a>
+                </li>
+                <li class="" role="">
+                    <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/epub/crunchy_containers.epub" target="_blank" rel="noopener">
+                      <i class='fas fa-book'></i> <label>EPUB</label>
+                    </a>
+                </li>
+        </nav>
+        <hr>
+
+      <b>Navigation</b>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/overview/" class="dd-item parent haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/overview/">Overview</a>
+            <i class="fas fa-angle-down fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/overview/overview/" class="dd-item active">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/overview/overview/">
+            Container Images
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/overview/supported/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/overview/supported/">
+            Supported Platforms
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/client-user-guide/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/client-user-guide/">Client User Guide</a><i class="fas fa-angle-right fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/client-user-guide/user-guide/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/client-user-guide/user-guide/">
+            User Guide
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/client-user-guide/usage/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/client-user-guide/usage/">
+            Using the Images
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/">Examples</a><i class="fas fa-angle-right fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/primary/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/primary/">
+            PostgreSQL Primary
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/custom-config/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/custom-config/">
+            Custom Configuration of PostgreSQL Container
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/custom-config-ssl/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/custom-config-ssl/">
+            Custom Configuration of PostgreSQL Container with SSL
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/primary-replica/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/primary-replica/">
+            Primary and Streaming Replica Containers
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/sync-replica/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/sync-replica/">
+            Synchronous Replication
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/postgis/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/postgis/">
+            PostGIS Container
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/poolers/pgpool/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/poolers/pgpool/">
+            pgPool II
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/backup-restoration/pgbackrest/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/backup-restoration/pgbackrest/">
+            pgBackRest
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/backup-restoration/pgbasebackup/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/backup-restoration/pgbasebackup/">
+            pgBaseBackup
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/backup-restoration/pgdump-pgrestore/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/backup-restoration/pgdump-pgrestore/">
+            pgDump &amp; pgRestore
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/poolers/pgbouncer/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/poolers/pgbouncer/">
+            pgBouncer
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/metrics/pgbadger/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/metrics/pgbadger/">
+            pgBadger
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/metrics/pgbench/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/metrics/pgbench/">
+            pgBench
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/logging/centralized-logging/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/logging/centralized-logging/">
+            Centralized Logging
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/logging/pgaudit/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/logging/pgaudit/">
+            pgAudit
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/administration/upgrade/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/administration/upgrade/">
+            Upgrade
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/administration/pgadmin4/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/examples/administration/pgadmin4/">
+            pgAdmin 4
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/installation-guide/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/installation-guide/">Installation Guide</a><i class="fas fa-angle-right fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/installation-guide/installation-guide/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/installation-guide/installation-guide/">
+            Installation Guide
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/installation-guide/storage-configuration/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/installation-guide/storage-configuration/">
+            Storage Configuration
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/">Container Specifications</a><i class="fas fa-angle-right fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgadmin4/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgadmin4/">
+            crunchy-pgadmin4
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgbackrest/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgbackrest/">
+            crunchy-pgbackrest
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgbackrest-repo/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgbackrest-repo/">
+            crunchy-pgbackrest-repo
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgbadger/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgbadger/">
+            crunchy-pgbadger
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgbouncer/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgbouncer/">
+            crunchy-pgbouncer
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgpool/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgpool/">
+            crunchy-pgpool
+          </a>
+        </div>
+    </li>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/">crunchy-postgres</a><i class="fas fa-angle-right fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/postgres/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/postgres/">
+            postgres
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/backup/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/backup/">
+            backup
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/pgbasebackup-restore/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/pgbasebackup-restore/">
+            pgbasebackup-restore
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/pgbench/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/pgbench/">
+            pgbench
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/pgdump/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/pgdump/">
+            pgdump
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/pgrestore/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/pgrestore/">
+            pgrestore
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/sqlrunner/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/sqlrunner/">
+            sqlrunner
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres-gis/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres-gis/">
+            crunchy-postgres-gis
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-upgrade/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-upgrade/">
+            crunchy-upgrade
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/" class="dd-item haschildren
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/">Contributing</a><i class="fas fa-angle-right fa-lg category-icon"></i>
+
+      </div>
+        <ul>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/building/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/building/">
+            Building the Containers
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/issues/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/issues/">
+            Submitting Issues
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/pull-requests/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/pull-requests/">
+            Submitting Pull Requests
+          </a>
+        </div>
+    </li>
+      <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/documentation-updates/" class="dd-item">
+        <div>
+          <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/documentation-updates/">
+            
+          </a>
+        </div>
+    </li>
+        </ul>
+    </li>
+    <li data-nav-id="https://crunchydata.github.io/crunchy-containers/4.7.7/troubleshooting/" class="dd-item
+        ">
+      <div>
+      <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/troubleshooting/">Troubleshooting</a>
+
+      </div>
+    </li>
+
+
+
+
+      <hr><nav id="TableOfContents"></nav>
+
+
+
+      <section>
+      </section>
+    </ul>
+  </aside>
+  <section class="page">
+
+    <div class="nav-select">
+      <center>Navigation :
+        <select onchange="javascript:location.href = this.value;">
+          
+    <option value="/overview/" >
+   Overview</option> 
+      <option value="/overview/overview/"  selected>- Container Images</option>
+      <option value="/overview/supported/" >- Supported Platforms</option>
+  
+    <option value="/client-user-guide/" >
+   Client User Guide</option>
+    <option value="/examples/" >
+   Examples</option>
+    <option value="/installation-guide/" >
+   Installation Guide</option>
+    <option value="/container-specifications/" >
+   Container Specifications</option>
+    <option value="/contributing/" >
+   Contributing</option>
+    <option value="/troubleshooting/" >
+   Troubleshooting</option>
+
+
+
+        </select>
+      </center>
+    </div>
+
+    
+      <div id="top-bar">
+        
+          
+          
+          
+        <div id="top-github-link">
+          <a class="github-link" href="https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/" target="blank">
+            <i class="fa fa-info-circle"></i>
+            
+          </a>
+          <a class="github-link" href="https://github.com/CrunchyData/crunchy-containers/edit/master/docs/content/overview/overview.md" target="blank">
+            <i class="fa fa-code-fork"></i>
+            
+          </a>
+        </div><div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+            <span id="sidebar-toggle-span">
+              <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                <i class="fa fa-bars"></i>
+              </a>
+            </span>
+            <span id="toc-menu"><i class="fa fa-list-alt"></i></span>
+            <span class="links">
+            
+
+
+
+
+
+
+
+ <a href='https://crunchydata.github.io/crunchy-containers/4.7.7/'>Introduction</a> > <a href='https://crunchydata.github.io/crunchy-containers/4.7.7/overview/'>Overview</a> > Container Images
+
+ 
+
+ 
+
+
+            </span>
+        </div>
+
+      </div>
+    
+
+    
+    <div id="body-inner">
+
+    <h1>Container Images</h1>
+
+    
+
+    
+    
+
+<h1 id="overview">Overview</h1>
+
+<p>The following provides a high level overview of each of the container images.</p>
+
+<h2 id="centos-vs-red-hat-ubi-images">CentOS vs Red Hat UBI Images</h2>
+
+<p>The Crunchy Container suite provides three different OS images: <code>centos7</code>, <code>ubi7</code>, and <code>ubi8-minimal</code>.  Both images
+utilize Crunchy Ceritifed RPM&rsquo;s for the installation of PostgreSQL, and outside of the base images
+utilized to build the containers and any packages included within them (either CentOS or UBI), both
+are effectively the same.  The <code>ubi7</code> and <code>ubi8-minimal</code> images are available to active Crunchy Data Customers only,
+and are built using the Red Hat Universal Base Image (UBI).</p>
+
+<p>Please note that as of version 4.2.2 of the Crunchy Containers Suite, the <code>ubi7</code> images have
+replaced the <code>rhel7</code> images included in previous versions of the container suite.  For more
+information on Red Hat UBI, please see the following link:</p>
+
+<p><a href="https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image">https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image</a></p>
+
+<h2 id="database-images">Database Images</h2>
+
+<p>Crunchy Container Suite provides two types of PostgreSQL database images:</p>
+
+<ul>
+<li>Crunchy PostgreSQL</li>
+<li>Crunchy PostGIS</li>
+</ul>
+
+<p>Supported major versions of these images are:</p>
+
+<ul>
+<li>13</li>
+<li>12</li>
+<li>11</li>
+<li>10</li>
+</ul>
+
+<h3 id="crunchy-postgresql">Crunchy PostgreSQL</h3>
+
+<p>Crunchy PostgreSQL is an unmodified deployment of the PostgreSQL relational database.
+It supports the following features:</p>
+
+<ul>
+<li>Asynchronous and synchronous replication</li>
+<li>Mounting custom configuration files such as <code>pg_hba.conf</code>, <code>postgresql.conf</code> and
+<code>setup.sql</code></li>
+<li>Can be configured to use SSL authentication</li>
+<li>Logging to container logs</li>
+<li>Dedicated users for: administration, monitoring, connection pooler authentication,
+replication and user applications.</li>
+<li>pgBackRest backups built into the container</li>
+<li>Archiving WAL to dedicated volume mounts</li>
+<li><a href="https://www.postgresql.org/docs/current/contrib.html">Extensions available</a> in the PostgreSQL contrib module.</li>
+<li>Enhanced audit logging from the pgAudit extension</li>
+<li>Enhanced database statistics from the pg_stat_tatements extensions</li>
+<li>Python Procedural Language from the PL/Python extensions</li>
+<li>Backups
+
+<ul>
+<li>Logical: <code>pg_dump</code> and <code>pg_restore</code> are included as logical backup and restore tools. These can be used to export and import SQL that recreates the database</li>
+<li>Physical: <code>pg_basebackup</code> is included as a physical backup tool. This can be used to backup the files that comprise the database</li>
+</ul></li>
+<li>Benchmarking with <code>pgbench</code></li>
+</ul>
+
+<h4 id="running-modes">Running Modes</h4>
+
+<p>The Crunchy PostgreSQL container can be run in modes, specified by setting the <code>MODE</code> environment variable, enabling different features. Detailed information for configuring the <code>crunchy-postgres</code> container running modes can be found in the container specification <a href="https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/">documentation</a>.</p>
+
+<h6 id="backup">Backup</h6>
+
+<p>The <code>backup</code> mode allows users to create <a href="https://www.postgresql.org/docs/current/app-pgbasebackup.html">pg_basebackup</a>
+physical backups.  The backups created by Crunchy Backup can be mounted to the Crunchy
+PostgreSQL container to restore databases.</p>
+
+<h6 id="pgbasebackup-restore">pgBasebackup-restore</h6>
+
+<p>The <code>pgbasebasebackup-restore</code> mode allows users to restore from a <a href="https://www.postgresql.org/docs/current/app-pgbasebackup.html">pg_basebackup</a>
+physical backup using <code>rsync</code>.</p>
+
+<h6 id="pgdump">pgDump</h6>
+
+<p>The <code>pgdump</code> mode creates a logical backup of the database using the
+<a href="https://www.postgresql.org/docs/current/app-pgdump.html">pg_dump</a> tool.  It
+supports the following features:</p>
+
+<ul>
+<li><code>pg_dump</code> individual databases</li>
+<li><code>pg_dump</code> all databases</li>
+<li>various formats of backups: plain (SQL), custom (compressed archive), directory
+(directory with one file for each table and blob being dumped with a table of
+contents) and tar (uncompressed tar archive)</li>
+<li>Logical backups of database sections such as: DDL, data only, indexes, schema</li>
+</ul>
+
+<h6 id="pgrestore">pgRestore</h6>
+
+<p>The <code>pgrestore</code> mode allows users to restore a PostgreSQL database from
+<code>pg_dump</code> logical backups using the <a href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</a> tool.</p>
+
+<h6 id="sqlrunner">Sqlrunner</h6>
+
+<p>The <code>sqlrunner</code> mode uses <a href="https://www.postgresql.org/docs/current/app-psql.html">psql</a> to run all of the SQL files that are provided in the <code>/pgconf</code> volume.</p>
+
+<h6 id="pgbench">pgBench</h6>
+
+<p>The <code>pgbench</code> mode allows users to run benchmarking tests on PostgreSQL using <a href="https://www.postgresql.org/docs/current/pgbench.html">pgbench</a></p>
+
+<h3 id="crunchy-postgresql-postgis">Crunchy PostgreSQL PostGIS</h3>
+
+<p>The Crunchy PostgreSQL PostGIS mirrors all the features of the Crunchy PostgreSQL
+image but additionally provides the following geospatial extensions:</p>
+
+<ul>
+<li>PostGIS</li>
+<li>PostGIS Topology</li>
+<li>PostGIS Tiger Geocoder</li>
+<li>FuzzyStrMatch</li>
+</ul>
+
+<h2 id="backup-and-restoration-options">Backup and Restoration Options</h2>
+
+<p>Crunchy Container Suite provides support for two types of backups:</p>
+
+<ul>
+<li>Physical - backups of the files that comprise the database</li>
+<li>Logical - an export of the SQL that recreates the database</li>
+</ul>
+
+<p><em>Physical</em> backup and restoration tools included in the Crunchy Container suite are:</p>
+
+<ul>
+<li><a href="2.33">pgBackRest</a>
+PostgreSQL images</li>
+<li><a href="https://www.postgresql.org/docs/current/app-pgbasebackup.html">pg_basebackup</a> -
+provided by the Crunchy PostgreSQL image</li>
+</ul>
+
+<p><em>Logical</em> backup and restoration tools are:</p>
+
+<ul>
+<li><a href="https://www.postgresql.org/docs/current/app-pgdump.html">pg_dump</a> - provided by
+the Crunchy PostgreSQL image</li>
+<li><a href="https://www.postgresql.org/docs/current/app-pgrestore.html">pg_restore</a> - provided by
+the Crunchy PostgreSQL image</li>
+</ul>
+
+<h3 id="crunchy-backrest-restore">Crunchy BackRest Restore</h3>
+
+<p>The Crunchy BackRest Restore image restores a PostgreSQL database from pgBackRest
+physical backups.  This image supports the following types of restores:</p>
+
+<ul>
+<li>Full - all database cluster files are restored and PostgreSQL
+replays Write Ahead Logs (WAL) to the latest point in time.  Requires an empty
+data directory.</li>
+<li>Delta - missing files for the database cluster are restored and PostgreSQL
+replays Write Ahead Logs (WAL) to the latest point in time.</li>
+<li>PITR - missing files for the database cluster are restored and PostgreSQL
+replays Write Ahead Logs (WAL) to a specific point in time.</li>
+</ul>
+
+<p>Visit the official pgBackRest website for more information: <a href="https://pgbackrest.org/">https://pgbackrest.org/</a></p>
+
+<h2 id="administration">Administration</h2>
+
+<p>The following images can be used to administer and maintain Crunchy PostgreSQL
+database containers.</p>
+
+<h3 id="crunchy-pgadmin4">Crunchy pgAdmin4</h3>
+
+<p>The Crunchy pgAdmin4 images allows users to administer their Crunchy PostgreSQL containers
+via a graphical user interface web application.</p>
+
+<p><img src="https://crunchydata.github.io/crunchy-containers/4.7.7/pgadmin4.png" alt="pgadmin4" title="pgAdmin4" /></p>
+
+<p>Visit the official pgAdmin4 website for more information: <a href="https://www.pgadmin.org/">https://www.pgadmin.org/</a></p>
+
+<h3 id="crunchy-upgrade">Crunchy Upgrade</h3>
+
+<p>The Crunchy Upgrade image allows users to perform major upgrades of their Crunchy
+PostgreSQL containers.  The following upgrade versions of PostgreSQL are available:</p>
+
+<ul>
+<li>13</li>
+<li>12</li>
+<li>11</li>
+<li>10</li>
+<li>9.6</li>
+<li>9.5</li>
+</ul>
+
+<h2 id="performance-and-monitoring">Performance and Monitoring</h2>
+
+<p>The following images can be used to understand how Crunchy PostgreSQL containers
+are performing over time using tools such as pgBadger.</p>
+
+<h3 id="crunchy-pgbadger">Crunchy pgBadger</h3>
+
+<p>The Crunchy pgBadger image provides a tool that parses PostgreSQL logs and generates
+an in-depth statistical report.  Crunchy pgBadger reports include:</p>
+
+<ul>
+<li>Connections</li>
+<li>Sessions</li>
+<li>Checkpoints</li>
+<li>Vacuum</li>
+<li>Locks</li>
+<li>Queries</li>
+</ul>
+
+<p>Additionally Crunchy pgBadger can be configured to store reports for analysis over
+time.</p>
+
+<p><img src="https://crunchydata.github.io/crunchy-containers/4.7.7/pgbadger.png" alt="pgbadger" title="pgbadger" /></p>
+
+<p>Visit the official pgBadger website for more information: <a href="https://pgbadger.darold.net/">https://pgbadger.darold.net/</a></p>
+
+<h2 id="connection-pooling-and-logical-routers">Connection Pooling and Logical Routers</h2>
+
+<h3 id="crunchy-pgbouncer">Crunchy pgBouncer</h3>
+
+<p>The Crunchy pgBouncer image provides a lightweight PostgreSQL connection pooler.
+Using pgBouncer, users can lower overhead of opening new connections and control
+traffic to their PostgreSQL databases.  Crunchy pgBouncer supports the following
+features:</p>
+
+<ul>
+<li>Connection pooling</li>
+<li>Drain, Pause, Stop connections to Crunchy PostgreSQL containers</li>
+<li>Dedicated pgBouncer user for authentication queries</li>
+<li>Dynamic user authentication</li>
+</ul>
+
+<p>Visit the official pgBouncer website for more information: <a href="https://pgbouncer.github.io">https://pgbouncer.github.io</a></p>
+
+<h3 id="crunchy-pgpool-ii">Crunchy pgPool II</h3>
+
+<p>The Crunchy pgPool image provides a logical router and connection pooler for Crunchy
+PostgreSQL containers.  pgPool examines SQL queries and redirects write queries to
+the primary and read queries to replicas.  This allows users to setup a single
+entrypoint for their applications without requiring knowledge of read replicas.
+Additionally pgPool provides connection pooling to lower overhead of opening new
+connections to Crunchy PostgreSQL containers.</p>
+
+<p>Visit the official pgPool II website for more information: <a href="http://www.pgpool.net">http://www.pgpool.net</a></p>
+
+
+
+    
+      <div class="chevrons">
+  <div id="navigation">
+<a class="nav nav-prev" href="https://crunchydata.github.io/crunchy-containers/4.7.7/overview/" title="Overview"> <i class="fa fa-chevron-left"></i><label>Overview</label></a>
+    <a class="nav nav-next" href="https://crunchydata.github.io/crunchy-containers/4.7.7/overview/supported/" title="Supported Platforms" style="margin-right: 0px;"><label>Supported Platforms</label><i class="fa fa-chevron-right"></i></a></div>
+</div>
+
+</section>
+</article>
+
+<footer>
+
+<div class="footline">
+  
+
+  
+
+
+
+</div>
+
+
+<div>
+</div>
+
+<div class="text-center">
+  <p><small>&copy; 2017 - 2022 Crunchy Data Solutions, Inc.</small></p>
+</div>
+
+
+</footer>
+
+<link href="https://crunchydata.github.io/crunchy-containers/4.7.7/css/featherlight.min.css" rel="stylesheet">
+<script src="https://crunchydata.github.io/crunchy-containers/4.7.7/js/featherlight.min.js"></script>
+
+<script src="https://crunchydata.github.io/crunchy-containers/4.7.7/theme-flex/script.js"></script>
+
+
+    
+
+    
+    
+
+    
+  </body>
+</html>

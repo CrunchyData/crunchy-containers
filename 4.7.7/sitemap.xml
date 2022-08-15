@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/primary/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/postgres/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/overview/overview/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/custom-config/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/overview/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/client-user-guide/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/custom-config-ssl/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/overview/supported/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/primary-replica/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/installation-guide/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/sync-replica/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/postgresql/postgis/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/troubleshooting/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/poolers/pgpool/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/backup-restoration/pgbackrest/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/backup-restoration/pgbasebackup/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/backup-restoration/pgdump-pgrestore/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/client-user-guide/user-guide/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/client-user-guide/usage/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/poolers/pgbouncer/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/metrics/pgbadger/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/metrics/pgbench/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/logging/centralized-logging/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/logging/pgaudit/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/administration/upgrade/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/examples/administration/pgadmin4/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/installation-guide/installation-guide/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/installation-guide/storage-configuration/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/building/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/issues/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/pull-requests/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/contributing/documentation-updates/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/categories/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/backup/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgadmin4/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgbackrest/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgbackrest-repo/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgbadger/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgbouncer/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-pgpool/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres-gis/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-upgrade/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/pgbasebackup-restore/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/pgbench/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/pgdump/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/pgrestore/</loc>
+  </url>
+  
+  <url>
+    <loc>https://crunchydata.github.io/crunchy-containers/4.7.7/container-specifications/crunchy-postgres/sqlrunner/</loc>
+  </url>
+  
+</urlset>

@@ -578,7 +578,7 @@
 
 <div class="notices tip" >
 This example assumes you have run *primary* using a PostgreSQL 12 or 13 image
-such as `ubi8-13.7-4.7.6` prior to running this upgrade.
+such as `ubi8-13.8-4.7.7` prior to running this upgrade.
 </div>
 
 <p>The upgrade container will let you perform a <code>pg_upgrade</code> from a PostgreSQL version 9.5, 9.6, 10, 11, 12, or 13 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, 12, and 13. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</p>
@@ -586,7 +586,7 @@ such as `ubi8-13.7-4.7.6` prior to running this upgrade.
 <p>Prior to running this example, make sure your <code>CCP_IMAGE_TAG</code>
 environment variable is using the next major version of PostgreSQL that you
 want to upgrade to. For example, if you&rsquo;re upgrading from 12 to 13, make
-sure the variable references a PostgreSQL 13 image such as <code>ubi8-13.7-4.7.6</code>.</p>
+sure the variable references a PostgreSQL 13 image such as <code>ubi8-13.8-4.7.7</code>.</p>
 
 <p>This will create the following in your Kubernetes environment:</p>
 
