@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Introduction on Crunchy Data Container Suite Documentation</title>
+    <link>https://crunchydata.github.io/crunchy-containers/4.5.8/</link>
+    <description>Recent content in Introduction on Crunchy Data Container Suite Documentation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 24 May 2018 12:05:42 -0700</lastBuildDate>
+    
+	<atom:link href="https://crunchydata.github.io/crunchy-containers/4.5.8/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PostgreSQL Primary</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/postgresql/primary/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/postgresql/primary/</guid>
+      <description>PostgreSQL Container Example This example starts a single PostgreSQL container and service, the most simple of examples.
+The container creates a default database called userdb, a default user called testuser and a default password of password.
+For all environments, the script additionally creates:
+ A persistent volume claim A crunchy-postgres container named primary The database using predefined environment variables  And specifically for the Kubernetes and OpenShift environments:
+ A pod named primary A service named primary A PVC named primary-pgdata The database using predefined environment variables  To shutdown the instance and remove the container for each example, run the following:</description>
+    </item>
+    
+    <item>
+      <title>crunchy-backrest-restore</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-backrest-restore/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-backrest-restore/</guid>
+      <description>The crunchy-backrest-restore container executes the pgBackRest utility, allowing FULL and DELTA restore capability. See the pgBackRest guide for more details.
+Features The following features are supported and required by the crunchy-backrest-restore container:
+ Mounted pgbackrest.conf configuration file via the /pgconf volume Mounted /backrestrepo for access to pgBackRest archives  Packages The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):
+ PostgreSQL (13.8, 12.12, 11.17, and 10.</description>
+    </item>
+    
+    <item>
+      <title>crunchy-pgbasebackup-restore</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgbasebackup-restore/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgbasebackup-restore/</guid>
+      <description>The crunchy-pgbasebackup-restore container restores a database using a pg_basebackup backup. Specifically, the container uses rsync to copy a pg_basebackup backup into a specified /pgdata directory.
+The crunchy-pgbasebackup-restore does not support point-in-time-recovery (PITR). If you would to create an environment that allows you to use PostgreSQL&amp;rsquo;s point-in-time-recovery capabilities, please use the crunchy-backrest-restore container with a corresponding pgBackRest repository.
+Packages The crunchy-pgbasebackup-restore Docker image contains the following packages:
+ rsync CentOS 7, UBI 8 - publicly available UBI 7, UBI 8 - customers only  Environment Variables Required    Name Default Description     BACKUP_PATH None The path under the /backup volume containing the pg_basebackup that will be used for the restore (/backup should be excluded when providing the path)   PGDATA_PATH None The path under the /pgdata volume containing the restored database (/pgdata should be excluded when providing the path).</description>
+    </item>
+    
+    <item>
+      <title>Container Images</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/overview/overview/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/overview/overview/</guid>
+      <description>Overview The following provides a high level overview of each of the container images.
+CentOS vs Red Hat UBI Images The Crunchy Container suite provides two different OS images: centos7 and ubi7. Both images utilize Crunchy Ceritifed RPM&amp;rsquo;s for the installation of PostgreSQL, and outside of the base images utilized to build the containers and any packages included within them (either CentOS or UBI), both are effectively the same. The ubi7 images are available to active Crunchy Data Customers only, and are built using the Red Hat Universal Base Image (UBI).</description>
+    </item>
+    
+    <item>
+      <title>Custom Configuration of PostgreSQL Container</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/postgresql/custom-config/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/postgresql/custom-config/</guid>
+      <description>Custom Configuration You can use your own version of the SQL file setup.sql to customize the initialization of database data and objects when the container and database are created.
+This works by placing a file named setup.sql within the /pgconf mounted volume directory. Portions of the setup.sql file are required for the container to work; please see comments within the sample setup.sql file.
+If you mount a /pgconf volume, crunchy-postgres will look at that directory for postgresql.</description>
+    </item>
+    
+    <item>
+      <title>crunchy-backup</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-backup/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-backup/</guid>
+      <description>The crunchy-backup container executes a full backup against another database container using the standard pg_basebackup utility that is included with PostgreSQL.
+Features The following features are supported by the crunchy-backup container:
+ Backup and restoration from: pg_basebackup  Packages The crunchy-backup Docker image contains the following packages (versions vary depending on PostgreSQL version):
+ PostgreSQL (13.8, 12.12, 11.17, and 10.22) CentOS 7, UBI 8 - publicly available UBI 7, UBI 8 - customers only  Environment Variables Required    Name Default Description     BACKUP_LABEL crunchy-backup The label for the backup.</description>
+    </item>
+    
+    <item>
+      <title>Custom Configuration of PostgreSQL Container with SSL</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/postgresql/custom-config-ssl/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/postgresql/custom-config-ssl/</guid>
+      <description>SSL Authentication This example shows how you can configure PostgreSQL to use SSL for client authentication.
+The example requires SSL certificates and keys to be created. Included in the examples directory is a script to create self-signed certificates (server and client) for the example: $CCPROOT/examples/ssl-creator.sh.
+The example creates a client certificate for the user testuser. Furthermore, the server certificate is created for the server name custom-config-ssl.
+This example can be run as follows for the Docker environment:</description>
+    </item>
+    
+    <item>
+      <title>Supported Platforms</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/overview/supported/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/overview/supported/</guid>
+      <description> Supported Platforms Crunchy Container Suite supports the following platforms:
+ Docker 1.13+ Kubernetes 1.12+ OpenShift Container Platform 3.11 VMWare Enterprise PKS 1.3+  </description>
+    </item>
+    
+    <item>
+      <title>Primary and Streaming Replica Containers</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/postgresql/primary-replica/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/postgresql/primary-replica/</guid>
+      <description>Replication This example starts a primary and a replica pod containing a PostgreSQL database.
+The container creates a default database called userdb, a default user called testuser and a default password of password.
+For the Docker environment, the script additionally creates:
+ A docker volume using the local driver for the primary A docker volume using the local driver for the replica A container named primary binding to port 12007 A container named replica binding to port 12008 A mapping of the PostgreSQL port 5432 within the container to the localhost port 12000 The database using predefined environment variables  And specifically for the Kubernetes and OpenShift environments:</description>
+    </item>
+    
+    <item>
+      <title>crunchy-pgadmin4</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgadmin4/</link>
+      <pubDate>Thu, 24 May 2018 12:05:42 -0700</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgadmin4/</guid>
+      <description>The crunchy-pgadmin4 container executes the pgAdmin4 web application.
+pgAdmin4 provides a web user interface to PostgreSQL databases. A sample screenshot is below:
+Features The following features are supported by the crunchy-pgadmin4 container:
+ Expose port (5050 by default) which is the web server port. Mount a certificate and key to the /certs directory and set ENABLE_TLS to true to activate HTTPS mode. Set username and password for login via environment variables.</description>
+    </item>
+    
+    <item>
+      <title>Synchronous Replication</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/postgresql/sync-replica/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/postgresql/sync-replica/</guid>
+      <description>Synchronous Replication This example deploys a PostgreSQL cluster with a primary, a synchronous replica, and an asynchronous replica. The two replicas share the same service.
+To shutdown the instance and remove the container for each example, run the following:
+./cleanup.sh  Docker To run this example, run the following:
+cd $CCPROOT/examples/docker/sync ./run.sh  You can test the replication status on the primary by using the following command and the password password:</description>
+    </item>
+    
+    <item>
+      <title>crunchy-pgbadger</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgbadger/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgbadger/</guid>
+      <description>The crunchy-pgbadger container executes the pgBadger utility, which generates a PostgreSQL log analysis report using a small HTTP server running on the container. This log report can be accessed through the URL http://&amp;lt;&amp;gt;:10000/api/badgergenerate.
+Features The following features are supported by the crunchy-pgbadger container:
+ Generate a full report by default Optional custom options for more advanced use cases (such as incremental reports) Report persistence on a volume  Packages The crunchy-badger Docker image contains the following packages:</description>
+    </item>
+    
+    <item>
+      <title>crunchy-pgbouncer</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgbouncer/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgbouncer/</guid>
+      <description>pgBouncer is a lightweight connection pooler for PostgreSQL databases.
+Features The following features are supported by the crunchy-pgbouncer container:
+ crunchy-pgbouncer uses auth_query to authenticate users. This requires the pgbouncer username and password in users.txt. Automatically generated from environment variables, see Restrictions. Mount a custom users.txt and pgbouncer.ini configurations for advanced usage. Tune pooling parameters via environment variables. Connect to the administration database in pgBouncer to view statistics of the target databases.</description>
+    </item>
+    
+    <item>
+      <title>PostGIS Container</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/postgresql/postgis/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/postgresql/postgis/</guid>
+      <description>Geospatial (PostGIS) An example is provided that will run a PostgreSQL with PostGIS pod and service in Kubernetes and OpenShift and a container in Docker.
+The container creates a default database called userdb, a default user called testuser and a default password of password.
+You can view the extensions that postgres-gis has enabled by running the following command and viewing the listed PostGIS packages:
+psql -h postgres-gis -U testuser userdb -c &#39;\dx&#39;  To validate that PostGIS is installed and which version is running, run the command:</description>
+    </item>
+    
+    <item>
+      <title>crunchy-pgdump</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgdump/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgdump/</guid>
+      <description>The crunchy-pgdump container executes either a pg_dump or pg_dumpall database backup against another PostgreSQL database.
+Packages The crunchy-pgdump Docker image contains the following packages (versions vary depending on PostgreSQL version):
+ PostgreSQL (13.8, 12.12, 11.17, and 10.22) CentOS 7, UBI 8 - publicly available UBI 7, UBI 8 - customers only  Environment Variables Required    Name Default Description     PGDUMP_DB None Name of the database the backup is being performed on.</description>
+    </item>
+    
+    <item>
+      <title>crunchy-pgpool</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgpool/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgpool/</guid>
+      <description>The crunchy-pgpool container executes the pgPool II utility. pgPool can be used to provide a smart PostgreSQL-aware proxy to a PostgreSQL cluster, both primary and replica, so that applications only have to work with a single database connection.
+PostgreSQL replicas are read-only whereas a primary is capable of receiving both read and write actions.
+The default pgPool examples use a Secret to hold the set of pgPool configuration files used by the examples.</description>
+    </item>
+    
+    <item>
+      <title>crunchy-pgrestore</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgrestore/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgrestore/</guid>
+      <description>The restore image provides a means of performing a restore of a dump from pg_dump or pg_dumpall via psql or pg_restore to a PostgreSQL container database.
+Packages The crunchy-pgrestore Docker image contains the following packages (versions vary depending on PostgreSQL version):
+ PostgreSQL (13.8, 12.12, 11.17, and 10.22) CentOS 7, UBI 8 - publicly available UBI 7, UBI 8 - customers only  Environment Variables Required    Name Default Description     PGRESTORE_DB None Name of the database to connect to.</description>
+    </item>
+    
+    <item>
+      <title>crunchy-postgres-gis</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-postgres-gis/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-postgres-gis/</guid>
+      <description>PostgreSQL (pronounced &amp;ldquo;post-gress-Q-L&amp;rdquo;) is an open source, ACID compliant, relational database management system (RDBMS) developed by a worldwide team of volunteers. The crunchy-postgres-gis container image is unmodified, open source PostgreSQL packaged and maintained by professionals. This image is identical to the crunchy-postgres image except it includes the open source geospatial extension PostGIS for PostgreSQL in addition to the language extension PL/R which allows for writing functions in the R statistical computing language.</description>
+    </item>
+    
+    <item>
+      <title>crunchy-pgbench</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgbench/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-pgbench/</guid>
+      <description>pgBench is a simple program for running benchmark tests on PostgreSQL. It runs the same sequence of SQL commands over and over, possibly in multiple concurrent database sessions, and then calculates the average transaction rate (transactions per second).
+Features The following features are supported by the crunchy-pgbench container:
+ Kubernetes and OpenShift secrets Custom mounted transaction files (see below) Configurable benchmarking options  Packages The crunchy-pgbench Docker image contains the following packages (versions vary depending on PostgreSQL version):</description>
+    </item>
+    
+    <item>
+      <title>crunchy-postgres</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-postgres/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-postgres/</guid>
+      <description>PostgreSQL (pronounced &amp;ldquo;post-gress-Q-L&amp;rdquo;) is an open source, ACID compliant, relational database management system (RDBMS) developed by a worldwide team of volunteers. The crunchy-postgres container image is unmodified, open source PostgreSQL packaged and maintained by professionals.
+Features The following features are supported by the crunchy-postgres container:
+ Kubernetes and OpenShift secrets Backup and restoration from various tools: pgbackrest, pg_basebackup and pg_dump/pg_restore. Custom mounted configuration files (see below) Async and Sync Replication  Packages The crunchy-postgres Docker image contains the following packages (versions vary depending on PostgreSQL version):</description>
+    </item>
+    
+    <item>
+      <title>crunchy-upgrade</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-upgrade/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/container-specifications/crunchy-upgrade/</guid>
+      <description>The crunchy-upgrade container contains multiple versions of PostgreSQL in order to perform a pg_upgrade between major versions of PostgreSQL. This includes the following combinations:
+ PostgreSQL 9.5 / PostgreSQL 9.6 PostgreSQL 9.6 / PostgreSQL 10 PostgreSQL 10 / PostgreSQL 11 PostgreSQL 11 / PostgreSQL 12  Features The following features are supported by the crunchy-upgrade container:
+ Supports a pg_upgrade of the PostgreSQL database. Doesn&amp;rsquo;t alter the old database files.</description>
+    </item>
+    
+    <item>
+      <title>pgPool II</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/poolers/pgpool/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/poolers/pgpool/</guid>
+      <description>pgPool Logical Router Example An example is provided that will run a pgPool II container in conjunction with the primary-replica example provided above.
+You can execute both INSERT and SELECT statements after connecting to pgpool. The container will direct INSERT statements to the primary and SELECT statements will be sent round-robin to both the primary and replica.
+The container creates a default database called userdb, a default user called testuser and a default password of password.</description>
+    </item>
+    
+    <item>
+      <title>pgBackRest</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/backup-restoration/pgbackrest/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/backup-restoration/pgbackrest/</guid>
+      <description>pgBackRest Examples Written and maintained by David Steele, pgBackRest is a utility that provides backup and restore functionality for PostgreSQL databases. pgBackRest is available for use within the Crunchy Container Suite, and can therefore be utilized to provide an effective backup and restore solution for any database clusters deployed using the crunchy-postgres or crunchy-postgres-gis containers. The following section will provide an overview of how pgBackRest can be utilized within the Crunchy Container Suite, including examples for enabling and configuring pgBackRest, and then utilizing pgBackRest to backup and restore various PostgreSQL database clusters.</description>
+    </item>
+    
+    <item>
+      <title>pgBaseBackup</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/backup-restoration/pgbasebackup/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/backup-restoration/pgbasebackup/</guid>
+      <description>pgBaseBackup Examples The script assumes you are going to backup the primary container created in the first example, so you need to ensure that container is running. This example assumes you have configured storage as described in the Storage Configuration documentation. Things to point out with this example include its use of persistent volumes and volume claims to store the backup data files.
+A successful backup will perform pg_basebackup on the primary container and store the backup in the $CCP_STORAGE_PATH volume under a directory named $CCP_NAMESPACE-primary-backups.</description>
+    </item>
+    
+    <item>
+      <title>pgDump &amp; pgRestore</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/backup-restoration/pgdump-pgrestore/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/backup-restoration/pgdump-pgrestore/</guid>
+      <description>pgDump &amp;amp; pgRestore Examples The following examples will demonstrate how the crunchy-pgdump container can be utilized to create a database backup using the pg_dump utility, while also demonstrating how the backup created can then be utilized to restore the database using the pg_restore utility.
+Backup (pg_dump) The script assumes you are going to backup the primary example and that container is running.
+This example assumes you have configured a storage filesystem as described in the Storage Configuration document.</description>
+    </item>
+    
+    <item>
+      <title>User Guide</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/client-user-guide/user-guide/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/client-user-guide/user-guide/</guid>
+      <description>User Guide Overview This guide is intended to get you up and running with the Crunchy Container Suite, and therefore provides guidance for deploying the Crunchy Container Suite within your own environment. This includes guidance for standing-up and configuring your environment in order to run Crunchy Containers examples that can be found in the next section.
+Please see the following sections in order to properly setup and configure your environment for the Crunchy Container Suite (please feel free to skip any sections that have already been completed within your environment):</description>
+    </item>
+    
+    <item>
+      <title>Using the Images</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/client-user-guide/usage/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/client-user-guide/usage/</guid>
+      <description>Running the Examples The Kubernetes and OpenShift examples in this guide have been designed using single-node Kubernetes/OCP clusters whose host machines provide any required supporting infrastructure or services (e.g. local HostPath storage or access to an NFS share). Therefore, for the best results when running these examples, it is recommended that you utilize a single-node architecture as well.
+Additionally, the examples located in the kube directory work on both Kubernetes and OpenShift.</description>
+    </item>
+    
+    <item>
+      <title>pgBouncer</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/poolers/pgbouncer/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/poolers/pgbouncer/</guid>
+      <description>pgBouncer Connection Pooling Example Crunchy pgBouncer is a lightweight connection pooler for PostgreSQL databases.
+The following examples create the following containers:
+ pgBouncer Primary pgBouncer Replica PostgreSQL Primary PostgreSQL Replica  In Kubernetes and OpenShift, this example will also create:
+ pgBouncer Primary Service pgBouncer Replica Service Primary Service Replica Service PostgreSQL Secrets pgBouncer Secrets  To cleanup the objects created by this example, run the following in the pgbouncer example directory:</description>
+    </item>
+    
+    <item>
+      <title>pgBadger</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/metrics/pgbadger/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/metrics/pgbadger/</guid>
+      <description>pgBadger Example pgbadger is a PostgreSQL tool that reads the log files from a specified database in order to produce a HTML report that shows various PostgreSQL statistics and graphs. This example runs the pgbadger HTTP server against a crunchy-postgres container and illustrates how to view the generated reports.
+The port utilized for this tool is port 14000 for Docker environments and port 10000 for Kubernetes and OpenShift environments.</description>
+    </item>
+    
+    <item>
+      <title>pgBench</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/metrics/pgbench/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/metrics/pgbench/</guid>
+      <description>pgBench Example pgbench is a simple program for running benchmark tests on PostgreSQL. It runs the same sequence of SQL commands over and over, possibly in multiple concurrent database sessions, and then calculates the average transaction rate (transactions per second). By default, pgbench tests a scenario that is loosely based on TPC-B, involving five SELECT, UPDATE, and INSERT commands per transaction. However, it is easy to test other cases by writing your own transaction script files.</description>
+    </item>
+    
+    <item>
+      <title>Centralized Logging</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/logging/centralized-logging/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/logging/centralized-logging/</guid>
+      <description>Centralized Logging Example The logs generated by containers are critical for deployments because they provide insights into the health of the system. PostgreSQL logs are very detailed and there is some information that can only be obtained from logs (but not limited to):
+ Connections and Disconnections of users Checkpoint Statistics PostgreSQL Server Errors  Aggregrating container logs across multiple hosts allows administrators to audit, debug problems and prevent repudiation of misconduct.</description>
+    </item>
+    
+    <item>
+      <title>pgAudit</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/logging/pgaudit/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/logging/pgaudit/</guid>
+      <description>pgAudit Enhanced Logging This example provides an example of enabling pg_audit output. As of release 1.3, pg_audit is included in the crunchy-postgres container and is added to the PostgreSQL shared library list in postgresql.conf.
+Given the numerous ways pg_audit can be configured, the exact pg_audit configuration is left to the user to define. pg_audit allows you to configure auditing rules either in postgresql.conf or within your SQL script.
+For this test, we place pg_audit statements within a SQL script and verify that auditing is enabled and working.</description>
+    </item>
+    
+    <item>
+      <title>Upgrade</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/administration/upgrade/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/administration/upgrade/</guid>
+      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 11 or 12 image such as `centos7-12.12-4.5.8` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11 or 12 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, and 12. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</description>
+    </item>
+    
+    <item>
+      <title>pgAdmin 4</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/administration/pgadmin4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/examples/administration/pgadmin4/</guid>
+      <description>pgAdmin4 example This example deploys the pgadmin4 v2 web user interface for PostgreSQL without TLS.
+After running the example, you should be able to browse to http://127.0.0.1:5050 and log into the web application with the following configured credentials:
+ Username : admin@admin.com Password: password  If you are running this example using Kubernetes or OpenShift, it is required to use a port-forward proxy to access the dashboard.
+To start the port-forward proxy run the following:</description>
+    </item>
+    
+    <item>
+      <title>Installation Guide</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/installation-guide/installation-guide/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/installation-guide/installation-guide/</guid>
+      <description>Overview This document serves four purposes:
+ Ensure you have the prerequisites for building the images in Crunchy Container Suite Make sure your local machine has all the pieces needed to run the examples in the GitHub repository Run the images as standalone containers in Docker Instruct you how to install the Crunchy Container Suite into Kubernetes or OpenShift  Where applicable, we will try to denote which installations and steps are required for the items above.</description>
+    </item>
+    
+    <item>
+      <title>Storage Configuration</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/installation-guide/storage-configuration/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/installation-guide/storage-configuration/</guid>
+      <description>Storage Configuration Available Storage Types The Crunchy Container Suite is officially tested using two different storage backends:
+ HostPath (single node testing) NFS (single and multi-node testing)  Other storage backends work as well, including GCE, EBS, ScaleIO, and others, but may require you to modify various examples or configuration.
+The Crunchy Container Suite is tested, developed, and examples are provided that use the various storage types listed above. This ensures that customers have a high degree of choices when it comes to choosing a volume type.</description>
+    </item>
+    
+    <item>
+      <title>Building the Containers</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/contributing/building/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/contributing/building/</guid>
+      <description>Build From Source There are many cases where you may want to build the containers from source, such as working on a patch to contribute a feature. This guide provides the instructions to get you set up to build from source.
+Requirements  CentOS 7 or Red Hat 7 environment. The instructions below are set up for CentOS 7, but you can read the installation guide for additional instructions go version 1.</description>
+    </item>
+    
+    <item>
+      <title>Submitting Issues</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/contributing/issues/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/contributing/issues/</guid>
+      <description>If you would like to submit an feature / issue for us to consider please submit an issue to the official GitHub Repository.
+If you would like to work any current or open issues, please update the issue with your efforts so that we can avoid redundant or unnecessary work.
+If you have any questions, you can submit a Support - Question and Answer issue and we will work with you on how you can get more involved.</description>
+    </item>
+    
+    <item>
+      <title>Submitting Pull Requests</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/contributing/pull-requests/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/contributing/pull-requests/</guid>
+      <description>So you decided to submit an issue and work it. Great! Let&amp;rsquo;s get it merged in to the codebase. The following will go a long way to helping get the fix merged in quicker:
+ Fork the Github repository and make a branch off of the master branch Create a Pull Request from your Fork back to the master branch. Update the checklists in the Pull Request description. Reference which issues this Pull Request is resolving.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/contributing/documentation-updates/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/contributing/documentation-updates/</guid>
+      <description>The documentation website is generated using Hugo.
+Hosting Hugo Locally (Optional) If you would like to build the documentation locally, view the official Installing Hugo guide to set up Hugo locally.
+The git submodule for the crunchy-hugo-theme has to be synched -
+cd $CCPROOT/ git submodule init git submodule update You can then start the server by running the following commands -
+cd $CCPROOT/docs/ hugo server The local version of the Hugo server is accessible by default from localhost:1313.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Installation Guide on Crunchy Data Container Suite Documentation</title>
+    <link>https://crunchydata.github.io/crunchy-containers/4.5.8/installation-guide/</link>
+    <description>Recent content in Installation Guide on Crunchy Data Container Suite Documentation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://crunchydata.github.io/crunchy-containers/4.5.8/installation-guide/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Installation Guide</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/installation-guide/installation-guide/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/installation-guide/installation-guide/</guid>
+      <description>Overview This document serves four purposes:
+ Ensure you have the prerequisites for building the images in Crunchy Container Suite Make sure your local machine has all the pieces needed to run the examples in the GitHub repository Run the images as standalone containers in Docker Instruct you how to install the Crunchy Container Suite into Kubernetes or OpenShift  Where applicable, we will try to denote which installations and steps are required for the items above.</description>
+    </item>
+    
+    <item>
+      <title>Storage Configuration</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.5.8/installation-guide/storage-configuration/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.5.8/installation-guide/storage-configuration/</guid>
+      <description>Storage Configuration Available Storage Types The Crunchy Container Suite is officially tested using two different storage backends:
+ HostPath (single node testing) NFS (single and multi-node testing)  Other storage backends work as well, including GCE, EBS, ScaleIO, and others, but may require you to modify various examples or configuration.
+The Crunchy Container Suite is tested, developed, and examples are provided that use the various storage types listed above. This ensures that customers have a high degree of choices when it comes to choosing a volume type.</description>
+    </item>
+    
+  </channel>
+</rss>

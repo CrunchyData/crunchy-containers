@@ -1,0 +1,68 @@
+baseURL= ""
+
+languageCode = "en-us"
+DefaultContentLanguage = "en"
+title = "Crunchy Data Container Suite Documentation"
+theme = "crunchy-hugo-theme"
+pygmentsCodeFences = true
+pygmentsStyle = "monokailight"
+publishDir = ""
+canonifyurls = true
+
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir= false
+enableMissingTranslationPlaceholders = false
+
+# Set timeout for generating page contents
+timeout=20000
+
+[params]
+containersVersion = "4.5.8"
+postgresVersion = "12.12"
+postgresVersionShort = "12"
+postgresVersion13 = "13.8"
+postgresVersion12 = "12.12"
+postgresVersion11 = "11.17"
+postgresVersion10 = "10.22"
+
+# Theme params
+editURL = "https://github.com/CrunchyData/crunchy-containers/edit/master/docs/content/"
+showVisitedLinks = false # default is false
+themeStyle = "flex" # "original" or "flex" # default "flex"
+themeVariant = "" # choose theme variant "green", "gold" , "gray", "blue" (default)
+ordersectionsby = "weight" # ordersectionsby = "title"
+disableHomeIcon = true # default is false
+disableSearch = false # default is false
+disableNavChevron = false # set true to hide next/prev chevron, default is false
+highlightClientSide = false # set true to use highlight.pack.js instead of the default hugo chroma highlighter
+menushortcutsnewtab = true # set true to open shortcuts links to a new tab/window
+enableGitInfo = true
+
+[outputs]
+home = [ "HTML", "RSS", "JSON"]
+
+[[menu.shortcuts]]
+name = "<i class='fab fa-github'></i> <label>Source</label>"
+url = "https://github.com/CrunchyData/crunchy-containers"
+weight = 10
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-bookmark'></i> <label>Kubernetes</label>"
+identifier = "kubedoc"
+url = "https://kubernetes.io/docs/"
+weight = 20
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-file-contract'></i> <label>License</label>"
+url = "https://github.com/CrunchyData/crunchy-containers/blob/master/LICENSE.md"
+weight = 30
+
+[[menu.downloads]]
+name = "<i class='fas fa-file-pdf'></i> <label>PDF</label>"
+url = "/pdf/crunchy_containers.pdf"
+weight = 20
+
+[[menu.downloads]]
+name = "<i class='fas fa-book'></i> <label>EPUB</label>"
+url = "/epub/crunchy_containers.epub"
+weight = 30
