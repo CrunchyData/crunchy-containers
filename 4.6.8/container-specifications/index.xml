@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Container Specifications on Crunchy Data Container Suite Documentation</title>
+    <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/</link>
+    <description>Recent content in Container Specifications on Crunchy Data Container Suite Documentation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>crunchy-pgadmin4</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-pgadmin4/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-pgadmin4/</guid>
+      <description>The crunchy-pgadmin4 container executes the pgAdmin4 web application.
+pgAdmin4 provides a web user interface to PostgreSQL databases. A sample screenshot is below:
+Features The following features are supported by the crunchy-pgadmin4 container:
+ Expose port (5050 by default) which is the web server port. Mount a certificate and key to the /certs directory and set ENABLE_TLS to true to activate HTTPS mode. Set username and password for login via environment variables.</description>
+    </item>
+    
+    <item>
+      <title>crunchy-pgbackrest</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-pgbackrest/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-pgbackrest/</guid>
+      <description>The crunchy-pgbackrest container is used for pgBackRest functions including backup, restore, info, stanza creation and as the pgBackRest remote repository.
+See the pgBackRest guide for more details.
+Running Modes The crunchy-pgbackrest image can be run in modes to enable different functionality. The MODE environment variable must be set to run the image in the required mode. Each mode uses environment variables to configure how the container will be run.</description>
+    </item>
+    
+    <item>
+      <title>crunchy-pgbackrest-repo</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-pgbackrest-repo/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-pgbackrest-repo/</guid>
+      <description>The crunchy-pgbackrest-repo container acts as a pgBackRest remote repository for the Postgres cluster to use for storing archive files and backups.
+See the pgBackRest guide for more details.
+Volumes The following volumes are mounted by the crunchy-pgbackrest-repo container:
+ /backrestrepo volume used by the pgbackrest backup tool to store pgBackRest archives /pgdata volume is not used by this container, but required by the crunchy-pgbackrest parent container. /sshd volume that contains the SSHD configuration from the backrest-repo-config secret  Packages The crunchy-backrest-repo image contains the following packages:</description>
+    </item>
+    
+    <item>
+      <title>crunchy-pgbadger</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-pgbadger/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-pgbadger/</guid>
+      <description>The crunchy-pgbadger container executes the pgBadger utility, which generates a PostgreSQL log analysis report using a small HTTP server running on the container. This log report can be accessed through the URL http://&amp;lt;&amp;gt;:10000/api/badgergenerate.
+Features The following features are supported by the crunchy-pgbadger container:
+ Generate a full report by default Optional custom options for more advanced use cases (such as incremental reports) Report persistence on a volume  Packages The crunchy-badger Docker image contains the following packages:</description>
+    </item>
+    
+    <item>
+      <title>crunchy-pgbouncer</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-pgbouncer/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-pgbouncer/</guid>
+      <description>pgBouncer is a lightweight connection pooler for PostgreSQL databases.
+Features The following features are supported by the crunchy-pgbouncer container:
+ crunchy-pgbouncer uses auth_query to authenticate users. This requires the pgbouncer username and password in users.txt. Automatically generated from environment variables, see Restrictions. Mount a custom users.txt and pgbouncer.ini configurations for advanced usage. Tune pooling parameters via environment variables. Connect to the administration database in pgBouncer to view statistics of the target databases.</description>
+    </item>
+    
+    <item>
+      <title>crunchy-pgpool</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-pgpool/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-pgpool/</guid>
+      <description>The crunchy-pgpool container executes the pgPool II utility. pgPool can be used to provide a smart PostgreSQL-aware proxy to a PostgreSQL cluster, both primary and replica, so that applications only have to work with a single database connection.
+PostgreSQL replicas are read-only whereas a primary is capable of receiving both read and write actions.
+The default pgPool examples use a Secret to hold the set of pgPool configuration files used by the examples.</description>
+    </item>
+    
+    <item>
+      <title>crunchy-postgres-gis</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres-gis/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres-gis/</guid>
+      <description>PostgreSQL (pronounced &amp;ldquo;post-gress-Q-L&amp;rdquo;) is an open source, ACID compliant, relational database management system (RDBMS) developed by a worldwide team of volunteers. The crunchy-postgres-gis container image is unmodified, open source PostgreSQL packaged and maintained by professionals. This image is identical to the crunchy-postgres image except it includes the open source geospatial extension PostGIS for PostgreSQL in addition to the language extension PL/R which allows for writing functions in the R statistical computing language.</description>
+    </item>
+    
+    <item>
+      <title>crunchy-upgrade</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-upgrade/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-upgrade/</guid>
+      <description>The crunchy-upgrade container contains multiple versions of PostgreSQL in order to perform a pg_upgrade between major versions of PostgreSQL. This includes the following combinations:
+ PostgreSQL 9.5 / PostgreSQL 9.6 PostgreSQL 9.6 / PostgreSQL 10 PostgreSQL 10 / PostgreSQL 11 PostgreSQL 11 / PostgreSQL 12 PostgreSQL 12 / PostgreSQL 13  Features The following features are supported by the crunchy-upgrade container:
+ Supports a pg_upgrade of the PostgreSQL database. Doesn&amp;rsquo;t alter the old database files.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>crunchy-postgres on Crunchy Data Container Suite Documentation</title>
+    <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/</link>
+    <description>Recent content in crunchy-postgres on Crunchy Data Container Suite Documentation</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>postgres</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/postgres/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/postgres/</guid>
+      <description>PostgreSQL (pronounced &amp;ldquo;post-gress-Q-L&amp;rdquo;) is an open source, ACID compliant, relational database management system (RDBMS) developed by a worldwide team of volunteers. The crunchy-postgres container image is unmodified, open source PostgreSQL packaged and maintained by professionals.
+MODE: postgres
+Environment Variables Required    Name Default Description     MODE None Set to postgres to run as PostgreSQL database   PG_DATABASE None Set this value to create an initial database   PG_PRIMARY_PORT None Set this value to configure the primary PostgreSQL port.</description>
+    </item>
+    
+    <item>
+      <title>backup</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/backup/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/backup/</guid>
+      <description>The backup running mode executes a full backup against another database container using the standard pg_basebackup utility that is included with PostgreSQL.
+MODE: backup
+Environment Variables Required    Name Default Description     MODE None Set to backup to run as pg_basebackup job   BACKUP_LABEL crunchy-backup The label for the backup.   BACKUP_HOST None Name of the database the backup is being performed on.</description>
+    </item>
+    
+    <item>
+      <title>pgbasebackup-restore</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/pgbasebackup-restore/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/pgbasebackup-restore/</guid>
+      <description>The pgbasebackup-restore running mode restores a database using a pg_basebackup backup. Specifically, the container uses rsync to copy a pg_basebackup backup into a specified /pgdata directory.
+The pgbasebackup-restore mode does not support point-in-time-recovery (PITR). If you would to create an environment that allows you to use PostgreSQL&amp;rsquo;s point-in-time-recovery capabilities, please use the crunchy-backrest container with a corresponding pgBackRest repository.
+MODE: pgbasebackup-restore
+Environment Variables Required    Name Default Description     MODE None Set to pgbasebackup-restore to run as pg_basebackup restore job   BACKUP_PATH None The path under the /backup volume containing the pg_basebackup that will be used for the restore (/backup should be excluded when providing the path)   PGDATA_PATH None The path under the /pgdata volume containing the restored database (/pgdata should be excluded when providing the path).</description>
+    </item>
+    
+    <item>
+      <title>pgbench</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/pgbench/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/pgbench/</guid>
+      <description>pgBench is a simple program for running benchmark tests on PostgreSQL. It runs the same sequence of SQL commands over and over, possibly in multiple concurrent database sessions, and then calculates the average transaction rate (transactions per second).
+MODE: pgbench
+Environment Variables Required    Name Default Description     PG_DATABASE None Set this value to the database which pgBench should use   PG_HOSTNAME None Set this value to the hostname of the PostgreSQL primary to benchmark   PG_USERNAME None Set this value to specify the username used to run the benchmark   PG_PASSWORD None Set this value to specify the password of the user to run the benchmark.</description>
+    </item>
+    
+    <item>
+      <title>pgdump</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/pgdump/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/pgdump/</guid>
+      <description>The pgdump running mode executes either a pg_dump or pg_dumpall database backup against another PostgreSQL database.
+MODE: pgdump
+Environment Variables Required    Name Default Description     MODE None Set to pgdump to run as pg_dump job   PGDUMP_DB None Name of the database the backup is being performed on.   PGDUMP_HOST None Hostname of the database the backup is being performed on.   PGDUMP_PASS None Password for the PostgreSQL role being used.</description>
+    </item>
+    
+    <item>
+      <title>pgrestore</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/pgrestore/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/pgrestore/</guid>
+      <description>The restore running mode provides a means of performing a restore of a dump from pg_dump or pg_dumpall via psql or pg_restore to a PostgreSQL container database.
+MODE: pgrestore
+Environment Variables Required    Name Default Description     MODE None Set to pgrestore to run as pg_restore job   PGRESTORE_DB None Name of the database to connect to.   PGRESTORE_HOST None Hostname of the database to connect to.</description>
+    </item>
+    
+    <item>
+      <title>sqlrunner</title>
+      <link>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/sqlrunner/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://crunchydata.github.io/crunchy-containers/4.6.8/container-specifications/crunchy-postgres/sqlrunner/</guid>
+      <description>The sqlrunner running mode will use psql to issue specified queries, defined in SQL files, to your PostgreSQL database.
+MODE: sqlrunner
+Environment Variables Required    Name Default Description     MODE None Set to sqlrunner to run as SQL running job   PG_HOST None Hostname of the database the sql files will be run on.   PG_PORT None The port to use when connecting to the database.</description>
+    </item>
+    
+  </channel>
+</rss>
