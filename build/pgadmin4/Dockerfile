@@ -9,6 +9,7 @@ ARG BASEOS
 ARG PACKAGER
 ARG PG_MAJOR
 ARG PGADMIN_VER
+ARG DFSET
 
 LABEL name="pgadmin4" \
 	summary="pgAdmin4 GUI utility" \

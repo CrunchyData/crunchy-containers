@@ -289,6 +289,7 @@ pgadmin4-img-build: ccbase-image $(CCPROOT)/build/pgadmin4/Dockerfile
 		--build-arg PG_FULL=$(CCP_PG_FULLVERSION) \
 		--build-arg PG_MAJOR=$(CCP_PGVERSION) \
 		--build-arg PREFIX=$(CCP_IMAGE_PREFIX) \
+		--build-arg DFSET=$(DFSET) \
 		--build-arg PGADMIN_VER=$(CCP_PGADMIN_VERSION) \
 		--build-arg PACKAGER=$(PACKAGER) \
 		$(CCPROOT)
