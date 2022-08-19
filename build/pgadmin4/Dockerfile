@@ -20,7 +20,7 @@ LABEL name="pgadmin4" \
 RUN mkdir -p /opt/crunchy/bin /opt/crunchy/conf /var/lib/pgadmin /var/log/pgadmin \
         /certs /run/httpd
 
-RUN if [ "$BASEOS" = "centos8" ] ; then \
+RUN if [ "$DFSET" = "centos" ] ; then \
         ${PACKAGER} -y install --nodocs \
                 --setopt=skip_missing_names_on_install=False \
                 mod_ssl \
@@ -41,7 +41,7 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
         && alternatives --set python /usr/bin/python3 ; \
 fi
 
-RUN if [ "$BASEOS" = "ubi8" ] ; then \
+RUN if [ "$DFSET" = "rhel" ] ; then \
         ${PACKAGER} -y install --nodocs \
                 --enablerepo="epel" \
                 mod_ssl \
