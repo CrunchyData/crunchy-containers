@@ -45,6 +45,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	postgresql${PG_MAJOR//.}-server \
         	postgresql${PG_MAJOR//.}-plpython* \
         	pgnodemx${PG_MAJOR//.} \
+            $( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
         	psmisc \
         	python3-pip \
         	python3-psutil \
