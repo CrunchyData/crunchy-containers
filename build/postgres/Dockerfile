@@ -30,6 +30,7 @@ else \
         --enablerepo="crunchypg${PG_LBL}" \
         postgresql${PG_LBL} \
     && ${PACKAGER} -y clean all ; \
+fi
 
 # Preserving PGVERSION out of paranoia
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
