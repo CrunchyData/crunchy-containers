@@ -69,7 +69,7 @@ RUN for pg_version in $UPGRADE_PG_VERSIONS; do \
         else \
             ${PACKAGER} -y install --nodocs \
                 --setopt=skip_missing_names_on_install=False \
-                --disablerepo=* \
+                --disablerepo=crunchydata* \
                 --enablerepo=crunchydatadevpg* \
                 postgresql${pg_version} \
                 postgresql${pg_version}-contrib \
