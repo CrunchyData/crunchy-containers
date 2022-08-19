@@ -28,6 +28,7 @@ else \
     ${PACKAGER} -y install --nodocs \
         --disablerepo=crunchypg* \
         --enablerepo="crunchypg${PG_LBL}" \
+        postgresql${PG_LBL} \
     && ${PACKAGER} -y clean all ; \
 
 # Preserving PGVERSION out of paranoia
