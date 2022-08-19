@@ -24,7 +24,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
 	${PACKAGER} -y install --nodocs \
 		--setopt=skip_missing_names_on_install=False \
 		--enablerepo="powertools" \
-		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
+		pgrouting_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
 		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
 		postgresql${PG_MAJOR//.}-plperl \
