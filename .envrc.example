@@ -15,3 +15,4 @@ export CCP_CLI=kubectl          # kubectl for K8s, oc for OpenShift
 export CCP_NAMESPACE=postgres-operator       # Change this to whatever namespace/openshift project name you want to use
 export CCP_PG_EXTENSIONS="pg_qualstats_$CCP_PGVERSION hypopg_$CCP_PGVERSION powa_$CCP_PGVERSION"
 export CCP_BACKREST_VERSION=2.36
+export CCP_PGADMIN_VERSION=4.20
