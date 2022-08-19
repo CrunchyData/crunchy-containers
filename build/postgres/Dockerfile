@@ -18,11 +18,17 @@ ARG PG_LBL
 # Ability to install additional pg_extensions
 ARG CCP_PG_EXTENSIONS
 
-RUN ${PACKAGER} -y install --nodocs \
-	--disablerepo=crunchydata* \
-	--enablerepo="crunchydatadevpg${PG_LBL}" \
-	postgresql${PG_LBL} \
- && ${PACKAGER} -y clean all
+RUN if [ "$DFSET" = "centos" ] ; then \
+        ${PACKAGER} -y install --nodocs \
+            --disablerepo=crunchydata* \
+            --enablerepo="crunchydatadevpg${PG_LBL}" \
+            postgresql${PG_LBL} \
+        && ${PACKAGER} -y clean all ; \
+else \
+    ${PACKAGER} -y install --nodocs \
+        --disablerepo=crunchypg* \
+        --enablerepo="crunchypg${PG_LBL}" \
+    && ${PACKAGER} -y clean all ; \
 
 # Preserving PGVERSION out of paranoia
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"

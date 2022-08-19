@@ -46,8 +46,3 @@ fi
 git clone https://github.com/CrunchyData/pgmonitor.git ${CCPROOT?}/tools/pgmonitor
 cd ${CCPROOT?}/tools/pgmonitor
 git checkout ${PGMONITOR_COMMIT?}
-
-cd ${CCPROOT}
-curl https://api.developers.crunchydata.com/downloads/repo/rpm-centos/postgresql14/crunchypg14.repo > conf/crunchypg14.repo
-curl https://api.developers.crunchydata.com/downloads/repo/rpm-centos/postgresql13/crunchypg13.repo > conf/crunchypg13.repo
-curl https://api.developers.crunchydata.com/downloads/gpg/RPM-GPG-KEY-crunchydata-dev > conf/RPM-GPG-KEY-crunchydata-dev
