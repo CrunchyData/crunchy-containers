@@ -61,6 +61,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	bzip2 \
         	lz4 \
 			krb5-workstation \
+            orafce_${PG_MAJOR//.} \
 			${CCP_PG_EXTENSIONS} \
         && ${PACKAGER} -y clean all ; \
 else \
