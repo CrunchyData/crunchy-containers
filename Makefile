@@ -300,7 +300,7 @@ ifeq ("$(IMG_PUSH_TO_DOCKER_DAEMON)", "true")
 	sudo --preserve-env buildah push $(CCP_IMAGE_PREFIX)/crunchy-pgadmin4:$(CCP_IMAGE_TAG) docker-daemon:$(CCP_IMAGE_PREFIX)/crunchy-pgadmin4:$(CCP_IMAGE_TAG)
 endif
 
-pgadmin4-img-docker: pgadmin-img-build
+pgadmin4-img-docker: pgadmin4-img-build
 
 # ----- Extra images -----
 %-img-build: ccbase-image $(CCPROOT)/build/%/Dockerfile
