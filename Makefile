@@ -56,7 +56,7 @@ endif
 ifeq ("$(CCP_BASEOS)", "rocky8")
         DFSET=centos
         PACKAGER=dnf
-        DOCKERBASEREGISTRY=rockylinux/rockylinux:
+        DOCKERBASEREGISTRY=docker.io/rockylinux/rockylinux:
         BASE_IMAGE_OS=8
 endif
 
