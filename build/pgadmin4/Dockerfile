@@ -47,6 +47,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
                 mod_ssl \
                 python3-mod_wsgi \
                 python3-gssapi \
+                python3-psycopg2-2.8.* \
                 openssl \
                 sqlite \
                 pgadmin4-${PGADMIN_VER} \
