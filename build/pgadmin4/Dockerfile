@@ -66,9 +66,9 @@ fi
 # Preserving PGVERSION out of paranoia
 ENV PGROOT="/usr/pgsql-${PG_MAJOR}" PGVERSION="${PG_MAJOR}"
 
-ADD bin/pgadmin4/ /opt/crunchy/bin
-ADD bin/common /opt/crunchy/bin
-ADD conf/pgadmin4/ /opt/crunchy/conf
+COPY bin/pgadmin4/ /opt/crunchy/bin
+COPY bin/common /opt/crunchy/bin
+COPY conf/pgadmin4/ /opt/crunchy/conf
 
 RUN cp /opt/crunchy/conf/httpd.conf /etc/httpd/conf/httpd.conf \
 	&& rm /etc/httpd/conf.d/welcome.conf /etc/httpd/conf.d/ssl.conf

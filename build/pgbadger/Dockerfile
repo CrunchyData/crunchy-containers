@@ -4,7 +4,7 @@ ARG PG_FULL
 ARG PREFIX
 FROM golang:1.15.5 as badgerserver-build
 WORKDIR /go/src/github.com/crunchydata/crunchy-containers
-ADD ./badger ./badger
+COPY ./badger ./badger
 RUN CGO_ENABLED=0 GOOS=linux go build -a -o badgerserver ./badger
 
 FROM ${PREFIX}/crunchy-base:${BASEOS}-${PG_FULL}-${BASEVER}
@@ -49,9 +49,9 @@ RUN mkdir -p /opt/crunchy/bin /opt/crunchy/conf /report
 COPY --from=badgerserver-build \
 	/go/src/github.com/crunchydata/crunchy-containers/badgerserver \
 	/opt/crunchy/bin
-ADD conf/pgbadger /opt/crunchy/conf
-ADD bin/common /opt/crunchy/bin
-ADD bin/pgbadger /opt/crunchy/bin
+COPY conf/pgbadger /opt/crunchy/conf
+COPY bin/common /opt/crunchy/bin
+COPY bin/pgbadger /opt/crunchy/bin
 
 RUN chown -R postgres:postgres /opt/crunchy /report /bin && \
 	chmod -R g=u /opt/crunchy /report /bin

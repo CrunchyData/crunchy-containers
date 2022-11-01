@@ -27,9 +27,9 @@ ENV PGVERSION="${PG_MAJOR}"
 
 RUN mkdir -p /opt/crunchy/bin /opt/crunchy/conf
 
-ADD bin/pgpool /opt/crunchy/bin
-ADD bin/common /opt/crunchy/bin
-ADD conf/pgpool /opt/crunchy/conf
+COPY bin/pgpool /opt/crunchy/bin
+COPY bin/common /opt/crunchy/bin
+COPY conf/pgpool /opt/crunchy/conf
 
 RUN ln -sf /opt/crunchy/conf/pool_hba.conf /etc/pgpool-II_${PG_MAJOR//.}/pool_hba.conf \
 	&& ln -sf /opt/crunchy/conf/pgpool/pool_passwd /etc/pgpool-II_${PG_MAJOR//.}/pool_passwd

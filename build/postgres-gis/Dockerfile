@@ -47,7 +47,7 @@ fi
 # open up the postgres port
 EXPOSE 5432
 
-ADD bin/postgres-gis /opt/crunchy/bin/postgres
+COPY bin/postgres-gis /opt/crunchy/bin/postgres
 
 ENTRYPOINT ["/opt/crunchy/bin/uid_postgres.sh"]
 

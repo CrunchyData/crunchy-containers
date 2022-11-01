@@ -124,11 +124,11 @@ RUN chown -R postgres:postgres /opt/crunchy /var/lib/pgsql \
 # open up the postgres port
 EXPOSE 5432
 
-ADD bin/postgres_common /opt/crunchy/bin
-ADD bin/common /opt/crunchy/bin
-ADD conf/postgres_common /opt/crunchy/conf
-ADD tools/pgmonitor/postgres_exporter/common /opt/crunchy/bin/modules/pgexporter
-ADD tools/pgmonitor/postgres_exporter/linux /opt/crunchy/bin/modules/pgexporter
+COPY bin/postgres_common /opt/crunchy/bin
+COPY bin/common /opt/crunchy/bin
+COPY conf/postgres_common /opt/crunchy/conf
+COPY tools/pgmonitor/postgres_exporter/common /opt/crunchy/bin/modules/pgexporter
+COPY tools/pgmonitor/postgres_exporter/linux /opt/crunchy/bin/modules/pgexporter
 
 RUN mkdir /.ssh && chown 26:0 /.ssh && chmod g+rwx /.ssh && rm -f /run/nologin
 
