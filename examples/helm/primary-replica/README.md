@@ -102,10 +102,10 @@ See `values.yaml` for configuration notes. Specify each parameter using the `--s
 
 ```console
 $ helm install primary-replica --name primary-replica \
-  --set Image.tag=ubi8-13.8-4.6.8
+  --set Image.tag=ubi8-13.9-4.6.9
 ```
 
-The above command changes the image tag of the container to `ubi8-13.8-4.6.8`.
+The above command changes the image tag of the container to `ubi8-13.9-4.6.9`.
 
 > **Tip**: You can use the default [values.yaml](values.yaml)
 
@@ -121,7 +121,7 @@ The above command changes the image tag of the container to `ubi8-13.8-4.6.8`.
 | `.serviceType`      | The type of service      | `ClusterIP`               
 | `.image.repository` | The repository on DockerHub where the images are found.    | `crunchydata`                                           |
 | `.image.container` | The container to be pulled from the repository.    | `crunchy-postgres`                                                    |
-| `.image.tag` | The image tag to be used.    | `ubi8-13.8-4.6.8`                                                    |
+| `.image.tag` | The image tag to be used.    | `ubi8-13.9-4.6.9`                                                    |
 | `.pv.storage` | Size of persistent volume     | 400M                                                    |
 | `.pv.name` | Name of persistent volume    | `primary-pv`                                                    |
 | `.pv.mode` | The storage mode for the persistent volume    | `ReadWriteMany`                                                    |

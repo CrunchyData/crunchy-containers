@@ -12,7 +12,7 @@ serviceType: ClusterIP
 image:
   repository: crunchydata
   container: crunchy-postgres
-  tag: ubi8-13.8-4.6.8
+  tag: ubi8-13.9-4.6.9
 pv:
   storage: 400M
   name: primary-pv
