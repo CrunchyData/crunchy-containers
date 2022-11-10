@@ -17,13 +17,13 @@ enableMissingTranslationPlaceholders = false
 timeout=20000
 
 [params]
-containersVersion = "4.7.7"
-postgresVersion = "13.8"
+containersVersion = "4.7.8"
+postgresVersion = "13.9"
 postgresVersionShort = "13"
-postgresVersion13 = "13.8"
-postgresVersion12 = "12.12"
-postgresVersion11 = "11.17"
-postgresVersion10 = "10.22"
+postgresVersion13 = "13.9"
+postgresVersion12 = "12.13"
+postgresVersion11 = "11.18"
+postgresVersion10 = "10.23"
 
 # Theme params
 editURL = "https://github.com/CrunchyData/crunchy-containers/edit/master/docs/content/"
