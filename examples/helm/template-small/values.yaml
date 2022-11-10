@@ -12,7 +12,7 @@ serviceType: ClusterIP
 image:
   repository: crunchydata
   container: crunchy-postgres
-  tag: centos7-11.17-4.5.8
+  tag: centos7-11.18-4.5.9
 resources:
   cpu: 200m
   memory: 512Mi
