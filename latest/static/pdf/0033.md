@@ -20,7 +20,7 @@ The following features are supported by the crunchy-pgbouncer container:
 
 The crunchy-pgbouncer Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (14.5, 13.8, 12.12, 11.17 and 10.22)
+* PostgreSQL (14.6, 13.9, 12.13, 11.18 and 10.23)
 * [pgBouncer](https://pgbouncer.github.io/)
 * UBI 8 - publicly available
 * UBI 8 - customers only
