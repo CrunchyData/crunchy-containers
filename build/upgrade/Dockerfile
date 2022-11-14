@@ -31,9 +31,17 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 		"postgresql${PG_MAJOR//.}" \
 		"postgresql${PG_MAJOR//.}-contrib" \
 		"postgresql${PG_MAJOR//.}-server" \
+		postgresql${PG_MAJOR//.}-plpython* \
 		"pgaudit${PG_MAJOR//.}*" \
+		pgaudit${PG_MAJOR//.}_set_user \
 		"pgnodemx${PG_MAJOR//.}" \
 		"orafce_${PG_MAJOR//.}" \
+		pg_partman_${PG_MAJOR//.} \
+		pg_cron_${PG_MAJOR//.} \
+		$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
+		$( printf '11\n'${PG_MAJOR} | sort -VC && echo timescaledb_${PG_MAJOR} ) \
+		wal2json_${PG_MAJOR//.} \
+		pgaudit_analyze \
 		unzip \
 		&& ${PACKAGER} -y clean all ; \
 else \
@@ -45,9 +53,17 @@ else \
 		"postgresql${PG_MAJOR//.}" \
 		"postgresql${PG_MAJOR//.}-contrib" \
 		"postgresql${PG_MAJOR//.}-server" \
+		postgresql${PG_MAJOR//.}-plpython* \
 		"pgaudit${PG_MAJOR//.}*" \
+		pgaudit${PG_MAJOR//.}_set_user \
 		"pgnodemx${PG_MAJOR//.}" \
 		"orafce_${PG_MAJOR//.}" \
+		pg_partman_${PG_MAJOR//.} \
+		pg_cron_${PG_MAJOR//.} \
+		$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
+		$( printf '11\n'${PG_MAJOR} | sort -VC && echo timescaledb_${PG_MAJOR} ) \
+		wal2json_${PG_MAJOR//.} \
+		pgaudit_analyze \
 		unzip \
 		&& ${PACKAGER} -y clean all ; \
 fi
@@ -62,8 +78,16 @@ RUN for pg_version in $UPGRADE_PG_VERSIONS; do \
                 postgresql${pg_version} \
                 postgresql${pg_version}-contrib \
                 postgresql${pg_version}-server \
+				postgresql${pg_version}-plpython* \
                 pgaudit${pg_version} \
+				pgaudit${pg_version}_set_user \
+				pg_partman_${pg_version} \
+				pg_cron_${pg_version} \
                 pgnodemx${pg_version} \
+				$( printf '11\n'${pg_version} | sort -VC && echo postgresql${pg_version}-llvmjit ) \
+				$( printf '11\n'${pg_version} | sort -VC && echo timescaledb_${pg_version} ) \
+				wal2json_${pg_version} \
+				pgaudit_analyze \
 				orafce_${pg_version} ; \
         else \
             ${PACKAGER} -y install --nodocs \
@@ -73,8 +97,16 @@ RUN for pg_version in $UPGRADE_PG_VERSIONS; do \
                 postgresql${pg_version} \
                 postgresql${pg_version}-contrib \
                 postgresql${pg_version}-server \
+				postgresql${pg_version}-plpython* \
                 pgaudit${pg_version} \
+				pgaudit${pg_version}_set_user \
+				pg_partman_${pg_version} \
+				pg_cron_${pg_version} \
                 pgnodemx${pg_version} \
+				$( printf '11\n'${pg_version} | sort -VC && echo postgresql${pg_version}-llvmjit ) \
+				$( printf '11\n'${pg_version} | sort -VC && echo timescaledb_${pg_version} ) \
+				wal2json_${pg_version} \
+				pgaudit_analyze \
 				orafce_${pg_version} ; \
         fi \
 	done && ${PACKAGER} -y clean all ;
