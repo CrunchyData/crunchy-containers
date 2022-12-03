@@ -43,6 +43,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 		wal2json_${PG_MAJOR//.} \
 		pgaudit_analyze \
 		unzip \
+		passwordpolicy \
 		&& ${PACKAGER} -y clean all ; \
 else \
 	${PACKAGER} -y install --nodocs \
@@ -65,6 +66,7 @@ else \
 		wal2json_${PG_MAJOR//.} \
 		pgaudit_analyze \
 		unzip \
+		passwordpolicy \
 		&& ${PACKAGER} -y clean all ; \
 fi
 
