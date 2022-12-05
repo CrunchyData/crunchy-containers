@@ -39,7 +39,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 		pg_partman_${PG_MAJOR//.} \
 		pg_cron_${PG_MAJOR//.} \
 		$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
-		$( printf '10\n'${PG_MAJOR}'\n15' | sort -uVC && echo timescaledb_${PG_MAJOR} ) \
+		$( printf '11\n'${PG_MAJOR}'\n14' | sort -VC && echo timescaledb_${PG_MAJOR} ) \
 		wal2json_${PG_MAJOR//.} \
 		pgaudit_analyze \
 		unzip \
@@ -62,7 +62,7 @@ else \
 		pg_partman_${PG_MAJOR//.} \
 		pg_cron_${PG_MAJOR//.} \
 		$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
-		$( printf '10\n'${PG_MAJOR}'\n15' | sort -uVC && echo timescaledb_${PG_MAJOR} ) \
+		$( printf '11\n'${PG_MAJOR}'\n14' | sort -VC && echo timescaledb_${PG_MAJOR} ) \
 		wal2json_${PG_MAJOR//.} \
 		pgaudit_analyze \
 		unzip \
