@@ -4,7 +4,7 @@ version: "3.3"
 services:
   primary:
     hostname: 'primary'
-    image: crunchydata/crunchy-postgres:ubi8-14.6-0
+    image: crunchydata/crunchy-postgres:ubi8-14.6-2
     environment:
     - PGHOST=/tmp
     - MAX_CONNECTIONS=10
@@ -29,7 +29,7 @@ services:
         - node.labels.type == primary
         - node.role == worker
   replica:
-    image: crunchydata/crunchy-postgres:ubi8-14.6-0
+    image: crunchydata/crunchy-postgres:ubi8-14.6-2
     environment:
     - PGHOST=/tmp
     - MAX_CONNECTIONS=10
