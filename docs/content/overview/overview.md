@@ -11,10 +11,8 @@ The following provides a high level overview of each of the container images.
 
 ## Red Hat UBI Images
 
-The Crunchy Container suite provides OS image: `ubi8-minimal`.  The image
-utilize Crunchy Certified RPM's for the installation of PostgreSQL, and outside of the base images
-utilized to build the containers and any packages included within them (UBI).  The `ubi8-minimal` 
-are built using the Red Hat Universal Base Image (UBI).
+The Crunchy Container suite provides Red Hat's Universal Base Image, `ubi8-minimal`.
+The base image uses Crunchy Certified RPM's for the installation of PostgreSQL.
 
 https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image
 
@@ -27,11 +25,11 @@ Crunchy Container Suite provides two types of PostgreSQL database images:
 
 Supported major versions of these images are:
 
+- 15
 - 14
 - 13
 - 12
 - 11
-- 10
 
 ### Crunchy PostgreSQL
 
