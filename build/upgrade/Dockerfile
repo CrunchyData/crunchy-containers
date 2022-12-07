@@ -87,7 +87,7 @@ RUN for pg_version in $UPGRADE_PG_VERSIONS; do \
 				pg_cron_${pg_version} \
                 pgnodemx${pg_version} \
 				$( printf '11\n'${pg_version} | sort -VC && echo postgresql${pg_version}-llvmjit ) \
-				$( printf '10\n'${pg_version}'\n15' | sort -uVC && echo timescaledb_${pg_version} ) \
+				$( printf '11\n'${pg_version}'\n14' | sort -VC && echo timescaledb_${pg_version} ) \
 				wal2json_${pg_version} \
 				pgaudit_analyze \
 				orafce_${pg_version} ; \
@@ -106,7 +106,7 @@ RUN for pg_version in $UPGRADE_PG_VERSIONS; do \
 				pg_cron_${pg_version} \
                 pgnodemx${pg_version} \
 				$( printf '11\n'${pg_version} | sort -VC && echo postgresql${pg_version}-llvmjit ) \
-				$( printf '10\n'${pg_version}'\n15' | sort -uVC && echo timescaledb_${pg_version} ) \
+				$( printf '11\n'${pg_version}'\n14' | sort -VC && echo timescaledb_${pg_version} ) \
 				wal2json_${pg_version} \
 				pgaudit_analyze \
 				orafce_${pg_version} ; \
