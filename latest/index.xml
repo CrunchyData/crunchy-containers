@@ -41,9 +41,11 @@ Environment Variables Required    Name Default Description     MODE None Set to 
       
       <guid>https://crunchydata.github.io/crunchy-containers/latest/overview/overview/</guid>
       <description>Overview The following provides a high level overview of each of the container images.
-Red Hat UBI Images The Crunchy Container suite provides OS image: ubi8-minimal. The image utilize Crunchy Certified RPM&amp;rsquo;s for the installation of PostgreSQL, and outside of the base images utilized to build the containers and any packages included within them (UBI). The ubi8-minimal are built using the Red Hat Universal Base Image (UBI).
+Red Hat UBI Images The Crunchy Container suite provides Red Hat&amp;rsquo;s Universal Base Image, ubi8-minimal. The base image uses Crunchy Certified RPM&amp;rsquo;s for the installation of PostgreSQL.
 https://www.redhat.com/en/blog/introducing-red-hat-universal-base-image
-Database Images Crunchy Container Suite provides two types of PostgreSQL database images:</description>
+Database Images Crunchy Container Suite provides two types of PostgreSQL database images:
+ Crunchy PostgreSQL Crunchy PostGIS  Supported major versions of these images are:
+ 15 14 13 12 11  Crunchy PostgreSQL Crunchy PostgreSQL is an unmodified deployment of the PostgreSQL relational database.</description>
     </item>
     
     <item>
@@ -234,7 +236,7 @@ For this test, we place pg_audit statements within a SQL script and verify that 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://crunchydata.github.io/crunchy-containers/latest/examples/administration/upgrade/</guid>
-      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 12 or 13 image such as `ubi8-13.7-0` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from a PostgreSQL version 9.5, 9.6, 10, 11, 12, 13 or 14 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, 12, 13 and 14.</description>
+      <description>Major Upgrade This example assumes you have run *primary* using a PostgreSQL 12 or 13 image such as `ubi8-13.7-0` prior to running this upgrade.  The upgrade container will let you perform a pg_upgrade from PostgreSQL version 11, 12, 13 or 14 to any higher version, up to and including version 15. It does not do multi-version upgrades so you will need to for example do a 11 to 12 and then a 12 to 13 to get to version 13.</description>
     </item>
     
     <item>

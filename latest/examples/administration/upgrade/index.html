@@ -574,7 +574,7 @@ This example assumes you have run *primary* using a PostgreSQL 12 or 13 image
 such as `ubi8-13.7-0` prior to running this upgrade.
 </div>
 
-<p>The upgrade container will let you perform a <code>pg_upgrade</code> from a PostgreSQL version 9.5, 9.6, 10, 11, 12, 13 or 14 database to the available any of the higher versions of PostgreSQL versions that are currently support which are 9.6, 10, 11, 12, 13 and 14. It does not do multi-version upgrades so you will need to for example do a 10 to 11 and then a 11 to 12 to get to version 12.</p>
+<p>The upgrade container will let you perform a <code>pg_upgrade</code> from PostgreSQL version 11, 12, 13 or 14 to any higher version, up to and including version 15. It does not do multi-version upgrades so you will need to for example do a 11 to 12 and then a 12 to 13 to get to version 13.</p>
 
 <p>Prior to running this example, make sure your <code>CCP_IMAGE_TAG</code>
 environment variable is using the next major version of PostgreSQL that you
