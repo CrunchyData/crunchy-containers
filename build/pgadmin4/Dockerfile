@@ -25,6 +25,7 @@ RUN if [ "$BASEOS" = "centos7" ] ; then \
                 --setopt=skip_missing_names_on_install=False \
                 mod_ssl \
                 mod_wsgi \
+                python3-psycopg2-2.8.*\
                 openssl \
                 --setopt=obsoletes=0 pgadmin4-${PGADMIN_VER} \
                 pgadmin4-web-${PGADMIN_VER} \
@@ -68,6 +69,7 @@ RUN if [ "$BASEOS" = "ubi7" ] ; then \
                 --enablerepo="epel,rhel-7-server-extras-rpms" \
                 mod_ssl \
                 mod_wsgi \
+                python3-psycopg2-2.8.* \
                 openssl \
                 --setopt=obsoletes=0 pgadmin4-${PGADMIN_VER} \
                 pgadmin4-web-${PGADMIN_VER} \
@@ -89,6 +91,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
                 --enablerepo="epel" \
                 mod_ssl \
                 python3-mod_wsgi \
+                python3-psycopg2-2.8.* \
                 openssl \
                 sqlite \
                 --setopt=obsoletes=0 pgadmin4-${PGADMIN_VER} \
