@@ -23,7 +23,6 @@ postgresVersionShort = "13"
 postgresVersion13 = "13.9"
 postgresVersion12 = "12.13"
 postgresVersion11 = "11.18"
-postgresVersion10 = "10.23"
 
 # Theme params
 editURL = "https://github.com/CrunchyData/crunchy-containers/edit/master/docs/content/"
