@@ -71,6 +71,5 @@ cd ${PGADMIN_DIR?}
 
 echo_info "Starting Apache web server.."
 /usr/sbin/httpd -D FOREGROUND &
-echo $! > $APACHE_PIDFILE
 
 wait
