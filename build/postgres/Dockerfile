@@ -50,6 +50,7 @@ RUN if [ "$DFSET" = "centos" ] ; then \
         	python3-psycopg2 \
         	rsync \
         	$( printf '11\n'${PG_MAJOR}'\n14' | sort -VC && echo timescaledb_${PG_MAJOR} ) \
+			timescaledb-toolkit-postgresql-${PG_MAJOR//.} \
         	wal2json_${PG_MAJOR//.} \
         	file \
         	gettext \
@@ -84,6 +85,7 @@ else \
 		python3-psycopg2 \
 		rsync \
 		$( printf '11\n'${PG_MAJOR}'\n14' | sort -VC && echo timescaledb_${PG_MAJOR} ) \
+		timescaledb-toolkit-postgresql-${PG_MAJOR//.} \
 		wal2json_${PG_MAJOR//.} \
 		file \
 		unzip \
