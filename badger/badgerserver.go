@@ -1,5 +1,5 @@
 /*
- Copyright 2016 - 2022 Crunchy Data Solutions, Inc.
+ Copyright 2016 - 2023 Crunchy Data Solutions, Inc.
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -42,7 +42,7 @@ func main() {
 		log.Printf("PGBadger port not found. Using default %s\n", DEFAULT_PGBADGER_PORT)
 		port = DEFAULT_PGBADGER_PORT
 	}
-	log.Fatal(http.ListenAndServe(":" + port, nil))
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
 // BadgerGenerate perform a pgbadger to create the HTML output file

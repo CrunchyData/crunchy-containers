@@ -1,7 +1,7 @@
 package kubeapi
 
 /*
- Copyright 2017 - 2022 Crunchy Data Solutions, Inc.
+ Copyright 2017 - 2023 Crunchy Data Solutions, Inc.
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -13,23 +13,21 @@ package kubeapi
  limitations under the License.
 */
 
-
 import (
-"flag"
-"path/filepath"
-"os"
-log "github.com/sirupsen/logrus"
-"k8s.io/client-go/kubernetes"
-"k8s.io/client-go/tools/clientcmd"
-"k8s.io/client-go/rest"
+	"flag"
+	log "github.com/sirupsen/logrus"
+	"k8s.io/client-go/kubernetes"
+	"k8s.io/client-go/rest"
+	"k8s.io/client-go/tools/clientcmd"
+	"os"
+	"path/filepath"
 )
 
-func GetClientConfig (oocFlag bool, namespaceFlag string)(* kubernetes.Clientset,  string, error) {
+func GetClientConfig(oocFlag bool, namespaceFlag string) (*kubernetes.Clientset, string, error) {
 
 	var kubeconfig *string
-	var config *rest.Config 
+	var config *rest.Config
 	var err error
-
 
 	namespace := getNamespace(oocFlag, namespaceFlag) // this may call os.Exit(non-zero)
 
@@ -48,14 +46,13 @@ func GetClientConfig (oocFlag bool, namespaceFlag string)(* kubernetes.Clientset
 		config, err = clientcmd.BuildConfigFromFlags("", *kubeconfig)
 
 		if err != nil {
-				panic(err.Error())
+			panic(err.Error())
 		}
 
 	} else {
 		panic("Unable to obtain a cluster configuration. Exiting.")
 	}
 	flag.Parse()
-
 
 	// create the clientset
 	clientset, err := kubernetes.NewForConfig(config)
@@ -74,7 +71,6 @@ func homeDir() string {
 	return os.Getenv("USERPROFILE") // windows
 }
 
-
 func getNamespace(outOfContainer bool, namespaceFlag string) string {
 
 	if namespaceFlag != "" {
@@ -91,4 +87,3 @@ func getNamespace(outOfContainer bool, namespaceFlag string) string {
 
 	return "" // make compiler happy - never executed
 }
-
