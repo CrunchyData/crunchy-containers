@@ -39,7 +39,7 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 		pg_partman_${PG_MAJOR//.} \
 		pg_cron_${PG_MAJOR//.} \
 		$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
-		$( printf '11\n'${PG_MAJOR}'\n14' | sort -VC && echo timescaledb_${PG_MAJOR} ) \
+		timescaledb_${PG_MAJOR//.} \
 		wal2json_${PG_MAJOR//.} \
 		pgaudit_analyze \
 		unzip \
@@ -62,7 +62,7 @@ else \
 		pg_partman_${PG_MAJOR//.} \
 		pg_cron_${PG_MAJOR//.} \
 		$( printf '11\n'${PG_MAJOR} | sort -VC && echo postgresql${PG_MAJOR}-llvmjit ) \
-		$( printf '11\n'${PG_MAJOR}'\n14' | sort -VC && echo timescaledb_${PG_MAJOR} ) \
+		timescaledb_${PG_MAJOR//.} \
 		wal2json_${PG_MAJOR//.} \
 		pgaudit_analyze \
 		unzip \
@@ -87,7 +87,7 @@ RUN for pg_version in $UPGRADE_PG_VERSIONS; do \
 				pg_cron_${pg_version} \
                 pgnodemx${pg_version} \
 				$( printf '11\n'${pg_version} | sort -VC && echo postgresql${pg_version}-llvmjit ) \
-				$( printf '11\n'${pg_version}'\n14' | sort -VC && echo timescaledb_${pg_version} ) \
+				timescaledb_${PG_MAJOR//.} \
 				wal2json_${pg_version} \
 				pgaudit_analyze \
 				orafce_${pg_version} ; \
@@ -106,7 +106,7 @@ RUN for pg_version in $UPGRADE_PG_VERSIONS; do \
 				pg_cron_${pg_version} \
                 pgnodemx${pg_version} \
 				$( printf '11\n'${pg_version} | sort -VC && echo postgresql${pg_version}-llvmjit ) \
-				$( printf '11\n'${pg_version}'\n14' | sort -VC && echo timescaledb_${pg_version} ) \
+				timescaledb_${PG_MAJOR//.} \
 				wal2json_${pg_version} \
 				pgaudit_analyze \
 				orafce_${pg_version} ; \
