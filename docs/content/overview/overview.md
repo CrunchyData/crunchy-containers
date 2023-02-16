@@ -160,13 +160,11 @@ Visit the official pgAdmin4 website for more information: https://www.pgadmin.or
 The Crunchy Upgrade image allows users to perform major upgrades of their Crunchy
 PostgreSQL containers.  The following upgrade versions of PostgreSQL are available:
 
+- 15
 - 14
 - 13
 - 12
 - 11
-- 10
-- 9.6
-- 9.5
 
 ## Performance and Monitoring
 
