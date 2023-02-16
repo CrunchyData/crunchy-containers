@@ -26,7 +26,7 @@ The following features are supported by the crunchy-pgadmin4 container:
 
 The crunchy-pgadmin4 Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL (14.6, 13.9, 12.13, 11.18 and 10.23)
+* PostgreSQL (15.2, 14.7, 13.10, 12.14 and 11.19)
 * [pgAdmin4](https://www.pgadmin.org/)
 * UBI 8 - publicly available
 * UBI 8 - customers only
