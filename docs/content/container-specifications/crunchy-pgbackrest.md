@@ -20,6 +20,7 @@ The `MODE` environment variable must be set to run the image in the required mod
 | pgBackRest Repo mode acts as a pgBackRest remote repository for the Postgres cluster to use for storing archive files and backups. | `pgbackrest-repo`
 | pgBackRest Restore mode executes a pgBackRest restore independent of the Crunchy PostgreSQL Operator. | `pgbackrest-restore`
 
+
 ## Volumes
 
 The following volumes are mounted by the `crunchy-pgbackrest` container:
@@ -34,10 +35,11 @@ The following volumes are mounted by the `crunchy-pgbackrest` container:
 
 The crunchy-backrest-restore Docker image contains the following packages (versions vary depending on PostgreSQL version):
 
-* PostgreSQL ({{< param postgresVersion13 >}}, {{< param postgresVersion12 >}}, and {{< param postgresVersion11 >}}.
+* PostgreSQL ({{< param postgresVersion13 >}}, {{< param postgresVersion12 >}}, and {{< param postgresVersion11 >}}).
 * [pgBackRest](https://pgbackrest.org/) (2.31)
 * CentOS 7, UBI 8 - publicly available
 * UBI 7, UBI 8 - customers only
+
 
 ## Environment Variables
 
