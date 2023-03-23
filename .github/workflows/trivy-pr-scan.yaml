@@ -1,6 +1,6 @@
 # Uses Trivy to scan every pull request, rejecting those with severe, fixable vulnerabilities.
 # Scans on PR to master and weekly with same behavior.
-name: Trivy
+name: Trivy PR Scan
 
 on:
   pull_request:
@@ -9,9 +9,6 @@ on:
   push:
     branches:
       - master
-  # Scan schedule is same as codeql-analysis job.
-  schedule:
-    - cron: '10 18 * * 2'
 
 jobs:
   scan:
