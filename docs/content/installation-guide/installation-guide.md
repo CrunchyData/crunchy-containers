@@ -82,9 +82,9 @@ line starting with #:
     export GOBIN=$GOPATH/bin        # set bin path
     export PATH=$PATH:$GOBIN        # add Go bin path to your overall path
     export CCP_BASEOS=ubi8          # ubi8 for Red Hat Universal Base Image
-    export CCP_PGVERSION=14         # The PostgreSQL major version
-    export CCP_PG_FULLVERSION=14.7
-    export CCP_POSTGIS_VERSION=3.2  # The PostGIS version
+    export CCP_PGVERSION=15         # The PostgreSQL major version
+    export CCP_PG_FULLVERSION=15.2
+    export CCP_POSTGIS_VERSION=3.3  # The PostGIS version
     export CCP_VERSION=5.3.1-0
     export CCP_IMAGE_PREFIX=crunchydata # Prefix to put before all the container image names
     export CCP_IMAGE_TAG=$CCP_BASEOS-$CCP_PG_FULLVERSION-$CCP_VERSION   # Used to tag the images
