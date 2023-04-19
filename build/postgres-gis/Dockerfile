@@ -10,6 +10,7 @@ ARG DFSET
 ARG PACKAGER
 ARG PG_MAJOR
 ARG POSTGIS_LBL
+ARG POSTGIS_FULL_VER
 
 LABEL name="postgres-gis" \
 	summary="Includes PostGIS extensions on top of crunchy-postgres" \
@@ -25,8 +26,8 @@ RUN if [ "$BASEOS" = "centos8" ] ; then \
 		--setopt=skip_missing_names_on_install=False \
 		--enablerepo="powertools" \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
-		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
-		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-${POSTGIS_FULL_VER} \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client-${POSTGIS_FULL_VER} \
 		postgresql${PG_MAJOR//.}-plperl \
 		postgresql${PG_MAJOR//.}-pltcl \
 	&& ${PACKAGER} -y clean all ; \
@@ -41,8 +42,8 @@ RUN if [ "$BASEOS" = "ubi8" ] ; then \
 		--enablerepo="epel" \
 		--enablerepo="codeready-builder-for-rhel-8-x86_64-rpms" \
 		pgrouting${POSTGIS_LBL}_${PG_MAJOR//.} \
-		postgis${POSTGIS_LBL}_${PG_MAJOR//.} \
-		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-${POSTGIS_FULL_VER} \
+		postgis${POSTGIS_LBL}_${PG_MAJOR//.}-client-${POSTGIS_FULL_VER} \
 		postgresql${PG_MAJOR//.}-plperl \
 		postgresql${PG_MAJOR//.}-pltcl \
 	&& ${PACKAGER} -y clean all \
