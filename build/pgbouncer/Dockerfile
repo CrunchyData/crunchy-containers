@@ -9,6 +9,7 @@ ARG DFSET
 ARG PACKAGER
 
 ARG PG_MAJOR
+ARG PGBOUNCER_VER
 
 LABEL name="pgbouncer" \
 	summary="Lightweight connection pooler for crunchy-postgres" \
@@ -20,7 +21,7 @@ LABEL name="pgbouncer" \
 RUN ${PACKAGER} -y install \
 	--disablerepo="epel" \
 	--setopt=skip_missing_names_on_install=False \
-	pgbouncer \
+	pgbouncer-${PGBOUNCER_VER} \
 	&& ${PACKAGER} -y clean all
 
 # Preserving PGVERSION out of paranoia
