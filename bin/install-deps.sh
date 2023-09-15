@@ -19,13 +19,21 @@ OPENSHIFT_CLIENT='https://github.com/openshift/origin/releases/download/v3.11.0/
 CERTSTRAP_VERSION=1.1.1
 YQ_VERSION=3.3.0
 
-sudo yum -y install net-tools bind-utils wget unzip git
+if [ ! -f /etc/debian_release ]; then
+    sudo yum -y install net-tools bind-utils wget unzip git
+else
+    sudo apt -y satisfy net-tools bind-utils wget unzip git
+fi
 
 which buildah
 if [ $? -eq 1 ]; then
         echo "installing buildah"
-        sudo subscription-manager repos --enable=rhel-7-server-extras-rpms
-        sudo yum -y install buildah
+        if [ ! -f /etc/debian_release ]; then
+             sudo subscription-manager repos --enable=rhel-7-server-extras-rpms
+             sudo yum -y install buildah
+        else
+             sudo apt -y install buildah
+        fi
 fi
 
 FILE='openshift-origin-client.tgz'
