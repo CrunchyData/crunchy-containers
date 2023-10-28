@@ -28,9 +28,9 @@ ENV PGVERSION="${PG_MAJOR}"
 
 RUN mkdir -p /opt/crunchy/bin /opt/crunchy/conf /pgconf
 
-ADD bin/pgbouncer /opt/crunchy/bin
-ADD bin/common /opt/crunchy/bin
-ADD conf/pgbouncer /opt/crunchy/conf
+COPY bin/pgbouncer /opt/crunchy/bin
+COPY bin/common /opt/crunchy/bin
+COPY conf/pgbouncer /opt/crunchy/conf
 
 RUN chown -R 2:0 /opt/crunchy /pgconf && \
 	chmod -R g=u /opt/crunchy /pgconf

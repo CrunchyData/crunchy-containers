@@ -19,7 +19,7 @@ LABEL name="upgrade" \
 	io.openshift.tags="postgresql,postgres,upgrade,database,crunchy"
 
 # Add in the repository files with the correct PostgreSQL versions
-ADD conf/crunchypg*.repo /etc/yum.repos.d/
+COPY conf/crunchypg*.repo /etc/yum.repos.d/
 
 # install the highest version of PostgreSQL + pgAudit and its dependencies as
 # well as unzip
@@ -114,9 +114,9 @@ RUN for pg_version in $UPGRADE_PG_VERSIONS; do \
 	done && ${PACKAGER} -y clean all ;
 
 RUN mkdir -p /opt/crunchy/bin /pgolddata /pgnewdata /opt/crunchy/conf
-ADD bin/upgrade/ /opt/crunchy/bin
-ADD bin/common /opt/crunchy/bin
-ADD conf/upgrade/ /opt/crunchy/conf
+COPY bin/upgrade/ /opt/crunchy/bin
+COPY bin/common /opt/crunchy/bin
+COPY conf/upgrade/ /opt/crunchy/conf
 
 RUN chown -R postgres:postgres /opt/crunchy /pgolddata /pgnewdata && \
 	chmod -R g=u /opt/crunchy /pgolddata /pgnewdata

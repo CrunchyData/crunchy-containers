@@ -47,15 +47,15 @@ RUN mkdir -p /opt/crunchy/bin /opt/crunchy/conf /pgdata /backrestrepo \
 	/var/log/pgbackrest
 
 # add pgbackrest-restore files
-ADD bin/pgbackrest-restore /opt/crunchy/bin
-ADD conf/pgbackrest-restore /opt/crunchy/conf
+COPY bin/pgbackrest-restore /opt/crunchy/bin
+COPY conf/pgbackrest-restore /opt/crunchy/conf
 
 # add pgbackrest files
-ADD bin/pgbackrest /opt/crunchy/bin
+COPY bin/pgbackrest /opt/crunchy/bin
 
 # add pgbackrest-common files
-ADD bin/common /opt/crunchy/bin
-ADD bin/pgbackrest-common /opt/crunchy/bin
+COPY bin/common /opt/crunchy/bin
+COPY bin/pgbackrest-common /opt/crunchy/bin
 
 # set user and group ownership
 RUN chown -R postgres:postgres /opt/crunchy  \
@@ -63,7 +63,7 @@ RUN chown -R postgres:postgres /opt/crunchy  \
 
 # add the pgbackrest-repo specific files and directories, and
 # set the appropriate permissions and ownership
-ADD bin/pgbackrest-repo /usr/local/bin
+COPY bin/pgbackrest-repo /usr/local/bin
 RUN chmod +x /usr/local/bin/pgbackrest-repo.sh /usr/local/bin/archive-push-s3.sh \
 		/usr/local/bin/archive-push-gcs.sh \
 	&& mkdir -p /etc/pgbackrest \
