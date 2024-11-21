@@ -91,6 +91,22 @@ fi
 function initdb_logic() {
     echo_info "Starting initdb.."
 
+    # # # # # # # # # # # # # # # # # # # # # # # # #
+    # The "initdb" tool uses settings defined in the shared "postgresql.conf.sample" file preventing "huge_pages" from getting configured properly.
+    # In Kubernetes this causes the pod to crash when huge pages are enabled in the operating system and they are not configured in Kubernetes.
+    # We must disable huge pages for PostgreSQL as we are required not to use it.
+    #
+    # SOLUTION
+    # Remove the "huge_pages" configuration from "postgresql.conf.sample" as it may or may not exist.
+    # Add "huge_pages" to the bottom of the page turned off.
+
+    # TODO: Set "huge_pages" based on what is passed in via the postgrescluster.  It could be in "cat $PATRONI_POSTGRESQL_CONFIG_DIR/postgresql.conf".
+    # TODO: It is so early in the initialization the configuation may not have made it in yet.
+
+    POSTGRESQL_CONF_SAMPLE="$(awk '($1 ~ /huge_pages/ || $1 ~ /#huge_pages/ || $2 ~ /huge_pages/ || $2 ~ /#huge_pages/) { next } { print } END { print "huge_pages = off" }' ${PGROOT}/share/postgresql.conf.sample)"
+    echo "$POSTGRESQL_CONF_SAMPLE" > ${PGROOT}/share/postgresql.conf.sample
+    # # # # # # # # # # # # # # # # # # # # # # # # #
+
     cmd="initdb -D $PGDATA "
     if [[ -v PG_LOCALE ]]; then
         cmd+=" --locale="$PG_LOCALE
