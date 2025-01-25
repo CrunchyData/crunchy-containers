@@ -100,6 +100,9 @@ else \
 	&& ${PACKAGER} -y clean all --enablerepo="epel" ; \
 fi
 
+# Set huge_pages to "off" to workaround issue # sc-17565
+RUN echo "huge_pages = off" >> ${PGROOT}/share/postgresql.conf.sample
+
 # install patroni for Kube
 RUN pip3 install --upgrade python-dateutil \
 	&& pip3 install patroni[kubernetes]=="${PATRONI_VER}"
